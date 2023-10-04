@@ -110,24 +110,58 @@ void Animation::addKeyframe(const Gen::PlotPtr &next,
 	}
 
 	auto begin = target;
+
+	auto intermediate0Instant = intermediate0
+	                         && strategy != RegroupStrategy::fade
+	                         && begin->getOptions()->looksTheSame(
+	                             *intermediate0->getOptions());
+	begin = intermediate0 ? intermediate0 : begin;
+
+	auto intermediate1Instant = intermediate1
+	                         && strategy == RegroupStrategy::aggregate
+	                         && begin->getOptions()->looksTheSame(
+	                             *intermediate1->getOptions());
+	begin = intermediate1 ? intermediate1 : begin;
+
+	auto nextInstant =
+	    strategy != RegroupStrategy::fade
+	    && begin->getOptions()->looksTheSame(*next->getOptions());
+
+	auto duration_fix = (intermediate0 && !intermediate0Instant)
+	                  + (intermediate1 && !intermediate1Instant)
+	                  + !nextInstant;
+
+	auto real_options = options;
+	if (auto &duration = real_options.all.duration;
+	    duration_fix > 1 && duration) {
+		*duration =
+		    ::Anim::Duration{static_cast<double>(duration.value())
+		                     / static_cast<double>(duration_fix)};
+	}
+
+	begin = target;
+
 	if (intermediate0) {
-		addKeyframe(target,
+		addKeyframe(begin,
 		    intermediate0,
-		    options,
-		    strategy == RegroupStrategy::drilldown);
+		    real_options,
+		    intermediate0Instant);
 		begin = intermediate0;
+
+		if (!intermediate0Instant)
+			real_options.all.delay = ::Anim::Duration(0);
 	}
 	if (intermediate1) {
 		addKeyframe(begin,
 		    intermediate1,
-		    options,
-		    strategy == RegroupStrategy::aggregate);
+		    real_options,
+		    intermediate1Instant);
 		begin = intermediate1;
+
+		if (!intermediate1Instant)
+			real_options.all.delay = ::Anim::Duration(0);
 	}
-	addKeyframe(begin,
-	    next,
-	    options,
-	    strategy != RegroupStrategy::fade);
+	addKeyframe(begin, next, real_options, nextInstant);
 
 	target = next;
 }
@@ -159,18 +193,14 @@ Gen::PlotPtr Animation::getIntermediate(const Gen::PlotPtr &base,
 void Animation::addKeyframe(const Gen::PlotPtr &source,
     const Gen::PlotPtr &target,
     const Options::Keyframe &options,
-    bool canBeInstant)
+    bool isInstant)
 {
 	auto instant = options;
 	instant.all.duration = ::Anim::Duration(0);
 
 	auto keyframe = std::make_shared<Keyframe>(source,
 	    target,
-	    canBeInstant
-	            && source->getOptions()->looksTheSame(
-	                *target->getOptions())
-	        ? instant
-	        : options);
+	    isInstant ? instant : options);
 	::Anim::Sequence::addKeyframe(keyframe);
 }
 

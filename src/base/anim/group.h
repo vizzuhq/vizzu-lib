@@ -44,7 +44,7 @@ private:
 	Duration baseline;
 
 	void reTime(Options &options, Duration duration, Duration delay);
-	void calcDuration();
+	void calcDuration(Duration duration);
 };
 
 }

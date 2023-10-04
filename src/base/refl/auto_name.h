@@ -48,13 +48,11 @@ template <class E, auto v> consteval auto name()
 	constexpr auto last = sv.find_last_not_of(" }>)(", sv.size() - 6);
 #else
 #if defined(__clang__)
-	if constexpr (std::is_member_object_pointer_v<decltype(v)>) {
+	if constexpr (std::is_member_object_pointer_v<decltype(v)>)
 		return name<void,
 		    Wrapper{&std::invoke(v,
 		        declval<decltype(getBase(v)) &>())}>();
-	}
 #endif
-
 	constexpr std::string_view sv = __PRETTY_FUNCTION__;
 	constexpr auto last = sv.find_last_not_of(" }])");
 #endif
@@ -63,7 +61,6 @@ template <class E, auto v> consteval auto name()
 	                        "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 	                        "0123456789_",
 	        last);
-
 	if constexpr (constexpr std::string_view res =
 	                  sv.substr(val + 1, last - val);
 	              res.length() > 0
@@ -72,9 +69,8 @@ template <class E, auto v> consteval auto name()
 		std::ranges::copy(res, arr.begin());
 		return arr;
 	}
-	else {
+	else
 		return std::array<char, 0>{};
-	}
 }
 
 template <auto A>

@@ -21,6 +21,10 @@
 - Anim.Control.seek() won't fail when Number passed instead of string.
 - When animation canceled, promise rejected with proper custom error. 
 - No redraw on every mouse event.
+- Anim options applies for the whole animation even when dimension changes
+  cause multi-step animations.
+- Animation between two version of the same chart is instant only if duration
+  is not explicitly set
 
 ### Added
 
