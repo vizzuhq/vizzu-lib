@@ -37,6 +37,10 @@ jobs:
         env:
           NPM_API_TOKEN: ${{ secrets.NPM_API_TOKEN }}
 
+      - name: Purge package
+        run: |
+          npm run pkg-purge-js
+
       - name: Upload package
         run: |
           echo ${{ secrets.GITHUB_TOKEN }} | gh auth login --with-token
