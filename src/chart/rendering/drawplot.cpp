@@ -70,8 +70,12 @@ void DrawPlot::drawArea(bool clip)
 			}
 			canvas.setLineWidth(0);
 		}
-		else if (rootEvents.draw.plot.area)
-			rootEvents.draw.plot.area->invoke(std::move(eventObj));
+		else if (!rootEvents.draw.plot.area
+		         || rootEvents.draw.plot.area->invoke(
+		             std::move(eventObj))) {
+			renderedChart.emplace(Rect{rect, true},
+			    std::move(areaElement));
+		}
 	}
 }
 
