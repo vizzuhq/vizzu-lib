@@ -26,8 +26,10 @@ DrawBackground::DrawBackground(const DrawingContext &context,
 		}
 		canvas.setLineWidth(0);
 	}
-	else if (onDraw)
-		onDraw->invoke(std::move(eventObj));
+	else if (!onDraw || onDraw->invoke(std::move(eventObj))) {
+		renderedChart.emplace(Geom::TransformedRect::fromRect(rect),
+		    std::move(eventTarget));
+	}
 }
 
 }
