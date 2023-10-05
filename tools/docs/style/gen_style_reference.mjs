@@ -37,7 +37,7 @@ function appendContent(obj, level) {
 
 const Vizzu = process.argv[2]
 
-const browserLaunched = puppeteer.launch({ headless: 'new' })
+const browserLaunched = puppeteer.launch({ headless: 'new', args: ['--no-sandbox'] })
 
 const pageCreated = browserLaunched.then((browser) => {
   return browser.newPage()
