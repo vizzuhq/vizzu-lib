@@ -40,8 +40,6 @@ jobs:
       - name: Purge package
         run: |
           npm run pkg-purge-js
-        env:
-          NPM_API_TOKEN: ${{ secrets.NPM_API_TOKEN }}
 
       - name: Upload package
         run: |
