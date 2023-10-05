@@ -102,12 +102,13 @@
     "pkg-rollup-js": "./tools/ci/run/pkg-rollup-js.sh",
     "pkg-rollup-jsonly": "./tools/ci/run/pkg-rollup-jsonly.sh",
     "pkg-init-js": "./tools/ci/run/pkg-init-js.sh",
-    "pkg-build-js": "./tools/ci/run/pkg-build-js.sh"
+    "pkg-build-js": "./tools/ci/run/pkg-build-js.sh",
+    "pkg-purge-js": "./tools/ci/run/pkg-purge-js.sh"
   },
   "devDependencies": {
     "@rollup/plugin-terser": "^0.4.3",
     "aggregate-error": "^5.0.0",
-    "ajv": "^8.12.0",
+    "axios": "^1.5.1",
     "check-dts": "^0.7.2",
     "colors": "^1.4.0",
     "eslint": "^8.49.0",
