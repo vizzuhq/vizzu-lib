@@ -1,6 +1,7 @@
-export default class Tooltip {
+export class Tooltip {
   meta = {
-    name: 'tooltip'
+    name: 'tooltip',
+    depends: ['pointerEvents']
   }
 
   listeners = {

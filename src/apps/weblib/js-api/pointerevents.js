@@ -1,4 +1,4 @@
-export default class PointerEvents {
+export class PointerEvents {
   meta = {
     name: 'pointerEvents'
   }
@@ -11,7 +11,7 @@ export default class PointerEvents {
     if (this._enabled) this._removeHandlers()
   }
 
-  enabled(enabled) {
+  enable(enabled) {
     this._enabled = enabled
     if (enabled) this._setHandlers()
     else this._removeHandlers()

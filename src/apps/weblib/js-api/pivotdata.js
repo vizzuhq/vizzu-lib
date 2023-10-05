@@ -1,6 +1,6 @@
 import UnPivot from './unpivot.js'
 
-export default class PivotData {
+export class PivotData {
   meta = {
     name: 'pivotData'
   }

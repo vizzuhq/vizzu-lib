@@ -1,6 +1,6 @@
 declare namespace Plugins {
   interface PluginMeta {
-    name: string
+    name?: string
     version?: string
     depends?: string[]
   }
@@ -26,11 +26,11 @@ declare namespace Plugins {
   }
 
   interface PluginApi {
-    [apiMethod: string]: (...args: any[]) => any
+    [key: string]: any
   }
 
   interface Plugin {
-    meta: PluginMeta
+    meta?: PluginMeta
     hooks?: PluginHooks
     listeners?: PluginListeners
     api?: PluginApi

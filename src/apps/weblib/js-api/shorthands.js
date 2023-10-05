@@ -1,7 +1,7 @@
 import { CObject } from './objregistry.js'
 import { Animation } from './animcontrol.js'
 
-export default class Shorthands {
+export class Shorthands {
   meta = {
     name: 'shorthands'
   }

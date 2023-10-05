@@ -30,7 +30,7 @@ class DataRecord {
   }
 }
 
-export default class Data {
+export class Data {
   constructor(chart) {
     this.chart = chart
   }

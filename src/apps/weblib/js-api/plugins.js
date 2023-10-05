@@ -1,27 +1,30 @@
-export default class Plugins {
+export class Plugins {
   constructor(parent, plugins) {
     this._parent = parent
     this._plugins = []
     if (plugins) {
-      if (!Array.isArray(plugins)) throw new Error('Plugins must be an array')
+      if (!Array.isArray(plugins)) {
+        throw new Error('Plugins must be an array')
+      }
       plugins.forEach((plugin) => this.register(plugin, true))
     }
   }
 
-  getName(instance) {
+  enable(name, enabled) {
+    const plugin = this._getByName(name)
+    this._setEnabled(plugin, enabled)
+  }
+
+  getRegisteredName(instance) {
     const plugin = this._plugins.find((plugin) => plugin.instance === instance)
     return plugin?.name
   }
 
   register(instance, enabled = true) {
     this._validate(instance)
-    const name = instance.meta.name
+    const name = this._discoverName(instance)
     if (instance.register) {
-      try {
-        instance.register(this._parent)
-      } catch (e) {
-        console.error(e)
-      }
+      instance.register(this._parent)
     }
     const plugin = { name, instance, enabled: undefined }
     this._plugins.push(plugin)
@@ -29,30 +32,24 @@ export default class Plugins {
     return name
   }
 
-  enabled(name, enabled) {
-    const plugin = this._getByName(name)
-    this._setEnabled(plugin, enabled)
-  }
-
   destruct() {
     const names = this._plugins.map((plugin) => plugin.name)
-    names.forEach((name) => this.unregister(name))
-    this._plugins = []
-    this._parent = null
+    try {
+      names.forEach((name) => this.unregister(name))
+    } finally {
+      this._plugins = []
+      this._parent = null
+    }
   }
 
   unregister(name) {
     const index = this._plugins.findIndex((plugin) => plugin.name === name)
     if (index !== -1) {
       const plugin = this._plugins[index]
-      if (plugin.instance.unregister) {
-        try {
-          plugin.instance.unregister(this._parent)
-        } catch (e) {
-          console.error(e)
-        }
-      }
       this._plugins.splice(index, 1)
+      if (plugin.instance.unregister) {
+        plugin.instance.unregister(this._parent)
+      }
     }
   }
 
@@ -72,8 +69,8 @@ export default class Plugins {
   _setEnabled(plugin, enabled) {
     if (plugin.enabled !== enabled) {
       plugin.enabled = enabled
-      if (plugin.instance.enabled) {
-        plugin.instance.enabled(enabled)
+      if (plugin.instance.enable) {
+        plugin.instance.enable(enabled)
       }
       if (plugin.instance.listeners) {
         if (plugin.enabled) {
@@ -95,12 +92,22 @@ export default class Plugins {
   }
 
   _validateName(instance) {
-    if (instance.meta?.name) {
-      if (typeof instance.meta.name === 'string' && instance.meta.name.length > 0) {
-        return
-      }
+    const name = this._discoverName(instance)
+    if (typeof name === 'string' && name.length > 0) {
+      return
     }
     throw new Error('Plugin must have a non empty name string')
+  }
+
+  _discoverName(instance) {
+    return (
+      instance.meta?.name ??
+      (instance.constructor?.name ? this._firstToLower(instance.constructor.name) : null)
+    )
+  }
+
+  _firstToLower(s) {
+    return s[0].toLowerCase() + s.slice(1)
   }
 
   _validateDepends(instance) {

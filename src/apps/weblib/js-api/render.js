@@ -1,4 +1,17 @@
-export default class Render {
+export class Rendering {
+  meta = { name: 'rendering' }
+
+  register(chart) {
+    this.chart = chart
+  }
+
+  enable(enabled) {
+    this.chart._validateModule()
+    this.chart.render.enabled = enabled
+  }
+}
+
+export class Render {
   init(ccanvas, update, canvas, log) {
     this.ccanvas = ccanvas
     this.enabled = true

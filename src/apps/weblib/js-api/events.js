@@ -1,4 +1,4 @@
-export default class Events {
+export class Events {
   constructor(vizzu) {
     this.vizzu = vizzu
     this.module = vizzu.module

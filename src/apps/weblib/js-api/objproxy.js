@@ -1,4 +1,4 @@
-export default class ObjectProxy {
+export class ObjectProxy {
   constructor(setter) {
     this._setter = setter
   }

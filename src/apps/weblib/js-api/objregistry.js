@@ -1,6 +1,6 @@
 export class CObject {}
 
-export default class ObjectRegistry {
+export class ObjectRegistry {
   constructor(fnFree) {
     this.finalizationRegistry = new FinalizationRegistry((rawCPointer) => {
       fnFree(rawCPointer)

@@ -1,24 +1,19 @@
-import Render from './render.js'
-import Events from './events.js'
-import Data from './data.js'
+import { Rendering, Render } from './render.js'
+import { Events } from './events.js'
+import { Data } from './data.js'
 import { Animation, AnimControl } from './animcontrol.js'
-import Tooltip from './tooltip.js'
+import { Tooltip } from './tooltip.js'
+import { CSSProperties } from './cssproperties.js'
+import { ObjectRegistry, CObject } from './objregistry.js'
 import Presets from './presets.js'
 import VizzuModule from './cvizzu.js'
-import CSSProperties from './cssproperties.js'
-import ObjectRegistry, { CObject } from './objregistry.js'
-import Plugins from './plugins.js'
-import Shorthands from './shorthands.js'
-import PointerEvents from './pointerevents.js'
-import PivotData from './pivotdata.js'
+import { Plugins } from './plugins.js'
+import { Shorthands } from './shorthands.js'
+import { PointerEvents } from './pointerevents.js'
+import { PivotData } from './pivotdata.js'
 import { recursiveCopy } from './utils.js'
-
-class CancelError extends Error {
-  constructor() {
-    super('animation canceled')
-    this.name = 'CancelError'
-  }
-}
+import { CancelError } from './errors.js'
+import { Logging } from './logging.js'
 
 class Hooks {
   static setAnimParams = 'setAnimParams'
@@ -28,32 +23,6 @@ class Hooks {
 let vizzuOptions = null
 
 class Snapshot extends CObject {}
-
-class Logging {
-  meta = { name: 'logging' }
-
-  register(chart) {
-    this.chart = chart
-  }
-
-  enabled(enabled) {
-    this.chart._validateModule()
-    this.chart._call(this.chart.module._vizzu_setLogging)(enabled)
-  }
-}
-
-class Rendering {
-  meta = { name: 'rendering' }
-
-  register(chart) {
-    this.chart = chart
-  }
-
-  enabled(enabled) {
-    this.chart._validateModule()
-    this.chart.render.enabled = enabled
-  }
-}
 
 class CChart extends CObject {}
 
@@ -73,9 +42,9 @@ export default class Vizzu {
 
     this._container = opts.container
 
-    this._plugins = new Plugins(this, opts.features)
-
     this._started = false
+
+    this._plugins = new Plugins(this, opts.features)
 
     this.initializing = this._loadModule().then((module) => {
       this._init(module)
@@ -260,20 +229,21 @@ export default class Vizzu {
       throw new Error('enabled parameter must be boolean if specified')
 
     let name
-    const enabledProvided = enabled !== undefined
-    let enabledSet = false
+    let enabledInRegister = false
     if (typeof nameOrInstance !== 'string') {
       const instance = nameOrInstance
-      name = this._plugins.getName(instance)
-      const exists = name !== undefined
-      if (!exists) {
+      name = this._plugins.getRegisteredName(instance)
+      if (!name) {
         name = this._plugins.register(instance, enabled || true)
-        enabledSet = true
+        enabledInRegister = true
       }
-    } else name = nameOrInstance
+    } else {
+      name = nameOrInstance
+    }
 
-    if (enabledProvided && !enabledSet) {
-      this._plugins.enabled(name, enabled)
+    const enabledProvided = enabled !== undefined
+    if (enabledProvided && !enabledInRegister) {
+      this._plugins.enable(name, enabled)
     }
 
     return this._plugins.api(name)
@@ -434,12 +404,12 @@ export default class Vizzu {
     this._setupDOMEventHandlers(this.canvas)
 
     this.feature(new Logging(), false)
-    this.feature(new Tooltip(), false)
     this.feature(new CSSProperties(), false)
     this.feature(new Rendering(), true)
     this.feature(new Shorthands(), true)
-    this.feature(new PointerEvents(), true)
     this.feature(new PivotData(), true)
+    this.feature(new PointerEvents(), true)
+    this.feature(new Tooltip(), false)
 
     this._start()
   }
@@ -472,10 +442,14 @@ export default class Vizzu {
   }
 
   detach() {
-    this._plugins.destruct()
-    this._resizeObserver?.disconnect()
-    if (this._updateInterval) clearInterval(this._updateInterval)
-    if (this._container && this._container !== this.canvas) this._container.removeChild(this.canvas)
+    try {
+      this._plugins.destruct()
+    } finally {
+      this._resizeObserver?.disconnect()
+      if (this._updateInterval) clearInterval(this._updateInterval)
+      if (this._container && this._container !== this.canvas)
+        this._container.removeChild(this.canvas)
+    }
   }
 
   getConverter(target, from, to) {

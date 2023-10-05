@@ -1,22 +1,20 @@
-export function recursiveCopy(obj) {
-  if (obj === null || typeof obj !== 'object') {
-    return obj
+export function recursiveCopy(value) {
+  if (value === null || typeof value !== 'object') {
+    return value
   }
 
-  if (obj instanceof Function) {
-    return obj
+  if (value instanceof Function) {
+    return value
   }
 
-  if (obj instanceof Array) {
-    const copyArray = []
-    obj.map((arrayElement) => copyArray.push(recursiveCopy(arrayElement)))
-    return copyArray
+  if (Array.isArray(value)) {
+    return value.map((item) => recursiveCopy(item))
   }
 
-  const copyObj = Object.create(obj)
-  for (const key in obj) {
-    if (key in obj) {
-      copyObj[key] = recursiveCopy(obj[key])
+  const copyObj = Object.create(value)
+  for (const key in value) {
+    if (key in value) {
+      copyObj[key] = recursiveCopy(value[key])
     }
   }
   return copyObj
