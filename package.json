@@ -108,6 +108,7 @@
   "devDependencies": {
     "@rollup/plugin-terser": "^0.4.3",
     "aggregate-error": "^5.0.0",
+    "ajv": "8.12.0",
     "axios": "^1.5.1",
     "check-dts": "^0.7.2",
     "colors": "^1.4.0",
