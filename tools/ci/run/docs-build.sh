@@ -2,6 +2,8 @@
 
 set -e
 
+git clone --single-branch --branch main --depth 1 'git@github.com:vizzuhq/vizzu-lib-doc'
+
 rm -rf docs/assets/dist
 mkdir -p docs/assets/dist
 cp dist/vizzu.min.js docs/assets/dist/vizzu.min.js

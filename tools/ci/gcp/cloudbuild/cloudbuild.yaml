@@ -118,26 +118,27 @@ steps:
     dir: /workspace
 
   - name: gcr.io/cloud-builders/git
-    id: docs-clone
+    id: docs-init
     waitFor:
       - test
     entrypoint: bash
     args:
       - '-c'
       - |
-        mkdir -p /root/.ssh
         echo "$$VIZZUHQ_GITHUB_SSH" > /root/.ssh/id_rsa
         chmod 400 /root/.ssh/id_rsa
         ssh-keyscan -t rsa github.com > /root/.ssh/known_hosts
-        git clone --single-branch --branch main --depth 1 'git@github.com:vizzuhq/vizzu-lib-doc'
     dir: /workspace
     secretEnv:
       - VIZZUHQ_GITHUB_SSH
+    volumes:
+      - name: ssh
+        path: /root/.ssh
 
   - name: vizzu/vizzu-dev-wasm:0.8
     id: docs-build
     waitFor:
-      - docs-clone
+      - docs-init
     entrypoint: bash
     args:
       - '-c'
@@ -145,6 +146,28 @@ steps:
         ./tools/ci/run/docs-thumbnails.sh &&
         ./tools/ci/run/docs-build.sh
     dir: /workspace
+
+  - name: gcr.io/cloud-builders/git
+    id: docs-publish
+    waitFor:
+      - docs-build
+    entrypoint: bash
+    args:
+      - '-c'
+      - |
+        git checkout -b tmp
+        git rm -r .
+        git clean -df
+        cp -r ../site/* .
+        git add .
+        git commit -m "Site development version"
+        git push origin tmp:gh-pages-dev -f
+    dir: /workspace/vizzu-lib-doc
+    secretEnv:
+      - VIZZUHQ_GITHUB_SSH
+    volumes:
+      - name: ssh
+        path: /root/.ssh
 
   - name: gcr.io/cloud-builders/gsutil
     id: upload
