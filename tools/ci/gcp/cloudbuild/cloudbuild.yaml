@@ -128,6 +128,7 @@ steps:
         echo "$$VIZZUHQ_GITHUB_SSH" > /root/.ssh/id_rsa
         chmod 400 /root/.ssh/id_rsa
         ssh-keyscan -t rsa github.com > /root/.ssh/known_hosts
+        git clone --single-branch --branch main --depth 1 'git@github.com:vizzuhq/vizzu-lib-doc'
     dir: /workspace
     secretEnv:
       - VIZZUHQ_GITHUB_SSH
