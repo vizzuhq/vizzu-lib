@@ -117,6 +117,35 @@ steps:
         npm test -- --vizzu /dist/vizzu.min.js --vizzu-ref /dist/vizzu.min.js --images DISABLED --hashes DISABLED --nologs
     dir: /workspace
 
+  - name: gcr.io/cloud-builders/git
+    id: docs-clone
+    waitFor:
+      - test
+    entrypoint: bash
+    args:
+      - '-c'
+      - |
+        mkdir -p /root/.ssh
+        echo "$$VIZZUHQ_GITHUB_SSH" > /root/.ssh/id_rsa
+        chmod 400 /root/.ssh/id_rsa
+        ssh-keyscan -t rsa github.com > /root/.ssh/known_hosts
+        git clone 'git@github.com:vizzuhq/vizzu-lib-doc'
+    dir: /workspace
+    secretEnv:
+      - VIZZUHQ_GITHUB_SSH
+
+  - name: vizzu/vizzu-dev-wasm:0.8
+    id: docs-build
+    waitFor:
+      - docs-clone
+    entrypoint: bash
+    args:
+      - '-c'
+      - |-
+        ./tools/ci/run/docs-thumbnails.sh &&
+        ./tools/ci/run/docs-build.sh
+    dir: /workspace
+
   - name: gcr.io/cloud-builders/gsutil
     id: upload
     waitFor:
@@ -141,6 +170,10 @@ steps:
         fi
     dir: /workspace
 
-timeout: 1800s
+availableSecrets:
+  secretManager:
+    - versionName: projects/418279184538/secrets/VIZZUHQ_GITHUB_SSH/versions/latest
+      env: VIZZUHQ_GITHUB_SSH
+timeout: 2400s
 options:
   machineType: E2_HIGHCPU_8
