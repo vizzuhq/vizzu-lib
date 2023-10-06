@@ -265,6 +265,26 @@ sometimes unstable changes.
 
 ### Documentation
 
+**Note:** The showcases and some images are stored in the
+[vizzu-lib-doc](https://github.com/vizzuhq/vizzu-lib-doc) repository. If you
+wish to build the site, run the following command:
+
+```sh
+git clone --single-branch --branch main --depth 1 'git@github.com:vizzuhq/vizzu-lib-doc'
+```
+
+**Note:** If you also want to generate thumbnails, run the following command:
+
+```sh
+npm run docs-gen-thumbnails
+```
+
+To build the documentation, you can use the `docs-build` script:
+
+```sh
+npm run docs-build
+```
+
 You can read the online version at
 [lib.vizzuhq.com](https://lib.vizzuhq.com/latest/).
 

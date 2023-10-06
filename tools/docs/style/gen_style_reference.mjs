@@ -1,15 +1,45 @@
-import fs from 'fs/promises'
 import puppeteer from 'puppeteer'
 import path from 'path'
+import serveStatic from 'serve-static'
+import express from 'express'
 import { fileURLToPath } from 'url'
 
-const __filename = fileURLToPath(import.meta.url)
-const __dirname = path.dirname(__filename)
+async function createServer(workspacePath) {
+  return new Promise((resolve, reject) => {
+    const app = express()
+    app.use(serveStatic(workspacePath))
+    app.use(express.json())
+    const server = app.listen(0, 'localhost', () => {
+      return resolve(server)
+    })
+  })
+}
 
-const repoPath = __dirname + '/../../..'
-const mkdocsPath = `${repoPath}/tools/docs`
-const genPath = `${mkdocsPath}/style`
-const jsAssetsPath = '../../assets/javascripts'
+async function createStyleReference(serverPort) {
+  const browser = await puppeteer.launch({
+    headless: 'new',
+    args: ['--no-sandbox', '--disable-web-security']
+  })
+  const page = await browser.newPage()
+
+  const style = await page.evaluate(async (serverPort) => {
+    const VizzuModule = await import(`http://127.0.0.1:${serverPort}/docs/assets/dist/vizzu.min.js`)
+    const Vizzu = VizzuModule.default
+    const div = document.createElement('div')
+    const chart = await new Vizzu(div).initializing
+    const style = await chart.getComputedStyle()
+    return JSON.stringify(style)
+  }, serverPort)
+
+  let content = ''
+  content += `<p id="allbtn-style" class="allbtn-style"><button type="button">+&nbsp;expand all</button></p>`
+  content += appendContent(JSON.parse(style), 0)
+  content += `<script src="../../assets/javascripts/style_ref_allbtn.js"></script>`
+  content += `<script src="../../assets/javascripts/style_ref_clickevent.js"></script>`
+  console.log(content)
+
+  browser.close()
+}
 
 function appendContent(obj, level) {
   const tab = '&emsp;'
@@ -35,53 +65,10 @@ function appendContent(obj, level) {
   return content
 }
 
-const Vizzu = process.argv[2]
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
+const repoPath = __dirname + '/../../..'
 
-const browserLaunched = puppeteer.launch({ headless: 'new' })
-
-const pageCreated = browserLaunched.then((browser) => {
-  return browser.newPage()
-})
-
-const getStyleScriptLoaded = fs.readFile(`${genPath}/get_style_reference.mjs`, {
-  encoding: 'utf8'
-})
-
-const pageModified = Promise.all([pageCreated, getStyleScriptLoaded]).then((results) => {
-  const page = results[0]
-  const getStyleScript = results[1]
-  return page.goto(`data:text/html,<script id="style" type="module">
-import Vizzu from "${Vizzu}";
-${getStyleScript}
-</script>`)
-})
-
-const selectorLoaded = Promise.all([pageCreated, pageModified]).then((results) => {
-  const page = results[0]
-  return page.waitForSelector('p')
-})
-
-const element = Promise.all([pageCreated, selectorLoaded]).then((results) => {
-  const page = results[0]
-  return page.$('p')
-})
-
-const elementValue = Promise.all([browserLaunched, pageCreated, element]).then((results) => {
-  const page = results[1]
-  const element = results[2]
-  return page.evaluate((el) => el.textContent, element)
-})
-
-Promise.all([browserLaunched, elementValue]).then((results) => {
-  const browser = results[0]
-  browser.close()
-})
-
-elementValue.then((elementValue) => {
-  let content = ''
-  content += `<p id="allbtn-style" class="allbtn-style"><button type="button">+&nbsp;expand all</button></p>`
-  content += appendContent(JSON.parse(elementValue), 0)
-  content += `<script src="${jsAssetsPath}/style_ref_allbtn.js"></script>`
-  content += `<script src="${jsAssetsPath}/style_ref_clickevent.js"></script>`
-  console.log(content)
-})
+const server = await createServer(repoPath)
+await createStyleReference(server.address().port)
+server.close()

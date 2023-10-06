@@ -117,6 +117,64 @@ steps:
         npm test -- --vizzu /dist/vizzu.min.js --vizzu-ref /dist/vizzu.min.js --images DISABLED --hashes DISABLED --nologs
     dir: /workspace
 
+  - name: gcr.io/cloud-builders/git
+    id: docs-init
+    waitFor:
+      - test
+    entrypoint: bash
+    args:
+      - '-c'
+      - |
+        echo "$$VIZZUHQ_GITHUB_SSH" > /root/.ssh/id_rsa
+        chmod 400 /root/.ssh/id_rsa
+        ssh-keyscan -t rsa github.com > /root/.ssh/known_hosts
+        git clone --single-branch --branch main --depth 1 'git@github.com:vizzuhq/vizzu-lib-doc'
+    dir: /workspace
+    secretEnv:
+      - VIZZUHQ_GITHUB_SSH
+    volumes:
+      - name: ssh
+        path: /root/.ssh
+
+  - name: vizzu/vizzu-dev-wasm:0.8
+    id: docs-build
+    waitFor:
+      - docs-init
+    entrypoint: bash
+    args:
+      - '-c'
+      - |-
+        npm run docs-gen-thumbnail-gsutil &&
+        npm run docs-build
+    dir: /workspace
+
+  - name: gcr.io/cloud-builders/git
+    id: docs-publish
+    waitFor:
+      - docs-build
+    entrypoint: bash
+    args:
+      - '-c'
+      - |
+        if [ $BRANCH_NAME == "main" ]
+        then
+          git config --global user.name "David Vegh"
+          git config --global user.email "veghdev@gmail.com"
+          git checkout -b tmp
+          git rm -r .
+          git clean -df
+          cp -r ../site/* .
+          git add .
+          git commit -m "Site development version"
+          git push origin tmp:gh-pages-dev -f
+        fi
+    dir: /workspace/vizzu-lib-doc
+    secretEnv:
+      - VIZZUHQ_GITHUB_SSH
+    volumes:
+      - name: ssh
+        path: /root/.ssh
+
   - name: gcr.io/cloud-builders/gsutil
     id: upload
     waitFor:
@@ -141,6 +199,10 @@ steps:
         fi
     dir: /workspace
 
-timeout: 1800s
+availableSecrets:
+  secretManager:
+    - versionName: projects/418279184538/secrets/VIZZUHQ_GITHUB_SSH/versions/latest
+      env: VIZZUHQ_GITHUB_SSH
+timeout: 2400s
 options:
   machineType: E2_HIGHCPU_8
