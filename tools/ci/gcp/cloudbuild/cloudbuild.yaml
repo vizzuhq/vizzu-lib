@@ -144,8 +144,8 @@ steps:
     args:
       - '-c'
       - |-
-        ./tools/ci/run/docs-thumbnails.sh &&
-        ./tools/ci/run/docs-build.sh
+        npm run docs-gen-thumbnail-gsutil &&
+        npm run docs-build
     dir: /workspace
 
   - name: gcr.io/cloud-builders/git
@@ -156,6 +156,8 @@ steps:
     args:
       - '-c'
       - |
+        git config --global user.name "David Vegh"
+        git config --global user.email "veghdev@gmail.com"
         git checkout -b tmp
         git rm -r .
         git clean -df
