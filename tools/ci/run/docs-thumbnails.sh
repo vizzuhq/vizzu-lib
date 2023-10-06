@@ -16,4 +16,5 @@ else
     gsutil -m cp -r /workspace/docs/examples/analytical_operations "gs://vizzu-lib-thumbnails/$hash/"
     gsutil -m cp -r /workspace/docs/examples/presets "gs://vizzu-lib-thumbnails/$hash/"
     gsutil -m cp -r /workspace/docs/examples/static "gs://vizzu-lib-thumbnails/$hash/"
+    echo "exists" | gsutil cp - gs://vizzu-lib-thumbnails/$hash/exists.txt
 fi
