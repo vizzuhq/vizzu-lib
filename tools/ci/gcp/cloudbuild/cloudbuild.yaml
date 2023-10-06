@@ -156,15 +156,18 @@ steps:
     args:
       - '-c'
       - |
-        git config --global user.name "David Vegh"
-        git config --global user.email "veghdev@gmail.com"
-        git checkout -b tmp
-        git rm -r .
-        git clean -df
-        cp -r ../site/* .
-        git add .
-        git commit -m "Site development version"
-        git push origin tmp:gh-pages-dev -f
+        if [ $BRANCH_NAME == "main" ]
+        then
+          git config --global user.name "David Vegh"
+          git config --global user.email "veghdev@gmail.com"
+          git checkout -b tmp
+          git rm -r .
+          git clean -df
+          cp -r ../site/* .
+          git add .
+          git commit -m "Site development version"
+          git push origin tmp:gh-pages-dev -f
+        fi
     dir: /workspace/vizzu-lib-doc
     secretEnv:
       - VIZZUHQ_GITHUB_SSH
