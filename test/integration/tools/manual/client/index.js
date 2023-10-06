@@ -162,12 +162,12 @@ class ManualClient {
         const slider = this.frame.contentWindow.document.getElementById('myRange')
         const sliderRef = this.frameRef.contentWindow.document.getElementById('myRange')
         slider.addEventListener('input', (e) => {
-          this.frameRef.contentWindow.testRunner.setSlider(e.target.value)
+          this.frameRef.contentWindow.testRunner?.setSlider(e.target.value)
         })
 
         if (this.frameRef.style.display !== 'none') {
           sliderRef.addEventListener('input', (e) => {
-            this.frame.contentWindow.testRunner.setSlider(e.target.value)
+            this.frame.contentWindow.testRunner?.setSlider(e.target.value)
           })
         }
         return setups

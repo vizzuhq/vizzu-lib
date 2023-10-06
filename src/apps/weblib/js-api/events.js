@@ -1,4 +1,4 @@
-export default class Events {
+export class Events {
   constructor(vizzu) {
     this.vizzu = vizzu
     this.module = vizzu.module
@@ -57,6 +57,18 @@ export default class Events {
         this.module.removeFunction(cfunc)
       }
       this.eventHandlers.delete(eventName)
+    }
+  }
+
+  addMany(events) {
+    for (const [eventName, handler] of Object.entries(events)) {
+      this.add(eventName, handler)
+    }
+  }
+
+  removeMany(events) {
+    for (const [eventName, handler] of Object.entries(events)) {
+      this.remove(eventName, handler)
     }
   }
 

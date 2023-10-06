@@ -7,10 +7,8 @@ data_url: ../../assets/data/music_data.js
 This and the next chapter provide a quick intro to the styling of the charts.
 You can either use the `style` property like in the following examples or use
 `CSS`. By using `CSS`, it's easier to set the same style for multiple charts on
-one page or re-use style settings.
-
-If you use `CSS`, don't change the set parameters later on via the `style`
-property.
+one page or re-use style settings. `CSS` parameter usage is disabled by default
+and can be enabled by `chart.feature('cssProperties', true)`.
 
 The font sizes automatically adjust to the chart size to help readability, and
 can also be set separately or for specific groups.

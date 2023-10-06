@@ -1,59 +1,53 @@
-export default class Tooltip {
-  constructor(chart) {
-    this.set = false
-    this.chart = chart
+export class Tooltip {
+  meta = {
+    name: 'tooltip',
+    depends: ['pointerEvents']
+  }
+
+  listeners = {
+    pointermove: this._mousemove.bind(this),
+    pointeron: this._mouseon.bind(this)
+  }
+
+  constructor() {
     this.id = 0
     this.animating = false
     this.lastMarkerId = null
     this.lastMove = new Date()
-    this.mouseMoveHandler = (event) => {
-      this.mousemove(event)
-    }
-    this.mouseOnHandler = (event) => {
-      this.mouseon(event)
-    }
-    this.enabled = false
+  }
+
+  register(chart) {
+    this.chart = chart
   }
 
   enable(enabled) {
-    if (enabled === this.set) {
-      return
-    }
-
-    if (enabled) {
-      this.chart.on('pointermove', this.mouseMoveHandler)
-      this.chart.on('pointeron', this.mouseOnHandler)
-    } else {
-      this.chart.off('pointermove', this.mouseMoveHandler)
-      this.chart.off('pointeron', this.mouseOnHandler)
+    if (!enabled) {
       this.id++
       setTimeout(() => {
-        this.out(this.id)
+        this._out(this.id)
       }, 200)
     }
-
-    this.set = enabled
   }
 
-  mousemove() {
+  _mousemove() {
     this.lastMove = new Date()
   }
 
-  mouseon(param) {
+  _mouseon(param) {
     this.id++
     const id = this.id
     if (!param.target || param.target.tagName !== 'plot-marker') {
       setTimeout(() => {
-        this.out(id)
+        this._out(id)
       }, 200)
     } else {
       setTimeout(() => {
-        this.in(id, param.target.index)
+        this._in(id, param.target.index)
       }, 0)
     }
   }
 
-  in(id, markerId) {
+  _in(id, markerId) {
     if (this.id === id) {
       if (!this.animating) {
         this.lastMarkerId = markerId
@@ -65,13 +59,13 @@ export default class Tooltip {
           })
       } else {
         setTimeout(() => {
-          this.in(id, markerId)
+          this._in(id, markerId)
         }, 100)
       }
     }
   }
 
-  out(id) {
+  _out(id) {
     if (this.id === id) {
       const ellapsed = new Date() - this.lastMove
       if (!this.animating && ellapsed > 200) {
@@ -82,7 +76,7 @@ export default class Tooltip {
         })
       } else {
         setTimeout(() => {
-          this.out(id)
+          this._out(id)
         }, 200 - ellapsed)
       }
     }

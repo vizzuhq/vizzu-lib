@@ -19,8 +19,12 @@
 - Pointer event coordinates fixed when canvas is in CSS transformed view.
 - Title appearance and disappearance glitch is fixed.
 - Anim.Control.seek() won't fail when Number passed instead of string.
+- When animation canceled, promise rejected with proper custom error. 
 - No redraw on every mouse event.
-- Anim options applied for the whole anim when intermediate keyframes added
+- Anim options applies for the whole animation even when dimension changes
+  cause multi-step animations.
+- Animation between two version of the same chart is instant only if duration
+  is not explicitly set
 
 ### Added
 
@@ -37,7 +41,10 @@
 - New parameters for the chart: subtitle and caption.
 - New speed parameter introduced for animation control object for setting 
   the speed of the animation.
-- Interpolation between two version of the same chart if duration explicitly set
+- CSS parameter usage feature is disabled by default and can be enabled through
+  'Vizzu.feature()' with name 'cssProperties'.
+- 'shorthands', 'pointerEvents', 'pivotData' features can be disabled through
+  'Vizzu.feature()'
 
 ## [0.8.1] - 2023-08-15
 

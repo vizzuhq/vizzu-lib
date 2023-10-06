@@ -1,21 +1,9 @@
 import { data } from '../../../../test_data/chart_types_eu.mjs'
+import VideoCapture from '../../../../utils/vizzu-videocapture.mjs'
 
 const testSteps = [
-  async (chart) => {
-    const recordedChunks = []
-    const stream = chart.getCanvasElement().captureStream(30 /* fps */)
-    const mediaRecorder = new MediaRecorder(stream)
-
-    mediaRecorder.ondataavailable = (e) => {
-      recordedChunks.push(e.data)
-    }
-
-    mediaRecorder.onstop = (event) => {
-      const blob = new Blob(recordedChunks, {
-        type: 'video/webm'
-      })
-      window.open(URL.createObjectURL(blob))
-    }
+  (chart) => {
+    chart.feature(new VideoCapture())
 
     const anim = chart.animate({
       data,
@@ -28,11 +16,12 @@ const testSteps = [
     })
 
     anim.activated.then(() => {
-      mediaRecorder.start()
+      chart.feature.videoCapture.start()
     })
 
-    anim.then((chart) => {
-      mediaRecorder.stop()
+    anim.then(async (chart) => {
+      const output = await chart.feature.videoCapture.stop()
+      window.open(output.getObjectURL())
     })
 
     return anim

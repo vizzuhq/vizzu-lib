@@ -1,5 +1,3 @@
-import UnPivot from './unpivot.js'
-
 class DataRecord {
   constructor(chart, record) {
     this.chart = chart
@@ -32,7 +30,7 @@ class DataRecord {
   }
 }
 
-export default class Data {
+export class Data {
   constructor(chart) {
     this.chart = chart
   }
@@ -40,16 +38,6 @@ export default class Data {
   set(obj) {
     if (!obj) {
       return
-    }
-
-    if (UnPivot.isPivot(obj)) {
-      if (this.is1NF(obj)) {
-        throw new Error(
-          'inconsistent data form: ' + 'series/records and dimensions/measures are both set.'
-        )
-      } else {
-        obj = UnPivot.convert(obj)
-      }
     }
 
     if (obj.series) {
@@ -250,9 +238,5 @@ export default class Data {
     } else {
       throw new Error('data filter is not a function or null')
     }
-  }
-
-  is1NF(data) {
-    return data.series || data.records
   }
 }

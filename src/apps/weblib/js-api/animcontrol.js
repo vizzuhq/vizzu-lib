@@ -1,4 +1,6 @@
-export class Animation {}
+import { CObject } from './objregistry.js'
+
+export class Animation extends CObject {}
 
 export class AnimControl {
   constructor(chart) {

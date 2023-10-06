@@ -2,15 +2,18 @@ import { data } from '../../../../test_data/chart_types_eu.mjs'
 
 const testSteps = [
   (chart) => {
-    let labelToShow = ''
+    const labelToShow = { value: '' }
 
     chart.on('pointeron', (event) => {
-      labelToShow = event.target.values['Value 5 (+/-)']
-      event.preventDefault()
+      if (event.target?.tagName === 'plot-marker') {
+        labelToShow.value = event.target.values['Value 5 (+/-)']
+      } else {
+        labelToShow.value = ''
+      }
     })
 
     chart.on('plot-marker-label-draw', (event) => {
-      if (event.target.value !== labelToShow) event.preventDefault()
+      if (event.target.parent.values['Value 5 (+/-)'] !== labelToShow.value) event.preventDefault()
     })
 
     return chart.animate({

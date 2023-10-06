@@ -17,8 +17,19 @@ definitions:
       - tooltip: tooltips on the chart appearing on markers on mouse over. 
         Since the tooltip uses the animation interface, calling animate() while
         the tooltip is enabled can cause unwanted behaviour.
+      - cssProperties: sets style parameters from custom CSS variables (--vizzu-*).
+      - shorthands: shorthands for styles, configs, animOptions in animate call.
+      - pointerEvents: mouse/pointer event handling
+      - pivotData: accept data in pivot table format
     type: string
-    enum: [tooltip, logging, rendering]
+    enum:
+      - tooltip
+      - logging
+      - rendering
+      - cssProperties
+      - shorthands
+      - pointerEvents
+      - pivotData
 
   Converter:
     description: Converts a point between two coordinate system.
@@ -33,6 +44,23 @@ definitions:
     type: string
     enum: [relative, canvas]
 
+  LazyContainer:
+    description:
+    oneOf:
+      - type: string
+      - $ref: HTMLElement
+
+  VizzuOptions:
+    description:
+    type: object
+    properties:
+      container: { $ref: LazyContainer }
+      features:
+        type: array
+        items:
+          $ref: plugins/Plugin
+    required: [container]
+
   Vizzu:
     description: Class representing a single chart in Vizzu.
     type: object
@@ -46,15 +74,15 @@ definitions:
           parameter.
         type: function
         arguments:
-          container:
+          options:
             oneOf:
-              - type: string
-              - $ref: HTMLElement
+              - $ref: VizzuOptions
+              - $ref: LazyContainer
           initState:
             oneOf:
               - $ref: anim/Target
               - $ref: config/Chart
-        required: [container]
+        required: [options]
 
       initializing:
         description: |
@@ -187,13 +215,16 @@ definitions:
         $template: { T: data/Metainfo }
 
       feature:
-        description: Enable/disable additional features.
+        description: Enable/disable/install/select additional features.
         type: function
         arguments:
-          name: { $ref: Feature }
+          feature:
+            oneOf:
+              - $ref: plugins/Plugin
+              - $ref: Feature
           enabled: { type: boolean }
-        required: [name, enabled]
-        return: { type: void }
+        required: [name]
+        return: { $ref: plugins/PluginApi }
 
       detach:
         description: |

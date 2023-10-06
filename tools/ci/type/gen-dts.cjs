@@ -6,24 +6,26 @@ const yaml = require('js-yaml')
 class SchemaCollection {
   constructor(inputDir) {
     this._inputDir = inputDir
-    this._files = this._getFiles()
-    this.schemas = this._getJsons()
+    const yamls = this._getFiles('yaml')
+    const dts = this._getFiles('d.ts')
+    this.schemas = this._getContent(yamls, (content) => yaml.load(content))
+    this.declarations = this._getContent(dts, (content) => content)
   }
 
-  _getFiles() {
+  _getFiles(ext) {
     let files = fs.readdirSync(this._inputDir)
-    files = files.filter((file) => file.endsWith('.yaml'))
+    files = files.filter((file) => file.endsWith('.' + ext))
     return files
   }
 
-  _getJsons() {
-    const jsons = []
-    for (const file of this._files) {
+  _getContent(files, format) {
+    const contents = []
+    for (const file of files) {
       const basename = file.split('.')[0]
-      const json = yaml.load(fs.readFileSync(this._inputDir + '/' + file, 'utf8'))
-      jsons[basename] = json
+      const formatted = format(fs.readFileSync(this._inputDir + '/' + file, 'utf8'))
+      contents[basename] = formatted
     }
-    return jsons
+    return contents
   }
 }
 
@@ -47,8 +49,8 @@ class DTSGenerator {
     this._content = ''
   }
 
-  async generate(schemas, outputPath) {
-    this._namespaces = Object.keys(schemas)
+  async generate(schemas, declarations, outputPath) {
+    this._namespaces = [...Object.keys(schemas), ...Object.keys(declarations)]
     const namespaceOrder = [
       'lib',
       'data',
@@ -57,13 +59,15 @@ class DTSGenerator {
       'anim',
       'geom',
       'event',
+      'plugins',
       'presets',
       'vizzu'
     ]
     for (const name of namespaceOrder) {
       const isRootNamespace = name === 'vizzu'
-      if (!schemas[name]) throw new Error(`Schema ${name} not found`)
-      this.addNamespace(name, schemas[name], isRootNamespace)
+      if (schemas[name]) this.addNamespace(name, schemas[name], isRootNamespace)
+      else if (declarations[name]) this.addContent(declarations[name])
+      else throw new Error(`Schema or declarations ${name} not found`)
     }
     await this.writeFile(outputPath)
     this._namespaces = []
@@ -86,7 +90,7 @@ class DTSGenerator {
 
   addDefinitions(definitions) {
     for (const name in definitions) {
-      generator.addDefinition(name, definitions[name])
+      this.addDefinition(name, definitions[name])
     }
   }
 
@@ -294,4 +298,4 @@ const collection = new SchemaCollection(inputDir)
 
 const generator = new DTSGenerator()
 
-generator.generate(collection.schemas, outputPath)
+generator.generate(collection.schemas, collection.declarations, outputPath)

@@ -32,8 +32,8 @@ class TestRunner {
         return this.chart.initializing
       })
       .then((chart) => {
-        chart.module._vizzu_setLogging(true)
         console.log(chart.version())
+        chart.feature('logging', true)
         this.initSlider()
         return import(this.testFile + '.mjs')
       })

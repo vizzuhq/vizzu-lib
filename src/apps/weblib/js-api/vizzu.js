@@ -1,20 +1,32 @@
-import Render from './render.js'
-import Events from './events.js'
-import Data from './data.js'
+import { Rendering, Render } from './render.js'
+import { Events } from './events.js'
+import { Data } from './data.js'
 import { Animation, AnimControl } from './animcontrol.js'
-import Tooltip from './tooltip.js'
+import { Tooltip } from './tooltip.js'
+import { CSSProperties } from './cssproperties.js'
+import { ObjectRegistry, CObject } from './objregistry.js'
 import Presets from './presets.js'
 import VizzuModule from './cvizzu.js'
-import { getCSSCustomPropsForElement, propsToObject } from './utils.js'
-import ObjectRegistry from './objregistry.js'
+import { Plugins } from './plugins.js'
+import { Shorthands } from './shorthands.js'
+import { PointerEvents } from './pointerevents.js'
+import { PivotData } from './pivotdata.js'
+import { recursiveCopy } from './utils.js'
+import { CancelError } from './errors.js'
+import { Logging } from './logging.js'
+
+class Hooks {
+  static setAnimParams = 'setAnimParams'
+  static animateRegister = 'animateRegister'
+}
 
 let vizzuOptions = null
 
-class Snapshot {}
+class Snapshot extends CObject {}
 
-class CChart {}
+class CChart extends CObject {}
 
-class CCanvas {}
+class CCanvas extends CObject {}
 
 export default class Vizzu {
   static get presets() {
@@ -25,26 +37,49 @@ export default class Vizzu {
     vizzuOptions = options
   }
 
-  constructor(container, initState) {
-    this._container = container
+  constructor(options, initState) {
+    const opts = this._processOptions(options)
 
-    if (!(this._container instanceof HTMLElement)) {
-      this._container = document.getElementById(container)
-    }
+    this._container = opts.container
 
-    if (!this._container) {
-      throw new Error(`Cannot find container ${this._container} to render Vizzu!`)
-    }
-
-    this._propPrefix = 'vizzu'
     this._started = false
 
-    this._resolveAnimate = null
-    this.initializing = new Promise((resolve) => {
-      this._resolveAnimate = resolve
+    this._plugins = new Plugins(this, opts.features)
+
+    this.initializing = this._loadModule().then((module) => {
+      this._init(module)
+      return this
     })
+
     this.anim = this.initializing
 
+    if (initState) {
+      this.initializing = this.animate(initState, 0)
+    }
+  }
+
+  _processOptions(options) {
+    const opts =
+      typeof options !== 'object' || options instanceof HTMLElement
+        ? { container: options }
+        : options
+
+    if (!('container' in opts)) {
+      throw new Error('container not specified')
+    }
+
+    if (!(opts.container instanceof HTMLElement)) {
+      opts.container = document.getElementById(opts.container)
+    }
+
+    if (!opts.container) {
+      throw new Error(`Cannot find container ${opts.container} to render Vizzu!`)
+    }
+
+    return opts
+  }
+
+  _loadModule() {
     const moduleOptions = {}
 
     if (vizzuOptions?.wasmUrl) {
@@ -56,16 +91,7 @@ export default class Vizzu {
       }
     }
 
-    // load module
-    VizzuModule(moduleOptions).then((module) => {
-      if (this._resolveAnimate) {
-        this._resolveAnimate(this._init(module))
-      }
-    })
-
-    if (initState) {
-      this.initializing = this.animate(initState, 0)
-    }
+    return VizzuModule(moduleOptions)
   }
 
   _callOnChart(f) {
@@ -132,12 +158,6 @@ export default class Vizzu {
     }
   }
 
-  _setStyle(style) {
-    this._iterateObject(style, (path, value) => {
-      this._callOnChart(this.module._style_setValue)(path, value)
-    })
-  }
-
   _cloneObject(lister, getter, ...args) {
     const clistStr = this._call(lister)()
     const listStr = this._fromCString(clistStr)
@@ -156,30 +176,6 @@ export default class Vizzu {
     }
     Object.freeze(res)
     return res
-  }
-
-  _recursiveCopy(obj) {
-    if (obj === null || typeof obj !== 'object') {
-      return obj
-    }
-
-    if (obj instanceof Function) {
-      return obj
-    }
-
-    if (obj instanceof Array) {
-      const copyArray = []
-      obj.map((arrayElement) => copyArray.push(arrayElement))
-      return copyArray
-    }
-
-    const copyObj = {}
-    for (const key in obj) {
-      if (key in obj) {
-        copyObj[key] = this._recursiveCopy(obj[key])
-      }
-    }
-    return copyObj
   }
 
   get config() {
@@ -204,51 +200,6 @@ export default class Vizzu {
     return { series: JSON.parse(info) }
   }
 
-  _setConfig(config) {
-    if (config !== null && typeof config === 'object') {
-      Object.keys(config).forEach((key) => {
-        if (this._channelNames.includes(key)) {
-          config.channels = config.channels || {}
-          config.channels[key] = config[key]
-          delete config[key]
-        }
-      })
-    }
-
-    if (config?.channels) {
-      const channels = config.channels
-      Object.keys(channels).forEach((ch) => {
-        if (typeof channels[ch] === 'string') {
-          channels[ch] = [channels[ch]]
-        }
-
-        if (channels[ch] === null || Array.isArray(channels[ch])) {
-          channels[ch] = { set: channels[ch] }
-        }
-
-        if (typeof channels[ch].attach === 'string') {
-          channels[ch].attach = [channels[ch].attach]
-        }
-
-        if (typeof channels[ch].detach === 'string') {
-          channels[ch].detach = [channels[ch].detach]
-        }
-
-        if (typeof channels[ch].set === 'string') {
-          channels[ch].set = [channels[ch].set]
-        }
-
-        if (Array.isArray(channels[ch].set) && channels[ch].set.length === 0) {
-          channels[ch].set = null
-        }
-      })
-    }
-
-    this._iterateObject(config, (path, value) => {
-      this._callOnChart(this.module._chart_setValue)(path, value)
-    })
-  }
-
   on(eventName, handler) {
     this._validateModule()
     this.events.add(eventName, handler)
@@ -264,15 +215,38 @@ export default class Vizzu {
     return this._objectRegistry.get(this._callOnChart(this.module._chart_store), Snapshot)
   }
 
-  feature(name, enabled) {
-    this._validateModule()
-    if (name === 'tooltip') {
-      this._tooltip.enable(enabled)
-    } else if (name === 'logging') {
-      this._call(this.module._vizzu_setLogging)(enabled)
-    } else if (name === 'rendering') {
-      this.render.enabled = enabled
+  get feature() {
+    const fn = this._feature.bind(this)
+    return new Proxy(fn, {
+      get: (_target, pluginName) => {
+        return this._plugins.api(pluginName)
+      }
+    })
+  }
+
+  _feature(nameOrInstance, enabled) {
+    if (enabled !== undefined && typeof enabled !== 'boolean')
+      throw new Error('enabled parameter must be boolean if specified')
+
+    let name
+    let enabledInRegister = false
+    if (typeof nameOrInstance !== 'string') {
+      const instance = nameOrInstance
+      name = this._plugins.getRegisteredName(instance)
+      if (!name) {
+        name = this._plugins.register(instance, enabled || true)
+        enabledInRegister = true
+      }
+    } else {
+      name = nameOrInstance
     }
+
+    const enabledProvided = enabled !== undefined
+    if (enabledProvided && !enabledInRegister) {
+      this._plugins.enable(name, enabled)
+    }
+
+    return this._plugins.api(name)
   }
 
   _validateModule() {
@@ -281,96 +255,83 @@ export default class Vizzu {
     }
   }
 
-  animate(...args) {
-    const copiedArgs = this._recursiveCopy(args)
-    let activate
-    const activated = new Promise((resolve, reject) => {
-      activate = resolve
+  animate(target, options) {
+    const copiedTarget = recursiveCopy(target)
+    const copiedOptions = recursiveCopy(options)
+    const ctx = { target: copiedTarget, options: copiedOptions, promise: this.anim }
+    this._plugins.hook(Hooks.animateRegister, ctx).default((ctx) => {
+      let activate
+      const activated = new Promise((resolve, reject) => {
+        activate = resolve
+      })
+      ctx.promise = ctx.promise.then(() => this._animate(copiedTarget, copiedOptions, activate))
+      ctx.promise.activated = activated
     })
-    this.anim = this.anim.then(() => this._animate(copiedArgs, activate))
-    this.anim.activated = activated
+    this.anim = ctx.promise
     return this.anim
   }
 
-  _animate(args, activate) {
+  _animate(target, options, activate) {
     const anim = new Promise((resolve, reject) => {
       const callbackPtr = this.module.addFunction((ok) => {
         if (ok) {
           resolve(this)
         } else {
           // eslint-disable-next-line prefer-promise-reject-errors
-          reject('animation canceled')
+          reject(new CancelError())
           this.anim = Promise.resolve(this)
         }
         this.module.removeFunction(callbackPtr)
       }, 'vi')
-      this._processAnimParams(...args)
+
+      this._plugins.hook(Hooks.setAnimParams, { target, options }).default((ctx) => {
+        this._processAnimParams(ctx.target, ctx.options)
+      })
       this._callOnChart(this.module._chart_animate)(callbackPtr)
     }, this)
     activate(new AnimControl(this))
     return anim
   }
 
-  _processAnimParams(animTarget, animOptions) {
-    if (animTarget instanceof Animation) {
-      this._callOnChart(this.module._chart_anim_restore)(animTarget.id)
+  _processAnimParams(target, options) {
+    if (target instanceof Animation) {
+      this._callOnChart(this.module._chart_anim_restore)(target.id)
     } else {
-      const anims = []
-
-      if (Array.isArray(animTarget)) {
-        for (const target of animTarget)
-          if (target.target !== undefined)
-            anims.push({ target: target.target, options: target.options })
-          else anims.push({ target, options: undefined })
-      } else {
-        anims.push({ target: animTarget, options: animOptions })
-      }
-
-      for (const anim of anims) this._setKeyframe(anim.target, anim.options)
+      for (const keyframe of target) this._setKeyframe(keyframe.target, keyframe.options)
     }
-    this._setAnimation(animOptions)
+    this._setAnimOptions(options)
   }
 
-  _setKeyframe(animTarget, animOptions) {
-    if (animTarget) {
-      if (animTarget instanceof Snapshot) {
-        this._callOnChart(this.module._chart_restore)(animTarget.id)
+  _setKeyframe(target, options) {
+    if (target) {
+      if (target instanceof Snapshot) {
+        this._callOnChart(this.module._chart_restore)(target.id)
       } else {
-        let obj = Object.assign({}, animTarget)
-
-        if (!obj.data && obj.style === undefined && !obj.config) {
-          obj = { config: obj }
-        }
-
-        this._data.set(obj.data)
-
-        // setting style, including CSS properties
-        if (obj.style === null) {
-          obj.style = { '': null }
-        }
-        const style = JSON.parse(JSON.stringify(obj.style || {}))
-        const props = getCSSCustomPropsForElement(this._container, this._propPrefix)
-        this._setStyle(propsToObject(props, style, this._propPrefix))
-        this._setConfig(Object.assign({}, obj.config))
+        this._data.set(target.data)
+        this._setStyle(target.style)
+        this._setConfig(target.config)
       }
     }
-
-    this._setAnimation(animOptions)
-
+    this._setAnimOptions(options)
     this._callOnChart(this.module._chart_setKeyframe)()
   }
 
-  _setAnimation(animOptions) {
-    if (typeof animOptions !== 'undefined') {
-      if (animOptions === null) {
-        animOptions = { duration: 0 }
-      } else if (typeof animOptions === 'string' || typeof animOptions === 'number') {
-        animOptions = { duration: animOptions }
-      }
+  _setConfig(config) {
+    this._iterateObject(config, (path, value) => {
+      this._callOnChart(this.module._chart_setValue)(path, value)
+    })
+  }
 
-      if (typeof animOptions === 'object') {
-        animOptions = Object.assign({}, animOptions)
-        this._iterateObject(animOptions, (path, value) => {
+  _setStyle(style) {
+    this._iterateObject(style, (path, value) => {
+      this._callOnChart(this.module._style_setValue)(path, value)
+    })
+  }
+
+  _setAnimOptions(options) {
+    if (typeof options !== 'undefined') {
+      if (typeof options === 'object') {
+        this._iterateObject(options, (path, value) => {
           this._callOnChart(this.module._anim_setValue)(path, value)
         })
       } else {
@@ -424,6 +385,7 @@ export default class Vizzu {
   _init(module) {
     this.module = module
     this.module.callback = this._call(this.module._callback)
+    this._call(this.module._vizzu_setLogging)(false)
 
     this.canvas = this._createCanvas()
 
@@ -431,7 +393,6 @@ export default class Vizzu {
     this._data = new Data(this)
     this.events = new Events(this)
     this.module.events = this.events
-    this._tooltip = new Tooltip(this)
     this._objectRegistry = new ObjectRegistry(this._call(this.module._object_free))
     this._cChart = this._objectRegistry.get(this._call(this.module._vizzu_createChart), CChart)
 
@@ -440,13 +401,17 @@ export default class Vizzu {
     this.module.renders = this.module.renders || {}
     this.module.renders[ccanvas.id] = this.render
 
-    this._call(this.module._vizzu_setLogging)(false)
-    this._channelNames = Object.keys(this.config.channels)
     this._setupDOMEventHandlers(this.canvas)
 
-    this._start()
+    this.feature(new Logging(), false)
+    this.feature(new CSSProperties(), false)
+    this.feature(new Rendering(), true)
+    this.feature(new Shorthands(), true)
+    this.feature(new PivotData(), true)
+    this.feature(new PointerEvents(), true)
+    this.feature(new Tooltip(), false)
 
-    return this
+    this._start()
   }
 
   _createCanvas() {
@@ -473,67 +438,18 @@ export default class Vizzu {
     this._resizeObserver = new ResizeObserver(() => {
       this.render.updateFrame(true)
     })
-
     this._resizeObserver.observe(canvas)
-
-    this._pointermoveHandler = (evt) => {
-      const pos = this.render.clientToRenderCoor({ x: evt.clientX, y: evt.clientY })
-      this._callOnChart(this.module._vizzu_pointerMove)(
-        this.render.ccanvas.id,
-        evt.pointerId,
-        pos.x,
-        pos.y
-      )
-    }
-
-    this._pointerupHandler = (evt) => {
-      const pos = this.render.clientToRenderCoor({ x: evt.clientX, y: evt.clientY })
-      this._callOnChart(this.module._vizzu_pointerUp)(
-        this.render.ccanvas.id,
-        evt.pointerId,
-        pos.x,
-        pos.y
-      )
-    }
-
-    this._pointerdownHandler = (evt) => {
-      const pos = this.render.clientToRenderCoor({ x: evt.clientX, y: evt.clientY })
-      this._callOnChart(this.module._vizzu_pointerDown)(
-        this.render.ccanvas.id,
-        evt.pointerId,
-        pos.x,
-        pos.y
-      )
-    }
-
-    this._pointerleaveHandler = (evt) => {
-      this._callOnChart(this.module._vizzu_pointerLeave)(this.render.ccanvas.id, evt.pointerId)
-    }
-
-    this._wheelHandler = (evt) => {
-      this._callOnChart(this.module._vizzu_wheel)(this.render.ccanvas.id, evt.deltaY)
-    }
-
-    canvas.addEventListener('pointermove', this._pointermoveHandler)
-    canvas.addEventListener('pointerup', this._pointerupHandler)
-    canvas.addEventListener('pointerdown', this._pointerdownHandler)
-    canvas.addEventListener('pointerleave', this._pointerleaveHandler)
-    canvas.addEventListener('wheel', this._wheelHandler)
   }
 
   detach() {
-    this?._resizeObserver.disconnect()
-    if (this._updateInterval) clearInterval(this._updateInterval)
-    if (this._pointermoveHandler)
-      this?.canvas.removeEventListener('pointermove', this._pointermoveHandler)
-    if (this._pointerupHandler)
-      this?.canvas.removeEventListener('pointerup', this._pointerupHandler)
-    if (this._pointerdownHandler)
-      this?.canvas.removeEventListener('pointerdown', this._pointerdownHandler)
-    if (this._pointerleaveHandler)
-      this?.canvas.removeEventListener('pointerleave', this._pointerleaveHandler)
-    if (this._wheelHandler) this?.canvas.removeEventListener('wheel', this._wheelHandler)
-    if (this._container && this._container !== this.canvas) this._container.removeChild(this.canvas)
+    try {
+      this._plugins.destruct()
+    } finally {
+      this._resizeObserver?.disconnect()
+      if (this._updateInterval) clearInterval(this._updateInterval)
+      if (this._container && this._container !== this.canvas)
+        this._container.removeChild(this.canvas)
+    }
   }
 
   getConverter(target, from, to) {
