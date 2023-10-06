@@ -19,9 +19,6 @@ from chdir import (  # pylint: disable=import-error, wrong-import-position, wron
 from node import (  # pylint: disable=import-error, wrong-import-position, wrong-import-order
     Node,
 )
-from vizzu import (  # pylint: disable=import-error, wrong-import-position, wrong-import-order
-    Vizzu,
-)
 
 
 class StyleReference:
@@ -32,7 +29,6 @@ class StyleReference:
         content = Node.node(
             True,
             GEN_PATH / "gen_style_reference.mjs",
-            Vizzu.get_vizzu_styleref_backend_url(),
         )
         with mkdocs_gen_files.open(dst, "a") as f_index:
             f_index.write(f"\n{content}\n")

@@ -94,7 +94,7 @@
     "ci-docs": "npm-run-all format-docs lint-docs",
     "ci-tools": "npm-run-all format-tools lint-tools type-tools",
     "ci": "npm-run-all ci-src ci-docs ci-tools",
-    "docs-build": "mkdocs build -f ./tools/docs/mkdocs.yml",
+    "docs-build": "./tools/ci/run/docs-build.sh",
     "pkg-build-desktop": "./tools/ci/run/pkg-build-desktop.sh",
     "pkg-build-desktop-clangformat": "./tools/ci/run/pkg-build-desktop-clangformat.sh",
     "pkg-build-desktop-clangtidy": "./tools/ci/run/pkg-build-desktop-clangtidy.sh",

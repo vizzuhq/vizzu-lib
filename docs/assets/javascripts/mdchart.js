@@ -1,9 +1,7 @@
 class MdChart {
   constructor(data, vizzu, id) {
     this.data = data
-    this.vizzuLoaded = import(vizzu).then((vizzuUrl) => {
-      return import(vizzuUrl.default)
-    })
+    this.vizzuLoaded = import('../dist/vizzu.min.js')
     this.id = id
   }
 

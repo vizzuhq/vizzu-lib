@@ -15,5 +15,5 @@ module.exports = {
       }
     }
   ],
-  ignorePatterns: ['**/showcases/**', '!.puppeteerrc.cjs']
+  ignorePatterns: ['**/showcases/**', '**/dist/**', '!.puppeteerrc.cjs']
 }
