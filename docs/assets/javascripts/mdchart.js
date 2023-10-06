@@ -1,7 +1,8 @@
+import Vizzu from '../dist/vizzu.min.js'
+
 class MdChart {
-  constructor(data, vizzu, id) {
+  constructor(data, id) {
     this.data = data
-    this.vizzuLoaded = import('../dist/vizzu.min.js')
     this.id = id
   }
 
@@ -47,10 +48,7 @@ class MdChart {
 
     let snapshot
 
-    let chart = this.vizzuLoaded.then((Vizzu) => {
-      const VizzuConstructor = Vizzu.default
-      return new VizzuConstructor(div, { data: this.data }).initializing
-    })
+    let chart = new Vizzu(div, { data: this.data }).initializing
 
     chart = this.restore(number, snippet, prevChart, snapshot, chart)
 

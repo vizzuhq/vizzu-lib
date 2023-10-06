@@ -11,7 +11,7 @@ const mdChartLoaded = import("${assetsPath}/assets/javascripts/mdchart.js");
 Promise.all([dataLoaded, mdChartLoaded]).then((results) => {
   const ${dataName} = results[0].${dataName};
   const MdChart = results[1].default;
-  const mdchart = new MdChart(${dataName}, "./vizzu.js", "example");
+  const mdchart = new MdChart(${dataName}, "example");
 
   mdchart.create([
     {
