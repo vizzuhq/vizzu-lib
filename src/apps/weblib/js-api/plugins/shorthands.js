@@ -1,4 +1,4 @@
-import { Snapshot, Animation } from './module/cchart.js'
+import { Snapshot, Animation } from './../module/cchart.js'
 
 export class Shorthands {
   meta = {
