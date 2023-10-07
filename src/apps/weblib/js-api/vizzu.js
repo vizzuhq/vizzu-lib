@@ -338,7 +338,7 @@ export default class Vizzu {
   }
 
   getConverter(target, from, to) {
-    if (target === 'plot-area') {
+    if (typeof target === 'string' && target.startsWith('plot')) {
       if (this._cChart) {
         if (from === 'relative' || to === 'canvas') return (p) => this._cChart.toCanvasCoords(p)
         if (from === 'canvas' || to === 'relative') return (p) => this._cChart.toRelCoords(p)
