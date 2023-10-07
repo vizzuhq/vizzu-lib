@@ -1,7 +1,3 @@
-import { CObject } from './objregistry.js'
-
-export class Animation extends CObject {}
-
 export class AnimControl {
   constructor(chart) {
     this.chart = chart
@@ -12,10 +8,7 @@ export class AnimControl {
   }
 
   store() {
-    return this.chart._objectRegistry.get(
-      this.chart._callOnChart(this.chart.module._chart_anim_store),
-      Animation
-    )
+    return this.chart._cChart.storeAnim()
   }
 
   seek(value) {
@@ -56,14 +49,6 @@ export class AnimControl {
   }
 
   _animControl(command, param = '') {
-    const ccommand = this.chart._toCString(command)
-    const cparam = this.chart._toCString(param)
-
-    try {
-      this.chart._callOnChart(this.chart.module._anim_control)(ccommand, cparam)
-    } finally {
-      this.chart.module._free(cparam)
-      this.chart.module._free(ccommand)
-    }
+    this.chart._cChart.animControl(command, param)
   }
 }

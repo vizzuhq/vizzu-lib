@@ -35,13 +35,33 @@ const testSteps = [
     })
   },
   (chart) => {
-    chart._callOnChart(chart.module._vizzu_pointerDown)(chart.render.ccanvas.id, 0, 100, 100)
-    chart._callOnChart(chart.module._vizzu_pointerUp)(chart.render.ccanvas.id, 0, 100, 100)
+    chart._cChart._call(chart._cChart._wasm._vizzu_pointerDown)(
+      chart.render.ccanvas.getId(),
+      0,
+      100,
+      100
+    )
+    chart._cChart._call(chart._cChart._wasm._vizzu_pointerUp)(
+      chart.render.ccanvas.getId(),
+      0,
+      100,
+      100
+    )
     return chart.anim
   },
   (chart) => {
-    chart._callOnChart(chart.module._vizzu_pointerDown)(chart.render.ccanvas.id, 0, 300, 200)
-    chart._callOnChart(chart.module._vizzu_pointerUp)(chart.render.ccanvas.id, 0, 300, 200)
+    chart._cChart._call(chart._cChart._wasm._vizzu_pointerDown)(
+      chart.render.ccanvas.getId(),
+      0,
+      300,
+      200
+    )
+    chart._cChart._call(chart._cChart._wasm._vizzu_pointerUp)(
+      chart.render.ccanvas.getId(),
+      0,
+      300,
+      200
+    )
     return chart.anim
   }
 ]

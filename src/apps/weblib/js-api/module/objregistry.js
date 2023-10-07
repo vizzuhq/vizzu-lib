@@ -1,5 +1,3 @@
-export class CObject {}
-
 export class ObjectRegistry {
   constructor(fnFree) {
     this.finalizationRegistry = new FinalizationRegistry((rawCPointer) => {
@@ -7,11 +5,10 @@ export class ObjectRegistry {
     })
   }
 
-  get(fnGetter, Type) {
-    const id = fnGetter()
-    const object = new Type()
-    object.id = id
-    this.finalizationRegistry.register(object, id)
+  get(fnGetter) {
+    const rawCPointer = fnGetter()
+    const object = () => rawCPointer
+    this.finalizationRegistry.register(object, rawCPointer)
     return object
   }
 }

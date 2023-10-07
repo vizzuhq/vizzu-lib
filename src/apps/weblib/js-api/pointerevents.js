@@ -38,32 +38,32 @@ export class PointerEvents {
   }
 
   _pointermove(evt) {
-    this._passEventToChart(evt, this._chart.module._vizzu_pointerMove)
+    this._passEventToChart(evt, this._chart._module._wasm._vizzu_pointerMove)
   }
 
   _pointerup(evt) {
-    this._passEventToChart(evt, this._chart.module._vizzu_pointerUp)
+    this._passEventToChart(evt, this._chart._module._wasm._vizzu_pointerUp)
   }
 
   _pointerdown(evt) {
-    this._passEventToChart(evt, this._chart.module._vizzu_pointerDown)
+    this._passEventToChart(evt, this._chart._module._wasm._vizzu_pointerDown)
   }
 
   _pointerleave(evt) {
-    this._passEventToChart(evt, this._chart.module._vizzu_pointerLeave)
+    this._passEventToChart(evt, this._chart._module._wasm._vizzu_pointerLeave)
   }
 
   _wheel(evt) {
-    this._passEventToChart(evt, this._chart.module._vizzu_wheel, 'deltaY')
+    this._passEventToChart(evt, this._chart._module._wasm._vizzu_wheel, 'deltaY')
   }
 
   _passEventToChart(evt, cfunc, member = 'pointerId') {
-    const args = [this._chart.render.ccanvas.id, evt[member]]
+    const args = [this._chart.render.ccanvas.getId(), evt[member]]
     if (evt.clientX !== undefined) {
       const clientPos = { x: evt.clientX, y: evt.clientY }
       const pos = this._chart.render.clientToRenderCoor(clientPos)
       args.push(pos.x, pos.y)
     }
-    this._chart._callOnChart(cfunc)(...args)
+    this._chart._cChart._call(cfunc)(...args)
   }
 }

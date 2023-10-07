@@ -12,13 +12,13 @@ export class Rendering {
 }
 
 export class Render {
-  init(ccanvas, update, canvas, log) {
+  init(ccanvas, cchart, canvas, log) {
     this.ccanvas = ccanvas
     this.enabled = true
     this.polygonFirstPoint = false
     this.offscreenCanvas = document.createElement('CANVAS')
     this.offscreenContext = this.offscreenCanvas.getContext('2d')
-    this.update = update
+    this.cchart = cchart
     this.mainCanvas = canvas
     this.context = canvas.getContext('2d')
     this.log = log
@@ -87,7 +87,7 @@ export class Render {
     this.updateCanvasSize()
     if (this.mainCanvas.width > 0 && this.mainCanvas.height > 0) {
       const renderControl = !this.enabled ? 2 : force ? 1 : 0
-      this.update(this.ccanvas.id, this.cssWidth, this.cssHeight, renderControl)
+      this.cchart.update(this.ccanvas, this.cssWidth, this.cssHeight, renderControl)
     }
     const time = performance.now() - start
     if (this.log && time > 1) {

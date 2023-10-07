@@ -1,5 +1,4 @@
-import { CObject } from './objregistry.js'
-import { Animation } from './animcontrol.js'
+import { Snapshot, Animation } from './module/cchart.js'
 
 export class Shorthands {
   meta = {
@@ -38,7 +37,7 @@ export class Shorthands {
   }
 
   _normalizeTarget(target) {
-    if (target && !(target instanceof CObject)) {
+    if (target && !(target instanceof Snapshot)) {
       if (!target.data && target.style === undefined && !target.config) {
         target = { config: target }
       }

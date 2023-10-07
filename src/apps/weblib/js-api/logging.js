@@ -7,6 +7,6 @@ export class Logging {
 
   enable(enabled) {
     this.chart._validateModule()
-    this.chart._call(this.chart.module._vizzu_setLogging)(enabled)
+    this.chart._module.setLogging(enabled)
   }
 }
