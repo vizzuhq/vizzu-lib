@@ -5,7 +5,7 @@ import { Rendering, Render } from './render.js'
 import { Events } from './events.js'
 import { Data } from './data.js'
 import { AnimControl } from './animcontrol.js'
-import { recursiveCopy, iterateObject, cloneObject } from './utils.js'
+import { recursiveCopy } from './utils.js'
 import { CancelError } from './errors.js'
 import { Plugins } from './plugins.js'
 import { Logging } from './plugins/logging.js'
@@ -38,8 +38,6 @@ export default class Vizzu {
     const opts = this._processOptions(options)
 
     this._container = opts.container
-
-    this._started = false
 
     this._plugins = new Plugins(this, opts.features)
 
@@ -76,33 +74,27 @@ export default class Vizzu {
     return opts
   }
 
-  get config() {
-    this._validateModule()
-    return cloneObject(
-      this._cChart.listConfigParams.bind(this._cChart),
-      this._cChart.getConfigParam.bind(this._cChart)
-    )
-  }
-
-  get style() {
-    this._validateModule()
-    return cloneObject(
-      this._cChart.listStyleParams.bind(this._cChart),
-      this._cChart.getStyleParam.bind(this._cChart, false)
-    )
-  }
-
-  getComputedStyle() {
-    this._validateModule()
-    return cloneObject(
-      this._cChart.listStyleParams.bind(this._cChart),
-      this._cChart.getStyleParam.bind(this._cChart, true)
-    )
-  }
-
   get data() {
     if (this._cChart) {
       return this._cData.getMetaInfo()
+    }
+  }
+
+  get config() {
+    if (this._cChart) {
+      return this._cChart.config.get()
+    }
+  }
+
+  get style() {
+    if (this._cChart) {
+      return this._cChart.style.get()
+    }
+  }
+
+  getComputedStyle() {
+    if (this._cChart) {
+      return this._cChart.computedStyle.get()
     }
   }
 
@@ -181,7 +173,7 @@ export default class Vizzu {
   _animate(target, options, activate) {
     const anim = new Promise((resolve, reject) => {
       this._plugins.hook(Hooks.setAnimParams, { target, options }).default((ctx) => {
-        this._processAnimParams(ctx.target, ctx.options)
+        this._setAnimParams(ctx.target, ctx.options)
       })
       const callback = (ok) => {
         if (ok) {
@@ -198,13 +190,13 @@ export default class Vizzu {
     return anim
   }
 
-  _processAnimParams(target, options) {
+  _setAnimParams(target, options) {
     if (target instanceof Animation) {
       this._cChart.restoreAnim(target)
     } else {
       for (const keyframe of target) this._setKeyframe(keyframe.target, keyframe.options)
     }
-    this._setAnimOptions(options)
+    if (options) this._cChart.animOptions.set(options)
   }
 
   _setKeyframe(target, options) {
@@ -213,30 +205,12 @@ export default class Vizzu {
         this._cChart.restoreSnapshot(target)
       } else {
         this._data.set(target.data)
-        this._setStyle(target.style)
-        this._setConfig(target.config)
+        this._cChart.style.set(target.style)
+        this._cChart.config.set(target.config)
       }
     }
-    this._setAnimOptions(options)
+    if (options) this._cChart.animOptions.set(options)
     this._cChart.setKeyframe()
-  }
-
-  _setConfig(config) {
-    iterateObject(config, this._cChart.setConfigParam.bind(this._cChart))
-  }
-
-  _setStyle(style) {
-    iterateObject(style, this._cChart.setStyleParam.bind(this._cChart))
-  }
-
-  _setAnimOptions(options) {
-    if (typeof options !== 'undefined') {
-      if (typeof options === 'object') {
-        iterateObject(options, this._cChart.setAnimParam.bind(this._cChart))
-      } else {
-        throw new Error('invalid animation option')
-      }
-    }
   }
 
   // keeping this one for backward compatibility
@@ -254,19 +228,16 @@ export default class Vizzu {
   }
 
   forceUpdate() {
-    this._validateModule()
-    this.render.updateFrame(true)
+    if (this.render) this.render.updateFrame(true)
   }
 
   _start() {
-    if (!this._started) {
+    if (!this._updateInterval) {
       this.render.updateFrame()
 
       this._updateInterval = setInterval(() => {
         this.render.updateFrame()
       }, 25)
-
-      this._started = true
     }
   }
 

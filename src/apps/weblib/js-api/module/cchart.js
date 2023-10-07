@@ -1,4 +1,5 @@
 import { CObject } from './cenv.js'
+import { CProxy } from './cproxy.js'
 
 export class Snapshot extends CObject {}
 
@@ -10,10 +11,40 @@ export class CEvent extends CObject {
   }
 }
 
+export class CConfig extends CProxy {
+  constructor(cChart) {
+    super(cChart.getId, cChart)
+    this._lister = this._wasm._chart_getList
+    this._getter = this._wasm._chart_getValue
+    this._setter = this._wasm._chart_setValue
+  }
+}
+
+export class CStyle extends CProxy {
+  constructor(cChart, computed) {
+    super(cChart.getId, cChart)
+    this._lister = this._wasm._style_getList
+    this._getter = (ptr, path) => this._wasm._style_getValue(ptr, path, computed)
+    this._setter = this._wasm._style_setValue
+  }
+}
+
+export class CAnimOptions extends CProxy {
+  constructor(cChart) {
+    super(cChart.getId, cChart)
+    this._setter = this._wasm._anim_setValue
+  }
+}
+
 export class CChart extends CObject {
   constructor(env) {
     const getId = env._get(env._wasm._vizzu_createChart)
     super(getId, env)
+
+    this.config = new CConfig(this)
+    this.style = new CStyle(this, false)
+    this.computedStyle = new CStyle(this, true)
+    this.animOptions = new CAnimOptions(this)
   }
 
   update(cCanvas, width, height, renderControl) {
@@ -26,64 +57,6 @@ export class CChart extends CObject {
       this._wasm.removeFunction(callbackPtr)
     }, 'vi')
     this._call(this._wasm._chart_animate)(callbackPtr)
-  }
-
-  listConfigParams() {
-    return this._listParams(this._wasm._chart_getList)
-  }
-
-  listStyleParams() {
-    return this._listParams(this._wasm._style_getList)
-  }
-
-  getConfigParam(path) {
-    const value = this._getParam(this._wasm._chart_getValue, path)
-    // dirty workaround because config.channel.*.set returns already json instead of scalars
-    return value.startsWith('[') || value.startsWith('{') ? JSON.parse(value) : value
-  }
-
-  getStyleParam(computed, path) {
-    return this._getParam(this._wasm._style_getValue, path, computed)
-  }
-
-  setConfigParam(path, value) {
-    this._setParam(this._wasm._chart_setValue, path, value)
-  }
-
-  setStyleParam(path, value) {
-    this._setParam(this._wasm._style_setValue, path, value)
-  }
-
-  setAnimParam(path, value) {
-    this._setParam(this._wasm._anim_setValue, path, value)
-  }
-
-  _listParams(lister) {
-    const clistStr = this._call(lister)()
-    const listStr = this._fromCString(clistStr)
-    const list = JSON.parse(listStr)
-    return list
-  }
-
-  _getParam(getter, path, ...args) {
-    const cpath = this._toCString(path)
-    try {
-      const cvalue = this._call(getter)(cpath, ...args)
-      return this._fromCString(cvalue)
-    } finally {
-      this._wasm._free(cpath)
-    }
-  }
-
-  _setParam(setter, path, value) {
-    const cpath = this._toCString(path)
-    const cvalue = this._toCString(String(value).toString())
-    try {
-      this._call(setter)(cpath, cvalue)
-    } finally {
-      this._wasm._free(cvalue)
-      this._wasm._free(cpath)
-    }
   }
 
   animControl(command, param = '') {

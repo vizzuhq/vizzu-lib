@@ -25,7 +25,7 @@ export function recursiveCopy(value, Ignore) {
 }
 
 export function iterateObject(obj, paramHandler, path = '') {
-  if (obj) {
+  if (obj && obj !== null && typeof obj === 'object') {
     Object.keys(obj).forEach((key) => {
       const newPath = path + (path.length === 0 ? '' : '.') + key
       if (obj[key] !== null && typeof obj[key] === 'object') {
