@@ -22,7 +22,7 @@ import Presets from './plugins/presets.js'
 export default class Vizzu implements Vizzu {
   _chart?: Chart
   initializing: Promise<Vizzu>
-  anim: Anim.Completing
+  _anim: Anim.Completing
   _container: HTMLElement
   _plugins: Plugins
   /*
@@ -50,10 +50,10 @@ export default class Vizzu implements Vizzu {
       return this
     })
 
-    this.anim = this.initializing as any as Anim.Completing
+    this._anim = Object.assign(this.initializing, { activated: Promise.reject() })
 
     if (initState) {
-      this.initializing = this.animate(initState, 0) as any as Promise<Vizzu>
+      this.initializing = this.animate(initState, 0).then(() => this)
     }
   }
 
@@ -118,38 +118,39 @@ export default class Vizzu implements Vizzu {
   ): Anim.Completing {
     const copiedTarget = recursiveCopy(target, CObject)
     const copiedOptions = recursiveCopy(options)
-    const ctx = { target: copiedTarget, options: copiedOptions, promise: this.anim }
+    const ctx = { target: copiedTarget, options: copiedOptions, promise: this._anim }
     this._plugins.hook(Hooks.animateRegister, ctx).default((ctx) => {
       let activate: (control: AnimControl) => void = () => { }
       const activated = new Promise<AnimControl>((resolve, _reject) => {
         activate = resolve
       })
-      ctx.promise = ctx.promise.then(() => this._animate(copiedTarget, copiedOptions, activate)) as any as Anim.Completing
-      ctx.promise.activated = activated
+      const promise = ctx.promise.then(() => this._animate(copiedTarget, copiedOptions, activate))
+      ctx.promise = Object.assign(promise, { activated });
     })
-    this.anim = ctx.promise
-    return this.anim
+    this._anim = ctx.promise
+    return this._anim
   }
 
   _animate(
     target: Anim.Keyframes | CAnimation,
     options: Anim.ControlOptions | (Anim.ControlOptions & Anim.LazyOptions) | undefined,
-    activate: (control: AnimControl) => void) {
-    const anim = new Promise((resolve, reject) => {
+    activate: (control: AnimControl) => void): Promise<Vizzu> {
+    return new Promise((resolve, reject) => {
       const callback = (ok: boolean) => {
         if (ok) {
           resolve(this)
         } else {
           // eslint-disable-next-line prefer-promise-reject-errors
           reject(new CancelError())
-          this.anim = Promise.resolve(this) as any as Anim.Completing
+          let cancelled = Promise.resolve(this)
+          let activated = Promise.reject()
+          this._anim = Object.assign(cancelled, { activated })
         }
       }
       if (!this._chart) throw new NotInitializedError()
       this._chart._animate(callback, target, options)
       activate(new AnimControl(this._chart._cChart))
     })
-    return anim
   }
 
   // keeping this one for backward compatibility
