@@ -1,7 +1,7 @@
 /// <reference types="./types/vizzu.d.ts" />
 
 import { Module } from './module/module'
-import { CChart, CAnimation, CSnapshot } from './module/cchart'
+import { CChart, CAnimation, Snapshot } from './module/cchart'
 import { CData } from './module/cdata'
 import { Render } from './render'
 import { Data } from './data'
@@ -90,7 +90,7 @@ export class Chart {
 	}
 
 	_animate(callback: (ok: boolean) => void,
-		target: Anim.Keyframes | Anim.Animation,
+		target: Anim.Keyframes | CAnimation,
 		options?: Anim.ControlOptions & Anim.Options) {
 		this._plugins.hook(Hooks.setAnimParams, { target, options }).default((ctx) => {
 			this._setAnimParams(ctx.target, ctx.options)
@@ -98,12 +98,12 @@ export class Chart {
 		this._cChart.animate(callback)
 	}
 
-	_setAnimParams(target: Anim.Keyframes | Anim.Animation,
+	_setAnimParams(target: Anim.Keyframes | CAnimation,
 		options?: Anim.ControlOptions & Anim.Options) {
 		if (target instanceof CAnimation) {
 			this._cChart.restoreAnim(target)
 		} else {
-			for (const keyframe of (target as Anim.Keyframes))
+			for (const keyframe of (target))
 				this._setKeyframe(keyframe.target, keyframe.options)
 		}
 		if (options) this._cChart.animOptions.set(options)
@@ -112,13 +112,12 @@ export class Chart {
 	_setKeyframe(target: Anim.Target | Snapshot,
 		options?: Anim.Options) {
 		if (target) {
-			if (target instanceof CSnapshot) {
+			if (target instanceof Snapshot) {
 				this._cChart.restoreSnapshot(target)
 			} else {
-				const pure = target as Anim.Target
-				if (pure.data) this._data.set(pure.data)
-				if (pure.style) this._cChart.style.set(pure.style)
-				if (pure.config) this._cChart.config.set(pure.config)
+				if (target.data) this._data.set(target.data)
+				if (target.style) this._cChart.style.set(target.style)
+				if (target.config) this._cChart.config.set(target.config)
 			}
 		}
 		if (options) this._cChart.animOptions.set(options)

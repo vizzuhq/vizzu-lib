@@ -2,6 +2,7 @@
 
 import { loader } from './module/loader'
 import { Chart } from './chart'
+import { CAnimation } from './module/cchart'
 import { CObject } from './module/cenv'
 import { AnimControl } from './animcontrol'
 import { recursiveCopy } from './utils'
@@ -37,7 +38,7 @@ export default class Vizzu implements Vizzu {
     return loader.initialize()
   }
 
-  constructor(options: string | HTMLElement | VizzuOptions, initState?: Anim.Target | Config.Chart) {
+  constructor(options: string | HTMLElement | VizzuOptions, initState?: Anim.Keyframes) {
     const opts = this._processOptions(options)
 
     this._container = opts.container
@@ -112,7 +113,7 @@ export default class Vizzu implements Vizzu {
   }
 
   animate(
-    target: Anim.Keyframes | Anim.Animation | Anim.LazyTarget,
+    target: Anim.Keyframes | CAnimation,
     options?: Anim.ControlOptions | (Anim.ControlOptions & Anim.LazyOptions)
   ): Anim.Completing {
     const copiedTarget = recursiveCopy(target, CObject)
@@ -131,7 +132,7 @@ export default class Vizzu implements Vizzu {
   }
 
   _animate(
-    target: Anim.Keyframes | Anim.Animation | Anim.LazyTarget,
+    target: Anim.Keyframes | CAnimation,
     options: Anim.ControlOptions | (Anim.ControlOptions & Anim.LazyOptions) | undefined,
     activate: (control: AnimControl) => void) {
     const anim = new Promise((resolve, reject) => {

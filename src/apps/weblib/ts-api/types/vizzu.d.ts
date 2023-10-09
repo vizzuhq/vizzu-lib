@@ -620,8 +620,6 @@ declare namespace Anim {
     /** Play direction of the animation. */
     direction?: 'normal' | 'reverse'
   }
-  /** Stored Animation object. */
-  interface Animation { }
   /** Control object for animation. */
   interface Control {
     /** Seeks the animation to the position specified by time or progress 
@@ -639,7 +637,7 @@ declare namespace Anim {
     /** Cancels the animation, will reject the animation promise. */
     cancel(): void
     /** Returns a reference to the actual animation for further reuse. */
-    store(): Animation
+    store(): CAnimation
   }
   /** Promise resolves to the Vizzu object when the animation completed. */
   interface Completing extends Promise<Vizzu> {
@@ -1163,12 +1161,12 @@ declare namespace Plugins {
   }
 
   interface SetAnimParamsContext {
-    target: Anim.Keyframes | Anim.Animation | Anim.LazyTarget;
+    target: Anim.Keyframes | CAnimation | Anim.LazyTarget;
     options: Anim.ControlOptions | (Anim.ControlOptions & Anim.LazyOptions);
   }
 
   interface AnimateRegisterContext {
-    target: Anim.Keyframes | Anim.Animation | Anim.LazyTarget;
+    target: Anim.Keyframes | CAnimation | Anim.LazyTarget;
     options: Anim.ControlOptions | (Anim.ControlOptions & Anim.LazyOptions);
     promise: Anim.Completing;
   }
@@ -1206,8 +1204,10 @@ declare namespace Plugins {
   }
 }
 
+/** Stored Animation object. */
+declare class CAnimation { }
 /** Stored Chart object. */
-interface Snapshot { }
+declare class Snapshot { }
 /** List of base and additional features:
     - logging: enables logging of the library to the console 
       (switched off by default).
@@ -1263,7 +1263,7 @@ interface Vizzu {
     promise provides a nested promise member {@link Anim.Completing.activated|activated}, 
     which resolves when the requested animation gets active.  */
   animate(
-    animTarget: Anim.Keyframes | Anim.Animation | Anim.LazyTarget,
+    animTarget: Anim.Keyframes | CAnimation | Anim.LazyTarget,
     animOptions?: Anim.ControlOptions | (Anim.ControlOptions & Anim.LazyOptions)
   ): Anim.Completing
   /** Returns a reference to the actual chart state for further reuse. 

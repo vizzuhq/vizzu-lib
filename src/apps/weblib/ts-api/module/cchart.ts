@@ -5,9 +5,9 @@ import { CObject, CEnv } from './cenv'
 import { CProxy } from './cproxy'
 import { CCanvas } from './ccanvas'
 
-export class CSnapshot extends CObject { }
+export class Snapshot extends CObject { }
 
-export class CAnimation extends CObject implements Anim.Animation { }
+export class CAnimation extends CObject { }
 
 export class CEvent extends CObject {
   preventDefault() {
@@ -80,10 +80,10 @@ export class CChart extends CObject {
   }
 
   storeSnapshot() {
-    return new CSnapshot(this._get(this._wasm._chart_store), this)
+    return new Snapshot(this._get(this._wasm._chart_store), this)
   }
 
-  restoreSnapshot(snapshot: CSnapshot) {
+  restoreSnapshot(snapshot: Snapshot) {
     this._call(this._wasm._chart_restore)(snapshot.getId())
   }
 
