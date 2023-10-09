@@ -20,7 +20,7 @@ export class Chart {
 	_data: Data
 	_events: Events
 	_resizeObserver: ResizeObserver
-	_updateInterval: NodeJS.Timeout
+	_updateInterval: ReturnType<typeof setTimeout>
 
 	constructor(module: Module, container: HTMLElement, _plugins: Plugins) {
 		this._plugins = _plugins
@@ -79,7 +79,7 @@ export class Chart {
 		return canvas
 	}
 
-	_start(): NodeJS.Timeout {
+	_start(): ReturnType<typeof setTimeout> {
 		if (!this._updateInterval) {
 			this._render.updateFrame()
 			this._updateInterval = setInterval(() => {
