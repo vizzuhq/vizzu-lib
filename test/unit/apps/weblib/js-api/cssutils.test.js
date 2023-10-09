@@ -4,7 +4,7 @@ import {
   getCSSCustomPropsForElement,
   propSet,
   propsToObject
-} from '../../../../../src/apps/weblib/js-api/cssutils.js'
+} from '../../../../../src/apps/weblib/js-api/plugins/cssutils.js'
 
 class CSSStyleRule {
   constructor({ type, style }) {

@@ -1,4 +1,4 @@
-import UnPivot from '../../../../../src/apps/weblib/js-api/unpivot.js'
+import UnPivot from '../../../../../src/apps/weblib/js-api/plugins/unpivot.js'
 import Data1D from './unpivot.test.data/unpivot.test.data.1D.js'
 import Data3D from './unpivot.test.data/unpivot.test.data.3D.js'
 
