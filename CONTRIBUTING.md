@@ -13,6 +13,11 @@ the project, make your changes and send us a pull request. You can find the
 detailed description of how to do this in
 [Github's guide to contributing to projects](https://docs.github.com/en/get-started/quickstart/contributing-to-projects).
 
+Our [Roadmap page](https://github.com/vizzuhq/.github/wiki/Roadmap) is a
+comprehensive list of tasks we want to do in the future. It is a good place to
+start if you want to contribute to `Vizzu`. In case you have something else in
+mind, that's awesome and we are very interested in hearing about it.
+
 ## CI-CD
 
 ### Development environment
