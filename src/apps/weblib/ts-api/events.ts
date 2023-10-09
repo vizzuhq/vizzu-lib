@@ -23,8 +23,8 @@ export class Events {
     this._eventHandlers = new Map<Event.Type, EventRecord>()
   }
 
-  add<T>(eventName: Event.Type, handler: Event.Handler) {
-    if (eventName !== '' + eventName) {
+  add(eventName: Event.Type, handler: Event.Handler) {
+    if (typeof eventName !== 'string') {
       throw new Error('first parameter should be string')
     }
 
@@ -38,11 +38,11 @@ export class Events {
       }
       this._eventHandlers.set(eventName, [cfunc, []])
     }
-    this._eventHandlers.get(eventName)?.[1].push(handler)
+    this._eventHandlers.get(eventName)![1].push(handler)
   }
 
   remove(eventName: Event.Type, handler: Event.Handler) {
-    if (eventName !== '' + eventName) {
+    if (typeof eventName !== 'string') {
       throw new Error('first parameter should be string')
     }
 
