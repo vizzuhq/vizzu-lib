@@ -22,7 +22,7 @@ export class Data {
     this._cData = cData
   }
 
-  set(obj?: Data.TableBySeries & Data.TableByRecords) {
+  set(obj?: Data.TableBySeries | Data.TableByRecords) {
     if (!obj) {
       return
     }
@@ -37,7 +37,7 @@ export class Data {
       }
     }
 
-    if (obj.records) {
+    if ('records' in obj) {
       if (!Array.isArray(obj.records)) {
         throw new Error('data records field is not an array')
       }
@@ -81,15 +81,15 @@ export class Data {
       throw new Error('missing series name')
     }
 
-    const values = series.values ? series.values : ([] as Data.Value[])
+    const values = series.values ? series.values : ([] as Data.Values)
 
     const seriesType = series.type ? series.type : this.detectType(values)
 
     if (seriesType === 'dimension') {
-      this.addDimension(series.name, values as string[])
+      this.addDimension(series.name, values)
     } else if (seriesType === 'measure') {
       if (!series.unit) series.unit = ''
-      this.addMeasure(series.name, series.unit, values as number[])
+      this.addMeasure(series.name, series.unit, values)
     } else {
       throw new Error('invalid series type: ' + series.type)
     }
@@ -106,7 +106,7 @@ export class Data {
     return null
   }
 
-  addDimension(name: string, dimension: string[]): void {
+  addDimension(name: string, dimension: unknown[]): void {
     if (typeof name !== 'string') {
       throw new Error('first parameter should be string')
     }
@@ -115,16 +115,23 @@ export class Data {
       throw new Error('second parameter should be an array')
     }
 
-    for (let i = 0; i < dimension.length; i++) {
-      if (typeof dimension[i] !== 'string') {
-        throw new Error('array element should be string')
-      }
+    if (!this._isStringArray(dimension)) {
+      throw new Error('array element should be string')
     }
 
     this._cData.addDimension(name, dimension)
   }
 
-  addMeasure(name: string, unit: string, values: number[]): void {
+  _isStringArray(values: any[]): values is string[] {
+    for (const value of values) {
+      if (typeof value !== 'string') {
+        return false
+      }
+    }
+    return true
+  }
+
+  addMeasure(name: string, unit: string, values: unknown[]): void {
     if (typeof name !== 'string') {
       throw new Error("'name' parameter should be string")
     }
@@ -137,7 +144,20 @@ export class Data {
       throw new Error("'values' parameter should be an array")
     }
 
+    if (!this._isNumberArray(values)) {
+      throw new Error('array element should be number')
+    }
+
     this._cData.addMeasure(name, unit, values)
+  }
+
+  _isNumberArray(values: any[]): values is number[] {
+    for (const value of values) {
+      if (typeof value !== 'number') {
+        return false
+      }
+    }
+    return true
   }
 
   setFilter(filter: Data.FilterCallback | null): void {

@@ -63,7 +63,7 @@ declare namespace Data {
     should match {@link Data.SeriesMetaInfo.type}. If the data series
     is shorter than the longest data series defined, it will be internally 
     extended with empty values. */
-    values: Values
+    values?: Values
   }
   /** A record of the data set, containing one value of each data series 
     corresponding to the same index. */
