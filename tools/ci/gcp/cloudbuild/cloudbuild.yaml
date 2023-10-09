@@ -125,9 +125,9 @@ steps:
     args:
       - '-c'
       - |
-        echo "$$VIZZUHQ_GITHUB_SSH" > /root/.ssh/id_rsa
-        chmod 400 /root/.ssh/id_rsa
-        ssh-keyscan -t rsa github.com > /root/.ssh/known_hosts
+        echo "$$VIZZUHQ_GITHUB_SSH" > /root/.ssh/id_rsa &&
+        chmod 400 /root/.ssh/id_rsa &&
+        ssh-keyscan -t rsa github.com > /root/.ssh/known_hosts &&
         git clone --single-branch --branch main --depth 1 'git@github.com:vizzuhq/vizzu-lib-doc'
     dir: /workspace
     secretEnv:
@@ -158,14 +158,14 @@ steps:
       - |
         if [ $BRANCH_NAME == "main" ]
         then
-          git config --global user.name "David Vegh"
-          git config --global user.email "veghdev@gmail.com"
-          git checkout -b tmp
-          git rm -r .
-          git clean -df
-          cp -r ../site/* .
-          git add .
-          git commit -m "Site development version"
+          git config --global user.name "David Vegh" &&
+          git config --global user.email "veghdev@gmail.com" &&
+          git checkout -b tmp &&
+          git rm -r . &&
+          git clean -df &&
+          cp -r ../site/* . &&
+          git add . &&
+          git commit -m "Site development version" &&
           git push origin tmp:gh-pages-dev -f
         fi
     dir: /workspace/vizzu-lib-doc
