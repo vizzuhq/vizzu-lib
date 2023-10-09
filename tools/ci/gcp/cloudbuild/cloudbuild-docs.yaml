@@ -42,7 +42,7 @@ steps:
         path: /root/.ssh
 
   - name: vizzu/vizzu-dev-wasm:0.8
-    id: docs-build
+    id: docs-publish
     waitFor:
       - docs-init
     entrypoint: bash
