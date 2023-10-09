@@ -8,6 +8,10 @@ jobs:
   init:
     uses: ./.github/workflows/init.yml
 
+  doc:
+    uses: ./.github/workflows/doc.yml
+    needs: init
+
   release:
     uses: ./.github/workflows/release.yml
     secrets: inherit

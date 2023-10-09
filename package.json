@@ -97,6 +97,7 @@
     "docs-gen-thumbnail": "./tools/ci/run/docs-gen-thumbnail.sh",
     "docs-gen-thumbnail-gsutil": "./tools/ci/run/docs-gen-thumbnail-gsutil.sh",
     "docs-build": "./tools/ci/run/docs-build.sh",
+    "docs-deploy": "./tools/ci/run/docs-deploy.sh",
     "pkg-build-desktop": "./tools/ci/run/pkg-build-desktop.sh",
     "pkg-build-desktop-clangformat": "./tools/ci/run/pkg-build-desktop-clangformat.sh",
     "pkg-build-desktop-clangtidy": "./tools/ci/run/pkg-build-desktop-clangtidy.sh",
