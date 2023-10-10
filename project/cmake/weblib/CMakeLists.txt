@@ -31,8 +31,8 @@ if(EMSCRIPTEN)
 		"cvizzu.*"
 		"${CMAKE_CURRENT_SOURCE_DIR}/${root}/dist")
 
-	file(GLOB_RECURSE jsapi CONFIGURE_DEPENDS ${appsDir}/weblib/js-api/*)
-	
+	file(GLOB_RECURSE jsapi CONFIGURE_DEPENDS ${appsDir}/weblib/js-api/**/*)
+
 	add_custom_target(copy_weblib
 		COMMAND "${CMAKE_COMMAND}" -E copy_directory
 		"${CMAKE_CURRENT_SOURCE_DIR}/${appsDir}/weblib/js-api"
