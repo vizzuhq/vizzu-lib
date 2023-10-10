@@ -7,8 +7,7 @@ import { CObject } from './module/cenv'
 import { AnimControl } from './animcontrol'
 import { recursiveCopy } from './utils'
 import { NotInitializedError, CancelError } from './errors'
-import { Plugins } from './plugins'
-import { Hooks } from './hooks'
+import { Hooks, PluginRegistry } from './plugins'
 /*
 import { Logging } from './plugins/logging.js'
 import { Shorthands } from './plugins/shorthands.js'
@@ -24,7 +23,7 @@ export default class Vizzu implements Vizzu {
   initializing: Promise<Vizzu>
   _anim: Anim.Completing
   _container: HTMLElement
-  _plugins: Plugins
+  _plugins: PluginRegistry
   /*
     static get presets() {
       return new Presets()
@@ -43,7 +42,7 @@ export default class Vizzu implements Vizzu {
 
     this._container = opts.container
 
-    this._plugins = new Plugins(this, opts.features)
+    this._plugins = new PluginRegistry(this, opts.features)
 
     this.initializing = loader.initialize().then((module) => {
       this._chart = new Chart(module, this._container, this._plugins)

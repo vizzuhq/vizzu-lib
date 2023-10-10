@@ -669,6 +669,8 @@ declare namespace Anim {
   type LazyKeyframe = Keyframe | LazyTarget
   /** Sequence of keyframe descriptors */
   type Keyframes = Keyframe[]
+
+  type AnimTarget = Anim.Keyframes | CAnimation
 }
 declare namespace Geom {
   /** Object representing a 2D point. */
@@ -1161,25 +1163,29 @@ declare namespace Plugins {
   }
 
   interface SetAnimParamsContext {
-    target: Anim.Keyframes | CAnimation | Anim.LazyTarget;
-    options: Anim.ControlOptions | (Anim.ControlOptions & Anim.LazyOptions);
+    target: AnimTarget;
+    options?: Anim.ControlOptions | (Anim.ControlOptions & Anim.Options);
   }
 
   interface AnimateRegisterContext {
-    target: Anim.Keyframes | CAnimation | Anim.LazyTarget;
-    options: Anim.ControlOptions | (Anim.ControlOptions & Anim.LazyOptions);
+    target: AnimTarget;
+    options?: Anim.ControlOptions | (Anim.ControlOptions & Anim.Options);
     promise: Anim.Completing;
   }
 
+  interface HookContexts {
+    [Hooks.setAnimParams]: SetAnimParamsContext
+    [Hooks.animateRegister]: AnimateRegisterContext
+  }
+
   type PluginHook<T> = {
-    (ctx: T, next: () => void): void
-    priority?: number
+    (ctx: T, next: () => void): void;
+    priority?: number;
   };
 
-  interface PluginHooks {
-    setAnimParams?: PluginHook<SetAnimParamsContext>
-    animateRegister?: PluginHook<AnimateRegisterContext>
-  }
+  type PluginHooks<T extends Hooks> = {
+    [key in T]?: PluginHook<HookContexts[key]>
+  };
 
   interface PluginListeners {
     [event: Event.Type]: (eventObj: any) => void;
@@ -1204,6 +1210,10 @@ declare namespace Plugins {
   }
 }
 
+declare enum Hooks {
+  setAnimParams = 'setAnimParams',
+  animateRegister = 'animateRegister'
+}
 /** Stored Animation object. */
 declare class CAnimation { }
 /** Stored Chart object. */
@@ -1223,6 +1233,7 @@ type Converter = (point: Geom.Point) => Geom.Point
 type CoordinateType = 'relative' | 'canvas'
 //import ObjectRegistry from './objregistry'
 /** Class representing a single chart in Vizzu. */
+
 interface VizzuOptions {
   container: HTMLElement
   features?: Plugins.Plugin[]
@@ -1263,7 +1274,7 @@ interface Vizzu {
     promise provides a nested promise member {@link Anim.Completing.activated|activated}, 
     which resolves when the requested animation gets active.  */
   animate(
-    animTarget: Anim.Keyframes | CAnimation | Anim.LazyTarget,
+    animTarget: AnimTarget,
     animOptions?: Anim.ControlOptions | (Anim.ControlOptions & Anim.LazyOptions)
   ): Anim.Completing
   /** Returns a reference to the actual chart state for further reuse. 

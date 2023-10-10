@@ -1,18 +1,16 @@
 /// <reference types="./types/vizzu.d.ts" />
-
 import { Module } from './module/module'
 import { CChart, CAnimation, Snapshot } from './module/cchart'
 import { CData } from './module/cdata'
 import { Render } from './render'
 import { Data } from './data'
 import { Events } from './events'
-import { Plugins } from './plugins'
-import { Hooks } from './hooks'
+import { Hooks, PluginRegistry } from './plugins'
 
 export class Chart {
 	_module: Module
 	_container: HTMLElement
-	_plugins: Plugins
+	_plugins: PluginRegistry
 	_canvas: HTMLCanvasElement
 	_cChart: CChart
 	_cData: CData
@@ -22,7 +20,7 @@ export class Chart {
 	_resizeObserver: ResizeObserver
 	_updateInterval: ReturnType<typeof setTimeout>
 
-	constructor(module: Module, container: HTMLElement, _plugins: Plugins) {
+	constructor(module: Module, container: HTMLElement, _plugins: PluginRegistry) {
 		this._plugins = _plugins
 		this._container = container
 		this._module = module
