@@ -120,7 +120,7 @@ steps:
         fi
     dir: /workspace
 
-  - name: gcr.io/cloud-builders/gsutil
+  - name: vizzu/vizzu-dev-wasm:0.8
     id: lib-sha
     waitFor:
       - build-wasm
@@ -137,6 +137,7 @@ steps:
           gsutil -m cp -r 'dist/*' 'gs://vizzu-lib-main-sha/lib-$SHORT_SHA'
           gsutil -m cp -r 'build/js/*' 'gs://vizzu-lib-main-sha/lib-$SHORT_SHA'
         fi
+        git reset --hard
 
     dir: /workspace
 
@@ -167,7 +168,6 @@ steps:
       - '-c'
       - '-e'
       - |
-        git reset --hard
         mkdir -p /root/.ssh
         echo "$$VIZZUHQ_GITHUB_SSH" > /root/.ssh/id_rsa
         chmod 400 /root/.ssh/id_rsa
