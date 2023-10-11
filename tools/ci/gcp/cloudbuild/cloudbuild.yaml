@@ -210,12 +210,12 @@ steps:
       - |-
         ./tools/ci/run/pkg-init-js.sh
         npm config set registry=https://registry.npmjs.org/
-        npm config set //registry.npmjs.org/:_authToken=${VIZZUHQ_NPM_API}
+        npm config set //registry.npmjs.org/:_authToken=$$VIZZUHQ_NPM_API
         if [ "$_ISRELEASE" == "true" ]
         then
           npm publish
           npm run pkg-purge-js
-          echo ${VIZZUHQ_GITHUB_API} | gh auth login --with-token
+          echo $$VIZZUHQ_GITHUB_API | gh auth login --with-token
           gh release upload $(git describe --tags --abbrev=0) build/js/*tgz --clobber
         else
           npm publish --dry-run
