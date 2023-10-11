@@ -704,38 +704,74 @@ declare namespace Geom {
     size: Point
   }
 }
-declare namespace Event {
-  type Type =
-    | 'click'
-    | 'pointeron'
-    | 'pointermove'
-    | 'pointerdown'
-    | 'pointerup'
-    | 'wheel'
-    | 'update'
-    | 'draw-begin'
-    | 'draw-complete'
-    | 'background-draw'
-    | 'title-draw'
-    | 'logo-draw'
-    | 'legend-background-draw'
-    | 'legend-title-draw'
-    | 'legend-label-draw'
-    | 'legend-marker-draw'
-    | 'legend-bar-draw'
-    | 'plot-background-draw'
-    | 'plot-area-draw'
-    | 'plot-marker-draw'
-    | 'plot-marker-label-draw'
-    | 'plot-marker-guide-draw'
-    | 'plot-axis-draw'
-    | 'plot-axis-title-draw'
-    | 'plot-axis-label-draw'
-    | 'plot-axis-tick-draw'
-    | 'plot-axis-guide-draw'
-    | 'plot-axis-interlacing-draw'
-    | 'animation-begin'
-    | 'animation-complete'
+declare namespace Events {
+
+  enum Type {
+    click = 'click',
+    pointeron = 'pointeron',
+    pointermove = 'pointermove',
+    pointerdown = 'pointerdown',
+    pointerup = 'pointerup',
+    wheel = 'wheel',
+    update = 'update',
+    drawBegin = 'draw-begin',
+    drawComplete = 'draw-complete',
+    backgroundDraw = 'background-draw',
+    titleDraw = 'title-draw',
+    logoDraw = 'logo-draw',
+    legendBackgroundDraw = 'legend-background-draw',
+    legendTitleDraw = 'legend-title-draw',
+    legendLabelDraw = 'legend-label-draw',
+    legendMarkerDraw = 'legend-marker-draw',
+    legendBarDraw = 'legend-bar-draw',
+    plotBackgroundDraw = 'plot-background-draw',
+    plotAreaDraw = 'plot-area-draw',
+    plotMarkerDraw = 'plot-marker-draw',
+    plotMarkerLabelDraw = 'plot-marker-label-draw',
+    plotMarkerGuideDraw = 'plot-marker-guide-draw',
+    plotAxisDraw = 'plot-axis-draw',
+    plotAxisTitleDraw = 'plot-axis-title-draw',
+    plotAxisLabelDraw = 'plot-axis-label-draw',
+    plotAxisTickDraw = 'plot-axis-tick-draw',
+    plotAxisGuideDraw = 'plot-axis-guide-draw',
+    plotAxisInterlacingDraw = 'plot-axis-interlacing-draw',
+    animationBegin = 'animation-begin',
+    animationComplete = 'animation-complete'
+  }
+
+  interface EventMap {
+    [Type.click]: PointerEvent
+    [Type.pointeron]: PointerEvent
+    [Type.pointermove]: PointerEvent
+    [Type.pointerdown]: PointerEvent
+    [Type.pointerup]: PointerEvent
+    [Type.wheel]: WheelEvent
+    [Type.update]: UpdateEvent
+    [Type.drawBegin]: Event<Element>
+    [Type.drawComplete]: Event<Element>
+    [Type.backgroundDraw]: RectDrawEvent<Root>
+    [Type.titleDraw]: TextDrawEvent<Title>
+    [Type.logoDraw]: RectDrawEvent<Logo>
+    [Type.legendBackgroundDraw]: RectDrawEvent<Legend>
+    [Type.legendTitleDraw]: TextDrawEvent<LegendTitle>
+    [Type.legendLabelDraw]: TextDrawEvent<LegendLabel>
+    [Type.legendMarkerDraw]: RectDrawEvent<LegendMarker>
+    [Type.legendBarDraw]: RectDrawEvent<LegendBar>
+    [Type.plotBackgroundDraw]: RectDrawEvent<Plot>
+    [Type.plotAreaDraw]: RectDrawEvent<Area>
+    [Type.plotMarkerDraw]: RectDrawEvent<Marker>
+    [Type.plotMarkerLabelDraw]: TextDrawEvent<MarkerLabel>
+    [Type.plotMarkerGuideDraw]: LineDrawEvent<MarkerGuide>
+    [Type.plotAxisDraw]: LineDrawEvent<Axis>
+    [Type.plotAxisTitleDraw]: TextDrawEvent<AxisTitle>
+    [Type.plotAxisLabelDraw]: TextDrawEvent<AxisLabel>
+    [Type.plotAxisTickDraw]: LineDrawEvent<AxisTick>
+    [Type.plotAxisGuideDraw]: LineDrawEvent<AxisGuide>
+    [Type.plotAxisInterlacingDraw]: RectDrawEvent<AxisInterlacing>
+    [Type.animationBegin]: Event<Element>
+    [Type.animationComplete]: Event<Element>
+  }
+
   /** Abstract Element interface for chart elements. */
   interface Element {
     /** Name of the chart element type. */
@@ -845,10 +881,10 @@ declare namespace Event {
   }
   /** The interface of the event object is passed to event handlers by the library.
     Detail properties will vary by event type. */
-  interface Event {
+  interface Event<T> {
     type: Type
     /** The element of the chart the event triggered on. */
-    target: Element | null
+    target: T | null
     /** If called, the default action of the event will be canceled. */
     preventDefault(): void
     /** For drawing events the rendering context of the underlying 
@@ -860,14 +896,14 @@ declare namespace Event {
     position: Geom.Point
   }
   /** Event for pointer/mouse events. */
-  interface PointerEvent extends Event {
+  interface PointerEvent extends Event<Element> {
     detail: PointerDetail
   }
   interface WheelDetail {
     delta: number
   }
   /** Event for mouse wheel change. */
-  interface WheelEvent extends Event {
+  interface WheelEvent extends Event<Element> {
     detail: WheelDetail
   }
   interface UpdateDetail {
@@ -875,7 +911,7 @@ declare namespace Event {
     progress: number
   }
   /** Event emitted at every animation frame update. */
-  interface UpdateEvent extends Event {
+  interface UpdateEvent extends Event<Element> {
     detail: UpdateDetail
   }
   interface RectDrawDetail {
@@ -884,7 +920,7 @@ declare namespace Event {
   }
   /** Event of drawing a rectangle or a marker 
     (in which case rect is the boundary rectangle). */
-  interface RectDrawEvent extends Event {
+  interface RectDrawEvent<T> extends Event<T> {
     detail: RectDrawDetail
   }
   interface LineDrawDetail {
@@ -892,7 +928,7 @@ declare namespace Event {
     relative: boolean
   }
   /** Event of drawing a line. */
-  interface LineDrawEvent extends Event {
+  interface LineDrawEvent<T> extends Event<T> {
     detail: LineDrawDetail
   }
   interface TextDrawDetail {
@@ -900,10 +936,10 @@ declare namespace Event {
     text: string
   }
   /** Event of drawing a text. */
-  interface TextDrawEvent extends Event {
+  interface TextDrawEvent<T> extends Event<T> {
     detail: TextDrawDetail
   }
-  type Handler = (event: Event) => void
+  type Handler<Event> = (event: Event) => void
 }
 declare namespace Presets {
   interface Preset {
@@ -1188,7 +1224,7 @@ declare namespace Plugins {
   };
 
   interface PluginListeners {
-    [event: Event.Type]: (eventObj: any) => void;
+    [event: Events.Type]: Events.Handler<Events.EventMap[event]>
   }
 
   interface PluginApi {
@@ -1249,9 +1285,9 @@ interface Vizzu {
     an error before this promise is resolved.  */
   initializing: Promise<Vizzu>
   /** Installs the provided event handler to the event specified by name. */
-  on(eventName: Event.Type, handler: Event.Handler): void
+  on(eventName: Events.Type, handler: Events.Handler<Events.EventMap<T>>): void
   /** Uninstalls the provided event handler from the event specified by name. */
-  off(eventName: Event.Type, handler: Event.Handler): void
+  off(eventName: Events.Type, handler: Events.Handler<Events.EventMap<T>>): void
   /** Initiates the animation either to the new chart state passed as the first 
     argument, or through a sequence of keyframe charts passed as the first
     argument. If there is a currently running animation, all subsequent 

@@ -57,7 +57,7 @@ export class PluginRegistry {
     if (instance.register && this._parent) {
       instance.register(this._parent)
     }
-    const plugin = { name, instance, enabled: !enabled } as PluginRecord
+    const plugin = { name, instance, enabled: !enabled }
     this._plugins.push(plugin)
     this._setEnabled(plugin, enabled)
     return name

@@ -3,50 +3,57 @@
 import { CChart, CEvent } from "./module/cchart"
 import { Render } from "./render"
 
-type EventRecord = [
+type EventRecord<Handler> = [
   CFunction<(eventPtr: CEventPtr, param: CString) => void> | null,
-  Event.Handler[]
+  Handler[]
 ]
 
 interface EventState {
   canceled: boolean
 }
 
+type EventHandlers<T extends Events.Type> = {
+  [key in T]?: EventRecord<Events.Handler<Events.EventMap[T]>>
+};
+
 export class Events {
   _cChart: CChart
   _render: Render
-  _eventHandlers: Map<Event.Type, EventRecord>
+  _eventHandlers: EventHandlers<Events.Type> = {}
 
   constructor(cChart: CChart, render: Render) {
     this._cChart = cChart
     this._render = render
-    this._eventHandlers = new Map<Event.Type, EventRecord>()
   }
 
-  add(eventName: Event.Type, handler: Event.Handler) {
+  add<T extends Events.Type>(eventName: T, handler: Events.Handler<Events.EventMap[T]>) {
     if (typeof eventName !== 'string') {
       throw new Error('first parameter should be string')
     }
+    this._getHandlers(eventName).push(handler)
+  }
 
-    if (!this._eventHandlers.has(eventName)) {
+  _getHandlers<T extends Events.Type>(eventName: T): Events.Handler<Events.EventMap[T]>[] {
+    if (!(eventName in this._eventHandlers)) {
       let cfunc = null
       if (!this._isJSEvent(eventName)) {
-        const func = (eventPtr: CEvent, param: Event.Event) => {
+        const func = (eventPtr: CEvent, param: Events.EventMap[T]) => {
           this._invoke(eventName, param, eventPtr)
         }
         cfunc = this._cChart.addEventListener(eventName, func)
       }
-      this._eventHandlers.set(eventName, [cfunc, []])
+      this._eventHandlers[eventName] = [cfunc, []]
     }
-    this._eventHandlers.get(eventName)![1].push(handler)
+    const handlers = this._eventHandlers[eventName]
+    return handlers![1]
   }
 
-  remove(eventName: Event.Type, handler: Event.Handler) {
+  remove<T extends Events.Type>(eventName: T, handler: Events.Handler<Events.EventMap[T]>) {
     if (typeof eventName !== 'string') {
       throw new Error('first parameter should be string')
     }
 
-    const eventRecord = this._eventHandlers.get(eventName)
+    const eventRecord = this._eventHandlers[eventName]
     if (!eventRecord) throw new Error('unknown event handler')
 
     const [cfunc, handlers] = eventRecord
@@ -63,26 +70,26 @@ export class Events {
       if (!this._isJSEvent(eventName)) {
         if (cfunc) this._cChart.removeEventListener(eventName, cfunc)
       }
-      this._eventHandlers.delete(eventName)
+      delete this._eventHandlers[eventName]
     }
   }
 
   addMany(events: Plugins.PluginListeners) {
     for (const [eventName, handler] of Object.entries(events)) {
-      this.add(eventName as Event.Type, handler)
+      this.add(eventName as Events.Type, handler)
     }
   }
 
   removeMany(events: Plugins.PluginListeners) {
     for (const [eventName, handler] of Object.entries(events)) {
-      this.remove(eventName as Event.Type, handler)
+      this.remove(eventName as Events.Type, handler)
     }
   }
 
-  _invoke(eventName: Event.Type, param: Event.Event, cEvent?: CEvent) {
+  _invoke<T extends Events.Type>(eventName: T, param: Events.EventMap[T], cEvent?: CEvent) {
     const state: EventState = { canceled: false }
     try {
-      const handlers = this._eventHandlers.get(eventName)
+      const handlers = this._eventHandlers[eventName]
       if (handlers) {
         for (const handler of [...handlers[1]]) {
           const eventParam = this._isJSEvent(eventName)
@@ -98,18 +105,18 @@ export class Events {
     return state.canceled
   }
 
-  _isJSEvent(eventName: Event.Type) {
+  _isJSEvent(eventName: Events.Type) {
     return eventName.startsWith('api-')
   }
 
-  _makeJSEventParam(param: Event.Event, state: EventState) {
+  _makeJSEventParam<T>(param: Events.Event<T>, state: EventState) {
     param.preventDefault = () => {
       state.canceled = true
     }
     return param
   }
 
-  _makeCEventParam(cEvent: CEvent, param: Event.Event, state: EventState) {
+  _makeCEventParam<T>(cEvent: CEvent, param: Events.Event<T>, state: EventState) {
     param.preventDefault = () => {
       cEvent.preventDefault()
       state.canceled = true

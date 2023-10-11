@@ -193,12 +193,12 @@ export default class Vizzu implements Vizzu {
     return this._chart._cChart.computedStyle.get()
   }
 
-  on(eventName: Event.Type, handler: Event.Handler) {
+  on<T extends Events.Type>(eventName: T, handler: Events.Handler<Events.EventMap[T]>) {
     if (!this._chart) throw new NotInitializedError()
     this._chart._events.add(eventName, handler)
   }
 
-  off(eventName: Event.Type, handler: Event.Handler) {
+  off<T extends Events.Type>(eventName: T, handler: Events.Handler<Events.EventMap[T]>) {
     if (!this._chart) throw new NotInitializedError()
     this._chart._events.remove(eventName, handler)
   }
