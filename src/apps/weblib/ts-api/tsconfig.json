@@ -1,5 +1,5 @@
 {
-  "files": ["types/vizzu.d.ts", "types/cvizzu.d.ts"],
+  "types": ["types/vizzu.d.ts", "types/cvizzu.d.ts"],
   "include": ["**/*.ts"],
   "compilerOptions": {
     "target": "es2021",

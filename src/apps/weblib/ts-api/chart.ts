@@ -6,6 +6,15 @@ import { Render } from './render'
 import { Data } from './data'
 import { Events } from './events'
 import { Hooks, PluginRegistry } from './plugins'
+import { Logging } from './plugins/logging'
+import { Rendering } from './plugins/rendering'
+import { Shorthands } from './plugins/shorthands'
+import { PivotData } from './plugins/pivotdata'
+import { Tooltip } from './plugins/tooltip'
+import { PointerEvents } from './plugins/pointerevents'
+import { CSSProperties } from './plugins/cssproperties'
+//import Presets from './plugins/presets'
+
 
 export class Chart {
 	_module: Module
@@ -37,15 +46,13 @@ export class Chart {
 		this._events = new Events(this._cChart, this._render)
 		this._plugins.init(this._events)
 		this._resizeObserver = this._createResizeObserverFor(this._canvas)
-		/*
-			this.feature(new Logging(), false)
-			this.feature(new CSSProperties(), false)
-			this.feature(new Rendering(), true)
-			this.feature(new Shorthands(), true)
-			this.feature(new PivotData(), true)
-			this.feature(new PointerEvents(), true)
-			this.feature(new Tooltip(), false)
-		*/
+		this._plugins.register(new Logging(), false)
+		this._plugins.register(new Rendering(), true)
+		this._plugins.register(new CSSProperties(), false)
+		this._plugins.register(new Shorthands(), true)
+		this._plugins.register(new PivotData(), true)
+		this._plugins.register(new PointerEvents(), true)
+		this._plugins.register(new Tooltip(), false)
 		this._updateInterval = this._start()
 	}
 

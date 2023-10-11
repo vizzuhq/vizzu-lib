@@ -1228,7 +1228,7 @@ declare namespace Plugins {
   }
 
   interface PluginApi {
-    [apiMethod: string]: (...args: any[]) => any;
+    [apiMethod: string]: any;
   }
 
   interface Plugin {
@@ -1236,8 +1236,8 @@ declare namespace Plugins {
     hooks?: PluginHooks;
     listeners?: PluginListeners;
     api?: PluginApi;
-    register?: (ctx: Vizzu) => void;
-    unregister?: (ctx: Vizzu) => void;
+    register?: (ctx: Chart) => void;
+    unregister?: (ctx: Chart) => void;
     enable?: (enabled: boolean) => void;
   }
 
@@ -1274,20 +1274,21 @@ interface VizzuOptions {
   container: HTMLElement
   features?: Plugins.Plugin[]
 }
+
 interface Vizzu {
   /** Creates a new chart and connects it to the div or canvas HTML 
     element specified by its ID or DOM object. The new chart is empty by 
     default, but can be set to an initial state in the second optional 
     parameter. */
-  //  constructor(container: string | HTMLElement | VizzuOptions, initState?: Anim.Target | Config.Chart)
+  //constructor(container: string | HTMLElement | VizzuOptions, initState?: Anim.Target | Config.Chart)
   /** Promise representing the initialization will resolve when 
     initialization is finished. Any API call will potentially cause 
     an error before this promise is resolved.  */
   initializing: Promise<Vizzu>
   /** Installs the provided event handler to the event specified by name. */
-  on(eventName: Events.Type, handler: Events.Handler<Events.EventMap<T>>): void
+  on<T extends Events.Type>(eventName: T, handler: Events.Handler<Events.EventMap[T]>): void
   /** Uninstalls the provided event handler from the event specified by name. */
-  off(eventName: Events.Type, handler: Events.Handler<Events.EventMap<T>>): void
+  off<T extends Events.Type>(eventName: T, handler: Events.Handler<Events.EventMap[T]>): void
   /** Initiates the animation either to the new chart state passed as the first 
     argument, or through a sequence of keyframe charts passed as the first
     argument. If there is a currently running animation, all subsequent 
@@ -1310,7 +1311,7 @@ interface Vizzu {
     promise provides a nested promise member {@link Anim.Completing.activated|activated}, 
     which resolves when the requested animation gets active.  */
   animate(
-    animTarget: AnimTarget,
+    animTarget: Anim.Keyframes | CAnimation,
     animOptions?: Anim.ControlOptions | (Anim.ControlOptions & Anim.LazyOptions)
   ): Anim.Completing
   /** Returns a reference to the actual chart state for further reuse. 
@@ -1329,13 +1330,13 @@ interface Vizzu {
   /** Re-renders the chart. */
   forceUpdate(): void
   /** Property for read-only access to style object without default values. */
-  style: Readonly<Styles.Chart>
+  get style(): Readonly<Styles.Chart>
   /** Property for read-only access to the style object after setting defaults. */
   getComputedStyle(): Readonly<Styles.Chart>
   /** Property for read-only access to chart parameter object. */
-  config: Readonly<Config.Chart>
+  get config(): Readonly<Config.Chart>
   /** Property for read-only access to data metainfo object. */
-  data: Readonly<Data.Metainfo>
+  get data(): Readonly<Data.Metainfo>
   /** Enable/disable additional features. */
   feature(name: Feature, enabled: boolean): void
   /** Removes the reference of the chart from every place it attached itself,

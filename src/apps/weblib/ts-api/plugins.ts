@@ -1,5 +1,7 @@
 /// <reference types="./types/vizzu.d.ts" />
 
+import Vizzu from './vizzu'
+
 import { Events } from './events'
 
 export enum Hooks {

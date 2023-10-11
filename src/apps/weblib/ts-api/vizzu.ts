@@ -8,15 +8,6 @@ import { AnimControl } from './animcontrol'
 import { recursiveCopy } from './utils'
 import { NotInitializedError, CancelError } from './errors'
 import { Hooks, PluginRegistry } from './plugins'
-/*
-import { Logging } from './plugins/logging.js'
-import { Shorthands } from './plugins/shorthands.js'
-import { PointerEvents } from './plugins/pointerevents.js'
-import { PivotData } from './plugins/pivotdata.js'
-import { Tooltip } from './plugins/tooltip.js'
-import { CSSProperties } from './plugins/cssproperties.js'
-import Presets from './plugins/presets.js'
-*/
 
 export default class Vizzu implements Vizzu {
   _chart?: Chart
@@ -173,17 +164,17 @@ export default class Vizzu implements Vizzu {
     this._chart._render.updateFrame(true)
   }
 
-  get data(): Data.Metainfo {
+  get data(): Readonly<Data.Metainfo> {
     if (!this._chart) throw new NotInitializedError()
     return this._chart._cData.getMetaInfo()
   }
 
-  get config(): Config.Chart {
+  get config(): Readonly<Config.Chart> {
     if (!this._chart) throw new NotInitializedError()
     return this._chart._cChart.config.get()
   }
 
-  get style(): Styles.Chart {
+  get style(): Readonly<Styles.Chart> {
     if (!this._chart) throw new NotInitializedError()
     return this._chart._cChart.style.get()
   }
@@ -208,7 +199,7 @@ export default class Vizzu implements Vizzu {
     return this._chart._cChart.storeSnapshot()
   }
 
-  getConverter(target: string, from: string, to: string): (point: Geom.Point) => Geom.Point {
+  getConverter(target: 'plot-area', from: CoordinateType, to: CoordinateType): (point: Geom.Point) => Geom.Point {
     if (!this._chart) throw new NotInitializedError()
     return this._chart.getConverter(target, from, to)
   }
