@@ -24,7 +24,7 @@ void TableChart::setupVector(std::vector<Item> &items,
 
 	auto size = 0;
 	for (auto &item : items)
-		if (item.enabled) size++;
+		if (item.enabled) ++size;
 
 	auto rowsize =
 	    static_cast<ssize_t>(singleColumn ? 1.0 : ceil(sqrt(size)));

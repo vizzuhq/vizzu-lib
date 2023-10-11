@@ -75,10 +75,10 @@ void TreeMap::setupVector(std::vector<Item> &items,
 			rect = rect.positive();
 			items[item.second].position = rect.topRight();
 			items[item.second].size = rect.size;
-			subCnt++;
+			++subCnt;
 		}
 
-		cnt++;
+		++cnt;
 	}
 }
 

@@ -106,7 +106,7 @@ void Keyframe::addMissingMarkers(const Gen::PlotPtr &source,
 {
 	for (auto i = source->getMarkers().size();
 	     i < target->getMarkers().size();
-	     i++) {
+	     ++i) {
 		auto src = target->getMarkers()[i];
 		src.enabled = false;
 		source->markers.push_back(src);
@@ -114,7 +114,7 @@ void Keyframe::addMissingMarkers(const Gen::PlotPtr &source,
 
 	for (auto i = target->getMarkers().size();
 	     i < source->getMarkers().size();
-	     i++) {
+	     ++i) {
 		if (withTargetCopying) copyTarget();
 		auto trg = source->getMarkers()[i];
 		trg.enabled = false;

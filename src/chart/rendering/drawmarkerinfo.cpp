@@ -108,7 +108,7 @@ void DrawMarkerInfo::MarkerDC::fillTextBox(Content &cnt)
 			if (counter == 0 && !firstContent.empty()) {
 				text << TextBox::Bkgnd(0) << TextBox::Fgnd(1);
 				text << static_cast<Gfx::Font>(parent.style)
-				     << TextBox::Font(
+				     << static_cast<TextBox::Font>(
 				            parent.style.fontSize->get() * 1.3);
 				text << TextBox::bold << firstContent
 				     << TextBox::NewLine();
@@ -126,7 +126,7 @@ void DrawMarkerInfo::MarkerDC::fillTextBox(Content &cnt)
 			if (counter == 0 && !firstContent.empty()) {
 				text << TextBox::Bkgnd(0) << TextBox::Fgnd(1);
 				text << static_cast<Gfx::Font>(parent.style)
-				     << TextBox::Font(
+				     << static_cast<TextBox::Font>(
 				            parent.style.fontSize->get() * 1.3);
 				text << TextBox::bold << firstContent << " / ";
 			}
@@ -141,7 +141,7 @@ void DrawMarkerInfo::MarkerDC::fillTextBox(Content &cnt)
 				text << info.second;
 			}
 		}
-		counter++;
+		++counter;
 	}
 }
 

@@ -14,7 +14,7 @@ void DataTable::pushRow(const std::span<const char *> &cells)
 void DataTable::pushRow(const TableRow<std::string> &textRow)
 {
 	Row row;
-	for (auto i = 0U; i < getColumnCount(); i++) {
+	for (auto i = 0U; i < getColumnCount(); ++i) {
 		if (i < textRow.size())
 			row.pushBack(
 			    infos[i].registerValue(textRow[ColumnIndex(i)]));
@@ -53,7 +53,7 @@ DataTable::DataIndex DataTable::addTypedColumn(
 			infos[colIndex].reset();
 	}
 
-	for (auto i = 0U; i < getRowCount(); i++) {
+	for (auto i = 0U; i < getRowCount(); ++i) {
 		auto &row = rows.at(i);
 		auto value = i < values.size() ? values[i] : T{};
 		if constexpr (std::is_same_v<T, const char *>)
@@ -64,9 +64,9 @@ DataTable::DataIndex DataTable::addTypedColumn(
 		else
 			row.pushBack(infos[colIndex].registerValue(value));
 	}
-	for (auto i = getRowCount(); i < values.size(); i++) {
+	for (auto i = getRowCount(); i < values.size(); ++i) {
 		Row row;
-		for (auto j = 0U; j < getColumnCount(); j++) {
+		for (auto j = 0U; j < getColumnCount(); ++j) {
 			if (j == colIndex) {
 				auto value = i < values.size() ? values[i] : T();
 				if constexpr (std::is_same_v<T, const char *>)

@@ -29,8 +29,8 @@ bool Selector::anySelected()
 	for (const auto &marker : plot.getMarkers()) {
 		if (static_cast<double>(marker.enabled) > 0) {
 			if (static_cast<double>(marker.selected) > 0)
-				selectedCnt++;
-			allCnt++;
+				++selectedCnt;
+			++allCnt;
 		}
 	}
 	if (selectedCnt == allCnt) {

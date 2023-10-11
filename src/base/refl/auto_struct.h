@@ -78,7 +78,7 @@ template <template <class, std::size_t, class...> typename,
     std::size_t Begin,
     std::size_t Middle>
     requires(Begin < Middle)
-consteval std::size_t detect_fields_count(long) noexcept;
+consteval std::size_t detect_fields_count(std::size_t) noexcept;
 
 template <template <class, std::size_t, class...> typename EnableIf,
     class T,
@@ -98,7 +98,7 @@ template <template <class, std::size_t, class...> typename EnableIf,
     std::size_t Begin,
     std::size_t Middle>
     requires(Begin < Middle)
-consteval std::size_t detect_fields_count(long) noexcept
+consteval std::size_t detect_fields_count(std::size_t) noexcept
 {
 	return detect_fields_count<EnableIf,
 	    T,

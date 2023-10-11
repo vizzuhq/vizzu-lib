@@ -131,7 +131,7 @@ size_t Channels::count(const Data::SeriesIndex &index) const
 {
 	size_t cnt = 0;
 	for (const auto &channel : channels)
-		if (channel.isSeriesUsed(index)) cnt++;
+		if (channel.isSeriesUsed(index)) ++cnt;
 	return cnt;
 }
 
@@ -139,7 +139,7 @@ std::list<ChannelId> Channels::find(
     const Data::SeriesIndex &index) const
 {
 	std::list<ChannelId> res;
-	for (auto type = 0U; type < std::size(channels); type++) {
+	for (auto type = 0U; type < std::size(channels); ++type) {
 		if (channels[static_cast<ChannelId>(type)].isSeriesUsed(
 		        index))
 			res.push_back(static_cast<ChannelId>(type));
@@ -175,7 +175,7 @@ void Channels::visitAll(
     const std::function<void(ChannelId, const Channel &)> &visitor)
     const
 {
-	for (auto type = 0U; type < std::size(channels); type++) {
+	for (auto type = 0U; type < std::size(channels); ++type) {
 		const auto &channel = channels[static_cast<ChannelId>(type)];
 		visitor(static_cast<ChannelId>(type), std::ref(channel));
 	}

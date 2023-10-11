@@ -66,9 +66,9 @@ void BubbleChartBuilder::setupVector(std::vector<Item> &items,
 			items[item.second].sizeFactor =
 			    r * r / (maxRadius * maxRadius);
 			if (std::isnan(r)) items[item.second].enabled = false;
-			subCnt++;
+			++subCnt;
 		}
-		cnt++;
+		++cnt;
 	}
 }
 

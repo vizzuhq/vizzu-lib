@@ -13,7 +13,7 @@ TreeMap::TreeMap(const std::vector<double> &sizes,
 {
 	markers.reserve(sizes.size());
 
-	for (auto j = 0U; j < sizes.size(); j++)
+	for (auto j = 0U; j < sizes.size(); ++j)
 		markers.emplace_back(j, sizes[j]);
 
 	std::sort(markers.begin(), markers.end(), SpecMarker::sizeOrder);

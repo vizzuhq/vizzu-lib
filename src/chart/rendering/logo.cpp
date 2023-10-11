@@ -88,7 +88,7 @@ void Logo::draw(Geom::Point pos,
 	        Gfx::Color("#0085c5"),
 	        Gfx::Color("#4e9285")}};
 
-	for (auto i = 0U; i < 4; i++)
+	for (auto i = 0U; i < 4; ++i)
 		popCircle(colorTransform(circleColors[i]));
 
 	canvas.restore();
@@ -103,7 +103,7 @@ void Logo::popPolygon(size_t count)
 
 void Logo::popPoints(size_t count)
 {
-	for (auto i = 0U; i < count; i++) canvas.addPoint(popPoint());
+	for (auto i = 0U; i < count; ++i) canvas.addPoint(popPoint());
 }
 
 void Logo::popBeziers()
@@ -121,8 +121,7 @@ void Logo::popCircle(const Gfx::Color &color)
 
 Geom::Point Logo::popPoint()
 {
-	const auto &p = points[index];
-	index++;
+	const auto &p = points[index++];
 	return pos
 	     + Geom::Point{static_cast<double>(p.x),
 	           static_cast<double>(p.y)}
