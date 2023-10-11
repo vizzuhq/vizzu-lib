@@ -35,7 +35,7 @@ public:
 		double size;
 		int opCode;
 
-		explicit Font(double s, int opCode = 0) noexcept :
+		constexpr explicit Font(double s, int opCode = 0) noexcept :
 		    size(s),
 		    opCode(opCode)
 		{}

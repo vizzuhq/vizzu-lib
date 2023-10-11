@@ -34,7 +34,7 @@ size_t Array<T>::unfoldedIndex(const MultiIndex &index) const
 	if (index.empty()) return 0U;
 
 	size_t unfoldedIndex = 0U;
-	for (auto i = 0U; i < sizes.size(); i++) {
+	for (auto i = 0U; i < sizes.size(); ++i) {
 		auto size = sizes[i];
 		auto idx = index[i];
 		unfoldedIndex *= size;
@@ -101,7 +101,7 @@ void Array<T>::visitSubSlice(const SubSliceIndex &subSliceIndex,
 			visitSubSlice(subSliceIndex, visitor, multiIndex);
 		}
 		else
-			for (auto i = 0U; i < sizes[dim]; i++) {
+			for (auto i = 0U; i < sizes[dim]; ++i) {
 				multiIndex[dim] = Index(i);
 				visitSubSlice(subSliceIndex, visitor, multiIndex);
 			}
@@ -127,7 +127,7 @@ void Array<T>::visitSubSlicesTill(
 		auto maxIndex = whole ? sizes[dimIndex] - 1
 		                      : targetSubSliceIndex[level].index;
 
-		for (auto i = 0U; i <= maxIndex; i++) {
+		for (auto i = 0U; i <= maxIndex; ++i) {
 			subSliceIndex[level].index = Index(i);
 			visitSubSlicesTill(targetSubSliceIndex,
 			    visitor,
@@ -157,7 +157,7 @@ size_t Array<T>::lastIndexCountAt(
 	auto count = 0;
 	for (const auto &sliceIndex : subSliceIndex)
 		if (sliceIndex.index == sizes[sliceIndex.dimIndex] - 1)
-			count++;
+			++count;
 	return count;
 }
 
@@ -178,12 +178,12 @@ template <typename T> void Array<T>::incIndex(MultiIndex &index) const
 	int dim = static_cast<int>(index.size()) - 1;
 	bool overflow = true;
 	while (overflow && dim >= 0) {
-		index[dim]++;
+		++index[dim];
 		if (index[dim] >= sizes[dim])
 			index[dim] = Index(0);
 		else
 			overflow = false;
-		dim--;
+		--dim;
 	}
 }
 

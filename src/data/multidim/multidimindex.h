@@ -40,7 +40,7 @@ public:
 
 	explicit SubSliceIndex(const MultiDim::MultiIndex &multiIndex)
 	{
-		for (auto i = 0U; i < multiIndex.size(); i++)
+		for (auto i = 0U; i < multiIndex.size(); ++i)
 			this->push_back({DimIndex(i), multiIndex[i]});
 	}
 
@@ -92,7 +92,7 @@ public:
 	[[nodiscard]] bool hardEqual(const SubSliceIndex &other) const
 	{
 		if (size() != other.size()) return false;
-		for (auto i = 0U; i < size(); i++)
+		for (auto i = 0U; i < size(); ++i)
 			if ((*this)[i] != other[i]) return false;
 		return true;
 	}

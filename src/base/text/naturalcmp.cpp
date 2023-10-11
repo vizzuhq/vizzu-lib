@@ -64,15 +64,15 @@ int NaturalCmp::cmpNum(const char *&s0, const char *&s1)
 		if (SC::isDigit(*s0)) v0 = v0 * 10 + SC::toNumber(*s0);
 		if (SC::isDigit(*s1)) v1 = v1 * 10 + SC::toNumber(*s1);
 
-		if (SC::isDigit(*s0)) s0++;
-		if (SC::isDigit(*s1)) s1++;
+		if (SC::isDigit(*s0)) ++s0;
+		if (SC::isDigit(*s1)) ++s1;
 	}
 	return v0 < v1 ? -1 : v0 > v1 ? 1 : 0;
 }
 
 void NaturalCmp::skipSpaces(const char *&s)
 {
-	while (SC::isSpace(*s)) s++;
+	while (SC::isSpace(*s)) ++s;
 }
 
 }

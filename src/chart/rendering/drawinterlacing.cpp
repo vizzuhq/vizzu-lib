@@ -126,7 +126,7 @@ void DrawInterlacing::draw(
 		auto interlaceCount = 0U;
 		const auto maxInterlaceCount = 1000U;
 		for (int i = iMin; ++interlaceCount <= maxInterlaceCount;
-		     i++) {
+		     ++i) {
 			auto bottom = axisBottom + i * 2 * stripWidth;
 			if (bottom >= 1.0) break;
 			auto clippedBottom = bottom;

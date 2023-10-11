@@ -10,7 +10,7 @@ struct Character
 {
 	static uint8_t hex(const char *hex)
 	{
-		return (fromHex(*hex) << 4) + fromHex(*(hex + 1));
+		return (fromHex(*hex) << 4U) + fromHex(*(hex + 1));
 	}
 
 	static constexpr bool isDigit(char ch)
@@ -44,8 +44,9 @@ struct Character
 
 	static void toHex(uint8_t ch, char *res)
 	{
-		*res = toHex(static_cast<char>((ch >> 4) & 0x0F));
-		*(res + 1) = toHex(static_cast<char>(ch & 0x0F));
+		*res = toHex(static_cast<char>(
+		    static_cast<uint32_t>(ch >> 4U) & 0x0FU));
+		*(res + 1) = toHex(static_cast<char>(ch & 0x0FU));
 	}
 
 	static constexpr uint8_t fromHex(char ch)

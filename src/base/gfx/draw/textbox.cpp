@@ -3,9 +3,9 @@
 namespace Gfx::Draw
 {
 
-const TextBox::Font TextBox::bold{0, 1};
-const TextBox::Font TextBox::italic{0, 2};
-const TextBox::Font TextBox::normal{0, 3};
+const TextBox::Font TextBox::bold{0.0, 1};
+const TextBox::Font TextBox::italic{0.0, 2};
+const TextBox::Font TextBox::normal{0.0, 3};
 
 TextBox::Padding::Padding() : top(0), left(0), bottom(0), right(0) {}
 
@@ -175,7 +175,7 @@ Geom::Size TextBox::measure(ICanvas &canvas)
 					    && line.width > tabulators[tabPos].second) {
 						tabulators[tabPos].second = line.width;
 					}
-					tabPos++;
+					++tabPos;
 				}
 			}
 		}
@@ -188,7 +188,7 @@ Geom::Size TextBox::measure(ICanvas &canvas)
 					    && tabulators[tabPos].second > line.width)
 						text.width += tabulators[tabPos].second
 						            - line.width - text.width;
-					tabPos++;
+					++tabPos;
 				}
 				line.width += text.width;
 			}

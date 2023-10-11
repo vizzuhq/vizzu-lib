@@ -11,7 +11,7 @@ BubbleChart::BubbleChart(const std::vector<double> &sizes,
 {
 	markers.reserve(sizes.size());
 
-	for (auto j = 0U; j < sizes.size(); j++) {
+	for (auto j = 0U; j < sizes.size(); ++j) {
 		const double radius = std::sqrt(sizes[j]);
 		markers.emplace_back(j, radius);
 	}
@@ -28,7 +28,7 @@ void BubbleChart::generate()
 {
 	auto baseIndex = 0U;
 
-	for (auto i = 0U; i < markers.size(); i++) {
+	for (auto i = 0U; i < markers.size(); ++i) {
 		auto &marker = markers[i];
 
 		switch (i) {
@@ -57,7 +57,7 @@ void BubbleChart::generate()
 			    && !candidate1->overlaps(markers[baseIndex].circle(),
 			        0.00001)) {
 				marker.emplaceCircle(*candidate1);
-				baseIndex++;
+				++baseIndex;
 			}
 			else if (candidate0
 			         && !candidate0->overlaps(

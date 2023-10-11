@@ -20,7 +20,7 @@ Plot::MarkersInfo interpolate(const Plot::MarkersInfo &op1,
 	auto iter1 = op1.begin();
 	auto iter2 = op2.begin();
 	for (; iter1 != op1.end() && iter2 != op2.end();
-	     iter1++, iter2++) {
+	     ++iter1, ++iter2) {
 		if (iter1->first != iter2->first)
 			throw std::logic_error("invalid map operation");
 		if (iter1->second.get() || iter2->second.get()) {
@@ -241,7 +241,7 @@ void Plot::linkMarkers(const Buckets &buckets, bool main)
 	for (const auto &pair : buckets) {
 		const auto &bucket = pair.second;
 
-		for (auto i = 0U; i < sorted.size(); i++) {
+		for (auto i = 0U; i < sorted.size(); ++i) {
 			auto idAct = sorted[i].first;
 			auto indexAct = bucket.at(idAct);
 			auto &act = markers[indexAct];
@@ -297,7 +297,7 @@ void Plot::normalizeXY()
 
 void Plot::calcAxises(const Data::DataTable &dataTable)
 {
-	for (auto i = 0U; i < std::size(measureAxises.axises); i++) {
+	for (auto i = 0U; i < std::size(measureAxises.axises); ++i) {
 		auto id = static_cast<ChannelId>(i);
 		measureAxises.at(id) = calcAxis(id, dataTable);
 	}
@@ -336,7 +336,7 @@ MeasureAxis Plot::calcAxis(ChannelId type,
 
 void Plot::calcDimensionAxises(const Data::DataTable &table)
 {
-	for (auto i = 0U; i < std::size(dimensionAxises.axises); i++)
+	for (auto i = 0U; i < std::size(dimensionAxises.axises); ++i)
 		calcDimensionAxis(static_cast<ChannelId>(i), table);
 }
 
@@ -378,7 +378,7 @@ void Plot::calcDimensionAxis(ChannelId type,
 		const auto &indices = stats.channels[type].usedIndices;
 
 		auto count = 0;
-		for (auto i = 0U; i < indices.size(); i++) {
+		for (auto i = 0U; i < indices.size(); ++i) {
 			const auto &sliceIndex = indices[i];
 
 			if (!sliceIndex.empty() && dim < sliceIndex.size()) {
@@ -386,7 +386,7 @@ void Plot::calcDimensionAxis(ChannelId type,
 				auto range = Math::Range<double>(count, count);
 				auto inserted =
 				    axis.add(index, i, range, true, dim == 0);
-				if (inserted) count++;
+				if (inserted) ++count;
 			}
 		}
 	}
@@ -443,15 +443,15 @@ void Plot::addSeparation()
 				ranges[i].include(size);
 				if (static_cast<double>(marker.enabled) > 0)
 					anyEnabled[i] = true;
-				i++;
+				++i;
 			}
 		}
 
 		auto max = Math::Range(0.0, 0.0);
-		for (auto i = 1U; i < ranges.size(); i++)
+		for (auto i = 1U; i < ranges.size(); ++i)
 			if (anyEnabled[i]) max = max + ranges[i];
 
-		for (auto i = 1U; i < ranges.size(); i++)
+		for (auto i = 1U; i < ranges.size(); ++i)
 			ranges[i] = ranges[i] + ranges[i - 1].getMax()
 			          + (anyEnabled[i - 1] ? max.getMax() / 15 : 0);
 
@@ -466,7 +466,7 @@ void Plot::addSeparation()
 				auto newSize = aligner.getAligned(size);
 
 				marker.setSizeBy(!options->isHorizontal(), newSize);
-				i++;
+				++i;
 			}
 		}
 	}
@@ -548,9 +548,9 @@ void Plot::prependMarkers(const Plot &plot, bool enabled)
 	    plot.getMarkers().end());
 
 	if (!enabled)
-		for (auto i = 0U; i < size; i++) markers[i].enabled = false;
+		for (auto i = 0U; i < size; ++i) markers[i].enabled = false;
 
-	for (auto i = size; i < markers.size(); i++)
+	for (auto i = size; i < markers.size(); ++i)
 		markers[i].setIdOffset(size);
 }
 
@@ -562,7 +562,7 @@ void Plot::appendMarkers(const Plot &plot, bool enabled)
 	    plot.getMarkers().begin(),
 	    plot.getMarkers().end());
 
-	for (auto i = size; i < markers.size(); i++) {
+	for (auto i = size; i < markers.size(); ++i) {
 		auto &marker = markers[i];
 
 		marker.setIdOffset(size);

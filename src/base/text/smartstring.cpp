@@ -32,8 +32,8 @@ std::vector<std::string> SmartString::split(const std::string &str,
 	std::vector<std::string> result;
 	for (auto c : str) {
 		if (parens) {
-			if (c == parens[0]) nestingLevel++;
-			if (c == parens[1]) nestingLevel--;
+			if (c == parens[0]) ++nestingLevel;
+			if (c == parens[1]) --nestingLevel;
 		}
 		if (c == delim && nestingLevel <= 0) {
 			if (!tmp.empty() || !ignoreEmpty)
