@@ -215,6 +215,7 @@ steps:
         then
           npm publish
           npm run pkg-purge-js
+          git fetch --depth=1
           echo $$VIZZUHQ_GITHUB_API | gh auth login --with-token
           gh release upload $(git describe --tags --abbrev=0) build/js/*tgz --clobber
         else
