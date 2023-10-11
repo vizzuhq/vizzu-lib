@@ -158,7 +158,7 @@ steps:
         fi
     dir: /workspace
 
-  - name: gcr.io/cloud-builders/git
+  - name: vizzu/vizzu-dev-wasm:0.8
     id: docs
     waitFor:
       - lib-sha
