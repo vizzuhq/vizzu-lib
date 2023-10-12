@@ -10,10 +10,17 @@
 namespace Conv
 {
 
+template <class T>
+concept Parsable = requires(
+    const std::string &s) { static_cast<T>(T::fromString(s)); };
+
 template <typename To> To parse(const std::string &string)
 {
 	if constexpr (std::is_enum_v<To>) {
 		return Refl::get_enum<To>(string);
+	}
+	else if constexpr (Parsable<To>) {
+		return To::fromString(string);
 	}
 	else if constexpr (Type::isoptional<To>::value) {
 		if (string == "null") return std::nullopt;
