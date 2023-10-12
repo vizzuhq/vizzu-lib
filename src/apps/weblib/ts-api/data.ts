@@ -1,6 +1,6 @@
-/// <reference types="./types/vizzu.d.ts" />
+/// <reference path="./types/vizzu.d.ts" />
 
-import { CRecord, CData } from './module/cdata'
+import { CRecord, CData } from './module/cdata.js'
 
 class DataRecord implements Data.Record {
   [seriesName: Data.SeriesName]: Data.Value

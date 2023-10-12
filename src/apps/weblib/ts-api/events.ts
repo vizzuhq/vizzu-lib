@@ -1,7 +1,7 @@
-/// <reference types="./types/vizzu.d.ts" />
+/// <reference path="./types/vizzu.d.ts" />
 
-import { CChart, CEvent } from './module/cchart'
-import { Render } from './render'
+import { CChart, CEvent } from './module/cchart.js'
+import { Render } from './render.js'
 
 type EventRecord<Handler> = [
   CFunction<(eventPtr: CEventPtr, param: CString) => void> | null,

@@ -1,6 +1,6 @@
-/// <reference types="../types/vizzu.d.ts" />
+/// <reference path="../types/vizzu.d.ts" />
 
-import Vizzu from '../vizzu'
+import Vizzu from '../vizzu.js'
 
 export class Tooltip implements Plugins.Plugin {
   vizzu?: Vizzu

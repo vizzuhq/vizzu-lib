@@ -1,13 +1,13 @@
-/// <reference types="./types/vizzu.d.ts" />
+/// <reference path="./types/vizzu.d.ts" />
 
-import { loader } from './module/loader'
-import { Chart } from './chart'
-import { CAnimation } from './module/cchart'
-import { CObject } from './module/cenv'
-import { AnimControl } from './animcontrol'
-import { recursiveCopy } from './utils'
-import { NotInitializedError, CancelError } from './errors'
-import { Hooks, PluginRegistry } from './plugins'
+import { loader } from './module/loader.js'
+import { Chart } from './chart.js'
+import { CAnimation } from './module/cchart.js'
+import { CObject } from './module/cenv.js'
+import { AnimControl } from './animcontrol.js'
+import { recursiveCopy } from './utils.js'
+import { NotInitializedError, CancelError } from './errors.js'
+import { Hooks, PluginRegistry } from './plugins.js'
 
 export default class Vizzu implements Vizzu {
   _chart?: Chart

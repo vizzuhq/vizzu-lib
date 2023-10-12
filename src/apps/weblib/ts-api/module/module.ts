@@ -1,8 +1,8 @@
-import { ObjectRegistry } from './objregistry'
-import { CEnv } from './cenv'
-import { CData } from './cdata'
-import { CChart } from './cchart'
-import { CCanvas } from './ccanvas'
+import { ObjectRegistry } from './objregistry.js'
+import { CEnv } from './cenv.js'
+import { CData } from './cdata.js'
+import { CChart } from './cchart.js'
+import { CCanvas } from './ccanvas.js'
 
 export class Module extends CEnv {
   constructor(wasm: CVizzu) {

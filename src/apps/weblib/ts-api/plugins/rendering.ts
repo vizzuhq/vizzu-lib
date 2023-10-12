@@ -1,7 +1,7 @@
-/// <reference types="../types/vizzu.d.ts" />
+/// <reference path="../types/vizzu.d.ts" />
 
-import Vizzu from '../vizzu'
-import { NotInitializedError } from '../errors'
+import Vizzu from '../vizzu.js'
+import { NotInitializedError } from '../errors.js'
 
 export class Rendering implements Plugins.Plugin {
   _vizzu?: Vizzu

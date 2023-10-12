@@ -1,8 +1,8 @@
-/// <reference types="./types/vizzu.d.ts" />
+/// <reference path="./types/vizzu.d.ts" />
 
-import Vizzu from './vizzu'
+import Vizzu from './vizzu.js'
 
-import { Events } from './events'
+import { Events } from './events.js'
 
 export enum Hooks {
   setAnimParams = 'setAnimParams',

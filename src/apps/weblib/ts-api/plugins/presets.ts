@@ -1,4 +1,4 @@
-/// <reference types="../types/vizzu.d.ts" />
+/// <reference path="../types/vizzu.d.ts" />
 
 interface PresetConfigs {
   [key: string]: Config.Chart

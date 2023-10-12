@@ -1,4 +1,4 @@
-/// <reference types="../types/vizzu.d.ts" />
+/// <reference path="../types/vizzu.d.ts" />
 
 const assert = (condition: boolean, message: string) => {
   if (!condition) {

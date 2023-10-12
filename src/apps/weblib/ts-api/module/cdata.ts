@@ -1,7 +1,7 @@
-/// <reference types="../types/cvizzu.d.ts" />
-/// <reference types="../types/vizzu.d.ts" />
+/// <reference path="../cvizzu/cvizzu.d.ts" />
+/// <reference path="../types/vizzu.d.ts" />
 
-import { CObject, CEnv } from './cenv'
+import { CObject, CEnv } from './cenv.js'
 
 export class CRecord extends CObject {
   constructor(env: CEnv, recordPtr: CRecordPtr) {

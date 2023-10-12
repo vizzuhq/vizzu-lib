@@ -1,8 +1,8 @@
-/// <reference types="../types/cvizzu.d.ts" />
+/// <reference path="../cvizzu/cvizzu.d.ts" />
 
-import { CObject } from './cenv'
-import { cloneObject, iterateObject } from '../utils'
-import { CPointerClosure } from './objregistry'
+import { CObject } from './cenv.js'
+import { cloneObject, iterateObject } from '../utils.js'
+import { CPointerClosure } from './objregistry.js'
 
 type Lister = (self: CPointer) => CString
 type Getter = (self: CPointer, path: CString) => CString

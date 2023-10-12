@@ -1,7 +1,7 @@
-/// <reference types="../types/cvizzu.d.ts" />
+/// <reference path="../cvizzu/cvizzu.d.ts" />
 
-import { CError } from './cerror'
-import { ObjectRegistry, FnGetter, CPointerClosure } from './objregistry'
+import { CError } from './cerror.js'
+import { ObjectRegistry, FnGetter, CPointerClosure } from './objregistry.js'
 
 export class CEnv {
   _wasm: CVizzu

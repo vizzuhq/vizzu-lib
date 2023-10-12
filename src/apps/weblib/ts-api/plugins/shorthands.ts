@@ -1,8 +1,8 @@
-/// <reference types="../types/vizzu.d.ts" />
+/// <reference path="../types/vizzu.d.ts" />
 
-import Vizzu from '../vizzu'
+import Vizzu from '../vizzu.js'
 
-import { Snapshot, CAnimation } from '../module/cchart'
+import { Snapshot, CAnimation } from '../module/cchart.js'
 
 type ChannelName = keyof Config.Channels
 

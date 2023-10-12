@@ -1,9 +1,9 @@
-/// <reference types="../types/cvizzu.d.ts" />
-/// <reference types="../types/vizzu.d.ts" />
+/// <reference path="../cvizzu/cvizzu.d.ts" />
+/// <reference path="../types/vizzu.d.ts" />
 
-import { CObject, CEnv } from './cenv'
-import { CProxy } from './cproxy'
-import { CCanvas } from './ccanvas'
+import { CObject, CEnv } from './cenv.js'
+import { CProxy } from './cproxy.js'
+import { CCanvas } from './ccanvas.js'
 
 export class Snapshot extends CObject {}
 

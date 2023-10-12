@@ -1,6 +1,6 @@
-/// <reference types="./types/vizzu.d.ts" />
+/// <reference path="./types/vizzu.d.ts" />
 
-import { CChart, CAnimation } from './module/cchart'
+import { CChart, CAnimation } from './module/cchart.js'
 
 export class AnimControl implements Anim.Control {
   _cChart: CChart

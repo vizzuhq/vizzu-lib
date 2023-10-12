@@ -1,4 +1,4 @@
-import { CEnv, CObject } from './cenv'
+import { CEnv, CObject } from './cenv.js'
 
 export class CCanvas extends CObject {
   constructor(env: CEnv) {

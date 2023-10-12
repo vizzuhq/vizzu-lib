@@ -1,6 +1,6 @@
-/// <reference types="../types/vizzu.d.ts" />
+/// <reference path="../types/vizzu.d.ts" />
 
-import UnPivot from './unpivot'
+import UnPivot from './unpivot.js'
 
 export class PivotData implements Plugins.Plugin {
   meta = {

@@ -1266,7 +1266,7 @@ type Feature = 'tooltip' | 'logging' | 'rendering'
 type Converter = (point: Geom.Point) => Geom.Point
 /** Type of a point's coordinate system. */
 type CoordinateType = 'relative' | 'canvas'
-//import ObjectRegistry from './objregistry'
+//import ObjectRegistry from './objregistry.js'
 /** Class representing a single chart in Vizzu. */
 
 interface VizzuOptions {

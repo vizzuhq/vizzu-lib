@@ -1,4 +1,4 @@
-/// <reference types="../types/cvizzu.d.ts" />
+/// <reference path="../cvizzu/cvizzu.d.ts" />
 
 export type FnFree = (rawCPointer: CPointer) => void
 export type FnGetter = () => CPointer

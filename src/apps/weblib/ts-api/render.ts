@@ -1,7 +1,7 @@
-/// <reference types="./types/cvizzu.d.ts" />
+/// <reference path="./cvizzu/cvizzu.d.ts" />
 
-import { CCanvas } from './module/ccanvas'
-import { CChart } from './module/cchart'
+import { CCanvas } from './module/ccanvas.js'
+import { CChart } from './module/cchart.js'
 
 export class Render implements Renderer {
   _ccanvas: CCanvas

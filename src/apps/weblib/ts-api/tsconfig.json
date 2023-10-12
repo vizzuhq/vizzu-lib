@@ -1,17 +1,11 @@
 {
   "extends": "@tsconfig/strictest/tsconfig.json",
-  "types": ["types/vizzu.d.ts", "types/cvizzu.d.ts"],
+  "types": ["types/vizzu.d.ts", "cvizzu/cvizzu.d.ts"],
   "include": ["**/*.ts"],
   "compilerOptions": {
     "target": "es2021",
     "module": "ES6",
     "rootDir": "./",
-    "outDir": "./dist/vizzu",
-    "strict": true,
-    "moduleResolution": "node",
-    "allowSyntheticDefaultImports": true,
-    "esModuleInterop": true,
-    "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": true
+    "outDir": "./dist/vizzu"
   }
 }

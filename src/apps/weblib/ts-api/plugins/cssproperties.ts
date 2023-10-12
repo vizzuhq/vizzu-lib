@@ -1,8 +1,8 @@
-/// <reference types="../types/vizzu.d.ts" />
+/// <reference path="../types/vizzu.d.ts" />
 
-import Vizzu from '../vizzu'
+import Vizzu from '../vizzu.js'
 
-import { getCSSCustomPropsForElement, propsToObject } from './cssutils'
+import { getCSSCustomPropsForElement, propsToObject } from './cssutils.js'
 
 export class CSSProperties implements Plugins.Plugin {
   chart?: Vizzu

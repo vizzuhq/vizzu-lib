@@ -1,6 +1,7 @@
-/// <reference types="../types/cvizzu.d.ts" />
+/// <reference path="../cvizzu/cvizzu.d.ts" />
 
-import { Module } from './module'
+import { Module } from './module.js'
+import VizzuModule from '../cvizzu/cvizzu.js'
 
 interface LoaderOptions {
   wasmUrl?: string
