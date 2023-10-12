@@ -9,6 +9,7 @@ export class Module extends CEnv {
     super(wasm, new ObjectRegistry(wasm._object_free))
     this._wasm.callback = this._callStatic(this._wasm._callback)
     this._wasm.renders = {}
+    this.setLogging(false)
   }
 
   registerRenderer(cCanvas: CCanvas, renderer: Renderer) {

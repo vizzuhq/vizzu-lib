@@ -57,7 +57,7 @@ try {
             return testSteps[0](chart)
           })
           steps.push((chart) => {
-            chart.render.updateFrame(true)
+            chart.forceUpdate(true)
             if (reverse === 'true') {
               videoRecorder.start()
             }
@@ -112,7 +112,7 @@ try {
           }
           return promise.then((chart) => {
             setInterval(() => {
-              chart.render.updateFrame(true)
+              chart.forceUpdate(true)
             }, 50)
             if (reverse === 'true') {
               setTimeout(() => {

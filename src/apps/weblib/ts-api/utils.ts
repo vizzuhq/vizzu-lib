@@ -42,8 +42,8 @@ export function iterateObject<T>(obj: T, paramHandler: Visitor, path: string = '
 
 function setNestedProp<T>(obj: T, path: string, value: string): void {
   const propList = path.split('.')
+  let currentObj: any = obj
   propList.forEach((prop, i) => {
-    let currentObj: any = obj
     if (i < propList.length - 1) {
       currentObj[prop] = currentObj[prop] || (typeof propList[i + 1] === 'number' ? [] : {})
       currentObj = currentObj[prop]

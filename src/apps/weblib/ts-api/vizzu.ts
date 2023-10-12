@@ -8,6 +8,7 @@ import { AnimControl } from './animcontrol.js'
 import { recursiveCopy } from './utils.js'
 import { NotInitializedError, CancelError } from './errors.js'
 import { Hooks, PluginRegistry } from './plugins.js'
+import Presets from './plugins/presets.js'
 
 export default class Vizzu implements Vizzu {
   _chart?: Chart
@@ -15,11 +16,11 @@ export default class Vizzu implements Vizzu {
   _anim: Anim.Completing
   _container: HTMLElement
   _plugins: PluginRegistry
-  /*
-    static get presets() {
-      return new Presets()
-    }
-  */
+
+  static get presets() {
+    return new Presets()
+  }
+
   static options(options: Lib.Options) {
     loader.options = options
   }
@@ -37,10 +38,12 @@ export default class Vizzu implements Vizzu {
 
     this.initializing = loader.initialize().then((module) => {
       this._chart = new Chart(module, this._container, this._plugins)
+      this._chart.registerBuilts()
+      this._chart.start()
       return this
     })
 
-    this._anim = Object.assign(this.initializing, { activated: Promise.reject() })
+    this._anim = Object.assign(this.initializing, { activated: Promise.resolve(null) })
 
     if (initState) {
       this.initializing = this.animate(initState, 0).then(() => this)
@@ -110,7 +113,7 @@ export default class Vizzu implements Vizzu {
     const copiedOptions = recursiveCopy(options)
     const ctx = Object.assign(
       { target: copiedTarget, promise: this._anim },
-      copiedOptions ? { options: copiedOptions } : {}
+      copiedOptions !== undefined ? { options: copiedOptions } : {}
     )
     this._plugins.hook(Hooks.animateRegister, ctx).default((ctx) => {
       let activate: (control: AnimControl) => void = () => {}
@@ -137,7 +140,7 @@ export default class Vizzu implements Vizzu {
           // eslint-disable-next-line prefer-promise-reject-errors
           reject(new CancelError())
           let cancelled = Promise.resolve(this)
-          let activated = Promise.reject()
+          let activated = Promise.resolve(null)
           this._anim = Object.assign(cancelled, { activated })
         }
       }

@@ -147,20 +147,9 @@ export class Data {
       throw new Error("'values' parameter should be an array")
     }
 
-    if (!this._isNumberArray(values)) {
-      throw new Error('array element should be number')
-    }
+    let numbers = values.map((value) => Number(value))
 
-    this._cData.addMeasure(name, unit, values)
-  }
-
-  _isNumberArray(values: any[]): values is number[] {
-    for (const value of values) {
-      if (typeof value !== 'number') {
-        return false
-      }
-    }
-    return true
+    this._cData.addMeasure(name, unit, numbers)
   }
 
   setFilter(filter: Data.FilterCallback | null): void {

@@ -29,7 +29,7 @@ export class Render implements Renderer {
     this._offscreenContext = offCtx
     this._cchart = cchart
     this._mainCanvas = canvas
-    const ctx = this._offscreenCanvas.getContext('2d')
+    const ctx = this._mainCanvas.getContext('2d')
     if (!ctx) throw Error('Cannot get rendering context of canvas')
     this._context = ctx
     this._log = log

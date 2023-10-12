@@ -13,7 +13,6 @@ import { PivotData } from './plugins/pivotdata.js'
 import { Tooltip } from './plugins/tooltip.js'
 import { PointerEvents } from './plugins/pointerevents.js'
 import { CSSProperties } from './plugins/cssproperties.js'
-//import Presets from './plugins/presets.js'
 
 export class Chart {
   _module: Module
@@ -26,13 +25,12 @@ export class Chart {
   _data: Data
   _events: Events
   _resizeObserver: ResizeObserver
-  _updateInterval: ReturnType<typeof setTimeout>
+  _updateInterval?: ReturnType<typeof setTimeout>
 
   constructor(module: Module, container: HTMLElement, _plugins: PluginRegistry) {
     this._plugins = _plugins
     this._container = container
     this._module = module
-    this._module.setLogging(false)
 
     this._canvas = this._createCanvas()
 
@@ -45,6 +43,9 @@ export class Chart {
     this._events = new Events(this._cChart, this._render)
     this._plugins.init(this._events)
     this._resizeObserver = this._createResizeObserverFor(this._canvas)
+  }
+
+  registerBuilts() {
     this._plugins.register(new Logging(), false)
     this._plugins.register(new Rendering(), true)
     this._plugins.register(new CSSProperties(), false)
@@ -52,7 +53,6 @@ export class Chart {
     this._plugins.register(new PivotData(), true)
     this._plugins.register(new PointerEvents(), true)
     this._plugins.register(new Tooltip(), false)
-    this._updateInterval = this._start()
   }
 
   _createResizeObserverFor(canvas: HTMLCanvasElement): ResizeObserver {
@@ -83,14 +83,13 @@ export class Chart {
     return canvas
   }
 
-  _start(): ReturnType<typeof setTimeout> {
+  start(): void {
     if (!this._updateInterval) {
       this._render.updateFrame()
       this._updateInterval = setInterval(() => {
         this._render.updateFrame()
       }, 25)
     }
-    return this._updateInterval
   }
 
   _animate(
@@ -98,7 +97,7 @@ export class Chart {
     target: Anim.Keyframes | CAnimation,
     options?: Anim.ControlOptions & Anim.Options
   ) {
-    const ctx = Object.assign({ target }, options ? { options } : {})
+    const ctx = Object.assign({ target }, options !== undefined ? { options } : {})
     this._plugins.hook(Hooks.setAnimParams, ctx).default((ctx) => {
       this._setAnimParams(ctx.target, ctx.options)
     })
@@ -134,6 +133,7 @@ export class Chart {
   destruct() {
     this._resizeObserver.disconnect()
     if (this._updateInterval) clearInterval(this._updateInterval)
+    delete this._updateInterval
     if (this._container && this._container !== this._canvas)
       this._container.removeChild(this._canvas)
   }

@@ -33,7 +33,7 @@ interface CExceptionInfo {
   get_type(): CTypeInfo
 }
 interface CExceptionInfoConstructor {
-  new(ptr: CPointer): CExceptionInfo
+  new (ptr: CPointer): CExceptionInfo
 }
 
 interface ModuleOptions {
