@@ -415,9 +415,9 @@ Chart Chart::def()
 			.title = {
 				Padding
 				{
-					.paddingTop = Gfx::Length::Emphemeral(15.0 / 26.0),
+					.paddingTop = Gfx::Length::Emphemeral(15.0 / 26.0 - 0.192307679),
 					.paddingRight = Gfx::Length::Emphemeral(10.0 / 26.0),
-					.paddingBottom = Gfx::Length::Emphemeral(0),
+					.paddingBottom = Gfx::Length::Emphemeral(0.192307679),
 					.paddingLeft = Gfx::Length::Emphemeral(10.0 / 26.0)
 				},
 				Font

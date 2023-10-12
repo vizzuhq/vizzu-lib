@@ -54,7 +54,8 @@ void Layout::setBoundary(const Geom::Rect &boundary,
 	    plot.getOptions()->title,
 	    rect,
 	    &Geom::Rect::popBottom,
-	    &Geom::Rect::setBottom);
+	    &Geom::Rect::setBottom,
+	    rect.pos.y);
 
 	subtitle =
 	    popRectArea(Draw::DrawLabel::getHeight(style.subtitle, info),
