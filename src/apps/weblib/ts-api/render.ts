@@ -1,4 +1,4 @@
-/// <reference path="./cvizzu/cvizzu.d.ts" />
+/// <reference path="./cvizzu.types.d.ts" />
 
 import { CCanvas } from './module/ccanvas.js'
 import { CChart } from './module/cchart.js'

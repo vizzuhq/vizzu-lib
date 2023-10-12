@@ -147,7 +147,3 @@ interface CVizzu {
   _anim_control(chart: CChartPtr, command: CString, param: CString): void
   _anim_setValue(chart: CChartPtr, path: CString, value: CString): void
 }
-
-declare function VizzuModule(options: ModuleOptions): Promice<CVizzu>
-
-export default VizzuModule

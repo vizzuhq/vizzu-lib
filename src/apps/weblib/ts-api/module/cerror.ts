@@ -1,4 +1,4 @@
-/// <reference path="../cvizzu/cvizzu.d.ts" />
+/// <reference path="../cvizzu.types.d.ts" />
 
 export class CError extends Error {
   constructor(ptr: CPointer, wasm: CVizzu) {

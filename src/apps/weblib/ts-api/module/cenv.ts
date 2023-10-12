@@ -1,4 +1,4 @@
-/// <reference path="../cvizzu/cvizzu.d.ts" />
+/// <reference path="../cvizzu.types.d.ts" />
 
 import { CError } from './cerror.js'
 import { ObjectRegistry, FnGetter, CPointerClosure } from './objregistry.js'

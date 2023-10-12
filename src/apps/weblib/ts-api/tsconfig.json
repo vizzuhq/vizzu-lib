@@ -1,11 +1,11 @@
 {
   "extends": "@tsconfig/strictest/tsconfig.json",
-  "types": ["types/vizzu.d.ts", "cvizzu/cvizzu.d.ts"],
   "include": ["**/*.ts"],
   "compilerOptions": {
     "target": "es2021",
     "module": "ES6",
     "rootDir": "./",
-    "outDir": "./dist/vizzu"
+    "outDir": "./dist/vizzu",
+    "moduleResolution": "node"
   }
 }

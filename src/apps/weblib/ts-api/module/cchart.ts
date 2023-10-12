@@ -1,13 +1,13 @@
-/// <reference path="../cvizzu/cvizzu.d.ts" />
+/// <reference path="../cvizzu.types.d.ts" />
 /// <reference path="../types/vizzu.d.ts" />
 
 import { CObject, CEnv } from './cenv.js'
 import { CProxy } from './cproxy.js'
 import { CCanvas } from './ccanvas.js'
 
-export class Snapshot extends CObject {}
+export class Snapshot extends CObject { }
 
-export class CAnimation extends CObject {}
+export class CAnimation extends CObject { }
 
 export class CEvent extends CObject {
   preventDefault() {

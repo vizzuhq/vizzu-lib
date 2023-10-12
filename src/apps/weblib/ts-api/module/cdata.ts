@@ -1,4 +1,4 @@
-/// <reference path="../cvizzu/cvizzu.d.ts" />
+/// <reference path="../cvizzu.types.d.ts" />
 /// <reference path="../types/vizzu.d.ts" />
 
 import { CObject, CEnv } from './cenv.js'
