@@ -5,9 +5,9 @@ import { CObject, CEnv } from './cenv'
 import { CProxy } from './cproxy'
 import { CCanvas } from './ccanvas'
 
-export class Snapshot extends CObject { }
+export class Snapshot extends CObject {}
 
-export class CAnimation extends CObject { }
+export class CAnimation extends CObject {}
 
 export class CEvent extends CObject {
   preventDefault() {
@@ -17,26 +17,37 @@ export class CEvent extends CObject {
 
 export class CConfig extends CProxy<Config.Chart> {
   constructor(cChart: CChart) {
-    super(cChart.getId, cChart,
+    super(
+      cChart.getId,
+      cChart,
       cChart._wasm._chart_getList,
       cChart._wasm._chart_getValue,
-      cChart._wasm._chart_setValue)
+      cChart._wasm._chart_setValue
+    )
   }
 }
 
 export class CStyle extends CProxy<Styles.Chart> {
   constructor(cChart: CChart, computed: boolean) {
-    super(cChart.getId, cChart,
+    super(
+      cChart.getId,
+      cChart,
       cChart._wasm._style_getList,
       (ptr, path) => cChart._wasm._style_getValue(ptr, path, computed),
-      cChart._wasm._style_setValue)
+      cChart._wasm._style_setValue
+    )
   }
 }
 
 export class CAnimOptions extends CProxy<Anim.Options> {
   constructor(cChart: CChart) {
-    super(cChart.getId, cChart, () => 0, () => 0,
-      cChart._wasm._anim_setValue)
+    super(
+      cChart.getId,
+      cChart,
+      () => 0,
+      () => 0,
+      cChart._wasm._anim_setValue
+    )
   }
 }
 
@@ -99,8 +110,10 @@ export class CChart extends CObject {
     this._call(this._wasm._chart_setKeyframe)()
   }
 
-  addEventListener<T>(eventName: string, func: (event: CEvent, param: T) => void)
-    : CFunction<(eventPtr: CEventPtr, param: CString) => void> {
+  addEventListener<T>(
+    eventName: string,
+    func: (event: CEvent, param: T) => void
+  ): CFunction<(eventPtr: CEventPtr, param: CString) => void> {
     const wrappedFunc = (eventPtr: CEventPtr, param: CString) => {
       const eventObj = new CEvent(() => eventPtr, this)
       func(eventObj, JSON.parse(this._fromCString(param)))

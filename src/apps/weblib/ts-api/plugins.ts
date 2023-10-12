@@ -93,7 +93,7 @@ export class PluginRegistry {
 
   hook<T extends Hooks>(type: T, ctx: P.HookContexts[T]) {
     return {
-      default: (last = (_ctx: P.HookContexts[T]) => { }) => {
+      default: (last = (_ctx: P.HookContexts[T]) => {}) => {
         this._exec(ctx, type, last)
       }
     }
@@ -172,10 +172,7 @@ export class PluginRegistry {
     throw new Error(`Plugin ${name} is not registered`)
   }
 
-  _exec<T extends Hooks>(
-    ctx: P.HookContexts[T],
-    type: T,
-    last: P.PluginHook<P.HookContexts[T]>) {
+  _exec<T extends Hooks>(ctx: P.HookContexts[T], type: T, last: P.PluginHook<P.HookContexts[T]>) {
     const hooks = [...this._getHooks(type), last]
     this._executeHooks(hooks, ctx)
   }
@@ -187,14 +184,12 @@ export class PluginRegistry {
       .sort((a, b) => (b.priority || 0) - (a.priority || 0))
   }
 
-  _executeHooks<T>(
-    hooks: P.PluginHook<T>[],
-    ctx: T) {
+  _executeHooks<T>(hooks: P.PluginHook<T>[], ctx: T) {
     const iterator = hooks
       .map((fn) => {
         return fn ? () => fn(ctx, next) : () => next()
       })
-    [Symbol.iterator]()
+      [Symbol.iterator]()
     const next = () => iterator.next().value()
 
     return next()

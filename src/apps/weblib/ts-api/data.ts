@@ -1,9 +1,8 @@
 /// <reference types="./types/vizzu.d.ts" />
 
-import { CRecord, CData } from "./module/cdata"
+import { CRecord, CData } from './module/cdata'
 
 class DataRecord implements Data.Record {
-
   [seriesName: Data.SeriesName]: Data.Value
 
   constructor(cRecord: CRecord) {

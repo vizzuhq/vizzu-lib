@@ -16,7 +16,7 @@ export class PivotData implements Plugins.Plugin {
               if (PivotData._is1NF(target.data)) {
                 throw new Error(
                   'inconsistent data form: ' +
-                  'series/records and dimensions/measures are both set.'
+                    'series/records and dimensions/measures are both set.'
                 )
               } else {
                 target.data = UnPivot.convert(target.data)

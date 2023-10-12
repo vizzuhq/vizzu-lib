@@ -1,6 +1,5 @@
 /// <reference types="../types/cvizzu.d.ts" />
 
-//import VizzuModule from '../cvizzu.js'
 import { Module } from './module'
 
 interface LoaderOptions {

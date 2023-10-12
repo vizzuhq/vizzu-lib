@@ -1,6 +1,6 @@
 /// <reference types="../types/vizzu.d.ts" />
 
-import Vizzu from "../vizzu"
+import Vizzu from '../vizzu'
 
 export class Tooltip implements Plugins.Plugin {
   vizzu?: Vizzu
@@ -60,9 +60,11 @@ export class Tooltip implements Plugins.Plugin {
       if (!this.animating) {
         this.lastMarkerId = markerId
         this.animating = true
-        this.vizzu?.animate(
-          [{ target: { config: { tooltip: markerId } } }],
-          this.lastMarkerId ? '100ms' : '250ms')
+        this.vizzu
+          ?.animate(
+            [{ target: { config: { tooltip: markerId } } }],
+            this.lastMarkerId ? '100ms' : '250ms'
+          )
           .then(() => {
             this.animating = false
           })
@@ -80,11 +82,9 @@ export class Tooltip implements Plugins.Plugin {
       if (!this.animating && ellapsed > 200) {
         this.lastMarkerId = null
         this.animating = true
-        this.vizzu?.animate(
-          [{ target: { config: { tooltip: null } } }], '250ms')
-          .then(() => {
-            this.animating = false
-          })
+        this.vizzu?.animate([{ target: { config: { tooltip: null } } }], '250ms').then(() => {
+          this.animating = false
+        })
       } else {
         setTimeout(() => {
           this._out(id)

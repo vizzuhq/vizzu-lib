@@ -9,22 +9,20 @@ export const isAccessibleStylesheet = (stylesheet: CSSStyleSheet): boolean => {
 }
 
 export const getCSSCustomProps = (pfx = ''): string[] =>
-  [...document.styleSheets]
-    .filter(isAccessibleStylesheet)
-    .reduce<string[]>(
-      (finalArr, sheet) =>
-        finalArr.concat(
-          [...sheet.cssRules]
-            .filter((rule: CSSRule): rule is CSSStyleRule => rule.constructor.name === 'CSSStyleRule')
-            .reduce<string[]>((propValArr, rule) => {
-              const props = [...rule.style]
-                .filter((propName: string) => propName.trim().indexOf('--' + pfx + '-') === 0)
-                .map((propName: string) => propName.trim())
-              return [...propValArr, ...props]
-            }, [])
-        ),
-      []
-    )
+  [...document.styleSheets].filter(isAccessibleStylesheet).reduce<string[]>(
+    (finalArr, sheet) =>
+      finalArr.concat(
+        [...sheet.cssRules]
+          .filter((rule: CSSRule): rule is CSSStyleRule => rule.constructor.name === 'CSSStyleRule')
+          .reduce<string[]>((propValArr, rule) => {
+            const props = [...rule.style]
+              .filter((propName: string) => propName.trim().indexOf('--' + pfx + '-') === 0)
+              .map((propName: string) => propName.trim())
+            return [...propValArr, ...props]
+          }, [])
+      ),
+    []
+  )
 
 export const getCSSCustomPropsForElement = (el: HTMLElement, pfx = '') => {
   const props = getCSSCustomProps(pfx)
@@ -35,7 +33,7 @@ export const getCSSCustomPropsForElement = (el: HTMLElement, pfx = '') => {
 }
 
 interface LooseObject {
-  [key: string]: any;
+  [key: string]: any
 }
 
 export const propSet = (obj: LooseObject, path: string[], value: any, overwrite: boolean) => {
@@ -53,7 +51,12 @@ export const propSet = (obj: LooseObject, path: string[], value: any, overwrite:
   return obj
 }
 
-export const propsToObject = (props: string[][], propObj: LooseObject, pfx = '', overwrite = false) => {
+export const propsToObject = (
+  props: string[][],
+  propObj: LooseObject,
+  pfx = '',
+  overwrite = false
+) => {
   propObj = propObj || {}
   propObj = props.reduce((obj, [prop, val]) => {
     if (prop) {

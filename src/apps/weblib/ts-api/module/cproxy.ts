@@ -13,8 +13,13 @@ export class CProxy<T> extends CObject {
   _getter: Getter
   _setter: Setter
 
-  constructor(getId: CPointerClosure, cenv: CObject,
-    lister: Lister, getter: Getter, setter: Setter) {
+  constructor(
+    getId: CPointerClosure,
+    cenv: CObject,
+    lister: Lister,
+    getter: Getter,
+    setter: Setter
+  ) {
     super(getId, cenv)
     this._lister = lister
     this._getter = getter

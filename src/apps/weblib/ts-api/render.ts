@@ -1,7 +1,7 @@
 /// <reference types="./types/cvizzu.d.ts" />
 
-import { CCanvas } from "./module/ccanvas"
-import { CChart } from "./module/cchart"
+import { CCanvas } from './module/ccanvas'
+import { CChart } from './module/cchart'
 
 export class Render implements Renderer {
   _ccanvas: CCanvas
@@ -50,7 +50,12 @@ export class Render implements Renderer {
 
   frameBegin() {
     this._currentLineWidth = 1
-    this._offscreenContext.clearRect(-1, -1, this._mainCanvas.width + 1, this._mainCanvas.height + 1)
+    this._offscreenContext.clearRect(
+      -1,
+      -1,
+      this._mainCanvas.width + 1,
+      this._mainCanvas.height + 1
+    )
   }
 
   frameEnd() {

@@ -108,15 +108,17 @@ export default class Vizzu implements Vizzu {
   ): Anim.Completing {
     const copiedTarget = recursiveCopy(target, CObject)
     const copiedOptions = recursiveCopy(options)
-    const ctx = Object.assign({ target: copiedTarget, promise: this._anim },
-      copiedOptions ? { options: copiedOptions } : {})
+    const ctx = Object.assign(
+      { target: copiedTarget, promise: this._anim },
+      copiedOptions ? { options: copiedOptions } : {}
+    )
     this._plugins.hook(Hooks.animateRegister, ctx).default((ctx) => {
-      let activate: (control: AnimControl) => void = () => { }
+      let activate: (control: AnimControl) => void = () => {}
       const activated = new Promise<AnimControl>((resolve, _reject) => {
         activate = resolve
       })
       const promise = ctx.promise.then(() => this._animate(copiedTarget, copiedOptions, activate))
-      ctx.promise = Object.assign(promise, { activated });
+      ctx.promise = Object.assign(promise, { activated })
     })
     this._anim = ctx.promise
     return this._anim
@@ -125,7 +127,8 @@ export default class Vizzu implements Vizzu {
   _animate(
     target: Anim.Keyframes | CAnimation,
     options: Anim.ControlOptions | (Anim.ControlOptions & Anim.LazyOptions) | undefined,
-    activate: (control: AnimControl) => void): Promise<Vizzu> {
+    activate: (control: AnimControl) => void
+  ): Promise<Vizzu> {
     return new Promise((resolve, reject) => {
       const callback = (ok: boolean) => {
         if (ok) {
@@ -200,7 +203,11 @@ export default class Vizzu implements Vizzu {
     return this._chart._cChart.storeSnapshot()
   }
 
-  getConverter(target: 'plot-area', from: CoordinateType, to: CoordinateType): (point: Geom.Point) => Geom.Point {
+  getConverter(
+    target: 'plot-area',
+    from: CoordinateType,
+    to: CoordinateType
+  ): (point: Geom.Point) => Geom.Point {
     if (!this._chart) throw new NotInitializedError()
     return this._chart.getConverter(target, from, to)
   }
@@ -212,5 +219,4 @@ export default class Vizzu implements Vizzu {
       this._chart?.destruct()
     }
   }
-
 }

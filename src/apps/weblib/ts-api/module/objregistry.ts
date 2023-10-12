@@ -6,7 +6,6 @@ export type FnGetter = () => CPointer
 export type CPointerClosure = () => CPointer
 
 export class ObjectRegistry {
-
   private _finalizationRegistry: FinalizationRegistry<CPointer>
 
   constructor(fnFree: FnFree) {

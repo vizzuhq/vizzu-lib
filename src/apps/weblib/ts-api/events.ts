@@ -1,7 +1,7 @@
 /// <reference types="./types/vizzu.d.ts" />
 
-import { CChart, CEvent } from "./module/cchart"
-import { Render } from "./render"
+import { CChart, CEvent } from './module/cchart'
+import { Render } from './render'
 
 type EventRecord<Handler> = [
   CFunction<(eventPtr: CEventPtr, param: CString) => void> | null,
@@ -14,7 +14,7 @@ interface EventState {
 
 type EventHandlers<T extends Events.Type> = {
   [key in T]?: EventRecord<Events.Handler<Events.EventMap[T]>>
-};
+}
 
 export class Events {
   _cChart: CChart
@@ -95,7 +95,8 @@ export class Events {
           const eventParam = this._isJSEvent(eventName)
             ? this._makeJSEventParam(param, state)
             : cEvent
-              ? this._makeCEventParam(cEvent, param, state) : param
+            ? this._makeCEventParam(cEvent, param, state)
+            : param
           handler(eventParam)
         }
       }

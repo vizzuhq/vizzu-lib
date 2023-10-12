@@ -11,4 +11,3 @@ export class NotInitializedError extends Error {
     this.name = 'NotInitializedError'
   }
 }
-

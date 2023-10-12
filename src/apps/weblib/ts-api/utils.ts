@@ -1,4 +1,3 @@
-
 export function recursiveCopy<T>(value: T, Ignore?: new (...args: any[]) => any): T {
   if (value === null || typeof value !== 'object') {
     return value
@@ -44,7 +43,7 @@ export function iterateObject<T>(obj: T, paramHandler: Visitor, path: string = '
 function setNestedProp<T>(obj: T, path: string, value: string): void {
   const propList = path.split('.')
   propList.forEach((prop, i) => {
-    let currentObj: any = obj;
+    let currentObj: any = obj
     if (i < propList.length - 1) {
       currentObj[prop] = currentObj[prop] || (typeof propList[i + 1] === 'number' ? [] : {})
       currentObj = currentObj[prop]

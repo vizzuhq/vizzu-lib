@@ -2,7 +2,7 @@ declare namespace Lib {
   /** Options for the library. */
   interface Options {
     /** The URL for the webassembly binary (cvizzu.wasm). */
-    wasmUrl?: string;
+    wasmUrl?: string
   }
 }
 declare namespace Data {
@@ -705,7 +705,6 @@ declare namespace Geom {
   }
 }
 declare namespace Events {
-
   enum Type {
     click = 'click',
     pointeron = 'pointeron',
@@ -1193,20 +1192,20 @@ declare namespace Presets {
 }
 declare namespace Plugins {
   interface PluginMeta {
-    name: string;
-    version?: string;
-    depends?: string[];
+    name: string
+    version?: string
+    depends?: string[]
   }
 
   interface SetAnimParamsContext {
-    target: AnimTarget;
-    options?: Anim.ControlOptions | (Anim.ControlOptions & Anim.Options);
+    target: AnimTarget
+    options?: Anim.ControlOptions | (Anim.ControlOptions & Anim.Options)
   }
 
   interface AnimateRegisterContext {
-    target: AnimTarget;
-    options?: Anim.ControlOptions | (Anim.ControlOptions & Anim.Options);
-    promise: Anim.Completing;
+    target: AnimTarget
+    options?: Anim.ControlOptions | (Anim.ControlOptions & Anim.Options)
+    promise: Anim.Completing
   }
 
   interface HookContexts {
@@ -1215,34 +1214,34 @@ declare namespace Plugins {
   }
 
   type PluginHook<T> = {
-    (ctx: T, next: () => void): void;
-    priority?: number;
-  };
+    (ctx: T, next: () => void): void
+    priority?: number
+  }
 
   type PluginHooks<T extends Hooks> = {
     [key in T]?: PluginHook<HookContexts[key]>
-  };
+  }
 
   interface PluginListeners {
     [event: Events.Type]: Events.Handler<Events.EventMap[event]>
   }
 
   interface PluginApi {
-    [apiMethod: string]: any;
+    [apiMethod: string]: any
   }
 
   interface Plugin {
-    meta: PluginMeta;
-    hooks?: PluginHooks;
-    listeners?: PluginListeners;
-    api?: PluginApi;
-    register?: (ctx: Chart) => void;
-    unregister?: (ctx: Chart) => void;
-    enable?: (enabled: boolean) => void;
+    meta: PluginMeta
+    hooks?: PluginHooks
+    listeners?: PluginListeners
+    api?: PluginApi
+    register?: (ctx: Chart) => void
+    unregister?: (ctx: Chart) => void
+    enable?: (enabled: boolean) => void
   }
 
   interface PluginApis {
-    [name: string]: PluginApi;
+    [name: string]: PluginApi
   }
 }
 
@@ -1251,9 +1250,9 @@ declare enum Hooks {
   animateRegister = 'animateRegister'
 }
 /** Stored Animation object. */
-declare class CAnimation { }
+declare class CAnimation {}
 /** Stored Chart object. */
-declare class Snapshot { }
+declare class Snapshot {}
 /** List of base and additional features:
     - logging: enables logging of the library to the console 
       (switched off by default).

@@ -1,8 +1,8 @@
 /// <reference types="../types/vizzu.d.ts" />
 
-import Vizzu from "../vizzu"
+import Vizzu from '../vizzu'
 
-import { Snapshot, CAnimation } from '../module/cchart.js'
+import { Snapshot, CAnimation } from '../module/cchart'
 
 type ChannelName = keyof Config.Channels
 
@@ -16,10 +16,13 @@ export class Shorthands implements Plugins.Plugin {
 
   get hooks() {
     const hooks = {
-      setAnimParams: Object.assign((ctx: Plugins.SetAnimParamsContext, next: () => void) => {
-        this._normalize(ctx)
-        next()
-      }, { priority: 1 })
+      setAnimParams: Object.assign(
+        (ctx: Plugins.SetAnimParamsContext, next: () => void) => {
+          this._normalize(ctx)
+          next()
+        },
+        { priority: 1 }
+      )
     }
     return hooks
   }
@@ -97,8 +100,9 @@ export class Shorthands implements Plugins.Plugin {
     return channels
   }
 
-
-  _normalizeChannel(channel: Config.Channel | Data.SeriesList | null | undefined): Config.Channel | undefined {
+  _normalizeChannel(
+    channel: Config.Channel | Data.SeriesList | null | undefined
+  ): Config.Channel | undefined {
     if (typeof channel === 'string') {
       channel = [channel]
     }
@@ -125,7 +129,7 @@ export class Shorthands implements Plugins.Plugin {
     return channel
   }
 
-  _normalizeOptions(options: Anim.ControlOptions & Anim.LazyOptions | undefined) {
+  _normalizeOptions(options: (Anim.ControlOptions & Anim.LazyOptions) | undefined) {
     if (typeof options !== 'undefined') {
       if (options === null) {
         options = { duration: 0 }

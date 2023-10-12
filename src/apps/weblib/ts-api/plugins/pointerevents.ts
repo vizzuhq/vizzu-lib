@@ -1,6 +1,6 @@
 /// <reference types="../types/vizzu.d.ts" />
 
-import Vizzu from "../vizzu"
+import Vizzu from '../vizzu'
 import { NotInitializedError } from '../errors'
 
 export class PointerEvents implements Plugins.Plugin {
@@ -31,7 +31,7 @@ export class PointerEvents implements Plugins.Plugin {
   _setHandlers() {
     this._canvas = this._vizzu!.getCanvasElement()
     for (const handlerName of this._handlerList) {
-      (this._handlers as any)[handlerName] = (this as any)[handlerName].bind(this)
+      ;(this._handlers as any)[handlerName] = (this as any)[handlerName].bind(this)
       this._canvas.addEventListener(handlerName, (this._handlers as any)[handlerName])
     }
   }

@@ -35,8 +35,8 @@ export default class UnPivot {
     assert('dimensions' in data, 'data.dimensions is requreid')
     assert('measures' in data, 'data.measures is requreid')
 
-    const convertedData: Data.TableBySeries =
-      (({ dimensions, measures, ...o }) => Object.assign(o, { series: [] }))(data)
+    const convertedData: Data.TableBySeries = (({ dimensions, measures, ...o }) =>
+      Object.assign(o, { series: [] }))(data)
 
     let dimensionsProduct = 1
     assert(Array.isArray(data.dimensions), 'data.dimensions is not a list')
@@ -98,9 +98,9 @@ export default class UnPivot {
       assert(Array.isArray(item.values), 'data.measures.item.values is not a list')
       assertArray(data, item.values, data.dimensions.length - 1)
       const seriesItem: {
-        name: string;
-        type?: "dimension" | "measure" | undefined;
-        values: any[];
+        name: string
+        type?: 'dimension' | 'measure' | undefined
+        values: any[]
       } = {
         name: item.name,
         type: item.type,

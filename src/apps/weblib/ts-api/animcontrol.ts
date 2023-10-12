@@ -14,14 +14,14 @@ export class AnimControl implements Anim.Control {
   }
 
   seek(value: Anim.Position) {
-    const param = (typeof value !== 'string') ? value.toString() : value
+    const param = typeof value !== 'string' ? value.toString() : value
     this._animControl('seek', param)
     return this
   }
 
   // eslint-disable-next-line  accessor-pairs
   set speed(value: number) {
-    const param = (typeof value !== 'string') ? value.toString() : value
+    const param = typeof value !== 'string' ? value.toString() : value
     this._animControl('setSpeed', param)
   }
 

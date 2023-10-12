@@ -1,6 +1,6 @@
 /// <reference types="../types/vizzu.d.ts" />
 
-import Vizzu from "../vizzu"
+import Vizzu from '../vizzu'
 
 import { getCSSCustomPropsForElement, propsToObject } from './cssutils'
 

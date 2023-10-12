@@ -358,9 +358,9 @@ export default class Presets {
 
     for (const key in this._presetConfigs) {
       this._initPresetConfigChannels(this._presetConfigs[key]!.channels!)
-        ; (this as any)[key] = (config: Config.Chart) => {
-          return this._buildPresetConfig(key, config)
-        }
+      ;(this as any)[key] = (config: Config.Chart) => {
+        return this._buildPresetConfig(key, config)
+      }
     }
   }
 
@@ -435,7 +435,9 @@ export default class Presets {
     }
   }
 
-  _isChannel(channel: Config.Channel | null | undefined | Data.SeriesList): channel is Config.Channel {
+  _isChannel(
+    channel: Config.Channel | null | undefined | Data.SeriesList
+  ): channel is Config.Channel {
     return typeof channel === 'object' && channel !== null && 'set' in channel
   }
 
@@ -443,7 +445,7 @@ export default class Presets {
     ;['legend', 'title', 'subtitle', 'caption', 'reverse', 'sort'].forEach((key) => {
       const prop = key as keyof Config.Chart
       if (config[prop] !== undefined) {
-        (base as any)[prop] = config[prop]
+        ;(base as any)[prop] = config[prop]
       }
     })
   }
