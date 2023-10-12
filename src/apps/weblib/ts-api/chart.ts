@@ -97,7 +97,8 @@ export class Chart {
 	_animate(callback: (ok: boolean) => void,
 		target: Anim.Keyframes | CAnimation,
 		options?: Anim.ControlOptions & Anim.Options) {
-		this._plugins.hook(Hooks.setAnimParams, { target, options }).default((ctx) => {
+		const ctx = Object.assign({ target }, options ? { options } : {})
+		this._plugins.hook(Hooks.setAnimParams, ctx).default((ctx) => {
 			this._setAnimParams(ctx.target, ctx.options)
 		})
 		this._cChart.animate(callback)

@@ -67,13 +67,17 @@ export class Data {
 
     seriesList.forEach((series) => {
       if (series.name in record) {
-        result.push(record[series.name])
+        result.push(record[series.name] || this._default(series.type))
       } else {
-        result.push(series.type === 'measure' ? 0 : '')
+        result.push(this._default(series.type))
       }
     })
 
     return result
+  }
+
+  _default(type?: string) {
+    return type === 'measure' ? 0 : ''
   }
 
   setSeries(series: Data.Series): void {

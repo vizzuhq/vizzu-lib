@@ -35,12 +35,14 @@ export class Shorthands implements Plugins.Plugin {
         .map((keyframe) => (keyframe.target !== undefined ? keyframe : { target: keyframe }))
         .map((keyframe) => this._normalizeKeyframe(keyframe))
     }
-    ctx.options = this._normalizeOptions(ctx.options)
+    const options = this._normalizeOptions(ctx.options)
+    if (options) ctx.options = options
   }
 
   _normalizeKeyframe(keyframe: Anim.Keyframe) {
     keyframe.target = this._normalizeTarget(keyframe.target)
-    keyframe.options = this._normalizeOptions(keyframe.options)
+    const options = this._normalizeOptions(keyframe.options)
+    if (options) keyframe.options = options
     return keyframe
   }
 
@@ -55,7 +57,8 @@ export class Shorthands implements Plugins.Plugin {
       }
       target.style = target.style || ({} as Styles.Chart)
 
-      target.config = this._normalizeConfig(target.config)
+      const cfg = this._normalizeConfig(target.config)
+      if (cfg) target.config = cfg
     }
     return target
   }

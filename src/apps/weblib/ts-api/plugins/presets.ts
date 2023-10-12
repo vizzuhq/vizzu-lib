@@ -1,7 +1,5 @@
 /// <reference types="../types/vizzu.d.ts" />
 
-import Vizzu from "../vizzu"
-
 interface PresetConfigs {
   [key: string]: Config.Chart
 }
@@ -9,7 +7,7 @@ interface PresetConfigs {
 export default class Presets {
   _presetConfigs: PresetConfigs
 
-  constructor(chart: Vizzu) {
+  constructor() {
     this._presetConfigs = {
       column: {
         channels: {
@@ -359,7 +357,7 @@ export default class Presets {
     }
 
     for (const key in this._presetConfigs) {
-      this._initPresetConfigChannels(this._presetConfigs[key].channels!)
+      this._initPresetConfigChannels(this._presetConfigs[key]!.channels!)
         ; (this as any)[key] = (config: Config.Chart) => {
           return this._buildPresetConfig(key, config)
         }
@@ -401,7 +399,7 @@ export default class Presets {
   _createPresetConfig(presetName: string) {
     const presetConfig = this._presetConfigs[presetName]
     const nullConfig = this._nullConfig()
-    const channelBase = Object.assign(nullConfig.channels, presetConfig.channels)
+    const channelBase = Object.assign(nullConfig.channels, presetConfig!.channels)
     const base = Object.assign(this._nullConfig(), presetConfig)
     base.channels = channelBase
     return base
@@ -427,7 +425,7 @@ export default class Presets {
       } else if (Array.isArray(channel.set)) {
         const newChannel = []
         for (let i = 0; i < channel.set.length; i++) {
-          const channelConfig = this._getChannelCopy((config as any)[channel.set[i]])
+          const channelConfig = this._getChannelCopy((config as any)[channel.set[i]!])
           if (channelConfig !== null) {
             newChannel.push(channelConfig)
           }

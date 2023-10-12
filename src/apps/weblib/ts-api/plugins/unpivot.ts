@@ -9,7 +9,7 @@ const assert = (condition: boolean, message: string) => {
 const assertArray = (data: Data.Cube, array: any[], index: number) => {
   assert(Array.isArray(array), 'array is not a list')
   try {
-    if (array.length !== data.dimensions[index].values!.length) {
+    if (array.length !== data.dimensions[index]!.values!.length) {
       throw new Error('Assert failed')
     }
   } catch (err) {
@@ -41,7 +41,7 @@ export default class UnPivot {
     let dimensionsProduct = 1
     assert(Array.isArray(data.dimensions), 'data.dimensions is not a list')
     for (let i = 0; i < data.dimensions.length; i++) {
-      const item = data.dimensions[i]
+      const item = data.dimensions[i]!
       assert(
         typeof item === 'object' && item !== null && !Array.isArray(item),
         'data.dimensions.item is not an object'
@@ -59,7 +59,7 @@ export default class UnPivot {
 
     let dimensionsProductProcessed = 1
     for (let i = 0; i < data.dimensions.length; i++) {
-      const item = data.dimensions[i]
+      const item = data.dimensions[i]!
       let values = [] as string[]
       const valuesItem = [] as string[]
       item.values!.forEach((value) => {
@@ -88,7 +88,7 @@ export default class UnPivot {
       data.measures = [data.measures]
     }
     for (let i = 0; i < data.measures.length; i++) {
-      const item = data.measures[i]
+      const item = data.measures[i]!
       assert(
         typeof item === 'object' && item !== null && !Array.isArray(item),
         'data.measures.item is not an object'
@@ -97,7 +97,11 @@ export default class UnPivot {
       assert('values' in item, 'data.measures.item.values is requreid')
       assert(Array.isArray(item.values), 'data.measures.item.values is not a list')
       assertArray(data, item.values, data.dimensions.length - 1)
-      const seriesItem = {
+      const seriesItem: {
+        name: string;
+        type?: "dimension" | "measure" | undefined;
+        values: any[];
+      } = {
         name: item.name,
         type: item.type,
         values: (item.values as any[]).flat(Infinity)
@@ -106,7 +110,7 @@ export default class UnPivot {
         delete seriesItem.type
       }
       assert(seriesItem.values.length === dimensionsProduct, 'dimensions are not the same')
-      convertedData.series.push(seriesItem)
+      convertedData.series.push(seriesItem as any)
     }
 
     return convertedData

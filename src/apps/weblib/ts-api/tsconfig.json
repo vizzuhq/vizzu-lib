@@ -1,4 +1,5 @@
 {
+  "extends": "@tsconfig/strictest/tsconfig.json",
   "types": ["types/vizzu.d.ts", "types/cvizzu.d.ts"],
   "include": ["**/*.ts"],
   "compilerOptions": {

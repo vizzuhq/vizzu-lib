@@ -38,7 +38,7 @@ export class CData extends CObject {
   addDimension(name: string, dimension: string[]) {
     const ptrs = new Uint32Array(dimension.length)
     for (let i = 0; i < dimension.length; i++) {
-      const ptr = this._toCString(dimension[i])
+      const ptr = this._toCString(dimension[i]!)
       ptrs[i] = ptr
     }
 

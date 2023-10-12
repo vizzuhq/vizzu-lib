@@ -11,7 +11,7 @@ export class PivotData implements Plugins.Plugin {
     return {
       setAnimParams: (ctx: Plugins.SetAnimParamsContext, next: () => void) => {
         if (Array.isArray(ctx.target))
-          ctx.target.forEach(({ target, _options }) => {
+          ctx.target.forEach(({ target }) => {
             if (target?.data && UnPivot.isPivot(target.data)) {
               if (PivotData._is1NF(target.data)) {
                 throw new Error(

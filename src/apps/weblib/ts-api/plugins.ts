@@ -80,7 +80,7 @@ export class PluginRegistry {
     if (index !== -1) {
       const plugin = this._plugins[index]
       this._plugins.splice(index, 1)
-      if (plugin.instance.unregister && this._parent) {
+      if (plugin?.instance.unregister && this._parent) {
         plugin.instance.unregister(this._parent)
       }
     }
@@ -147,8 +147,11 @@ export class PluginRegistry {
     )
   }
 
-  _firstToLower(s: string) {
-    return s[0].toLowerCase() + s.slice(1)
+  _firstToLower(s: string): string {
+    if (typeof s === 'string' && s[0]) {
+      return s[0].toLowerCase() + s.slice(1)
+    }
+    return ''
   }
 
   _validateDepends(instance: P.Plugin) {

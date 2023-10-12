@@ -108,7 +108,8 @@ export default class Vizzu implements Vizzu {
   ): Anim.Completing {
     const copiedTarget = recursiveCopy(target, CObject)
     const copiedOptions = recursiveCopy(options)
-    const ctx = { target: copiedTarget, options: copiedOptions, promise: this._anim }
+    const ctx = Object.assign({ target: copiedTarget, promise: this._anim },
+      copiedOptions ? { options: copiedOptions } : {})
     this._plugins.hook(Hooks.animateRegister, ctx).default((ctx) => {
       let activate: (control: AnimControl) => void = () => { }
       const activated = new Promise<AnimControl>((resolve, _reject) => {

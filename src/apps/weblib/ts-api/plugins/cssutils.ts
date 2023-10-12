@@ -56,11 +56,12 @@ export const propSet = (obj: LooseObject, path: string[], value: any, overwrite:
 export const propsToObject = (props: string[][], propObj: LooseObject, pfx = '', overwrite = false) => {
   propObj = propObj || {}
   propObj = props.reduce((obj, [prop, val]) => {
-    const propname = prop.replace('--' + (pfx ? pfx + '-' : ''), '')
-    const proppath = propname.split('-')
+    if (prop) {
+      const propname = prop.replace('--' + (pfx ? pfx + '-' : ''), '')
+      const proppath = propname.split('-')
 
-    propSet(obj, proppath, val, overwrite)
-
+      propSet(obj, proppath, val, overwrite)
+    }
     return obj
   }, propObj)
 
