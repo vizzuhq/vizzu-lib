@@ -254,29 +254,35 @@ beforeAll(() => {
   return new Promise((resolve, reject) => {
     const testsReady = []
     testPathList.forEach((testPath) => {
-      const testReady = new Promise((resolve, reject) => {
+      // eslint-disable-next-line promise/param-names
+      const testReady = new Promise((testResolve, testReject) => {
         fs.rm(suites, { recursive: true, force: true }, (err) => {
           if (err) {
-            throw err
+            testReject(err)
           }
           fs.mkdir(path.dirname(testPath), { force: true, recursive: true }, (err) => {
             if (err) {
-              throw err
+              testReject(err)
             }
             fs.open(testPath, 'w', (err) => {
               if (err) {
-                throw err
+                testReject(err)
               }
-              return resolve()
+              testResolve()
             })
           })
         })
       })
       testsReady.push(testReady)
     })
-    Promise.all(testsReady).then(() => {
-      return resolve()
-    })
+
+    Promise.all(testsReady)
+      .then(() => {
+        resolve()
+      })
+      .catch((err) => {
+        reject(err)
+      })
   })
 })
 
