@@ -104,7 +104,7 @@ Run the following script in the running `vizzu-dev-desktop` container to build
 the `Desktop` version and run the `C++` unit tests:
 
 ```sh
-./tools/ci/pkg-build-desktop.sh
+./tools/ci/run/pkg-build-desktop.sh
 ```
 
 **Note:** A successful `gcc` and a `clang` build are required to contribute,
@@ -115,7 +115,7 @@ Run the following script in the running `vizzu-dev-desktop` container to build
 the `Desktop` version with `gcc`, `clangformat`, and run the `C++` unit tests:
 
 ```sh
-./tools/ci/pkg-build-desktop-clangformat.sh
+./tools/ci/run/pkg-build-desktop-clangformat.sh
 ```
 
 Run the following script in the running `vizzu-dev-desktop` container to build
@@ -123,7 +123,7 @@ the `Desktop` version with `clang`, `clangtidy`, `cppcheck` and run the `C++`
 unit tests:
 
 ```sh
-./tools/ci/pkg-build-desktop-clangtidy.sh
+./tools/ci/run/pkg-build-desktop-clangtidy.sh
 ```
 
 #### Building WASM version
@@ -133,7 +133,7 @@ Run the following script in the running `vizzu-dev-wasm` container to build the
 unit tests, create `vizzu.min.js` and check `d.ts`:
 
 ```sh
-./tools/ci/pkg-build-wasm.sh
+./tools/ci/run/pkg-build-wasm.sh
 ```
 
 **Note:** To debug WASM version under Chrome:
