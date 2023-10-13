@@ -23,8 +23,12 @@ const assertArray = (data: Data.Cube, array: any[], index: number) => {
 }
 
 export default class UnPivot {
-  static isPivot(data: Data.Set | Data.Cube | undefined): data is Data.Cube {
-    return !!data && 'dimensions' in data && 'measures' in data
+  static isPivot(data: Data.Set | Data.Cube | undefined): boolean {
+    return (
+      data !== undefined &&
+      (('dimensions' in data && data.dimensions !== undefined) ||
+        ('measures' in data && data.measures !== undefined))
+    )
   }
 
   static convert(data: Data.Cube) {
