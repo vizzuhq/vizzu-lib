@@ -171,22 +171,26 @@ steps:
         chmod 400 /root/.ssh/id_rsa
         ssh-keyscan -t rsa github.com > /root/.ssh/known_hosts
         git clone --single-branch --branch main --depth 1 'git@github.com:vizzuhq/vizzu-lib-doc'
-        git remote add vizzu-lib-doc git@github.com:vizzuhq/vizzu-lib-doc
         git config --global user.name "David Vegh"
         git config --global user.email "veghdev@gmail.com"
         npm run docs-gen-thumbnail-gsutil
         if [ "$_ISRELEASE" == "true" ]
         then
+          git remote add vizzu-lib-doc git@github.com:vizzuhq/vizzu-lib-doc
           git fetch git@github.com:vizzuhq/vizzu-lib-doc gh-pages:gh-pages --depth=1
           npm run docs-deploy
           git push vizzu-lib-doc gh-pages:gh-pages
         else
           npm run docs-build
           if [ "$BRANCH_NAME" == "main" ]; then
+            cd vizzu-lib-doc
             git checkout -b gh-pages-dev
-            git add site -f
+            git rm -r .
+            git clean -df
+            cp -r ../site/* .
+            git add .
             git commit -m "Site development version"
-            git push vizzu-lib-doc gh-pages-dev:gh-pages-dev -f
+            git push origin gh-pages-dev:gh-pages-dev -f
           fi
         fi
     dir: /workspace
