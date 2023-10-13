@@ -237,7 +237,7 @@ steps:
           for file in $(gsutil ls gs://vizzu-lib-main/lib/*); do
             filename=$(basename "$file")
             if [ "$filename" != "size.txt" ] && [ "$filename" != "sha.txt" ]; then
-              gsutil rm "$file"
+              gsutil -m rm -r "$file"
             fi
           done
           gsutil -m cp -r 'dist/*' 'gs://vizzu-lib-main/lib'
