@@ -137,8 +137,6 @@ steps:
           gsutil -m cp -r 'dist/*' 'gs://vizzu-lib-main-sha/lib-$SHORT_SHA'
           gsutil -m cp -r 'build/js/*' 'gs://vizzu-lib-main-sha/lib-$SHORT_SHA'
         fi
-        git reset --hard
-
     dir: /workspace
 
   - name: vizzu/vizzu-dev-wasm:0.8
@@ -162,12 +160,13 @@ steps:
   - name: vizzu/vizzu-dev-wasm:0.8
     id: docs
     waitFor:
-      - lib-sha
+      - test
     entrypoint: bash
     args:
       - '-c'
       - '-e'
       - |
+        git reset --hard
         mkdir -p /root/.ssh
         echo "$$VIZZUHQ_GITHUB_SSH" > /root/.ssh/id_rsa
         chmod 400 /root/.ssh/id_rsa
@@ -201,7 +200,6 @@ steps:
   - name: vizzu/vizzu-dev-wasm:0.8
     id: release
     waitFor:
-      - test
       - docs
     entrypoint: bash
     args:
