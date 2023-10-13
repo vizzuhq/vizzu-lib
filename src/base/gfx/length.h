@@ -12,11 +12,9 @@ namespace Gfx
 class Length
 {
 public:
-	double absolute;
-	double relative;
-	double emphemeral;
-
-	Length() : absolute(0), relative(0), emphemeral(0) {}
+	double absolute{};
+	double relative{};
+	double emphemeral{};
 
 	static Length Absolute(double value)
 	{
@@ -31,18 +29,7 @@ public:
 		return Length{0, 0, value};
 	}
 
-	Length(const Length &) = default;
-	Length &operator=(const Length &) = default;
-
-	explicit Length(double abs,
-	    double rel = 0.0,
-	    double emphemeral = 0.0) :
-	    absolute(abs),
-	    relative(rel),
-	    emphemeral(emphemeral)
-	{}
-
-	explicit Length(const std::string &s);
+	static Length fromString(const std::string &s);
 
 	[[nodiscard]] bool isAbsolute() const
 	{

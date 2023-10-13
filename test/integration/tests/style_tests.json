@@ -2,91 +2,91 @@
   "suite": "/test/integration/tests/style_tests",
   "test": {
     "plot/backgroundColor/hex/animated_black-white": {
-      "refs": ["d91990a"]
+      "refs": ["d5034b9"]
     },
     "plot/backgroundColor/hex/animated_blueCustom-yellowCustom": {
-      "refs": ["e1908fa"]
+      "refs": ["9a909d0"]
     },
     "plot/backgroundColor/hex/animated_white-black": {
-      "refs": ["d667a92"]
+      "refs": ["23ac860"]
     },
     "plot/backgroundColor/hex/animated_yellowCustom-blueCustom": {
-      "refs": ["f63fd9a"]
+      "refs": ["780535d"]
     },
     "plot/backgroundColor/hex/static_black": {
-      "refs": ["5225835"]
+      "refs": ["034f6c7"]
     },
     "plot/backgroundColor/hex/static_blue": {
-      "refs": ["ff5b5de"]
+      "refs": ["57b2a83"]
     },
     "plot/backgroundColor/hex/static_blueCustom": {
-      "refs": ["ce351c8"]
+      "refs": ["df6a3dc"]
     },
     "plot/backgroundColor/hex/static_blueCustomLowerCase": {
-      "refs": ["ce351c8"]
+      "refs": ["df6a3dc"]
     },
     "plot/backgroundColor/hex/static_cyan": {
-      "refs": ["f7828e8"]
+      "refs": ["3763c0a"]
     },
     "plot/backgroundColor/hex/static_lime": {
-      "refs": ["6545304"]
+      "refs": ["3c80218"]
     },
     "plot/backgroundColor/hex/static_magenta": {
-      "refs": ["ea3728d"]
+      "refs": ["75f8603"]
     },
     "plot/backgroundColor/hex/static_red": {
-      "refs": ["5e23e1a"]
+      "refs": ["22c108a"]
     },
     "plot/backgroundColor/hex/static_white": {
       "refs": ["4251172"]
     },
     "plot/backgroundColor/hex/static_yellow": {
-      "refs": ["30fe9c7"]
+      "refs": ["57ecc48"]
     },
     "plot/backgroundColor/hex/static_yellowCustom": {
-      "refs": ["292bf71"]
+      "refs": ["d74a020"]
     },
     "plot/backgroundColor/hex/static_yellowCustomLowerCase": {
-      "refs": ["292bf71"]
+      "refs": ["d74a020"]
     },
     "plot/backgroundColor/hexa/animated_yellowCustom_0.25-blueCustom_0.75": {
-      "refs": ["6e10356"]
+      "refs": ["0b4b7d9"]
     },
     "plot/backgroundColor/hexa/animated_yellowCustom_0.75-blueCustom_0.25": {
-      "refs": ["2eb99dd"]
+      "refs": ["ec8049f"]
     },
     "plot/backgroundColor/hexa/static_black_0.00": {
       "refs": ["4251172"]
     },
     "plot/backgroundColor/hexa/static_black_0.25": {
-      "refs": ["b807d0e"]
+      "refs": ["ec0ad7d"]
     },
     "plot/backgroundColor/hexa/static_black_0.50": {
-      "refs": ["25fb100"]
+      "refs": ["8b44e98"]
     },
     "plot/backgroundColor/hexa/static_black_0.75": {
-      "refs": ["9d57c06"]
+      "refs": ["c114016"]
     },
     "plot/backgroundColor/hexa/static_black_1.00": {
-      "refs": ["5225835"]
+      "refs": ["034f6c7"]
     },
     "plot/backgroundColor/hexa/static_blueCustomLowerCase_0.75": {
-      "refs": ["1f81f81"]
+      "refs": ["7b4e213"]
     },
     "plot/backgroundColor/hexa/static_blueCustom_0.00": {
       "refs": ["4251172"]
     },
     "plot/backgroundColor/hexa/static_blueCustom_0.25": {
-      "refs": ["2120bb5"]
+      "refs": ["03260dd"]
     },
     "plot/backgroundColor/hexa/static_blueCustom_0.50": {
-      "refs": ["8f8cd50"]
+      "refs": ["457879f"]
     },
     "plot/backgroundColor/hexa/static_blueCustom_0.75": {
-      "refs": ["1f81f81"]
+      "refs": ["7b4e213"]
     },
     "plot/backgroundColor/hexa/static_blueCustom_1.00": {
-      "refs": ["ce351c8"]
+      "refs": ["df6a3dc"]
     },
     "plot/backgroundColor/hexa/static_white_0.00": {
       "refs": ["4251172"]
@@ -104,139 +104,139 @@
       "refs": ["4251172"]
     },
     "plot/backgroundColor/hexa/static_yellowCustomLowerCase_0.75": {
-      "refs": ["eac616b"]
+      "refs": ["b5110f0"]
     },
     "plot/backgroundColor/hexa/static_yellowCustom_0.00": {
       "refs": ["4251172"]
     },
     "plot/backgroundColor/hexa/static_yellowCustom_0.25": {
-      "refs": ["95fc33b"]
+      "refs": ["c7a7a56"]
     },
     "plot/backgroundColor/hexa/static_yellowCustom_0.50": {
-      "refs": ["47e0b21"]
+      "refs": ["2141418"]
     },
     "plot/backgroundColor/hexa/static_yellowCustom_0.75": {
-      "refs": ["eac616b"]
+      "refs": ["b5110f0"]
     },
     "plot/backgroundColor/hexa/static_yellowCustom_1.00": {
-      "refs": ["292bf71"]
+      "refs": ["d74a020"]
     },
     "plot/backgroundColor/hexshort/animated_black-white": {
-      "refs": ["d91990a"]
+      "refs": ["d5034b9"]
     },
     "plot/backgroundColor/hexshort/animated_white-black": {
-      "refs": ["d667a92"]
+      "refs": ["23ac860"]
     },
     "plot/backgroundColor/hexshort/static_black": {
-      "refs": ["5225835"]
+      "refs": ["034f6c7"]
     },
     "plot/backgroundColor/hexshort/static_blue": {
-      "refs": ["ff5b5de"]
+      "refs": ["57b2a83"]
     },
     "plot/backgroundColor/hexshort/static_cyan": {
-      "refs": ["f7828e8"]
+      "refs": ["3763c0a"]
     },
     "plot/backgroundColor/hexshort/static_lime": {
-      "refs": ["6545304"]
+      "refs": ["3c80218"]
     },
     "plot/backgroundColor/hexshort/static_magenta": {
-      "refs": ["ea3728d"]
+      "refs": ["75f8603"]
     },
     "plot/backgroundColor/hexshort/static_red": {
-      "refs": ["5e23e1a"]
+      "refs": ["22c108a"]
     },
     "plot/backgroundColor/hexshort/static_white": {
       "refs": ["4251172"]
     },
     "plot/backgroundColor/hexshort/static_yellow": {
-      "refs": ["30fe9c7"]
+      "refs": ["57ecc48"]
     },
     "plot/backgroundColor/rgb/animated_black-white": {
-      "refs": ["d91990a"]
+      "refs": ["d5034b9"]
     },
     "plot/backgroundColor/rgb/animated_blueCustom-yellowCustom": {
-      "refs": ["e1908fa"]
+      "refs": ["9a909d0"]
     },
     "plot/backgroundColor/rgb/animated_white-black": {
-      "refs": ["d667a92"]
+      "refs": ["23ac860"]
     },
     "plot/backgroundColor/rgb/animated_yellowCustom-blueCustom": {
-      "refs": ["f63fd9a"]
+      "refs": ["780535d"]
     },
     "plot/backgroundColor/rgb/static_black": {
-      "refs": ["5225835"]
+      "refs": ["034f6c7"]
     },
     "plot/backgroundColor/rgb/static_blue": {
-      "refs": ["ff5b5de"]
+      "refs": ["57b2a83"]
     },
     "plot/backgroundColor/rgb/static_blueCustom": {
-      "refs": ["ce351c8"]
+      "refs": ["df6a3dc"]
     },
     "plot/backgroundColor/rgb/static_blueCustomWithSpaces": {
-      "refs": ["ce351c8"]
+      "refs": ["df6a3dc"]
     },
     "plot/backgroundColor/rgb/static_cyan": {
-      "refs": ["f7828e8"]
+      "refs": ["3763c0a"]
     },
     "plot/backgroundColor/rgb/static_lime": {
-      "refs": ["6545304"]
+      "refs": ["3c80218"]
     },
     "plot/backgroundColor/rgb/static_magenta": {
-      "refs": ["ea3728d"]
+      "refs": ["75f8603"]
     },
     "plot/backgroundColor/rgb/static_red": {
-      "refs": ["5e23e1a"]
+      "refs": ["22c108a"]
     },
     "plot/backgroundColor/rgb/static_white": {
       "refs": ["4251172"]
     },
     "plot/backgroundColor/rgb/static_yellow": {
-      "refs": ["30fe9c7"]
+      "refs": ["57ecc48"]
     },
     "plot/backgroundColor/rgb/static_yellowCustom": {
-      "refs": ["292bf71"]
+      "refs": ["d74a020"]
     },
     "plot/backgroundColor/rgb/static_yellowCustomWithSpaces": {
-      "refs": ["292bf71"]
+      "refs": ["d74a020"]
     },
     "plot/backgroundColor/rgba/animated_yellowCustom_0.25-blueCustom_0.75": {
-      "refs": ["54834a0"]
+      "refs": ["152f418"]
     },
     "plot/backgroundColor/rgba/animated_yellowCustom_0.75-blueCustom_0.25": {
-      "refs": ["cafc78b"]
+      "refs": ["41a8581"]
     },
     "plot/backgroundColor/rgba/static_black_0.00": {
       "refs": ["4251172"]
     },
     "plot/backgroundColor/rgba/static_black_0.25": {
-      "refs": ["9f17969"]
+      "refs": ["d47642a"]
     },
     "plot/backgroundColor/rgba/static_black_0.50": {
-      "refs": ["1e8dabd"]
+      "refs": ["2211494"]
     },
     "plot/backgroundColor/rgba/static_black_0.75": {
-      "refs": ["9d57c06"]
+      "refs": ["c114016"]
     },
     "plot/backgroundColor/rgba/static_black_1.00": {
-      "refs": ["5225835"]
+      "refs": ["034f6c7"]
     },
     "plot/backgroundColor/rgba/static_blueCustomWithSpaces_0.75": {
-      "refs": ["1f81f81"]
+      "refs": ["7b4e213"]
     },
     "plot/backgroundColor/rgba/static_blueCustom_0.00": {
       "refs": ["4251172"]
     },
     "plot/backgroundColor/rgba/static_blueCustom_0.25": {
-      "refs": ["babbb16"]
+      "refs": ["64a9fbc"]
     },
     "plot/backgroundColor/rgba/static_blueCustom_0.50": {
-      "refs": ["d77ecba"]
+      "refs": ["f4f5f05"]
     },
     "plot/backgroundColor/rgba/static_blueCustom_0.75": {
-      "refs": ["1f81f81"]
+      "refs": ["7b4e213"]
     },
     "plot/backgroundColor/rgba/static_blueCustom_1.00": {
-      "refs": ["ce351c8"]
+      "refs": ["df6a3dc"]
     },
     "plot/backgroundColor/rgba/static_white_0.00": {
       "refs": ["4251172"]
@@ -254,64 +254,64 @@
       "refs": ["4251172"]
     },
     "plot/backgroundColor/rgba/static_yellowCustomWithSpaces_0.75": {
-      "refs": ["eac616b"]
+      "refs": ["b5110f0"]
     },
     "plot/backgroundColor/rgba/static_yellowCustom_0.00": {
       "refs": ["4251172"]
     },
     "plot/backgroundColor/rgba/static_yellowCustom_0.25": {
-      "refs": ["ad533b4"]
+      "refs": ["c402504"]
     },
     "plot/backgroundColor/rgba/static_yellowCustom_0.50": {
-      "refs": ["e9a8d32"]
+      "refs": ["8c3e375"]
     },
     "plot/backgroundColor/rgba/static_yellowCustom_0.75": {
-      "refs": ["eac616b"]
+      "refs": ["b5110f0"]
     },
     "plot/backgroundColor/rgba/static_yellowCustom_1.00": {
-      "refs": ["292bf71"]
+      "refs": ["d74a020"]
     },
     "plot/borderColor/hexa/animated_yellowCustom_0.25-blueCustom_0.75": {
-      "refs": ["7f952ac"]
+      "refs": ["7646196"]
     },
     "plot/borderColor/hexa/animated_yellowCustom_0.75-blueCustom_0.25": {
-      "refs": ["6695473"]
+      "refs": ["9aac412"]
     },
     "plot/borderColor/hexa/static_blueCustom_0.25": {
-      "refs": ["86feb7a"]
+      "refs": ["1b2ccde"]
     },
     "plot/borderColor/hexa/static_blueCustom_0.75": {
-      "refs": ["f2d22a4"]
+      "refs": ["ec98dcf"]
     },
     "plot/borderColor/hexa/static_yellowCustom_0.25": {
-      "refs": ["f341372"]
+      "refs": ["5548412"]
     },
     "plot/borderColor/hexa/static_yellowCustom_0.75": {
-      "refs": ["8218dd7"]
+      "refs": ["e2d550a"]
     },
     "plot/borderWidth/animated_1-100": {
-      "refs": ["e75191f"]
+      "refs": ["984bf5f"]
     },
     "plot/borderWidth/animated_100-1": {
-      "refs": ["5f10b27"]
+      "refs": ["2d97ce9"]
     },
     "plot/borderWidth/static_1": {
-      "refs": ["4af1415"]
+      "refs": ["5831e59"]
     },
     "plot/borderWidth/static_10": {
-      "refs": ["08a1fe5"]
+      "refs": ["c20c094"]
     },
     "plot/borderWidth/static_100": {
-      "refs": ["8bb3d58"]
+      "refs": ["13e1977"]
     },
     "plot/paddingBottom/animated_150-350": {
-      "refs": ["72e77a6"]
+      "refs": ["3c1fd0e"]
     },
     "plot/paddingBottom/animated_350-150": {
-      "refs": ["1ecd56d"]
+      "refs": ["4e12d9c"]
     },
     "plot/paddingBottom/static_150": {
-      "refs": ["a0b32cc"]
+      "refs": ["40347e9"]
     },
     "plot/paddingBottom/static_350": {
       "refs": ["bb077a4"]
