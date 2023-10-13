@@ -83,7 +83,7 @@ try {
                     seek = seek + '%'
                     testData.seeks[i].push(seek)
                     control.seek(seek)
-                    chart.forceUpdate(true)
+                    chart.forceUpdate()
                     const canvasElement = document.getElementById('vizzuCanvas')
                     if (createImages !== 'DISABLED') {
                       const dataURL = canvasElement.toDataURL()

@@ -1,5 +1,8 @@
 import { data } from '../../../../test_data/chart_types_eu.mjs'
 
+const xScale = 0.95
+const yScale = 0.85
+
 const testSteps = [
   async (chart) => {
     await import('https://cdn.jsdelivr.net/npm/markerjs-live@1.1.0/markerjs-live.min.js')
@@ -16,10 +19,10 @@ const testSteps = [
           strokeColor: '#2563EB',
           strokeWidth: 3,
           strokeDasharray: '',
-          x1: 458 * 1.4,
-          y1: 221 * 1.2,
-          x2: 422 * 1.4,
-          y2: 316 * 1.2,
+          x1: 458 * xScale,
+          y1: 221 * yScale,
+          x2: 422 * xScale,
+          y2: 316 * yScale,
           typeName: 'ArrowMarker',
           state: 'select'
         },
@@ -28,10 +31,10 @@ const testSteps = [
           fontFamily: 'Helvetica, Arial, sans-serif',
           padding: 5,
           text: 'This bar is annotated',
-          left: 434 * 1.4,
-          top: 182 * 1.2,
-          width: 159 * 1.4,
-          height: 37 * 1.2,
+          left: 434 * xScale,
+          top: 182 * yScale,
+          width: 159 * xScale,
+          height: 37 * yScale,
           rotationAngle: 0,
           visualTransformMatrix: {
             a: 1,
@@ -58,10 +61,10 @@ const testSteps = [
           strokeWidth: 0,
           strokeDasharray: '',
           opacity: 0.25,
-          left: 108 * 1.4,
-          top: 99 * 1.2,
-          width: 48 * 1.4,
-          height: 26 * 1.2,
+          left: 108 * xScale,
+          top: 99 * yScale,
+          width: 48 * xScale,
+          height: 26 * yScale,
           rotationAngle: 0,
           visualTransformMatrix: {
             a: 1,
@@ -87,10 +90,10 @@ const testSteps = [
           fontFamily: 'Helvetica, Arial, sans-serif',
           padding: 5,
           text: 'This label is highlighted',
-          left: 153 * 1.4,
-          top: 95 * 1.2,
-          width: 164 * 1.4,
-          height: 30 * 1.2,
+          left: 153 * xScale,
+          top: 95 * yScale,
+          width: 164 * xScale,
+          height: 30 * yScale,
           rotationAngle: 0,
           visualTransformMatrix: {
             a: 1,
@@ -121,10 +124,10 @@ const testSteps = [
           fontFamily: 'Helvetica, Arial, sans-serif',
           padding: 5,
           text: 'E!',
-          left: 221 * 1.4,
-          top: 170 * 1.2,
-          width: 48 * 1.4,
-          height: 45 * 1.2,
+          left: 221 * xScale,
+          top: 170 * yScale,
+          width: 48 * xScale,
+          height: 45 * yScale,
           rotationAngle: 0,
           visualTransformMatrix: {
             a: 1,
