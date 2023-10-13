@@ -116,7 +116,6 @@ steps:
           source /root/.bashrc &&
           ./tools/ci/run/pkg-build-wasm.sh
           ./tools/ci/run/pkg-init-js.sh
-          mv build/js/* build/js/vizzu.tgz
         fi
     dir: /workspace
 
@@ -135,7 +134,12 @@ steps:
           gsutil -m cp -r 'gs://vizzu-lib-main-sha/lib-$SHORT_SHA/*' 'dist'
         else
           gsutil -m cp -r 'dist/*' 'gs://vizzu-lib-main-sha/lib-$SHORT_SHA'
-          gsutil -m cp -r 'build/js/*' 'gs://vizzu-lib-main-sha/lib-$SHORT_SHA'
+          for file in build/js/*
+          do
+            if [ -f "$file" ]; then
+              gsutil cp $file 'gs://vizzu-lib-main-sha/lib-$SHORT_SHA/vizzu.tgz'
+            fi
+          done
         fi
     dir: /workspace
 
@@ -243,7 +247,12 @@ steps:
           gsutil -m cp -r 'dist/*' 'gs://vizzu-lib-main/lib'
           echo $SHORT_SHA | gsutil cp - gs://vizzu-lib-main/lib/sha.txt
           gsutil cp 'build/cmake-wasm/weblib/size.txt' 'gs://vizzu-lib-main/lib'
-          gsutil -m cp 'build/js/*' 'gs://vizzu-lib-main/lib'
+          for file in build/js/*
+          do
+            if [ -f "$file" ]; then
+              gsutil cp $file 'gs://vizzu-lib-main/lib/vizzu.tgz'
+            fi
+          done
           gsutil -m setmeta -r -h 'cache-control: max-age=0,public' 'gs://vizzu-lib-main/*'
         else
           echo "skipped"
