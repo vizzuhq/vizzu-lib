@@ -234,7 +234,7 @@ steps:
       - '-e'
       - |-
         if [ "$_ISRELEASE" == "false" ] && [ "$BRANCH_NAME" == "main" ]; then
-          for file in $(gsutil ls gs://vizzu-lib-main/lib/*); do
+          for file in $(gsutil ls gs://vizzu-lib-main/lib); do
             filename=$(basename "$file")
             if [ "$filename" != "size.txt" ] && [ "$filename" != "sha.txt" ]; then
               gsutil -m rm -r "$file"
