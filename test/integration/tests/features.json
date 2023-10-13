@@ -24,6 +24,9 @@
     },
     "anim/speed": {
       "refs": ["7b07504"]
+    },
+    "presets": {
+      "refs": ["3cbd2f7"]
     }
   }
 }
