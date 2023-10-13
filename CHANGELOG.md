@@ -25,6 +25,9 @@
   cause multi-step animations.
 - Animation between two version of the same chart is instant only if duration
   is not explicitly set
+- Aggregators didn't work when there are parentheses in the name of the data 
+  series
+- Layout stretched to the bottom of the canvas. 
 
 ### Added
 

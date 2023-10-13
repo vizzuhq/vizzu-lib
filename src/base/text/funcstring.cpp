@@ -26,7 +26,7 @@ FuncString::FuncString(std::string code, bool throwOnError)
 	parts[1].remove_suffix(1);
 
 	name = parts[0];
-	params.emplace_back(parts[1]);
+	if (!parts[1].empty()) params.emplace_back(parts[1]);
 
 	SmartString::trim(name);
 
