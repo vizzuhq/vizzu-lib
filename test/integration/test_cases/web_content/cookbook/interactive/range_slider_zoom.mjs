@@ -1,4 +1,5 @@
 import { data } from '../../../../test_data/chart_types_eu.mjs'
+import { lastAnim } from '../../../../utils/utils.mjs'
 
 const testSteps = [
   (chart) => {
@@ -69,7 +70,7 @@ const testSteps = [
     input.value = '20'
     const event = new Event('input')
     input.dispatchEvent(event)
-    return chart.anim
+    return lastAnim(chart)
   }
 ]
 

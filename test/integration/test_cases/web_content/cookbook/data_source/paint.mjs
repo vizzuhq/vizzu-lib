@@ -1,3 +1,6 @@
+import { Mouse } from '../../../../utils/mouse.mjs'
+import { lastAnim } from '../../../../utils/utils.mjs'
+
 const testSteps = [
   (chart) => {
     const data = {
@@ -35,34 +38,12 @@ const testSteps = [
     })
   },
   (chart) => {
-    chart._chart._cChart._call(chart._chart._cChart._wasm._vizzu_pointerDown)(
-      chart._chart._render._ccanvas.getId(),
-      0,
-      100,
-      100
-    )
-    chart._chart._cChart._call(chart._chart._cChart._wasm._vizzu_pointerUp)(
-      chart._chart._render._ccanvas.getId(),
-      0,
-      100,
-      100
-    )
-    return chart._anim
+    new Mouse(chart).down(100, 100).up(100, 100)
+    return lastAnim(chart)
   },
   (chart) => {
-    chart._chart._cChart._call(chart._chart._cChart._wasm._vizzu_pointerDown)(
-      chart._chart._render._ccanvas.getId(),
-      0,
-      300,
-      200
-    )
-    chart._chart._cChart._call(chart._chart._cChart._wasm._vizzu_pointerUp)(
-      chart._chart._render._ccanvas.getId(),
-      0,
-      300,
-      200
-    )
-    return chart._anim
+    new Mouse(chart).down(300, 200).up(300, 200)
+    return lastAnim(chart)
   }
 ]
 

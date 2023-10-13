@@ -1,4 +1,6 @@
 import { data } from '../../../../test_data/chart_types_eu.mjs'
+import { Mouse } from '../../../../utils/mouse.mjs'
+import { lastAnim } from '../../../../utils/utils.mjs'
 
 const testSteps = [
   (chart) => {
@@ -26,34 +28,12 @@ const testSteps = [
     })
   },
   (chart) => {
-    chart._cChart._call(chart._cChart._wasm._vizzu_pointerDown)(
-      chart.render.ccanvas.getId(),
-      0,
-      150,
-      150
-    )
-    chart._cChart._call(chart._cChart._wasm._vizzu_pointerUp)(
-      chart.render.ccanvas.getId(),
-      0,
-      150,
-      150
-    )
-    return chart.anim
+    new Mouse(chart).down(150, 150).up(150, 150)
+    return lastAnim(chart)
   },
   (chart) => {
-    chart._cChart._call(chart._cChart._wasm._vizzu_pointerDown)(
-      chart.render.ccanvas.getId(),
-      0,
-      100,
-      100
-    )
-    chart._cChart._call(chart._cChart._wasm._vizzu_pointerUp)(
-      chart.render.ccanvas.getId(),
-      0,
-      100,
-      100
-    )
-    return chart.anim
+    new Mouse(chart).down(100, 100).up(100, 100)
+    return lastAnim(chart)
   }
 ]
 
