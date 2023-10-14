@@ -13,7 +13,7 @@ export class AnimControl implements Anim.Control {
     return this._cChart.storeAnim()
   }
 
-  seek(value: Anim.Position) {
+  seek(value: Anim.Position): this {
     const param = typeof value !== 'string' ? value.toString() : value
     this._animControl('seek', param)
     return this
@@ -25,32 +25,32 @@ export class AnimControl implements Anim.Control {
     this._animControl('setSpeed', param)
   }
 
-  pause() {
+  pause(): this {
     this._animControl('pause')
     return this
   }
 
-  play() {
+  play(): this {
     this._animControl('play')
     return this
   }
 
-  stop() {
+  stop(): this {
     this._animControl('stop')
     return this
   }
 
-  cancel() {
+  cancel(): this {
     this._animControl('cancel')
     return this
   }
 
-  reverse() {
+  reverse(): this {
     this._animControl('reverse')
     return this
   }
 
-  _animControl(command: string, param = '') {
+  _animControl(command: string, param = ''): void {
     this._cChart.animControl(command, param)
   }
 }

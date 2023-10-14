@@ -14,7 +14,7 @@ export class Shorthands implements Plugins.Plugin {
     name: 'shorthands'
   }
 
-  get hooks() {
+  get hooks(): Plugins.PluginHooks {
     const hooks = {
       setAnimParams: Object.assign(
         (ctx: Plugins.SetAnimParamsContext, next: () => void) => {
@@ -27,12 +27,12 @@ export class Shorthands implements Plugins.Plugin {
     return hooks
   }
 
-  register(chart: Vizzu) {
+  register(chart: Vizzu): void {
     this.chart = chart
     this._channelNames = Object.keys(chart.config.channels!)
   }
 
-  _normalize(ctx: Plugins.SetAnimParamsContext) {
+  _normalize(ctx: Plugins.SetAnimParamsContext): void {
     if (!(ctx.target instanceof CAnimation)) {
       ctx.target = (Array.isArray(ctx.target) ? ctx.target : [{ ...ctx }])
         .map((keyframe) => (keyframe.target !== undefined ? keyframe : { target: keyframe }))
@@ -42,7 +42,7 @@ export class Shorthands implements Plugins.Plugin {
     if (options) ctx.options = options
   }
 
-  _normalizeKeyframe(keyframe: Anim.Keyframe) {
+  _normalizeKeyframe(keyframe: Anim.Keyframe): Anim.Keyframe {
     keyframe.target = this._normalizeTarget(keyframe.target)
     const options = this._normalizeOptions(keyframe.options)
     if (options) keyframe.options = options
@@ -92,7 +92,7 @@ export class Shorthands implements Plugins.Plugin {
     return this._channelNames!.includes(value)
   }
 
-  _normalizeChannels(channels: Config.Channels) {
+  _normalizeChannels(channels: Config.Channels): Config.Channels {
     Object.keys(channels).forEach((key) => {
       const ch = key as ChannelName
       channels[ch] = this._normalizeChannel(channels[ch])
@@ -129,7 +129,9 @@ export class Shorthands implements Plugins.Plugin {
     return channel
   }
 
-  _normalizeOptions(options: (Anim.ControlOptions & Anim.LazyOptions) | undefined) {
+  _normalizeOptions(
+    options: (Anim.ControlOptions & Anim.LazyOptions) | undefined
+  ): (Anim.ControlOptions & Anim.Options) | undefined {
     if (typeof options !== 'undefined') {
       if (options === null) {
         options = { duration: 0 }

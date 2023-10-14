@@ -44,7 +44,7 @@ function isObject(value: unknown): value is Record<string, unknown> {
   return typeof value === 'object' && value !== null
 }
 
-function setNestedProp<T>(obj: T, path: string, value: string): void {
+function setNestedProp<T>(obj: T, path: string, value: unknown): void {
   const propList = path.split('.')
   let currentObj: unknown = obj
   propList.forEach((prop, i) => {
@@ -61,7 +61,7 @@ function setNestedProp<T>(obj: T, path: string, value: string): void {
 }
 
 type Lister = () => string[]
-type Getter = (path: string) => string
+type Getter = (path: string) => unknown
 
 export function cloneObject<T>(lister: Lister, getter: Getter): Readonly<T> {
   const list = lister()

@@ -8,11 +8,11 @@ export class Logging implements Plugins.Plugin {
 
   meta = { name: 'logging' }
 
-  register(vizzu: Vizzu) {
+  register(vizzu: Vizzu): void {
     this._vizzu = vizzu
   }
 
-  enable(enabled: boolean) {
+  enable(enabled: boolean): void {
     if (!this._vizzu || !this._vizzu._chart) throw new NotInitializedError()
     this._vizzu._chart._module.setLogging(enabled)
   }

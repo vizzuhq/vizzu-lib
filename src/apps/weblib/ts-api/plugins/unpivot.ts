@@ -1,12 +1,12 @@
 import { Data } from '../types/vizzu.js'
 
-const assert = (condition: boolean, message: string) => {
+const assert = (condition: boolean, message: string): void => {
   if (!condition) {
     throw new Error('Assert failed: ' + message)
   }
 }
 
-const assertArray = (data: Data.Cube, array: unknown[], index: number) => {
+const assertArray = (data: Data.Cube, array: unknown[], index: number): void => {
   assert(Array.isArray(array), 'array is not a list')
   try {
     if (array.length !== data.dimensions[index]!.values!.length) {
@@ -31,7 +31,7 @@ export default class UnPivot {
     )
   }
 
-  static convert(data: Data.Cube) {
+  static convert(data: Data.Cube): Data.TableBySeries {
     assert(
       typeof data === 'object' && data !== null && !Array.isArray(data),
       'data is not an object'
@@ -39,9 +39,13 @@ export default class UnPivot {
     assert('dimensions' in data, 'data.dimensions is requreid')
     assert('measures' in data, 'data.measures is requreid')
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const convertedData: Data.TableBySeries = (({ dimensions, measures, ...o }: Data.Cube) =>
-      Object.assign(o, { series: [] }))(data)
+    const convertedData: Data.TableBySeries = (({
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      dimensions,
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      measures,
+      ...o
+    }: Data.Cube): Data.TableBySeries => Object.assign(o, { series: [] }))(data)
 
     let dimensionsProduct = 1
     assert(Array.isArray(data.dimensions), 'data.dimensions is not a list')

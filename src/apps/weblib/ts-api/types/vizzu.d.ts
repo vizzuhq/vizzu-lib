@@ -234,7 +234,7 @@ export namespace Config {
     /** If both axes have measures on them, this parameter sets the 
     orientation of the chart, meaning to which axis the graphical elements 
     are oriented to. */
-    orientation?: 'horizontal' | 'vertical'
+    orientation?: 'horizontal' | 'vertical' | 'auto'
     /** - 'none': markers are sorted in the order as the corresponding data 
               appear in the data set.
     - 'byValue': markers will be sorted by the corresponding measure (if present)
@@ -1215,12 +1215,14 @@ export namespace Plugins {
     [Hooks.animateRegister]: AnimateRegisterContext
   }
 
+  type Next = () => void
+
   type PluginHook<T> = {
-    (ctx: T, next: () => void): void
+    (ctx: T, next: Next): void
     priority?: number
   }
 
-  type PluginHooks<T extends Hooks> = {
+  type PluginHooks<T extends Hooks = Hooks> = {
     [key in T]?: PluginHook<HookContexts[key]>
   }
 
@@ -1273,6 +1275,12 @@ export interface VizzuOptions {
   container: HTMLElement
   features?: Plugins.Plugin[]
 }
+
+export type FeatureFunction = (
+  feature: Feature | Plugins.Plugin,
+  enabled?: boolean
+) => Plugins.PluginApi
+export interface Features extends Record<string, Plugins.PluginApi>, FeatureFunction {}
 
 /** Class representing a single chart in Vizzu. */
 export class Vizzu {
@@ -1341,7 +1349,7 @@ export class Vizzu {
   /** Property for read-only access to data metainfo object. */
   get data(): Readonly<Data.Metainfo>
   /** Enable/disable additional features. */
-  feature(name: Feature, enabled: boolean): void
+  get feature(): Features
   /** Removes the reference of the chart from every place it attached itself,
     this method must be called in order to get the chart properly garbage 
     collected.  */

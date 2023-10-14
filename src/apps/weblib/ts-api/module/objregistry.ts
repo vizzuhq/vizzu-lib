@@ -16,7 +16,7 @@ export class ObjectRegistry {
 
   get(fnGetter: FnGetter): CPointerClosure {
     const cPointer = fnGetter()
-    const object = () => cPointer
+    const object = (): CPointer => cPointer
     this._finalizationRegistry.register(object, cPointer)
     return object
   }

@@ -7,7 +7,7 @@ class DataRecord implements D.Record {
 
   constructor(cRecord: CRecord) {
     return new Proxy(this, {
-      get: (_target, columnName: string) => {
+      get: (_target, columnName: string): D.Value => {
         return cRecord.getValue(columnName)
       }
     })
@@ -21,7 +21,7 @@ export class Data {
     this._cData = cData
   }
 
-  set(obj?: D.TableBySeries | D.TableByRecords) {
+  set(obj?: D.TableBySeries | D.TableByRecords): void {
     if (!obj) {
       return
     }
@@ -75,7 +75,7 @@ export class Data {
     return result
   }
 
-  _default(type?: string) {
+  _default(type?: string): D.Value {
     return type === 'measure' ? 0 : ''
   }
 
@@ -154,7 +154,7 @@ export class Data {
 
   setFilter(filter: D.FilterCallback | null): void {
     if (typeof filter === 'function') {
-      const callback = (cRecord: CRecord) => filter(new DataRecord(cRecord))
+      const callback = (cRecord: CRecord): boolean => filter(new DataRecord(cRecord))
       this._cData.setFilter(callback)
     } else if (filter === null) {
       this._cData.setFilter(null)

@@ -19,7 +19,10 @@ module.exports = {
       files: ['*.ts', '*.tsx'],
       extends: ['standard', 'prettier', 'plugin:@typescript-eslint/recommended'],
       parser: '@typescript-eslint/parser',
-      plugins: ['@typescript-eslint']
+      plugins: ['@typescript-eslint'],
+      rules: {
+        '@typescript-eslint/explicit-function-return-type': ['error']
+      }
     }
   ],
   ignorePatterns: ['**/showcases/**', '!.puppeteerrc.cjs']

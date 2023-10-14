@@ -14,27 +14,27 @@ export class Module extends CEnv {
     this.setLogging(false)
   }
 
-  registerRenderer(cCanvas: CCanvas, renderer: Renderer) {
+  registerRenderer(cCanvas: CCanvas, renderer: Renderer): void {
     this._wasm.renders[cCanvas.getId()] = renderer
   }
 
-  version() {
+  version(): string {
     return this._wasm.UTF8ToString(this._wasm._vizzu_version())
   }
 
-  setLogging(enabled: boolean) {
+  setLogging(enabled: boolean): void {
     this._callStatic(this._wasm._vizzu_setLogging)(enabled)
   }
 
-  getData(cChart: CChart) {
+  getData(cChart: CChart): CData {
     return new CData(cChart.getId, this)
   }
 
-  createChart() {
+  createChart(): CChart {
     return new CChart(this)
   }
 
-  createCanvas() {
+  createCanvas(): CCanvas {
     return new CCanvas(this)
   }
 }

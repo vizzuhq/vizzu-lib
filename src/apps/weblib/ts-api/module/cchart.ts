@@ -11,7 +11,7 @@ export class Snapshot extends CObject {}
 export class CAnimation extends CObject {}
 
 export class CEvent extends CObject {
-  preventDefault() {
+  preventDefault(): void {
     this._call(this._wasm._event_preventDefault)()
   }
 }
@@ -68,11 +68,11 @@ export class CChart extends CObject {
     this.animOptions = new CAnimOptions(this)
   }
 
-  update(cCanvas: CCanvas, width: number, height: number, renderControl: number) {
+  update(cCanvas: CCanvas, width: number, height: number, renderControl: number): void {
     this._call(this._wasm._vizzu_update)(cCanvas.getId(), width, height, renderControl)
   }
 
-  animate(callback: (ok: boolean) => void) {
+  animate(callback: (ok: boolean) => void): void {
     const callbackPtr = this._wasm.addFunction((ok: boolean) => {
       callback(ok)
       this._wasm.removeFunction(callbackPtr)
@@ -80,7 +80,7 @@ export class CChart extends CObject {
     this._call(this._wasm._chart_animate)(callbackPtr)
   }
 
-  animControl(command: string, param = '') {
+  animControl(command: string, param = ''): void {
     const ccommand = this._toCString(command)
     const cparam = this._toCString(param)
     try {
@@ -91,28 +91,28 @@ export class CChart extends CObject {
     }
   }
 
-  storeSnapshot() {
+  storeSnapshot(): Snapshot {
     return new Snapshot(this._get(this._wasm._chart_store), this)
   }
 
-  restoreSnapshot(snapshot: Snapshot) {
+  restoreSnapshot(snapshot: Snapshot): void {
     this._call(this._wasm._chart_restore)(snapshot.getId())
   }
 
-  storeAnim() {
+  storeAnim(): CAnimation {
     return new CAnimation(this._get(this._wasm._chart_anim_store), this)
   }
 
-  restoreAnim(animation: CAnimation) {
+  restoreAnim(animation: CAnimation): void {
     this._call(this._wasm._chart_anim_restore)(animation.getId())
   }
 
-  setKeyframe() {
+  setKeyframe(): void {
     this._call(this._wasm._chart_setKeyframe)()
   }
 
   addEventListener<T>(eventName: string, func: (event: CEvent, param: T) => void): CFunction {
-    const wrappedFunc = (eventPtr: CEventPtr, param: CString) => {
+    const wrappedFunc = (eventPtr: CEventPtr, param: CString): void => {
       const eventObj = new CEvent(() => eventPtr, this)
       func(eventObj, JSON.parse(this._fromCString(param)))
     }
@@ -126,7 +126,7 @@ export class CChart extends CObject {
     return cfunc
   }
 
-  removeEventListener(eventName: string, cfunc: CFunction) {
+  removeEventListener(eventName: string, cfunc: CFunction): void {
     const cname = this._toCString(eventName)
     try {
       this._call(this._wasm._removeEventListener)(cname, cfunc)
@@ -136,7 +136,7 @@ export class CChart extends CObject {
     this._wasm.removeFunction(cfunc)
   }
 
-  getMarkerData(markerId: number) {
+  getMarkerData(markerId: number): unknown {
     const cStr = this._call(this._wasm._chart_markerData)(markerId)
     return JSON.parse(this._fromCString(cStr))
   }

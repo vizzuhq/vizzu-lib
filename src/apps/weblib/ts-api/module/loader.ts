@@ -37,7 +37,7 @@ class Loader {
     const moduleOptions: ModuleOptions = {}
     if (this._options?.wasmUrl) {
       const wasmUrl = this._options.wasmUrl
-      moduleOptions.locateFile = (path: string) => {
+      moduleOptions.locateFile = (path: string): string => {
         return path.endsWith('.wasm') ? wasmUrl : path
       }
     }

@@ -34,14 +34,14 @@ export class CProxy<T> extends CObject {
     return cloneObject<T>(this.listParams.bind(this), this.getParam.bind(this))
   }
 
-  listParams() {
+  listParams(): string[] {
     const clistStr = this._call(this._lister)()
     const listStr = this._fromCString(clistStr)
     const list = JSON.parse(listStr)
     return list
   }
 
-  getParam(path: string) {
+  getParam(path: string): unknown {
     const cpath = this._toCString(path)
     try {
       const cvalue = this._call(this._getter)(cpath)
@@ -53,7 +53,7 @@ export class CProxy<T> extends CObject {
     }
   }
 
-  setParam(path: string, value: unknown) {
+  setParam(path: string, value: unknown): void {
     const cpath = this._toCString(path)
     const cvalue = this._toCString(String(value).toString())
     try {

@@ -37,19 +37,19 @@ export class Render implements Renderer {
     this.updateCanvasSize()
   }
 
-  canvas() {
+  canvas(): HTMLCanvasElement {
     return this._mainCanvas
   }
 
-  dc() {
+  dc(): CanvasRenderingContext2D {
     return this._offscreenContext
   }
 
-  clientRect() {
+  clientRect(): DOMRect {
     return this._mainCanvas.getBoundingClientRect()
   }
 
-  frameBegin() {
+  frameBegin(): void {
     this._currentLineWidth = 1
     this._offscreenContext.clearRect(
       -1,
@@ -59,30 +59,30 @@ export class Render implements Renderer {
     )
   }
 
-  frameEnd() {
+  frameEnd(): void {
     this._context.clearRect(-1, -1, this._mainCanvas.width + 1, this._mainCanvas.height + 1)
     this._context.drawImage(this._offscreenCanvas, 0, 0)
   }
 
-  lineWidthNotification(width: number) {
+  lineWidthNotification(width: number): void {
     this._currentLineWidth = width
   }
 
-  noneZeroLineWidth() {
+  noneZeroLineWidth(): boolean {
     return this._currentLineWidth !== 0
   }
 
-  startPolygonNotification() {
+  startPolygonNotification(): boolean {
     const first = this._polygonFirstPoint
     this._polygonFirstPoint = true
     return !first
   }
 
-  endPolygonNotification() {
+  endPolygonNotification(): void {
     this._polygonFirstPoint = false
   }
 
-  updateCanvasSize() {
+  updateCanvasSize(): void {
     this._scaleFactor = window.devicePixelRatio
     this._cssWidth = +getComputedStyle(this._mainCanvas).width.slice(0, -2)
     this._cssHeight = +getComputedStyle(this._mainCanvas).height.slice(0, -2)
@@ -98,7 +98,7 @@ export class Render implements Renderer {
     this._prevUpdateHash = hash
   }
 
-  updateFrame(force: boolean = false) {
+  updateFrame(force: boolean = false): void {
     const start = performance.now()
     this.updateCanvasSize()
     if (this._mainCanvas.width > 0 && this._mainCanvas.height > 0) {

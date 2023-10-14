@@ -9,6 +9,8 @@ import {
   Styles,
   VizzuOptions,
   CoordinateType,
+  Features,
+  FeatureFunction,
   Vizzu as VizzuInterface
 } from './types/vizzu.js'
 import { loader } from './module/loader.js'
@@ -28,16 +30,16 @@ export default class Vizzu implements VizzuInterface {
   _container: HTMLElement
   _plugins: PluginRegistry
 
-  static get presets() {
+  static get presets(): Presets {
     return new Presets()
   }
 
-  static options(options: Lib.Options) {
+  static options(options: Lib.Options): void {
     loader.options = options
   }
 
-  static initialize() {
-    return loader.initialize()
+  static initialize(): Promise<void> {
+    return loader.initialize().then(() => {})
   }
 
   constructor(options: string | HTMLElement | VizzuOptions, initState?: Anim.Keyframes) {
@@ -84,13 +86,13 @@ export default class Vizzu implements VizzuInterface {
     return { ...opts, container }
   }
 
-  get feature() {
-    const fn = this._feature.bind(this)
+  get feature(): Features {
+    const fn: FeatureFunction = this._feature.bind(this)
     return new Proxy(fn, {
-      get: (_target, pluginName: string) => {
+      get: (_target, pluginName: string): Plugins.PluginApi => {
         return this._plugins.api(pluginName)
       }
-    })
+    }) as Features
   }
 
   _feature(nameOrInstance: string | Plugins.Plugin, enabled?: boolean): Plugins.PluginApi {
@@ -146,7 +148,7 @@ export default class Vizzu implements VizzuInterface {
     activate: (control: AnimControl) => void
   ): Promise<Vizzu> {
     return new Promise((resolve, reject) => {
-      const callback = (ok: boolean) => {
+      const callback = (ok: boolean): void => {
         if (ok) {
           resolve(this)
         } else {
@@ -179,7 +181,7 @@ export default class Vizzu implements VizzuInterface {
     return this._chart._canvas
   }
 
-  forceUpdate() {
+  forceUpdate(): void {
     if (!this._chart) throw new NotInitializedError()
     this._chart._render.updateFrame(true)
   }
@@ -204,12 +206,12 @@ export default class Vizzu implements VizzuInterface {
     return this._chart._cChart.computedStyle.get()
   }
 
-  on<T extends Events.Type>(eventName: T, handler: Events.Handler<Events.EventMap[T]>) {
+  on<T extends Events.Type>(eventName: T, handler: Events.Handler<Events.EventMap[T]>): void {
     if (!this._chart) throw new NotInitializedError()
     this._chart._events.add(eventName, handler)
   }
 
-  off<T extends Events.Type>(eventName: T, handler: Events.Handler<Events.EventMap[T]>) {
+  off<T extends Events.Type>(eventName: T, handler: Events.Handler<Events.EventMap[T]>): void {
     if (!this._chart) throw new NotInitializedError()
     this._chart._events.remove(eventName, handler)
   }
@@ -228,7 +230,7 @@ export default class Vizzu implements VizzuInterface {
     return this._chart.getConverter(target, from, to)
   }
 
-  detach() {
+  detach(): void {
     try {
       this._plugins.destruct()
     } finally {

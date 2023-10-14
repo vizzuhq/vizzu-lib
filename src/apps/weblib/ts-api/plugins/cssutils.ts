@@ -24,7 +24,7 @@ export const getCSSCustomProps = (pfx = ''): string[] =>
     []
   )
 
-export const getCSSCustomPropsForElement = (el: HTMLElement, pfx = '') => {
+export const getCSSCustomPropsForElement = (el: HTMLElement, pfx = ''): string[][] => {
   const props = getCSSCustomProps(pfx)
   const style = getComputedStyle(el)
   return props
@@ -62,7 +62,7 @@ export const propsToObject = (
   propObj: StringKeyedObject,
   pfx = '',
   overwrite = false
-) => {
+): StringKeyedObject => {
   propObj = propObj || {}
   propObj = props.reduce((obj, [prop, val]) => {
     if (prop) {

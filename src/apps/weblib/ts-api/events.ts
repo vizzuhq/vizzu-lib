@@ -24,7 +24,7 @@ export class Events {
     this._render = render
   }
 
-  add<T extends E.Type>(eventName: T, handler: E.Handler<E.EventMap[T]>) {
+  add<T extends E.Type>(eventName: T, handler: E.Handler<E.EventMap[T]>): void {
     if (typeof eventName !== 'string') {
       throw new Error('first parameter should be string')
     }
@@ -35,7 +35,7 @@ export class Events {
     if (!(eventName in this._eventHandlers)) {
       let cfunc = null
       if (!this._isJSEvent(eventName)) {
-        const func = (eventPtr: CEvent, param: E.EventMap[T]) => {
+        const func = (eventPtr: CEvent, param: E.EventMap[T]): void => {
           this._invoke(eventName, param, eventPtr)
         }
         cfunc = this._cChart.addEventListener(eventName, func)
@@ -46,7 +46,7 @@ export class Events {
     return handlers![1]
   }
 
-  remove<T extends E.Type>(eventName: T, handler: E.Handler<E.EventMap[T]>) {
+  remove<T extends E.Type>(eventName: T, handler: E.Handler<E.EventMap[T]>): void {
     if (typeof eventName !== 'string') {
       throw new Error('first parameter should be string')
     }
@@ -72,19 +72,19 @@ export class Events {
     }
   }
 
-  addMany(events: Plugins.PluginListeners) {
+  addMany(events: Plugins.PluginListeners): void {
     for (const [eventName, handler] of Object.entries(events)) {
       this.add(eventName as E.Type, handler)
     }
   }
 
-  removeMany(events: Plugins.PluginListeners) {
+  removeMany(events: Plugins.PluginListeners): void {
     for (const [eventName, handler] of Object.entries(events)) {
       this.remove(eventName as E.Type, handler)
     }
   }
 
-  _invoke<T extends E.Type>(eventName: T, param: E.EventMap[T], cEvent?: CEvent) {
+  _invoke<T extends E.Type>(eventName: T, param: E.EventMap[T], cEvent?: CEvent): boolean {
     const state: EventState = { canceled: false }
     try {
       const handlers = this._eventHandlers[eventName]
@@ -104,19 +104,19 @@ export class Events {
     return state.canceled
   }
 
-  _isJSEvent(eventName: E.Type) {
+  _isJSEvent(eventName: E.Type): boolean {
     return eventName.startsWith('api-')
   }
 
-  _makeJSEventParam<T>(param: E.Event<T>, state: EventState) {
-    param.preventDefault = () => {
+  _makeJSEventParam<T>(param: E.Event<T>, state: EventState): E.Event<T> {
+    param.preventDefault = (): void => {
       state.canceled = true
     }
     return param
   }
 
-  _makeCEventParam<T>(cEvent: CEvent, param: E.Event<T>, state: EventState) {
-    param.preventDefault = () => {
+  _makeCEventParam<T>(cEvent: CEvent, param: E.Event<T>, state: EventState): E.Event<T> {
+    param.preventDefault = (): void => {
       cEvent.preventDefault()
       state.canceled = true
     }

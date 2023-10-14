@@ -19,11 +19,11 @@ export class Tooltip implements Plugins.Plugin {
     pointeron: this._mouseon.bind(this)
   }
 
-  register(vizzu: Vizzu) {
+  register(vizzu: Vizzu): void {
     this.vizzu = vizzu
   }
 
-  enable(enabled: boolean) {
+  enable(enabled: boolean): void {
     if (!enabled) {
       this.id++
       setTimeout(() => {
@@ -32,11 +32,11 @@ export class Tooltip implements Plugins.Plugin {
     }
   }
 
-  _mousemove() {
+  _mousemove(): void {
     this.lastMove = new Date().getTime()
   }
 
-  _mouseon(param: Events.PointerEvent) {
+  _mouseon(param: Events.PointerEvent): void {
     this.id++
     const id = this.id
     if (param.target && this._isMarker(param.target)) {
@@ -55,7 +55,7 @@ export class Tooltip implements Plugins.Plugin {
     return target.tagName === 'plot-marker'
   }
 
-  _in(id: number, markerId: number) {
+  _in(id: number, markerId: number): void {
     if (this.id === id) {
       if (!this.animating) {
         this.lastMarkerId = markerId
@@ -76,7 +76,7 @@ export class Tooltip implements Plugins.Plugin {
     }
   }
 
-  _out(id: number) {
+  _out(id: number): void {
     if (this.id === id) {
       const ellapsed = new Date().getTime() - this.lastMove
       if (!this.animating && ellapsed > 200) {

@@ -21,9 +21,9 @@ export class CSSProperties implements Plugins.Plugin {
     }
   }
 
-  get hooks() {
+  get hooks(): Plugins.PluginHooks {
     return {
-      setAnimParams: (ctx: Plugins.SetAnimParamsContext, next: () => void) => {
+      setAnimParams: (ctx: Plugins.SetAnimParamsContext, next: () => void): void => {
         const props = getCSSCustomPropsForElement(this.chart!._container, this.api.prefix)
         if (Array.isArray(ctx.target))
           ctx.target.forEach(({ target }) => {
@@ -34,7 +34,7 @@ export class CSSProperties implements Plugins.Plugin {
     }
   }
 
-  register(chart: Vizzu) {
+  register(chart: Vizzu): void {
     this.chart = chart
   }
 }

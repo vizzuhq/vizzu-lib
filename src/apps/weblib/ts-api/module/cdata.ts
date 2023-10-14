@@ -36,7 +36,7 @@ export class CData extends CObject {
     return { series: JSON.parse(info) }
   }
 
-  addDimension(name: string, dimension: string[]) {
+  addDimension(name: string, dimension: string[]): void {
     const ptrs = new Uint32Array(dimension.length)
     for (let i = 0; i < dimension.length; i++) {
       const ptr = this._toCString(dimension[i]!)
@@ -62,7 +62,7 @@ export class CData extends CObject {
     }
   }
 
-  addMeasure(name: string, unit: string, values: number[]) {
+  addMeasure(name: string, unit: string, values: number[]): void {
     const vals = new Float64Array(values)
     const valArrayLen = values.length * 8
 
@@ -83,7 +83,7 @@ export class CData extends CObject {
     }
   }
 
-  addRecord(record: (string | number)[]) {
+  addRecord(record: (string | number)[]): void {
     const ptrs = new Uint32Array(record.length)
 
     for (let i = 0; i < record.length; i++) {
@@ -107,12 +107,12 @@ export class CData extends CObject {
     }
   }
 
-  setFilter(callback: ((record: CRecord) => void) | null) {
+  setFilter(callback: ((record: CRecord) => boolean) | null): void {
     const callbackPtrs: [CPointer, CPointer] = [0, 0]
     if (callback !== null) {
-      const f = (recordPtr: CRecordPtr) => callback(new CRecord(this, recordPtr))
+      const f = (recordPtr: CRecordPtr): boolean => callback(new CRecord(this, recordPtr))
       callbackPtrs[0] = this._wasm.addFunction(f, 'ii')
-      const deleter = (ptr: CPointer) => {
+      const deleter = (ptr: CPointer): void => {
         if (ptr !== callbackPtrs[0]) console.warn('Wrong pointer passed to destructor')
         this._wasm.removeFunction(callbackPtrs[0])
         this._wasm.removeFunction(callbackPtrs[1])

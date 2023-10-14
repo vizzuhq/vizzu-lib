@@ -45,7 +45,7 @@ export class Chart {
     this._resizeObserver = this._createResizeObserverFor(this._canvas)
   }
 
-  registerBuilts() {
+  registerBuilts(): void {
     this._plugins.register(new Logging(), false)
     this._plugins.register(new Rendering(), true)
     this._plugins.register(new CSSProperties(), false)
@@ -63,7 +63,7 @@ export class Chart {
     return resizeObserver
   }
 
-  _createCanvas() {
+  _createCanvas(): HTMLCanvasElement {
     let canvas = null
     const placeholder = this._container
 
@@ -96,7 +96,7 @@ export class Chart {
     callback: (ok: boolean) => void,
     target: Anim.Keyframes | CAnimation,
     options?: Anim.ControlOptions & Anim.Options
-  ) {
+  ): void {
     const ctx = Object.assign({ target }, options !== undefined ? { options } : {})
     this._plugins.hook(Hooks.setAnimParams, ctx).default((ctx) => {
       this._setAnimParams(ctx.target, ctx.options)
@@ -107,7 +107,7 @@ export class Chart {
   _setAnimParams(
     target: Anim.Keyframes | CAnimation,
     options?: Anim.ControlOptions & Anim.Options
-  ) {
+  ): void {
     if (target instanceof CAnimation) {
       this._cChart.restoreAnim(target)
     } else {
@@ -116,7 +116,7 @@ export class Chart {
     if (options) this._cChart.animOptions.set(options)
   }
 
-  _setKeyframe(target: Anim.Target | Snapshot, options?: Anim.Options) {
+  _setKeyframe(target: Anim.Target | Snapshot, options?: Anim.Options): void {
     if (target) {
       if (target instanceof Snapshot) {
         this._cChart.restoreSnapshot(target)
@@ -130,7 +130,7 @@ export class Chart {
     this._cChart.setKeyframe()
   }
 
-  destruct() {
+  destruct(): void {
     this._resizeObserver.disconnect()
     if (this._updateInterval) clearInterval(this._updateInterval)
     delete this._updateInterval
