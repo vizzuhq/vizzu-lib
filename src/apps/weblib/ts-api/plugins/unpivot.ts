@@ -6,7 +6,7 @@ const assert = (condition: boolean, message: string) => {
   }
 }
 
-const assertArray = (data: Data.Cube, array: any[], index: number) => {
+const assertArray = (data: Data.Cube, array: unknown[], index: number) => {
   assert(Array.isArray(array), 'array is not a list')
   try {
     if (array.length !== data.dimensions[index]!.values!.length) {
@@ -39,7 +39,8 @@ export default class UnPivot {
     assert('dimensions' in data, 'data.dimensions is requreid')
     assert('measures' in data, 'data.measures is requreid')
 
-    const convertedData: Data.TableBySeries = (({ dimensions, measures, ...o }) =>
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const convertedData: Data.TableBySeries = (({ dimensions, measures, ...o }: Data.Cube) =>
       Object.assign(o, { series: [] }))(data)
 
     let dimensionsProduct = 1
@@ -104,17 +105,17 @@ export default class UnPivot {
       const seriesItem: {
         name: string
         type?: 'dimension' | 'measure' | undefined
-        values: any[]
+        values: unknown[]
       } = {
         name: item.name,
         type: item.type,
-        values: (item.values as any[]).flat(Infinity)
+        values: (item.values as unknown[]).flat(Infinity)
       }
       if (typeof seriesItem.type === 'undefined') {
         delete seriesItem.type
       }
       assert(seriesItem.values.length === dimensionsProduct, 'dimensions are not the same')
-      convertedData.series.push(seriesItem as any)
+      convertedData.series.push(seriesItem as Data.Series)
     }
 
     return convertedData

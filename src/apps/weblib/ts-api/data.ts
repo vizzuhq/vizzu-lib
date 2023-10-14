@@ -125,7 +125,7 @@ export class Data {
     this._cData.addDimension(name, dimension)
   }
 
-  _isStringArray(values: any[]): values is string[] {
+  _isStringArray(values: unknown[]): values is string[] {
     for (const value of values) {
       if (typeof value !== 'string') {
         return false
@@ -147,7 +147,7 @@ export class Data {
       throw new Error("'values' parameter should be an array")
     }
 
-    let numbers = values.map((value) => Number(value))
+    const numbers = values.map((value) => Number(value))
 
     this._cData.addMeasure(name, unit, numbers)
   }

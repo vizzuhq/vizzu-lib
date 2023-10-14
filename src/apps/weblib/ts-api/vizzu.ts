@@ -8,7 +8,8 @@ import {
   Plugins,
   Styles,
   VizzuOptions,
-  CoordinateType
+  CoordinateType,
+  Vizzu as VizzuInterface
 } from './types/vizzu.js'
 import { loader } from './module/loader.js'
 import { Chart } from './chart.js'
@@ -20,9 +21,9 @@ import { NotInitializedError, CancelError } from './errors.js'
 import { Hooks, PluginRegistry } from './plugins.js'
 import Presets from './plugins/presets.js'
 
-export default class Vizzu implements Vizzu {
+export default class Vizzu implements VizzuInterface {
   _chart?: Chart
-  initializing: Promise<Vizzu>
+  initializing: Promise<VizzuInterface>
   _anim: Anim.Completing
   _container: HTMLElement
   _plugins: PluginRegistry
@@ -60,25 +61,27 @@ export default class Vizzu implements Vizzu {
     }
   }
 
-  _processOptions(options: any): VizzuOptions {
+  _processOptions(options: unknown): VizzuOptions {
     const opts =
       typeof options !== 'object' || options instanceof HTMLElement
         ? { container: options }
         : options
 
-    if (!('container' in opts)) {
+    if (opts === null || !('container' in opts)) {
       throw new Error('container not specified')
     }
 
-    if (!(opts.container instanceof HTMLElement)) {
-      opts.container = document.getElementById(opts.container)
+    let container = opts.container
+
+    if (typeof container === 'string') {
+      container = document.getElementById(container)
     }
 
-    if (!opts.container) {
+    if (!(container instanceof HTMLElement)) {
       throw new Error(`Cannot find container ${opts.container} to render Vizzu!`)
     }
 
-    return opts
+    return { ...opts, container }
   }
 
   get feature() {
@@ -127,7 +130,7 @@ export default class Vizzu implements Vizzu {
     )
     this._plugins.hook(Hooks.animateRegister, ctx).default((ctx) => {
       let activate: (control: AnimControl) => void = () => {}
-      const activated = new Promise<AnimControl>((resolve, _reject) => {
+      const activated = new Promise<AnimControl>((resolve) => {
         activate = resolve
       })
       const promise = ctx.promise.then(() => this._animate(copiedTarget, copiedOptions, activate))
@@ -149,8 +152,8 @@ export default class Vizzu implements Vizzu {
         } else {
           // eslint-disable-next-line prefer-promise-reject-errors
           reject(new CancelError())
-          let cancelled = Promise.resolve(this)
-          let activated = Promise.resolve(null)
+          const cancelled = Promise.resolve(this)
+          const activated = Promise.resolve(null)
           this._anim = Object.assign(cancelled, { activated })
         }
       }

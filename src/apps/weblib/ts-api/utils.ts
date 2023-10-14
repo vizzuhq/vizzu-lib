@@ -1,4 +1,4 @@
-export function recursiveCopy<T>(value: T, Ignore?: new (...args: any[]) => any): T {
+export function recursiveCopy<T>(value: T, Ignore?: new (...args: never[]) => unknown): T {
   if (value === null || typeof value !== 'object') {
     return value
   }
@@ -24,7 +24,7 @@ export function recursiveCopy<T>(value: T, Ignore?: new (...args: any[]) => any)
   return copyObj
 }
 
-type Visitor = (path: string, value: any) => void
+type Visitor = (path: string, value: unknown) => void
 
 export function iterateObject<T>(obj: T, paramHandler: Visitor, path: string = ''): void {
   if (obj && obj !== null && typeof obj === 'object') {
@@ -40,10 +40,17 @@ export function iterateObject<T>(obj: T, paramHandler: Visitor, path: string = '
   }
 }
 
+function isObject(value: unknown): value is Record<string, unknown> {
+  return typeof value === 'object' && value !== null
+}
+
 function setNestedProp<T>(obj: T, path: string, value: string): void {
   const propList = path.split('.')
-  let currentObj: any = obj
+  let currentObj: unknown = obj
   propList.forEach((prop, i) => {
+    if (!isObject(currentObj)) {
+      throw new Error(`Expected an object, but got ${typeof currentObj}`)
+    }
     if (i < propList.length - 1) {
       currentObj[prop] = currentObj[prop] || (typeof propList[i + 1] === 'number' ? [] : {})
       currentObj = currentObj[prop]
@@ -63,6 +70,5 @@ export function cloneObject<T>(lister: Lister, getter: Getter): Readonly<T> {
     const value = getter(path)
     setNestedProp(res, path, value)
   }
-  Object.freeze(res)
-  return res
+  return Object.freeze(res) as Readonly<T>
 }

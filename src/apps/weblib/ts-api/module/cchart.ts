@@ -111,10 +111,7 @@ export class CChart extends CObject {
     this._call(this._wasm._chart_setKeyframe)()
   }
 
-  addEventListener<T>(
-    eventName: string,
-    func: (event: CEvent, param: T) => void
-  ): CFunction<(eventPtr: CEventPtr, param: CString) => void> {
+  addEventListener<T>(eventName: string, func: (event: CEvent, param: T) => void): CFunction {
     const wrappedFunc = (eventPtr: CEventPtr, param: CString) => {
       const eventObj = new CEvent(() => eventPtr, this)
       func(eventObj, JSON.parse(this._fromCString(param)))
@@ -129,7 +126,7 @@ export class CChart extends CObject {
     return cfunc
   }
 
-  removeEventListener<T>(eventName: string, cfunc: CFunction<T>) {
+  removeEventListener(eventName: string, cfunc: CFunction) {
     const cname = this._toCString(eventName)
     try {
       this._call(this._wasm._removeEventListener)(cname, cfunc)

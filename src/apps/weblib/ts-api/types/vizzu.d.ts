@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unused-vars, lines-between-class-members, no-use-before-define */
+
 export namespace Lib {
   /** Options for the library. */
   interface Options {
@@ -1227,7 +1229,7 @@ export namespace Plugins {
   }
 
   interface PluginApi {
-    [apiMethod: string]: any
+    [apiMethod: string]: unknown
   }
 
   interface Plugin {
@@ -1266,20 +1268,22 @@ type Feature = 'tooltip' | 'logging' | 'rendering'
 type Converter = (point: Geom.Point) => Geom.Point
 /** Type of a point's coordinate system. */
 export type CoordinateType = 'relative' | 'canvas'
-//import ObjectRegistry from './objregistry.js'
-/** Class representing a single chart in Vizzu. */
 
 export interface VizzuOptions {
   container: HTMLElement
   features?: Plugins.Plugin[]
 }
 
-interface Vizzu {
+/** Class representing a single chart in Vizzu. */
+export class Vizzu {
   /** Creates a new chart and connects it to the div or canvas HTML 
     element specified by its ID or DOM object. The new chart is empty by 
     default, but can be set to an initial state in the second optional 
     parameter. */
-  //constructor(container: string | HTMLElement | VizzuOptions, initState?: Anim.Target | Config.Chart)
+  constructor(
+    container: string | HTMLElement | VizzuOptions,
+    initState?: Anim.Target | Config.Chart
+  )
   /** Promise representing the initialization will resolve when 
     initialization is finished. Any API call will potentially cause 
     an error before this promise is resolved.  */
@@ -1343,9 +1347,7 @@ interface Vizzu {
     collected.  */
   detach(): void
   /** Returns the chart preset collection. */
-  //  static get presets(): Presets.Presets
+  static get presets(): Presets.Presets
   /** Setter method for Library options. */
-  //  static options(options: Lib.Options): void
+  static options(options: Lib.Options): void
 }
-
-export {}

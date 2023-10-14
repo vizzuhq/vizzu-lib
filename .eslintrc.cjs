@@ -4,6 +4,7 @@ module.exports = {
     jest: true
   },
   extends: ['standard', 'prettier'],
+  root: true,
   parserOptions: {
     ecmaVersion: 'latest'
   },
@@ -13,6 +14,12 @@ module.exports = {
       rules: {
         camelcase: 'off'
       }
+    },
+    {
+      files: ['*.ts', '*.tsx'],
+      extends: ['standard', 'prettier', 'plugin:@typescript-eslint/recommended'],
+      parser: '@typescript-eslint/parser',
+      plugins: ['@typescript-eslint']
     }
   ],
   ignorePatterns: ['**/showcases/**', '!.puppeteerrc.cjs']

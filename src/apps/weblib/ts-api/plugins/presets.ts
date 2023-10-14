@@ -2,8 +2,16 @@ import { Data, Config } from '../types/vizzu.js'
 
 import { presetConfigs } from './presetconfigs.js'
 
-interface PresetConfigs {
-  [key: string]: Config.Chart
+type RawPresetConfigs = typeof presetConfigs
+
+type PresetNames = keyof RawPresetConfigs
+
+type PresetConfigs = {
+  [Property in keyof RawPresetConfigs]: Config.Chart
+}
+
+type PresetInterface = {
+  [Property in keyof RawPresetConfigs]: (config: Config.Chart) => Config.Chart
 }
 
 export default class Presets {
@@ -13,9 +21,10 @@ export default class Presets {
     this._presetConfigs = presetConfigs as PresetConfigs
 
     for (const key in this._presetConfigs) {
-      this._initPresetConfigChannels(this._presetConfigs[key]!.channels!)
-      ;(this as any)[key] = (config: Config.Chart) => {
-        return this._buildPresetConfig(key, config)
+      const name = key as PresetNames
+      this._initPresetConfigChannels(this._presetConfigs[name]!.channels!)
+      ;(this as unknown as PresetInterface)[name] = (config: Config.Chart) => {
+        return this._buildPresetConfig(name, config)
       }
     }
   }
@@ -52,7 +61,7 @@ export default class Presets {
     }
   }
 
-  _createPresetConfig(presetName: string) {
+  _createPresetConfig(presetName: PresetNames) {
     const presetConfig = this._presetConfigs[presetName]
     const nullConfig = this._nullConfig()
     const channelBase = Object.assign(nullConfig.channels, presetConfig!.channels)
@@ -77,11 +86,13 @@ export default class Presets {
       if (!this._isChannel(channel)) {
         continue
       } else if (typeof channel.set === 'string') {
-        channel.set = this._getChannelCopy((config as any)[channel.set])
+        const key = channel.set as keyof Config.Chart
+        channel.set = this._getChannelCopy(config[key] as Data.SeriesList)
       } else if (Array.isArray(channel.set)) {
         const newChannel = []
         for (let i = 0; i < channel.set.length; i++) {
-          const channelConfig = this._getChannelCopy((config as any)[channel.set[i]!])
+          const key = channel.set[i]! as keyof Config.Chart
+          const channelConfig = this._getChannelCopy(config[key] as Data.SeriesList)
           if (channelConfig !== null) {
             newChannel.push(channelConfig)
           }
@@ -101,12 +112,12 @@ export default class Presets {
     ;['legend', 'title', 'subtitle', 'caption', 'reverse', 'sort'].forEach((key) => {
       const prop = key as keyof Config.Chart
       if (config[prop] !== undefined) {
-        ;(base as any)[prop] = config[prop]
+        base[prop] = config[prop] as undefined
       }
     })
   }
 
-  _buildPresetConfig(presetName: string, config: Config.Chart): Config.Chart {
+  _buildPresetConfig(presetName: PresetNames, config: Config.Chart): Config.Chart {
     const presetConfig = this._createPresetConfig(presetName)
     this._fillChannels(presetConfig, config)
     this._setupUserParams(presetConfig, config)

@@ -32,12 +32,17 @@ export const getCSSCustomPropsForElement = (el: HTMLElement, pfx = '') => {
     .filter((pv) => pv[1] !== '')
 }
 
-interface LooseObject {
-  [key: string]: any
+interface StringKeyedObject {
+  [key: string]: unknown
 }
 
-export const propSet = (obj: LooseObject, path: string[], value: any, overwrite: boolean) => {
-  path.reduce((acc, part, idx) => {
+export const propSet = <T extends StringKeyedObject, V>(
+  obj: T,
+  path: string[],
+  value: V,
+  overwrite: boolean
+): T => {
+  path.reduce((acc: StringKeyedObject, part: string, idx: number) => {
     if (idx === path.length - 1) {
       if (overwrite || !acc[part]) {
         acc[part] = value
@@ -46,14 +51,15 @@ export const propSet = (obj: LooseObject, path: string[], value: any, overwrite:
       acc[part] = {}
     }
 
-    return acc[part]
+    return acc[part] as StringKeyedObject
   }, obj)
+
   return obj
 }
 
 export const propsToObject = (
   props: string[][],
-  propObj: LooseObject,
+  propObj: StringKeyedObject,
   pfx = '',
   overwrite = false
 ) => {

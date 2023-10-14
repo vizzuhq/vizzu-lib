@@ -53,7 +53,7 @@ export class CProxy<T> extends CObject {
     }
   }
 
-  setParam(path: string, value: string) {
+  setParam(path: string, value: unknown) {
     const cpath = this._toCString(path)
     const cvalue = this._toCString(String(value).toString())
     try {

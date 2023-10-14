@@ -7,7 +7,7 @@ export type CAnimationPtr = CPointer
 export type CChartPtr = CPointer
 export type CCanvasPtr = CPointer
 export type CEventPtr = CPointer
-export type CFunction<T> = CPointer
+export type CFunction = CPointer
 export type CRecordPtr = CPointer
 export type CRecordValue = CPointer
 export type CPointPtr = CPointer
@@ -53,7 +53,7 @@ export interface Renderer {
 
 export interface CVizzu {
   // decorations
-  callback: (task: CFunction<(CPointer) => void>, obj: CPointer) => void
+  callback: (task: CFunction, obj: CPointer) => void
   renders: { [key: CPointer]: Renderer }
 
   // members
@@ -66,12 +66,12 @@ export interface CVizzu {
   setValue(ptr: CPointer, value: number, type: PtrType): void
   stringToUTF8(str: string, buffer: CPointer, len: number): void
   UTF8ToString(ptr: CString): string
-  addFunction<T>(func: T, sig: string): CFunction<T>
-  removeFunction(cfunc: CFunction<any>): void
+  addFunction<T>(func: T, sig: string): CFunction
+  removeFunction(cfunc: CFunction): void
   ExceptionInfo: CExceptionInfoConstructor
 
   // exported functions
-  _callback(task: CFunction<(CPointer) => void>, obj: CPointer): void
+  _callback(task: CFunction, obj: CPointer): void
   _vizzu_createChart(): CChartPtr
   _vizzu_createCanvas(): CCanvasPtr
   _vizzu_pointerDown(
@@ -123,26 +123,14 @@ export interface CVizzu {
   _chart_getList(): CString
   _chart_getValue(chart: CChartPtr, path: CString): CString
   _chart_setValue(chart: CChartPtr, path: CString, value: CString): void
-  _chart_setFilter(
-    chart: CChartPtr,
-    filter: CFunction<(CRecordPtr) => boolean>,
-    deleter: CFunction<(filter: CFunction<(CRecordPtr) => boolean>) => void>
-  ): void
-  _chart_animate(chart: CChartPtr, callback: CFunction<(bool) => void>): void
+  _chart_setFilter(chart: CChartPtr, filter: CFunction, deleter: CFunction): void
+  _chart_animate(chart: CChartPtr, callback: CFunction): void
   _chart_relToCanvasCoords(chart: CChartPtr, rx: number, ry: number): CPointPtr
   _chart_canvasToRelCoords(chart: CChartPtr, x: number, y: number): CPointPtr
   _chart_setKeyframe(chart: CChartPtr): void
   _chart_markerData(chart: CChartPtr, id: number): CString
-  _addEventListener(
-    chart: CChartPtr,
-    name: CString,
-    callback: CFunction<(CEventPtr, CString) => void>
-  ): void
-  _removeEventListener(
-    chart: CChartPtr,
-    name: CString,
-    callback: CFunction<(CEventPtr, CString) => void>
-  ): void
+  _addEventListener(chart: CChartPtr, name: CString, callback: CFunction): void
+  _removeEventListener(chart: CChartPtr, name: CString, callback: CFunction): void
   _event_preventDefault(event: CEventPtr): void
   _anim_control(chart: CChartPtr, command: CString, param: CString): void
   _anim_setValue(chart: CChartPtr, path: CString, value: CString): void

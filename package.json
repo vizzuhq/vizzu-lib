@@ -64,7 +64,7 @@
     "fix-format": "npm-run-all fix-format-src fix-format-docs fix-format-tools",
     "format": "npm-run-all format-src format-docs format-tools",
     "fix-lint-src-js": "npx eslint --fix --ext .js,.cjs,.mjs --config .eslintrc.cjs src test",
-    "lint-src-js": "npx eslint --ext .js,.cjs,.mjs --config .eslintrc.cjs src test",
+    "lint-src-js": "npx eslint --ext .js,.cjs,.mjs,.ts --config .eslintrc.cjs src test",
     "fix-lint-src": "npm-run-all fix-lint-src-js",
     "lint-src": "npm-run-all lint-src-js",
     "fix-lint-docs-js": "npx eslint --fix --ext .js,.cjs,.mjs --config .eslintrc.cjs docs",
@@ -108,6 +108,8 @@
   "devDependencies": {
     "@rollup/plugin-terser": "^0.4.3",
     "@tsconfig/strictest": "^2.0.2",
+    "@typescript-eslint/eslint-plugin": "^6.7.5",
+    "@typescript-eslint/parser": "^6.7.5",
     "aggregate-error": "^5.0.0",
     "ajv": "8.12.0",
     "axios": "^1.5.1",

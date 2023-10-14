@@ -3,12 +3,19 @@ import { Plugins } from '../types/vizzu.js'
 import Vizzu from '../vizzu.js'
 import { NotInitializedError } from '../errors.js'
 
+interface Handlers {
+  pointermove: (event: PointerEvent) => void
+  pointerup: (event: PointerEvent) => void
+  pointerdown: (event: PointerEvent) => void
+  pointerleave: (event: PointerEvent) => void
+  wheel: (event: WheelEvent) => void
+}
+
 export class PointerEvents implements Plugins.Plugin {
   _vizzu?: Vizzu
   _canvas?: HTMLCanvasElement
-  _handlers = {}
+  _handlers?: Handlers
   _enabled = false
-  _handlerList = ['pointermove', 'pointerup', 'pointerdown', 'pointerleave', 'wheel']
 
   meta = {
     name: 'pointerEvents'
@@ -16,6 +23,24 @@ export class PointerEvents implements Plugins.Plugin {
 
   register(vizzu: Vizzu) {
     this._vizzu = vizzu
+
+    this._handlers = {
+      pointermove: (evt: PointerEvent) => {
+        this._passEventToChart(evt, this._wasm()._vizzu_pointerMove)
+      },
+      pointerup: (evt: PointerEvent) => {
+        this._passEventToChart(evt, this._wasm()._vizzu_pointerUp)
+      },
+      pointerdown: (evt: PointerEvent) => {
+        this._passEventToChart(evt, this._wasm()._vizzu_pointerDown)
+      },
+      pointerleave: (evt: PointerEvent) => {
+        this._passEventToChart(evt, this._wasm()._vizzu_pointerLeave)
+      },
+      wheel: (evt: WheelEvent) => {
+        this._passEventToChart(evt, this._wasm()._vizzu_wheel, 'deltaY')
+      }
+    }
   }
 
   unregister() {
@@ -29,41 +54,23 @@ export class PointerEvents implements Plugins.Plugin {
   }
 
   _setHandlers() {
-    this._canvas = this._vizzu!.getCanvasElement()
-    for (const handlerName of this._handlerList) {
-      ;(this._handlers as any)[handlerName] = (this as any)[handlerName].bind(this)
-      this._canvas.addEventListener(handlerName, (this._handlers as any)[handlerName])
+    if (!this._vizzu || !this._handlers) {
+      throw new NotInitializedError()
+    }
+
+    this._canvas = this._vizzu.getCanvasElement()
+    for (const [key, value] of Object.entries(this._handlers)) {
+      this._canvas.addEventListener(key, value)
     }
   }
 
   _removeHandlers() {
-    for (const handlerName of this._handlerList) {
-      if ((this._handlers as any)[handlerName]) {
-        this._canvas?.removeEventListener(handlerName, (this._handlers as any)[handlerName])
-        delete (this._handlers as any)[handlerName]
+    if (this._handlers && this._canvas) {
+      for (const [key, value] of Object.entries(this._handlers)) {
+        this._canvas.removeEventListener(key, value)
       }
     }
     delete this._canvas
-  }
-
-  pointermove(evt: PointerEvent) {
-    this._passEventToChart(evt, this._wasm()._vizzu_pointerMove)
-  }
-
-  pointerup(evt: PointerEvent) {
-    this._passEventToChart(evt, this._wasm()._vizzu_pointerUp)
-  }
-
-  pointerdown(evt: PointerEvent) {
-    this._passEventToChart(evt, this._wasm()._vizzu_pointerDown)
-  }
-
-  pointerleave(evt: PointerEvent) {
-    this._passEventToChart(evt, this._wasm()._vizzu_pointerLeave)
-  }
-
-  wheel(evt: WheelEvent) {
-    this._passEventToChart(evt, this._wasm()._vizzu_wheel, 'deltaY')
   }
 
   _chart() {
@@ -80,12 +87,16 @@ export class PointerEvents implements Plugins.Plugin {
   }
 
   _passEventToChart<T extends MouseEvent, F>(evt: T, cfunc: F, member = 'pointerId') {
-    const args = [this._render()._ccanvas.getId(), evt[member as keyof T]]
+    const args: unknown[] = [this._render()._ccanvas.getId(), evt[member as keyof T]]
     if (evt.clientX !== undefined) {
-      const clientPos = { x: evt.clientX, y: evt.clientY }
-      const pos = this._render().clientToRenderCoor(clientPos)
-      args.push(pos.x, pos.y)
+      args.push(...this._getCoords(evt))
     }
-    this._chart()._cChart._call(cfunc as any)(...args)
+    this._chart()._cChart._call(cfunc as (cSelf: number, ...params: unknown[]) => unknown)(...args)
+  }
+
+  _getCoords(evt: MouseEvent): number[] {
+    const clientPos = { x: evt.clientX, y: evt.clientY }
+    const pos = this._render().clientToRenderCoor(clientPos)
+    return [pos.x, pos.y]
   }
 }

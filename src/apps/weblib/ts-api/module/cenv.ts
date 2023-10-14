@@ -27,12 +27,12 @@ export class CEnv {
     return this._objectRegistry.get(this._callStatic(getter))
   }
 
-  _callStatic<T extends any[], R>(f: (...params: T) => R): (...params: T) => R {
+  _callStatic<T extends unknown[], R>(f: (...params: T) => R): (...params: T) => R {
     return (...params) => {
       try {
         return f(...params)
-      } catch (e: any) {
-        if (Number.isInteger(e)) {
+      } catch (e: unknown) {
+        if (typeof e === 'number' && Number.isInteger(e)) {
           throw new CError(e, this._wasm)
         } else {
           throw e
@@ -54,7 +54,7 @@ export class CObject extends CEnv {
     return this._objectRegistry.get(this._call(getter))
   }
 
-  _call<T extends any[], R>(f: (cSelf: CPointer, ...params: T) => R): (...params: T) => R {
+  _call<T extends unknown[], R>(f: (cSelf: CPointer, ...params: T) => R): (...params: T) => R {
     return super._callStatic(f).bind(this, this.getId())
   }
 }

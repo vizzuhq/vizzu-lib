@@ -1,4 +1,4 @@
-import { Plugins } from './types/vizzu.js'
+import { Plugins as P } from './types/vizzu.js'
 
 import Vizzu from './vizzu.js'
 
@@ -8,8 +8,6 @@ export enum Hooks {
   setAnimParams = 'setAnimParams',
   animateRegister = 'animateRegister'
 }
-
-import P = Plugins
 
 interface PluginRecord {
   name: string
@@ -93,7 +91,7 @@ export class PluginRegistry {
 
   hook<T extends Hooks>(type: T, ctx: P.HookContexts[T]) {
     return {
-      default: (last = (_ctx: P.HookContexts[T]) => {}) => {
+      default: (last: (ctx: P.HookContexts[T]) => void = () => {}) => {
         this._exec(ctx, type, last)
       }
     }

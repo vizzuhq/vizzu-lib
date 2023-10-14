@@ -1,13 +1,10 @@
-import { CFunction, CString, CEventPtr } from './cvizzu.types'
+import { CFunction } from './cvizzu.types'
 import { Events as E, Plugins } from './types/vizzu.js'
 
 import { CChart, CEvent } from './module/cchart.js'
 import { Render } from './render.js'
 
-type EventRecord<Handler> = [
-  CFunction<(eventPtr: CEventPtr, param: CString) => void> | null,
-  Handler[]
-]
+type EventRecord<Handler> = [CFunction | null, Handler[]]
 
 interface EventState {
   canceled: boolean
