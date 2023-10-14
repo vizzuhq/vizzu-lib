@@ -1,4 +1,4 @@
-/// <reference path="../types/vizzu.d.ts" />
+import { Data } from '../types/vizzu.js'
 
 const assert = (condition: boolean, message: string) => {
   if (!condition) {

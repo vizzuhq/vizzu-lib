@@ -1,4 +1,4 @@
-/// <reference path="../cvizzu.types.d.ts" />
+import { CPointer, CVizzu, CString } from '../cvizzu.types'
 
 import { CError } from './cerror.js'
 import { ObjectRegistry, FnGetter, CPointerClosure } from './objregistry.js'

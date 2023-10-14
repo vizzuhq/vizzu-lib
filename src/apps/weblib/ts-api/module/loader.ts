@@ -1,4 +1,4 @@
-/// <reference path="../cvizzu.types.d.ts" />
+import { ModuleOptions } from '../cvizzu.types'
 
 import { Module } from './module.js'
 import VizzuModule from '../cvizzu.js'

@@ -1,5 +1,6 @@
-/// <reference path="../cvizzu.types.d.ts" />
-/// <reference path="../types/vizzu.d.ts" />
+import { CPointer, CRecordPtr } from '../cvizzu.types'
+
+import { Data } from '../types/vizzu.js'
 
 import { CObject, CEnv } from './cenv.js'
 

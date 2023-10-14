@@ -1,4 +1,4 @@
-/// <reference path="./types/vizzu.d.ts" />
+import { Anim } from './types/vizzu.js'
 
 import { CChart, CAnimation } from './module/cchart.js'
 

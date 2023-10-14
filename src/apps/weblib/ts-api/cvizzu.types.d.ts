@@ -1,19 +1,19 @@
-type CPointer = number
-type CString = CPointer
-type CException = CPointer
-type CTypeInfo = CPointer
-type CSnapshotPtr = CPointer
-type CAnimationPtr = CPointer
-type CChartPtr = CPointer
-type CCanvasPtr = CPointer
-type CEventPtr = CPointer
-type CFunction<T> = CPointer
-type CRecordPtr = CPointer
-type CRecordValue = CPointer
-type CPointPtr = CPointer
-type CArrayPtr = CPointer
+export type CPointer = number
+export type CString = CPointer
+export type CException = CPointer
+export type CTypeInfo = CPointer
+export type CSnapshotPtr = CPointer
+export type CAnimationPtr = CPointer
+export type CChartPtr = CPointer
+export type CCanvasPtr = CPointer
+export type CEventPtr = CPointer
+export type CFunction<T> = CPointer
+export type CRecordPtr = CPointer
+export type CRecordValue = CPointer
+export type CPointPtr = CPointer
+export type CArrayPtr = CPointer
 
-type PtrType =
+export type PtrType =
   | 'i1'
   | 'i8'
   | 'i16'
@@ -29,18 +29,18 @@ type PtrType =
   | 'float*'
   | 'double*'
 
-interface CExceptionInfo {
+export interface CExceptionInfo {
   get_type(): CTypeInfo
 }
-interface CExceptionInfoConstructor {
+export interface CExceptionInfoConstructor {
   new (ptr: CPointer): CExceptionInfo
 }
 
-interface ModuleOptions {
+export interface ModuleOptions {
   locateFile?: (path: string) => string
 }
 
-interface Renderer {
+export interface Renderer {
   canvas(): HTMLCanvasElement
   dc(): CanvasRenderingContext2D
   frameBegin()
@@ -51,7 +51,7 @@ interface Renderer {
   endPolygonNotification()
 }
 
-interface CVizzu {
+export interface CVizzu {
   // decorations
   callback: (task: CFunction<(CPointer) => void>, obj: CPointer) => void
   renders: { [key: CPointer]: Renderer }

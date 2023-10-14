@@ -1,5 +1,6 @@
-/// <reference path="./cvizzu.types.d.ts" />
+import { Renderer } from './cvizzu.types'
 
+import { Geom } from './types/vizzu.js'
 import { CCanvas } from './module/ccanvas.js'
 import { CChart } from './module/cchart.js'
 

@@ -1,5 +1,6 @@
-/// <reference path="../cvizzu.types.d.ts" />
-/// <reference path="../types/vizzu.d.ts" />
+import { CString, CFunction, CEventPtr } from '../cvizzu.types'
+
+import { Anim, Config, Geom, Styles } from '../types/vizzu.js'
 
 import { CObject, CEnv } from './cenv.js'
 import { CProxy } from './cproxy.js'

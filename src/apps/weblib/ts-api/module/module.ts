@@ -1,3 +1,5 @@
+import { CVizzu, Renderer } from '../cvizzu.types'
+
 import { ObjectRegistry } from './objregistry.js'
 import { CEnv } from './cenv.js'
 import { CData } from './cdata.js'

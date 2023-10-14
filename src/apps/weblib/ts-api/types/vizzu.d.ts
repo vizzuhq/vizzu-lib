@@ -1,11 +1,11 @@
-declare namespace Lib {
+export namespace Lib {
   /** Options for the library. */
   interface Options {
     /** The URL for the webassembly binary (cvizzu.wasm). */
     wasmUrl?: string
   }
 }
-declare namespace Data {
+export namespace Data {
   /** Name of the data series. */
   type SeriesName = string
   /** Type of the data series:
@@ -124,7 +124,7 @@ declare namespace Data {
   type SeriesDescriptor = SeriesName | `${AggregatorType}(${SeriesName})`
   type SeriesList = SeriesDescriptor[] | SeriesDescriptor
 }
-declare namespace Config {
+export namespace Config {
   /** Units: 
     - no unit: the same unit as in the data;
     - %: percentage relative to the min/max of the data; 
@@ -251,7 +251,7 @@ declare namespace Config {
     split?: boolean
   }
 }
-declare namespace Styles {
+export namespace Styles {
   /** Length can be set in pixels or in percentage of the element or the element's
     font size. Pixel is the default unit.  */
   type Length = `${number}px` | `${number}%` | `${number}em` | number
@@ -539,7 +539,7 @@ declare namespace Styles {
     logo?: Logo | null
   }
 }
-declare namespace Anim {
+export namespace Anim {
   /** Duration can be set in seconds or milliseconds.
     In case no unit is set, it defaults to seconds. */
   type Duration = `${number}s` | `${number}ms` | number
@@ -672,7 +672,7 @@ declare namespace Anim {
 
   type AnimTarget = Anim.Keyframes | CAnimation
 }
-declare namespace Geom {
+export namespace Geom {
   /** Object representing a 2D point. */
   interface Point {
     /** X coordinate of the point. */
@@ -704,7 +704,7 @@ declare namespace Geom {
     size: Point
   }
 }
-declare namespace Events {
+export namespace Events {
   enum Type {
     click = 'click',
     pointeron = 'pointeron',
@@ -940,7 +940,7 @@ declare namespace Events {
   }
   type Handler<Event> = (event: Event) => void
 }
-declare namespace Presets {
+export namespace Presets {
   interface Preset {
     legend?: 'color' | 'lightness' | 'size' | null
     title?: string | null
@@ -1190,7 +1190,7 @@ declare namespace Presets {
     stackedBubble(config: StackedBubble): Config.Chart
   }
 }
-declare namespace Plugins {
+export namespace Plugins {
   interface PluginMeta {
     name: string
     version?: string
@@ -1245,7 +1245,7 @@ declare namespace Plugins {
   }
 }
 
-declare enum Hooks {
+export enum Hooks {
   setAnimParams = 'setAnimParams',
   animateRegister = 'animateRegister'
 }
@@ -1265,11 +1265,11 @@ type Feature = 'tooltip' | 'logging' | 'rendering'
 /** Converts a point between two coordinate system. */
 type Converter = (point: Geom.Point) => Geom.Point
 /** Type of a point's coordinate system. */
-type CoordinateType = 'relative' | 'canvas'
+export type CoordinateType = 'relative' | 'canvas'
 //import ObjectRegistry from './objregistry.js'
 /** Class representing a single chart in Vizzu. */
 
-interface VizzuOptions {
+export interface VizzuOptions {
   container: HTMLElement
   features?: Plugins.Plugin[]
 }
@@ -1347,3 +1347,5 @@ interface Vizzu {
   /** Setter method for Library options. */
   //  static options(options: Lib.Options): void
 }
+
+export {}

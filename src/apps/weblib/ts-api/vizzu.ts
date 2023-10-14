@@ -1,8 +1,18 @@
-/// <reference path="./types/vizzu.d.ts" />
-
+import {
+  Anim,
+  Data,
+  Config,
+  Geom,
+  Events,
+  Lib,
+  Plugins,
+  Styles,
+  VizzuOptions,
+  CoordinateType
+} from './types/vizzu.js'
 import { loader } from './module/loader.js'
 import { Chart } from './chart.js'
-import { CAnimation } from './module/cchart.js'
+import { CAnimation, Snapshot } from './module/cchart.js'
 import { CObject } from './module/cenv.js'
 import { AnimControl } from './animcontrol.js'
 import { recursiveCopy } from './utils.js'

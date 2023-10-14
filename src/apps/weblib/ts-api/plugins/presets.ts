@@ -1,4 +1,4 @@
-/// <reference path="../types/vizzu.d.ts" />
+import { Data, Config } from '../types/vizzu.js'
 
 import { presetConfigs } from './presetconfigs.js'
 

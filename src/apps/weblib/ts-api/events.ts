@@ -1,4 +1,5 @@
-/// <reference path="./types/vizzu.d.ts" />
+import { CFunction, CString, CEventPtr } from './cvizzu.types'
+import { Events as E, Plugins } from './types/vizzu.js'
 
 import { CChart, CEvent } from './module/cchart.js'
 import { Render } from './render.js'
@@ -12,32 +13,32 @@ interface EventState {
   canceled: boolean
 }
 
-type EventHandlers<T extends Events.Type> = {
-  [key in T]?: EventRecord<Events.Handler<Events.EventMap[T]>>
+type EventHandlers<T extends E.Type> = {
+  [key in T]?: EventRecord<E.Handler<E.EventMap[T]>>
 }
 
 export class Events {
   _cChart: CChart
   _render: Render
-  _eventHandlers: EventHandlers<Events.Type> = {}
+  _eventHandlers: EventHandlers<E.Type> = {}
 
   constructor(cChart: CChart, render: Render) {
     this._cChart = cChart
     this._render = render
   }
 
-  add<T extends Events.Type>(eventName: T, handler: Events.Handler<Events.EventMap[T]>) {
+  add<T extends E.Type>(eventName: T, handler: E.Handler<E.EventMap[T]>) {
     if (typeof eventName !== 'string') {
       throw new Error('first parameter should be string')
     }
     this._getHandlers(eventName).push(handler)
   }
 
-  _getHandlers<T extends Events.Type>(eventName: T): Events.Handler<Events.EventMap[T]>[] {
+  _getHandlers<T extends E.Type>(eventName: T): E.Handler<E.EventMap[T]>[] {
     if (!(eventName in this._eventHandlers)) {
       let cfunc = null
       if (!this._isJSEvent(eventName)) {
-        const func = (eventPtr: CEvent, param: Events.EventMap[T]) => {
+        const func = (eventPtr: CEvent, param: E.EventMap[T]) => {
           this._invoke(eventName, param, eventPtr)
         }
         cfunc = this._cChart.addEventListener(eventName, func)
@@ -48,7 +49,7 @@ export class Events {
     return handlers![1]
   }
 
-  remove<T extends Events.Type>(eventName: T, handler: Events.Handler<Events.EventMap[T]>) {
+  remove<T extends E.Type>(eventName: T, handler: E.Handler<E.EventMap[T]>) {
     if (typeof eventName !== 'string') {
       throw new Error('first parameter should be string')
     }
@@ -76,17 +77,17 @@ export class Events {
 
   addMany(events: Plugins.PluginListeners) {
     for (const [eventName, handler] of Object.entries(events)) {
-      this.add(eventName as Events.Type, handler)
+      this.add(eventName as E.Type, handler)
     }
   }
 
   removeMany(events: Plugins.PluginListeners) {
     for (const [eventName, handler] of Object.entries(events)) {
-      this.remove(eventName as Events.Type, handler)
+      this.remove(eventName as E.Type, handler)
     }
   }
 
-  _invoke<T extends Events.Type>(eventName: T, param: Events.EventMap[T], cEvent?: CEvent) {
+  _invoke<T extends E.Type>(eventName: T, param: E.EventMap[T], cEvent?: CEvent) {
     const state: EventState = { canceled: false }
     try {
       const handlers = this._eventHandlers[eventName]
@@ -106,18 +107,18 @@ export class Events {
     return state.canceled
   }
 
-  _isJSEvent(eventName: Events.Type) {
+  _isJSEvent(eventName: E.Type) {
     return eventName.startsWith('api-')
   }
 
-  _makeJSEventParam<T>(param: Events.Event<T>, state: EventState) {
+  _makeJSEventParam<T>(param: E.Event<T>, state: EventState) {
     param.preventDefault = () => {
       state.canceled = true
     }
     return param
   }
 
-  _makeCEventParam<T>(cEvent: CEvent, param: Events.Event<T>, state: EventState) {
+  _makeCEventParam<T>(cEvent: CEvent, param: E.Event<T>, state: EventState) {
     param.preventDefault = () => {
       cEvent.preventDefault()
       state.canceled = true

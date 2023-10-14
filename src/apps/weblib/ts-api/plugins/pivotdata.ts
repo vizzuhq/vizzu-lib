@@ -1,4 +1,4 @@
-/// <reference path="../types/vizzu.d.ts" />
+import { Data, Plugins } from '../types/vizzu.js'
 
 import UnPivot from './unpivot.js'
 

@@ -1,9 +1,9 @@
-/// <reference path="./types/vizzu.d.ts" />
+import { Data as D } from './types/vizzu.js'
 
 import { CRecord, CData } from './module/cdata.js'
 
-class DataRecord implements Data.Record {
-  [seriesName: Data.SeriesName]: Data.Value
+class DataRecord implements D.Record {
+  [seriesName: D.SeriesName]: D.Value
 
   constructor(cRecord: CRecord) {
     return new Proxy(this, {
@@ -21,7 +21,7 @@ export class Data {
     this._cData = cData
   }
 
-  set(obj?: Data.TableBySeries | Data.TableByRecords) {
+  set(obj?: D.TableBySeries | D.TableByRecords) {
     if (!obj) {
       return
     }
@@ -52,7 +52,7 @@ export class Data {
     }
   }
 
-  addRecord(record: Data.ValueArray | Data.Record, seriesList: Data.SeriesInfo[]): void {
+  addRecord(record: D.ValueArray | D.Record, seriesList: D.SeriesInfo[]): void {
     if (!Array.isArray(record)) {
       if (typeof record === 'object' && record !== null) {
         record = this.recordObjectToArray(record, seriesList)
@@ -61,8 +61,8 @@ export class Data {
     this._cData.addRecord(record)
   }
 
-  recordObjectToArray(record: Data.Record, seriesList: Data.SeriesInfo[]): Data.Value[] {
-    const result = [] as Data.Value[]
+  recordObjectToArray(record: D.Record, seriesList: D.SeriesInfo[]): D.Value[] {
+    const result = [] as D.Value[]
 
     seriesList.forEach((series) => {
       if (series.name in record) {
@@ -79,12 +79,12 @@ export class Data {
     return type === 'measure' ? 0 : ''
   }
 
-  setSeries(series: Data.Series): void {
+  setSeries(series: D.Series): void {
     if (!series.name) {
       throw new Error('missing series name')
     }
 
-    const values = series.values ? series.values : ([] as Data.Values)
+    const values = series.values ? series.values : ([] as D.Values)
 
     const seriesType = series.type ? series.type : this.detectType(values)
 
@@ -98,7 +98,7 @@ export class Data {
     }
   }
 
-  detectType(values: (string | number)[]): Data.SeriesType | null {
+  detectType(values: (string | number)[]): D.SeriesType | null {
     if (Array.isArray(values) && values.length) {
       if (typeof values[0] === 'number') {
         return 'measure'
@@ -152,7 +152,7 @@ export class Data {
     this._cData.addMeasure(name, unit, numbers)
   }
 
-  setFilter(filter: Data.FilterCallback | null): void {
+  setFilter(filter: D.FilterCallback | null): void {
     if (typeof filter === 'function') {
       const callback = (cRecord: CRecord) => filter(new DataRecord(cRecord))
       this._cData.setFilter(callback)

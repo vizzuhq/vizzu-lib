@@ -1,4 +1,4 @@
-/// <reference path="../cvizzu.types.d.ts" />
+import { CPointer, CString } from '../cvizzu.types'
 
 import { CObject } from './cenv.js'
 import { cloneObject, iterateObject } from '../utils.js'

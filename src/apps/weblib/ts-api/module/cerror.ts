@@ -1,4 +1,4 @@
-/// <reference path="../cvizzu.types.d.ts" />
+import { CPointer, CVizzu } from '../cvizzu.types'
 
 export class CError extends Error {
   constructor(ptr: CPointer, wasm: CVizzu) {

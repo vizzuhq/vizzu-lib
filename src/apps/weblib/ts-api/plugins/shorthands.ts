@@ -1,4 +1,4 @@
-/// <reference path="../types/vizzu.d.ts" />
+import { Anim, Data, Config, Plugins, Styles } from '../types/vizzu.js'
 
 import Vizzu from '../vizzu.js'
 
