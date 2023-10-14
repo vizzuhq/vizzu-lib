@@ -138,7 +138,11 @@ export class Chart {
       this._container.removeChild(this._canvas)
   }
 
-  getConverter(target: string, from: string, to: string): (point: Geom.Point) => Geom.Point {
+  getConverter(
+    target: string,
+    from: Geom.CoordinateType,
+    to: Geom.CoordinateType
+  ): (point: Geom.Point) => Geom.Point {
     if (typeof target === 'string' && target.startsWith('plot')) {
       if (this._cChart) {
         const chart = this._cChart

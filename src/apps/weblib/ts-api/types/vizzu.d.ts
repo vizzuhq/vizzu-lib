@@ -705,6 +705,10 @@ export namespace Geom {
     /** Size of the rectangle. */
     size: Point
   }
+  /** Converts a point between two coordinate system. */
+  type Converter = (point: Point) => Point
+  /** Type of a point's coordinate system. */
+  type CoordinateType = 'relative' | 'canvas'
 }
 export namespace Events {
   enum Type {
@@ -1278,10 +1282,6 @@ type Feature =
   | 'shorthands'
   | 'pivotData'
   | 'pointerEvents'
-/** Converts a point between two coordinate system. */
-type Converter = (point: Geom.Point) => Geom.Point
-/** Type of a point's coordinate system. */
-export type CoordinateType = 'relative' | 'canvas'
 
 export interface VizzuOptions {
   container: HTMLElement
@@ -1349,7 +1349,11 @@ export class Vizzu {
   /** Returns the underlying canvas element. */
   getCanvasElement(): HTMLCanvasElement
   /** Returns a converter function. */
-  getConverter(target: 'plot-area', from: CoordinateType, to: CoordinateType): Converter
+  getConverter(
+    target: `plot${string}`,
+    from: Geom.CoordinateType,
+    to: Geom.CoordinateType
+  ): Geom.Converter
   /** Re-renders the chart. */
   forceUpdate(): void
   /** Property for read-only access to style object without default values. */

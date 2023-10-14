@@ -8,7 +8,6 @@ import {
   Plugins,
   Styles,
   VizzuOptions,
-  CoordinateType,
   Features,
   FeatureFunction,
   Vizzu as VizzuInterface
@@ -222,9 +221,9 @@ export default class Vizzu implements VizzuInterface {
   }
 
   getConverter(
-    target: 'plot-area',
-    from: CoordinateType,
-    to: CoordinateType
+    target: `plot${string}`,
+    from: Geom.CoordinateType,
+    to: Geom.CoordinateType
   ): (point: Geom.Point) => Geom.Point {
     if (!this._chart) throw new NotInitializedError()
     return this._chart.getConverter(target, from, to)
