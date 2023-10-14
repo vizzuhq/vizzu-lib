@@ -1264,8 +1264,20 @@ declare class Snapshot {}
       (enabled by default). 
     - tooltip: tooltips on the chart appearing on markers on mouse over. 
       Since the tooltip uses the animation interface, calling animate() while
-      the tooltip is enabled can cause unwanted behaviour. */
-type Feature = 'tooltip' | 'logging' | 'rendering'
+      the tooltip is enabled can cause unwanted behaviour.
+    - cssProperties: enables setting the styles through --vizzu-... css properties.
+    - shorthands: enables shorthand properties for chart config and style.
+    - pivotData: enables setting the data in pivot table or data cube format.
+    - pointerEvents: enables pointer events on the chart.
+  */
+type Feature =
+  | 'logging'
+  | 'tooltip'
+  | 'rendering'
+  | 'cssProperties'
+  | 'shorthands'
+  | 'pivotData'
+  | 'pointerEvents'
 /** Converts a point between two coordinate system. */
 type Converter = (point: Geom.Point) => Geom.Point
 /** Type of a point's coordinate system. */
@@ -1348,7 +1360,12 @@ export class Vizzu {
   get config(): Readonly<Config.Chart>
   /** Property for read-only access to data metainfo object. */
   get data(): Readonly<Data.Metainfo>
-  /** Enable/disable additional features. */
+  /** If called as a function:
+      (name, enabled): it enables/disables built-in features and registered plugins. 
+      (plugin, enabled?): registers the given plugin.
+      Otherwise gives access to the interfaces of the registered plugins, where
+      every plugin acceccible as a property with the plugin name.
+  */
   get feature(): Features
   /** Removes the reference of the chart from every place it attached itself,
     this method must be called in order to get the chart properly garbage 
@@ -1358,4 +1375,6 @@ export class Vizzu {
   static get presets(): Presets.Presets
   /** Setter method for Library options. */
   static options(options: Lib.Options): void
+  /** Initializes the library, if not called, first constructor call will do that. */
+  static initialize(): Promise<void>
 }
