@@ -14,6 +14,6 @@ export class Logging implements Plugins.Plugin {
 
   enable(enabled: boolean): void {
     if (!this._vizzu || !this._vizzu._chart) throw new NotInitializedError()
-    this._vizzu._chart._module.setLogging(enabled)
+    this._vizzu._chart.setLogging(enabled)
   }
 }

@@ -196,6 +196,10 @@ export class Chart {
     return this._cChart.storeSnapshot()
   }
 
+  setLogging(enabled: boolean): void {
+    this._module.setLogging(enabled)
+  }
+
   getCAnimControl(): CAnimControl {
     return this._module.getAnimControl(this._cChart)
   }
