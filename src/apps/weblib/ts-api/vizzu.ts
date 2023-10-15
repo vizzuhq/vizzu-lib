@@ -14,7 +14,8 @@ import {
 } from './types/vizzu.js'
 import { loader } from './module/loader.js'
 import { Chart } from './chart.js'
-import { CAnimation, Snapshot } from './module/cchart.js'
+import { Snapshot } from './module/cchart.js'
+import { CAnimation } from './module/canimctrl.js'
 import { CObject } from './module/cenv.js'
 import { AnimControl } from './animcontrol.js'
 import { recursiveCopy } from './utils.js'
@@ -160,14 +161,14 @@ export default class Vizzu implements VizzuInterface {
       }
       if (!this._chart) throw new NotInitializedError()
       this._chart.animate(callback, target, options)
-      activate(new AnimControl(this._chart._cChart))
+      activate(new AnimControl(this._chart.getCAnimControl()))
     })
   }
 
   // keeping this one for backward compatibility
   get animation(): AnimControl {
     if (!this._chart) throw new NotInitializedError()
-    return new AnimControl(this._chart._cChart)
+    return new AnimControl(this._chart.getCAnimControl())
   }
 
   version(): string {

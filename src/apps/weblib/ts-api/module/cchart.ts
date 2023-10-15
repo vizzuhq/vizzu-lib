@@ -6,10 +6,9 @@ import { CObject, CEnv } from './cenv.js'
 import { CPointerClosure } from './objregistry.js'
 import { CProxy } from './cproxy.js'
 import { CCanvas } from './ccanvas.js'
+import { CAnimation } from './canimctrl.js'
 
 export class Snapshot extends CObject {}
-
-export class CAnimation extends CObject {}
 
 export class CEvent extends CObject {
   preventDefault(): void {
@@ -48,27 +47,12 @@ export class CChart extends CObject {
     this._call(this._wasm._chart_animate)(callbackPtr)
   }
 
-  animControl(command: string, param = ''): void {
-    const ccommand = this._toCString(command)
-    const cparam = this._toCString(param)
-    try {
-      this._call(this._wasm._anim_control)(ccommand, cparam)
-    } finally {
-      this._wasm._free(cparam)
-      this._wasm._free(ccommand)
-    }
-  }
-
   storeSnapshot(): Snapshot {
     return new Snapshot(this._get(this._wasm._chart_store), this)
   }
 
   restoreSnapshot(snapshot: Snapshot): void {
     this._call(this._wasm._chart_restore)(snapshot.getId())
-  }
-
-  storeAnim(): CAnimation {
-    return new CAnimation(this._get(this._wasm._chart_anim_store), this)
   }
 
   restoreAnim(animation: CAnimation): void {

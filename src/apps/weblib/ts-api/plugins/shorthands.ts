@@ -2,7 +2,8 @@ import { Anim, Data, Config, Plugins, Styles } from '../types/vizzu.js'
 
 import Vizzu from '../vizzu.js'
 
-import { Snapshot, CAnimation } from '../module/cchart.js'
+import { Snapshot } from '../module/cchart.js'
+import { CAnimation } from '../module/canimctrl.js'
 
 type ChannelName = keyof Config.Channels
 

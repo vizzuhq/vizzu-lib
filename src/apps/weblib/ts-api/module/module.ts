@@ -5,6 +5,7 @@ import { CEnv } from './cenv.js'
 import { CData } from './cdata.js'
 import { CChart } from './cchart.js'
 import { CCanvas } from './ccanvas.js'
+import { CAnimControl } from './canimctrl.js'
 
 export class Module extends CEnv {
   constructor(wasm: CVizzu) {
@@ -28,6 +29,10 @@ export class Module extends CEnv {
 
   getData(cChart: CChart): CData {
     return new CData(cChart.getId, this)
+  }
+
+  getAnimControl(cChart: CChart): CAnimControl {
+    return new CAnimControl(cChart.getId, this)
   }
 
   createChart(): CChart {

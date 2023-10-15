@@ -1,16 +1,16 @@
 import { Anim } from './types/vizzu.js'
 
-import { CChart, CAnimation } from './module/cchart.js'
+import { CAnimControl, CAnimation } from './module/canimctrl.js'
 
 export class AnimControl implements Anim.Control {
-  private _cChart: CChart
+  private _cControl: CAnimControl
 
-  constructor(cChart: CChart) {
-    this._cChart = cChart
+  constructor(cControl: CAnimControl) {
+    this._cControl = cControl
   }
 
   store(): CAnimation {
-    return this._cChart.storeAnim()
+    return this._cControl.storeAnim()
   }
 
   seek(value: Anim.Position): this {
@@ -51,6 +51,6 @@ export class AnimControl implements Anim.Control {
   }
 
   private _animControl(command: string, param = ''): void {
-    this._cChart.animControl(command, param)
+    this._cControl.animControl(command, param)
   }
 }

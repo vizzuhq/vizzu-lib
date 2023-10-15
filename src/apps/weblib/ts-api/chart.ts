@@ -1,6 +1,7 @@
 import { Anim, Config, Geom, Data as D, Styles, Events as E } from './types/vizzu.js'
 import { Module } from './module/module.js'
-import { CChart, CAnimation, Snapshot } from './module/cchart.js'
+import { CChart, Snapshot } from './module/cchart.js'
+import { CAnimation } from './module/canimctrl.js'
 import { CData } from './module/cdata.js'
 import { Render } from './render.js'
 import { Data } from './data.js'
@@ -13,6 +14,7 @@ import { PivotData } from './plugins/pivotdata.js'
 import { Tooltip } from './plugins/tooltip.js'
 import { PointerEvents } from './plugins/pointerevents.js'
 import { CSSProperties } from './plugins/cssproperties.js'
+import { CAnimControl } from './module/canimctrl.js'
 
 export class Chart {
   _module: Module
@@ -192,5 +194,9 @@ export class Chart {
 
   store(): Snapshot {
     return this._cChart.storeSnapshot()
+  }
+
+  getCAnimControl(): CAnimControl {
+    return this._module.getAnimControl(this._cChart)
   }
 }
