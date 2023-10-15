@@ -11,10 +11,13 @@ FuncString::FuncString(std::string code, bool throwOnError)
 
 	if (code.empty()) return;
 
-	auto parts = SmartString::split(code, '(');
+	std::array<std::string, 2> parts{};
+	if (auto where = code.find('('); where != std::string::npos) {
+		parts[0] = code.substr(0, where);
+		parts[1] = code.substr(where + 1);
+	}
 
-	if (parts.size() != 2 || parts[1].empty()
-	    || parts[1].back() != ')') {
+	if (parts[1].empty() || parts[1].back() != ')') {
 		if (!throwOnError) return;
 
 		throw std::logic_error("invalid function format");

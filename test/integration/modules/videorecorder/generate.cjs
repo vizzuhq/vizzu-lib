@@ -294,7 +294,7 @@ try {
     .number('b')
     .alias('b', 'browsers')
     .describe('b', 'Change number of parallel browser windows' + '\n')
-    .default('b', 1)
+    .default('b', 6)
 
     .boolean('r')
     .describe('r', 'Also run the steps in reverse order')

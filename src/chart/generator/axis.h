@@ -40,7 +40,7 @@ template <typename Type> struct AbstractAxises
 
 	bool operator==(const AbstractAxises<Type> &other) const
 	{
-		for (auto i = 0; i < std::size(axises); i++) {
+		for (auto i = 0; i < std::size(axises); ++i) {
 			auto id = static_cast<ChannelId>(i);
 			if (axises[id] != other.axises[id]) return false;
 		}

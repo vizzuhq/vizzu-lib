@@ -12,7 +12,7 @@ const Font &Chart::getDefaultFont()
 	    Font{.fontFamily = ::Anim::String("Roboto, sans-serif"),
 	        .fontStyle = Gfx::Font::Style::normal,
 	        .fontWeight = Gfx::Font::Weight::Normal(),
-	        .fontSize = Gfx::Length(12)};
+	        .fontSize = Gfx::Length{12}};
 	return instance;
 }
 
@@ -25,7 +25,7 @@ Chart Chart::def()
 		{
 			.paddingTop = Gfx::Length::Emphemeral(5.0 / 12.0),
 			.paddingRight = Gfx::Length::Emphemeral(5.0 / 12.0),
-			.paddingBottom = Gfx::Length::Emphemeral(10.0 / 12.0),
+			.paddingBottom = Gfx::Length::Emphemeral(0.0),
 			.paddingLeft = Gfx::Length::Emphemeral(5.0 / 12.0)
 		},
 		Box
@@ -48,7 +48,7 @@ Chart Chart::def()
 				{
 					.paddingTop = Gfx::Length::Emphemeral(50.0 / 12.0),
 					.paddingRight = Gfx::Length::Emphemeral(45.0 / 12.0),
-					.paddingBottom = Gfx::Length::Emphemeral(60.0 / 12.0),
+					.paddingBottom = Gfx::Length::Emphemeral(70.0 / 12.0),
 					.paddingLeft = Gfx::Length::Emphemeral(80.0 / 12.0)
 				},
 				Box
@@ -343,7 +343,7 @@ Chart Chart::def()
 				{
 					.paddingTop = Gfx::Length::Emphemeral(10.0 / 12.0),
 					.paddingRight = Gfx::Length::Emphemeral(5.0 / 12.0),
-					.paddingBottom = Gfx::Length::Emphemeral(60.0 / 12.0),
+					.paddingBottom = Gfx::Length::Emphemeral(70.0 / 12.0),
 					.paddingLeft = Gfx::Length::Emphemeral(20.0 / 12.0)
 				},
 				Box
@@ -415,9 +415,9 @@ Chart Chart::def()
 			.title = {
 				Padding
 				{
-					.paddingTop = Gfx::Length::Emphemeral(15.0 / 26.0),
+					.paddingTop = Gfx::Length::Emphemeral(10.0 / 26.0),
 					.paddingRight = Gfx::Length::Emphemeral(10.0 / 26.0),
-					.paddingBottom = Gfx::Length::Emphemeral(0),
+					.paddingBottom = Gfx::Length::Emphemeral(5.0 / 26.0),
 					.paddingLeft = Gfx::Length::Emphemeral(10.0 / 26.0)
 				},
 				Font
@@ -465,10 +465,10 @@ Chart Chart::def()
 			.caption = {
 				Padding
 				{
-					.paddingTop = Gfx::Length::Emphemeral(0),
-					.paddingRight = Gfx::Length::Emphemeral(0),
-					.paddingBottom = Gfx::Length::Emphemeral(-1.0),
-					.paddingLeft = Gfx::Length::Emphemeral(5.0 / 12.0)
+					.paddingTop = Gfx::Length::Emphemeral(0.475),
+					.paddingRight = Gfx::Length::Emphemeral(1.6 * 30 / 26 + 40.0 * 29 / 26 / 12.13526042),
+					.paddingBottom = Gfx::Length::Emphemeral(0.475),
+					.paddingLeft = Gfx::Length::Emphemeral(0.8 * 30 / 26)
 				},
 				Font
 				{

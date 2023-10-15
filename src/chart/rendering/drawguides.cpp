@@ -28,15 +28,13 @@ void DrawGuides::draw(bool horizontal)
 	        > 0)) {
 		canvas.setLineWidth(*guideStyle.lineWidth);
 
-		Gen::DimensionAxis::Values::const_iterator it;
-		for (it = axis.begin(); it != axis.end(); ++it) {
+		for (auto it = axis.begin(); it != axis.end(); ++it) {
 			auto weight = it->second.weight;
 			weight *= static_cast<double>(
 			    plot.guides.at(axisId).dimensionGuides);
 			if (weight == 0) continue;
 
-			auto next = it;
-			next++;
+			auto next = std::next(it);
 			if (next != axis.end()) {
 				drawGuide(horizontal,
 				    it->second.range.getMax(),

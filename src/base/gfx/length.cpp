@@ -5,26 +5,23 @@
 namespace Gfx
 {
 
-Length::Length(const std::string &s)
+Length Length::fromString(const std::string &s)
 {
+	Length res{};
 	const Text::ValueUnit parser(s);
 	if (const auto &unit = parser.getUnit(); unit == "%") {
-		relative = parser.getValue() / 100.0;
-		absolute = 0.0;
-		emphemeral = 0.0;
+		res.relative = parser.getValue() / 100.0;
 	}
 	else if (unit == "em") {
-		absolute = 0.0;
-		relative = 0.0;
-		emphemeral = parser.getValue();
+		res.emphemeral = parser.getValue();
 	}
 	else if (unit == "px" || unit.empty()) {
-		absolute = parser.getValue();
-		relative = 0.0;
-		emphemeral = 0.0;
+		res.absolute = parser.getValue();
 	}
 	else
 		throw std::logic_error("invalid length unit: " + unit);
+
+	return res;
 }
 
 Length::operator std::string() const

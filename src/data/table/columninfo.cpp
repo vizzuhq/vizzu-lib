@@ -41,7 +41,7 @@ void ColumnInfo::sort()
 {
 	std::sort(values.begin(), values.end(), Text::NaturalCmp());
 	valueIndexes.clear();
-	for (auto i = 0U; i < values.size(); i++)
+	for (auto i = 0U; i < values.size(); ++i)
 		valueIndexes.insert({values[i], i});
 }
 
@@ -81,7 +81,7 @@ Math::Range<double> ColumnInfo::getRange() const { return range; }
 
 double ColumnInfo::registerValue(double value)
 {
-	count++;
+	++count;
 
 	switch (type) {
 	case Type::measure: {
@@ -101,7 +101,7 @@ double ColumnInfo::registerValue(double value)
 
 double ColumnInfo::registerValue(const std::string &value)
 {
-	count++;
+	++count;
 
 	switch (type) {
 	case Type::measure: {

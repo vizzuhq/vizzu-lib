@@ -132,8 +132,8 @@ We have a comprehensive list of features we plan to implement, on our
 
 ## Contributing
 
-We welcome contributions to the project, visit our
-[wiki page](https://github.com/vizzuhq/vizzu-lib/wiki) for further info.
+We welcome contributions to the project, visit our contributing
+[guide](https://lib.vizzuhq.com/latest/CONTRIBUTING/) for further info.
 
 ## Contact
 

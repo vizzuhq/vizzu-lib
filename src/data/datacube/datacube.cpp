@@ -47,12 +47,12 @@ DataCube::DataCube(const DataTable &table,
 		    {idx, SubCellIndex(seriesBySubIndex.size() - 1)});
 	}
 
-	for (auto rowIdx = 0U; rowIdx < table.getRowCount(); rowIdx++) {
+	for (auto rowIdx = 0U; rowIdx < table.getRowCount(); ++rowIdx) {
 		const auto &row = table[rowIdx];
 
 		auto index = getIndex(row, options.getDimensions(), rowIdx);
 
-		for (auto idx = 0U; idx < series.size(); idx++) {
+		for (auto idx = 0U; idx < series.size(); ++idx) {
 			auto value = series[idx].getType().isReal()
 			               ? row[series[idx].getColIndex().value()]
 			               : 0.0;
@@ -139,7 +139,7 @@ SubSliceIndex DataCube::inverseSubSliceIndex(
 	for (auto colIndex : colIndices)
 		dimIndices.insert(getDimBySeries(colIndex));
 
-	for (auto i = 0U; i < multiIndex.size(); i++)
+	for (auto i = 0U; i < multiIndex.size(); ++i)
 		if (dimIndices.find(DimIndex(i)) == dimIndices.end())
 			subSliceIndex.push_back({DimIndex(i), multiIndex[i]});
 
@@ -219,7 +219,7 @@ CellInfo::Categories DataCube::categories(
 {
 	CellInfo::Categories res;
 
-	for (auto i = 0U; i < index.size(); i++) {
+	for (auto i = 0U; i < index.size(); ++i) {
 		auto series = getSeriesByDim(MultiDim::DimIndex{i});
 		res.emplace_back(series, index[i]);
 	}
@@ -233,7 +233,7 @@ CellInfo::Values DataCube::values(
 
 	const auto &cell = data.at(index);
 
-	for (auto i = 0U; i < cell.subCells.size(); i++) {
+	for (auto i = 0U; i < cell.subCells.size(); ++i) {
 		auto series = getSeriesBySubIndex(SubCellIndex{i});
 
 		if (series.getType() == SeriesType::Exists) continue;

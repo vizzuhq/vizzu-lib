@@ -15,7 +15,7 @@ T Math::SegmentedFunction<T>::at(double pos) const
 	if (pos < stops.front().pos) return stops.front().value;
 	if (pos > stops.back().pos) return stops.back().value;
 
-	for (auto i = 1U; i < stops.size(); i++) {
+	for (auto i = 1U; i < stops.size(); ++i) {
 		if (pos >= stops.at(i - 1).pos && pos <= stops.at(i).pos) {
 			const Range range(stops.at(i - 1).pos, stops.at(i).pos);
 
@@ -52,9 +52,8 @@ Math::SegmentedFunction<T> Math::SegmentedFunction<T>::operator+(
 {
 	SegmentedFunction<T> res;
 
-	auto it0 = stops.begin();
-	auto it1 = other.stops.begin();
-	while (it0 != stops.end() || it1 != other.stops.end()) {
+	for (auto it0 = stops.begin(), it1 = other.stops.begin();
+	     it0 != stops.end() || it1 != other.stops.end();) {
 		if (it1 == other.stops.end() || it0->pos < it1->pos) {
 			res.stops.emplace_back(it0->pos,
 			    it0->value + other.at(it0->pos));

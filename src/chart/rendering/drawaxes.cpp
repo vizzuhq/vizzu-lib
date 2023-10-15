@@ -167,7 +167,7 @@ void DrawAxes::drawTitle(Gen::ChannelId axisIndex)
 	          || titleStyle.vposition->interpolates()
 	          || titleString.interpolates();
 
-	for (int index = 0; index < (fades ? 2 : 1); index++) {
+	for (int index = 0; index < (fades ? 2 : 1); ++index) {
 		auto title = titleString.get(index);
 
 		if (!title.value.empty()) {

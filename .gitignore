@@ -14,6 +14,7 @@ __pycache__
 docs/examples/**/*.png
 docs/examples/**/*.mp4
 docs/examples/**/*.webm
+docs/assets/dist
 docs/readme
 docs/showcases
 site

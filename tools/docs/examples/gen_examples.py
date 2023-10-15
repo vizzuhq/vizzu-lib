@@ -410,13 +410,10 @@ class GenShowcases(GenExamples):
         depth = self._depth
         index = self._create_index(dst, depth, self._name)
 
-        items = list(self._src.rglob("*.js")) + list(self._src.rglob("main.html"))
+        items = list(self._src.rglob("main.html"))
         for item in items:
             content = GenExamples._get_content(item)
-            if item.suffix == ".js":
-                content = Vizzu.set_version_showcase_js(content)
-            elif item.suffix == ".html":
-                content = Vizzu.set_version_showcase_html(content)
+            content = Vizzu.set_version_showcase(content)
             with mkdocs_gen_files.open(
                 self._dst + "/" + os.path.relpath(item, SHOWCASES_PATH), "w"
             ) as fh_js:

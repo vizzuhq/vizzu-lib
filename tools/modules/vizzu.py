@@ -8,15 +8,7 @@ REPO_PATH = Path(__file__).parent / ".." / ".."
 TOOLS_PATH = REPO_PATH / "tools"
 MKDOCS_PATH = TOOLS_PATH / "docs"
 
-
-VIZZU_BACKEND_URL = ""
-VIZZU_STYLEREF_BACKEND_URL = ""
-VIZZU_SHOWCASE_BACKEND_URL = ""
-GITHUB_SHOWCASE_BACKEND_URL = ""
-SITE_SHOWCASE_BACKEND_URL = ""
-
 VIZZU_VERSION = ""
-VIZZU_TEST_VERSION = ""
 
 VIZZU_DOC_URL = "https://github.com/vizzuhq/vizzu-lib-doc"
 VIZZU_SITE_URL = "https://lib.vizzuhq.com"
@@ -25,20 +17,6 @@ VIZZU_CDN_URL = "https://cdn.jsdelivr.net/npm/vizzu"
 
 class Vizzu:
     _vizzu_version = ""
-
-    @staticmethod
-    def get_vizzu_backend_url() -> str:
-        if VIZZU_BACKEND_URL:
-            return VIZZU_BACKEND_URL
-        version = Vizzu.get_vizzu_version()
-        return f"{VIZZU_CDN_URL}@{version}/dist/vizzu.min.js"
-
-    @staticmethod
-    def get_vizzu_styleref_backend_url() -> str:
-        if VIZZU_STYLEREF_BACKEND_URL:
-            return VIZZU_STYLEREF_BACKEND_URL
-        version = Vizzu.get_vizzu_version()
-        return f"{VIZZU_CDN_URL}@{version}/dist/vizzu.min.js"
 
     @staticmethod
     def get_vizzu_full_version() -> list:
@@ -65,13 +43,6 @@ class Vizzu:
         return Vizzu._vizzu_version
 
     @staticmethod
-    def get_vizzu_test_version() -> str:
-        if VIZZU_TEST_VERSION:
-            return VIZZU_TEST_VERSION
-        version_parts = Vizzu.get_vizzu_full_version()
-        return f"{version_parts[0]}.{version_parts[1]}.{version_parts[2]}"
-
-    @staticmethod
     def set_version(content: str, restore: bool = False) -> str:
         version = Vizzu.get_vizzu_version()
         if not restore:
@@ -94,29 +65,11 @@ class Vizzu:
         return content
 
     @staticmethod
-    def set_version_showcase_js(content: str) -> str:
-        version = Vizzu.get_vizzu_version()
-        vizzu_url = f"{VIZZU_CDN_URL}@{version}/dist/vizzu.min.js"
-        if VIZZU_SHOWCASE_BACKEND_URL:
-            vizzu_url = VIZZU_SHOWCASE_BACKEND_URL
-        content = content.replace(
-            f"{VIZZU_CDN_URL}@latest/dist/vizzu.min.js", vizzu_url
-        )
-        return content
-
-    @staticmethod
-    def set_version_showcase_html(content: str) -> str:
+    def set_version_showcase(content: str) -> str:
         version = Vizzu.get_vizzu_version()
         github_url = f"{VIZZU_DOC_URL}/tree/gh-pages"
-        new_github_url = github_url
-        if GITHUB_SHOWCASE_BACKEND_URL:
-            new_github_url = GITHUB_SHOWCASE_BACKEND_URL
         content = content.replace(
             f"{github_url}/latest/",
-            f"{new_github_url}/{version}/",
+            f"{github_url}/{version}/",
         )
-        site_url = VIZZU_SITE_URL
-        if SITE_SHOWCASE_BACKEND_URL:
-            site_url = SITE_SHOWCASE_BACKEND_URL
-        content = content.replace(f"{VIZZU_SITE_URL}/latest/", f"{site_url}/{version}/")
         return content

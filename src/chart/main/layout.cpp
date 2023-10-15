@@ -39,22 +39,20 @@ void Layout::setBoundary(const Geom::Rect &boundary,
 	this->boundary = boundary;
 	auto rect = style.contentRect(boundary, em);
 
-	auto captionHeight =
-	    Draw::DrawLabel::getHeight(style.caption, info);
-
-	caption = Geom::Rect{rect}.popTop(
-	    plot.getOptions()->caption.combine<double>(
-	        [&](int, const auto &weight)
-	        {
-		        return weight ? 0 : -captionHeight;
-	        })
-	    + captionHeight);
+	caption =
+	    popRectArea(Draw::DrawLabel::getHeight(style.caption, info),
+	        plot.getOptions()->caption,
+	        rect,
+	        &Geom::Rect::popTop);
+	caption.setBottom(rect.top());
+	caption.setTop(boundary.top());
 
 	title = popRectArea(Draw::DrawLabel::getHeight(style.title, info),
 	    plot.getOptions()->title,
 	    rect,
 	    &Geom::Rect::popBottom,
-	    &Geom::Rect::setBottom);
+	    &Geom::Rect::setBottom,
+	    rect.pos.y);
 
 	subtitle =
 	    popRectArea(Draw::DrawLabel::getHeight(style.subtitle, info),

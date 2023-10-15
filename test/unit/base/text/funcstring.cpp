@@ -77,6 +77,16 @@ const static auto tests =
 	            check() << f.getParams().at(2) == "baz";
             })
 
+        .add_case("function_with_parameter_contains_parenthesis",
+            []
+            {
+	            const FuncString f("foo(bar())");
+	            check() << f.isEmpty() == false;
+	            check() << f.getName() == "foo";
+	            check() << f.getParams().size() == 1U;
+	            check() << f.getParams().at(0) == "bar()";
+            })
+
         .add_case("throws_on_not_matching_string",
             []
             {

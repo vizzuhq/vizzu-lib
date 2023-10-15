@@ -4,7 +4,7 @@ const mdChartLoaded = import('../assets/javascripts/mdchart.js')
 Promise.all([dataLoaded, mdChartLoaded]).then((results) => {
   const data = results[0].default
   const MdChart = results[1].default
-  const mdchart = new MdChart(data, './vizzu.js', 'tutorial')
+  const mdchart = new MdChart(data, 'tutorial')
 
   const clickHandler = (event) => {
     alert(JSON.stringify(event.target)) // eslint-disable-line no-alert

@@ -227,7 +227,7 @@ void Planner::reset()
 {
 	::Anim::Group::clear();
 
-	for (auto i = 0U; i < std::size(animNeeded); i++)
+	for (auto i = 0U; i < std::size(animNeeded); ++i)
 		animNeeded[static_cast<SectionId>(i)] = false;
 }
 
@@ -300,7 +300,7 @@ bool Planner::anyMarker(const std::function<bool(const Gen::Marker &,
 {
 	for (auto i = 0U; i < source->getMarkers().size()
 	                  && i < target->getMarkers().size();
-	     i++) {
+	     ++i) {
 		if (compare(source->getMarkers()[i], target->getMarkers()[i]))
 			return true;
 	}

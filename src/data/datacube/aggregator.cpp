@@ -34,7 +34,7 @@ Aggregator &Aggregator::add(double v)
 		      / static_cast<double>(count + 1);
 		break;
 	case Exists: value = 1; break;
-	case Count: value++; break;
+	case Count: ++value; break;
 	case Sum: value += v; break;
 	case Distinct:
 		distinctCategories.insert(static_cast<int>(v));
@@ -46,7 +46,7 @@ Aggregator &Aggregator::add(double v)
 		    "internal error: invalid sub cell type");
 	}
 
-	count++;
+	++count;
 
 	return *this;
 }

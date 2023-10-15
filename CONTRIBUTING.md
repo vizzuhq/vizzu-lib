@@ -13,6 +13,11 @@ the project, make your changes and send us a pull request. You can find the
 detailed description of how to do this in
 [Github's guide to contributing to projects](https://docs.github.com/en/get-started/quickstart/contributing-to-projects).
 
+Our [Roadmap page](https://github.com/vizzuhq/.github/wiki/Roadmap) is a
+comprehensive list of tasks we want to do in the future. It is a good place to
+start if you want to contribute to `Vizzu`. In case you have something else in
+mind, that's awesome and we are very interested in hearing about it.
+
 ## CI-CD
 
 ### Development environment
@@ -99,7 +104,7 @@ Run the following script in the running `vizzu-dev-desktop` container to build
 the `Desktop` version and run the `C++` unit tests:
 
 ```sh
-./tools/ci/pkg-build-desktop.sh
+./tools/ci/run/pkg-build-desktop.sh
 ```
 
 **Note:** A successful `gcc` and a `clang` build are required to contribute,
@@ -110,7 +115,7 @@ Run the following script in the running `vizzu-dev-desktop` container to build
 the `Desktop` version with `gcc`, `clangformat`, and run the `C++` unit tests:
 
 ```sh
-./tools/ci/pkg-build-desktop-clangformat.sh
+./tools/ci/run/pkg-build-desktop-clangformat.sh
 ```
 
 Run the following script in the running `vizzu-dev-desktop` container to build
@@ -118,7 +123,7 @@ the `Desktop` version with `clang`, `clangtidy`, `cppcheck` and run the `C++`
 unit tests:
 
 ```sh
-./tools/ci/pkg-build-desktop-clangtidy.sh
+./tools/ci/run/pkg-build-desktop-clangtidy.sh
 ```
 
 #### Building WASM version
@@ -128,7 +133,7 @@ Run the following script in the running `vizzu-dev-wasm` container to build the
 unit tests, create `vizzu.min.js` and check `d.ts`:
 
 ```sh
-./tools/ci/pkg-build-wasm.sh
+./tools/ci/run/pkg-build-wasm.sh
 ```
 
 **Note:** To debug WASM version under Chrome:
@@ -264,6 +269,26 @@ sometimes unstable changes.
   where `HASH` is the first 7 character of the commit's git hash.
 
 ### Documentation
+
+**Note:** The showcases and some images are stored in the
+[vizzu-lib-doc](https://github.com/vizzuhq/vizzu-lib-doc) repository. If you
+wish to build the site, run the following command:
+
+```sh
+git clone --single-branch --branch main --depth 1 'git@github.com:vizzuhq/vizzu-lib-doc'
+```
+
+**Note:** If you also want to generate thumbnails, run the following command:
+
+```sh
+npm run docs-gen-thumbnails
+```
+
+To build the documentation, you can use the `docs-build` script:
+
+```sh
+npm run docs-build
+```
 
 You can read the online version at
 [lib.vizzuhq.com](https://lib.vizzuhq.com/latest/).

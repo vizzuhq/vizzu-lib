@@ -37,9 +37,9 @@ Color::Color(const std::string &string)
 		auto r = Text::Character::fromHex(string[1]);
 		auto g = Text::Character::fromHex(string[2]);
 		auto b = Text::Character::fromHex(string[3]);
-		red = ((r << 4) + r) / 255.0;
-		green = ((g << 4) + g) / 255.0;
-		blue = ((b << 4) + b) / 255.0;
+		red = ((r << 4U) + r) / 255.0;
+		green = ((g << 4U) + g) / 255.0;
+		blue = ((b << 4U) + b) / 255.0;
 		alpha = 1.0;
 	}
 	else if (const Text::FuncString f(string, false); !f.isEmpty()) {
@@ -73,11 +73,11 @@ Color Color::RGB(uint32_t rgb)
 {
 	Color c;
 
-	c.blue = (rgb & 0x000000FF) / 255.0;
-	rgb >>= 8;
-	c.green = (rgb & 0x000000FF) / 255.0;
-	rgb >>= 8;
-	c.red = (rgb & 0x000000FF) / 255.0;
+	c.blue = (rgb & 0x000000FFU) / 255.0;
+	rgb >>= 8U;
+	c.green = (rgb & 0x000000FFU) / 255.0;
+	rgb >>= 8U;
+	c.red = (rgb & 0x000000FFU) / 255.0;
 
 	c.alpha = 1.0;
 
@@ -86,8 +86,8 @@ Color Color::RGB(uint32_t rgb)
 
 Color Color::RGBA(uint32_t rgba)
 {
-	auto alpha = (rgba & 0x000000FF) / 255.0;
-	auto rgb = rgba >> 8;
+	auto alpha = (rgba & 0x000000FFU) / 255.0;
+	auto rgb = rgba >> 8U;
 	auto c = RGB(rgb);
 	c.alpha = alpha;
 

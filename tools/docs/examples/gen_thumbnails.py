@@ -24,10 +24,6 @@ from node import (  # pylint: disable=import-error, wrong-import-position, wrong
     Node,
 )
 
-# from vizzu import (  # pylint: disable=import-error, wrong-import-position, wrong-import-order
-#     Vizzu,
-# )
-
 
 class Thumbnails:
     @staticmethod
@@ -36,8 +32,6 @@ class Thumbnails:
         with chdir(VIZZU_TEST_PATH):
             Node.node(True, "test.cjs", "--delete")
             params = []
-            params.append("--vizzu")
-            params.append("head")  # params.append(Vizzu.get_vizzu_test_version())
             params.append("--images")
             params.append("ALL")
             params += src.rglob("*.mjs")  # type: ignore
@@ -68,9 +62,7 @@ class Thumbnails:
     def generate_videos(src: Path, gen_params: Optional[List[str]] = None) -> None:
         print(f"Generating videos: {src}")
         with chdir(VIZZU_VIDEO_PATH):
-            params = []
-            params.append("--vizzu")
-            params.append("head")  # params.append(Vizzu.get_vizzu_test_version())
+            params: List[str] = []
             params += src.rglob("*.mjs")  # type: ignore
             if gen_params:
                 params += gen_params

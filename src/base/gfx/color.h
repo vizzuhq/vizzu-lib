@@ -142,8 +142,10 @@ struct Color
 
 	[[nodiscard]] uint32_t getRGBA32() const
 	{
-		return (getRedByte() << 24) | (getGreenByte() << 16)
-		     | (getBlueByte() << 8) | getAlphaByte();
+		return static_cast<uint32_t>(getRedByte() << 24U)
+		     | static_cast<uint32_t>(getGreenByte() << 16U)
+		     | static_cast<uint32_t>(getBlueByte() << 8U)
+		     | getAlphaByte();
 	}
 
 	[[nodiscard]] bool isOpaque() const { return alpha == 1.0; }

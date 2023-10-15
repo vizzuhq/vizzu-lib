@@ -5,10 +5,10 @@ on:
     types: [published]
 
 jobs:
-  init:
-    uses: ./.github/workflows/init.yml
-
   release:
-    uses: ./.github/workflows/release.yml
-    secrets: inherit
-    needs: init
+    runs-on: ubuntu-22.04
+
+    steps:
+      - name: Trigger Cloud Build
+        run: |
+          curl -X POST -H "Content-type: application/json" "https://cloudbuild.googleapis.com/v1/projects/vizzu-ci/triggers/vizzu-lib-release:webhook?key=${{ secrets.VIZZUHQ_GCP_BUILD }}" -d "{}"

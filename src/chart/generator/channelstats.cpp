@@ -44,7 +44,7 @@ ChannelsStats::ChannelsStats(const Channels &channels,
     const Data::DataCube &cube)
 {
 	for (auto channelId = 0U; channelId < std::size(this->channels);
-	     channelId++) {
+	     ++channelId) {
 		const auto &channel =
 		    channels.at(static_cast<ChannelId>(channelId));
 

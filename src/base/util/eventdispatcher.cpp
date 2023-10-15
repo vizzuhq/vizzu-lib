@@ -64,7 +64,7 @@ void EventDispatcher::Event::detach(std::uint64_t id)
 		handlersToRemove.emplace_back(currentlyInvoked, handler_fn{});
 	else {
 		for (auto iter = handlers.begin(); iter != handlers.end();
-		     iter++) {
+		     ++iter) {
 			if (iter->first == id) {
 				handlers.erase(iter);
 				break;
