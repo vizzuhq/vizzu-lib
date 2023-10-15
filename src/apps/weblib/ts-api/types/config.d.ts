@@ -93,6 +93,14 @@ export namespace Config {
     If set to null, the title will not be shown and will not take up any
     space in the chart layout. */
     title?: string | null
+    /** This is the subtitle shown on the top of the chart under the title.
+    If set to null, the subtitle will not be shown and will not take up any
+    space in the chart layout. */
+    subtitle?: string | null
+    /** This is the caption shown on the bottom of the chart.
+    If set to null, the caption will not be shown and will not take up any
+    space in the chart layout. */
+    caption?: string | null
     /** Specifies which channel should be shown on the legend.
     If set to null, the legend will not be shown and will not take up any
     space in the chart layout.
@@ -110,7 +118,7 @@ export namespace Config {
     /** If both axes have measures on them, this parameter sets the 
     orientation of the chart, meaning to which axis the graphical elements 
     are oriented to. */
-    orientation?: 'horizontal' | 'vertical' | 'auto'
+    orientation?: 'auto' | 'horizontal' | 'vertical'
     /** - 'none': markers are sorted in the order as the corresponding data 
               appear in the data set.
     - 'byValue': markers will be sorted by the corresponding measure (if present)

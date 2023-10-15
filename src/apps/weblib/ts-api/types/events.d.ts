@@ -17,6 +17,8 @@ export namespace Events {
     drawComplete = 'draw-complete',
     backgroundDraw = 'background-draw',
     titleDraw = 'title-draw',
+    subtitleDraw = 'subtitle-draw',
+    captionDraw = 'caption-draw',
     logoDraw = 'logo-draw',
     legendBackgroundDraw = 'legend-background-draw',
     legendTitleDraw = 'legend-title-draw',
@@ -50,6 +52,8 @@ export namespace Events {
     [Type.drawComplete]: Event<Element>
     [Type.backgroundDraw]: RectDrawEvent<Root>
     [Type.titleDraw]: TextDrawEvent<Title>
+    [Type.subtitleDraw]: TextDrawEvent<Subtitle>
+    [Type.captionDraw]: TextDrawEvent<Caption>
     [Type.logoDraw]: RectDrawEvent<Logo>
     [Type.legendBackgroundDraw]: RectDrawEvent<Legend>
     [Type.legendTitleDraw]: TextDrawEvent<LegendTitle>
@@ -97,6 +101,14 @@ export namespace Events {
   /** Main title element of the chart. */
   interface Title extends TextElement {
     tagName: 'title'
+  }
+  /** Subtitle element of the chart. */
+  interface Subtitle extends TextElement {
+    tagName: 'subtitle'
+  }
+  /** Caption element of the chart. */
+  interface Caption extends TextElement {
+    tagName: 'caption'
   }
   /** Legend element of the chart. */
   interface Legend extends Element {

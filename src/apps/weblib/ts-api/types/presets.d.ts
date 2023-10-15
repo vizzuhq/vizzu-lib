@@ -6,6 +6,8 @@ export namespace Presets {
   interface Preset {
     legend?: 'color' | 'lightness' | 'size' | null
     title?: string | null
+    subtitle?: string | null
+    caption?: string | null
     reverse?: boolean
     sort?: 'none' | 'byValue'
   }

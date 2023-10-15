@@ -50,6 +50,10 @@ export namespace Anim {
     style?: GroupOptions
     /** Title animation parameters. */
     title?: GroupOptions
+    /** Subtitle animation parameters. */
+    subtitle?: GroupOptions
+    /** Caption animation parameters. */
+    caption?: GroupOptions
     /** Legend animation parameters. */
     legend?: GroupOptions
     /** Animation group for new markers fading in 
@@ -84,6 +88,9 @@ export namespace Anim {
     position?: number
     /** Play direction of the animation. */
     direction?: 'normal' | 'reverse'
+    /** Playback speed of the animation. It is 1.0 by default.
+    Negative values are considered 0. */
+    speed?: number
   }
   /** Control object for animation. */
   interface Control {
@@ -103,6 +110,9 @@ export namespace Anim {
     cancel(): void
     /** Returns a reference to the actual animation for further reuse. */
     store(): CAnimation
+    /** Playback speed of the animation. It is 1.0 by default.
+    Negative values are considered 0. */
+    speed: number
   }
   /** Promise resolves to the Vizzu object when the animation completed. */
   interface Completing extends Promise<Vizzu> {

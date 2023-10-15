@@ -282,6 +282,10 @@ export namespace Styles {
     legend?: Legend | null
     /** Style settings for the main chart title. */
     title?: Label | null
+    /** Style settings for the main chart subtitle. */
+    subtitle?: Label | null
+    /** Style settings for the main chart caption. */
+    caption?: Label | null
     /** Style settings for the tooltip. */
     tooltip?: Tooltip | null
     /** Style settings of the Vizzu logo. */
