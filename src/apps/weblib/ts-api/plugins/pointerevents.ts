@@ -1,9 +1,8 @@
 import { Plugins } from '../types/vizzu.js'
 
 import Vizzu from '../vizzu.js'
-import { Chart } from '../chart.js'
 import { CChart } from '../module/cchart.js'
-import { Render } from '../render.js'
+import { RenderingApi } from '../render.js'
 import { NotInitializedError } from '../errors.js'
 
 interface Handlers {
@@ -16,6 +15,7 @@ interface Handlers {
 
 export class PointerEvents implements Plugins.Plugin {
   private _vizzu?: Vizzu
+  private _rendering?: RenderingApi
   private _canvas?: HTMLCanvasElement
   private _handlers?: Handlers
   private _enabled = false
@@ -24,26 +24,30 @@ export class PointerEvents implements Plugins.Plugin {
     name: 'pointerEvents'
   }
 
+  constructor(cChart: CChart) {
+    this._handlers = {
+      pointermove: (evt: PointerEvent): void => {
+        this._passEventToChart(evt, cChart.pointermove.bind(cChart))
+      },
+      pointerup: (evt: PointerEvent): void => {
+        this._passEventToChart(evt, cChart.pointerup.bind(cChart))
+      },
+      pointerdown: (evt: PointerEvent): void => {
+        this._passEventToChart(evt, cChart.pointerdown.bind(cChart))
+      },
+      pointerleave: (evt: PointerEvent): void => {
+        this._passEventToChart(evt, cChart.pointerleave.bind(cChart))
+      },
+      wheel: (evt: WheelEvent): void => {
+        this._passEventToChart(evt, cChart.wheel.bind(cChart), 'deltaY')
+      }
+    }
+  }
+
   register(vizzu: Vizzu): void {
     this._vizzu = vizzu
 
-    this._handlers = {
-      pointermove: (evt: PointerEvent): void => {
-        this._passEventToChart(evt, this._cChart().pointermove.bind(this._cChart()))
-      },
-      pointerup: (evt: PointerEvent): void => {
-        this._passEventToChart(evt, this._cChart().pointerup.bind(this._cChart()))
-      },
-      pointerdown: (evt: PointerEvent): void => {
-        this._passEventToChart(evt, this._cChart().pointerdown.bind(this._cChart()))
-      },
-      pointerleave: (evt: PointerEvent): void => {
-        this._passEventToChart(evt, this._cChart().pointerleave.bind(this._cChart()))
-      },
-      wheel: (evt: WheelEvent): void => {
-        this._passEventToChart(evt, this._cChart().wheel.bind(this._cChart()), 'deltaY')
-      }
-    }
+    this._rendering = this._vizzu?.feature('rendering') as RenderingApi
   }
 
   unregister(): void {
@@ -76,21 +80,8 @@ export class PointerEvents implements Plugins.Plugin {
     delete this._canvas
   }
 
-  private _chart(): Chart {
-    if (!this._vizzu || !this._vizzu._chart) throw new NotInitializedError()
-    return this._vizzu._chart
-  }
-
-  private _cChart(): CChart {
-    return this._chart()._cChart
-  }
-
-  private _render(): Render {
-    return this._chart()._render
-  }
-
   private _passEventToChart<T extends MouseEvent, F>(evt: T, func: F, member = 'pointerId'): void {
-    const args: unknown[] = [this._render()._ccanvas, evt[member as keyof T]]
+    const args: unknown[] = [evt[member as keyof T]]
     if (evt.clientX !== undefined) {
       args.push(...this._getCoords(evt))
     }
@@ -99,7 +90,8 @@ export class PointerEvents implements Plugins.Plugin {
 
   private _getCoords(evt: MouseEvent): number[] {
     const clientPos = { x: evt.clientX, y: evt.clientY }
-    const pos = this._render().clientToRenderCoor(clientPos)
+    if (!this._rendering) throw new NotInitializedError()
+    const pos = this._rendering.clientToRenderCoor(clientPos)
     return [pos.x, pos.y]
   }
 }

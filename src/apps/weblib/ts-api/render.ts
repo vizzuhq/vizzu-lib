@@ -5,8 +5,12 @@ import { Module } from './module/module.js'
 import { CCanvas } from './module/ccanvas.js'
 import { CChart } from './module/cchart.js'
 
+export interface RenderingApi extends Plugins.PluginApi {
+  clientToRenderCoor(clientPos: Geom.Point): Geom.Point
+}
+
 export class Render implements Plugins.Plugin, Renderer {
-  _ccanvas: CCanvas
+  private _ccanvas: CCanvas
   private _enabled: boolean
   private _cchart: CChart
   private _log: boolean
@@ -22,6 +26,14 @@ export class Render implements Plugins.Plugin, Renderer {
   private _cssHeight: number = 1
 
   meta = { name: 'rendering' }
+
+  get api(): RenderingApi {
+    return {
+      clientToRenderCoor: (clientPos: Geom.Point): Geom.Point => {
+        return this.clientToRenderCoor(clientPos)
+      }
+    }
+  }
 
   enable(enabled: boolean): void {
     this._enabled = enabled

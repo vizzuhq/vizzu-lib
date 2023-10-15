@@ -25,8 +25,8 @@ import Presets from './plugins/presets.js'
 
 export default class Vizzu implements VizzuInterface {
   initializing: Promise<VizzuInterface>
-  _chart?: Chart
-  _container: HTMLElement
+  private _chart?: Chart
+  private _container: HTMLElement
   private _anim: Anim.Completing
   private _plugins: PluginRegistry
 

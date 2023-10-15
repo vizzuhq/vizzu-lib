@@ -1,19 +1,15 @@
 import { Plugins } from '../types/vizzu.js'
 
-import Vizzu from '../vizzu.js'
-import { NotInitializedError } from '../errors.js'
-
 export class Logging implements Plugins.Plugin {
-  private _vizzu?: Vizzu
+  private _setEnable: (enabled: boolean) => void
 
   meta = { name: 'logging' }
 
-  register(vizzu: Vizzu): void {
-    this._vizzu = vizzu
+  constructor(setEnable: (enabled: boolean) => void) {
+    this._setEnable = setEnable
   }
 
   enable(enabled: boolean): void {
-    if (!this._vizzu || !this._vizzu._chart) throw new NotInitializedError()
-    this._vizzu._chart.setLogging(enabled)
+    this._setEnable(enabled)
   }
 }

@@ -1,7 +1,7 @@
 import { Anim, Config, Geom, Data as D, Styles, Events as E } from './types/vizzu.js'
 import { Module } from './module/module.js'
 import { CChart, Snapshot } from './module/cchart.js'
-import { CAnimation } from './module/canimctrl.js'
+import { CAnimControl, CAnimation } from './module/canimctrl.js'
 import { CData } from './module/cdata.js'
 import { Render } from './render.js'
 import { Data } from './data.js'
@@ -13,11 +13,10 @@ import { PivotData } from './plugins/pivotdata.js'
 import { Tooltip } from './plugins/tooltip.js'
 import { PointerEvents } from './plugins/pointerevents.js'
 import { CSSProperties } from './plugins/cssproperties.js'
-import { CAnimControl } from './module/canimctrl.js'
 
 export class Chart {
-  _cChart: CChart
-  _render: Render
+  private _cChart: CChart
+  private _render: Render
   private _module: Module
   private _container: HTMLElement
   private _canvas: HTMLCanvasElement
@@ -45,12 +44,12 @@ export class Chart {
   }
 
   registerBuilts(): void {
-    this._plugins.register(new Logging(), false)
+    this._plugins.register(new Logging(this._module.setLogging.bind(this._module)), false)
     this._plugins.register(this._render, true)
     this._plugins.register(new CSSProperties(), false)
     this._plugins.register(new Shorthands(), true)
     this._plugins.register(new PivotData(), true)
-    this._plugins.register(new PointerEvents(), true)
+    this._plugins.register(new PointerEvents(this._cChart), true)
     this._plugins.register(new Tooltip(), false)
   }
 
@@ -191,10 +190,6 @@ export class Chart {
 
   store(): Snapshot {
     return this._cChart.storeSnapshot()
-  }
-
-  setLogging(enabled: boolean): void {
-    this._module.setLogging(enabled)
   }
 
   getCAnimControl(): CAnimControl {

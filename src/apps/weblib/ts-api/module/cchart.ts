@@ -25,6 +25,7 @@ export class CChart extends CObject {
   style: CStyle
   computedStyle: CStyle
   animOptions: CAnimOptions
+  private _cCanvas?: CCanvas
 
   constructor(env: CEnv, getId: CPointerClosure) {
     super(getId, env)
@@ -36,6 +37,7 @@ export class CChart extends CObject {
   }
 
   update(cCanvas: CCanvas, width: number, height: number, renderControl: number): void {
+    this._cCanvas = cCanvas
     this._call(this._wasm._vizzu_update)(cCanvas.getId(), width, height, renderControl)
   }
 
@@ -109,24 +111,29 @@ export class CChart extends CObject {
     }
   }
 
-  pointerdown(canvas: CCanvas, pointerId: number, x: number, y: number): void {
-    this._call(this._wasm._vizzu_pointerDown)(canvas.getId(), pointerId, x, y)
+  pointerdown(pointerId: number, x: number, y: number): void {
+    if (!this._cCanvas) return
+    this._call(this._wasm._vizzu_pointerDown)(this._cCanvas.getId(), pointerId, x, y)
   }
 
-  pointermove(canvas: CCanvas, pointerId: number, x: number, y: number): void {
-    this._call(this._wasm._vizzu_pointerMove)(canvas.getId(), pointerId, x, y)
+  pointermove(pointerId: number, x: number, y: number): void {
+    if (!this._cCanvas) return
+    this._call(this._wasm._vizzu_pointerMove)(this._cCanvas.getId(), pointerId, x, y)
   }
 
-  pointerup(canvas: CCanvas, pointerId: number, x: number, y: number): void {
-    this._call(this._wasm._vizzu_pointerUp)(canvas.getId(), pointerId, x, y)
+  pointerup(pointerId: number, x: number, y: number): void {
+    if (!this._cCanvas) return
+    this._call(this._wasm._vizzu_pointerUp)(this._cCanvas.getId(), pointerId, x, y)
   }
 
-  pointerleave(canvas: CCanvas, pointerId: number): void {
-    this._call(this._wasm._vizzu_pointerLeave)(canvas.getId(), pointerId)
+  pointerleave(pointerId: number): void {
+    if (!this._cCanvas) return
+    this._call(this._wasm._vizzu_pointerLeave)(this._cCanvas.getId(), pointerId)
   }
 
-  wheel(canvas: CCanvas, delta: number): void {
-    this._call(this._wasm._vizzu_wheel)(canvas.getId(), delta)
+  wheel(delta: number): void {
+    if (!this._cCanvas) return
+    this._call(this._wasm._vizzu_wheel)(this._cCanvas.getId(), delta)
   }
 
   private _makeConfig(): CConfig {
