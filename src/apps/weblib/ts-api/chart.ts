@@ -8,7 +8,6 @@ import { Data } from './data.js'
 import { Events } from './events.js'
 import { Hooks, PluginRegistry } from './plugins.js'
 import { Logging } from './plugins/logging.js'
-import { Rendering } from './plugins/rendering.js'
 import { Shorthands } from './plugins/shorthands.js'
 import { PivotData } from './plugins/pivotdata.js'
 import { Tooltip } from './plugins/tooltip.js'
@@ -17,9 +16,9 @@ import { CSSProperties } from './plugins/cssproperties.js'
 import { CAnimControl } from './module/canimctrl.js'
 
 export class Chart {
-  _module: Module
   _cChart: CChart
   _render: Render
+  private _module: Module
   private _container: HTMLElement
   private _canvas: HTMLCanvasElement
   private _cData: CData
@@ -36,12 +35,10 @@ export class Chart {
 
     this._canvas = this._createCanvas()
 
-    const ccanvas = this._module.createCanvas()
     this._cChart = this._module.createChart()
     this._cData = this._module.getData(this._cChart)
     this._data = new Data(this._cData)
-    this._render = new Render(ccanvas, this._cChart, this._canvas, false)
-    this._module.registerRenderer(ccanvas, this._render)
+    this._render = new Render(this._module, this._cChart, this._canvas, false)
     this._events = new Events(this._cChart, this._render)
     this._plugins.init(this._events)
     this._resizeObserver = this._createResizeObserverFor(this._canvas)
@@ -49,7 +46,7 @@ export class Chart {
 
   registerBuilts(): void {
     this._plugins.register(new Logging(), false)
-    this._plugins.register(new Rendering(), true)
+    this._plugins.register(this._render, true)
     this._plugins.register(new CSSProperties(), false)
     this._plugins.register(new Shorthands(), true)
     this._plugins.register(new PivotData(), true)

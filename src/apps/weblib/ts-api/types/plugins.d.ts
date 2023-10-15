@@ -11,7 +11,7 @@ export enum Hooks {
 
 export namespace Plugins {
   interface PluginMeta {
-    name: string
+    name?: string
     version?: string
     depends?: string[]
   }
@@ -52,7 +52,7 @@ export namespace Plugins {
   }
 
   interface Plugin {
-    meta: PluginMeta
+    meta?: PluginMeta
     hooks?: PluginHooks
     listeners?: PluginListeners
     api?: PluginApi

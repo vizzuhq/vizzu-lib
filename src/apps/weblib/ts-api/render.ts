@@ -1,12 +1,13 @@
 import { Renderer } from './cvizzu.types'
+import { Plugins, Geom } from './types/vizzu.js'
 
-import { Geom } from './types/vizzu.js'
+import { Module } from './module/module.js'
 import { CCanvas } from './module/ccanvas.js'
 import { CChart } from './module/cchart.js'
 
-export class Render implements Renderer {
+export class Render implements Plugins.Plugin, Renderer {
   _ccanvas: CCanvas
-  _enabled: boolean
+  private _enabled: boolean
   private _cchart: CChart
   private _log: boolean
   private _polygonFirstPoint: boolean
@@ -20,8 +21,13 @@ export class Render implements Renderer {
   private _cssWidth: number = 1
   private _cssHeight: number = 1
 
-  constructor(ccanvas: CCanvas, cchart: CChart, canvas: HTMLCanvasElement, log: boolean) {
-    this._ccanvas = ccanvas
+  meta = { name: 'rendering' }
+
+  enable(enabled: boolean): void {
+    this._enabled = enabled
+  }
+
+  constructor(module: Module, cchart: CChart, canvas: HTMLCanvasElement, log: boolean) {
     this._enabled = true
     this._polygonFirstPoint = false
     this._offscreenCanvas = document.createElement<'canvas'>('canvas')
@@ -34,6 +40,8 @@ export class Render implements Renderer {
     if (!ctx) throw Error('Cannot get rendering context of canvas')
     this._context = ctx
     this._log = log
+    this._ccanvas = module.createCanvas()
+    module.registerRenderer(this._ccanvas, this)
     this._updateCanvasSize()
   }
 
