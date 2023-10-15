@@ -56,7 +56,7 @@ export default class Vizzu implements VizzuInterface {
       return this
     })
 
-    this._anim = Object.assign(this.initializing, { activated: Promise.resolve(null) })
+    this._anim = this.initializing
 
     if (initState) {
       this.initializing = this.animate(initState, 0).then(() => this)
@@ -154,9 +154,7 @@ export default class Vizzu implements VizzuInterface {
         } else {
           // eslint-disable-next-line prefer-promise-reject-errors
           reject(new CancelError())
-          const cancelled = Promise.resolve(this)
-          const activated = Promise.resolve(null)
-          this._anim = Object.assign(cancelled, { activated })
+          this._anim = Promise.resolve(this)
         }
       }
       if (!this._chart) throw new NotInitializedError()

@@ -117,7 +117,7 @@ export namespace Anim {
   /** Promise resolves to the Vizzu object when the animation completed. */
   interface Completing extends Promise<Vizzu> {
     /** Promise resolves to the animation controller object when the animation starts. */
-    activated: Promise<Control | null>
+    activated?: Promise<Control>
   }
   /** Represents a state in the animation describing the data, the chart, and 
     the style parameters to be changed from the actual state.
