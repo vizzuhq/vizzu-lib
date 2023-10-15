@@ -8,8 +8,8 @@ interface LoaderOptions {
 }
 
 class Loader {
-  _options: LoaderOptions
-  _loading: Promise<Module> | null
+  private _options: LoaderOptions
+  private _loading: Promise<Module> | null
 
   constructor() {
     this._options = {}
@@ -29,11 +29,11 @@ class Loader {
     return this._loading
   }
 
-  async _loadModule(): Promise<Module> {
+  private async _loadModule(): Promise<Module> {
     return new Module(await VizzuModule(this._getModuleOptions()))
   }
 
-  _getModuleOptions(): ModuleOptions {
+  private _getModuleOptions(): ModuleOptions {
     const moduleOptions: ModuleOptions = {}
     if (this._options?.wasmUrl) {
       const wasmUrl = this._options.wasmUrl

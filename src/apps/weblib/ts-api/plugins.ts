@@ -21,9 +21,9 @@ interface HookExecutor<T extends Hooks> {
 }
 
 export class PluginRegistry {
-  _parent: Vizzu | null
-  _plugins: PluginRecord[]
-  _events?: Events
+  private _parent: Vizzu | null
+  private _plugins: PluginRecord[]
+  private _events?: Events
 
   constructor(parent: Vizzu, plugins?: P.Plugin[]) {
     this._parent = parent
@@ -101,7 +101,7 @@ export class PluginRegistry {
     }
   }
 
-  _setEnabled(plugin: PluginRecord, enabled: boolean): void {
+  private _setEnabled(plugin: PluginRecord, enabled: boolean): void {
     if (plugin.enabled !== enabled) {
       plugin.enabled = enabled
       if (plugin.instance.enable) {
@@ -115,26 +115,26 @@ export class PluginRegistry {
     }
   }
 
-  _enableEvents(plugin: PluginRecord): void {
+  private _enableEvents(plugin: PluginRecord): void {
     if (plugin.instance.listeners) {
       plugin.registeredListeners = plugin.instance.listeners
       this._events?.addMany(plugin.registeredListeners)
     }
   }
 
-  _disableEvents(plugin: PluginRecord): void {
+  private _disableEvents(plugin: PluginRecord): void {
     if (plugin.registeredListeners) {
       this._events?.removeMany(plugin.registeredListeners)
     }
     delete plugin.registeredListeners
   }
 
-  _validate(instance: P.Plugin): void {
+  private _validate(instance: P.Plugin): void {
     this._validateName(instance)
     this._validateDepends(instance)
   }
 
-  _validateName(instance: P.Plugin): void {
+  private _validateName(instance: P.Plugin): void {
     const name = this._discoverName(instance)
     if (typeof name === 'string' && name.length > 0) {
       return
@@ -142,21 +142,21 @@ export class PluginRegistry {
     throw new Error('Plugin must have a non empty name string')
   }
 
-  _discoverName(instance: P.Plugin): string | undefined {
+  private _discoverName(instance: P.Plugin): string | undefined {
     return (
       instance.meta?.name ??
       (instance.constructor?.name ? this._firstToLower(instance.constructor.name) : undefined)
     )
   }
 
-  _firstToLower(s: string): string {
+  private _firstToLower(s: string): string {
     if (typeof s === 'string' && s[0]) {
       return s[0].toLowerCase() + s.slice(1)
     }
     return ''
   }
 
-  _validateDepends(instance: P.Plugin): void {
+  private _validateDepends(instance: P.Plugin): void {
     if (instance.meta?.depends) {
       if (Array.isArray(instance.meta.depends)) {
         for (const depend of instance.meta.depends) {
@@ -168,13 +168,13 @@ export class PluginRegistry {
     }
   }
 
-  _getByName(name: string): PluginRecord {
+  private _getByName(name: string): PluginRecord {
     const plugin = this._plugins.find((plugin) => plugin.name === name)
     if (plugin) return plugin
     throw new Error(`Plugin ${name} is not registered`)
   }
 
-  _exec<T extends Hooks>(
+  private _exec<T extends Hooks>(
     ctx: P.HookContexts[T],
     type: T,
     last: P.PluginHook<P.HookContexts[T]>
@@ -183,14 +183,14 @@ export class PluginRegistry {
     this._executeHooks(hooks, ctx)
   }
 
-  _getHooks<T extends Hooks>(type: T): P.PluginHook<P.HookContexts[T]>[] {
+  private _getHooks<T extends Hooks>(type: T): P.PluginHook<P.HookContexts[T]>[] {
     return this._plugins
       .filter((plugin) => plugin.enabled && plugin.instance.hooks?.[type])
       .map((plugin: PluginRecord) => plugin.instance.hooks![type]!)
       .sort((a, b) => (b.priority || 0) - (a.priority || 0))
   }
 
-  _executeHooks<T>(hooks: P.PluginHook<T>[], ctx: T): void {
+  private _executeHooks<T>(hooks: P.PluginHook<T>[], ctx: T): void {
     const iterator = hooks
       .map((fn) => {
         return fn ? (): void => fn(ctx, next) : (): void => next()

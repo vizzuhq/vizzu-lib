@@ -6,19 +6,19 @@ import { CChart } from './module/cchart.js'
 
 export class Render implements Renderer {
   _ccanvas: CCanvas
-  _cchart: CChart
   _enabled: boolean
-  _log: boolean
-  _polygonFirstPoint: boolean
-  _offscreenCanvas: HTMLCanvasElement
-  _offscreenContext: CanvasRenderingContext2D
-  _mainCanvas: HTMLCanvasElement
-  _context: CanvasRenderingContext2D
-  _prevUpdateHash: string = ''
-  _currentLineWidth: number = 1
-  _scaleFactor: number = 1
-  _cssWidth: number = 1
-  _cssHeight: number = 1
+  private _cchart: CChart
+  private _log: boolean
+  private _polygonFirstPoint: boolean
+  private _offscreenCanvas: HTMLCanvasElement
+  private _offscreenContext: CanvasRenderingContext2D
+  private _mainCanvas: HTMLCanvasElement
+  private _context: CanvasRenderingContext2D
+  private _prevUpdateHash: string = ''
+  private _currentLineWidth: number = 1
+  private _scaleFactor: number = 1
+  private _cssWidth: number = 1
+  private _cssHeight: number = 1
 
   constructor(ccanvas: CCanvas, cchart: CChart, canvas: HTMLCanvasElement, log: boolean) {
     this._ccanvas = ccanvas
@@ -34,7 +34,7 @@ export class Render implements Renderer {
     if (!ctx) throw Error('Cannot get rendering context of canvas')
     this._context = ctx
     this._log = log
-    this.updateCanvasSize()
+    this._updateCanvasSize()
   }
 
   canvas(): HTMLCanvasElement {
@@ -45,7 +45,7 @@ export class Render implements Renderer {
     return this._offscreenContext
   }
 
-  clientRect(): DOMRect {
+  private _clientRect(): DOMRect {
     return this._mainCanvas.getBoundingClientRect()
   }
 
@@ -82,7 +82,7 @@ export class Render implements Renderer {
     this._polygonFirstPoint = false
   }
 
-  updateCanvasSize(): void {
+  private _updateCanvasSize(): void {
     this._scaleFactor = window.devicePixelRatio
     this._cssWidth = +getComputedStyle(this._mainCanvas).width.slice(0, -2)
     this._cssHeight = +getComputedStyle(this._mainCanvas).height.slice(0, -2)
@@ -100,7 +100,7 @@ export class Render implements Renderer {
 
   updateFrame(force: boolean = false): void {
     const start = performance.now()
-    this.updateCanvasSize()
+    this._updateCanvasSize()
     if (this._mainCanvas.width > 0 && this._mainCanvas.height > 0) {
       const renderControl = !this._enabled ? 2 : force ? 1 : 0
       this._cchart.update(this._ccanvas, this._cssWidth, this._cssHeight, renderControl)
@@ -112,7 +112,7 @@ export class Render implements Renderer {
   }
 
   clientToRenderCoor(clientPos: Geom.Point): Geom.Point {
-    const rect = this.clientRect()
+    const rect = this._clientRect()
     const scaleX = rect.width / (this._mainCanvas.width / this._scaleFactor)
     const scaleY = rect.height / (this._mainCanvas.height / this._scaleFactor)
     return {

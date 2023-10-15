@@ -31,10 +31,10 @@ export class Module extends CEnv {
   }
 
   createChart(): CChart {
-    return new CChart(this)
+    return new CChart(this, this._getStatic(this._wasm._vizzu_createChart))
   }
 
   createCanvas(): CCanvas {
-    return new CCanvas(this)
+    return new CCanvas(this, this._getStatic(this._wasm._vizzu_createCanvas))
   }
 }

@@ -1,8 +1,8 @@
 import { CEnv, CObject } from './cenv.js'
+import { CPointerClosure } from './objregistry.js'
 
 export class CCanvas extends CObject {
-  constructor(env: CEnv) {
-    const getId = env._getStatic(env._wasm._vizzu_createCanvas)
+  constructor(env: CEnv, getId: CPointerClosure) {
     super(getId, env)
   }
 }

@@ -9,9 +9,9 @@ type Getter = (self: CPointer, path: CString) => CString
 type Setter = (self: CPointer, path: CString, value: CString) => void
 
 export class CProxy<T> extends CObject {
-  _lister: Lister
-  _getter: Getter
-  _setter: Setter
+  private _lister: Lister
+  private _getter: Getter
+  private _setter: Setter
 
   constructor(
     getId: CPointerClosure,

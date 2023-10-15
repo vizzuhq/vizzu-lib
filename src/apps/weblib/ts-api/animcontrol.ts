@@ -3,7 +3,7 @@ import { Anim } from './types/vizzu.js'
 import { CChart, CAnimation } from './module/cchart.js'
 
 export class AnimControl implements Anim.Control {
-  _cChart: CChart
+  private _cChart: CChart
 
   constructor(cChart: CChart) {
     this._cChart = cChart
@@ -50,7 +50,7 @@ export class AnimControl implements Anim.Control {
     return this
   }
 
-  _animControl(command: string, param = ''): void {
+  private _animControl(command: string, param = ''): void {
     this._cChart.animControl(command, param)
   }
 }

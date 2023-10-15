@@ -7,8 +7,8 @@ import { Snapshot, CAnimation } from '../module/cchart.js'
 type ChannelName = keyof Config.Channels
 
 export class Shorthands implements Plugins.Plugin {
-  chart?: Vizzu
-  _channelNames?: string[]
+  private _chart?: Vizzu
+  private _channelNames?: string[]
 
   meta = {
     name: 'shorthands'
@@ -28,11 +28,11 @@ export class Shorthands implements Plugins.Plugin {
   }
 
   register(chart: Vizzu): void {
-    this.chart = chart
-    this._channelNames = Object.keys(chart.config.channels!)
+    this._chart = chart
+    this._channelNames = Object.keys(this._chart.config.channels!)
   }
 
-  _normalize(ctx: Plugins.SetAnimParamsContext): void {
+  private _normalize(ctx: Plugins.SetAnimParamsContext): void {
     if (!(ctx.target instanceof CAnimation)) {
       ctx.target = (Array.isArray(ctx.target) ? ctx.target : [{ ...ctx }])
         .map((keyframe) => (keyframe.target !== undefined ? keyframe : { target: keyframe }))
@@ -42,14 +42,14 @@ export class Shorthands implements Plugins.Plugin {
     if (options) ctx.options = options
   }
 
-  _normalizeKeyframe(keyframe: Anim.Keyframe): Anim.Keyframe {
+  private _normalizeKeyframe(keyframe: Anim.Keyframe): Anim.Keyframe {
     keyframe.target = this._normalizeTarget(keyframe.target)
     const options = this._normalizeOptions(keyframe.options)
     if (options) keyframe.options = options
     return keyframe
   }
 
-  _normalizeTarget(target: Anim.Target | Config.Chart | Snapshot): Anim.Target | Snapshot {
+  private _normalizeTarget(target: Anim.Target | Config.Chart | Snapshot): Anim.Target | Snapshot {
     if (target && !(target instanceof Snapshot)) {
       if (this._isConfig(target)) {
         target = { config: target }
@@ -66,11 +66,11 @@ export class Shorthands implements Plugins.Plugin {
     return target
   }
 
-  _isConfig(value: Anim.Target | Config.Chart): value is Config.Chart {
+  private _isConfig(value: Anim.Target | Config.Chart): value is Config.Chart {
     return !('data' in value || 'style' in value || 'config' in value)
   }
 
-  _normalizeConfig(config: Config.Chart | undefined): Config.Chart | undefined {
+  private _normalizeConfig(config: Config.Chart | undefined): Config.Chart | undefined {
     if (config !== null && typeof config === 'object') {
       Object.keys(config).forEach((key) => {
         if (this._isChannelName(key)) {
@@ -88,11 +88,11 @@ export class Shorthands implements Plugins.Plugin {
     return config
   }
 
-  _isChannelName(value: string): value is ChannelName {
+  private _isChannelName(value: string): value is ChannelName {
     return this._channelNames!.includes(value)
   }
 
-  _normalizeChannels(channels: Config.Channels): Config.Channels {
+  private _normalizeChannels(channels: Config.Channels): Config.Channels {
     Object.keys(channels).forEach((key) => {
       const ch = key as ChannelName
       channels[ch] = this._normalizeChannel(channels[ch])
@@ -100,7 +100,7 @@ export class Shorthands implements Plugins.Plugin {
     return channels
   }
 
-  _normalizeChannel(
+  private _normalizeChannel(
     channel: Config.Channel | Data.SeriesList | null | undefined
   ): Config.Channel | undefined {
     if (typeof channel === 'string') {
@@ -129,7 +129,7 @@ export class Shorthands implements Plugins.Plugin {
     return channel
   }
 
-  _normalizeOptions(
+  private _normalizeOptions(
     options: (Anim.ControlOptions & Anim.LazyOptions) | undefined
   ): (Anim.ControlOptions & Anim.Options) | undefined {
     if (typeof options !== 'undefined') {

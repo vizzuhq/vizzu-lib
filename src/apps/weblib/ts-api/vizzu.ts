@@ -23,11 +23,11 @@ import { Hooks, PluginRegistry } from './plugins.js'
 import Presets from './plugins/presets.js'
 
 export default class Vizzu implements VizzuInterface {
-  _chart?: Chart
   initializing: Promise<VizzuInterface>
-  _anim: Anim.Completing
+  _chart?: Chart
   _container: HTMLElement
-  _plugins: PluginRegistry
+  private _anim: Anim.Completing
+  private _plugins: PluginRegistry
 
   static get presets(): Presets {
     return new Presets()
@@ -62,7 +62,7 @@ export default class Vizzu implements VizzuInterface {
     }
   }
 
-  _processOptions(options: unknown): VizzuOptions {
+  private _processOptions(options: unknown): VizzuOptions {
     const opts =
       typeof options !== 'object' || options instanceof HTMLElement
         ? { container: options }
@@ -94,7 +94,7 @@ export default class Vizzu implements VizzuInterface {
     }) as Features
   }
 
-  _feature(nameOrInstance: string | Plugins.Plugin, enabled?: boolean): Plugins.PluginApi {
+  private _feature(nameOrInstance: string | Plugins.Plugin, enabled?: boolean): Plugins.PluginApi {
     if (enabled !== undefined && typeof enabled !== 'boolean')
       throw new Error('enabled parameter must be boolean if specified')
 
@@ -141,7 +141,7 @@ export default class Vizzu implements VizzuInterface {
     return this._anim
   }
 
-  _animate(
+  private _animate(
     target: Anim.Keyframes | CAnimation,
     options: Anim.ControlOptions | (Anim.ControlOptions & Anim.LazyOptions) | undefined,
     activate: (control: AnimControl) => void
@@ -159,7 +159,7 @@ export default class Vizzu implements VizzuInterface {
         }
       }
       if (!this._chart) throw new NotInitializedError()
-      this._chart._animate(callback, target, options)
+      this._chart.animate(callback, target, options)
       activate(new AnimControl(this._chart._cChart))
     })
   }
@@ -172,52 +172,52 @@ export default class Vizzu implements VizzuInterface {
 
   version(): string {
     if (!this._chart) throw new NotInitializedError()
-    return this._chart._module.version()
+    return this._chart.version()
   }
 
   getCanvasElement(): HTMLCanvasElement {
     if (!this._chart) throw new NotInitializedError()
-    return this._chart._canvas
+    return this._chart.getCanvasElement()
   }
 
   forceUpdate(): void {
     if (!this._chart) throw new NotInitializedError()
-    this._chart._render.updateFrame(true)
+    this._chart.forceUpdate()
   }
 
   get data(): Readonly<Data.Metainfo> {
     if (!this._chart) throw new NotInitializedError()
-    return this._chart._cData.getMetaInfo()
+    return this._chart.data
   }
 
   get config(): Readonly<Config.Chart> {
     if (!this._chart) throw new NotInitializedError()
-    return this._chart._cChart.config.get()
+    return this._chart.config
   }
 
   get style(): Readonly<Styles.Chart> {
     if (!this._chart) throw new NotInitializedError()
-    return this._chart._cChart.style.get()
+    return this._chart.style
   }
 
   getComputedStyle(): Styles.Chart {
     if (!this._chart) throw new NotInitializedError()
-    return this._chart._cChart.computedStyle.get()
+    return this._chart.getComputedStyle()
   }
 
   on<T extends Events.Type>(eventName: T, handler: Events.Handler<Events.EventMap[T]>): void {
     if (!this._chart) throw new NotInitializedError()
-    this._chart._events.add(eventName, handler)
+    this._chart.on(eventName, handler)
   }
 
   off<T extends Events.Type>(eventName: T, handler: Events.Handler<Events.EventMap[T]>): void {
     if (!this._chart) throw new NotInitializedError()
-    this._chart._events.remove(eventName, handler)
+    this._chart.off(eventName, handler)
   }
 
   store(): Snapshot {
     if (!this._chart) throw new NotInitializedError()
-    return this._chart._cChart.storeSnapshot()
+    return this._chart.store()
   }
 
   getConverter(

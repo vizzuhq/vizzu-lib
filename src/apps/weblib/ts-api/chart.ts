@@ -1,4 +1,4 @@
-import { Anim, Geom } from './types/vizzu.js'
+import { Anim, Config, Geom, Data as D, Styles, Events as E } from './types/vizzu.js'
 import { Module } from './module/module.js'
 import { CChart, CAnimation, Snapshot } from './module/cchart.js'
 import { CData } from './module/cdata.js'
@@ -16,16 +16,16 @@ import { CSSProperties } from './plugins/cssproperties.js'
 
 export class Chart {
   _module: Module
-  _container: HTMLElement
-  _plugins: PluginRegistry
-  _canvas: HTMLCanvasElement
   _cChart: CChart
-  _cData: CData
   _render: Render
-  _data: Data
-  _events: Events
-  _resizeObserver: ResizeObserver
-  _updateInterval?: ReturnType<typeof setTimeout>
+  private _container: HTMLElement
+  private _canvas: HTMLCanvasElement
+  private _cData: CData
+  private _data: Data
+  private _events: Events
+  private _plugins: PluginRegistry
+  private _resizeObserver: ResizeObserver
+  private _updateInterval?: ReturnType<typeof setTimeout>
 
   constructor(module: Module, container: HTMLElement, _plugins: PluginRegistry) {
     this._plugins = _plugins
@@ -55,7 +55,7 @@ export class Chart {
     this._plugins.register(new Tooltip(), false)
   }
 
-  _createResizeObserverFor(canvas: HTMLCanvasElement): ResizeObserver {
+  private _createResizeObserverFor(canvas: HTMLCanvasElement): ResizeObserver {
     const resizeObserver = new ResizeObserver(() => {
       this._render.updateFrame(true)
     })
@@ -63,7 +63,7 @@ export class Chart {
     return resizeObserver
   }
 
-  _createCanvas(): HTMLCanvasElement {
+  private _createCanvas(): HTMLCanvasElement {
     let canvas = null
     const placeholder = this._container
 
@@ -92,7 +92,7 @@ export class Chart {
     }
   }
 
-  _animate(
+  animate(
     callback: (ok: boolean) => void,
     target: Anim.Keyframes | CAnimation,
     options?: Anim.ControlOptions & Anim.Options
@@ -104,7 +104,7 @@ export class Chart {
     this._cChart.animate(callback)
   }
 
-  _setAnimParams(
+  private _setAnimParams(
     target: Anim.Keyframes | CAnimation,
     options?: Anim.ControlOptions & Anim.Options
   ): void {
@@ -116,7 +116,7 @@ export class Chart {
     if (options) this._cChart.animOptions.set(options)
   }
 
-  _setKeyframe(target: Anim.Target | Snapshot, options?: Anim.Options): void {
+  private _setKeyframe(target: Anim.Target | Snapshot, options?: Anim.Options): void {
     if (target) {
       if (target instanceof Snapshot) {
         this._cChart.restoreSnapshot(target)
@@ -152,5 +152,45 @@ export class Chart {
       }
     }
     return (point: Geom.Point) => point
+  }
+
+  version(): string {
+    return this._module.version()
+  }
+
+  getCanvasElement(): HTMLCanvasElement {
+    return this._canvas
+  }
+
+  forceUpdate(): void {
+    this._render.updateFrame(true)
+  }
+
+  get data(): Readonly<D.Metainfo> {
+    return this._cData.getMetaInfo()
+  }
+
+  get config(): Readonly<Config.Chart> {
+    return this._cChart.config.get()
+  }
+
+  get style(): Readonly<Styles.Chart> {
+    return this._cChart.style.get()
+  }
+
+  getComputedStyle(): Styles.Chart {
+    return this._cChart.computedStyle.get()
+  }
+
+  on<T extends E.Type>(eventName: T, handler: E.Handler<E.EventMap[T]>): void {
+    this._events.add(eventName, handler)
+  }
+
+  off<T extends E.Type>(eventName: T, handler: E.Handler<E.EventMap[T]>): void {
+    this._events.remove(eventName, handler)
+  }
+
+  store(): Snapshot {
+    return this._cChart.storeSnapshot()
   }
 }

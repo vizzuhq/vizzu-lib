@@ -3,6 +3,7 @@ import { CString, CFunction, CEventPtr } from '../cvizzu.types'
 import { Anim, Config, Geom, Styles } from '../types/vizzu.js'
 
 import { CObject, CEnv } from './cenv.js'
+import { CPointerClosure } from './objregistry.js'
 import { CProxy } from './cproxy.js'
 import { CCanvas } from './ccanvas.js'
 
@@ -16,41 +17,9 @@ export class CEvent extends CObject {
   }
 }
 
-export class CConfig extends CProxy<Config.Chart> {
-  constructor(cChart: CChart) {
-    super(
-      cChart.getId,
-      cChart,
-      cChart._wasm._chart_getList,
-      cChart._wasm._chart_getValue,
-      cChart._wasm._chart_setValue
-    )
-  }
-}
-
-export class CStyle extends CProxy<Styles.Chart> {
-  constructor(cChart: CChart, computed: boolean) {
-    super(
-      cChart.getId,
-      cChart,
-      cChart._wasm._style_getList,
-      (ptr, path) => cChart._wasm._style_getValue(ptr, path, computed),
-      cChart._wasm._style_setValue
-    )
-  }
-}
-
-export class CAnimOptions extends CProxy<Anim.Options> {
-  constructor(cChart: CChart) {
-    super(
-      cChart.getId,
-      cChart,
-      () => 0,
-      () => 0,
-      cChart._wasm._anim_setValue
-    )
-  }
-}
+class CConfig extends CProxy<Config.Chart> {}
+class CStyle extends CProxy<Styles.Chart> {}
+class CAnimOptions extends CProxy<Anim.Options> {}
 
 export class CChart extends CObject {
   config: CConfig
@@ -58,14 +27,13 @@ export class CChart extends CObject {
   computedStyle: CStyle
   animOptions: CAnimOptions
 
-  constructor(env: CEnv) {
-    const getId = env._getStatic(env._wasm._vizzu_createChart)
+  constructor(env: CEnv, getId: CPointerClosure) {
     super(getId, env)
 
-    this.config = new CConfig(this)
-    this.style = new CStyle(this, false)
-    this.computedStyle = new CStyle(this, true)
-    this.animOptions = new CAnimOptions(this)
+    this.config = this._makeConfig()
+    this.style = this._makeStyle(false)
+    this.computedStyle = this._makeStyle(true)
+    this.animOptions = this._makeAnimOptions()
   }
 
   update(cCanvas: CCanvas, width: number, height: number, renderControl: number): void {
@@ -155,5 +123,55 @@ export class CChart extends CObject {
       x: this._wasm.getValue(ptr, 'double'),
       y: this._wasm.getValue(ptr + 8, 'double')
     }
+  }
+
+  pointerdown(canvas: CCanvas, pointerId: number, x: number, y: number): void {
+    this._call(this._wasm._vizzu_pointerDown)(canvas.getId(), pointerId, x, y)
+  }
+
+  pointermove(canvas: CCanvas, pointerId: number, x: number, y: number): void {
+    this._call(this._wasm._vizzu_pointerMove)(canvas.getId(), pointerId, x, y)
+  }
+
+  pointerup(canvas: CCanvas, pointerId: number, x: number, y: number): void {
+    this._call(this._wasm._vizzu_pointerUp)(canvas.getId(), pointerId, x, y)
+  }
+
+  pointerleave(canvas: CCanvas, pointerId: number): void {
+    this._call(this._wasm._vizzu_pointerLeave)(canvas.getId(), pointerId)
+  }
+
+  wheel(canvas: CCanvas, delta: number): void {
+    this._call(this._wasm._vizzu_wheel)(canvas.getId(), delta)
+  }
+
+  private _makeConfig(): CConfig {
+    return new CConfig(
+      this.getId,
+      this,
+      this._wasm._chart_getList,
+      this._wasm._chart_getValue,
+      this._wasm._chart_setValue
+    )
+  }
+
+  private _makeStyle(computed: boolean): CStyle {
+    return new CStyle(
+      this.getId,
+      this,
+      this._wasm._style_getList,
+      (ptr, path) => this._wasm._style_getValue(ptr, path, computed),
+      this._wasm._style_setValue
+    )
+  }
+
+  private _makeAnimOptions(): CAnimOptions {
+    return new CAnimOptions(
+      this.getId,
+      this,
+      () => 0,
+      () => 0,
+      this._wasm._anim_setValue
+    )
   }
 }

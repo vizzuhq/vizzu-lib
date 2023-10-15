@@ -15,9 +15,9 @@ type EventHandlers<T extends E.Type> = {
 }
 
 export class Events {
-  _cChart: CChart
-  _render: Render
-  _eventHandlers: EventHandlers<E.Type> = {}
+  private _cChart: CChart
+  private _render: Render
+  private _eventHandlers: EventHandlers<E.Type> = {}
 
   constructor(cChart: CChart, render: Render) {
     this._cChart = cChart
@@ -31,7 +31,7 @@ export class Events {
     this._getHandlers(eventName).push(handler)
   }
 
-  _getHandlers<T extends E.Type>(eventName: T): E.Handler<E.EventMap[T]>[] {
+  private _getHandlers<T extends E.Type>(eventName: T): E.Handler<E.EventMap[T]>[] {
     if (!(eventName in this._eventHandlers)) {
       let cfunc = null
       if (!this._isJSEvent(eventName)) {
@@ -84,7 +84,7 @@ export class Events {
     }
   }
 
-  _invoke<T extends E.Type>(eventName: T, param: E.EventMap[T], cEvent?: CEvent): boolean {
+  private _invoke<T extends E.Type>(eventName: T, param: E.EventMap[T], cEvent?: CEvent): boolean {
     const state: EventState = { canceled: false }
     try {
       const handlers = this._eventHandlers[eventName]
@@ -104,18 +104,18 @@ export class Events {
     return state.canceled
   }
 
-  _isJSEvent(eventName: E.Type): boolean {
+  private _isJSEvent(eventName: E.Type): boolean {
     return eventName.startsWith('api-')
   }
 
-  _makeJSEventParam<T>(param: E.Event<T>, state: EventState): E.Event<T> {
+  private _makeJSEventParam<T>(param: E.Event<T>, state: EventState): E.Event<T> {
     param.preventDefault = (): void => {
       state.canceled = true
     }
     return param
   }
 
-  _makeCEventParam<T>(cEvent: CEvent, param: E.Event<T>, state: EventState): E.Event<T> {
+  private _makeCEventParam<T>(cEvent: CEvent, param: E.Event<T>, state: EventState): E.Event<T> {
     param.preventDefault = (): void => {
       cEvent.preventDefault()
       state.canceled = true

@@ -4,7 +4,7 @@ import Vizzu from '../vizzu.js'
 import { NotInitializedError } from '../errors.js'
 
 export class Rendering implements Plugins.Plugin {
-  _vizzu?: Vizzu
+  private _vizzu?: Vizzu
 
   meta = { name: 'rendering' }
 

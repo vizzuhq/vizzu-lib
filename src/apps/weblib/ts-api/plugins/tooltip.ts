@@ -3,11 +3,11 @@ import { Events, Plugins } from '../types/vizzu.js'
 import Vizzu from '../vizzu.js'
 
 export class Tooltip implements Plugins.Plugin {
-  vizzu?: Vizzu
-  id = 0
-  animating = false
-  lastMarkerId: number | null = null
-  lastMove = new Date().getTime()
+  private _vizzu?: Vizzu
+  private _id = 0
+  private _animating = false
+  private _lastMarkerId: number | null = null
+  private _lastMove = new Date().getTime()
 
   meta = {
     name: 'tooltip',
@@ -20,25 +20,25 @@ export class Tooltip implements Plugins.Plugin {
   }
 
   register(vizzu: Vizzu): void {
-    this.vizzu = vizzu
+    this._vizzu = vizzu
   }
 
   enable(enabled: boolean): void {
     if (!enabled) {
-      this.id++
+      this._id++
       setTimeout(() => {
-        this._out(this.id)
+        this._out(this._id)
       }, 200)
     }
   }
 
   _mousemove(): void {
-    this.lastMove = new Date().getTime()
+    this._lastMove = new Date().getTime()
   }
 
   _mouseon(param: Events.PointerEvent): void {
-    this.id++
-    const id = this.id
+    this._id++
+    const id = this._id
     if (param.target && this._isMarker(param.target)) {
       const markerId = param.target.index
       setTimeout(() => {
@@ -56,17 +56,17 @@ export class Tooltip implements Plugins.Plugin {
   }
 
   _in(id: number, markerId: number): void {
-    if (this.id === id) {
-      if (!this.animating) {
-        this.lastMarkerId = markerId
-        this.animating = true
-        this.vizzu
+    if (this._id === id) {
+      if (!this._animating) {
+        this._lastMarkerId = markerId
+        this._animating = true
+        this._vizzu
           ?.animate(
             [{ target: { config: { tooltip: markerId } } }],
-            this.lastMarkerId ? '100ms' : '250ms'
+            this._lastMarkerId ? '100ms' : '250ms'
           )
           .then(() => {
-            this.animating = false
+            this._animating = false
           })
       } else {
         setTimeout(() => {
@@ -77,13 +77,13 @@ export class Tooltip implements Plugins.Plugin {
   }
 
   _out(id: number): void {
-    if (this.id === id) {
-      const ellapsed = new Date().getTime() - this.lastMove
-      if (!this.animating && ellapsed > 200) {
-        this.lastMarkerId = null
-        this.animating = true
-        this.vizzu?.animate([{ target: { config: { tooltip: null } } }], '250ms').then(() => {
-          this.animating = false
+    if (this._id === id) {
+      const ellapsed = new Date().getTime() - this._lastMove
+      if (!this._animating && ellapsed > 200) {
+        this._lastMarkerId = null
+        this._animating = true
+        this._vizzu?.animate([{ target: { config: { tooltip: null } } }], '250ms').then(() => {
+          this._animating = false
         })
       } else {
         setTimeout(() => {

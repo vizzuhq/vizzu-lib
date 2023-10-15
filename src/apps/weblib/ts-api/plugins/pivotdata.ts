@@ -28,7 +28,7 @@ export class PivotData implements Plugins.Plugin {
     }
   }
 
-  static _is1NF(data: Data.Set | Data.Cube): data is Data.Set {
+  private static _is1NF(data: Data.Set | Data.Cube): data is Data.Set {
     return 'series' in data || 'records' in data
   }
 }

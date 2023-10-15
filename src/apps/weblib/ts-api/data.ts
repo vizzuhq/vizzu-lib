@@ -15,7 +15,7 @@ class DataRecord implements D.Record {
 }
 
 export class Data {
-  _cData: CData
+  private _cData: CData
 
   constructor(cData: CData) {
     this._cData = cData
@@ -32,7 +32,7 @@ export class Data {
       }
 
       for (const series of obj.series) {
-        this.setSeries(series)
+        this._setSeries(series)
       }
     }
 
@@ -43,25 +43,25 @@ export class Data {
 
       const seriesList = this._cData.getMetaInfo().series
       for (const record of obj.records) {
-        this.addRecord(record, seriesList)
+        this._addRecord(record, seriesList)
       }
     }
 
     if (obj.filter || obj.filter === null) {
-      this.setFilter(obj.filter)
+      this._setFilter(obj.filter)
     }
   }
 
-  addRecord(record: D.ValueArray | D.Record, seriesList: D.SeriesInfo[]): void {
+  private _addRecord(record: D.ValueArray | D.Record, seriesList: D.SeriesInfo[]): void {
     if (!Array.isArray(record)) {
       if (typeof record === 'object' && record !== null) {
-        record = this.recordObjectToArray(record, seriesList)
+        record = this._recordObjectToArray(record, seriesList)
       } else throw new Error('data record is not an array or object')
     }
     this._cData.addRecord(record)
   }
 
-  recordObjectToArray(record: D.Record, seriesList: D.SeriesInfo[]): D.Value[] {
+  private _recordObjectToArray(record: D.Record, seriesList: D.SeriesInfo[]): D.Value[] {
     const result = [] as D.Value[]
 
     seriesList.forEach((series) => {
@@ -75,30 +75,30 @@ export class Data {
     return result
   }
 
-  _default(type?: string): D.Value {
+  private _default(type?: string): D.Value {
     return type === 'measure' ? 0 : ''
   }
 
-  setSeries(series: D.Series): void {
+  private _setSeries(series: D.Series): void {
     if (!series.name) {
       throw new Error('missing series name')
     }
 
     const values = series.values ? series.values : ([] as D.Values)
 
-    const seriesType = series.type ? series.type : this.detectType(values)
+    const seriesType = series.type ? series.type : this._detectType(values)
 
     if (seriesType === 'dimension') {
-      this.addDimension(series.name, values)
+      this._addDimension(series.name, values)
     } else if (seriesType === 'measure') {
       if (!series.unit) series.unit = ''
-      this.addMeasure(series.name, series.unit, values)
+      this._addMeasure(series.name, series.unit, values)
     } else {
       throw new Error('invalid series type: ' + series.type)
     }
   }
 
-  detectType(values: (string | number)[]): D.SeriesType | null {
+  private _detectType(values: (string | number)[]): D.SeriesType | null {
     if (Array.isArray(values) && values.length) {
       if (typeof values[0] === 'number') {
         return 'measure'
@@ -109,7 +109,7 @@ export class Data {
     return null
   }
 
-  addDimension(name: string, dimension: unknown[]): void {
+  private _addDimension(name: string, dimension: unknown[]): void {
     if (typeof name !== 'string') {
       throw new Error('first parameter should be string')
     }
@@ -125,7 +125,7 @@ export class Data {
     this._cData.addDimension(name, dimension)
   }
 
-  _isStringArray(values: unknown[]): values is string[] {
+  private _isStringArray(values: unknown[]): values is string[] {
     for (const value of values) {
       if (typeof value !== 'string') {
         return false
@@ -134,7 +134,7 @@ export class Data {
     return true
   }
 
-  addMeasure(name: string, unit: string, values: unknown[]): void {
+  private _addMeasure(name: string, unit: string, values: unknown[]): void {
     if (typeof name !== 'string') {
       throw new Error("'name' parameter should be string")
     }
@@ -152,7 +152,7 @@ export class Data {
     this._cData.addMeasure(name, unit, numbers)
   }
 
-  setFilter(filter: D.FilterCallback | null): void {
+  private _setFilter(filter: D.FilterCallback | null): void {
     if (typeof filter === 'function') {
       const callback = (cRecord: CRecord): boolean => filter(new DataRecord(cRecord))
       this._cData.setFilter(callback)

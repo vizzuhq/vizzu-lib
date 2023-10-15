@@ -5,7 +5,7 @@ import Vizzu from '../vizzu.js'
 import { getCSSCustomPropsForElement, propsToObject } from './cssutils.js'
 
 export class CSSProperties implements Plugins.Plugin {
-  chart?: Vizzu
+  private _chart?: Vizzu
 
   meta = {
     name: 'cssProperties'
@@ -24,7 +24,7 @@ export class CSSProperties implements Plugins.Plugin {
   get hooks(): Plugins.PluginHooks {
     return {
       setAnimParams: (ctx: Plugins.SetAnimParamsContext, next: () => void): void => {
-        const props = getCSSCustomPropsForElement(this.chart!._container, this.api.prefix)
+        const props = getCSSCustomPropsForElement(this._chart!._container, this.api.prefix)
         if (Array.isArray(ctx.target))
           ctx.target.forEach(({ target }) => {
             target.style = propsToObject(props, target.style, this.api.prefix)
@@ -35,6 +35,6 @@ export class CSSProperties implements Plugins.Plugin {
   }
 
   register(chart: Vizzu): void {
-    this.chart = chart
+    this._chart = chart
   }
 }
