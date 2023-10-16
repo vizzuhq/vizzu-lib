@@ -10,7 +10,7 @@ import {
   VizzuOptions,
   Features,
   FeatureFunction,
-  Vizzu as VizzuInterface
+  default as VizzuInterface
 } from './types/vizzu.js'
 import { loader } from './module/loader.js'
 import { Chart } from './chart.js'

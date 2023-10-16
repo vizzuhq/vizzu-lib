@@ -84,9 +84,9 @@ export namespace Plugins {
     /** Any parameter or method the Plugin exposes for the user. */
     api?: PluginApi
     /** Register called when the plugin added to vizzu, receiving the Vizzu instance. */
-    register?: (ctx: Parent) => void
+    register?: (ctx: Vizzu) => void
     /** Unregister is called when detach() called on the Vizzu instance. */
-    unregister?: (ctx: Parent) => void
+    unregister?: (ctx: Vizzu) => void
     /** Method called by Vizzu indicating for the plugin that it got switched on/off.
         If switched off, its event listeners gets removed and its hooks won't be called. */
     enable?: (enabled: boolean) => void

@@ -58,7 +58,7 @@ export type FeatureFunction = (
 export interface Features extends Record<string, Plugins.PluginApi>, FeatureFunction {}
 
 /** Class representing a single chart in Vizzu. */
-export class Vizzu {
+export default class Vizzu {
   /** Creates a new chart and connects it to the div or canvas HTML 
     element specified by its ID or DOM object. The new chart is empty by 
     default, but can be set to an initial state in the second optional 
