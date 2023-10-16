@@ -5,8 +5,9 @@ import Vizzu from './vizzu.js'
 import { Events } from './events.js'
 
 export enum Hooks {
-  setAnimParams = 'setAnimParams',
-  animateRegister = 'animateRegister'
+  registerAnimation = 'registerAnimation',
+  prepareAnimation = 'prepareAnimation',
+  runAnimation = 'runAnimation'
 }
 
 interface PluginRecord {

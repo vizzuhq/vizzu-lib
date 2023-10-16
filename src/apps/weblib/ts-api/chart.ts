@@ -90,19 +90,24 @@ export class Chart {
     }
   }
 
-  animate(
-    callback: (ok: boolean) => void,
+  async prepareAnimation(
     target: Anim.Keyframes | CAnimation,
     options?: Anim.ControlOptions & Anim.Options
-  ): void {
+  ): Promise<void> {
     const ctx = Object.assign({ target }, options !== undefined ? { options } : {})
-    this._plugins.hook(Hooks.setAnimParams, ctx).default((ctx) => {
-      this._setAnimParams(ctx.target, ctx.options)
+    await this._plugins.hook(Hooks.prepareAnimation, ctx).default((ctx) => {
+      this.setAnimParams(ctx.target, ctx.options)
     })
-    this._cChart.animate(callback)
   }
 
-  private _setAnimParams(
+  runAnimation(callback: (ok: boolean) => void): void {
+    const ctx = { callback }
+    this._plugins.hook(Hooks.runAnimation, ctx).default((ctx) => {
+      this._cChart.animate(ctx.callback)
+    })
+  }
+
+  setAnimParams(
     target: Anim.Keyframes | CAnimation,
     options?: Anim.ControlOptions & Anim.Options
   ): void {

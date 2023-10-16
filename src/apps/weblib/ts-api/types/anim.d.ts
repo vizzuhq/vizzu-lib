@@ -8,6 +8,7 @@ export namespace Anim {
   /** Duration can be set in seconds or milliseconds.
     In case no unit is set, it defaults to seconds. */
   type Duration = `${number}s` | `${number}ms` | number
+  /** Seek position in the animation. */
   type Position = `${number}%` | Duration
   type Easing =
     | 'none'

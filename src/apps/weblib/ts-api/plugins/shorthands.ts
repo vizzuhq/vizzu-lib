@@ -17,7 +17,7 @@ export class Shorthands implements Plugins.Plugin {
 
   get hooks(): Plugins.PluginHooks {
     const hooks = {
-      setAnimParams: Object.assign(
+      prepareAnimation: Object.assign(
         (ctx: Plugins.SetAnimParamsContext, next: () => void) => {
           this._normalize(ctx)
           next()

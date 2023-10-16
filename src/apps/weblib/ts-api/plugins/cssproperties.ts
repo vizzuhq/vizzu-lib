@@ -23,7 +23,7 @@ export class CSSProperties implements Plugins.Plugin {
 
   get hooks(): Plugins.PluginHooks {
     return {
-      setAnimParams: (ctx: Plugins.SetAnimParamsContext, next: () => void): void => {
+      prepareAnimation: (ctx: Plugins.SetAnimParamsContext, next: () => void): void => {
         const props = getCSSCustomPropsForElement(this._chart!.getCanvasElement(), this.api.prefix)
         if (Array.isArray(ctx.target))
           ctx.target.forEach(({ target }) => {

@@ -8,10 +8,12 @@ import { Vizzu } from './vizzu'
 export enum Hooks {
   /** Called when the animate() parameters gets set in the library to prepare 
       the animation. */
-  setAnimParams = 'setAnimParams',
+  prepareAnimation = 'prepareAnimation',
   /** Called when the animate() method called, and the lib shedules the call 
       to the animation queue. */
-  animateRegister = 'animateRegister'
+  registerAnimation = 'registerAnimation',
+  /** Called when all animate() parameter set and animation can be started. */
+  runAnimation = 'runAnimation'
 }
 
 export namespace Plugins {
@@ -38,9 +40,14 @@ export namespace Plugins {
     promise: Anim.Completing
   }
 
+  interface RunAnimationContext {
+    callback: (ok: boolean) => void
+  }
+
   interface HookContexts {
-    [Hooks.setAnimParams]: SetAnimParamsContext
-    [Hooks.animateRegister]: AnimateRegisterContext
+    [Hooks.prepareAnimation]: SetAnimParamsContext
+    [Hooks.registerAnimation]: AnimateRegisterContext
+    [Hooks.runAnimation]: RunAnimationContext
   }
 
   type Next = () => void

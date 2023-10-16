@@ -130,7 +130,7 @@ export default class Vizzu implements VizzuInterface {
       { target: copiedTarget, promise: this._anim },
       copiedOptions !== undefined ? { options: copiedOptions } : {}
     )
-    this._plugins.hook(Hooks.animateRegister, ctx).default((ctx) => {
+    this._plugins.hook(Hooks.registerAnimation, ctx).default((ctx) => {
       let activate: (control: AnimControl) => void = () => {}
       const activated = new Promise<AnimControl>((resolve) => {
         activate = resolve
@@ -147,7 +147,7 @@ export default class Vizzu implements VizzuInterface {
     options: Anim.ControlOptions | (Anim.ControlOptions & Anim.LazyOptions) | undefined,
     activate: (control: AnimControl) => void
   ): Promise<Vizzu> {
-    return new Promise((resolve, reject) => {
+    return new Promise(async (resolve, reject) => {
       const callback = (ok: boolean): void => {
         if (ok) {
           resolve(this)
@@ -158,7 +158,8 @@ export default class Vizzu implements VizzuInterface {
         }
       }
       if (!this._chart) throw new NotInitializedError()
-      this._chart.animate(callback, target, options)
+      await this._chart.prepareAnimation(target, options)
+      this._chart.runAnimation(callback)
       activate(new AnimControl(this._chart.getCAnimControl()))
     })
   }

@@ -22,7 +22,7 @@ export default class PPTXGen {
   }
 
   hooks = {
-    animateRegister: (ctx, next) => {
+    registerAnimation: (ctx, next) => {
       ctx.promise = ctx.promise.then((chart) => {
         this.chart.feature.videoCapture.start()
         return chart

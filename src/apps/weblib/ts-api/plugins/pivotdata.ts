@@ -9,7 +9,7 @@ export class PivotData implements Plugins.Plugin {
 
   get hooks(): Plugins.PluginHooks {
     return {
-      setAnimParams: (ctx: Plugins.SetAnimParamsContext, next: () => void): void => {
+      prepareAnimation: (ctx: Plugins.SetAnimParamsContext, next: () => void): void => {
         if (Array.isArray(ctx.target))
           ctx.target.forEach(({ target }) => {
             if (target?.data && UnPivot.isPivot(target.data)) {

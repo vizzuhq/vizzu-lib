@@ -29,7 +29,7 @@ export default class MarkerDropshadow {
   }
 
   hooks = {
-    setAnimParams: (ctx, next) => {
+    prepareAnimation: (ctx, next) => {
       if (Array.isArray(ctx.target))
         ctx.target.forEach(({ target, options }) => {
           target.style = this._prepareStyle(target.style)
