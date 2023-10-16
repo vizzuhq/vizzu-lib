@@ -281,7 +281,7 @@ git clone --single-branch --branch main --depth 1 'git@github.com:vizzuhq/vizzu-
 **Note:** If you also want to generate thumbnails, run the following command:
 
 ```sh
-npm run docs-gen-thumbnails
+npm run docs-gen-thumbnail
 ```
 
 To build the documentation, you can use the `docs-build` script:
