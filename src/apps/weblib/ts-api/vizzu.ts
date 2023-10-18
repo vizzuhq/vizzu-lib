@@ -105,7 +105,7 @@ export default class Vizzu implements VizzuInterface {
       const instance = nameOrInstance
       name = this._plugins.getRegisteredName(instance)
       if (!name) {
-        name = this._plugins.register(instance, enabled || true)
+        name = this._plugins.register(instance, enabled ?? true)
         enabledInRegister = true
       }
     } else {
