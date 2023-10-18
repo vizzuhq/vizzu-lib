@@ -257,7 +257,7 @@ struct DataPoint
 
 	[[nodiscard]] Math::Range<double> lightnessRange() const
 	{
-		return {*minLightness, *maxLightness};
+		return Math::Range<double>::Raw(*minLightness, *maxLightness);
 	}
 };
 
