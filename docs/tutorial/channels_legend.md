@@ -78,7 +78,7 @@ columns’ height and lightness represent the same values. The legend for the
 !!! info
     This is an example when we explicitly instruct `Vizzu` to show the legend.
     By default `Vizzu` automatically shows/hides the legend when it's necessary.
-    You can also turn it off with the `legend`: `null` command or set back to
+    You can also turn it off with the `legend`: `null` setting or set back to
     automatic mode with `legend`: `'auto'`.
 
 <div id="tutorial_02"></div>
