@@ -1,16 +1,16 @@
 import { Renderer } from './cvizzu.types'
-import { Geom } from './geom.js'
-import { Plugins } from './plugins'
+import { Point } from './geom.js'
+import { Plugin, PluginApi } from './plugins'
 
 import { Module } from './module/module.js'
 import { CCanvas } from './module/ccanvas.js'
 import { CChart } from './module/cchart.js'
 
-export interface RenderingApi extends Plugins.PluginApi {
-  clientToRenderCoor(clientPos: Geom.Point): Geom.Point
+export interface RenderingApi extends PluginApi {
+  clientToRenderCoor(clientPos: Point): Point
 }
 
-export class Render implements Plugins.Plugin, Renderer {
+export class Render implements Plugin, Renderer {
   private _ccanvas: CCanvas
   private _enabled: boolean
   private _cchart: CChart
@@ -30,7 +30,7 @@ export class Render implements Plugins.Plugin, Renderer {
 
   get api(): RenderingApi {
     return {
-      clientToRenderCoor: (clientPos: Geom.Point): Geom.Point => {
+      clientToRenderCoor: (clientPos: Point): Point => {
         return this.clientToRenderCoor(clientPos)
       }
     }
@@ -132,7 +132,7 @@ export class Render implements Plugins.Plugin, Renderer {
     }
   }
 
-  clientToRenderCoor(clientPos: Geom.Point): Geom.Point {
+  clientToRenderCoor(clientPos: Point): Point {
     const rect = this._clientRect()
     const scaleX = rect.width / (this._mainCanvas.width / this._scaleFactor)
     const scaleY = rect.height / (this._mainCanvas.height / this._scaleFactor)

@@ -1,6 +1,6 @@
-import { Plugins } from '../plugins'
+import { Plugin } from '../plugins'
 
-export class Logging implements Plugins.Plugin {
+export class Logging implements Plugin {
   private _setEnable: (enabled: boolean) => void
 
   meta = { name: 'logging' }

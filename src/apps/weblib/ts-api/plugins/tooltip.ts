@@ -1,9 +1,9 @@
-import { Events } from '../events.js'
-import { Plugins } from '../plugins.js'
+import { Element, Marker, PointerEvent } from '../events.js'
+import { Plugin } from '../plugins.js'
 
 import Vizzu from '../vizzu.js'
 
-export class Tooltip implements Plugins.Plugin {
+export class Tooltip implements Plugin {
   private _vizzu?: Vizzu
   private _id = 0
   private _animating = false
@@ -37,7 +37,7 @@ export class Tooltip implements Plugins.Plugin {
     this._lastMove = new Date().getTime()
   }
 
-  _mouseon(param: Events.PointerEvent): void {
+  _mouseon(param: PointerEvent): void {
     this._id++
     const id = this._id
     if (param.target && this._isMarker(param.target)) {
@@ -52,7 +52,7 @@ export class Tooltip implements Plugins.Plugin {
     }
   }
 
-  _isMarker(target: Events.Element): target is Events.Marker {
+  _isMarker(target: Element): target is Marker {
     return target.tagName === 'plot-marker'
   }
 

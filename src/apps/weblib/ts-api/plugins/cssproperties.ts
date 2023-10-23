@@ -1,11 +1,11 @@
-import { Plugins } from '../plugins.js'
+import { Plugin, PluginHooks, PrepareAnimationContext } from '../plugins.js'
 import { Snapshot } from '../module/cchart.js'
 
 import Vizzu from '../vizzu.js'
 
 import { getCSSCustomPropsForElement, propsToObject } from './cssutils.js'
 
-export class CSSProperties implements Plugins.Plugin {
+export class CSSProperties implements Plugin {
   private _chart?: Vizzu
 
   meta = {
@@ -22,9 +22,9 @@ export class CSSProperties implements Plugins.Plugin {
     }
   }
 
-  get hooks(): Plugins.PluginHooks {
+  get hooks(): PluginHooks {
     return {
-      prepareAnimation: (ctx: Plugins.PrepareAnimationContext, next: () => void): void => {
+      prepareAnimation: (ctx: PrepareAnimationContext, next: () => void): void => {
         const props = getCSSCustomPropsForElement(this._chart!.getCanvasElement(), this.api.prefix)
         if (Array.isArray(ctx.target))
           ctx.target.forEach(({ target }) => {

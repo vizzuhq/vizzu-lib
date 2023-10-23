@@ -21,6 +21,8 @@ module.exports = {
       parser: '@typescript-eslint/parser',
       plugins: ['@typescript-eslint'],
       rules: {
+        'no-use-before-define': 'off',
+        '@typescript-eslint/no-use-before-define': 'error',
         '@typescript-eslint/explicit-function-return-type': ['error']
       }
     }

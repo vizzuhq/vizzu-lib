@@ -2,7 +2,7 @@ import { CString, CFunction, CEventPtr } from '../cvizzu.types'
 
 import { Anim } from '../types/anim.js'
 import { Config } from '../types/config.js'
-import { Geom } from '../geom.js'
+import { Point } from '../geom.js'
 import { Styles } from '../types/styles.js'
 
 import { CObject, CEnv } from './cenv.js'
@@ -99,7 +99,7 @@ export class CChart extends CObject {
     return JSON.parse(this._fromCString(cStr))
   }
 
-  toCanvasCoords(point: Geom.Point): Geom.Point {
+  toCanvasCoords(point: Point): Point {
     const ptr = this._call(this._wasm._chart_relToCanvasCoords)(point.x, point.y)
     return {
       x: this._wasm.getValue(ptr, 'double'),
@@ -107,7 +107,7 @@ export class CChart extends CObject {
     }
   }
 
-  toRelCoords(point: Geom.Point): Geom.Point {
+  toRelCoords(point: Point): Point {
     const ptr = this._call(this._wasm._chart_canvasToRelCoords)(point.x, point.y)
     return {
       x: this._wasm.getValue(ptr, 'double'),

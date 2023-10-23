@@ -1,6 +1,5 @@
-import { Plugins } from '../plugins'
-
 import Vizzu from '../vizzu.js'
+import { Plugin } from '../plugins'
 import { CChart } from '../module/cchart.js'
 import { RenderingApi } from '../render.js'
 import { NotInitializedError } from '../errors.js'
@@ -13,7 +12,7 @@ interface Handlers {
   wheel: (event: WheelEvent) => void
 }
 
-export class PointerEvents implements Plugins.Plugin {
+export class PointerEvents implements Plugin {
   private _vizzu?: Vizzu
   private _rendering?: RenderingApi
   private _canvas?: HTMLCanvasElement

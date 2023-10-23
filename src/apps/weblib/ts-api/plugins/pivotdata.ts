@@ -1,17 +1,17 @@
 import { Snapshot } from '../module/cchart.js'
-import { Plugins } from '../plugins'
+import { Plugin, PluginHooks, PrepareAnimationContext } from '../plugins'
 import { Data } from '../types/data.js'
 
 import UnPivot, { DataCube } from './unpivot.js'
 
-export class PivotData implements Plugins.Plugin {
+export class PivotData implements Plugin {
   meta = {
     name: 'pivotData'
   }
 
-  get hooks(): Plugins.PluginHooks {
+  get hooks(): PluginHooks {
     return {
-      prepareAnimation: (ctx: Plugins.PrepareAnimationContext, next: () => void): void => {
+      prepareAnimation: (ctx: PrepareAnimationContext, next: () => void): void => {
         if (Array.isArray(ctx.target))
           ctx.target.forEach(({ target }) => {
             if (target instanceof Snapshot) return

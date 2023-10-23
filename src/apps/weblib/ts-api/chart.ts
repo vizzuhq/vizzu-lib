@@ -1,6 +1,6 @@
 import { Anim } from './types/anim.js'
 import { Config } from './types/config.js'
-import { Geom } from './geom.js'
+import { Point, CoordinateType, PointConverter } from './geom.js'
 import { Data as D } from './types/data.js'
 import { Styles } from './types/styles.js'
 import { Module } from './module/module.js'
@@ -9,8 +9,8 @@ import { CAnimControl, CAnimation } from './module/canimctrl.js'
 import { CData } from './module/cdata.js'
 import { Render } from './render.js'
 import { Data } from './data.js'
-import { Events } from './events.js'
-import { Plugins } from './plugins'
+import { Events, EventType, EventHandler, EventMap } from './events.js'
+import { PluginRegistry, Hooks } from './plugins'
 import { Logging } from './plugins/logging.js'
 import { Shorthands } from './plugins/shorthands.js'
 import { PivotData } from './plugins/pivotdata.js'
@@ -26,12 +26,12 @@ export class Chart {
   private _canvas: HTMLCanvasElement
   private _cData: CData
   private _data: Data
-  private _events: Events.Events
-  private _plugins: Plugins.PluginRegistry
+  private _events: Events
+  private _plugins: PluginRegistry
   private _resizeObserver: ResizeObserver
   private _updateInterval?: ReturnType<typeof setTimeout>
 
-  constructor(module: Module, container: HTMLElement, _plugins: Plugins.PluginRegistry) {
+  constructor(module: Module, container: HTMLElement, _plugins: PluginRegistry) {
     this._plugins = _plugins
     this._container = container
     this._module = module
@@ -42,7 +42,7 @@ export class Chart {
     this._cData = this._module.getData(this._cChart)
     this._data = new Data(this._cData)
     this._render = new Render(this._module, this._cChart, this._canvas, false)
-    this._events = new Events.Events(this._cChart, this._render)
+    this._events = new Events(this._cChart, this._render)
     this._plugins.init(this._events)
     this._resizeObserver = this._createResizeObserverFor(this._canvas)
   }
@@ -99,14 +99,14 @@ export class Chart {
     options?: Anim.ControlOptions & Anim.Options
   ): Promise<void> {
     const ctx = Object.assign({ target }, options !== undefined ? { options } : {})
-    await this._plugins.hook(Plugins.Hooks.prepareAnimation, ctx).default((ctx) => {
+    await this._plugins.hook(Hooks.prepareAnimation, ctx).default((ctx) => {
       this.setAnimParams(ctx.target, ctx.options)
     })
   }
 
   runAnimation(callback: (ok: boolean) => void): void {
     const ctx = { callback }
-    this._plugins.hook(Plugins.Hooks.runAnimation, ctx).default((ctx) => {
+    this._plugins.hook(Hooks.runAnimation, ctx).default((ctx) => {
       this._cChart.animate(ctx.callback)
     })
   }
@@ -145,20 +145,15 @@ export class Chart {
       this._container.removeChild(this._canvas)
   }
 
-  getConverter(
-    target: string,
-    from: Geom.CoordinateType,
-    to: Geom.CoordinateType
-  ): (point: Geom.Point) => Geom.Point {
+  getConverter(target: string, from: CoordinateType, to: CoordinateType): PointConverter {
     if (typeof target === 'string' && target.startsWith('plot')) {
       if (this._cChart) {
         const chart = this._cChart
-        if (from === 'relative' || to === 'canvas')
-          return (p: Geom.Point) => chart.toCanvasCoords(p)
-        if (from === 'canvas' || to === 'relative') return (p: Geom.Point) => chart.toRelCoords(p)
+        if (from === 'relative' || to === 'canvas') return (p: Point) => chart.toCanvasCoords(p)
+        if (from === 'canvas' || to === 'relative') return (p: Point) => chart.toRelCoords(p)
       }
     }
-    return (point: Geom.Point) => point
+    return (point: Point) => point
   }
 
   version(): string {
@@ -189,11 +184,11 @@ export class Chart {
     return this._cChart.computedStyle.get()
   }
 
-  on<T extends Events.Type>(eventName: T, handler: Events.Handler<Events.EventMap[T]>): void {
+  on<T extends EventType>(eventName: T, handler: EventHandler<EventMap[T]>): void {
     this._events.add(eventName, handler)
   }
 
-  off<T extends Events.Type>(eventName: T, handler: Events.Handler<Events.EventMap[T]>): void {
+  off<T extends EventType>(eventName: T, handler: EventHandler<EventMap[T]>): void {
     this._events.remove(eventName, handler)
   }
 

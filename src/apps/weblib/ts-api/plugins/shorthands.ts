@@ -1,6 +1,6 @@
 import { Anim } from '../types/anim.js'
 import { Config } from '../types/config.js'
-import { Plugins } from '../plugins.js'
+import { Plugin, PluginHooks, PrepareAnimationContext } from '../plugins.js'
 import { Data } from '../types/data.js'
 import { Styles } from '../types/styles.js'
 
@@ -28,7 +28,7 @@ interface LazyPrepareAnimationContext {
 
 type ChannelName = keyof Config.Channels
 
-export class Shorthands implements Plugins.Plugin {
+export class Shorthands implements Plugin {
   private _chart?: Vizzu
   private _channelNames?: string[]
 
@@ -36,10 +36,10 @@ export class Shorthands implements Plugins.Plugin {
     name: 'shorthands'
   }
 
-  get hooks(): Plugins.PluginHooks {
+  get hooks(): PluginHooks {
     const hooks = {
       prepareAnimation: Object.assign(
-        (ctx: Plugins.PrepareAnimationContext, next: () => void) => {
+        (ctx: PrepareAnimationContext, next: () => void) => {
           this._normalize(ctx)
           next()
         },

@@ -1,8 +1,8 @@
 import { Anim } from './types/anim.js'
 import { Data } from './types/data.js'
 import { Config } from './types/config.js'
-import { Geom } from './geom.js'
-import { Events } from './events.js'
+import { CoordinateType, PointConverter } from './geom.js'
+import { EventType, EventMap, EventHandler } from './events.js'
 import { Styles } from './types/styles.js'
 import { loader, LoaderOptions } from './module/loader.js'
 import { Chart } from './chart.js'
@@ -13,13 +13,11 @@ import { AnimControl } from './animcontrol.js'
 import { AnimCompleting } from './animcompleting.js'
 import { recursiveCopy } from './utils.js'
 import { NotInitializedError, CancelError } from './errors.js'
-import { Plugins } from './plugins.js'
+import { Plugin, PluginApi, PluginRegistry, Hooks } from './plugins.js'
 import Presets from './plugins/presets.js'
 
-namespace Lib {
-  /** Options for the library. */
-  export type Options = LoaderOptions
-}
+/** Options for the library. */
+export type LibOptions = LoaderOptions
 
 /** List of base and additional features:
     - logging: enables logging of the library to the console 
@@ -45,14 +43,11 @@ export type Feature =
 
 export interface VizzuOptions {
   container: HTMLElement
-  features?: Plugins.Plugin[]
+  features?: Plugin[]
 }
 
-export type FeatureFunction = (
-  feature: Feature | Plugins.Plugin,
-  enabled?: boolean
-) => Plugins.PluginApi
-export interface Features extends Record<string, Plugins.PluginApi>, FeatureFunction {}
+export type FeatureFunction = (feature: Feature | Plugin, enabled?: boolean) => PluginApi
+export interface Features extends Record<string, PluginApi>, FeatureFunction {}
 
 /** Class representing a single chart in Vizzu. */
 export default class Vizzu {
@@ -63,7 +58,7 @@ export default class Vizzu {
   private _chart?: Chart
   private _container: HTMLElement
   private _anim: AnimCompleting
-  private _plugins: Plugins.PluginRegistry
+  private _plugins: PluginRegistry
 
   /** Returns the chart preset collection. */
   static get presets(): Presets {
@@ -71,7 +66,7 @@ export default class Vizzu {
   }
 
   /** Setter method for Library options. */
-  static options(options: Lib.Options): void {
+  static options(options: LibOptions): void {
     loader.options = options
   }
 
@@ -89,7 +84,7 @@ export default class Vizzu {
 
     this._container = opts.container
 
-    this._plugins = new Plugins.PluginRegistry(this, opts.features)
+    this._plugins = new PluginRegistry(this, opts.features)
 
     this.initializing = loader.initialize().then((module) => {
       this._chart = new Chart(module, this._container, this._plugins)
@@ -136,13 +131,13 @@ export default class Vizzu {
   get feature(): Features {
     const fn: FeatureFunction = this._feature.bind(this)
     return new Proxy(fn, {
-      get: (_target, pluginName: string): Plugins.PluginApi => {
+      get: (_target, pluginName: string): PluginApi => {
         return this._plugins.api(pluginName)
       }
     }) as Features
   }
 
-  private _feature(nameOrInstance: string | Plugins.Plugin, enabled?: boolean): Plugins.PluginApi {
+  private _feature(nameOrInstance: string | Plugin, enabled?: boolean): PluginApi {
     if (enabled !== undefined && typeof enabled !== 'boolean')
       throw new Error('enabled parameter must be boolean if specified')
 
@@ -195,7 +190,7 @@ export default class Vizzu {
       { target: copiedTarget, promise: this._anim },
       copiedOptions !== undefined ? { options: copiedOptions } : {}
     )
-    this._plugins.hook(Plugins.Hooks.registerAnimation, ctx).default((ctx) => {
+    this._plugins.hook(Hooks.registerAnimation, ctx).default((ctx) => {
       let activate: (control: AnimControl) => void = () => {}
       const activated = new Promise<AnimControl>((resolve) => {
         activate = resolve
@@ -212,7 +207,14 @@ export default class Vizzu {
     options: Anim.ControlOptions | undefined,
     activate: (control: AnimControl) => void
   ): Promise<Vizzu> {
-    return new Promise(async (resolve, reject) => {
+    if (!this._chart) throw new NotInitializedError()
+    return this._chart.prepareAnimation(target, options).then(() => {
+      return this._runAnimation(activate)
+    })
+  }
+
+  private _runAnimation(activate: (control: AnimControl) => void): Promise<Vizzu> {
+    return new Promise((resolve, reject) => {
       const callback = (ok: boolean): void => {
         if (ok) {
           resolve(this)
@@ -223,7 +225,6 @@ export default class Vizzu {
         }
       }
       if (!this._chart) throw new NotInitializedError()
-      await this._chart.prepareAnimation(target, options)
       this._chart.runAnimation(callback)
       activate(new AnimControl(this._chart.getCAnimControl()))
     })
@@ -279,13 +280,13 @@ export default class Vizzu {
   }
 
   /** Installs the provided event handler to the event specified by name. */
-  on<T extends Events.Type>(eventName: T, handler: Events.Handler<Events.EventMap[T]>): void {
+  on<T extends EventType>(eventName: T, handler: EventHandler<EventMap[T]>): void {
     if (!this._chart) throw new NotInitializedError()
     this._chart.on(eventName, handler)
   }
 
   /** Uninstalls the provided event handler from the event specified by name. */
-  off<T extends Events.Type>(eventName: T, handler: Events.Handler<Events.EventMap[T]>): void {
+  off<T extends EventType>(eventName: T, handler: EventHandler<EventMap[T]>): void {
     if (!this._chart) throw new NotInitializedError()
     this._chart.off(eventName, handler)
   }
@@ -299,11 +300,7 @@ export default class Vizzu {
   }
 
   /** Returns a converter function. */
-  getConverter(
-    target: `plot${string}`,
-    from: Geom.CoordinateType,
-    to: Geom.CoordinateType
-  ): Geom.Converter {
+  getConverter(target: `plot${string}`, from: CoordinateType, to: CoordinateType): PointConverter {
     if (!this._chart) throw new NotInitializedError()
     return this._chart.getConverter(target, from, to)
   }
