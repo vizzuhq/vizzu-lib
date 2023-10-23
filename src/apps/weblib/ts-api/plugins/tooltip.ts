@@ -1,4 +1,4 @@
-import { Events, Plugins } from '../types/vizzu.js'
+import { Events, Plugins, default as VizzuInterface } from '../types/vizzu.js'
 
 import Vizzu from '../vizzu.js'
 
@@ -19,7 +19,7 @@ export class Tooltip implements Plugins.Plugin {
     pointeron: this._mouseon.bind(this)
   }
 
-  register(vizzu: Vizzu): void {
+  register(vizzu: VizzuInterface): void {
     this._vizzu = vizzu
   }
 
@@ -61,10 +61,9 @@ export class Tooltip implements Plugins.Plugin {
         this._lastMarkerId = markerId
         this._animating = true
         this._vizzu
-          ?.animate(
-            [{ target: { config: { tooltip: markerId } } }],
-            this._lastMarkerId ? '100ms' : '250ms'
-          )
+          ?.animate([{ target: { config: { tooltip: markerId } } }], {
+            duration: this._lastMarkerId ? '100ms' : '250ms'
+          })
           .then(() => {
             this._animating = false
           })
@@ -82,9 +81,11 @@ export class Tooltip implements Plugins.Plugin {
       if (!this._animating && ellapsed > 200) {
         this._lastMarkerId = null
         this._animating = true
-        this._vizzu?.animate([{ target: { config: { tooltip: null } } }], '250ms').then(() => {
-          this._animating = false
-        })
+        this._vizzu
+          ?.animate([{ target: { config: { tooltip: null } } }], { duration: '250ms' })
+          .then(() => {
+            this._animating = false
+          })
       } else {
         setTimeout(() => {
           this._out(id)

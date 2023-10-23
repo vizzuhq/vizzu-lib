@@ -74,13 +74,13 @@ export class Events {
 
   addMany(events: Plugins.PluginListeners): void {
     for (const [eventName, handler] of Object.entries(events)) {
-      this.add(eventName as E.Type, handler)
+      this.add(eventName as E.Type, handler as E.Handler<E.EventMap[E.Type]>)
     }
   }
 
   removeMany(events: Plugins.PluginListeners): void {
     for (const [eventName, handler] of Object.entries(events)) {
-      this.remove(eventName as E.Type, handler)
+      this.remove(eventName as E.Type, handler as E.Handler<E.EventMap[E.Type]>)
     }
   }
 

@@ -6,6 +6,8 @@
     "module": "ES6",
     "rootDir": "./",
     "outDir": "../../../../dist",
-    "moduleResolution": "node"
+    "moduleResolution": "node",
+    "declaration": true,
+    "skipLibCheck": false
   }
 }

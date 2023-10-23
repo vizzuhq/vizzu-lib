@@ -105,7 +105,7 @@ export namespace Data {
   }
   /** Data set is a collection of related {@link Data.Series|data series}. 
     Each chart works on a single data set. */
-  type Set = TableBySeries & TableByRecords
+  type Set = TableBySeries | TableByRecords
   /** Types of the different available data series aggregators:
     
     - sum: sum of the values (default)

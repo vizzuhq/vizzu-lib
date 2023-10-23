@@ -1,4 +1,5 @@
 import { Plugins } from '../types/vizzu.js'
+import { Snapshot } from '../module/cchart.js'
 
 import Vizzu from '../vizzu.js'
 
@@ -23,11 +24,13 @@ export class CSSProperties implements Plugins.Plugin {
 
   get hooks(): Plugins.PluginHooks {
     return {
-      prepareAnimation: (ctx: Plugins.SetAnimParamsContext, next: () => void): void => {
+      prepareAnimation: (ctx: Plugins.PrepareAnimationContext, next: () => void): void => {
         const props = getCSSCustomPropsForElement(this._chart!.getCanvasElement(), this.api.prefix)
         if (Array.isArray(ctx.target))
           ctx.target.forEach(({ target }) => {
-            target.style = propsToObject(props, target.style, this.api.prefix)
+            if (!(target instanceof Snapshot)) {
+              target.style = propsToObject(props, target.style, this.api.prefix)
+            }
           })
         next()
       }

@@ -3,6 +3,9 @@
 import { Data } from './data'
 import { Config } from './config'
 import { Styles } from './styles'
+import Vizzu from './vizzu'
+import { CAnimation } from '../module/canimctrl'
+import { Snapshot } from '../module/cchart'
 
 export namespace Anim {
   /** Duration can be set in seconds or milliseconds.
@@ -81,7 +84,7 @@ export namespace Anim {
     differently on the source and target chart.  */
     regroupStrategy?: RegroupStrategy
   }
-  interface ControlOptions {
+  interface ControlOptions extends GroupOptions {
     /** Determines if the animation should start automatically after the 
     animate() call.  */
     playState?: 'paused' | 'running'
@@ -131,18 +134,12 @@ export namespace Anim {
     /** Style changes. */
     style?: Styles.Chart | null
   }
-  /** All types, which can represent a single animation target chart state. */
-  type LazyTarget = Target | Config.Chart | Snapshot
-  /** All types, which can represent an animation option. */
-  type LazyOptions = (Options | Duration) | null
   /** Object for describing a single animation target chart state and the 
     options of the animation to this chart state.   */
   interface Keyframe {
     target: Target | Snapshot
     options?: Options
   }
-  /** Types, that can represent a Keyframe. */
-  type LazyKeyframe = Keyframe | LazyTarget
   /** Sequence of keyframe descriptors */
   type Keyframes = Keyframe[]
 

@@ -1,3 +1,4 @@
+import { Snapshot } from '../module/cchart.js'
 import { Data, Plugins } from '../types/vizzu.js'
 
 import UnPivot from './unpivot.js'
@@ -9,10 +10,12 @@ export class PivotData implements Plugins.Plugin {
 
   get hooks(): Plugins.PluginHooks {
     return {
-      prepareAnimation: (ctx: Plugins.SetAnimParamsContext, next: () => void): void => {
+      prepareAnimation: (ctx: Plugins.PrepareAnimationContext, next: () => void): void => {
         if (Array.isArray(ctx.target))
           ctx.target.forEach(({ target }) => {
-            if (target?.data && UnPivot.isPivot(target.data)) {
+            if (target instanceof Snapshot) return
+            if (!target.data) return
+            if (target.data && UnPivot.isPivot(target.data)) {
               if (PivotData._is1NF(target.data)) {
                 throw new Error(
                   'inconsistent data form: ' +

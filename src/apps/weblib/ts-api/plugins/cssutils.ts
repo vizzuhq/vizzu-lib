@@ -57,19 +57,19 @@ export const propSet = <T extends StringKeyedObject, V>(
   return obj
 }
 
-export const propsToObject = (
+export const propsToObject = <T>(
   props: string[][],
-  propObj: StringKeyedObject,
+  propObj: T | null | undefined,
   pfx = '',
   overwrite = false
-): StringKeyedObject => {
-  propObj = propObj || {}
+): T => {
+  propObj = propObj || ({} as T)
   propObj = props.reduce((obj, [prop, val]) => {
     if (prop) {
       const propname = prop.replace('--' + (pfx ? pfx + '-' : ''), '')
       const proppath = propname.split('-')
 
-      propSet(obj, proppath, val, overwrite)
+      propSet(obj as StringKeyedObject, proppath, val, overwrite)
     }
     return obj
   }, propObj)

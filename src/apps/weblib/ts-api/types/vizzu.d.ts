@@ -10,6 +10,10 @@ import { Events } from './events'
 import { Presets } from './presets'
 import { Plugins } from './plugins'
 
+import { Chart } from '../chart.js'
+import { PluginRegistry } from '../plugins.js'
+import { AnimControl } from '../animcontrol.js'
+
 export { Lib }
 export { Data }
 export { Config }
@@ -98,7 +102,7 @@ export default class Vizzu {
     which resolves when the requested animation gets active.  */
   animate(
     animTarget: Anim.Keyframes | CAnimation,
-    animOptions?: Anim.ControlOptions | (Anim.ControlOptions & Anim.LazyOptions)
+    animOptions?: Anim.ControlOptions
   ): Anim.Completing
   /** Returns a reference to the actual chart state for further reuse. 
     This reference includes the chart config, style parameters and the

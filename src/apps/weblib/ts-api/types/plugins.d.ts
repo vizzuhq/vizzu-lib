@@ -2,7 +2,7 @@
 
 import { Anim } from './anim'
 import { Events } from './events'
-import { Vizzu } from './vizzu'
+import Vizzu from './vizzu'
 
 /** Available hooks for plugins in Vizzu. */
 export enum Hooks {
@@ -29,14 +29,14 @@ export namespace Plugins {
     depends?: string[]
   }
 
-  interface SetAnimParamsContext {
+  interface PrepareAnimationContext {
     target: Anim.AnimTarget
-    options?: Anim.ControlOptions | (Anim.ControlOptions & Anim.Options)
+    options?: Anim.ControlOptions
   }
 
-  interface AnimateRegisterContext {
+  interface RegisterAnimationContext {
     target: Anim.AnimTarget
-    options?: Anim.ControlOptions | (Anim.ControlOptions & Anim.Options)
+    options?: Anim.ControlOptions
     promise: Anim.Completing
   }
 
@@ -45,8 +45,8 @@ export namespace Plugins {
   }
 
   interface HookContexts {
-    [Hooks.prepareAnimation]: SetAnimParamsContext
-    [Hooks.registerAnimation]: AnimateRegisterContext
+    [Hooks.prepareAnimation]: PrepareAnimationContext
+    [Hooks.registerAnimation]: RegisterAnimationContext
     [Hooks.runAnimation]: RunAnimationContext
   }
 
@@ -65,8 +65,8 @@ export namespace Plugins {
     [key in T]?: PluginHook<HookContexts[key]>
   }
 
-  interface PluginListeners {
-    [event: Events.Type]: Events.Handler<Events.EventMap[event]>
+  type PluginListeners<T extends Events.Type = Events.Type> = {
+    [event in Events.Type]?: Events.Handler<Events.EventMap[event]>
   }
 
   interface PluginApi {

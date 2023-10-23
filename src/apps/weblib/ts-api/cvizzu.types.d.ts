@@ -43,12 +43,12 @@ export interface ModuleOptions {
 export interface Renderer {
   canvas(): HTMLCanvasElement
   dc(): CanvasRenderingContext2D
-  frameBegin()
-  frameEnd()
-  lineWidthNotification(width: number)
+  frameBegin(): void
+  frameEnd(): void
+  lineWidthNotification(width: number): void
   noneZeroLineWidth(): boolean
   startPolygonNotification(): boolean
-  endPolygonNotification()
+  endPolygonNotification(): void
 }
 
 export interface CVizzu {
@@ -81,20 +81,26 @@ export interface CVizzu {
     x: number,
     y: number
   ): void
-  _vizzu_pointerUp(chart: CChartPtr, canvas: CCanvas, pointerId: number, x: number, y: number): void
-  _vizzu_pointerMove(
+  _vizzu_pointerUp(
     chart: CChartPtr,
-    canvas: CCanvas,
+    canvas: CCanvasPtr,
     pointerId: number,
     x: number,
     y: number
   ): void
-  _vizzu_pointerLeave(chart: CChartPtr, canvas: CCanvas, pointerId: number): void
-  _vizzu_wheel(chart: CChartPtr, canvas: CCanvas, delta: number): void
+  _vizzu_pointerMove(
+    chart: CChartPtr,
+    canvas: CCanvasPtr,
+    pointerId: number,
+    x: number,
+    y: number
+  ): void
+  _vizzu_pointerLeave(chart: CChartPtr, canvas: CCanvasPtr, pointerId: number): void
+  _vizzu_wheel(chart: CChartPtr, canvas: CCanvasPtr, delta: number): void
   _vizzu_setLogging(enable: boolean): void
   _vizzu_update(
     chart: CChartPtr,
-    canvas: CCanvas,
+    canvas: CCanvasPtr,
     width: number,
     height: number,
     renderControl: number

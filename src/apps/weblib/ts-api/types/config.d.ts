@@ -135,5 +135,6 @@ export namespace Config {
     both axes have measures and dimension(s) on them, this is determined by the 
     {@link Config.Chart.orientation|orientation} of the chart. */
     split?: boolean
+    tooltip?: number | null
   }
 }

@@ -5,6 +5,23 @@ import Vizzu from '../vizzu.js'
 import { Snapshot } from '../module/cchart.js'
 import { CAnimation } from '../module/canimctrl.js'
 
+type LazyTarget = Anim.Target | Config.Chart | Snapshot
+type LazyOptions = Anim.Options | Anim.Duration | null
+type LazyControlOptions = Anim.ControlOptions | Anim.Duration | null
+
+interface LazyKeyframe {
+  target: LazyTarget
+  options?: LazyOptions
+}
+type LazyKeyframes = (LazyKeyframe | LazyTarget)[]
+
+type LazyAnimTarget = LazyKeyframes | LazyTarget | CAnimation
+
+interface LazyPrepareAnimationContext {
+  target: LazyAnimTarget
+  options?: LazyControlOptions
+}
+
 type ChannelName = keyof Config.Channels
 
 export class Shorthands implements Plugins.Plugin {
@@ -18,7 +35,7 @@ export class Shorthands implements Plugins.Plugin {
   get hooks(): Plugins.PluginHooks {
     const hooks = {
       prepareAnimation: Object.assign(
-        (ctx: Plugins.SetAnimParamsContext, next: () => void) => {
+        (ctx: Plugins.PrepareAnimationContext, next: () => void) => {
           this._normalize(ctx)
           next()
         },
@@ -33,24 +50,36 @@ export class Shorthands implements Plugins.Plugin {
     this._channelNames = Object.keys(this._chart.config.channels!)
   }
 
-  private _normalize(ctx: Plugins.SetAnimParamsContext): void {
+  private _normalize(ctx: LazyPrepareAnimationContext): void {
     if (!(ctx.target instanceof CAnimation)) {
-      ctx.target = (Array.isArray(ctx.target) ? ctx.target : [{ ...ctx }])
-        .map((keyframe) => (keyframe.target !== undefined ? keyframe : { target: keyframe }))
+      const keyframes = this._isKeyframes(ctx.target) ? ctx.target : [ctx.target]
+      ctx.target = keyframes
+        .map((keyframe) => (this._isKeyframe(keyframe) ? keyframe : { target: keyframe }))
         .map((keyframe) => this._normalizeKeyframe(keyframe))
     }
     const options = this._normalizeOptions(ctx.options)
     if (options) ctx.options = options
   }
 
-  private _normalizeKeyframe(keyframe: Anim.Keyframe): Anim.Keyframe {
-    keyframe.target = this._normalizeTarget(keyframe.target)
-    const options = this._normalizeOptions(keyframe.options)
-    if (options) keyframe.options = options
-    return keyframe
+  private _isKeyframes(value: LazyAnimTarget): value is LazyKeyframes {
+    return Array.isArray(value)
   }
 
-  private _normalizeTarget(target: Anim.Target | Config.Chart | Snapshot): Anim.Target | Snapshot {
+  private _isKeyframe(value: LazyKeyframe | LazyTarget): value is LazyKeyframe {
+    return 'target' in value
+  }
+
+  private _normalizeKeyframe(keyframe: LazyKeyframe): Anim.Keyframe {
+    const options = this._normalizeOptions(keyframe.options)
+    return Object.assign(
+      {
+        target: this._normalizeTarget(keyframe.target)
+      },
+      options ? { options } : {}
+    )
+  }
+
+  private _normalizeTarget(target: LazyTarget): Anim.Target | Snapshot {
     if (target && !(target instanceof Snapshot)) {
       if (this._isConfig(target)) {
         target = { config: target }
@@ -130,9 +159,7 @@ export class Shorthands implements Plugins.Plugin {
     return channel
   }
 
-  private _normalizeOptions(
-    options: (Anim.ControlOptions & Anim.LazyOptions) | undefined
-  ): (Anim.ControlOptions & Anim.Options) | undefined {
+  private _normalizeOptions(options: LazyOptions | undefined): Anim.Options | undefined {
     if (typeof options !== 'undefined') {
       if (options === null) {
         options = { duration: 0 }

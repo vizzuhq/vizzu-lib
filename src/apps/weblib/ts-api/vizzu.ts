@@ -59,7 +59,7 @@ export default class Vizzu implements VizzuInterface {
     this._anim = this.initializing
 
     if (initState) {
-      this.initializing = this.animate(initState, 0).then(() => this)
+      this.initializing = this.animate(initState, { duration: 0 }).then(() => this)
     }
   }
 
@@ -120,10 +120,7 @@ export default class Vizzu implements VizzuInterface {
     return this._plugins.api(name)
   }
 
-  animate(
-    target: Anim.Keyframes | CAnimation,
-    options?: Anim.ControlOptions | (Anim.ControlOptions & Anim.LazyOptions)
-  ): Anim.Completing {
+  animate(target: Anim.Keyframes | CAnimation, options?: Anim.ControlOptions): Anim.Completing {
     const copiedTarget = recursiveCopy(target, CObject)
     const copiedOptions = recursiveCopy(options)
     const ctx = Object.assign(
@@ -144,7 +141,7 @@ export default class Vizzu implements VizzuInterface {
 
   private _animate(
     target: Anim.Keyframes | CAnimation,
-    options: Anim.ControlOptions | (Anim.ControlOptions & Anim.LazyOptions) | undefined,
+    options: Anim.ControlOptions | undefined,
     activate: (control: AnimControl) => void
   ): Promise<Vizzu> {
     return new Promise(async (resolve, reject) => {
@@ -165,7 +162,7 @@ export default class Vizzu implements VizzuInterface {
   }
 
   // keeping this one for backward compatibility
-  get animation(): AnimControl {
+  get animation(): Anim.Control {
     if (!this._chart) throw new NotInitializedError()
     return new AnimControl(this._chart.getCAnimControl())
   }
@@ -200,7 +197,7 @@ export default class Vizzu implements VizzuInterface {
     return this._chart.style
   }
 
-  getComputedStyle(): Styles.Chart {
+  getComputedStyle(): Readonly<Styles.Chart> {
     if (!this._chart) throw new NotInitializedError()
     return this._chart.getComputedStyle()
   }
@@ -224,7 +221,7 @@ export default class Vizzu implements VizzuInterface {
     target: `plot${string}`,
     from: Geom.CoordinateType,
     to: Geom.CoordinateType
-  ): (point: Geom.Point) => Geom.Point {
+  ): Geom.Converter {
     if (!this._chart) throw new NotInitializedError()
     return this._chart.getConverter(target, from, to)
   }
