@@ -1,6 +1,9 @@
 import { CString, CFunction, CEventPtr } from '../cvizzu.types'
 
-import { Anim, Config, Geom, Styles } from '../types/vizzu.js'
+import { Anim } from '../types/anim.js'
+import { Config } from '../types/config.js'
+import { Geom } from '../types/geom.js'
+import { Styles } from '../types/styles.js'
 
 import { CObject, CEnv } from './cenv.js'
 import { CPointerClosure } from './objregistry.js'
@@ -8,6 +11,7 @@ import { CProxy } from './cproxy.js'
 import { CCanvas } from './ccanvas.js'
 import { CAnimation } from './canimctrl.js'
 
+/** Stored Chart object. */
 export class Snapshot extends CObject {}
 
 export class CEvent extends CObject {

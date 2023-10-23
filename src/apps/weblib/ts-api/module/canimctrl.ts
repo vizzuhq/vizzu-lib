@@ -1,5 +1,6 @@
 import { CObject } from './cenv.js'
 
+/** Stored Animation object. */
 export class CAnimation extends CObject {}
 
 export class CAnimControl extends CObject {

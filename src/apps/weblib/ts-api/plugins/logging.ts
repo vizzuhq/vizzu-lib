@@ -1,4 +1,4 @@
-import { Plugins } from '../types/vizzu.js'
+import { Plugins } from '../types/plugins.js'
 
 export class Logging implements Plugins.Plugin {
   private _setEnable: (enabled: boolean) => void

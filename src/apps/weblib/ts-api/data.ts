@@ -1,4 +1,4 @@
-import { Data as D } from './types/vizzu.js'
+import { Data as D } from './types/data.js'
 
 import { CRecord, CData } from './module/cdata.js'
 

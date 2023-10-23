@@ -1,5 +1,6 @@
 import { Snapshot } from '../module/cchart.js'
-import { Data, Plugins } from '../types/vizzu.js'
+import { Plugins } from '../types/plugins.js'
+import { Data } from '../types/data.js'
 
 import UnPivot from './unpivot.js'
 

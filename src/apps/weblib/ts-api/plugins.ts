@@ -1,4 +1,4 @@
-import { Plugins as P } from './types/vizzu.js'
+import { Plugins as P } from './types/plugins.js'
 
 import Vizzu from './vizzu.js'
 

@@ -1,6 +1,6 @@
 import { CPointer, CRecordPtr } from '../cvizzu.types'
 
-import { Data } from '../types/vizzu.js'
+import { Data } from '../types/data.js'
 
 import { CObject, CEnv } from './cenv.js'
 

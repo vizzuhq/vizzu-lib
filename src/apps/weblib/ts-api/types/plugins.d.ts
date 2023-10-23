@@ -2,7 +2,7 @@
 
 import { Anim } from './anim'
 import { Events } from './events'
-import Vizzu from './vizzu'
+import Vizzu from '../vizzu'
 
 /** Available hooks for plugins in Vizzu. */
 export enum Hooks {

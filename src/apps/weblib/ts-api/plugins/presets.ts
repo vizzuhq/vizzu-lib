@@ -1,4 +1,5 @@
-import { Data, Config } from '../types/vizzu.js'
+import { Data } from '../types/data.js'
+import { Config } from '../types/config.js'
 
 import { presetConfigs } from './presetconfigs.js'
 

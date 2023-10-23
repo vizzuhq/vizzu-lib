@@ -1,5 +1,6 @@
 import { CFunction } from './cvizzu.types'
-import { Events as E, Plugins } from './types/vizzu.js'
+import { Events as E } from './types/events.js'
+import { Plugins } from './types/plugins.js'
 
 import { CChart, CEvent } from './module/cchart.js'
 import { Render } from './render.js'

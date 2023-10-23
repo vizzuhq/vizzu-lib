@@ -3,7 +3,7 @@
 import { Data } from './data'
 import { Config } from './config'
 import { Styles } from './styles'
-import Vizzu from './vizzu'
+import Vizzu from '../vizzu'
 import { CAnimation } from '../module/canimctrl'
 import { Snapshot } from '../module/cchart'
 

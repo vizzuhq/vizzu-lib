@@ -1,4 +1,4 @@
-import { Anim } from './types/vizzu.js'
+import { Anim } from './types/anim.js'
 
 import { CAnimControl, CAnimation } from './module/canimctrl.js'
 

@@ -1,4 +1,4 @@
-import { Data } from '../types/vizzu.js'
+import { Data } from '../types/data.js'
 
 const assert = (condition: boolean, message: string): void => {
   if (!condition) {

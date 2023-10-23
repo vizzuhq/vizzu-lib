@@ -1,4 +1,5 @@
-import { Events, Plugins, default as VizzuInterface } from '../types/vizzu.js'
+import { Events } from '../types/events.js'
+import { Plugins } from '../types/plugins.js'
 
 import Vizzu from '../vizzu.js'
 
@@ -19,7 +20,7 @@ export class Tooltip implements Plugins.Plugin {
     pointeron: this._mouseon.bind(this)
   }
 
-  register(vizzu: VizzuInterface): void {
+  register(vizzu: Vizzu): void {
     this._vizzu = vizzu
   }
 

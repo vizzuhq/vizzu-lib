@@ -1,4 +1,8 @@
-import { Anim, Data, Config, Plugins, Styles } from '../types/vizzu.js'
+import { Anim } from '../types/anim.js'
+import { Config } from '../types/config.js'
+import { Plugins } from '../types/plugins.js'
+import { Data } from '../types/data.js'
+import { Styles } from '../types/styles.js'
 
 import Vizzu from '../vizzu.js'
 
