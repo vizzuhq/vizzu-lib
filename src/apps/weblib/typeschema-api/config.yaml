@@ -1,4 +1,7 @@
 ---
+$import:
+  Data: ./data
+
 definitions:
   ChannelExtrema:
     description: |
@@ -51,18 +54,18 @@ definitions:
         nullable: true
       set:
         description: List of {@link SeriesDescriptor|data series descriptors} on the channel.
-        $ref: data/SeriesList
+        $ref: Data:SeriesList
         nullable: true
       attach:
         description: |
           List of {@link SeriesDescriptor|data series descriptors} to be added to the 
           channel beside the ones already added.
-        $ref: data/SeriesList
+        $ref: Data:SeriesList
       detach:
         description: |
           List of {@link SeriesDescriptor|data series descriptors} to be removed from the 
           channel.
-        $ref: data/SeriesList
+        $ref: Data:SeriesList
       range:
         description: |
           Specifies the range that determines how the represented data scales 
@@ -109,7 +112,7 @@ definitions:
     type: object
     properties:
       x:
-        oneOf: [$ref: Channel, $ref: data/SeriesList]
+        oneOf: [$ref: Channel, $ref: Data:SeriesList]
         nullable: true
         description: |
           Parameters for the X-axis, determining the position of the markers on the 
@@ -117,34 +120,34 @@ definitions:
           Note: leaving x and y channels empty will result in a 
           chart "without coordinates" like a Treemap or a Bubble Chart.
       y:
-        oneOf: [$ref: Channel, $ref: data/SeriesList]
+        oneOf: [$ref: Channel, $ref: Data:SeriesList]
         nullable: true
         description: |
           Parameters for the Y-axis, determining the position of the markers on the 
           y-axis - or their radius when using polar coordinates) .
       color:
-        oneOf: [$ref: Channel, $ref: data/SeriesList]
+        oneOf: [$ref: Channel, $ref: Data:SeriesList]
         nullable: true
         description: |
           Parameters for the markers' base color. The markers' actual color can 
           also be affected by the lightness channel.
       lightness:
-        oneOf: [$ref: Channel, $ref: data/SeriesList]
+        oneOf: [$ref: Channel, $ref: Data:SeriesList]
         nullable: true
         description: Parameters for markers' lightness.
       size:
-        oneOf: [$ref: Channel, $ref: data/SeriesList]
+        oneOf: [$ref: Channel, $ref: Data:SeriesList]
         nullable: true
         description: |
           Parameters for the markers' size. Effective only for circle and line
           geometry affecting the circle area or the line width respectively.
       label:
-        oneOf: [$ref: Channel, $ref: data/SeriesList]
+        oneOf: [$ref: Channel, $ref: Data:SeriesList]
         nullable: true
         description: |
           Parameters for the content of the labels that appear on the markers.
       noop:
-        oneOf: [$ref: Channel, $ref: data/SeriesList]
+        oneOf: [$ref: Channel, $ref: Data:SeriesList]
         nullable: true
         description: |
           Splits the markers as all the other channels, but have no 
@@ -241,3 +244,10 @@ definitions:
           both axes have measures and dimension(s) on them, this is determined by the 
           {@link Config.Chart.orientation|orientation} of the chart.
         type: boolean
+      tooltip:
+        description: |
+          Index of the marker, the tooltip should be turned on. This parameter is not needed
+          to set manually, tooltip will be taken care of autamatically when `tooltip` feature
+          is enabled.
+        type: number
+        nullable: true

@@ -1,12 +1,30 @@
 import { Data } from '../types/data.js'
 
+type CubeRow = Data.Values | CubeRow[]
+
+/** Defines a data series of the data cube, and contains a particular variable's
+  values in the data cube and meta info about that variable. */
+interface CubeData extends Data.SeriesMetaInfo {
+  /** A nested array that contains the values of the data series. Nesting 
+  level should match the number of {@link Data.Cube.dimensions}. */
+  values: CubeRow
+}
+
+/** N dimensional data cude */
+export interface DataCube extends Data.Filter {
+  /** The list of the dimensions of the data cube. */
+  dimensions: Data.Series[]
+  /** The list of measures of the data cube. */
+  measures: CubeData[]
+}
+
 const assert = (condition: boolean, message: string): void => {
   if (!condition) {
     throw new Error('Assert failed: ' + message)
   }
 }
 
-const assertArray = (data: Data.Cube, array: unknown[], index: number): void => {
+const assertArray = (data: DataCube, array: unknown[], index: number): void => {
   assert(Array.isArray(array), 'array is not a list')
   try {
     if (array.length !== data.dimensions[index]!.values!.length) {
@@ -23,7 +41,7 @@ const assertArray = (data: Data.Cube, array: unknown[], index: number): void => 
 }
 
 export default class UnPivot {
-  static isPivot(data: Data.Set | Data.Cube | undefined): boolean {
+  static isPivot(data: Data.Set | DataCube | undefined): boolean {
     return (
       data !== undefined &&
       (('dimensions' in data && data.dimensions !== undefined) ||
@@ -31,7 +49,7 @@ export default class UnPivot {
     )
   }
 
-  static convert(data: Data.Cube): Data.TableBySeries {
+  static convert(data: DataCube): Data.TableBySeries {
     assert(
       typeof data === 'object' && data !== null && !Array.isArray(data),
       'data is not an object'
@@ -45,7 +63,7 @@ export default class UnPivot {
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       measures,
       ...o
-    }: Data.Cube): Data.TableBySeries => Object.assign(o, { series: [] }))(data)
+    }: DataCube): Data.TableBySeries => Object.assign(o, { series: [] }))(data)
 
     let dimensionsProduct = 1
     assert(Array.isArray(data.dimensions), 'data.dimensions is not a list')

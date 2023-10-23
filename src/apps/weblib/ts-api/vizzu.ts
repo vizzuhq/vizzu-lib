@@ -10,6 +10,7 @@ import { Snapshot } from './module/cchart.js'
 import { CAnimation } from './module/canimctrl.js'
 import { CObject } from './module/cenv.js'
 import { AnimControl } from './animcontrol.js'
+import { AnimCompleting } from './animcompleting.js'
 import { recursiveCopy } from './utils.js'
 import { NotInitializedError, CancelError } from './errors.js'
 import { Plugins } from './plugins.js'
@@ -61,7 +62,7 @@ export default class Vizzu {
   initializing: Promise<Vizzu>
   private _chart?: Chart
   private _container: HTMLElement
-  private _anim: Anim.Completing
+  private _anim: AnimCompleting
   private _plugins: Plugins.PluginRegistry
 
   /** Returns the chart preset collection. */
@@ -175,7 +176,7 @@ export default class Vizzu {
     data, config and style, or a single chart config object.
     It accepts also a chart snapshot acquired from a previous state using 
     the store() method of this class or a whole previous animation acquired
-    using the store() method of the Anim.Control object, which can be queried
+    using the store() method of the AnimControl object, which can be queried
     from the promise returned by the animate() method.
     The optional second parameter specifies the animation control options 
     and also all the other animation options in case of only a single chart
@@ -187,7 +188,7 @@ export default class Vizzu {
     finished. Since there can be multiple animations in the queue, the result
     promise provides a nested promise member {@link Anim.Completing.activated|activated}, 
     which resolves when the requested animation gets active.  */
-  animate(target: Anim.Keyframes | CAnimation, options?: Anim.ControlOptions): Anim.Completing {
+  animate(target: Anim.Keyframes | CAnimation, options?: Anim.ControlOptions): AnimCompleting {
     const copiedTarget = recursiveCopy(target, CObject)
     const copiedOptions = recursiveCopy(options)
     const ctx = Object.assign(
@@ -230,7 +231,7 @@ export default class Vizzu {
 
   /** Returns controls for the ongoing animation, if any.
     @deprecated since version 0.4.0  */
-  get animation(): Anim.Control {
+  get animation(): AnimControl {
     if (!this._chart) throw new NotInitializedError()
     return new AnimControl(this._chart.getCAnimControl())
   }

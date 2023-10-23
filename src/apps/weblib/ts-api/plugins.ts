@@ -1,6 +1,7 @@
 import Vizzu from './vizzu.js'
 import { Anim } from './types/anim.js'
 import { Events } from './events.js'
+import { AnimCompleting } from './animcompleting.js'
 
 export namespace Plugins {
   /** Available hooks for plugins in Vizzu. */
@@ -35,7 +36,7 @@ export namespace Plugins {
   export interface RegisterAnimationContext {
     target: Anim.AnimTarget
     options?: Anim.ControlOptions
-    promise: Anim.Completing
+    promise: AnimCompleting
   }
 
   export interface RunAnimationContext {

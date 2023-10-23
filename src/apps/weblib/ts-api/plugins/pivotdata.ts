@@ -2,7 +2,7 @@ import { Snapshot } from '../module/cchart.js'
 import { Plugins } from '../plugins'
 import { Data } from '../types/data.js'
 
-import UnPivot from './unpivot.js'
+import UnPivot, { DataCube } from './unpivot.js'
 
 export class PivotData implements Plugins.Plugin {
   meta = {
@@ -32,7 +32,7 @@ export class PivotData implements Plugins.Plugin {
     }
   }
 
-  private static _is1NF(data: Data.Set | Data.Cube): data is Data.Set {
+  private static _is1NF(data: Data.Set | DataCube): data is Data.Set {
     return 'series' in data || 'records' in data
   }
 }

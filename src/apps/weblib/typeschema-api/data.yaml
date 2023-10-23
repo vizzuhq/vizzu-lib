@@ -4,6 +4,15 @@ definitions:
     description: Name of the data series.
     type: string
 
+  SeriesType:
+    description: |
+      Type of the data series:
+      - 'dimension' - categorical data containing strings 
+        (dates should also be added as strings); 
+      - 'measure' - continuous data containing numbers.
+    type: string
+    enum: [dimension, measure]
+
   SeriesMetaInfo:
     description: Additional info about a data series besides the contained data.
     type: object
@@ -17,15 +26,11 @@ definitions:
         $ref: SeriesName
       type:
         description: |
-          Type of the data series:
-          - 'dimension' - categorical data containing strings 
-            (dates should also be added as strings); 
-          - 'measure' - continuous data containing numbers. 
+          Type of the data series.
           If not set, the library will attempt to determine the type based on 
           the type of the first value. Number type will result in measure, 
           string type will result in dimension.
-        type: string
-        enum: [dimension, measure]
+        $ref: SeriesType
       unit:
         description: Unit of the data series.
         type: string
@@ -115,7 +120,6 @@ definitions:
           is shorter than the longest data series defined, it will be internally 
           extended with empty values.
         $ref: Values
-    required: [values]
 
   Record:
     description: |
@@ -186,40 +190,6 @@ definitions:
             - { $ref: Record }
     required: [records]
 
-  CubeRow:
-    oneOf:
-      - $ref: Values
-      - type: array
-        items: { $ref: CubeRow }
-
-  CubeData:
-    $extends: SeriesMetaInfo
-    description: |
-      Defines a data series of the data cube, and contains a particular variable's
-      values in the data cube and meta info about that variable.
-    type: object
-    properties:
-      values:
-        description: |
-          A nested array that contains the values of the data series. Nesting 
-          level should match the number of {@link Data.Cube.dimensions}.
-        $ref: CubeRow
-    required: [values]
-
-  Cube:
-    $extends: Filter
-    description: N dimensional data cude
-    type: object
-    properties:
-      dimensions:
-        description: The list of the dimensions of the data cube.
-        type: array
-        items: { $ref: Series }
-      measures:
-        description: The list of measures of the data cube.
-        type: array
-        items: { $ref: CubeData }
-
   Set:
     description: |
       Data set is a collection of related {@link Data.Series|data series}. 
@@ -227,7 +197,6 @@ definitions:
     oneOf:
       - $ref: TableBySeries
       - $ref: TableByRecords
-      - $ref: Cube
 
   AggregatorType:
     description: |

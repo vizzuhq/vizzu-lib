@@ -1,18 +1,7 @@
 import { Data as D } from './types/data.js'
 
 import { CRecord, CData } from './module/cdata.js'
-
-class DataRecord implements D.Record {
-  [seriesName: D.SeriesName]: D.Value
-
-  constructor(cRecord: CRecord) {
-    return new Proxy(this, {
-      get: (_target, columnName: string): D.Value => {
-        return cRecord.getValue(columnName)
-      }
-    })
-  }
-}
+import { DataRecord } from './datarecord.js'
 
 export class Data {
   private _cData: CData
