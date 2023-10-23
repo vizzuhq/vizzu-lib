@@ -3,7 +3,8 @@ import { ModuleOptions } from '../cvizzu.types'
 import { Module } from './module.js'
 import VizzuModule from '../cvizzu.js'
 
-interface LoaderOptions {
+export interface LoaderOptions {
+  /** The URL for the webassembly binary (cvizzu.wasm). */
   wasmUrl?: string
 }
 

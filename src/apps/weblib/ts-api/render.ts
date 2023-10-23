@@ -1,6 +1,6 @@
 import { Renderer } from './cvizzu.types'
-import { Geom } from './types/geom.js'
-import { Plugins } from './types/plugins.js'
+import { Geom } from './geom.js'
+import { Plugins } from './plugins'
 
 import { Module } from './module/module.js'
 import { CCanvas } from './module/ccanvas.js'

@@ -1,13 +1,10 @@
 import { Anim } from './types/anim.js'
 import { Data } from './types/data.js'
 import { Config } from './types/config.js'
-import { Geom } from './types/geom.js'
-import { Events } from './types/events.js'
-import { Lib } from './types/lib.js'
-import { Plugins } from './types/plugins.js'
+import { Geom } from './geom.js'
+import { Events } from './events.js'
 import { Styles } from './types/styles.js'
-import { VizzuOptions, Features, FeatureFunction } from './types/vizzu.js'
-import { loader } from './module/loader.js'
+import { loader, LoaderOptions } from './module/loader.js'
 import { Chart } from './chart.js'
 import { Snapshot } from './module/cchart.js'
 import { CAnimation } from './module/canimctrl.js'
@@ -15,8 +12,46 @@ import { CObject } from './module/cenv.js'
 import { AnimControl } from './animcontrol.js'
 import { recursiveCopy } from './utils.js'
 import { NotInitializedError, CancelError } from './errors.js'
-import { Hooks, PluginRegistry } from './plugins.js'
+import { Plugins } from './plugins.js'
 import Presets from './plugins/presets.js'
+
+namespace Lib {
+  /** Options for the library. */
+  export type Options = LoaderOptions
+}
+
+/** List of base and additional features:
+    - logging: enables logging of the library to the console 
+      (switched off by default).
+    - rendering: enables rendering of the library to the canvas
+      (enabled by default). 
+    - tooltip: tooltips on the chart appearing on markers on mouse over. 
+      Since the tooltip uses the animation interface, calling animate() while
+      the tooltip is enabled can cause unwanted behaviour.
+    - cssProperties: enables setting the styles through --vizzu-... css properties.
+    - shorthands: enables shorthand properties for chart config and style.
+    - pivotData: enables setting the data in pivot table or data cube format.
+    - pointerEvents: enables pointer events on the chart.
+  */
+export type Feature =
+  | 'logging'
+  | 'tooltip'
+  | 'rendering'
+  | 'cssProperties'
+  | 'shorthands'
+  | 'pivotData'
+  | 'pointerEvents'
+
+export interface VizzuOptions {
+  container: HTMLElement
+  features?: Plugins.Plugin[]
+}
+
+export type FeatureFunction = (
+  feature: Feature | Plugins.Plugin,
+  enabled?: boolean
+) => Plugins.PluginApi
+export interface Features extends Record<string, Plugins.PluginApi>, FeatureFunction {}
 
 /** Class representing a single chart in Vizzu. */
 export default class Vizzu {
@@ -27,7 +62,7 @@ export default class Vizzu {
   private _chart?: Chart
   private _container: HTMLElement
   private _anim: Anim.Completing
-  private _plugins: PluginRegistry
+  private _plugins: Plugins.PluginRegistry
 
   /** Returns the chart preset collection. */
   static get presets(): Presets {
@@ -53,7 +88,7 @@ export default class Vizzu {
 
     this._container = opts.container
 
-    this._plugins = new PluginRegistry(this, opts.features)
+    this._plugins = new Plugins.PluginRegistry(this, opts.features)
 
     this.initializing = loader.initialize().then((module) => {
       this._chart = new Chart(module, this._container, this._plugins)
@@ -159,7 +194,7 @@ export default class Vizzu {
       { target: copiedTarget, promise: this._anim },
       copiedOptions !== undefined ? { options: copiedOptions } : {}
     )
-    this._plugins.hook(Hooks.registerAnimation, ctx).default((ctx) => {
+    this._plugins.hook(Plugins.Hooks.registerAnimation, ctx).default((ctx) => {
       let activate: (control: AnimControl) => void = () => {}
       const activated = new Promise<AnimControl>((resolve) => {
         activate = resolve

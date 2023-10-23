@@ -1,5 +1,5 @@
-import { Events } from '../types/events.js'
-import { Plugins } from '../types/plugins.js'
+import { Events } from '../events.js'
+import { Plugins } from '../plugins.js'
 
 import Vizzu from '../vizzu.js'
 

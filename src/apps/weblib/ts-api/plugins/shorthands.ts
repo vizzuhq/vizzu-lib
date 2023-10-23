@@ -1,6 +1,6 @@
 import { Anim } from '../types/anim.js'
 import { Config } from '../types/config.js'
-import { Plugins } from '../types/plugins.js'
+import { Plugins } from '../plugins.js'
 import { Data } from '../types/data.js'
 import { Styles } from '../types/styles.js'
 

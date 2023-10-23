@@ -1,4 +1,4 @@
-import { Plugins } from '../types/plugins.js'
+import { Plugins } from '../plugins'
 
 export class Logging implements Plugins.Plugin {
   private _setEnable: (enabled: boolean) => void

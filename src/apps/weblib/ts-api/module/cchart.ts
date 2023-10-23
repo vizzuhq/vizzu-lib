@@ -2,7 +2,7 @@ import { CString, CFunction, CEventPtr } from '../cvizzu.types'
 
 import { Anim } from '../types/anim.js'
 import { Config } from '../types/config.js'
-import { Geom } from '../types/geom.js'
+import { Geom } from '../geom.js'
 import { Styles } from '../types/styles.js'
 
 import { CObject, CEnv } from './cenv.js'

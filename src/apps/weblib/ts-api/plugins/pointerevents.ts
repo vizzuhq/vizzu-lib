@@ -1,4 +1,4 @@
-import { Plugins } from '../types/plugins.js'
+import { Plugins } from '../plugins'
 
 import Vizzu from '../vizzu.js'
 import { CChart } from '../module/cchart.js'
