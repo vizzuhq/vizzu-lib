@@ -27,6 +27,11 @@ if(EMSCRIPTEN)
 		"-o" "$<TARGET_FILE_DIR:cvizzu>/cvizzu.wasm")
 
 	add_custom_command(TARGET cvizzu POST_BUILD
+		COMMAND "${CMAKE_COMMAND}" -E make_directory 
+		"${CMAKE_CURRENT_SOURCE_DIR}/${root}/dist" 
+		WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}")
+
+	add_custom_command(TARGET cvizzu POST_BUILD
 		COMMAND "${CMAKE_COMMAND}" -E copy
 		"cvizzu.*"
 		"${CMAKE_CURRENT_SOURCE_DIR}/${root}/dist")
