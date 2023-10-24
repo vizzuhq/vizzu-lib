@@ -10,7 +10,7 @@ const srcPath = path.join(repoPath, 'src', 'apps', 'weblib', 'ts-api')
 async function reference() {
   const app = await TypeDoc.Application.bootstrapWithPlugins(
     {
-      plugin: [/*'typedoc-plugin-markdown', */ 'typedoc-plugin-rename-defaults'],
+      plugin: ['typedoc-plugin-markdown', 'typedoc-plugin-rename-defaults'],
       entryPoints: [
         path.join(srcPath, '*.ts'),
         path.join(srcPath, 'module', '*.ts'),
@@ -19,7 +19,7 @@ async function reference() {
       entryPointStrategy: 'expand',
       tsconfig: path.join(srcPath, 'tsconfig.json'),
       name: 'Vizzu',
-      //hideInPageTOC: true,
+      hideInPageTOC: true,
       disableSources: true,
       excludeNotDocumented: true,
       excludePrivate: true,

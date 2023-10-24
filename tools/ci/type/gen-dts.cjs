@@ -56,7 +56,7 @@ class DTSGenerator {
     this._namespaces = [...Object.keys(schemas)]
     const namespaceOrder = ['data', 'config', 'styles', 'anim', 'presets']
     for (const name of namespaceOrder) {
-      if (schemas[name]) this.addNamespace(name, schemas[name])
+      if (schemas[name]) this.addModule(schemas[name])
       else throw new Error(`Schema ${name} not found`)
       await this.writeFile(outputDir + `/${name}.ts`)
     }
@@ -64,8 +64,7 @@ class DTSGenerator {
     this._imports = []
   }
 
-  addNamespace(name, schema) {
-    const namespace = this._upperCaseFirstLetter(name)
+  addModule(schema) {
     if (schema.$import) {
       this.addImports(schema.$import)
     }
