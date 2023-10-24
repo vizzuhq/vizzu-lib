@@ -29,6 +29,7 @@ python tools/ci/size_check.py
 
 # build js
 
+npm run type-gen
 npm run type-src-js
 
 # test js
