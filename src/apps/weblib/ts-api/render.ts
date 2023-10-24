@@ -1,6 +1,6 @@
 import { Renderer } from './cvizzu.types'
 import { Point } from './geom.js'
-import { Plugin, PluginApi } from './plugins'
+import { Plugin, PluginApi } from './plugins.js'
 
 import { Module } from './module/module.js'
 import { CCanvas } from './module/ccanvas.js'

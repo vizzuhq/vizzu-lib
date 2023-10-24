@@ -1,5 +1,5 @@
-import Vizzu from './vizzu'
-import { AnimControl } from './animcontrol'
+import Vizzu from './vizzu.js'
+import { AnimControl } from './animcontrol.js'
 
 /** Promise resolves to the Vizzu object when the animation completed. */
 export interface AnimCompleting extends Promise<Vizzu> {

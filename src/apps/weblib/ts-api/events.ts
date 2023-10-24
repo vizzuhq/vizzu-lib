@@ -4,9 +4,9 @@ import { PluginListeners } from './plugins.js'
 import { CChart, CEvent } from './module/cchart.js'
 import { Render } from './render.js'
 
-import * as Data from './types/data'
-import * as Anim from './types/anim'
-import { Point, Rect, Line, TransformedRect } from './geom'
+import * as Data from './types/data.js'
+import * as Anim from './types/anim.js'
+import { Point, Rect, Line, TransformedRect } from './geom.js'
 
 export enum EventType {
   click = 'click',

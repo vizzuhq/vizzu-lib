@@ -79,7 +79,7 @@ class DTSGenerator {
   addImports(imports) {
     for (const name in imports) {
       const file = imports[name]
-      this.addContent(`import * as ${name} from '${file}'\n`)
+      this.addContent(`import * as ${name} from '${file}.js'\n`)
       this._imports.push(name)
     }
     this.addContent('\n')
