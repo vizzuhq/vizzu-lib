@@ -15,9 +15,9 @@ class, and its most important component is the
 
 [`Vizzu`](./classes/vizzu.Vizzu.md)`.`[`animate`](./classes/vizzu.Vizzu.md#animate)`(`[`Anim.AnimTarget`](./modules/types_anim.md#AnimTarget)`,`[`Anim.ControlOptions`](./interfaces/types_anim.ControlOptions.md)`):`[`Anim.Completing`](./modules/animcompleting.md)
 
-The **animate** method's main parameter is the **AnimTarget** interface, which is an array
-of keyframes containing the configuration of the chart, the underlying data, the
-chart's style settings, and the animation options:
+The **animate** method's main parameter is the **AnimTarget** interface, which
+is an array of keyframes containing the configuration of the chart, the
+underlying data, the chart's style settings, and the animation options:
 
 Keyframe:
 
