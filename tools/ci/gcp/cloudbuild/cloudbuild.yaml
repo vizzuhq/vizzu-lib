@@ -150,13 +150,11 @@ steps:
     entrypoint: bash
     args:
       - '-c'
-      - '-e'
       - |-
-        if [ "$_ISRELEASE" == "true" ]
-        then
+        if [ "$_ISRELEASE" == "true" ]; then
           echo "skipped"
         else
-          npm test -- --vizzu /dist/vizzu.min.js --vizzu-ref /dist/vizzu.min.js --images DISABLED --hashes DISABLED --nologs
+          ./tools/ci/run/test-gsutil.sh
         fi
     dir: /workspace
 
