@@ -154,6 +154,9 @@ steps:
         if [ "$_ISRELEASE" == "true" ]; then
           echo "skipped"
         else
+          TEST_FAILED=false
+          TGZ_FAILED=false
+          GSUTIL_FAILED=false
           npm test -- --vizzu /dist/vizzu.min.js --hashes ALL || TEST_FAILED=true
           tar -czvf test/integration/test_report.tgz test/integration/test_report/ || TGZ_FAILED=true
           gsutil cp 'test/integration/test_report.tgz' 'gs://vizzu-lib-main-sha/lib-$SHORT_SHA/test_report.tgz' || GSUTIL_FAILED=true
