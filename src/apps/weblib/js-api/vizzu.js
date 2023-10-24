@@ -1,119 +1,66 @@
 import { loader } from './module/loader.js'
-import { Animation, Snapshot } from './module/cchart.js'
+import { Chart } from './chart.js'
 import { CObject } from './module/cenv.js'
-import { Rendering, Render } from './render.js'
-import { Events } from './events.js'
-import { Data } from './data.js'
 import { AnimControl } from './animcontrol.js'
 import { recursiveCopy } from './utils.js'
-import { CancelError } from './errors.js'
-import { Plugins } from './plugins.js'
-import { Logging } from './plugins/logging.js'
-import { Shorthands } from './plugins/shorthands.js'
-import { PointerEvents } from './plugins/pointerevents.js'
-import { PivotData } from './plugins/pivotdata.js'
-import { Tooltip } from './plugins/tooltip.js'
-import { CSSProperties } from './plugins/cssproperties.js'
+import { NotInitializedError, CancelError } from './errors.js'
+import { PluginRegistry, Hooks } from './plugins.js'
 import Presets from './plugins/presets.js'
-
-class Hooks {
-  static setAnimParams = 'setAnimParams'
-  static animateRegister = 'animateRegister'
-}
-
+/** Class representing a single chart in Vizzu. */
 export default class Vizzu {
+  /** Returns the chart preset collection. */
   static get presets() {
     return new Presets()
   }
-
+  /** Setter method for Library options. */
   static options(options) {
     loader.options = options
   }
-
+  /** Initializes the library, if not called, first constructor call will do that. */
   static initialize() {
-    return loader.initialize()
+    return loader.initialize().then(() => {})
   }
-
+  /** Creates a new chart and connects it to the div or canvas HTML
+      element specified by its ID or DOM object. The new chart is empty by
+      default, but can be set to an initial state in the second optional
+      parameter. */
   constructor(options, initState) {
     const opts = this._processOptions(options)
-
     this._container = opts.container
-
-    this._plugins = new Plugins(this, opts.features)
-
+    this._plugins = new PluginRegistry(this, opts.features)
     this.initializing = loader.initialize().then((module) => {
-      this._init(module)
+      this._chart = new Chart(module, this._container, this._plugins)
+      this._chart.registerBuilts()
+      this._chart.start()
       return this
     })
-
-    this.anim = this.initializing
-
+    this._anim = this.initializing
     if (initState) {
-      this.initializing = this.animate(initState, 0)
+      this.initializing = this.animate(initState, { duration: 0 }).then(() => this)
     }
   }
-
   _processOptions(options) {
     const opts =
       typeof options !== 'object' || options instanceof HTMLElement
         ? { container: options }
         : options
-
-    if (!('container' in opts)) {
+    if (opts === null || !('container' in opts)) {
       throw new Error('container not specified')
     }
-
-    if (!(opts.container instanceof HTMLElement)) {
-      opts.container = document.getElementById(opts.container)
+    let container = opts.container
+    if (typeof container === 'string') {
+      container = document.getElementById(container)
     }
-
-    if (!opts.container) {
+    if (!(container instanceof HTMLElement)) {
       throw new Error(`Cannot find container ${opts.container} to render Vizzu!`)
     }
-
-    return opts
+    return { ...opts, container }
   }
-
-  get data() {
-    if (this._cChart) {
-      return this._cData.getMetaInfo()
-    }
-  }
-
-  get config() {
-    if (this._cChart) {
-      return this._cChart.config.get()
-    }
-  }
-
-  get style() {
-    if (this._cChart) {
-      return this._cChart.style.get()
-    }
-  }
-
-  getComputedStyle() {
-    if (this._cChart) {
-      return this._cChart.computedStyle.get()
-    }
-  }
-
-  on(eventName, handler) {
-    this._validateModule()
-    this.events.add(eventName, handler)
-  }
-
-  off(eventName, handler) {
-    this._validateModule()
-    this.events.remove(eventName, handler)
-  }
-
-  store() {
-    if (this._cChart) {
-      return this._cChart.storeSnapshot()
-    }
-  }
-
+  /** If called as a function:
+        (name, enabled): it enables/disables built-in features and registered plugins.
+        (plugin, enabled?): registers the given plugin.
+        Otherwise gives access to the interfaces of the registered plugins, where
+        every plugin acceccible as a property with the plugin name. */
   get feature() {
     const fn = this._feature.bind(this)
     return new Proxy(fn, {
@@ -122,199 +69,159 @@ export default class Vizzu {
       }
     })
   }
-
   _feature(nameOrInstance, enabled) {
     if (enabled !== undefined && typeof enabled !== 'boolean')
       throw new Error('enabled parameter must be boolean if specified')
-
     let name
     let enabledInRegister = false
     if (typeof nameOrInstance !== 'string') {
       const instance = nameOrInstance
       name = this._plugins.getRegisteredName(instance)
       if (!name) {
-        name = this._plugins.register(instance, enabled || true)
+        name = this._plugins.register(instance, enabled ?? true)
         enabledInRegister = true
       }
     } else {
       name = nameOrInstance
     }
-
     const enabledProvided = enabled !== undefined
     if (enabledProvided && !enabledInRegister) {
       this._plugins.enable(name, enabled)
     }
-
     return this._plugins.api(name)
   }
-
-  _validateModule() {
-    if (!this._module) {
-      throw new Error('Vizzu not initialized. Use `initializing` promise.')
-    }
-  }
-
+  /** Initiates the animation either to the new chart state passed as the first
+      argument, or through a sequence of keyframe charts passed as the first
+      argument. If there is a currently running animation, all subsequent
+      calls will schedule the corresponding animation after the end of the
+      previous one.
+      The new chart state or keyframe can be a full state specifier object with
+      data, config and style, or a single chart config object.
+      It accepts also a chart snapshot acquired from a previous state using
+      the store() method of this class or a whole previous animation acquired
+      using the store() method of the AnimControl object, which can be queried
+      from the promise returned by the animate() method.
+      The optional second parameter specifies the animation control options
+      and also all the other animation options in case of only a single chart
+      state passed as the first argument.
+      This second option can be a scalar value, setting the overall
+      animation duration. Passing explicit null as second parameter will
+      result in no animation.
+      The method returns a promise, which will resolve when the animation is
+      finished. Since there can be multiple animations in the queue, the result
+      promise provides a nested promise member `activated`,
+      which resolves when the requested animation gets active.  */
   animate(target, options) {
     const copiedTarget = recursiveCopy(target, CObject)
     const copiedOptions = recursiveCopy(options)
-    const ctx = { target: copiedTarget, options: copiedOptions, promise: this.anim }
-    this._plugins.hook(Hooks.animateRegister, ctx).default((ctx) => {
-      let activate
-      const activated = new Promise((resolve, reject) => {
+    const ctx = Object.assign(
+      { target: copiedTarget, promise: this._anim },
+      copiedOptions !== undefined ? { options: copiedOptions } : {}
+    )
+    this._plugins.hook(Hooks.registerAnimation, ctx).default((ctx) => {
+      let activate = () => {}
+      const activated = new Promise((resolve) => {
         activate = resolve
       })
-      ctx.promise = ctx.promise.then(() => this._animate(copiedTarget, copiedOptions, activate))
-      ctx.promise.activated = activated
+      const promise = ctx.promise.then(() => this._animate(copiedTarget, copiedOptions, activate))
+      ctx.promise = Object.assign(promise, { activated })
     })
-    this.anim = ctx.promise
-    return this.anim
+    this._anim = ctx.promise
+    return this._anim
   }
-
   _animate(target, options, activate) {
-    const anim = new Promise((resolve, reject) => {
-      this._plugins.hook(Hooks.setAnimParams, { target, options }).default((ctx) => {
-        this._setAnimParams(ctx.target, ctx.options)
-      })
+    if (!this._chart) throw new NotInitializedError()
+    return this._chart.prepareAnimation(target, options).then(() => {
+      return this._runAnimation(activate)
+    })
+  }
+  _runAnimation(activate) {
+    return new Promise((resolve, reject) => {
       const callback = (ok) => {
         if (ok) {
           resolve(this)
         } else {
           // eslint-disable-next-line prefer-promise-reject-errors
           reject(new CancelError())
-          this.anim = Promise.resolve(this)
+          this._anim = Promise.resolve(this)
         }
       }
-      this._cChart.animate(callback)
-    }, this)
-    activate(new AnimControl(this))
-    return anim
-  }
-
-  _setAnimParams(target, options) {
-    if (target instanceof Animation) {
-      this._cChart.restoreAnim(target)
-    } else {
-      for (const keyframe of target) this._setKeyframe(keyframe.target, keyframe.options)
-    }
-    if (options) this._cChart.animOptions.set(options)
-  }
-
-  _setKeyframe(target, options) {
-    if (target) {
-      if (target instanceof Snapshot) {
-        this._cChart.restoreSnapshot(target)
-      } else {
-        this._data.set(target.data)
-        this._cChart.style.set(target.style)
-        this._cChart.config.set(target.config)
-      }
-    }
-    if (options) this._cChart.animOptions.set(options)
-    this._cChart.setKeyframe()
-  }
-
-  // keeping this one for backward compatibility
-  get animation() {
-    return new AnimControl(this)
-  }
-
-  version() {
-    this._validateModule()
-    return this._module.version()
-  }
-
-  getCanvasElement() {
-    return this.canvas
-  }
-
-  forceUpdate() {
-    if (this.render) this.render.updateFrame(true)
-  }
-
-  _start() {
-    if (!this._updateInterval) {
-      this.render.updateFrame()
-
-      this._updateInterval = setInterval(() => {
-        this.render.updateFrame()
-      }, 25)
-    }
-  }
-
-  _init(module) {
-    this._module = module
-    this._module.setLogging(false)
-
-    this.canvas = this._createCanvas()
-
-    const ccanvas = this._module.createCanvas()
-    this._cChart = this._module.createChart()
-    this._cData = this._module.getData(this._cChart)
-
-    this.render = new Render()
-    this._data = new Data(this)
-    this.events = new Events(this)
-    this.render.init(ccanvas, this._cChart, this.canvas, false)
-    this._module.registerRenderer(ccanvas, this.render)
-
-    this._setupDOMEventHandlers(this.canvas)
-
-    this.feature(new Logging(), false)
-    this.feature(new CSSProperties(), false)
-    this.feature(new Rendering(), true)
-    this.feature(new Shorthands(), true)
-    this.feature(new PivotData(), true)
-    this.feature(new PointerEvents(), true)
-    this.feature(new Tooltip(), false)
-
-    this._start()
-  }
-
-  _createCanvas() {
-    let canvas = null
-    const placeholder = this._container
-
-    if (placeholder instanceof HTMLCanvasElement) {
-      canvas = placeholder
-    } else {
-      canvas = document.createElement('CANVAS')
-      canvas.style.width = '100%'
-      canvas.style.height = '100%'
-      placeholder.appendChild(canvas)
-    }
-
-    if (!(canvas instanceof HTMLCanvasElement)) {
-      throw new Error('Error initializing <canvas> for Vizzu!')
-    }
-
-    return canvas
-  }
-
-  _setupDOMEventHandlers(canvas) {
-    this._resizeObserver = new ResizeObserver(() => {
-      this.render.updateFrame(true)
+      if (!this._chart) throw new NotInitializedError()
+      this._chart.runAnimation(callback)
+      activate(new AnimControl(this._chart.getCAnimControl()))
     })
-    this._resizeObserver.observe(canvas)
   }
-
+  /** Returns controls for the ongoing animation, if any.
+      @deprecated since version 0.4.0  */
+  get animation() {
+    if (!this._chart) throw new NotInitializedError()
+    return new AnimControl(this._chart.getCAnimControl())
+  }
+  /** Returns the version number of the library. */
+  version() {
+    if (!this._chart) throw new NotInitializedError()
+    return this._chart.version()
+  }
+  /** Returns the underlying canvas element. */
+  getCanvasElement() {
+    if (!this._chart) throw new NotInitializedError()
+    return this._chart.getCanvasElement()
+  }
+  /** Re-renders the chart. */
+  forceUpdate() {
+    if (!this._chart) throw new NotInitializedError()
+    this._chart.forceUpdate()
+  }
+  /** Property for read-only access to data metainfo object. */
+  get data() {
+    if (!this._chart) throw new NotInitializedError()
+    return this._chart.data
+  }
+  /** Property for read-only access to chart parameter object. */
+  get config() {
+    if (!this._chart) throw new NotInitializedError()
+    return this._chart.config
+  }
+  /** Property for read-only access to style object without default values. */
+  get style() {
+    if (!this._chart) throw new NotInitializedError()
+    return this._chart.style
+  }
+  /** Property for read-only access to the style object after setting defaults. */
+  getComputedStyle() {
+    if (!this._chart) throw new NotInitializedError()
+    return this._chart.getComputedStyle()
+  }
+  /** Installs the provided event handler to the event specified by name. */
+  on(eventName, handler) {
+    if (!this._chart) throw new NotInitializedError()
+    this._chart.on(eventName, handler)
+  }
+  /** Uninstalls the provided event handler from the event specified by name. */
+  off(eventName, handler) {
+    if (!this._chart) throw new NotInitializedError()
+    this._chart.off(eventName, handler)
+  }
+  /** Returns a reference to the actual chart state for further reuse.
+      This reference includes the chart config, style parameters and the
+      data filter but does not include the actual data and the animation options. */
+  store() {
+    if (!this._chart) throw new NotInitializedError()
+    return this._chart.store()
+  }
+  /** Returns a converter function. */
+  getConverter(target, from, to) {
+    if (!this._chart) throw new NotInitializedError()
+    return this._chart.getConverter(target, from, to)
+  }
+  /** Removes the reference of the chart from every place it attached itself,
+      this method must be called in order to get the chart properly garbage
+      collected.  */
   detach() {
     try {
       this._plugins.destruct()
     } finally {
-      this._resizeObserver?.disconnect()
-      if (this._updateInterval) clearInterval(this._updateInterval)
-      if (this._container && this._container !== this.canvas)
-        this._container.removeChild(this.canvas)
+      this._chart?.destruct()
     }
-  }
-
-  getConverter(target, from, to) {
-    if (typeof target === 'string' && target.startsWith('plot')) {
-      if (this._cChart) {
-        if (from === 'relative' || to === 'canvas') return (p) => this._cChart.toCanvasCoords(p)
-        if (from === 'canvas' || to === 'relative') return (p) => this._cChart.toRelCoords(p)
-      }
-    }
-    return (point) => point
   }
 }

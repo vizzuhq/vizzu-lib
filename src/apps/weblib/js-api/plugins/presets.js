@@ -1,371 +1,26 @@
+import { presetConfigs } from './presetconfigs.js'
 export default class Presets {
-  constructor(chart) {
-    this._presetConfigs = {
-      column: {
-        channels: {
-          x: 'x',
-          y: 'y',
-          label: 'y'
-        }
-      },
-      groupedColumn: {
-        channels: {
-          x: ['groupedBy', 'x'],
-          y: 'y',
-          label: 'y',
-          color: 'x'
-        }
-      },
-      stackedColumn: {
-        channels: {
-          x: 'x',
-          y: ['y', 'stackedBy'],
-          label: 'y',
-          color: 'stackedBy'
-        }
-      },
-      splittedColumn: {
-        channels: {
-          x: 'x',
-          y: ['y', 'splittedBy'],
-          color: 'splittedBy',
-          label: 'y'
-        },
-        split: true
-      },
-      percentageColumn: {
-        channels: {
-          x: 'x',
-          y: ['y', 'stackedBy'],
-          color: 'stackedBy',
-          label: 'y'
-        },
-        align: 'stretch'
-      },
-      waterfall: {
-        channels: {
-          x: 'x',
-          y: ['y', 'x'],
-          label: 'y',
-          color: 'y'
-        },
-        align: 'stretch'
-      },
-      mekko: {
-        channels: {
-          x: ['x', 'groupedBy'],
-          y: ['y', 'stackedBy'],
-          color: 'stackedBy',
-          label: 'groupedBy'
-        }
-      },
-      marimekko: {
-        channels: {
-          x: ['x', 'groupedBy'],
-          y: ['y', 'stackedBy'],
-          color: 'stackedBy',
-          label: 'groupedBy'
-        },
-        align: 'stretch'
-      },
-      bar: {
-        channels: {
-          x: 'x',
-          y: 'y',
-          label: 'x'
-        }
-      },
-      groupedBar: {
-        channels: {
-          x: 'x',
-          y: ['groupedBy', 'y'],
-          label: 'x',
-          color: 'y'
-        }
-      },
-      stackedBar: {
-        channels: {
-          x: ['x', 'stackedBy'],
-          y: 'y',
-          label: 'x',
-          color: 'stackedBy'
-        }
-      },
-      splittedBar: {
-        channels: {
-          x: ['x', 'splittedBy'],
-          y: 'y',
-          color: 'splittedBy',
-          label: 'x'
-        },
-        split: true
-      },
-      percentageBar: {
-        channels: {
-          x: ['x', 'stackedBy'],
-          y: 'y',
-          color: 'stackedBy',
-          label: 'x'
-        },
-        align: 'stretch'
-      },
-      lollipop: {
-        channels: {
-          x: 'x',
-          y: 'y',
-          label: 'y'
-        },
-        geometry: 'circle'
-      },
-      scatter: {
-        channels: {
-          x: 'x',
-          y: 'y',
-          noop: 'dividedBy'
-        },
-        geometry: 'circle'
-      },
-      bubbleplot: {
-        channels: {
-          x: 'x',
-          y: 'y',
-          color: 'color',
-          size: 'size',
-          label: 'dividedBy',
-          noop: 'dividedBy'
-        },
-        geometry: 'circle'
-      },
-      area: {
-        channels: {
-          x: 'x',
-          y: 'y'
-        },
-        geometry: 'area'
-      },
-      stackedArea: {
-        channels: {
-          x: 'x',
-          y: ['y', 'stackedBy'],
-          color: 'stackedBy'
-        },
-        geometry: 'area'
-      },
-      percentageArea: {
-        channels: {
-          x: 'x',
-          y: ['y', 'stackedBy'],
-          color: 'stackedBy'
-        },
-        align: 'stretch',
-        geometry: 'area'
-      },
-      splittedArea: {
-        channels: {
-          x: 'x',
-          y: ['y', 'splittedBy'],
-          color: 'splittedBy'
-        },
-        split: true,
-        geometry: 'area'
-      },
-      stream: {
-        channels: {
-          x: 'x',
-          y: ['y', 'stackedBy'],
-          color: 'stackedBy'
-        },
-        geometry: 'area',
-        align: 'center'
-      },
-      verticalStream: {
-        channels: {
-          x: ['x', 'stackedBy'],
-          y: 'y',
-          color: 'stackedBy'
-        },
-        geometry: 'area',
-        align: 'center'
-      },
-      violin: {
-        channels: {
-          x: 'x',
-          y: ['y', 'splittedBy'],
-          color: 'splittedBy'
-        },
-        geometry: 'area',
-        align: 'center',
-        split: true
-      },
-      verticalViolin: {
-        channels: {
-          x: ['x', 'splittedBy'],
-          y: 'y',
-          color: 'splittedBy'
-        },
-        geometry: 'area',
-        align: 'center',
-        split: true
-      },
-      line: {
-        channels: {
-          x: 'x',
-          y: 'y',
-          color: 'dividedBy'
-        },
-        geometry: 'line'
-      },
-      verticalLine: {
-        channels: {
-          x: 'x',
-          y: 'y',
-          color: 'dividedBy'
-        },
-        geometry: 'line'
-      },
-      pie: {
-        channels: {
-          x: ['angle', 'by'],
-          color: 'by',
-          label: 'angle'
-        },
-        coordSystem: 'polar'
-      },
-      polarColumn: {
-        channels: {
-          x: 'angle',
-          y: 'radius',
-          label: 'radius'
-        },
-        coordSystem: 'polar'
-      },
-      polarStackedColumn: {
-        channels: {
-          x: 'angle',
-          y: ['radius', 'stackedBy'],
-          color: 'stackedBy'
-        },
-        coordSystem: 'polar'
-      },
-      variableRadiusPie: {
-        channels: {
-          x: ['angle', 'by'],
-          y: 'radius',
-          color: 'by',
-          label: 'radius'
-        },
-        coordSystem: 'polar'
-      },
-      radialBar: {
-        channels: {
-          x: 'angle',
-          y: { set: 'radius', range: { min: '-50%' } },
-          label: 'angle'
-        },
-        coordSystem: 'polar'
-      },
-      radialStackedBar: {
-        channels: {
-          x: ['angle', 'stackedBy'],
-          y: { set: 'radius', range: { min: '-50%' } },
-          color: 'stackedBy',
-          label: 'angle'
-        },
-        coordSystem: 'polar'
-      },
-      donut: {
-        channels: {
-          x: ['angle', 'stackedBy'],
-          y: { range: { min: '-200%', max: '100%' } },
-          color: 'stackedBy'
-        },
-        coordSystem: 'polar'
-      },
-      nestedDonut: {
-        channels: {
-          x: ['angle', 'stackedBy'],
-          y: { set: 'radius', range: { min: '-50%' } },
-          color: 'stackedBy',
-          label: 'angle'
-        },
-        coordSystem: 'polar',
-        align: 'stretch'
-      },
-      polarScatter: {
-        channels: {
-          x: 'angle',
-          y: 'radius',
-          noop: 'dividedBy'
-        },
-        coordSystem: 'polar',
-        geometry: 'circle'
-      },
-      polarLine: {
-        channels: {
-          x: 'angle',
-          y: 'radius',
-          color: 'dividedBy'
-        },
-        coordSystem: 'polar',
-        geometry: 'line'
-      },
-      treemap: {
-        channels: {
-          size: ['size', 'color'],
-          color: 'color',
-          label: 'color'
-        }
-      },
-      stackedTreemap: {
-        channels: {
-          size: ['size', 'dividedBy'],
-          color: 'color',
-          label: 'dividedBy',
-          lightness: 'size'
-        }
-      },
-      heatmap: {
-        channels: {
-          x: 'x',
-          y: 'y',
-          lightness: 'lightness'
-        }
-      },
-      bubble: {
-        channels: {
-          size: 'size',
-          color: 'color',
-          label: 'color'
-        },
-        geometry: 'circle'
-      },
-      stackedBubble: {
-        channels: {
-          size: ['size', 'stackedBy'],
-          color: 'color'
-        },
-        geometry: 'circle'
-      }
-    }
-
+  constructor() {
+    this._presetConfigs = presetConfigs
     for (const key in this._presetConfigs) {
-      this._initPresetConfigChannels(this._presetConfigs[key].channels)
-      this[key] = (config) => {
-        return this._buildPresetConfig(key, config)
+      const name = key
+      this._initPresetConfigChannels(this._presetConfigs[name].channels)
+      this[name] = (config) => {
+        return this._buildPresetConfig(name, config)
       }
     }
   }
-
   _initPresetConfigChannels(channels) {
-    for (const channel in channels) {
-      if (typeof channels[channel] !== 'object' || Array.isArray(channels[channel])) {
-        channels[channel] = {
-          set: channels[channel]
+    for (const key in channels) {
+      const channelName = key
+      const channel = channels[channelName]
+      if (typeof channel !== 'object' || Array.isArray(channel)) {
+        channels[channelName] = {
+          set: channels[channelName]
         }
       }
     }
   }
-
   _nullConfig() {
     return {
       align: 'none',
@@ -385,52 +40,54 @@ export default class Presets {
       }
     }
   }
-
   _createPresetConfig(presetName) {
     const presetConfig = this._presetConfigs[presetName]
-    const nullConfig = this._nullConfig()
-    const channelBase = Object.assign(nullConfig.channels, presetConfig.channels)
+    const channelBase = { ...this._nullConfig().channels, ...presetConfig.channels }
     const base = Object.assign(this._nullConfig(), presetConfig)
     base.channels = channelBase
     return base
   }
-
   _getChannelCopy(channel) {
     if (channel === null) return null
     if (channel === undefined) return null
-    if (Array.isArray(channel)) channel.map((v) => v)
+    if (Array.isArray(channel)) return channel
     return [channel]
   }
-
   _fillChannels(presetConfig, config) {
     if (!config) return
     const channels = presetConfig.channels
-    for (const channel in channels) {
-      if (channels[channel] === null) {
+    for (const key in channels) {
+      const channelName = key
+      const channel = channels[channelName]
+      if (!this._isChannel(channel)) {
         continue
-      } else if (typeof channels[channel].set === 'string') {
-        channels[channel].set = this._getChannelCopy(config[channels[channel].set])
-      } else if (Array.isArray(channels[channel].set)) {
+      } else if (typeof channel.set === 'string') {
+        const key = channel.set
+        channel.set = this._getChannelCopy(config[key])
+      } else if (Array.isArray(channel.set)) {
         const newChannel = []
-        for (let i = 0; i < channels[channel].set.length; i++) {
-          const channelConfig = this._getChannelCopy(config[channels[channel].set[i]])
+        for (let i = 0; i < channel.set.length; i++) {
+          const key = channel.set[i]
+          const channelConfig = this._getChannelCopy(config[key])
           if (channelConfig !== null) {
             newChannel.push(channelConfig)
           }
         }
-        channels[channel].set = newChannel.length > 0 ? newChannel.flat() : null
+        channel.set = newChannel.length > 0 ? newChannel.flat() : null
       }
     }
   }
-
+  _isChannel(channel) {
+    return typeof channel === 'object' && channel !== null && 'set' in channel
+  }
   _setupUserParams(base, config) {
     ;['legend', 'title', 'subtitle', 'caption', 'reverse', 'sort'].forEach((key) => {
-      if (config[key] !== undefined) {
-        base[key] = config[key]
+      const prop = key
+      if (config[prop] !== undefined) {
+        base[prop] = config[prop]
       }
     })
   }
-
   _buildPresetConfig(presetName, config) {
     const presetConfig = this._createPresetConfig(presetName)
     this._fillChannels(presetConfig, config)

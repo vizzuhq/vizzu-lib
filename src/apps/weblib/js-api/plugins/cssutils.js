@@ -7,7 +7,6 @@ export const isAccessibleStylesheet = (stylesheet) => {
     return false
   }
 }
-
 export const getCSSCustomProps = (pfx = '') =>
   [...document.styleSheets].filter(isAccessibleStylesheet).reduce(
     (finalArr, sheet) =>
@@ -23,7 +22,6 @@ export const getCSSCustomProps = (pfx = '') =>
       ),
     []
   )
-
 export const getCSSCustomPropsForElement = (el, pfx = '') => {
   const props = getCSSCustomProps(pfx)
   const style = getComputedStyle(el)
@@ -31,7 +29,6 @@ export const getCSSCustomPropsForElement = (el, pfx = '') => {
     .map((prop) => [prop, style.getPropertyValue(prop).trim()])
     .filter((pv) => pv[1] !== '')
 }
-
 export const propSet = (obj, path, value, overwrite) => {
   path.reduce((acc, part, idx) => {
     if (idx === path.length - 1) {
@@ -41,22 +38,19 @@ export const propSet = (obj, path, value, overwrite) => {
     } else if (!acc[part]) {
       acc[part] = {}
     }
-
     return acc[part]
   }, obj)
   return obj
 }
-
 export const propsToObject = (props, propObj, pfx = '', overwrite = false) => {
   propObj = propObj || {}
   propObj = props.reduce((obj, [prop, val]) => {
-    const propname = prop.replace('--' + (pfx ? pfx + '-' : ''), '')
-    const proppath = propname.split('-')
-
-    propSet(obj, proppath, val, overwrite)
-
+    if (prop) {
+      const propname = prop.replace('--' + (pfx ? pfx + '-' : ''), '')
+      const proppath = propname.split('-')
+      propSet(obj, proppath, val, overwrite)
+    }
     return obj
   }, propObj)
-
   return propObj
 }

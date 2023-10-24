@@ -1,61 +1,60 @@
 export class Tooltip {
-  meta = {
-    name: 'tooltip',
-    depends: ['pointerEvents']
-  }
-
-  listeners = {
-    pointermove: this._mousemove.bind(this),
-    pointeron: this._mouseon.bind(this)
-  }
-
   constructor() {
-    this.id = 0
-    this.animating = false
-    this.lastMarkerId = null
-    this.lastMove = new Date()
+    this._id = 0
+    this._animating = false
+    this._lastMarkerId = null
+    this._lastMove = new Date().getTime()
+    this.meta = {
+      name: 'tooltip',
+      depends: ['pointerEvents']
+    }
+    this.listeners = {
+      pointermove: this._mousemove.bind(this),
+      pointeron: this._mouseon.bind(this)
+    }
   }
-
-  register(chart) {
-    this.chart = chart
+  register(vizzu) {
+    this._vizzu = vizzu
   }
-
   enable(enabled) {
     if (!enabled) {
-      this.id++
+      this._id++
       setTimeout(() => {
-        this._out(this.id)
+        this._out(this._id)
       }, 200)
     }
   }
-
   _mousemove() {
-    this.lastMove = new Date()
+    this._lastMove = new Date().getTime()
   }
-
   _mouseon(param) {
-    this.id++
-    const id = this.id
-    if (!param.target || param.target.tagName !== 'plot-marker') {
+    this._id++
+    const id = this._id
+    if (param.target && this._isMarker(param.target)) {
+      const markerId = param.target.index
+      setTimeout(() => {
+        this._in(id, markerId)
+      }, 0)
+    } else {
       setTimeout(() => {
         this._out(id)
       }, 200)
-    } else {
-      setTimeout(() => {
-        this._in(id, param.target.index)
-      }, 0)
     }
   }
-
+  _isMarker(target) {
+    return target.tagName === 'plot-marker'
+  }
   _in(id, markerId) {
-    if (this.id === id) {
-      if (!this.animating) {
-        this.lastMarkerId = markerId
-        this.animating = true
-        this.chart
-          .animate({ config: { tooltip: markerId } }, this.lastMarkerId ? '100ms' : '250ms')
+    if (this._id === id) {
+      if (!this._animating) {
+        this._lastMarkerId = markerId
+        this._animating = true
+        this._vizzu
+          ?.animate([{ target: { config: { tooltip: markerId } } }], {
+            duration: this._lastMarkerId ? '100ms' : '250ms'
+          })
           .then(() => {
-            this.animating = false
+            this._animating = false
           })
       } else {
         setTimeout(() => {
@@ -64,16 +63,17 @@ export class Tooltip {
       }
     }
   }
-
   _out(id) {
-    if (this.id === id) {
-      const ellapsed = new Date() - this.lastMove
-      if (!this.animating && ellapsed > 200) {
-        this.lastMarkerId = null
-        this.animating = true
-        this.chart.animate({ config: { tooltip: null } }, '250ms').then(() => {
-          this.animating = false
-        })
+    if (this._id === id) {
+      const ellapsed = new Date().getTime() - this._lastMove
+      if (!this._animating && ellapsed > 200) {
+        this._lastMarkerId = null
+        this._animating = true
+        this._vizzu
+          ?.animate([{ target: { config: { tooltip: null } } }], { duration: '250ms' })
+          .then(() => {
+            this._animating = false
+          })
       } else {
         setTimeout(() => {
           this._out(id)

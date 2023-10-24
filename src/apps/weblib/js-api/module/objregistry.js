@@ -1,14 +1,13 @@
 export class ObjectRegistry {
   constructor(fnFree) {
-    this.finalizationRegistry = new FinalizationRegistry((rawCPointer) => {
-      fnFree(rawCPointer)
+    this._finalizationRegistry = new FinalizationRegistry((cPointer) => {
+      fnFree(cPointer)
     })
   }
-
   get(fnGetter) {
-    const rawCPointer = fnGetter()
-    const object = () => rawCPointer
-    this.finalizationRegistry.register(object, rawCPointer)
+    const cPointer = fnGetter()
+    const object = () => cPointer
+    this._finalizationRegistry.register(object, cPointer)
     return object
   }
 }

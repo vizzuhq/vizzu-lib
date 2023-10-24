@@ -1,12 +1,9 @@
 export class Logging {
-  meta = { name: 'logging' }
-
-  register(chart) {
-    this.chart = chart
+  constructor(setEnable) {
+    this.meta = { name: 'logging' }
+    this._setEnable = setEnable
   }
-
   enable(enabled) {
-    this.chart._validateModule()
-    this.chart._module.setLogging(enabled)
+    this._setEnable(enabled)
   }
 }

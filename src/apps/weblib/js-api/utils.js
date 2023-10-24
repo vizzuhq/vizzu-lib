@@ -2,19 +2,15 @@ export function recursiveCopy(value, Ignore) {
   if (value === null || typeof value !== 'object') {
     return value
   }
-
   if (value instanceof Function) {
     return value
   }
-
-  if (Array.isArray(value)) {
+  if (Array.isArray(value) && value instanceof Array) {
     return value.map((item) => recursiveCopy(item, Ignore))
   }
-
   if (Ignore && value instanceof Ignore) {
     return value
   }
-
   const copyObj = {}
   for (const key in value) {
     if (key in value) {
@@ -23,35 +19,37 @@ export function recursiveCopy(value, Ignore) {
   }
   return copyObj
 }
-
 export function iterateObject(obj, paramHandler, path = '') {
   if (obj && obj !== null && typeof obj === 'object') {
     Object.keys(obj).forEach((key) => {
       const newPath = path + (path.length === 0 ? '' : '.') + key
-      if (obj[key] !== null && typeof obj[key] === 'object') {
-        iterateObject(obj[key], paramHandler, newPath)
+      const value = obj[key]
+      if (value !== null && typeof value === 'object') {
+        iterateObject(value, paramHandler, newPath)
       } else {
-        if (newPath !== '' + newPath) {
-          throw new Error('first parameter should be string')
-        }
-        paramHandler(newPath, obj[key])
+        paramHandler(newPath, value)
       }
     })
   }
 }
-
+function isObject(value) {
+  return typeof value === 'object' && value !== null
+}
 function setNestedProp(obj, path, value) {
   const propList = path.split('.')
+  let currentObj = obj
   propList.forEach((prop, i) => {
+    if (!isObject(currentObj)) {
+      throw new Error(`Expected an object, but got ${typeof currentObj}`)
+    }
     if (i < propList.length - 1) {
-      obj[prop] = obj[prop] || (typeof propList[i + 1] === 'number' ? [] : {})
-      obj = obj[prop]
+      currentObj[prop] = currentObj[prop] || (typeof propList[i + 1] === 'number' ? [] : {})
+      currentObj = currentObj[prop]
     } else {
-      obj[prop] = value
+      currentObj[prop] = value
     }
   })
 }
-
 export function cloneObject(lister, getter) {
   const list = lister()
   const res = {}
@@ -59,6 +57,5 @@ export function cloneObject(lister, getter) {
     const value = getter(path)
     setNestedProp(res, path, value)
   }
-  Object.freeze(res)
-  return res
+  return Object.freeze(res)
 }

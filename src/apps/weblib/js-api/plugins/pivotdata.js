@@ -1,16 +1,19 @@
+import { Snapshot } from '../module/cchart.js'
 import UnPivot from './unpivot.js'
-
 export class PivotData {
-  meta = {
-    name: 'pivotData'
+  constructor() {
+    this.meta = {
+      name: 'pivotData'
+    }
   }
-
   get hooks() {
     return {
-      setAnimParams: (ctx, next) => {
+      prepareAnimation: (ctx, next) => {
         if (Array.isArray(ctx.target))
-          ctx.target.forEach(({ target, options }) => {
-            if (target?.data && UnPivot.isPivot(target.data)) {
+          ctx.target.forEach(({ target }) => {
+            if (target instanceof Snapshot) return
+            if (!target.data) return
+            if (target.data && UnPivot.isPivot(target.data)) {
               if (PivotData._is1NF(target.data)) {
                 throw new Error(
                   'inconsistent data form: ' +
@@ -25,8 +28,7 @@ export class PivotData {
       }
     }
   }
-
   static _is1NF(data) {
-    return data.series || data.records
+    return 'series' in data || 'records' in data
   }
 }

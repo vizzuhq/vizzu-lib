@@ -1,104 +1,115 @@
-import { Snapshot, Animation } from './../module/cchart.js'
-
+import { Snapshot } from '../module/cchart.js'
+import { CAnimation } from '../module/canimctrl.js'
 export class Shorthands {
-  meta = {
-    name: 'shorthands'
+  constructor() {
+    this.meta = {
+      name: 'shorthands'
+    }
   }
-
   get hooks() {
     const hooks = {
-      setAnimParams: (ctx, next) => {
-        this._normalize(ctx)
-        next()
-      }
+      prepareAnimation: Object.assign(
+        (ctx, next) => {
+          this._normalize(ctx)
+          next()
+        },
+        { priority: 1 }
+      )
     }
-    hooks.setAnimParams.priority = 1
     return hooks
   }
-
   register(chart) {
-    this.chart = chart
-    this._channelNames = Object.keys(this.chart.config.channels)
+    this._chart = chart
+    this._channelNames = Object.keys(this._chart.config.channels)
   }
-
   _normalize(ctx) {
-    if (!(ctx.target instanceof Animation)) {
-      ctx.target = (Array.isArray(ctx.target) ? ctx.target : [{ ...ctx }])
-        .map((keyframe) => (keyframe.target !== undefined ? keyframe : { target: keyframe }))
+    if (!(ctx.target instanceof CAnimation)) {
+      const keyframes = this._isKeyframes(ctx.target) ? ctx.target : [ctx.target]
+      ctx.target = keyframes
+        .map((keyframe) => (this._isKeyframe(keyframe) ? keyframe : { target: keyframe }))
         .map((keyframe) => this._normalizeKeyframe(keyframe))
     }
-    ctx.options = this._normalizeOptions(ctx.options)
+    const options = this._normalizeOptions(ctx.options)
+    if (options) ctx.options = options
   }
-
+  _isKeyframes(value) {
+    return Array.isArray(value)
+  }
+  _isKeyframe(value) {
+    return 'target' in value
+  }
   _normalizeKeyframe(keyframe) {
-    keyframe.target = this._normalizeTarget(keyframe.target)
-    keyframe.options = this._normalizeOptions(keyframe.options)
-    return keyframe
+    const options = this._normalizeOptions(keyframe.options)
+    return Object.assign(
+      {
+        target: this._normalizeTarget(keyframe.target)
+      },
+      options ? { options } : {}
+    )
   }
-
   _normalizeTarget(target) {
     if (target && !(target instanceof Snapshot)) {
-      if (!target.data && target.style === undefined && !target.config) {
+      if (this._isConfig(target)) {
         target = { config: target }
       }
-
       if (target.style === null) {
         target.style = { '': null }
       }
       target.style = target.style || {}
-
-      target.config = this._normalizeConfig(target.config)
+      const cfg = this._normalizeConfig(target.config)
+      if (cfg) target.config = cfg
     }
     return target
   }
-
+  _isConfig(value) {
+    return !('data' in value || 'style' in value || 'config' in value)
+  }
   _normalizeConfig(config) {
     if (config !== null && typeof config === 'object') {
       Object.keys(config).forEach((key) => {
-        if (this._channelNames.includes(key)) {
+        if (this._isChannelName(key)) {
           config.channels = config.channels || {}
           config.channels[key] = config[key]
           delete config[key]
         }
       })
     }
-
     if (config?.channels) {
       config.channels = this._normalizeChannels(config.channels)
     }
-
     return config
   }
-
+  _isChannelName(value) {
+    return this._channelNames.includes(value)
+  }
   _normalizeChannels(channels) {
-    Object.keys(channels).forEach((ch) => {
-      if (typeof channels[ch] === 'string') {
-        channels[ch] = [channels[ch]]
-      }
-
-      if (channels[ch] === null || Array.isArray(channels[ch])) {
-        channels[ch] = { set: channels[ch] }
-      }
-
-      if (typeof channels[ch].attach === 'string') {
-        channels[ch].attach = [channels[ch].attach]
-      }
-
-      if (typeof channels[ch].detach === 'string') {
-        channels[ch].detach = [channels[ch].detach]
-      }
-
-      if (typeof channels[ch].set === 'string') {
-        channels[ch].set = [channels[ch].set]
-      }
-
-      if (Array.isArray(channels[ch].set) && channels[ch].set.length === 0) {
-        channels[ch].set = null
-      }
+    Object.keys(channels).forEach((key) => {
+      const ch = key
+      channels[ch] = this._normalizeChannel(channels[ch])
     })
     return channels
   }
-
+  _normalizeChannel(channel) {
+    if (typeof channel === 'string') {
+      channel = [channel]
+    }
+    if (channel === null || Array.isArray(channel)) {
+      channel = { set: channel }
+    }
+    if (typeof channel?.attach === 'string') {
+      channel.attach = [channel.attach]
+    }
+    if (typeof channel?.detach === 'string') {
+      channel.detach = [channel.detach]
+    }
+    if (typeof channel?.set === 'string') {
+      channel.set = [channel.set]
+    }
+    if (Array.isArray(channel?.set) && channel?.set.length === 0) {
+      channel.set = null
+    }
+    return channel
+  }
   _normalizeOptions(options) {
     if (typeof options !== 'undefined') {
       if (options === null) {

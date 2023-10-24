@@ -3,7 +3,6 @@ const assert = (condition, message) => {
     throw new Error('Assert failed: ' + message)
   }
 }
-
 const assertArray = (data, array, index) => {
   assert(Array.isArray(array), 'array is not a list')
   try {
@@ -19,12 +18,14 @@ const assertArray = (data, array, index) => {
     }
   })
 }
-
 export default class UnPivot {
   static isPivot(data) {
-    return typeof data?.dimensions !== 'undefined' || typeof data?.measures !== 'undefined'
+    return (
+      data !== undefined &&
+      (('dimensions' in data && data.dimensions !== undefined) ||
+        ('measures' in data && data.measures !== undefined))
+    )
   }
-
   static convert(data) {
     assert(
       typeof data === 'object' && data !== null && !Array.isArray(data),
@@ -32,10 +33,13 @@ export default class UnPivot {
     )
     assert('dimensions' in data, 'data.dimensions is requreid')
     assert('measures' in data, 'data.measures is requreid')
-
-    const convertedData = (({ dimensions, measures, ...o }) => o)(data)
-    convertedData.series = []
-
+    const convertedData = (({
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      dimensions,
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      measures,
+      ...o
+    }) => Object.assign(o, { series: [] }))(data)
     let dimensionsProduct = 1
     assert(Array.isArray(data.dimensions), 'data.dimensions is not a list')
     for (let i = 0; i < data.dimensions.length; i++) {
@@ -54,7 +58,6 @@ export default class UnPivot {
       assert(item.values.length !== 0, 'data.dimensions.item.values length is zero')
       dimensionsProduct *= item.values.length
     }
-
     let dimensionsProductProcessed = 1
     for (let i = 0; i < data.dimensions.length; i++) {
       const item = data.dimensions[i]
@@ -69,7 +72,6 @@ export default class UnPivot {
       for (let a = 1; a <= dimensionsProduct / dimensionsProductProcessed; a++) {
         values = values.concat(valuesItem)
       }
-
       const seriesItem = {
         name: item.name,
         type: item.type || 'dimension',
@@ -77,7 +79,6 @@ export default class UnPivot {
       }
       convertedData.series.push(seriesItem)
     }
-
     assert(
       typeof data.measures === 'object' && data.measures !== null,
       'data.measures is not a list or an object'
@@ -106,7 +107,6 @@ export default class UnPivot {
       assert(seriesItem.values.length === dimensionsProduct, 'dimensions are not the same')
       convertedData.series.push(seriesItem)
     }
-
     return convertedData
   }
 }

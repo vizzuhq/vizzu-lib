@@ -1,34 +1,32 @@
+import { Snapshot } from '../module/cchart.js'
 import { getCSSCustomPropsForElement, propsToObject } from './cssutils.js'
-
 export class CSSProperties {
-  meta = {
-    name: 'cssProperties'
-  }
-
-  api = {
-    prefix: 'vizzu'
-  }
-
-  constructor(options) {
+  constructor(options = {}) {
+    this.meta = {
+      name: 'cssProperties'
+    }
+    this.api = {
+      prefix: 'vizzu'
+    }
     if (options?.prefix) {
       this.api.prefix = options.prefix
     }
   }
-
   get hooks() {
     return {
-      setAnimParams: (ctx, next) => {
-        const props = getCSSCustomPropsForElement(this.chart._container, this.api.prefix)
+      prepareAnimation: (ctx, next) => {
+        const props = getCSSCustomPropsForElement(this._chart.getCanvasElement(), this.api.prefix)
         if (Array.isArray(ctx.target))
-          ctx.target.forEach(({ target, options }) => {
-            target.style = propsToObject(props, target.style, this.api.prefix)
+          ctx.target.forEach(({ target }) => {
+            if (!(target instanceof Snapshot)) {
+              target.style = propsToObject(props, target.style, this.api.prefix)
+            }
           })
         next()
       }
     }
   }
-
   register(chart) {
-    this.chart = chart
+    this._chart = chart
   }
 }
