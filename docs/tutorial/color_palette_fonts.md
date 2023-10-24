@@ -137,6 +137,7 @@ chart.animate({
 })
 ```
 
-For information on all available style parameters see the [Code reference](../reference).
+For information on all available style parameters see the
+[Code reference](../reference).
 
 <script src="../color_palette_fonts.js"></script>
