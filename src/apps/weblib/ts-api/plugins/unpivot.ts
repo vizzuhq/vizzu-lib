@@ -6,7 +6,7 @@ type CubeRow = Data.Values | CubeRow[]
   values in the data cube and meta info about that variable. */
 interface CubeData extends Data.SeriesMetaInfo {
   /** A nested array that contains the values of the data series. Nesting 
-  level should match the number of {@link Data.Cube.dimensions}. */
+  level should match the number of data cube dimensions. */
   values: CubeRow
 }
 

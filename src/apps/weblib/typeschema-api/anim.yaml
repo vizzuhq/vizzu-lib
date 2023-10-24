@@ -124,6 +124,7 @@ definitions:
   ControlOptions:
     type: object
     $extends: GroupOptions
+    description: Animation playback related oprtions.
     properties:
       playState:
         type: string

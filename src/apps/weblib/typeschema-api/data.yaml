@@ -20,8 +20,8 @@ definitions:
       name:
         description: |
           Name of the data series. It will be the unique id of the series to 
-          reference it in various parts of the API, mainly in {@link Config.Channel} and
-          {@link Data.Record}. This name will also be used by default for Axis and 
+          reference it in various parts of the API, mainly in channel configuration and
+          in data record filters. This name will also be used by default for Axis and 
           Legend title.
         $ref: SeriesName
       type:
@@ -39,6 +39,7 @@ definitions:
   AbstractSeriesInfo:
     $extends: SeriesMetaInfo
     type: object
+    description: Generic meta data about any data series
     properties:
       length:
         description: Count of values in the series.
@@ -59,6 +60,7 @@ definitions:
 
   Range:
     type: object
+    description: Represents a numeric interval.
     properties:
       min:
         description: Minimal value in the series
@@ -78,6 +80,7 @@ definitions:
     required: [range]
 
   SeriesInfo:
+    description: MetaInfo for different series types.
     oneOf:
       - $ref: DimensionSeriesInfo
       - $ref: MeasureSeriesInfo
@@ -116,7 +119,7 @@ definitions:
       values:
         description: |
           The array that contains the values of the data series. The value types 
-          should match {@link Data.SeriesMetaInfo.type}. If the data series
+          should match the data series' `type` property. If the data series
           is shorter than the longest data series defined, it will be internally 
           extended with empty values.
         $ref: Values
@@ -130,7 +133,7 @@ definitions:
       operator[]:
         description: |
           Properties are provided for each data series, providing access to the value within
-          the record referenced by its {@link Data.Series.name|name}.
+          the record referenced by its data series name.
         type: function
         arguments:
           seriesName: { $ref: SeriesName }
@@ -139,6 +142,7 @@ definitions:
 
   FilterCallback:
     type: function
+    description: A callback function receives a record
     arguments:
       record: { $ref: Record }
     required: [record]
@@ -146,6 +150,7 @@ definitions:
 
   Filter:
     type: object
+    description: Filter object containing a filter function
     properties:
       filter:
         description: |
@@ -192,7 +197,7 @@ definitions:
 
   Set:
     description: |
-      Data set is a collection of related {@link Data.Series|data series}. 
+      Data set is a collection of related data series. 
       Each chart works on a single data set.
     oneOf:
       - $ref: TableBySeries
@@ -219,6 +224,7 @@ definitions:
       - { type: string, mask: /:AggregatorType:\(:SeriesName:\)/ }
 
   SeriesList:
+    description: Array or a single data series.
     oneOf:
       - type: array
         items: { $ref: SeriesDescriptor }

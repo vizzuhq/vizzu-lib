@@ -53,17 +53,17 @@ definitions:
           - { type: string, enum: [auto] }
         nullable: true
       set:
-        description: List of {@link SeriesDescriptor|data series descriptors} on the channel.
+        description: List of data series descriptors on the channel.
         $ref: Data:SeriesList
         nullable: true
       attach:
         description: |
-          List of {@link SeriesDescriptor|data series descriptors} to be added to the 
+          List of data series descriptors to be added to the 
           channel beside the ones already added.
         $ref: Data:SeriesList
       detach:
         description: |
-          List of {@link SeriesDescriptor|data series descriptors} to be removed from the 
+          List of data series descriptors to be removed from the 
           channel.
         $ref: Data:SeriesList
       range:
@@ -105,10 +105,7 @@ definitions:
 
   Channels:
     description: |
-      Channel configuration. 
-      A data series' name or a list of the data series' names can be used as a 
-      short-hand - instead of the {@link Config.Channel|channel object} - to set data series 
-      for the channel. Setting a channel to null will remove all data series from it.
+      Channel configuration. Setting a channel to null will remove all data series from it.
     type: object
     properties:
       x:
@@ -234,7 +231,7 @@ definitions:
         description: |
           Sets the alignment of the markers with relation to the x- or the y-axis depending
           on where the measure is. In case both axes have measures on them, this is determined 
-          by the {@link Config.Chart.orientation|orientation} of the chart.
+          by the `orientation` of the chart.
         type: string
         enum: [none, min, center, max, stretch]
       split:
@@ -242,7 +239,7 @@ definitions:
           If set to true, markers will be split by the dimension(s) along the axis.
           This works if you have at least one dimension and a measure on the same axis.In case 
           both axes have measures and dimension(s) on them, this is determined by the 
-          {@link Config.Chart.orientation|orientation} of the chart.
+          `orientation` of the chart.
         type: boolean
       tooltip:
         description: |

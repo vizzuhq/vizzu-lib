@@ -137,7 +137,7 @@
     "serve-static": "^1.15.0",
     "strip-color": "^0.1.0",
     "typedoc": "~0.25.2",
-    "typedoc-plugin-markdown": "~3.14.0",
+    "typedoc-plugin-markdown": "~3.16.0",
     "typedoc-plugin-rename-defaults": "~0.6.4",
     "typescript": "^5.2.2",
     "yaml": "^2.3.2",

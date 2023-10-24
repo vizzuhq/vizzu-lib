@@ -5,25 +5,30 @@ const repoPath = path.join(__dirname, '..', '..', '..')
 const toolsPath = path.join(repoPath, 'tools')
 const mkdocsPath = path.join(toolsPath, 'docs')
 const genPath = path.join(mkdocsPath, 'reference')
-const distPath = path.join(repoPath, 'dist')
+const srcPath = path.join(repoPath, 'src', 'apps', 'weblib', 'ts-api')
 
-function reference() {
-  const app = new TypeDoc.Application()
+async function reference() {
+  const app = await TypeDoc.Application.bootstrapWithPlugins(
+    {
+      plugin: [/*'typedoc-plugin-markdown', */ 'typedoc-plugin-rename-defaults'],
+      entryPoints: [
+        path.join(srcPath, '*.ts'),
+        path.join(srcPath, 'module', '*.ts'),
+        path.join(srcPath, 'types', '*.ts')
+      ],
+      entryPointStrategy: 'expand',
+      tsconfig: path.join(srcPath, 'tsconfig.json'),
+      name: 'Vizzu',
+      //hideInPageTOC: true,
+      disableSources: true,
+      excludeNotDocumented: true,
+      excludePrivate: true,
+      readme: path.join(repoPath, 'docs', 'reference', 'index.md')
+    },
+    [new TypeDoc.TSConfigReader()]
+  )
 
-  app.options.addReader(new TypeDoc.TSConfigReader())
-
-  app.bootstrap({
-    plugin: ['typedoc-plugin-markdown', 'typedoc-plugin-rename-defaults'],
-    entryPoints: [path.join(distPath, 'vizzu.d.ts')],
-    entryPointStrategy: 'expand',
-    tsconfig: path.join(genPath, 'tsconfig.json'),
-    name: 'Vizzu',
-    hideInPageTOC: true,
-    disableSources: true,
-    readme: path.join(repoPath, 'docs', 'reference', 'index.md')
-  })
-
-  const project = app.convert()
+  const project = await app.convert()
 
   if (project) {
     const outputDir = path.join(genPath, 'tmp')

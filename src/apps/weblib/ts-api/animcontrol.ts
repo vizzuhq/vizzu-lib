@@ -16,8 +16,8 @@ export class AnimControl {
   }
 
   /** Seeks the animation to the position specified by time or progress 
-    percentage. Seeking the animation to the end position will not trigger
-    the {@link Vizzu.animate|animation promise} to resolve.  */
+    percentage. Seeking the animation to the end position while the animation
+    is paused will not trigger the animation complete promise to resolve. */
   seek(value: Position): this {
     const param = typeof value !== 'string' ? value.toString() : value
     this._animControl('seek', param)

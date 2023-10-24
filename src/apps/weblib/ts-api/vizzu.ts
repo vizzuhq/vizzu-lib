@@ -7,7 +7,6 @@ import { EventType, EventMap, EventHandler } from './events.js'
 import { loader, LoaderOptions } from './module/loader.js'
 import { Chart } from './chart.js'
 import { Snapshot } from './module/cchart.js'
-import { CAnimation } from './module/canimctrl.js'
 import { CObject } from './module/cenv.js'
 import { AnimControl } from './animcontrol.js'
 import { AnimCompleting } from './animcompleting.js'
@@ -181,9 +180,9 @@ export default class Vizzu {
     result in no animation.
     The method returns a promise, which will resolve when the animation is
     finished. Since there can be multiple animations in the queue, the result
-    promise provides a nested promise member {@link Anim.Completing.activated|activated}, 
+    promise provides a nested promise member `activated`, 
     which resolves when the requested animation gets active.  */
-  animate(target: Anim.Keyframes | CAnimation, options?: Anim.ControlOptions): AnimCompleting {
+  animate(target: Anim.AnimTarget, options?: Anim.ControlOptions): AnimCompleting {
     const copiedTarget = recursiveCopy(target, CObject)
     const copiedOptions = recursiveCopy(options)
     const ctx = Object.assign(
@@ -203,7 +202,7 @@ export default class Vizzu {
   }
 
   private _animate(
-    target: Anim.Keyframes | CAnimation,
+    target: Anim.AnimTarget,
     options: Anim.ControlOptions | undefined,
     activate: (control: AnimControl) => void
   ): Promise<Vizzu> {
