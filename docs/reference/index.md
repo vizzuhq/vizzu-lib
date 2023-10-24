@@ -13,17 +13,16 @@ The main entry point of the library is the [Vizzu](./classes/vizzu.Vizzu.md)
 class, and its most important component is the
 [animate](./classes/vizzu.Vizzu.md#animate) method:
 
-[`Vizzu`](./classes/vizzu.Vizzu.md)`.`[`animate`](./classes/vizzu.Vizzu.md#animate)`(`[`Anim.AnimTarget`](./types/types_anim.AnimTarget.md)`,`[`Anim.ControlOptions`](./interfaces/types_anim.ControlOptions.md)`):`[`Anim.Completing`](./modules/animcompleting.md)
+[`Vizzu`](./classes/vizzu.Vizzu.md)`.`[`animate`](./classes/vizzu.Vizzu.md#animate)`(`[`Anim.AnimTarget`](./modules/types_anim.md#AnimTarget)`,`[`Anim.ControlOptions`](./interfaces/types_anim.ControlOptions.md)`):`[`Anim.Completing`](./modules/animcompleting.md)
 
-The **animate** method's main parameter is the
-[Anim.AnimTarget](./types/types_anim.AnimTarget.md) interface, which is an array
+The **animate** method's main parameter is the **AnimTarget** interface, which is an array
 of keyframes containing the configuration of the chart, the underlying data, the
 chart's style settings, and the animation options:
 
 Keyframe:
 
-- [Anim.Target](./interfaces/types_anim.Target)
-  - [Data.Set](./types/types_data.Set.md)
+- [Anim.Target](./interfaces/types_anim.Target.md)
+  - [Data.Set](./modules/types_data.md#Set)
   - [Config.Chart](./interfaces/types_config.Chart.md)
     - [Config.Channels](./interfaces/types_config.Channel.md)
   - [Styles.Chart](./interfaces/types_styles.Chart.md)
