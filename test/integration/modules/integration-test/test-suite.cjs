@@ -31,6 +31,7 @@ class TestSuite {
 
   #Werror
   #createImages
+  #maxFailedImages
   #createHashes
 
   #testCasesConfig
@@ -59,6 +60,7 @@ class TestSuite {
     vizzuRefUrl,
     Werror,
     createImages,
+    maxFailedImages,
     createHashes
   ) {
     this.#cnsl = new TestConsole(!noLogs)
@@ -76,6 +78,7 @@ class TestSuite {
 
     this.#Werror = Werror
     this.#createImages = createImages
+    this.#maxFailedImages = maxFailedImages
     this.#createHashes = createHashes
 
     this.#testCasesConfigReady = TestCasesConfig.getConfig(configPathList)
@@ -124,6 +127,7 @@ class TestSuite {
                 browsersChrome: this.#browsersChrome,
                 Werror: this.#Werror,
                 createImages: this.#createImages,
+                maxFailedImages: this.#maxFailedImages,
                 animTimeout: this.#browsersChrome.getTimeout(),
                 cnsl: this.#cnsl
               }
