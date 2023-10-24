@@ -25,7 +25,7 @@ export class Tooltip implements Plugin {
   }
 
   enable(enabled: boolean): void {
-    if (!enabled) {
+    if (!enabled && this._lastMarkerId !== null) {
       this._id++
       setTimeout(() => {
         this._out(this._id)

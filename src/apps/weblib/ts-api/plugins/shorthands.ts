@@ -23,7 +23,7 @@ type LazyAnimTarget = LazyKeyframes | LazyTarget | CAnimation
 
 interface LazyPrepareAnimationContext {
   target: LazyAnimTarget
-  options?: LazyControlOptions
+  options?: LazyControlOptions | LazyOptions
 }
 
 type ChannelName = keyof Config.Channels
@@ -56,13 +56,22 @@ export class Shorthands implements Plugin {
 
   private _normalize(ctx: LazyPrepareAnimationContext): void {
     if (!(ctx.target instanceof CAnimation)) {
-      const keyframes = this._isKeyframes(ctx.target) ? ctx.target : [ctx.target]
+      const keyframes = this._isKeyframes(ctx.target)
+        ? ctx.target
+        : [this._toKeyframe(ctx.target, ctx.options)]
+
       ctx.target = keyframes
         .map((keyframe) => (this._isKeyframe(keyframe) ? keyframe : { target: keyframe }))
         .map((keyframe) => this._normalizeKeyframe(keyframe))
+
+      if (ctx.options !== undefined && !this._isKeyframes(ctx.target)) delete ctx.options
     }
     const options = this._normalizeOptions(ctx.options)
     if (options) ctx.options = options
+  }
+
+  private _toKeyframe(target: LazyTarget, options?: LazyOptions): LazyKeyframe {
+    return Object.assign({ target }, options !== undefined ? { options } : {})
   }
 
   private _isKeyframes(value: LazyAnimTarget): value is LazyKeyframes {
