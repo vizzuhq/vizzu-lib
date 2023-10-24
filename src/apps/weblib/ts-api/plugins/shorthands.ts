@@ -1,8 +1,8 @@
-import { Anim } from '../types/anim.js'
-import { Config } from '../types/config.js'
+import * as Anim from '../types/anim.js'
+import * as Config from '../types/config.js'
+import * as Data from '../types/data.js'
+import * as Styles from '../types/styles.js'
 import { Plugin, PluginHooks, PrepareAnimationContext } from '../plugins.js'
-import { Data } from '../types/data.js'
-import { Styles } from '../types/styles.js'
 
 import Vizzu from '../vizzu.js'
 

@@ -1,4 +1,4 @@
-import { Data } from '../types/data.js'
+import * as Data from '../types/data.js'
 
 type CubeRow = Data.Values | CubeRow[]
 

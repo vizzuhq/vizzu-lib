@@ -1,5 +1,5 @@
-import { Data } from '../types/data.js'
-import { Config } from '../types/config.js'
+import * as Data from '../types/data.js'
+import * as Config from '../types/config.js'
 
 import { presetConfigs } from './presetconfigs.js'
 

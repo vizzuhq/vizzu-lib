@@ -1,9 +1,9 @@
 import { CString, CFunction, CEventPtr } from '../cvizzu.types'
 
-import { Anim } from '../types/anim.js'
-import { Config } from '../types/config.js'
+import * as Anim from '../types/anim.js'
+import * as Config from '../types/config.js'
+import * as Styles from '../types/styles.js'
 import { Point } from '../geom.js'
-import { Styles } from '../types/styles.js'
 
 import { CObject, CEnv } from './cenv.js'
 import { CPointerClosure } from './objregistry.js'

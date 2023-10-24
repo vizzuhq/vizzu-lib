@@ -1,4 +1,4 @@
-import { Anim } from './types/anim.js'
+import { Position } from './types/anim.js'
 
 import { CAnimControl, CAnimation } from './module/canimctrl.js'
 
@@ -18,7 +18,7 @@ export class AnimControl {
   /** Seeks the animation to the position specified by time or progress 
     percentage. Seeking the animation to the end position will not trigger
     the {@link Vizzu.animate|animation promise} to resolve.  */
-  seek(value: Anim.Position): this {
+  seek(value: Position): this {
     const param = typeof value !== 'string' ? value.toString() : value
     this._animControl('seek', param)
     return this

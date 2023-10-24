@@ -3,8 +3,8 @@ $import:
   Data: ./data
   Config: ./config
   Styles: ./styles
-  CAnimation: ../module/canimctrl
-  Snapshot: ../module/cchart
+  CA: ../module/canimctrl
+  CC: ../module/cchart
 
 definitions:
   Duration:
@@ -171,7 +171,7 @@ definitions:
       target:
         oneOf:
           - $ref: Target
-          - $ref: Snapshot
+          - $ref: CC:Snapshot
       options:
         $ref: Options
     required: [target]
@@ -185,4 +185,4 @@ definitions:
     description: Types, that can represent an animation.
     oneOf:
       - $ref: Keyframes
-      - $ref: CAnimation
+      - $ref: CA:CAnimation

@@ -1,5 +1,5 @@
 import Vizzu from './vizzu.js'
-import { Anim } from './types/anim.js'
+import * as Anim from './types/anim.js'
 import { Events, EventType, EventHandler, EventMap } from './events.js'
 import { AnimCompleting } from './animcompleting.js'
 

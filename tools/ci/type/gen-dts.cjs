@@ -31,6 +31,7 @@ class DTSGenerator {
   constructor() {
     this._export = ''
     this._namespaces = []
+    this._imports = []
     this._content = ''
   }
 
@@ -55,36 +56,31 @@ class DTSGenerator {
     this._namespaces = [...Object.keys(schemas)]
     const namespaceOrder = ['data', 'config', 'styles', 'anim', 'presets']
     for (const name of namespaceOrder) {
-      const isRootNamespace = name === 'vizzu'
-      if (schemas[name]) this.addNamespace(name, schemas[name], isRootNamespace)
+      if (schemas[name]) this.addNamespace(name, schemas[name])
       else throw new Error(`Schema ${name} not found`)
-      await this.writeFile(outputDir + `/${name}.d.ts`)
+      await this.writeFile(outputDir + `/${name}.ts`)
     }
     this._namespaces = []
+    this._imports = []
   }
 
-  addNamespace(name, schema, isRootNamespace) {
+  addNamespace(name, schema) {
     const namespace = this._upperCaseFirstLetter(name)
     if (schema.$import) {
       this.addImports(schema.$import)
-    }
-    if (!isRootNamespace) {
-      this.addContent(`export namespace ${namespace} {\n`)
     }
     if (schema.$ref) {
       this._export = schema.$ref
     }
     this.addDefinitions(schema.definitions)
     this._export = ''
-    if (!isRootNamespace) {
-      this.addContent('}\n')
-    }
   }
 
   addImports(imports) {
     for (const name in imports) {
       const file = imports[name]
-      this.addContent(`import { ${name} } from '${file}'\n`)
+      this.addContent(`import * as ${name} from '${file}'\n`)
+      this._imports.push(name)
     }
     this.addContent('\n')
   }
@@ -247,7 +243,11 @@ class DTSGenerator {
 
   _getRef(reference) {
     const parts = reference.split(':')
-    if (parts.length === 1 || this._namespaces.includes(parts[0].toLowerCase())) {
+    if (
+      parts.length === 1 ||
+      this._namespaces.includes(parts[0]) ||
+      this._imports.includes(parts[0])
+    ) {
       parts[0] = this._upperCaseFirstLetter(parts[0])
     } else {
       parts[0] = `import('./${parts[0]}')`

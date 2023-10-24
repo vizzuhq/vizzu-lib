@@ -1,6 +1,6 @@
 import { Snapshot } from '../module/cchart.js'
 import { Plugin, PluginHooks, PrepareAnimationContext } from '../plugins'
-import { Data } from '../types/data.js'
+import * as Data from '../types/data.js'
 
 import UnPivot, { DataCube } from './unpivot.js'
 

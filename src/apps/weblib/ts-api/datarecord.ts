@@ -1,4 +1,4 @@
-import { Data } from './types/data.js'
+import * as Data from './types/data.js'
 import { CRecord } from './module/cdata.js'
 
 export class DataRecord implements Data.Record {
