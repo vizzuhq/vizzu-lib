@@ -31,8 +31,8 @@ export class Chart {
   private _resizeObserver: ResizeObserver
   private _updateInterval?: ReturnType<typeof setTimeout>
 
-  constructor(module: Module, container: HTMLElement, _plugins: PluginRegistry) {
-    this._plugins = _plugins
+  constructor(module: Module, container: HTMLElement, plugins: PluginRegistry) {
+    this._plugins = plugins
     this._container = container
     this._module = module
 
