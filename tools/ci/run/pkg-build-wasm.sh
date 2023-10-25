@@ -29,7 +29,6 @@ python tools/ci/size_check.py
 
 # build ts
 
-npm run type-gen
 npm run pkg-build-ts
 
 # test js
