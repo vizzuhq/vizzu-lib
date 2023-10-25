@@ -148,8 +148,8 @@ Run the following script in the running `vizzu-dev-wasm` container to build the
 
 If you used the above script to build the `WASM` version, the minified
 `JavaScript` file is already created otherwise you can run
-`npm run type-gen && npm run pkg-build-ts && npm run pkg-rollup-js`. After run
-the following command in order to create the npm package:
+`npm run pkg-build-ts && npm run pkg-rollup-js`. After run the following command
+in order to create the npm package:
 
 ```sh
 npm run pkg-build-js
