@@ -9,8 +9,9 @@
     "package.json",
     "README.md",
     "dist/cvizzu.wasm",
-    "dist/vizzu.d.ts",
-    "dist/vizzu.min.js"
+    "dist/vizzu.min.js",
+    "dist/*.d.ts",
+    "dist/**/*.d.ts"
   ],
   "description": "Vizzu is a free, open-source Javascript/C++ library utilizing a generic dataviz engine that generates many types of charts and seamlessly animates between them. It can be used to create static charts but more importantly it is designed for building animated data stories and interactive explorers as Vizzu enables showing different perspectives of the data that the viewers can easily follow due to the animation.",
   "keywords": [
@@ -81,16 +82,14 @@
     "type-gen-presets": "node tools/ci/type/gen-presets.cjs",
     "type-gen-dts": "node tools/ci/type/gen-dts.cjs",
     "type-gen": "npm-run-all type-gen-presets type-gen-dts",
-    "type-src-js": "npx tsc -p src/apps/weblib/ts-api/tsconfig.json",
-    "type-src": "npm-run-all type-src-js",
     "type-tools-py": "./tools/ci/run/type-mypy-py.sh tools",
     "type-tools": "npm-run-all type-tools-py",
-    "type": "npm-run-all type-src type-tools",
+    "type": "npm-run-all type-tools",
     "test-unit-src": "NODE_OPTIONS='--experimental-vm-modules' npx jest --config test/unit/jest.config.js --verbose",
     "test-unit-test": "npx jest --config=./test/integration/modules/jest.config.cjs --verbose",
     "test-man": "node test/integration/man.cjs",
     "test": "node test/integration/test.cjs",
-    "ci-src": "npm-run-all format-src lint-src type-src test-unit-src test-unit-test test",
+    "ci-src": "npm-run-all format-src lint-src test-unit-src test-unit-test test",
     "ci-docs": "npm-run-all format-docs lint-docs",
     "ci-tools": "npm-run-all format-tools lint-tools type-tools",
     "ci": "npm-run-all ci-src ci-docs ci-tools",
@@ -102,10 +101,11 @@
     "pkg-build-desktop-clangformat": "./tools/ci/run/pkg-build-desktop-clangformat.sh",
     "pkg-build-desktop-clangtidy": "./tools/ci/run/pkg-build-desktop-clangtidy.sh",
     "pkg-build-wasm": "./tools/ci/run/pkg-build-wasm.sh",
+    "pkg-build-ts": "npx tsc -p src/apps/weblib/ts-api/tsconfig.json",
     "pkg-rollup-js": "./tools/ci/run/pkg-rollup-js.sh",
-    "pkg-rollup-jsonly": "./tools/ci/run/pkg-rollup-jsonly.sh",
     "pkg-init-js": "./tools/ci/run/pkg-init-js.sh",
     "pkg-build-js": "./tools/ci/run/pkg-build-js.sh",
+    "pkg-build-jsonly": "./tools/ci/run/pkg-build-jsonly.sh",
     "pkg-purge-js": "./tools/ci/run/pkg-purge-js.sh"
   },
   "devDependencies": {

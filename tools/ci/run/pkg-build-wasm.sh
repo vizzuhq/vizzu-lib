@@ -27,10 +27,10 @@ popd
 wget 'https://vizzu-lib-main.storage.googleapis.com/lib/size.txt' -O build/cmake-wasm/weblib/size_downloaded.txt
 python tools/ci/size_check.py
 
-# build js
+# build ts
 
 npm run type-gen
-npm run type-src-js
+npm run pkg-build-ts
 
 # test js
 
