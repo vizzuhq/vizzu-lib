@@ -23,21 +23,8 @@ export default class Presets {
 
     for (const key in this._presetConfigs) {
       const name = key as PresetNames
-      this._initPresetConfigChannels(this._presetConfigs[name]!.channels!)
       ;(this as unknown as PresetInterface)[name] = (config: Config.Chart): Config.Chart => {
         return this._buildPresetConfig(name, config)
-      }
-    }
-  }
-
-  private _initPresetConfigChannels(channels: Config.Channels): void {
-    for (const key in channels) {
-      const channelName = key as keyof Config.Channels
-      const channel = channels[channelName]!
-      if (typeof channel !== 'object' || Array.isArray(channel)) {
-        channels[channelName] = {
-          set: channels[channelName]
-        } as Config.Channel
       }
     }
   }
@@ -51,13 +38,13 @@ export default class Presets {
       split: false,
       geometry: 'rectangle',
       channels: {
-        x: null,
-        y: null,
-        color: null,
-        lightness: null,
-        size: null,
-        noop: null,
-        label: null
+        x: { set: null },
+        y: { set: null },
+        color: { set: null },
+        lightness: { set: null },
+        size: { set: null },
+        noop: { set: null },
+        label: { set: null }
       }
     }
   }

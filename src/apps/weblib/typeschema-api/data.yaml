@@ -225,7 +225,5 @@ definitions:
 
   SeriesList:
     description: Array or a single data series.
-    oneOf:
-      - type: array
-        items: { $ref: SeriesDescriptor }
-      - $ref: SeriesDescriptor
+    type: array
+    items: { $ref: SeriesDescriptor }
