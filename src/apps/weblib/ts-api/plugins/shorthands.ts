@@ -4,11 +4,10 @@ import * as Data from '../types/data.js'
 import * as Styles from '../types/styles.js'
 import { Plugin, PluginHooks, PrepareAnimationContext } from '../plugins.js'
 
-import VizzuClass from '../vizzu.js'
+import Vizzu from '../vizzu.js'
 
 import { Snapshot } from '../module/cchart.js'
 import { CAnimation } from '../module/canimctrl.js'
-import { AnimCompleting } from '../animcompleting.js'
 
 export type AnySeriesList = Data.SeriesList | Data.SeriesDescriptor | null
 
@@ -53,14 +52,10 @@ interface LazyPrepareAnimationContext {
   options?: AnyAnimOptions
 }
 
-export declare class Vizzu extends VizzuClass {
-  animate(target: AnyAnimTarget, options?: AnyAnimOptions): AnimCompleting
-}
-
 type ChannelName = keyof Config.Channels
 
 export class Shorthands implements Plugin {
-  private _chart?: VizzuClass
+  private _chart?: Vizzu
   private _channelNames?: string[]
 
   meta = {
@@ -80,7 +75,7 @@ export class Shorthands implements Plugin {
     return hooks
   }
 
-  register(chart: VizzuClass): void {
+  register(chart: Vizzu): void {
     this._chart = chart
     this._channelNames = Object.keys(this._chart.config.channels!)
   }
