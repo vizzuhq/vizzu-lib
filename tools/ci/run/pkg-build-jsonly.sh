@@ -5,8 +5,6 @@ set -e
 rm -rf dist
 mkdir -p dist
 
-cp -r src/apps/weblib/js-api/* dist/
-
 LIB_URL="https://vizzu-lib-main.storage.googleapis.com/lib"
 if [ "$1" ]; then
   LIB_URL="https://vizzu-lib-main-sha.storage.googleapis.com/lib-$1"
@@ -30,4 +28,7 @@ if [ "$SUCCESS" = false ]; then
     exit 1
 fi
 
+npm run type-gen
+npm run pkg-build-ts
 npm run pkg-rollup-js
+npm run pkg-build-js
