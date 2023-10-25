@@ -24,7 +24,7 @@ definitions:
   Color:
     description: |
       The following CSS color formats are available: 
-      rgb(), rgba(), #RRGGBB, #RRGGBBAA, #RGB.
+      rgb(), rgba(), `#RRGGBB`, `#RRGGBBAA`, `#RGB`.
     oneOf:
       - { type: string, mask: /#:string:/ }
       - { type: string, mask: '/rgb\(:number:,:number:,:number:\)/' }
