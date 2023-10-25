@@ -121,7 +121,11 @@ class TestCaseResult {
         this.#createTestCaseResultWarning()
         return resolve()
       } else {
-        if (this.#vizzuRefUrl && this.#vizzuUrl !== this.#vizzuRefUrl) {
+        if (
+          this.#vizzuRefUrl &&
+          this.#vizzuUrl !== this.#vizzuRefUrl &&
+          !this.#maxFailedImagesReached()
+        ) {
           const testCaseObj = Object.assign({}, this.#testCaseObj)
           testCaseObj.createImages = 'ALL'
           this.#runTestCaseRef(testCaseObj, this.#browserChrome, this.#vizzuRefUrl)
@@ -201,7 +205,7 @@ class TestCaseResult {
   }
 
   #createTestCaseResultWarning(failureMsgs) {
-    if (this.#testCaseObj.createImages === 'FAILED') {
+    if (this.#testCaseObj.createImages === 'FAILED' && !this.#maxFailedImagesReached()) {
       this.#createImages()
     }
     this.#testCaseObj.testSuiteResults.WARNING.push(this.#testCaseObj.testCase.testName)
@@ -231,7 +235,7 @@ class TestCaseResult {
   }
 
   #createTestCaseResultFailed(failureMsgs) {
-    if (this.#testCaseObj.createImages === 'FAILED') {
+    if (this.#testCaseObj.createImages === 'FAILED' && !this.#maxFailedImagesReached()) {
       this.#createImages()
     }
     this.#testCaseObj.testSuiteResults.FAILED.push(this.#testCaseObj.testCase.testName)
@@ -389,6 +393,16 @@ class TestCaseResult {
         })
       }
     })
+  }
+
+  #maxFailedImagesReached() {
+    if (!this.#testCaseObj.maxFailedImages) {
+      return false
+    }
+    const failedCases =
+      this.#testCaseObj.testSuiteResults.FAILED.length +
+      this.#testCaseObj.testSuiteResults.WARNING.length
+    return failedCases >= this.#testCaseObj.maxFailedImages
   }
 }
 

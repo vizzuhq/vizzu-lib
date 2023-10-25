@@ -87,6 +87,12 @@ Please note that the test require Chrome, ChromeDriver and Selenium Webdriver to
     )
     .default('images', 'FAILED')
 
+    .describe(
+      'maxFailedImages',
+      'The maximum number of failed and warning test cases, of which images are taken'
+    )
+    .default('maxFailedImages', null)
+
     .choices('hashes', ['ALL', 'FAILED', 'DISABLED'])
     .describe(
       'hashes',
@@ -187,6 +193,7 @@ Please note that the test require Chrome, ChromeDriver and Selenium Webdriver to
       argv.vizzuRef,
       argv.Werror || [],
       argv.images,
+      argv.maxFailedImages,
       argv.hashes
     )
     // eslint-disable-next-line no-var

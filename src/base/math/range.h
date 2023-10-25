@@ -17,6 +17,14 @@ public:
 		double shift;
 	};
 
+	static Range<T> Raw(const T &min, const T &max)
+	{
+		Range<T> range;
+		range.min = min;
+		range.max = max;
+		return range;
+	}
+
 	Range() :
 	    min(std::numeric_limits<T>::max()),
 	    max(std::numeric_limits<T>::lowest())

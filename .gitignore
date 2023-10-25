@@ -5,6 +5,7 @@ dist
 
 .coverage
 test_report
+test_report.tgz
 
 __pycache__
 

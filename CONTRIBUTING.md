@@ -148,8 +148,8 @@ Run the following script in the running `vizzu-dev-wasm` container to build the
 
 If you used the above script to build the `WASM` version, the minified
 `JavaScript` file is already created otherwise you can run
-`npm run type-gen && npm run pkg-build-ts && npm run pkg-rollup-js`. After run
-the following command in order to create the npm package:
+`npm run pkg-build-ts && npm run pkg-rollup-js`. After run the following command
+in order to create the npm package:
 
 ```sh
 npm run pkg-build-js
@@ -281,7 +281,7 @@ git clone --single-branch --branch main --depth 1 'git@github.com:vizzuhq/vizzu-
 **Note:** If you also want to generate thumbnails, run the following command:
 
 ```sh
-npm run docs-gen-thumbnails
+npm run docs-gen-thumbnail
 ```
 
 To build the documentation, you can use the `docs-build` script:

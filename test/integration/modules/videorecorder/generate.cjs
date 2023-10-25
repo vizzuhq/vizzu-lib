@@ -289,7 +289,7 @@ try {
     .number('b')
     .alias('b', 'browsers')
     .describe('b', 'Change number of parallel browser windows' + '\n')
-    .default('b', 6)
+    .default('b', 1)
 
     .example(
       '$0 ../../test_cases/web_content/animated/*',

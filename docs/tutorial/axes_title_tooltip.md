@@ -109,7 +109,7 @@ configuration of the chart.
 console.log(chart.config);
 ```
 
-Setting the chart title with the title command.
+Setting the chart title with the title property.
 
 <div id="tutorial_04"></div>
 
