@@ -65,7 +65,7 @@
       "refs": ["10078ce"]
     },
     "basic_animations/legend_transitions/color_conti_discrete_anim": {
-      "refs": ["0a6d78e"]
+      "refs": ["89c4261"]
     },
     "basic_animations/legend_transitions/color_discrete_anim": {
       "refs": ["1b4fabb"]
@@ -86,7 +86,7 @@
       "refs": ["1d574aa"]
     },
     "basic_animations/legend_transitions/lightness_conti_discrete_anim": {
-      "refs": ["683071a"]
+      "refs": ["3d1d378"]
     },
     "basic_animations/legend_transitions/lightness_discrete_anim": {
       "refs": ["53d1e59"]
@@ -3005,10 +3005,10 @@
       "refs": ["7d7c580"]
     },
     "ww_samples_for_presets/cartesian_coo_sys/112_C_R_icicle_chart": {
-      "refs": ["4130f12"]
+      "refs": ["c42d76b"]
     },
     "ww_samples_for_presets/cartesian_coo_sys/11_C_R_icicle_chart": {
-      "refs": ["a9abc28"]
+      "refs": ["508383a"]
     },
     "ww_samples_for_presets/cartesian_coo_sys/12_C_R_matrix_chart": {
       "refs": ["066f42f"]
@@ -3092,7 +3092,7 @@
       "refs": ["aa85e89"]
     },
     "ww_samples_for_presets/polar_coo_sys/41_P_R_multi-level_pie_chart": {
-      "refs": ["e910e99"]
+      "refs": ["190c250"]
     },
     "web_content/presets_config/chart/column_polar_stacked": {
       "refs": ["441ce16"]
@@ -3236,7 +3236,7 @@
       "refs": ["bd104b0"]
     },
     "web_content/cookbook/style/dark_theme": {
-      "refs": ["a946a6c"]
+      "refs": ["2d08a18"]
     },
     "web_content/cookbook/style/highligh_markers": {
       "refs": ["48d6207"]

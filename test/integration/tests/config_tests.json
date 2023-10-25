@@ -39,6 +39,9 @@
     },
     "geometry/animated_rectangle-line": {
       "refs": ["3e1ffaf"]
+    },
+    "dimension_axis_title": {
+      "refs": ["f722345"]
     }
   }
 }

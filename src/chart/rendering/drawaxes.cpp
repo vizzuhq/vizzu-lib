@@ -159,7 +159,7 @@ Geom::Point DrawAxes::getTitleOffset(Gen::ChannelId axisIndex,
 
 void DrawAxes::drawTitle(Gen::ChannelId axisIndex)
 {
-	const auto &titleString = plot.measureAxises.at(axisIndex).title;
+	const auto &titleString = plot.commonAxises.at(axisIndex).title;
 
 	const auto &titleStyle = rootStyle.plot.getAxis(axisIndex).title;
 

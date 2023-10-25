@@ -35,7 +35,7 @@ private:
 	    const Geom::Rect &itemRect) const;
 	[[nodiscard]] Geom::Rect getBarRect() const;
 
-	void drawTitle(const ::Anim::String &title);
+	void drawTitle(const ::Anim::String &title, double mul);
 
 	void extremaLabel(double value, int pos);
 	void colorBar(const Geom::Rect &rect);
