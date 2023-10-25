@@ -29,7 +29,20 @@ namespace Vizzu::Gen
 class Options
 {
 public:
-	enum class LegendId { color, lightness, size };
+	enum class LegendId : std::underlying_type_t<ChannelId> {
+		color,
+		lightness,
+		size
+	};
+
+	static_assert(std::ranges::all_of(Refl::enum_names<LegendId>,
+	    [](std::string_view name)
+	    {
+		    return static_cast<std::underlying_type_t<ChannelId>>(
+		               Refl::get_enum<LegendId>(name))
+		        == static_cast<std::underlying_type_t<ChannelId>>(
+		            Refl::get_enum<ChannelId>(name));
+	    }));
 
 	using MarkerId = uint64_t;
 	using Heading = ::Anim::Interpolated<std::optional<std::string>>;
