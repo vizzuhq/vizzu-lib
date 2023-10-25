@@ -1,4 +1,5 @@
 import { data } from '../../../../test_data/chart_types_eu.mjs'
+import { lastAnim } from '../../../../utils/utils.mjs'
 
 const testSteps = [
   (chart) => {
@@ -41,7 +42,7 @@ const testSteps = [
     document.querySelector('select').value = 'Value 3 (+)'
     const event = new Event('change')
     document.querySelector('select').dispatchEvent(event)
-    return chart.anim
+    return lastAnim(chart)
   }
 ]
 

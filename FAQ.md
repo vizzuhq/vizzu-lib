@@ -27,5 +27,4 @@ the CSV loading part is in the csv-input.js file.
 ## How to remove fraction digits on integer labels during animation?
 
 The maximum number of fraction digits can be set for marker and axis labels with
-[maxFractionDigits](https://lib.vizzuhq.com/latest/reference/interfaces/vizzu.Styles.MarkerLabel/#maxfractiondigits)
-style parameter.
+`maxFractionDigits` style parameter.

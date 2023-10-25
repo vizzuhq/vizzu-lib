@@ -1,4 +1,5 @@
 import { data } from '../../../../test_data/music_industry_history_1.mjs'
+import { lastAnim } from '../../../../utils/utils.mjs'
 
 const testSteps = [
   (chart) => {
@@ -39,7 +40,7 @@ const testSteps = [
     input.value = '2000'
     const event = new Event('input')
     input.dispatchEvent(event)
-    return chart.anim
+    return lastAnim(chart)
   }
 ]
 

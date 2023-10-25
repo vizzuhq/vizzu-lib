@@ -1,47 +1,44 @@
 # Vizzu JS Library Reference
 
-This is the API reference document of the `Vizzu` `JS` library. It provides
+This is the API reference document of the **Vizzu JS library**. It provides
 information about every detail of the API. This works best for users who already
-have a basic understanding of the `Vizzu` library and its logic.
+have a basic understanding of the Vizzu library and its logic.
 
-In case you're just getting started with `Vizzu`, we strongly recommend visiting
-our [Tutorial](../tutorial/index.md) first.
+In case you're just getting started with Vizzu, we recommend visiting our
+[Tutorial](../tutorial/index.md) first.
 
 ## Library Overview
 
-The main entry point of the library is the [Vizzu](./classes/Vizzu.md) class,
-and its most important component is the [animate](./classes/Vizzu.md#animate)
-method:
+The main entry point of the library is the [Vizzu](./classes/vizzu.Vizzu.md)
+class, and its most important component is the
+[animate](./classes/vizzu.Vizzu.md#animate) method:
 
-- [Vizzu](./classes/Vizzu.md) class
-  - [constructor()](./classes/Vizzu.md#constructor)
-  - [animate](./classes/Vizzu.md#animate) (
-    [Anim.Target](./interfaces/Anim.Target.md) ,
-    [Anim.Options](./interfaces/Anim.Options.md) ) :
-    [Anim.Completing](./interfaces/Anim.Completing.md)
+[`Vizzu`](./classes/vizzu.Vizzu.md)`.`[`animate`](./classes/vizzu.Vizzu.md#animate)`(`[`Anim.AnimTarget`](./modules/types_anim.md#AnimTarget)`,`[`Anim.ControlOptions`](./interfaces/types_anim.ControlOptions.md)`):`[`Anim.Completing`](./modules/animcompleting.md)
 
-The `animate` method's main parameter is the
-[Anim.Target](./interfaces/Anim.Target.md) interface, which contains the
-configuration of the chart, the underlying data, and the chart's style settings:
+The **animate** method's main parameter is the **AnimTarget** interface, which
+is an array of keyframes containing the configuration of the chart, the
+underlying data, the chart's style settings, and the animation options:
 
-- [Anim.Target](./interfaces/Anim.Target.md)
-  - [Data.Set](./modules/Data.md#Set)
-  - [Config.Chart](./interfaces/Config.Chart.md)
-    - [Config.Channels](./interfaces/Config.Channels.md)
-  - [Styles.Chart](./interfaces/Styles.Chart.md)
-    - [Styles.Plot](./interfaces/Styles.Plot.md)
-      - [Styles.Marker](./interfaces/Styles.Marker.md)
-      - [Styles.Axis](./interfaces/Styles.Axis.md)
-    - [Styles.Legend](./interfaces/Styles.Legend.md)
-    - [Styles.Tooltip](./interfaces/Styles.Tooltip.md)
+Keyframe:
 
-## Details
+- [Anim.Target](./interfaces/types_anim.Target.md)
+  - [Data.Set](./modules/types_data.md#Set)
+  - [Config.Chart](./interfaces/types_config.Chart.md)
+    - [Config.Channels](./interfaces/types_config.Channel.md)
+  - [Styles.Chart](./interfaces/types_styles.Chart.md)
+    - [Styles.Plot](./interfaces/types_styles.Plot.md)
+      - [Styles.Marker](./interfaces/types_styles.Marker.md)
+      - [Styles.Axis](./interfaces/types_styles.Axis.md)
+    - [Styles.Legend](./interfaces/types_styles.Legend.md)
+    - [Styles.Tooltip](./interfaces/types_styles.Tooltip.md)
+- [Anim.Options](interfaces/types_anim.Options.md)
 
-You can find all interface declarations and types under these namespaces.
+You can find all interface declarations and types under these modules:
 
-- [Data](./modules/Data.md) - Data structure and operations
-- [Config](./modules/Config.md) - Configuration settings of your charts
-- [Style](./modules/Styles.md) - Style settings
-- [Anim](./modules/Anim.md) - Animation settings
-- [Events](./modules/Event.md) - Event handling
-- [Presets](./modules/Presets.md) - Preset chart configurations
+- [vizzu](./modules/vizzu.md) - Main Vizzu class
+- [data](./modules/types_data.md) - Data structure and operations
+- [config](./modules/types_config.md) - Configuration settings of your charts
+- [styles](./modules/types_styles.md) - Style settings
+- [anim](./modules/types_anim.md) - Animation settings
+- [events](./modules/events.md) - Event handling
+- [plugins](./modules/plugins.md) - Plugin infrastructure

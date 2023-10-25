@@ -1,9 +1,0 @@
----
-definitions:
-  Options:
-    description: Options for the library.
-    type: object
-    properties:
-      wasmUrl:
-        description: The URL for the webassembly binary (cvizzu.wasm).
-        type: string

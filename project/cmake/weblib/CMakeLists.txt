@@ -27,20 +27,14 @@ if(EMSCRIPTEN)
 		"-o" "$<TARGET_FILE_DIR:cvizzu>/cvizzu.wasm")
 
 	add_custom_command(TARGET cvizzu POST_BUILD
+		COMMAND "${CMAKE_COMMAND}" -E make_directory 
+		"${CMAKE_CURRENT_SOURCE_DIR}/${root}/dist" 
+		WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}")
+
+	add_custom_command(TARGET cvizzu POST_BUILD
 		COMMAND "${CMAKE_COMMAND}" -E copy
 		"cvizzu.*"
 		"${CMAKE_CURRENT_SOURCE_DIR}/${root}/dist")
-
-	file(GLOB_RECURSE jsapi CONFIGURE_DEPENDS ${appsDir}/weblib/js-api/**/*)
-
-	add_custom_target(copy_weblib
-		COMMAND "${CMAKE_COMMAND}" -E copy_directory
-		"${CMAKE_CURRENT_SOURCE_DIR}/${appsDir}/weblib/js-api"
-		"${CMAKE_CURRENT_SOURCE_DIR}/${root}/dist"
-		DEPENDS	${jsapi}
-	)
-
-	add_dependencies(cvizzu copy_weblib)
 
 	add_custom_command(TARGET cvizzu POST_BUILD
 			COMMAND gzip -9 < "$<TARGET_FILE_DIR:cvizzu>/cvizzu.wasm" > "$<TARGET_FILE_DIR:cvizzu>/cvizzu.wasm.gz"

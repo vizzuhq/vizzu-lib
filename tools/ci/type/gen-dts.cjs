@@ -7,9 +7,7 @@ class SchemaCollection {
   constructor(inputDir) {
     this._inputDir = inputDir
     const yamls = this._getFiles('yaml')
-    const dts = this._getFiles('d.ts')
     this.schemas = this._getContent(yamls, (content) => yaml.load(content))
-    this.declarations = this._getContent(dts, (content) => content)
   }
 
   _getFiles(ext) {
@@ -33,6 +31,7 @@ class DTSGenerator {
   constructor() {
     this._export = ''
     this._namespaces = []
+    this._imports = []
     this._content = ''
   }
 
@@ -43,49 +42,46 @@ class DTSGenerator {
   async writeFile(outputPath) {
     const formatted = await prettier.format(this._content, {
       parser: 'typescript',
-      singleQuote: true
+      semi: false,
+      tabWidth: 2,
+      singleQuote: true,
+      printWidth: 100,
+      trailingComma: 'none'
     })
     fs.writeFileSync(outputPath, formatted)
     this._content = ''
   }
 
-  async generate(schemas, declarations, outputPath) {
-    this._namespaces = [...Object.keys(schemas), ...Object.keys(declarations)]
-    const namespaceOrder = [
-      'lib',
-      'data',
-      'config',
-      'styles',
-      'anim',
-      'geom',
-      'event',
-      'plugins',
-      'presets',
-      'vizzu'
-    ]
+  async generate(schemas, outputDir) {
+    this._namespaces = [...Object.keys(schemas)]
+    const namespaceOrder = ['data', 'config', 'styles', 'anim', 'presets']
     for (const name of namespaceOrder) {
-      const isRootNamespace = name === 'vizzu'
-      if (schemas[name]) this.addNamespace(name, schemas[name], isRootNamespace)
-      else if (declarations[name]) this.addContent(declarations[name])
-      else throw new Error(`Schema or declarations ${name} not found`)
+      if (schemas[name]) this.addModule(schemas[name])
+      else throw new Error(`Schema ${name} not found`)
+      await this.writeFile(outputDir + `/${name}.ts`)
     }
-    await this.writeFile(outputPath)
     this._namespaces = []
+    this._imports = []
   }
 
-  addNamespace(name, schema, isRootNamespace) {
-    const namespace = this._upperCaseFirstLetter(name)
-    if (!isRootNamespace) {
-      this.addContent(`declare namespace ${namespace} {\n`)
+  addModule(schema) {
+    if (schema.$import) {
+      this.addImports(schema.$import)
     }
     if (schema.$ref) {
       this._export = schema.$ref
     }
     this.addDefinitions(schema.definitions)
     this._export = ''
-    if (!isRootNamespace) {
-      this.addContent('}\n')
+  }
+
+  addImports(imports) {
+    for (const name in imports) {
+      const file = imports[name]
+      this.addContent(`import * as ${name} from '${file}.js'\n`)
+      this._imports.push(name)
     }
+    this.addContent('\n')
   }
 
   addDefinitions(definitions) {
@@ -105,11 +101,12 @@ class DTSGenerator {
     } else {
       this._addType(name, definition)
     }
+    this.addContent('\n')
   }
 
   _addInterface(name, definition) {
     this._validateType(definition, 'properties', '$extends', 'required')
-    const type = name === this._export ? `export default class` : 'interface'
+    const type = name === this._export ? `export default class` : 'export interface'
     if (definition.$extends) {
       const extendsType = this._getExtendsType(name, definition.$extends)
       this.addContent(`${type} ${name} extends ${extendsType} {\n`)
@@ -173,7 +170,7 @@ class DTSGenerator {
 
   _addType(name, definition) {
     const type = this._getType(name, definition)
-    this.addContent(`type ${name} = ${type};\n`)
+    this.addContent(`export type ${name} = ${type};\n`)
   }
 
   _getType(name, definition) {
@@ -244,8 +241,12 @@ class DTSGenerator {
   }
 
   _getRef(reference) {
-    const parts = reference.split('/')
-    if (parts.length === 1 || this._namespaces.includes(parts[0])) {
+    const parts = reference.split(':')
+    if (
+      parts.length === 1 ||
+      this._namespaces.includes(parts[0]) ||
+      this._imports.includes(parts[0])
+    ) {
       parts[0] = this._upperCaseFirstLetter(parts[0])
     } else {
       parts[0] = `import('./${parts[0]}')`
@@ -289,13 +290,13 @@ class DTSGenerator {
 }
 
 let inputDir = process.argv[2]
-let outputPath = process.argv[3]
+let outputDir = process.argv[3]
 
 if (!inputDir) inputDir = path.join(__dirname, '../../..', 'src/apps/weblib/typeschema-api')
-if (!outputPath) outputPath = path.join(__dirname, '../../..', 'dist/vizzu.d.ts')
+if (!outputDir) outputDir = path.join(__dirname, '../../..', 'src/apps/weblib/ts-api/types')
 
 const collection = new SchemaCollection(inputDir)
 
 const generator = new DTSGenerator()
 
-generator.generate(collection.schemas, collection.declarations, outputPath)
+generator.generate(collection.schemas, outputDir)

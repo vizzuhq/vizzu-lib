@@ -1,4 +1,7 @@
 ---
+$import:
+  Data: ./data
+
 definitions:
   ChannelExtrema:
     description: |
@@ -50,19 +53,19 @@ definitions:
           - { type: string, enum: [auto] }
         nullable: true
       set:
-        description: List of {@link SeriesDescriptor|data series descriptors} on the channel.
-        $ref: data/SeriesList
+        description: List of data series descriptors on the channel.
+        $ref: Data:SeriesList
         nullable: true
       attach:
         description: |
-          List of {@link SeriesDescriptor|data series descriptors} to be added to the 
+          List of data series descriptors to be added to the 
           channel beside the ones already added.
-        $ref: data/SeriesList
+        $ref: Data:SeriesList
       detach:
         description: |
-          List of {@link SeriesDescriptor|data series descriptors} to be removed from the 
+          List of data series descriptors to be removed from the 
           channel.
-        $ref: data/SeriesList
+        $ref: Data:SeriesList
       range:
         description: |
           Specifies the range that determines how the represented data scales 
@@ -102,14 +105,11 @@ definitions:
 
   Channels:
     description: |
-      Channel configuration. 
-      A data series' name or a list of the data series' names can be used as a 
-      short-hand - instead of the {@link Config.Channel|channel object} - to set data series 
-      for the channel. Setting a channel to null will remove all data series from it.
+      Channel configuration. Setting a channel to null will remove all data series from it.
     type: object
     properties:
       x:
-        oneOf: [$ref: Channel, $ref: data/SeriesList]
+        oneOf: [$ref: Channel, $ref: Data:SeriesList]
         nullable: true
         description: |
           Parameters for the X-axis, determining the position of the markers on the 
@@ -117,34 +117,34 @@ definitions:
           Note: leaving x and y channels empty will result in a 
           chart "without coordinates" like a Treemap or a Bubble Chart.
       y:
-        oneOf: [$ref: Channel, $ref: data/SeriesList]
+        oneOf: [$ref: Channel, $ref: Data:SeriesList]
         nullable: true
         description: |
           Parameters for the Y-axis, determining the position of the markers on the 
           y-axis - or their radius when using polar coordinates) .
       color:
-        oneOf: [$ref: Channel, $ref: data/SeriesList]
+        oneOf: [$ref: Channel, $ref: Data:SeriesList]
         nullable: true
         description: |
           Parameters for the markers' base color. The markers' actual color can 
           also be affected by the lightness channel.
       lightness:
-        oneOf: [$ref: Channel, $ref: data/SeriesList]
+        oneOf: [$ref: Channel, $ref: Data:SeriesList]
         nullable: true
         description: Parameters for markers' lightness.
       size:
-        oneOf: [$ref: Channel, $ref: data/SeriesList]
+        oneOf: [$ref: Channel, $ref: Data:SeriesList]
         nullable: true
         description: |
           Parameters for the markers' size. Effective only for circle and line
           geometry affecting the circle area or the line width respectively.
       label:
-        oneOf: [$ref: Channel, $ref: data/SeriesList]
+        oneOf: [$ref: Channel, $ref: Data:SeriesList]
         nullable: true
         description: |
           Parameters for the content of the labels that appear on the markers.
       noop:
-        oneOf: [$ref: Channel, $ref: data/SeriesList]
+        oneOf: [$ref: Channel, $ref: Data:SeriesList]
         nullable: true
         description: |
           Splits the markers as all the other channels, but have no 
@@ -231,7 +231,7 @@ definitions:
         description: |
           Sets the alignment of the markers with relation to the x- or the y-axis depending
           on where the measure is. In case both axes have measures on them, this is determined 
-          by the {@link Config.Chart.orientation|orientation} of the chart.
+          by the `orientation` of the chart.
         type: string
         enum: [none, min, center, max, stretch]
       split:
@@ -239,5 +239,12 @@ definitions:
           If set to true, markers will be split by the dimension(s) along the axis.
           This works if you have at least one dimension and a measure on the same axis.In case 
           both axes have measures and dimension(s) on them, this is determined by the 
-          {@link Config.Chart.orientation|orientation} of the chart.
+          `orientation` of the chart.
         type: boolean
+      tooltip:
+        description: |
+          Index of the marker, the tooltip should be turned on. This parameter is not needed
+          to set manually, tooltip will be taken care of autamatically when `tooltip` feature
+          is enabled.
+        type: number
+        nullable: true

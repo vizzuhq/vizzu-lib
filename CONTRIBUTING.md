@@ -129,8 +129,9 @@ unit tests:
 #### Building WASM version
 
 Run the following script in the running `vizzu-dev-wasm` container to build the
-`WASM` version, run the `C++` unit tests, check binary sizes, run `JavaScript`
-unit tests, create `vizzu.min.js` and check `d.ts`:
+`WASM` version, run the `C++` unit tests, check binary sizes, compile
+`TypeScript`, run `JavaScript` unit tests, create `vizzu.min.js` and check
+`d.ts`:
 
 ```sh
 ./tools/ci/run/pkg-build-wasm.sh
@@ -147,8 +148,8 @@ unit tests, create `vizzu.min.js` and check `d.ts`:
 
 If you used the above script to build the `WASM` version, the minified
 `JavaScript` file is already created otherwise you can run
-`npm run pkg-rollup-js`. After run the following command in order to create the
-npm package:
+`npm run pkg-build-ts && npm run pkg-rollup-js`. After run the following command
+in order to create the npm package:
 
 ```sh
 npm run pkg-build-js
@@ -159,8 +160,7 @@ npm run pkg-build-js
 **Note:** You can build the `npm` package without building the `WASM` version:
 
 ```sh
-npm run pkg-rollup-jsonly
-npm run pkg-build-js
+npm run pkg-build-jsonly
 ```
 
 ### CI
@@ -215,7 +215,7 @@ npm run type
 ```
 
 If you want to check specific parts of the project, you can use the following
-scripts: `type-src` or `type-tools`.
+script: `type-tools`.
 
 #### Testing
 

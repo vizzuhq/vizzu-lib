@@ -4,6 +4,15 @@ definitions:
     description: Name of the data series.
     type: string
 
+  SeriesType:
+    description: |
+      Type of the data series:
+      - 'dimension' - categorical data containing strings 
+        (dates should also be added as strings); 
+      - 'measure' - continuous data containing numbers.
+    type: string
+    enum: [dimension, measure]
+
   SeriesMetaInfo:
     description: Additional info about a data series besides the contained data.
     type: object
@@ -11,21 +20,17 @@ definitions:
       name:
         description: |
           Name of the data series. It will be the unique id of the series to 
-          reference it in various parts of the API, mainly in {@link Config.Channel} and
-          {@link Data.Record}. This name will also be used by default for Axis and 
+          reference it in various parts of the API, mainly in channel configuration and
+          in data record filters. This name will also be used by default for Axis and 
           Legend title.
         $ref: SeriesName
       type:
         description: |
-          Type of the data series:
-          - 'dimension' - categorical data containing strings 
-            (dates should also be added as strings); 
-          - 'measure' - continuous data containing numbers. 
+          Type of the data series.
           If not set, the library will attempt to determine the type based on 
           the type of the first value. Number type will result in measure, 
           string type will result in dimension.
-        type: string
-        enum: [dimension, measure]
+        $ref: SeriesType
       unit:
         description: Unit of the data series.
         type: string
@@ -34,6 +39,7 @@ definitions:
   AbstractSeriesInfo:
     $extends: SeriesMetaInfo
     type: object
+    description: Generic meta data about any data series
     properties:
       length:
         description: Count of values in the series.
@@ -54,6 +60,7 @@ definitions:
 
   Range:
     type: object
+    description: Represents a numeric interval.
     properties:
       min:
         description: Minimal value in the series
@@ -73,6 +80,7 @@ definitions:
     required: [range]
 
   SeriesInfo:
+    description: MetaInfo for different series types.
     oneOf:
       - $ref: DimensionSeriesInfo
       - $ref: MeasureSeriesInfo
@@ -111,11 +119,10 @@ definitions:
       values:
         description: |
           The array that contains the values of the data series. The value types 
-          should match {@link Data.SeriesMetaInfo.type}. If the data series
+          should match the data series' `type` property. If the data series
           is shorter than the longest data series defined, it will be internally 
           extended with empty values.
         $ref: Values
-    required: [values]
 
   Record:
     description: |
@@ -126,7 +133,7 @@ definitions:
       operator[]:
         description: |
           Properties are provided for each data series, providing access to the value within
-          the record referenced by its {@link Data.Series.name|name}.
+          the record referenced by its data series name.
         type: function
         arguments:
           seriesName: { $ref: SeriesName }
@@ -135,6 +142,7 @@ definitions:
 
   FilterCallback:
     type: function
+    description: A callback function receives a record
     arguments:
       record: { $ref: Record }
     required: [record]
@@ -142,6 +150,7 @@ definitions:
 
   Filter:
     type: object
+    description: Filter object containing a filter function
     properties:
       filter:
         description: |
@@ -186,48 +195,13 @@ definitions:
             - { $ref: Record }
     required: [records]
 
-  CubeRow:
-    oneOf:
-      - $ref: Values
-      - type: array
-        items: { $ref: CubeRow }
-
-  CubeData:
-    $extends: SeriesMetaInfo
-    description: |
-      Defines a data series of the data cube, and contains a particular variable's
-      values in the data cube and meta info about that variable.
-    type: object
-    properties:
-      values:
-        description: |
-          A nested array that contains the values of the data series. Nesting 
-          level should match the number of {@link Data.Cube.dimensions}.
-        $ref: CubeRow
-    required: [values]
-
-  Cube:
-    $extends: Filter
-    description: N dimensional data cude
-    type: object
-    properties:
-      dimensions:
-        description: The list of the dimensions of the data cube.
-        type: array
-        items: { $ref: Series }
-      measures:
-        description: The list of measures of the data cube.
-        type: array
-        items: { $ref: CubeData }
-
   Set:
     description: |
-      Data set is a collection of related {@link Data.Series|data series}. 
+      Data set is a collection of related data series. 
       Each chart works on a single data set.
     oneOf:
       - $ref: TableBySeries
       - $ref: TableByRecords
-      - $ref: Cube
 
   AggregatorType:
     description: |
@@ -250,6 +224,7 @@ definitions:
       - { type: string, mask: /:AggregatorType:\(:SeriesName:\)/ }
 
   SeriesList:
+    description: Array or a single data series.
     oneOf:
       - type: array
         items: { $ref: SeriesDescriptor }

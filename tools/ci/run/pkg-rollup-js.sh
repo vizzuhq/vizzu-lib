@@ -2,6 +2,5 @@
 
 set -e
 
-rm -f dist/*.d.ts dist/*.min.js
-npm run type-gen
+rm -f dist/*.min.js
 npx rollup --config tools/ci/rollup.config.cjs

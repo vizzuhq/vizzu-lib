@@ -24,7 +24,7 @@ definitions:
   Color:
     description: |
       The following CSS color formats are available: 
-      rgb(), rgba(), #RRGGBB, #RRGGBBAA, #RGB.
+      rgb(), rgba(), `#RRGGBB`, `#RRGGBBAA`, `#RGB`.
     oneOf:
       - { type: string, mask: /#:string:/ }
       - { type: string, mask: '/rgb\(:number:,:number:,:number:\)/' }
@@ -49,6 +49,7 @@ definitions:
 
   Padding:
     type: object
+    description: Padding on the four sides of the bounding rect.
     properties:
       paddingTop:
         description: Top padding of the element.
@@ -69,6 +70,7 @@ definitions:
 
   Font:
     type: object
+    description: Font properties.
     properties:
       fontFamily:
         description: The family of the font. If not set, it inherits the root style font family.
@@ -93,6 +95,7 @@ definitions:
 
   Box:
     type: object
+    description: Represents a box with border and background.
     properties:
       backgroundColor:
         description: The background color of the element.
@@ -109,6 +112,7 @@ definitions:
 
   Text:
     type: object
+    description: Text formatting properties.
     properties:
       color:
         description: The color of the displayed text.
@@ -160,6 +164,7 @@ definitions:
   OrientedLabel:
     $extends: Label
     type: object
+    description: Properties for a rotatable label.
     properties:
       orientation:
         type: string
@@ -174,6 +179,7 @@ definitions:
   MarkerLabel:
     $extends: OrientedLabel
     type: object
+    description: Properties for marker label.
     properties:
       position:
         description: The label position relatively to the marker.
@@ -196,6 +202,7 @@ definitions:
 
   Guides:
     type: object
+    description: Properties for guide lines.
     properties:
       color:
         description: The color of the guides.
@@ -209,6 +216,7 @@ definitions:
   Tooltip:
     $extends: [Font, Box]
     type: object
+    description: Properties for tooltip.
     properties:
       layout:
         description: The layout of the tooltip text
@@ -245,6 +253,7 @@ definitions:
   Logo:
     $extends: Padding
     type: object
+    description: Properties for the logo.
     properties:
       width:
         description: Width of the Vizzu logo
@@ -257,6 +266,7 @@ definitions:
 
   DataPoint:
     type: object
+    description: Data related properties of a marker.
     properties:
       colorGradient:
         description: Color gradient used for the measure on the color channel.
@@ -313,6 +323,7 @@ definitions:
   Marker:
     $extends: DataPoint
     type: object
+    description: Rendering related properties of a marker.
     properties:
       borderWidth:
         description: Width of the marker border in pixels.
@@ -359,7 +370,7 @@ definitions:
         nullable: true
 
   AxisTitle:
-    description: Style settings of the {@link Config.Channel.title|Axis title}
+    description: Style settings of the Axis title
     $extends: Label
     type: object
     properties:
@@ -391,6 +402,7 @@ definitions:
 
   Ticks:
     type: object
+    description: Properties for axis ticks.
     properties:
       color:
         description: Color of the ticks on the axis.
@@ -412,6 +424,7 @@ definitions:
 
   Interlacing:
     type: object
+    description: Properties for axis interlacing.
     properties:
       color:
         description: Color of the interlacing pattern.
@@ -420,6 +433,7 @@ definitions:
 
   Axis:
     type: object
+    description: Properties for an axis.
     properties:
       color:
         description: Color of the axis line.
@@ -446,6 +460,7 @@ definitions:
   Plot:
     $extends: [Padding, Box]
     type: object
+    description: Properties for the plot.
     properties:
       marker:
         description: Style settings for the markers.
@@ -473,6 +488,7 @@ definitions:
 
   LegendMarker:
     type: object
+    description: Properties for markers on the legend.
     properties:
       type:
         description: Shape of the legend marker.
@@ -487,6 +503,7 @@ definitions:
   Legend:
     $extends: [Padding, Box]
     type: object
+    description: Properties for the legend.
     properties:
       width:
         description: Width of the legend's boundary box.
@@ -540,6 +557,7 @@ definitions:
       - type: string
 
   Label:
+    description: Represents a Label.
     allOf:
       - $ref: Padding
       - $ref: Font
@@ -548,6 +566,7 @@ definitions:
   Chart:
     $extends: [Padding, Box, Font]
     type: object
+    description: Properties for the chart.
     properties:
       plot:
         description: Style settings for the plot area.
