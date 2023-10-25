@@ -29,13 +29,21 @@ namespace Vizzu::Gen
 class Options
 {
 public:
+	enum class LegendId { color, lightness, size };
+
 	using MarkerId = uint64_t;
 	using Heading = ::Anim::Interpolated<std::optional<std::string>>;
-	using LegendType = Base::AutoParam<ChannelId>;
+	using LegendType = Base::AutoParam<LegendId>;
 	using Legend = ::Anim::Interpolated<LegendType>;
 	using OrientationType = Base::AutoParam<Gen::Orientation>;
 	using Orientation = ::Anim::Interpolated<OrientationType>;
 	using MarkersInfoMap = std::map<uint64_t, MarkerId>;
+
+	friend bool operator==(const Options::LegendId &,
+	    const ChannelId &);
+
+	[[nodiscard]] static ChannelId toChannel(
+	    const Options::LegendId &);
 
 	Options() = default;
 
@@ -153,7 +161,7 @@ private:
 	Channels channels;
 
 	[[nodiscard]] Gen::Orientation getAutoOrientation() const;
-	[[nodiscard]] std::optional<ChannelId> getAutoLegend() const;
+	[[nodiscard]] std::optional<LegendId> getAutoLegend() const;
 	static void setMeasureRange(Channel &channel, bool positive);
 	static void setRange(Channel &channel,
 	    ChannelExtrema min,

@@ -14,16 +14,19 @@ const testSteps = [
     chart.animate({
       x: { set: 'Foo' },
       y: { set: 'Bar', title: 'Feeling' },
-      legend: 'x'
+      size: { set: 'Foo' },
+      legend: 'size'
     }),
   (chart) =>
     chart.animate({
       x: { title: 'Who' },
       y: { title: null },
+      size: { title: 'Bigness' },
     }),
   (chart) =>
     chart.animate({
-      x: { set: 'Baz' }
+      x: { set: 'Baz' },
+      size: { set: 'Baz' }
     })
 ]
 
