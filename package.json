@@ -3,6 +3,14 @@
   "main": "dist/vizzu.min.js",
   "types": "dist/vizzu.d.ts",
   "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/vizzu.d.ts",
+      "import": "./dist/vizzu.min.js",
+      "default": "./dist/vizzu.min.js"
+    },
+    "./*.json": "./*.json"
+  },
   "files": [
     "CHANGELOG.md",
     "LICENSE",
