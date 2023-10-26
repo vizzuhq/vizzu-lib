@@ -28,19 +28,22 @@ namespace Vizzu::Gen
 
 class Options
 {
+	using ChannelIdType = std::underlying_type_t<ChannelId>;
+
 public:
-	enum class LegendId : std::underlying_type_t<ChannelId> {
-		color,
-		lightness,
-		size
+	enum class LegendId : ChannelIdType {
+		color = static_cast<ChannelIdType>(ChannelId::color),
+		lightness = static_cast<ChannelIdType>(ChannelId::lightness),
+		size = static_cast<ChannelIdType>(ChannelId::size)
 	};
 
+	static_assert(Refl::enum_names<LegendId>.size() == 3);
 	static_assert(std::ranges::all_of(Refl::enum_names<LegendId>,
 	    [](std::string_view name)
 	    {
-		    return static_cast<std::underlying_type_t<ChannelId>>(
+		    return static_cast<ChannelIdType>(
 		               Refl::get_enum<LegendId>(name))
-		        == static_cast<std::underlying_type_t<ChannelId>>(
+		        == static_cast<ChannelIdType>(
 		            Refl::get_enum<ChannelId>(name));
 	    }));
 
