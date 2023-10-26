@@ -2,6 +2,7 @@ import * as D from './types/data.js'
 
 import { CRecord, CData } from './module/cdata.js'
 import { DataRecord } from './datarecord.js'
+import { Mirrored } from './tsutils.js'
 
 export class Data {
   private _cData: CData
@@ -41,7 +42,7 @@ export class Data {
     }
   }
 
-  private _addRecord(record: D.ValueArray | D.Record, seriesList: D.SeriesInfo[]): void {
+  private _addRecord(record: D.ValueArray | D.Record, seriesList: Mirrored<D.SeriesInfo[]>): void {
     if (!Array.isArray(record)) {
       if (typeof record === 'object' && record !== null) {
         record = this._recordObjectToArray(record, seriesList)
@@ -50,7 +51,7 @@ export class Data {
     this._cData.addRecord(record)
   }
 
-  private _recordObjectToArray(record: D.Record, seriesList: D.SeriesInfo[]): D.Value[] {
+  private _recordObjectToArray(record: D.Record, seriesList: Mirrored<D.SeriesInfo[]>): D.Value[] {
     const result = [] as D.Value[]
 
     seriesList.forEach((series) => {

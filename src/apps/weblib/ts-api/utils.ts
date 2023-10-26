@@ -1,3 +1,5 @@
+import { Mirrored } from './tsutils'
+
 export function recursiveCopy<T>(value: T, Ignore?: new (...args: never[]) => unknown): T {
   if (value === null || typeof value !== 'object') {
     return value
@@ -63,12 +65,12 @@ function setNestedProp<T>(obj: T, path: string, value: unknown): void {
 type Lister = () => string[]
 type Getter = (path: string) => unknown
 
-export function cloneObject<T>(lister: Lister, getter: Getter): Readonly<T> {
+export function mirrorObject<T>(lister: Lister, getter: Getter): Mirrored<T> {
   const list = lister()
   const res = {} as T
   for (const path of list) {
     const value = getter(path)
     setNestedProp(res, path, value)
   }
-  return Object.freeze(res) as Readonly<T>
+  return Object.freeze(res) as Mirrored<T>
 }

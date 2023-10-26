@@ -1,7 +1,8 @@
 import { CPointer, CString } from '../cvizzu.types'
 
 import { CObject } from './cenv.js'
-import { cloneObject, iterateObject } from '../utils.js'
+import { mirrorObject, iterateObject } from '../utils.js'
+import { Mirrored } from '../tsutils.js'
 import { CPointerClosure } from './objregistry.js'
 
 type Lister = (self: CPointer) => CString
@@ -30,8 +31,8 @@ export class CProxy<T> extends CObject {
     iterateObject(value, this.setParam.bind(this))
   }
 
-  get(): T {
-    return cloneObject<T>(this.listParams.bind(this), this.getParam.bind(this))
+  get(): Mirrored<T> {
+    return mirrorObject<T>(this.listParams.bind(this), this.getParam.bind(this))
   }
 
   listParams(): string[] {
