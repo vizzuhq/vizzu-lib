@@ -6,18 +6,23 @@
 namespace Vizzu::Gen
 {
 
+CommonAxis interpolate(const CommonAxis &op0,
+    const CommonAxis &op1,
+    double factor)
+{
+	return {interpolate(op0.title, op1.title, factor)};
+}
+
 Geom::Point MeasureAxises::origo() const
 {
 	return {at(ChannelId::x).origo(), at(ChannelId::y).origo()};
 }
 
 MeasureAxis::MeasureAxis(Math::Range<double> interval,
-    std::string title,
     std::string unit,
     std::optional<double> step) :
     enabled(true),
     range(interval),
-    title(std::move(title)),
     unit(std::move(unit)),
     step(step ? *step : Math::Renard::R5().ceil(range.size() / 5.0))
 {}
@@ -25,8 +30,7 @@ MeasureAxis::MeasureAxis(Math::Range<double> interval,
 bool MeasureAxis::operator==(const MeasureAxis &other) const
 {
 	return enabled == other.enabled && range == other.range
-	    && step == other.step && unit == other.unit
-	    && title == other.title;
+	    && step == other.step && unit == other.unit;
 }
 
 double MeasureAxis::origo() const
@@ -56,7 +60,6 @@ MeasureAxis interpolate(const MeasureAxis &op0,
 	}
 
 	res.unit = op1.unit;
-	res.title = interpolate(op0.title, op1.title, factor);
 
 	return res;
 }
@@ -110,7 +113,6 @@ DimensionAxis interpolate(const DimensionAxis &op0,
     double factor)
 {
 	DimensionAxis res;
-	res.title = interpolate(op0.title, op1.title, factor);
 
 	DimensionAxis::Values::const_iterator it;
 	for (it = op0.values.cbegin(); it != op0.values.cend(); ++it) {

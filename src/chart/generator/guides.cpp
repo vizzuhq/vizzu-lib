@@ -30,18 +30,15 @@ bool GuidesByAxis::operator==(const GuidesByAxis &other) const
 	    && interlacings == other.interlacings;
 }
 
-void Guides::init(const MeasureAxises &measureAxises,
-    const Options &options)
+void Guides::init(const Options &options)
 {
 	auto isCircle = options.geometry.get() == ShapeType::circle;
 	auto isLine = options.geometry.get() == ShapeType::line;
 	auto isHorizontal = options.isHorizontal();
-	auto yIsMeasure =
-	    static_cast<bool>(measureAxises.at(ChannelId::y)
-	                          .enabled.calculate<Math::FuzzyBool>());
-	auto xIsMeasure =
-	    static_cast<bool>(measureAxises.at(ChannelId::x)
-	                          .enabled.calculate<Math::FuzzyBool>());
+	const auto &channelX = options.getChannels().at(ChannelId::x);
+	const auto &channelY = options.getChannels().at(ChannelId::y);
+	auto xIsMeasure = channelX.isMeasure();
+	auto yIsMeasure = channelY.isMeasure();
 	auto isPolar = options.coordSystem.get() == CoordSystem::polar;
 
 	const auto &xOpt = options.getChannels().at(ChannelId::x);

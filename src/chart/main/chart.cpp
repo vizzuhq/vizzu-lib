@@ -150,7 +150,7 @@ void Chart::draw(Gfx::ICanvas &canvas)
 		    {
 			    if (legend.value)
 				    Draw::DrawLegend(context,
-				        *legend.value,
+				        Gen::Options::toChannel(*legend.value),
 				        legend.weight);
 		    });
 

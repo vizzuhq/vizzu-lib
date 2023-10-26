@@ -105,6 +105,11 @@ void Horizontal::transform(const Gen::Plot &source,
     Gen::Plot &actual,
     double factor) const
 {
+	actual.commonAxises.at(Gen::ChannelId::x) =
+	    interpolate(source.commonAxises.at(Gen::ChannelId::x),
+	        target.commonAxises.at(Gen::ChannelId::x),
+	        factor);
+
 	actual.measureAxises.at(Gen::ChannelId::x) =
 	    interpolate(source.measureAxises.at(Gen::ChannelId::x),
 	        target.measureAxises.at(Gen::ChannelId::x),
@@ -178,6 +183,11 @@ void Vertical::transform(const Gen::Plot &source,
     Gen::Plot &actual,
     double factor) const
 {
+	actual.commonAxises.at(Gen::ChannelId::y) =
+	    interpolate(source.commonAxises.at(Gen::ChannelId::y),
+	        target.commonAxises.at(Gen::ChannelId::y),
+	        factor);
+
 	actual.measureAxises.at(Gen::ChannelId::y) =
 	    interpolate(source.measureAxises.at(Gen::ChannelId::y),
 	        target.measureAxises.at(Gen::ChannelId::y),
@@ -186,6 +196,11 @@ void Vertical::transform(const Gen::Plot &source,
 	actual.dimensionAxises.at(Gen::ChannelId::y) =
 	    interpolate(source.dimensionAxises.at(Gen::ChannelId::y),
 	        target.dimensionAxises.at(Gen::ChannelId::y),
+	        factor);
+
+	actual.commonAxises.at(Gen::ChannelId::size) =
+	    interpolate(source.commonAxises.at(Gen::ChannelId::size),
+	        target.commonAxises.at(Gen::ChannelId::size),
 	        factor);
 
 	actual.measureAxises.at(Gen::ChannelId::size) =
@@ -225,6 +240,11 @@ void Morph::Color::transform(const Gen::Plot &source,
 	actual.anySelected =
 	    interpolate(source.anySelected, target.anySelected, factor);
 
+	actual.commonAxises.at(Gen::ChannelId::color) =
+	    interpolate(source.commonAxises.at(Gen::ChannelId::color),
+	        target.commonAxises.at(Gen::ChannelId::color),
+	        factor);
+
 	actual.measureAxises.at(Gen::ChannelId::color) =
 	    interpolate(source.measureAxises.at(Gen::ChannelId::color),
 	        target.measureAxises.at(Gen::ChannelId::color),
@@ -233,6 +253,11 @@ void Morph::Color::transform(const Gen::Plot &source,
 	actual.dimensionAxises.at(Gen::ChannelId::color) =
 	    interpolate(source.dimensionAxises.at(Gen::ChannelId::color),
 	        target.dimensionAxises.at(Gen::ChannelId::color),
+	        factor);
+
+	actual.commonAxises.at(Gen::ChannelId::lightness) =
+	    interpolate(source.commonAxises.at(Gen::ChannelId::lightness),
+	        target.commonAxises.at(Gen::ChannelId::lightness),
 	        factor);
 
 	actual.measureAxises.at(Gen::ChannelId::lightness) = interpolate(
