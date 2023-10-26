@@ -17,6 +17,7 @@ import { PivotData } from './plugins/pivotdata.js'
 import { Tooltip } from './plugins/tooltip.js'
 import { PointerEvents } from './plugins/pointerevents.js'
 import { CSSProperties } from './plugins/cssproperties.js'
+import { Mirrored } from './tsutils.js'
 
 export class Chart {
   private _cChart: CChart
@@ -168,19 +169,19 @@ export class Chart {
     this._render.updateFrame(true)
   }
 
-  get data(): Readonly<D.Metainfo> {
+  get data(): Mirrored<D.Metainfo> {
     return this._cData.getMetaInfo()
   }
 
-  get config(): Readonly<Config.Chart> {
+  get config(): Mirrored<Config.Chart> {
     return this._cChart.config.get()
   }
 
-  get style(): Readonly<Styles.Chart> {
+  get style(): Mirrored<Styles.Chart> {
     return this._cChart.style.get()
   }
 
-  getComputedStyle(): Styles.Chart {
+  getComputedStyle(): Mirrored<Styles.Chart> {
     return this._cChart.computedStyle.get()
   }
 

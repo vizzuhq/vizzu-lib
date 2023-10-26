@@ -11,6 +11,7 @@ import { CObject } from './module/cenv.js'
 import { AnimControl } from './animcontrol.js'
 import { AnimCompleting } from './animcompleting.js'
 import { recursiveCopy } from './utils.js'
+import { Mirrored } from './tsutils.js'
 import { NotInitializedError, CancelError } from './errors.js'
 import { Plugin, PluginApi, PluginRegistry, Hooks } from './plugins.js'
 import Presets from './plugins/presets.js'
@@ -255,25 +256,25 @@ export default class Vizzu {
   }
 
   /** Property for read-only access to data metainfo object. */
-  get data(): Readonly<Data.Metainfo> {
+  get data(): Mirrored<Data.Metainfo> {
     if (!this._chart) throw new NotInitializedError()
     return this._chart.data
   }
 
   /** Property for read-only access to chart parameter object. */
-  get config(): Readonly<Config.Chart> {
+  get config(): Mirrored<Config.Chart> {
     if (!this._chart) throw new NotInitializedError()
     return this._chart.config
   }
 
   /** Property for read-only access to style object without default values. */
-  get style(): Readonly<Styles.Chart> {
+  get style(): Mirrored<Styles.Chart> {
     if (!this._chart) throw new NotInitializedError()
     return this._chart.style
   }
 
   /** Property for read-only access to the style object after setting defaults. */
-  getComputedStyle(): Readonly<Styles.Chart> {
+  getComputedStyle(): Mirrored<Styles.Chart> {
     if (!this._chart) throw new NotInitializedError()
     return this._chart.getComputedStyle()
   }

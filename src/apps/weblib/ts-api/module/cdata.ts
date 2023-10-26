@@ -1,8 +1,7 @@
 import { CPointer, CRecordPtr } from '../cvizzu.types'
-
-import * as Data from '../types/data.js'
-
 import { CObject, CEnv } from './cenv.js'
+import { Mirrored } from '../tsutils'
+import * as Data from '../types/data.js'
 
 export class CRecord extends CObject {
   constructor(env: CEnv, recordPtr: CRecordPtr) {
@@ -30,7 +29,7 @@ export class CRecord extends CObject {
 }
 
 export class CData extends CObject {
-  getMetaInfo(): Data.Metainfo {
+  getMetaInfo(): Mirrored<Data.Metainfo> {
     const cInfo = this._call(this._wasm._data_metaInfo)()
     const info = this._fromCString(cInfo)
     return { series: JSON.parse(info) }
