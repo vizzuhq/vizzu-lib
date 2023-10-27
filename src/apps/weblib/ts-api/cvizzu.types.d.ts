@@ -41,14 +41,41 @@ export interface ModuleOptions {
 }
 
 export interface Renderer {
-  canvas(): HTMLCanvasElement
-  dc(): CanvasRenderingContext2D
+  setCursor(name: string): void
   frameBegin(): void
   frameEnd(): void
-  lineWidthNotification(width: number): void
-  noneZeroLineWidth(): boolean
-  startPolygonNotification(): boolean
-  endPolygonNotification(): void
+  frameBegin(): void
+  frameEnd(): void
+  setClipRect(x: number, y: number, sizex: number, sizey: number): void
+  setClipCircle(x: number, y: number, radius: number): void
+  setClipPolygon(): void
+  setBrushColor(r: number, g: number, b: number, a: number): void
+  setLineColor(r: number, g: number, b: number, a: number): void
+  setLineWidth(width: number): void
+  setFont(font: string): void
+  setDropShadowBlur(radius: number): void
+  setDropShadowColor(r: number, g: number, b: number, a: number): void
+  setDropShadowOffset(x: number, y: number): void
+  endDropShadow(): void
+  endPolygon(): void
+  addPoint(x: number, y: number): void
+  addBezier(c0x: number, c0y: number, c1x: number, c1y: number, x: number, y: number): void
+  endPolygon(): void
+  rectangle(x: number, y: number, sizex: number, sizey: number): void
+  circle(x: number, y: number, radius: number): void
+  line(x1: number, y1: number, x2: number, y2: number): void
+  textBoundary(text: string, sizeX: number, sizeY: number): { width: number; height: number }
+  text(x: number, y: number, sizex: number, sizey: number, text: string): void
+  setBrushGradient(
+    x1: number,
+    y1: number,
+    x2: number,
+    y2: number,
+    grd: { offset: number; color: string }[]
+  ): void
+  transform(a: number, b: number, c: number, d: number, e: number, f: number): void
+  save(): void
+  restore(): void
 }
 
 export interface CVizzu {
@@ -141,3 +168,5 @@ export interface CVizzu {
   _anim_control(chart: CChartPtr, command: CString, param: CString): void
   _anim_setValue(chart: CChartPtr, path: CString, value: CString): void
 }
+
+export declare const Module: CVizzu
