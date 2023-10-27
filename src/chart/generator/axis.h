@@ -48,16 +48,27 @@ template <typename Type> struct AbstractAxises
 	}
 };
 
+struct CommonAxis
+{
+	::Anim::String title;
+
+	[[nodiscard]] bool operator==(const CommonAxis &) const = default;
+};
+
+using CommonAxises = AbstractAxises<CommonAxis>;
+
+CommonAxis interpolate(const CommonAxis &op0,
+    const CommonAxis &op1,
+    double factor);
+
 struct MeasureAxis
 {
 	::Anim::Interpolated<bool> enabled{false};
 	Math::Range<double> range = Math::Range<double>(0, 1);
-	::Anim::String title;
 	std::string unit;
 	::Anim::Interpolated<double> step{1.0};
 	MeasureAxis() = default;
 	MeasureAxis(Math::Range<double> interval,
-	    std::string title,
 	    std::string unit,
 	    std::optional<double> step);
 	bool operator==(const MeasureAxis &other) const;
@@ -123,8 +134,7 @@ public:
 	};
 	using Values = std::multimap<Data::MultiDim::SliceIndex, Item>;
 
-	Math::FuzzyBool enabled{false};
-	::Anim::String title;
+	bool enabled{false};
 
 	DimensionAxis() = default;
 	bool add(const Data::MultiDim::SliceIndex &index,

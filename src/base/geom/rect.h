@@ -15,20 +15,17 @@ namespace Geom
 
 struct Rect
 {
-	Point pos;
-	Size size;
+	Point pos{};
+	Size size{};
 
 	template <class Container>
 	static Rect Boundary(const Container &points);
 
+	static Rect toRect(const Line &diagonal);
+
 	static Rect Ident();
 	static Rect CenteredMax();
 
-	Rect() = default;
-	explicit Rect(const Point &pos);
-	Rect(const Point &pos, const Point &size);
-	explicit Rect(const Line &diagonal);
-	Rect(double, double, double, double);
 	[[nodiscard]] Rect boundary(const Rect &rect) const;
 	[[nodiscard]] Rect boundary(const Point &p) const;
 	[[nodiscard]] Point normalize(const Point &p) const;
@@ -151,7 +148,7 @@ struct Rect
 
 	[[nodiscard]] Rect outline(const Geom::Size &margin) const
 	{
-		return {pos - margin, size + margin * 2};
+		return {pos - margin, {size + margin * 2}};
 	}
 
 	Rect popBottom(double length);
@@ -160,17 +157,12 @@ struct Rect
 	Rect popRight(double length);
 
 	[[nodiscard]] std::array<Point, 4> points() const;
-
-	consteval static auto members()
-	{
-		return std::tuple{&Rect::pos, &Rect::size};
-	}
 };
 
 template <class Container>
 Rect Rect::Boundary(const Container &points)
 {
-	Rect boundary(points[0]);
+	Rect boundary{points[0]};
 	for (auto &point : points) boundary = boundary.boundary(point);
 	return boundary;
 }

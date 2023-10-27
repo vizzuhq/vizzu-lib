@@ -17,6 +17,12 @@ ChannelExtrema operator"" _perc(long double percent)
 }
 }
 
+[[nodiscard]] bool operator==(const Options::LegendId &l,
+    const ChannelId &c)
+{
+	return Options::toChannel(l) == c;
+}
+
 void Options::reset()
 {
 	channels.reset();
@@ -228,7 +234,7 @@ uint64_t Options::generateMarkerInfoId()
 void Options::setAutoParameters()
 {
 	if (legend.get().isAuto()) {
-		Base::AutoParam<ChannelId> tmp = legend.get();
+		Base::AutoParam<LegendId> tmp = legend.get();
 		tmp.setAuto(getAutoLegend());
 		legend = tmp;
 	}
@@ -267,7 +273,7 @@ Gen::Orientation Options::getAutoOrientation() const
 	return Gen::Orientation::horizontal;
 }
 
-std::optional<ChannelId> Options::getAutoLegend() const
+std::optional<Options::LegendId> Options::getAutoLegend() const
 {
 	auto series = channels.getDimensions();
 	series.merge(channels.getSeries());
@@ -283,15 +289,14 @@ std::optional<ChannelId> Options::getAutoLegend() const
 		if (id) series.erase(*id);
 	}
 
-	for (auto channelId : {ChannelId::color, ChannelId::lightness})
-		for (auto id : channels.at(channelId).dimensionIds)
+	for (auto channelId : {LegendId::color, LegendId::lightness})
+		for (auto id : channels.at(toChannel(channelId)).dimensionIds)
 			if (series.contains(id)) return channelId;
 
 	for (auto channelId :
-	    {ChannelId::color, ChannelId::lightness, ChannelId::size})
-		if (channels.at(channelId).measureId)
-			if (series.contains(*channels.at(channelId).measureId))
-				return channelId;
+	    {LegendId::color, LegendId::lightness, LegendId::size})
+		if (auto &&mid = channels.at(toChannel(channelId)).measureId)
+			if (series.contains(*mid)) return channelId;
 
 	return std::nullopt;
 }
@@ -369,7 +374,13 @@ bool Options::labelsShownFor(const Data::SeriesIndex &series) const
 	return channels.at(ChannelId::x).labelSeries() == series
 	    || channels.at(ChannelId::y).labelSeries() == series
 	    || (legend.get()
-	        && channels.at(*legend.get()).labelSeries() == series);
+	        && channels.at(toChannel(*legend.get())).labelSeries()
+	               == series);
+}
+
+[[nodiscard]] ChannelId Options::toChannel(const Options::LegendId &l)
+{
+	return static_cast<ChannelId>(l);
 }
 
 }

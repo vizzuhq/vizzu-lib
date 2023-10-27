@@ -13,12 +13,6 @@ struct Line
 	Point begin;
 	Point end;
 
-	Line() = default;
-	Line(const Point &begin, const Point &end) :
-	    begin(begin),
-	    end(end)
-	{}
-
 	[[nodiscard]] Point center() const { return (begin + end) / 2.0; }
 
 	[[nodiscard]] Point getDirection() const { return end - begin; }
@@ -75,11 +69,6 @@ struct Line
 		auto nearestPoint = at(projection);
 
 		return (nearestPoint - point).abs();
-	}
-
-	consteval static auto members()
-	{
-		return std::tuple{&Line::begin, &Line::end};
 	}
 };
 

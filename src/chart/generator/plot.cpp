@@ -75,6 +75,7 @@ bool Plot::MarkerInfoContent::operator==(
 Plot::Plot(PlotOptionsPtr options, const Plot &other) :
     anySelected(other.anySelected),
     anyAxisSet(other.anyAxisSet),
+    commonAxises(other.commonAxises),
     measureAxises(other.measureAxises),
     guides(other.guides),
     dimensionAxises(other.dimensionAxises),
@@ -112,7 +113,7 @@ Plot::Plot(const Data::DataTable &dataTable,
 		calcDimensionAxises(dataTable);
 		normalizeColors();
 		if (options->geometry != ShapeType::circle) normalizeSizes();
-		calcAxises(dataTable);
+		calcMeasureAxises(dataTable);
 	}
 	else {
 		addSeparation();
@@ -120,11 +121,11 @@ Plot::Plot(const Data::DataTable &dataTable,
 		calcDimensionAxises(dataTable);
 		normalizeSizes();
 		normalizeColors();
-		calcAxises(dataTable);
+		calcMeasureAxises(dataTable);
 		addAlignment();
 	}
 
-	guides.init(measureAxises, *options);
+	guides.init(*options);
 }
 
 void Plot::detachOptions()
@@ -295,7 +296,7 @@ void Plot::normalizeXY()
 	stats.channels[ChannelId::y].range = boundRect.vSize();
 }
 
-void Plot::calcAxises(const Data::DataTable &dataTable)
+void Plot::calcMeasureAxises(const Data::DataTable &dataTable)
 {
 	for (auto i = 0U; i < std::size(measureAxises.axises); ++i) {
 		auto id = static_cast<ChannelId>(i);
@@ -308,15 +309,14 @@ MeasureAxis Plot::calcAxis(ChannelId type,
 {
 	const auto &scale = options->getChannels().at(type);
 	if (!scale.isEmpty() && scale.measureId) {
-		auto title = scale.title == "auto"
-		               ? scale.measureName(dataTable)
-		           : scale.title == "null" ? std::string()
-		                                   : scale.title;
+		commonAxises.at(type).title =
+		    scale.title == "auto"   ? scale.measureName(dataTable)
+		    : scale.title == "null" ? std::string()
+		                            : scale.title;
 
 		if (type == options->subAxisType()
 		    && options->align == Base::Align::Type::stretch) {
 			return {Math::Range<double>(0, 100),
-			    title,
 			    "%",
 			    scale.step.getValue()};
 		}
@@ -326,7 +326,6 @@ MeasureAxis Plot::calcAxis(ChannelId type,
 		              ? dataTable.getInfo(colIndex.value()).getUnit()
 		              : std::string{};
 		return {stats.channels[type].range,
-		    title,
 		    unit,
 		    scale.step.getValue()};
 	}
@@ -348,9 +347,9 @@ void Plot::calcDimensionAxis(ChannelId type,
 
 	if (scale.dimensionIds.empty() || !scale.isDimension()) return;
 
-	axis.title = scale.title == "auto" || scale.title == "null"
-	               ? std::string()
-	               : scale.title;
+	commonAxises.at(type).title =
+	    scale.title == "auto" || scale.title == "null" ? std::string()
+	                                                   : scale.title;
 
 	auto dim = scale.labelLevel;
 

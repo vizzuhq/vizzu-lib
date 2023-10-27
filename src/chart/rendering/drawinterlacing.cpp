@@ -139,11 +139,11 @@ void DrawInterlacing::draw(
 
 			if (!topUnderflow) {
 				Geom::Rect rect(Geom::Point{clippedBottom, 0.0},
-				    Geom::Point{top - clippedBottom, 1.0});
+				    Geom::Size{top - clippedBottom, 1.0});
 
 				if (horizontal)
-					rect =
-					    Geom::Rect(rect.pos.flip(), rect.size.flip());
+					rect = Geom::Rect{rect.pos.flip(),
+					    {rect.size.flip()}};
 
 				if (text) {
 					canvas.setTextColor(textColor);

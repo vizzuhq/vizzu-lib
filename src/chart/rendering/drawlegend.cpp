@@ -37,24 +37,29 @@ DrawLegend::DrawLegend(const DrawingContext &context,
 		canvas.save();
 		canvas.setClipRect(contentRect);
 
-		const auto axis = plot.measureAxises.at(type);
+		const auto measureAxis = plot.measureAxises.at(type);
 		const auto dimensionAxis = plot.dimensionAxises.at(type);
 
-		if (static_cast<double>(dimensionAxis.enabled) > 0)
-			drawDimension(dimensionAxis);
+		const auto measureEnabled =
+		    measureAxis.enabled.calculate<double>();
 
-		if (axis.enabled.calculate<double>() > 0) drawMeasure(axis);
+		drawTitle(plot.commonAxises.at(type).title,
+		    dimensionAxis.enabled ? 1.0 : measureEnabled);
+
+		if (dimensionAxis.enabled) drawDimension(dimensionAxis);
+
+		if (measureEnabled > 0) drawMeasure(measureAxis);
 
 		canvas.restore();
 	}
 }
 
-void DrawLegend::drawTitle(const ::Anim::String &title)
+void DrawLegend::drawTitle(const ::Anim::String &title, double mul)
 {
 	auto rect = contentRect;
 	rect.size.y += titleHeight;
 	title.visit(
-	    [this, &rect](int, const auto &title)
+	    [this, &rect, &mul](int, const auto &title)
 	    {
 		    DrawLabel(*this,
 		        Geom::TransformedRect::fromRect(rect),
@@ -65,15 +70,13 @@ void DrawLegend::drawTitle(const ::Anim::String &title)
 		            title.value,
 		            type),
 		        DrawLabel::Options(true,
-		            title.weight * weight * enabled));
+		            title.weight * weight * mul));
 	    });
 }
 
 void DrawLegend::drawDimension(const Gen::DimensionAxis &axis)
 {
 	enabled = static_cast<double>(axis.enabled);
-
-	drawTitle(axis.title);
 
 	for (const auto &value : axis) {
 		if (value.second.weight > 0) {
@@ -158,8 +161,6 @@ void DrawLegend::drawMarker(const Gfx::Color &color,
 void DrawLegend::drawMeasure(const Gen::MeasureAxis &axis)
 {
 	enabled = axis.enabled.calculate<double>();
-
-	drawTitle(axis.title);
 
 	extremaLabel(axis.range.getMax(), 0);
 	extremaLabel(axis.range.getMin(), 5);

@@ -28,6 +28,8 @@
 - Aggregators didn't work when there are parentheses in the name of the data 
   series
 - Layout stretched to the bottom of the canvas. 
+- Legend accepts only the acceptable channel values.
+- From now the dimension axis title is shown if set.
 
 ### Added
 
