@@ -15,8 +15,8 @@ namespace Geom
 
 struct Rect
 {
-	Point pos;
-	Size size;
+	Point pos{};
+	Size size{};
 
 	template <class Container>
 	static Rect Boundary(const Container &points);
@@ -162,7 +162,7 @@ struct Rect
 template <class Container>
 Rect Rect::Boundary(const Container &points)
 {
-	Rect boundary(points[0]);
+	Rect boundary{points[0]};
 	for (auto &point : points) boundary = boundary.boundary(point);
 	return boundary;
 }
