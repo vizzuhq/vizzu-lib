@@ -36,4 +36,4 @@ export * from './render.js'
 
 export * from './vizzu.js'
 export { default as Vizzu } from './vizzu.js'
-export default from './vizzu.js'
+export { default } from './vizzu.js'
