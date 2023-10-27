@@ -9,23 +9,13 @@ Rect Rect::Ident() { return {Geom::Point(), Geom::Size::Identity()}; }
 
 Rect Rect::CenteredMax()
 {
-	return {Geom::Point::Min() / 2, Geom::Size::Max()};
+	return {Geom::Point::Min() / 2, {Geom::Size::Max()}};
 }
 
-Rect::Rect(const Point &pos) : pos(pos), size{0, 0} {}
-
-Rect::Rect(const Point &pos, const Point &size) : pos(pos), size(size)
-{}
-
-Rect::Rect(double x, double y, double sx, double sy) :
-    pos(x, y),
-    size{sx, sy}
-{}
-
-Rect::Rect(const Line &diagonal) :
-    pos(diagonal.begin),
-    size(diagonal.getDirection())
-{}
+Rect Rect::toRect(const Line &diagonal)
+{
+	return {diagonal.begin, {diagonal.getDirection()}};
+}
 
 Rect Rect::boundary(const Rect &rect) const
 {
@@ -85,12 +75,12 @@ Rect Rect::positive() const
 
 Rect Rect::operator*(double factor) const
 {
-	return {pos * factor, size * factor};
+	return {pos * factor, {size * factor}};
 }
 
 Rect Rect::operator+(const Geom::Rect &other) const
 {
-	return {pos + other.pos, size + other.size};
+	return {pos + other.pos, {size + other.size}};
 }
 
 bool Rect::contains(const Point &p) const
@@ -106,7 +96,7 @@ Rect Rect::intersection(const Rect &rect) const
 	auto yTop = std::min(this->top(), rect.top());
 	if (xLeft >= xRight || yBottom >= yTop) { return {}; }
 	return {Point{xLeft, yBottom},
-	    Point{xRight - xLeft, yTop - yBottom}};
+	    Size{xRight - xLeft, yTop - yBottom}};
 }
 
 bool Rect::intersects(const Rect &r) const

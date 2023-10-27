@@ -142,11 +142,10 @@ void TextBox::draw(ICanvas &canvas, double opacity)
 			canvas.setLineWidth(0);
 			canvas.setBrushColor(background);
 			canvas.setLineColor(background);
-			const Geom::Rect bg(xpos, ypos, text.width, line.height);
-			canvas.rectangle(bg);
+			canvas.rectangle(
+			    {{xpos, ypos}, {text.width, line.height}});
 			canvas.setTextColor(foreground);
-			canvas.text(Geom::Rect(xpos, ypos, 10000, 10000),
-			    text.content);
+			canvas.text({{xpos, ypos}, {10000, 10000}}, text.content);
 			xpos += text.width;
 		}
 		ypos += line.height * line.spacing;
