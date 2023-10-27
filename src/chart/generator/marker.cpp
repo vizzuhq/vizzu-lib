@@ -230,7 +230,7 @@ double Marker::getValueForChannel(const Channels &channels,
 
 Geom::Rect Marker::toRectangle() const
 {
-	return {position - size, size};
+	return {position - size, {size}};
 }
 
 void Marker::fromRectangle(const Geom::Rect &rect)

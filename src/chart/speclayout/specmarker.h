@@ -26,7 +26,7 @@ struct SpecMarker
 
 	void emplaceRect(const Geom::Point &p0, const Geom::Point &p1)
 	{
-		shape.emplace<Geom::Rect>(p0, p1 - p0);
+		shape.emplace<Geom::Rect>(p0, Geom::Size{p1 - p0});
 	}
 
 	[[nodiscard]] const Geom::Rect &rect() const
