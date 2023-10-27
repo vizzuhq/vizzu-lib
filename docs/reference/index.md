@@ -42,3 +42,4 @@ You can find all interface declarations and types under these modules:
 - [anim](./modules/types_anim.md) - Animation settings
 - [events](./modules/events.md) - Event handling
 - [plugins](./modules/plugins.md) - Plugin infrastructure
+- [presets](./modules/types_presets.md) - Preset charts
