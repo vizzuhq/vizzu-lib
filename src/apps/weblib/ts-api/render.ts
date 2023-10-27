@@ -1,4 +1,4 @@
-import { Renderer, CString, CColorGradientPtr } from './cvizzu.types'
+import { Renderer, CPointer, CString, CColorGradientPtr } from './cvizzu.types'
 import { Point } from './geom.js'
 import { Plugin, PluginApi } from './plugins.js'
 
@@ -243,13 +243,14 @@ export class Render implements Plugin, Renderer {
     if (this._currentLineWidth !== 0) dc.stroke()
   }
 
-  textBoundary(text: CString): { width: number; height: number } {
+  textBoundary(text: CString, sizeX: CPointer, sizeY: CPointer): void {
     const dc = this.dc()
     let metrics = dc.measureText(this._ccanvas.getString(text))
     const width = metrics.width
     metrics = dc.measureText('Op')
     const height = metrics.actualBoundingBoxAscent + metrics.actualBoundingBoxDescent
-    return { width, height }
+    this._ccanvas.setNumber(sizeX, width)
+    this._ccanvas.setNumber(sizeY, height)
   }
 
   text(x: number, y: number, sizex: number, sizey: number, text: CString): void {

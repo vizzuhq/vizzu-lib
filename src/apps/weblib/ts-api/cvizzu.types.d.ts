@@ -65,7 +65,7 @@ export interface Renderer {
   rectangle(x: number, y: number, sizex: number, sizey: number): void
   circle(x: number, y: number, radius: number): void
   line(x1: number, y1: number, x2: number, y2: number): void
-  textBoundary(text: CString): { width: number; height: number }
+  textBoundary(text: CString, sizeX: CPointer, sizeY: CPointer): void
   text(x: number, y: number, sizex: number, sizey: number, text: CString): void
   setBrushGradient(
     x1: number,
