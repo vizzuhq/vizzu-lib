@@ -1,14 +1,15 @@
 {
   "name": "vizzu",
   "main": "dist/vizzu.min.js",
-  "types": "dist/vizzu.d.ts",
+  "types": "dist/index.d.ts",
   "type": "module",
   "exports": {
     ".": {
-      "types": "./dist/vizzu.d.ts",
+      "types": "./dist/index.d.ts",
       "import": "./dist/vizzu.min.js",
       "default": "./dist/vizzu.min.js"
     },
+    "./*.wasm": "./dist/*.wasm",
     "./*.json": "./*.json"
   },
   "files": [
