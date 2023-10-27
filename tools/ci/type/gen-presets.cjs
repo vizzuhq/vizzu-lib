@@ -20,18 +20,20 @@ function collectUniqueValues(obj) {
   return [...new Set(values)]
 }
 
-function genPreset(preset) {
+function genPreset(presetName, preset) {
   const properties = collectUniqueValues(preset.channels)
 
   const definition = {
     type: 'object',
     $extends: 'Preset',
+    description: `Configuration for the ${presetName} preset.`,
     properties: {}
   }
 
   for (let i = 0; i < properties.length; i++) {
     const propertyName = properties[i]
     definition.properties[propertyName] = {
+      description: `The ${propertyName} channel.`,
       oneOf: [{ type: 'array', items: { type: 'string' } }, { type: 'string' }]
     }
     definition.required = definition.required || []
@@ -52,8 +54,10 @@ function genPresetClass(presets) {
     const parameterType = capitalize(name)
     definition.properties[methodName] = {
       type: 'function',
+      description: `Creates a chart config for the ${name} preset.`,
       arguments: {
         config: {
+          description: 'The preset configuration.',
           $ref: parameterType
         }
       },
@@ -102,7 +106,7 @@ function genSchema(presets) {
   }
 
   for (const presetName in presets) {
-    schema.definitions[capitalize(presetName)] = genPreset(presets[presetName])
+    schema.definitions[capitalize(presetName)] = genPreset(presetName, presets[presetName])
   }
   schema.definitions.Presets = genPresetClass(presets)
 
