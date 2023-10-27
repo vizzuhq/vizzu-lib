@@ -1,4 +1,4 @@
-import { Renderer } from './cvizzu.types'
+import { Renderer, CString, CColorGradientPtr } from './cvizzu.types'
 import { Point } from './geom.js'
 import { Plugin, PluginApi } from './plugins.js'
 
@@ -109,8 +109,8 @@ export class Render implements Plugin, Renderer {
     }
   }
 
-  setCursor(name: string): void {
-    this.canvas().style.cursor = name
+  setCursor(name: CString): void {
+    this.canvas().style.cursor = this._ccanvas.getString(name)
   }
 
   frameBegin(): void {
@@ -165,9 +165,9 @@ export class Render implements Plugin, Renderer {
     this._currentLineWidth = width
   }
 
-  setFont(font: string): void {
+  setFont(font: CString): void {
     const dc = this.dc()
-    dc.font = font
+    dc.font = this._ccanvas.getString(font)
   }
 
   setDropShadowBlur(radius: number): void {
@@ -243,22 +243,22 @@ export class Render implements Plugin, Renderer {
     if (this._currentLineWidth !== 0) dc.stroke()
   }
 
-  textBoundary(text: string): { width: number; height: number } {
+  textBoundary(text: CString): { width: number; height: number } {
     const dc = this.dc()
-    let metrics = dc.measureText(text)
+    let metrics = dc.measureText(this._ccanvas.getString(text))
     const width = metrics.width
     metrics = dc.measureText('Op')
     const height = metrics.actualBoundingBoxAscent + metrics.actualBoundingBoxDescent
     return { width, height }
   }
 
-  text(x: number, y: number, sizex: number, sizey: number, text: string): void {
+  text(x: number, y: number, sizex: number, sizey: number, text: CString): void {
     const dc = this.dc()
     dc.textAlign = 'left'
     dc.textBaseline = 'top'
     x = x + (sizex < 0 ? -sizex : 0)
     y = y + (sizey < 0 ? -sizey : 0)
-    dc.fillText(text, x, y)
+    dc.fillText(this._ccanvas.getString(text), x, y)
   }
 
   setBrushGradient(
@@ -266,11 +266,14 @@ export class Render implements Plugin, Renderer {
     y1: number,
     x2: number,
     y2: number,
-    gradient: { offset: number; color: string }[]
+    stopCount: number,
+    stopsPtr: CColorGradientPtr
   ): void {
     const dc = this.dc()
     const grd = dc.createLinearGradient(x1, y1, x2, y2)
-    gradient.forEach((g) => grd.addColorStop(g.offset, g.color))
+    this._ccanvas
+      .getColorGradient(stopsPtr, stopCount)
+      .stops.forEach((g) => grd.addColorStop(g.offset, g.color))
     dc.fillStyle = grd
   }
 

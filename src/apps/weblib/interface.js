@@ -1,4 +1,3 @@
-/// <reference path="./ts-api/cvizzu.types.d.ts" />
 mergeInto(LibraryManager.library, {
   openUrl: function (url) {
     window.open(UTF8ToString(url), '_blank')
@@ -7,7 +6,7 @@ mergeInto(LibraryManager.library, {
     setTimeout(() => Module.callback(func, obj), Math.max(later, 0))
   },
   setCursor: function (canvas, cName) {
-    Module.renders[canvas].setCursor(UTF8ToString(cName))
+    Module.renders[canvas].setCursor(cName)
   },
   canvas_frameBegin: function (canvas) {
     Module.renders[canvas].frameBegin()
@@ -34,7 +33,7 @@ mergeInto(LibraryManager.library, {
     Module.renders[canvas].setLineWidth(width)
   },
   canvas_setFont: function (canvas, font) {
-    Module.renders[canvas].setFont(UTF8ToString(font))
+    Module.renders[canvas].setFont(font)
   },
   canvas_beginDropShadow: function (_canvas) {},
   canvas_setDropShadowBlur: function (canvas, radius) {
@@ -71,31 +70,15 @@ mergeInto(LibraryManager.library, {
     Module.renders[canvas].line(x1, y1, x2, y2)
   },
   canvas_textBoundary: function (canvas, text, sizeX, sizeY) {
-    const size = Module.renders[canvas].textBoundary(UTF8ToString(text))
+    const size = Module.renders[canvas].textBoundary(text)
     setValue(sizeX, size.width, 'double')
     setValue(sizeY, size.height, 'double')
   },
   canvas_text: function (canvas, x, y, sizex, sizey, text) {
-    Module.renders[canvas].text(x, y, sizex, sizey, UTF8ToString(text))
+    Module.renders[canvas].text(x, y, sizex, sizey, text)
   },
-  canvas_setBrushGradient: function (canvas, x1, y1, x2, y2, stopsCount, stops) {
-    const grd = []
-    for (let i = 0; i < stopsCount * 40; i += 40) {
-      grd.push({
-        offset: getValue(stops + i, 'double'),
-        color:
-          'rgba(' +
-          getValue(stops + i + 8, 'double') * 255 +
-          ',' +
-          getValue(stops + i + 16, 'double') * 255 +
-          ',' +
-          getValue(stops + i + 24, 'double') * 255 +
-          ',' +
-          getValue(stops + i + 32, 'double') +
-          ')'
-      })
-    }
-    Module.renders[canvas].setBrushGradient(x1, y1, x2, y2, grd)
+  canvas_setBrushGradient: function (canvas, x1, y1, x2, y2, stopCount, stops) {
+    Module.renders[canvas].setBrushGradient(x1, y1, x2, y2, stopCount, stops)
   },
   canvas_transform: function (canvas, a, b, c, d, e, f) {
     Module.renders[canvas].transform(a, b, c, d, e, f)

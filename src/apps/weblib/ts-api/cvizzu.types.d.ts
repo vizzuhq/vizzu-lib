@@ -12,6 +12,7 @@ export type CRecordPtr = CPointer
 export type CRecordValue = CPointer
 export type CPointPtr = CPointer
 export type CArrayPtr = CPointer
+export type CColorGradientPtr = CPointer
 
 export type PtrType =
   | 'i1'
@@ -41,7 +42,7 @@ export interface ModuleOptions {
 }
 
 export interface Renderer {
-  setCursor(name: string): void
+  setCursor(name: CString): void
   frameBegin(): void
   frameEnd(): void
   frameBegin(): void
@@ -52,7 +53,7 @@ export interface Renderer {
   setBrushColor(r: number, g: number, b: number, a: number): void
   setLineColor(r: number, g: number, b: number, a: number): void
   setLineWidth(width: number): void
-  setFont(font: string): void
+  setFont(font: CString): void
   setDropShadowBlur(radius: number): void
   setDropShadowColor(r: number, g: number, b: number, a: number): void
   setDropShadowOffset(x: number, y: number): void
@@ -64,14 +65,15 @@ export interface Renderer {
   rectangle(x: number, y: number, sizex: number, sizey: number): void
   circle(x: number, y: number, radius: number): void
   line(x1: number, y1: number, x2: number, y2: number): void
-  textBoundary(text: string, sizeX: number, sizeY: number): { width: number; height: number }
-  text(x: number, y: number, sizex: number, sizey: number, text: string): void
+  textBoundary(text: CString): { width: number; height: number }
+  text(x: number, y: number, sizex: number, sizey: number, text: CString): void
   setBrushGradient(
     x1: number,
     y1: number,
     x2: number,
     y2: number,
-    grd: { offset: number; color: string }[]
+    stopCount: number,
+    stops: CColorGradientPtr
   ): void
   transform(a: number, b: number, c: number, d: number, e: number, f: number): void
   save(): void
