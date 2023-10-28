@@ -94,11 +94,6 @@ export class CChart extends CObject {
     this._wasm.removeFunction(cfunc)
   }
 
-  getMarkerData(markerId: number): unknown {
-    const cStr = this._call(this._wasm._chart_markerData)(markerId)
-    return JSON.parse(this._fromCString(cStr))
-  }
-
   toCanvasCoords(point: Point): Point {
     const ptr = this._call(this._wasm._chart_relToCanvasCoords)(point.x, point.y)
     return {

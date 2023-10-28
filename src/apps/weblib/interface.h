@@ -108,8 +108,6 @@ public:
 	void animate(ObjectRegistry::Handle chart,
 	    void (*callback)(bool));
 	void setKeyframe(ObjectRegistry::Handle chart);
-	const char *getMarkerData(ObjectRegistry::Handle chart,
-	    unsigned id);
 	void animControl(ObjectRegistry::Handle chart,
 	    const char *command,
 	    const char *param);

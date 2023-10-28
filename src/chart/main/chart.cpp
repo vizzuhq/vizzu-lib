@@ -255,13 +255,4 @@ Draw::CoordinateSystem Chart::getCoordSystem() const
 	    Math::FuzzyBool()};
 }
 
-const Gen::Marker *Chart::markerByIndex(size_t index) const
-{
-	if (actPlot) {
-		auto &markers = actPlot->getMarkers();
-		if (index < markers.size()) return &markers[index];
-	}
-	return nullptr;
-}
-
 }
