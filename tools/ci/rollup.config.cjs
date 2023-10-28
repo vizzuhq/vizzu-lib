@@ -10,6 +10,14 @@ module.exports = [
       format: 'es',
       name: 'bundle'
     },
-    plugins: [terser()]
+    plugins: [
+      terser({
+        mangle: {
+          properties: {
+            regex: /^_/
+          }
+        }
+      })
+    ]
   }
 ]
