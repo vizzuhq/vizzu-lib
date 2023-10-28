@@ -88,7 +88,7 @@ export default class Vizzu {
 
     this.initializing = loader.initialize().then((module) => {
       this._chart = new Chart(module, this._container, this._plugins)
-      this._chart.registerBuilts()
+      this._chart.registerBuiltins()
       this._chart.start()
       return this
     })

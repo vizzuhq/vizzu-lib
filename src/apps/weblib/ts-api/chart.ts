@@ -48,7 +48,7 @@ export class Chart {
     this._resizeObserver = this._createResizeObserverFor(this._canvas)
   }
 
-  registerBuilts(): void {
+  registerBuiltins(): void {
     this._plugins.register(new Logging(this._module.setLogging.bind(this._module)), false)
     this._plugins.register(this._render, true)
     this._plugins.register(new CSSProperties(), false)
