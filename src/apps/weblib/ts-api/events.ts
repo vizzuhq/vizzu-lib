@@ -217,7 +217,7 @@ export interface LegendBar extends Element {
 }
 /** The interface of the event object is passed to event handlers by the library.
     Detail properties will vary by event type. */
-interface Event<T> {
+export interface Event<T> {
   type: EventType
   /** The element of the chart the event triggered on. */
   target: T | null
