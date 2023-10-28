@@ -8,6 +8,7 @@ export class Tooltip implements Plugin {
   private _id = 0
   private _animating = false
   private _lastMarkerId: number | null = null
+  private _overedMarkerId: number | null = null
   private _lastMove = new Date().getTime()
 
   meta = {
@@ -17,7 +18,7 @@ export class Tooltip implements Plugin {
 
   listeners = {
     pointermove: this._mousemove.bind(this),
-    pointeron: this._mouseon.bind(this)
+    pointerleave: this._mouseleave.bind(this)
   }
 
   register(vizzu: Vizzu): void {
@@ -33,8 +34,19 @@ export class Tooltip implements Plugin {
     }
   }
 
-  _mousemove(): void {
+  _mousemove(param: PointerEvent): void {
     this._lastMove = new Date().getTime()
+    const actMarkerId = this._getMarkerId(param.target)
+    if (actMarkerId !== this._overedMarkerId) {
+      this._overedMarkerId = actMarkerId
+      this._mouseon(param)
+    }
+  }
+
+  _mouseleave(param: PointerEvent): void {
+    this._lastMove = new Date().getTime()
+    this._overedMarkerId = null
+    this._mouseon(param)
   }
 
   _mouseon(param: PointerEvent): void {
@@ -52,6 +64,14 @@ export class Tooltip implements Plugin {
     }
   }
 
+  _getMarkerId(target: Element | null): number | null {
+    if (target && this._isMarker(target)) {
+      return target.index
+    } else {
+      return null
+    }
+  }
+
   _isMarker(target: Element): target is Marker {
     return target.tagName === 'plot-marker'
   }
@@ -62,9 +82,14 @@ export class Tooltip implements Plugin {
         this._lastMarkerId = markerId
         this._animating = true
         this._vizzu
-          ?.animate([{ target: { config: { tooltip: markerId } } }], {
-            duration: this._lastMarkerId ? '100ms' : '250ms'
-          })
+          ?.animate([
+            {
+              target: { config: { tooltip: markerId } },
+              options: {
+                duration: this._lastMarkerId ? '100ms' : '250ms'
+              }
+            }
+          ])
           .then(() => {
             this._animating = false
           })
@@ -83,7 +108,7 @@ export class Tooltip implements Plugin {
         this._lastMarkerId = null
         this._animating = true
         this._vizzu
-          ?.animate([{ target: { config: { tooltip: null } } }], { duration: '250ms' })
+          ?.animate([{ target: { config: { tooltip: null } }, options: { duration: '250ms' } }])
           .then(() => {
             this._animating = false
           })
