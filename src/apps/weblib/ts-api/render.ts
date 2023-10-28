@@ -1,7 +1,7 @@
-import { Renderer, CPointer, CString, CColorGradientPtr } from './cvizzu.types'
+import { CPointer, CString, CColorGradientPtr } from './cvizzu.types'
 import { Point } from './geom.js'
 import { Plugin, PluginApi } from './plugins.js'
-
+import { Canvas } from './module/canvas.js'
 import { Module } from './module/module.js'
 import { CCanvas } from './module/ccanvas.js'
 import { CChart } from './module/cchart.js'
@@ -10,7 +10,7 @@ export interface RenderingApi extends PluginApi {
   clientToRenderCoor(clientPos: Point): Point
 }
 
-export class Render implements Plugin, Renderer {
+export class Render implements Plugin, Canvas {
   private _ccanvas: CCanvas
   private _enabled: boolean
   private _cchart: CChart
@@ -169,6 +169,8 @@ export class Render implements Plugin, Renderer {
     const dc = this.dc()
     dc.font = this._ccanvas.getString(font)
   }
+
+  beginDropShadow(): void {}
 
   setDropShadowBlur(radius: number): void {
     const dc = this.dc()

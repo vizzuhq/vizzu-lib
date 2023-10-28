@@ -1,3 +1,5 @@
+import { Canvas } from './module/canvas'
+
 export type CPointer = number
 export type CString = CPointer
 export type CException = CPointer
@@ -41,49 +43,10 @@ export interface ModuleOptions {
   locateFile?: (path: string) => string
 }
 
-export interface Renderer {
-  setCursor(name: CString): void
-  frameBegin(): void
-  frameEnd(): void
-  frameBegin(): void
-  frameEnd(): void
-  setClipRect(x: number, y: number, sizex: number, sizey: number): void
-  setClipCircle(x: number, y: number, radius: number): void
-  setClipPolygon(): void
-  setBrushColor(r: number, g: number, b: number, a: number): void
-  setLineColor(r: number, g: number, b: number, a: number): void
-  setLineWidth(width: number): void
-  setFont(font: CString): void
-  setDropShadowBlur(radius: number): void
-  setDropShadowColor(r: number, g: number, b: number, a: number): void
-  setDropShadowOffset(x: number, y: number): void
-  endDropShadow(): void
-  endPolygon(): void
-  addPoint(x: number, y: number): void
-  addBezier(c0x: number, c0y: number, c1x: number, c1y: number, x: number, y: number): void
-  endPolygon(): void
-  rectangle(x: number, y: number, sizex: number, sizey: number): void
-  circle(x: number, y: number, radius: number): void
-  line(x1: number, y1: number, x2: number, y2: number): void
-  textBoundary(text: CString, sizeX: CPointer, sizeY: CPointer): void
-  text(x: number, y: number, sizex: number, sizey: number, text: CString): void
-  setBrushGradient(
-    x1: number,
-    y1: number,
-    x2: number,
-    y2: number,
-    stopCount: number,
-    stops: CColorGradientPtr
-  ): void
-  transform(a: number, b: number, c: number, d: number, e: number, f: number): void
-  save(): void
-  restore(): void
-}
-
 export interface CVizzu {
   // decorations
   callback: (task: CFunction, obj: CPointer) => void
-  renders: { [key: CPointer]: Renderer }
+  canvases: { [key: CPointer]: Canvas }
 
   // members
   HEAPU8: Uint8Array
