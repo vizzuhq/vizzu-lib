@@ -4,7 +4,7 @@ const testSteps = [
   (chart) => {
     const labelToShow = { value: '' }
 
-    chart.on('pointeron', (event) => {
+    chart.on('pointermove', (event) => {
       if (event.target?.tagName === 'plot-marker') {
         labelToShow.value = event.target.values['Value 5 (+/-)']
         chart.forceUpdate()

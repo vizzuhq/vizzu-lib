@@ -10,10 +10,10 @@ import { Point, Rect, Line, TransformedRect } from './geom.js'
 
 export enum EventType {
   click = 'click',
-  pointeron = 'pointeron',
   pointermove = 'pointermove',
   pointerdown = 'pointerdown',
   pointerup = 'pointerup',
+  pointerleave = 'pointerleave',
   wheel = 'wheel',
   update = 'update',
   drawBegin = 'draw-begin',
@@ -45,10 +45,10 @@ export enum EventType {
 
 export interface EventMap {
   [EventType.click]: PointerEvent
-  [EventType.pointeron]: PointerEvent
   [EventType.pointermove]: PointerEvent
   [EventType.pointerdown]: PointerEvent
   [EventType.pointerup]: PointerEvent
+  [EventType.pointerleave]: PointerEvent
   [EventType.wheel]: WheelEvent
   [EventType.update]: UpdateEvent
   [EventType.drawBegin]: Event<Element>

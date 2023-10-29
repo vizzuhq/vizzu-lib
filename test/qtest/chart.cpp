@@ -31,7 +31,7 @@ void TestChart::prepareData()
 
 	chart.getChart()
 	    .getEventDispatcher()
-	    .getEvent("pointeron")
+	    .getEvent("pointermove")
 	    ->attach(*this);
 }
 
