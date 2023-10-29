@@ -3,8 +3,6 @@
 
 #include <QMainWindow>
 
-#include "apps/qutils/qtscheduler.h"
-
 #include "chart.h"
 
 namespace Ui
@@ -22,7 +20,6 @@ public:
 	void paintEvent(QPaintEvent *) override;
 
 private:
-	QtScheduler scheduler;
 	TestChart chart;
 	std::unique_ptr<Ui::Window> ui;
 
