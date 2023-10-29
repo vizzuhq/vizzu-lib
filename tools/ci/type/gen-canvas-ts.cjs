@@ -13,8 +13,7 @@ const generator = new Generator({
   formatCode: async (code) => {
     const cfg = await prettier.resolveConfig(__dirname)
     return await prettier.format(code, Object.assign(cfg, { parser: 'typescript' }))
-  },
-  formatFile: (_file) => {}
+  }
 })
 
 function convertToTSType(yamlType) {

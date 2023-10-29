@@ -15,8 +15,7 @@ const generator = new Generator({
   formatCode: async (code) => {
     const cfg = await prettier.resolveConfig(__dirname)
     return await prettier.format(code, { ...cfg, parser: 'babel' })
-  },
-  formatFile: (_file) => {}
+  }
 })
 
 const outputFile = path.join(__dirname, '../../..', 'src/apps/weblib/canvas.js')

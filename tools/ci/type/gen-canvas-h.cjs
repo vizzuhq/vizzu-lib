@@ -1,5 +1,4 @@
 const path = require('path')
-const { exec } = require('child_process')
 const Generator = require('./gen-simple.cjs')
 
 const generator = new Generator({
@@ -8,16 +7,8 @@ const generator = new Generator({
   toParameter: (_param, type) => `${convertToCType(type)}`,
   toDeclaration: (method, params) => `extern void canvas_${method}(${params});`,
   toContent: (declarations) => declarations.join('\n'),
-  suffix: () => `\n}\n`,
-  formatCode: async (code) => code,
-  formatFile: async (file) => {
-    return new Promise((resolve, reject) => {
-      exec(`clang-format -i ${file}`, (err, stdout, stderr) => {
-        if (err) reject(err)
-        else resolve(stdout)
-      })
-    })
-  }
+  suffix: () => `\n\n}\n`,
+  formatCode: async (code) => code
 })
 
 function convertToCType(yamlType) {

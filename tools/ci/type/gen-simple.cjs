@@ -14,7 +14,6 @@ class Generator {
     const content = await this.options.formatCode(code)
     console.log(`Writing ${outputFile}`)
     fs.writeFileSync(outputFile, content)
-    await this.options.formatFile(outputFile)
   }
 
   generateCode(def) {
