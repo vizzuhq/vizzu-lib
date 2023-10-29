@@ -134,7 +134,6 @@ export interface CVizzu {
   _chart_relToCanvasCoords(chart: CChartPtr, rx: number, ry: number): CPointPtr
   _chart_canvasToRelCoords(chart: CChartPtr, x: number, y: number): CPointPtr
   _chart_setKeyframe(chart: CChartPtr): void
-  _chart_markerData(chart: CChartPtr, id: number): CString
   _addEventListener(chart: CChartPtr, name: CString, callback: CFunction): void
   _removeEventListener(chart: CChartPtr, name: CString, callback: CFunction): void
   _event_preventDefault(event: CEventPtr): void

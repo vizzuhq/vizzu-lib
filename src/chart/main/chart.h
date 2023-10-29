@@ -85,8 +85,6 @@ public:
 	void animate(const OnComplete &onComplete = OnComplete());
 	void setKeyframe();
 	void setAnimation(const Anim::AnimationPtr &animation);
-	[[nodiscard]] const Gen::Marker *markerByIndex(
-	    size_t index) const;
 	[[nodiscard]] Geom::Rect getLogoBoundary() const;
 
 private:

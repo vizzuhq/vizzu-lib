@@ -228,18 +228,6 @@ void Interface::setKeyframe(ObjectRegistry::Handle chart)
 	getChart(chart)->setKeyframe();
 }
 
-const char *Interface::getMarkerData(ObjectRegistry::Handle chart,
-    unsigned id)
-{
-	auto &&chartPtr = getChart(chart);
-	thread_local std::string res;
-	if (const auto *marker = chartPtr->markerByIndex(id))
-		res = marker->toJSON();
-	else
-		res = {};
-	return res.c_str();
-}
-
 void Interface::animControl(ObjectRegistry::Handle chart,
     const char *command,
     const char *param)
