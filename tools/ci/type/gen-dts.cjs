@@ -45,6 +45,10 @@ class DTSGenerator {
       this._content,
       Object.assign(cfg, { parser: 'typescript' })
     )
+    const dir = path.dirname(outputPath)
+    if (!fs.existsSync(dir)) {
+      fs.mkdirSync(dir, { recursive: true })
+    }
     fs.writeFileSync(outputPath, formatted)
     this._content = ''
   }
