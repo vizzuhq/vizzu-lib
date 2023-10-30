@@ -14,6 +14,7 @@ module.exports = [
       terser({
         mangle: {
           properties: {
+            keep_quoted: true,
             regex: /^_/
           }
         }
