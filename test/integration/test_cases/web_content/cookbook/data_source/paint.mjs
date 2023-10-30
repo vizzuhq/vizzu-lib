@@ -1,5 +1,4 @@
 import { Mouse } from '../../../../utils/mouse.mjs'
-import { lastAnim } from '../../../../utils/utils.mjs'
 
 const testSteps = [
   (chart) => {
@@ -38,12 +37,10 @@ const testSteps = [
     })
   },
   (chart) => {
-    new Mouse(chart).down(100, 100).up(100, 100)
-    return lastAnim(chart)
+    return new Mouse(chart).click(200, 200).expectedAnimation()
   },
   (chart) => {
-    new Mouse(chart).down(300, 200).up(300, 200)
-    return lastAnim(chart)
+    return new Mouse(chart).click(300, 200).expectedAnimation()
   }
 ]
 

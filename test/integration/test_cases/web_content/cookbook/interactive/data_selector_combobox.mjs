@@ -1,8 +1,9 @@
 import { data } from '../../../../test_data/chart_types_eu.mjs'
-import { lastAnim } from '../../../../utils/utils.mjs'
+import { LastAnimation } from '../../../../utils/lastanimation.mjs'
 
 const testSteps = [
   (chart) => {
+    chart.feature(new LastAnimation())
     const select = document.createElement('select')
     select.style = 'position: absolute; top: 40px; left: 300px;'
     chart.getCanvasElement().parentElement.appendChild(select)
@@ -42,7 +43,7 @@ const testSteps = [
     document.querySelector('select').value = 'Value 3 (+)'
     const event = new Event('change')
     document.querySelector('select').dispatchEvent(event)
-    return lastAnim(chart)
+    return chart.feature.lastAnimation.last()
   }
 ]
 

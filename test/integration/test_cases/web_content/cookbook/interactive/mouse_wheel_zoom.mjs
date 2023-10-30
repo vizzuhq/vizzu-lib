@@ -1,6 +1,5 @@
 import { data } from '../../../../test_data/chart_types_eu.mjs'
 import { Mouse } from '../../../../utils/mouse.mjs'
-import { lastAnim } from '../../../../utils/utils.mjs'
 
 const testSteps = [
   (chart) => {
@@ -100,8 +99,7 @@ const testSteps = [
     )
   },
   (chart) => {
-    new Mouse(chart).move(250, 150).wheel(50)
-    return lastAnim(chart)
+    return new Mouse(chart).move(250, 150).wheel(50).expectedAnimation()
   }
 ]
 
