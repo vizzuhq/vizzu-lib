@@ -12,7 +12,7 @@ fi
 mkdir -p build/cmake-desktop
 pushd build/cmake-desktop
 cmake -Dclangtidy:BOOL="ON" -Dcppcheck:BOOL="ON" ../../project/cmake/
-cmake --build . --target cvizzu vizzutest -- --jobs=$JOBS
+cmake --build . --target vizzutest -- --jobs=$JOBS
 popd
 
 # test desktop

@@ -1,3 +1,5 @@
+import { Canvas } from './module/canvas'
+
 export type CPointer = number
 export type CString = CPointer
 export type CException = CPointer
@@ -12,6 +14,7 @@ export type CRecordPtr = CPointer
 export type CRecordValue = CPointer
 export type CPointPtr = CPointer
 export type CArrayPtr = CPointer
+export type CColorGradientPtr = CPointer
 
 export type PtrType =
   | 'i1'
@@ -40,21 +43,10 @@ export interface ModuleOptions {
   locateFile?: (path: string) => string
 }
 
-export interface Renderer {
-  canvas(): HTMLCanvasElement
-  dc(): CanvasRenderingContext2D
-  frameBegin(): void
-  frameEnd(): void
-  lineWidthNotification(width: number): void
-  noneZeroLineWidth(): boolean
-  startPolygonNotification(): boolean
-  endPolygonNotification(): void
-}
-
 export interface CVizzu {
   // decorations
   callback: (task: CFunction, obj: CPointer) => void
-  renders: { [key: CPointer]: Renderer }
+  canvases: { [key: CPointer]: Canvas }
 
   // members
   HEAPU8: Uint8Array
@@ -140,3 +132,5 @@ export interface CVizzu {
   _anim_control(chart: CChartPtr, command: CString, param: CString): void
   _anim_setValue(chart: CChartPtr, path: CString, value: CString): void
 }
+
+export declare const Module: CVizzu

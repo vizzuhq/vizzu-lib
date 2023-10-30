@@ -1,7 +1,7 @@
-import { Renderer } from './cvizzu.types'
+import { CPointer, CString, CColorGradientPtr } from './cvizzu.types'
 import { Point } from './geom.js'
 import { Plugin, PluginApi } from './plugins.js'
-
+import { Canvas } from './module/canvas.js'
 import { Module } from './module/module.js'
 import { CCanvas } from './module/ccanvas.js'
 import { CChart } from './module/cchart.js'
@@ -10,12 +10,12 @@ export interface RenderingApi extends PluginApi {
   clientToRenderCoor(clientPos: Point): Point
 }
 
-export class Render implements Plugin, Renderer {
+export class Render implements Plugin, Canvas {
   private _ccanvas: CCanvas
   private _enabled: boolean
   private _cchart: CChart
   private _log: boolean
-  private _polygonFirstPoint: boolean
+  private _polygonInProgress: boolean
   private _offscreenCanvas: HTMLCanvasElement
   private _offscreenContext: CanvasRenderingContext2D
   private _mainCanvas: HTMLCanvasElement
@@ -42,7 +42,7 @@ export class Render implements Plugin, Renderer {
 
   constructor(module: Module, cchart: CChart, canvas: HTMLCanvasElement, log: boolean) {
     this._enabled = true
-    this._polygonFirstPoint = false
+    this._polygonInProgress = false
     this._offscreenCanvas = document.createElement<'canvas'>('canvas')
     const offCtx = this._offscreenCanvas.getContext('2d')
     if (!offCtx) throw Error('Cannot get rendering context of internal canvas')
@@ -68,39 +68,6 @@ export class Render implements Plugin, Renderer {
 
   private _clientRect(): DOMRect {
     return this._mainCanvas.getBoundingClientRect()
-  }
-
-  frameBegin(): void {
-    this._currentLineWidth = 1
-    this._offscreenContext.clearRect(
-      -1,
-      -1,
-      this._mainCanvas.width + 1,
-      this._mainCanvas.height + 1
-    )
-  }
-
-  frameEnd(): void {
-    this._context.clearRect(-1, -1, this._mainCanvas.width + 1, this._mainCanvas.height + 1)
-    this._context.drawImage(this._offscreenCanvas, 0, 0)
-  }
-
-  lineWidthNotification(width: number): void {
-    this._currentLineWidth = width
-  }
-
-  noneZeroLineWidth(): boolean {
-    return this._currentLineWidth !== 0
-  }
-
-  startPolygonNotification(): boolean {
-    const first = this._polygonFirstPoint
-    this._polygonFirstPoint = true
-    return !first
-  }
-
-  endPolygonNotification(): void {
-    this._polygonFirstPoint = false
   }
 
   private _updateCanvasSize(): void {
@@ -140,5 +107,191 @@ export class Render implements Plugin, Renderer {
       x: (clientPos.x - rect.x) / scaleX,
       y: (clientPos.y - rect.y) / scaleY
     }
+  }
+
+  setCursor(name: CString): void {
+    this.canvas().style.cursor = this._ccanvas.getString(name)
+  }
+
+  frameBegin(): void {
+    this._currentLineWidth = 1
+    this._offscreenContext.clearRect(
+      -1,
+      -1,
+      this._mainCanvas.width + 1,
+      this._mainCanvas.height + 1
+    )
+  }
+
+  frameEnd(): void {
+    this._context.clearRect(-1, -1, this._mainCanvas.width + 1, this._mainCanvas.height + 1)
+    this._context.drawImage(this._offscreenCanvas, 0, 0)
+  }
+
+  setClipRect(x: number, y: number, sizex: number, sizey: number): void {
+    const dc = this.dc()
+    dc.beginPath()
+    dc.rect(x, y, sizex, sizey)
+    dc.clip()
+  }
+
+  setClipCircle(x: number, y: number, radius: number): void {
+    const dc = this.dc()
+    dc.beginPath()
+    dc.arc(x, y, radius, 0, 6.28318530718)
+    dc.clip()
+  }
+
+  setClipPolygon(): void {
+    const dc = this.dc()
+    dc.closePath()
+    dc.clip()
+    this._polygonInProgress = false
+  }
+
+  setBrushColor(r: number, g: number, b: number, a: number): void {
+    const dc = this.dc()
+    dc.fillStyle = 'rgba(' + r * 255 + ',' + g * 255 + ',' + b * 255 + ',' + a + ')'
+  }
+
+  setLineColor(r: number, g: number, b: number, a: number): void {
+    const dc = this.dc()
+    dc.strokeStyle = 'rgba(' + r * 255 + ',' + g * 255 + ',' + b * 255 + ',' + a + ')'
+  }
+
+  setLineWidth(width: number): void {
+    const dc = this.dc()
+    dc.lineWidth = width
+    this._currentLineWidth = width
+  }
+
+  setFont(font: CString): void {
+    const dc = this.dc()
+    dc.font = this._ccanvas.getString(font)
+  }
+
+  beginDropShadow(): void {}
+
+  setDropShadowBlur(radius: number): void {
+    const dc = this.dc()
+    dc.shadowBlur = radius
+  }
+
+  setDropShadowColor(r: number, g: number, b: number, a: number): void {
+    const dc = this.dc()
+    dc.shadowColor = 'rgba(' + r * 255 + ',' + g * 255 + ',' + b * 255 + ',' + a + ')'
+  }
+
+  setDropShadowOffset(x: number, y: number): void {
+    const dc = this.dc()
+    dc.shadowOffsetX = x
+    dc.shadowOffsetY = y
+  }
+
+  endDropShadow(): void {
+    const dc = this.dc()
+    dc.shadowBlur = 0
+    dc.shadowOffsetX = 0
+    dc.shadowOffsetY = 0
+    dc.shadowColor = 'rgba(0, 0, 0, 0)'
+  }
+
+  beginPolygon(): void {
+    const dc = this.dc()
+    dc.beginPath()
+  }
+
+  addPoint(x: number, y: number): void {
+    const dc = this.dc()
+    if (!this._polygonInProgress) dc.moveTo(x, y)
+    else dc.lineTo(x, y)
+    this._polygonInProgress = true
+  }
+
+  addBezier(c0x: number, c0y: number, c1x: number, c1y: number, x: number, y: number): void {
+    const dc = this.dc()
+    dc.bezierCurveTo(c0x, c0y, c1x, c1y, x, y)
+  }
+
+  endPolygon(): void {
+    const dc = this.dc()
+    dc.closePath()
+    dc.fill()
+    if (this._currentLineWidth !== 0) dc.stroke()
+    this._polygonInProgress = false
+  }
+
+  rectangle(x: number, y: number, sizex: number, sizey: number): void {
+    const dc = this.dc()
+    dc.beginPath()
+    dc.rect(x, y, sizex, sizey)
+    dc.fill()
+    if (this._currentLineWidth !== 0) dc.stroke()
+  }
+
+  circle(x: number, y: number, radius: number): void {
+    const dc = this.dc()
+    dc.beginPath()
+    dc.arc(x, y, radius, 0, 6.28318530718)
+    dc.fill()
+    if (this._currentLineWidth !== 0) dc.stroke()
+  }
+
+  line(x1: number, y1: number, x2: number, y2: number): void {
+    const dc = this.dc()
+    dc.beginPath()
+    dc.moveTo(x1, y1)
+    dc.lineTo(x2, y2)
+    if (this._currentLineWidth !== 0) dc.stroke()
+  }
+
+  textBoundary(text: CString, sizeX: CPointer, sizeY: CPointer): void {
+    const dc = this.dc()
+    let metrics = dc.measureText(this._ccanvas.getString(text))
+    const width = metrics.width
+    metrics = dc.measureText('Op')
+    const height = metrics.actualBoundingBoxAscent + metrics.actualBoundingBoxDescent
+    this._ccanvas.setNumber(sizeX, width)
+    this._ccanvas.setNumber(sizeY, height)
+  }
+
+  text(x: number, y: number, sizex: number, sizey: number, text: CString): void {
+    const dc = this.dc()
+    dc.textAlign = 'left'
+    dc.textBaseline = 'top'
+    x = x + (sizex < 0 ? -sizex : 0)
+    y = y + (sizey < 0 ? -sizey : 0)
+    dc.fillText(this._ccanvas.getString(text), x, y)
+  }
+
+  setBrushGradient(
+    x1: number,
+    y1: number,
+    x2: number,
+    y2: number,
+    stopCount: number,
+    stopsPtr: CColorGradientPtr
+  ): void {
+    const dc = this.dc()
+    const grd = dc.createLinearGradient(x1, y1, x2, y2)
+    this._ccanvas
+      .getColorGradient(stopsPtr, stopCount)
+      .stops.forEach((g) => grd.addColorStop(g.offset, g.color))
+    dc.fillStyle = grd
+  }
+
+  transform(a: number, b: number, c: number, d: number, e: number, f: number): void {
+    const dc = this.dc()
+    dc.transform(a, b, c, d, e, f)
+  }
+
+  save(): void {
+    const dc = this.dc()
+    dc.save()
+  }
+
+  restore(): void {
+    const dc = this.dc()
+    dc.restore()
   }
 }

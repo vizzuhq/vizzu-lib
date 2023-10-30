@@ -5,6 +5,7 @@
 #include "base/conv/auto_json.h"
 #include "base/io/log.h"
 
+#include "canvas.h"
 #include "interfacejs.h"
 #include "jscriptcanvas.h"
 #include "jsfunctionwrapper.h"
@@ -305,7 +306,7 @@ ObjectRegistry::Handle Interface::createChart()
 	    [&](const std::shared_ptr<Gfx::ICanvas> &target,
 	        GUI::Cursor cursor)
 	{
-		::setCursor(
+		::canvas_setCursor(
 		    std::static_pointer_cast<Vizzu::Main::JScriptCanvas>(
 		        target)
 		        .get(),

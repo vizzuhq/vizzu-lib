@@ -1,0 +1,27 @@
+set(canvas_h_generator ${CMAKE_CURRENT_SOURCE_DIR}/${root}/tools/ci/type/gen-canvas-h.cjs)
+set(canvas_js_generator ${CMAKE_CURRENT_SOURCE_DIR}/${root}/tools/ci/type/gen-canvas-js.cjs)
+set(canvas_yaml ${appsDir}/weblib/canvas.yaml)
+set(canvas_h ${appsDir}/weblib/canvas.h)
+set(canvas_js ${appsDir}/weblib/canvas.js)
+
+add_custom_command(
+    OUTPUT ${canvas_h}
+    COMMAND node ${canvas_h_generator}
+    DEPENDS ${canvas_h_generator} ${canvas_yaml}
+    COMMENT "Generating canvas.h file..."
+    VERBATIM
+)
+
+add_custom_command(
+    OUTPUT ${canvas_js}
+    COMMAND node ${canvas_js_generator}
+    DEPENDS ${canvas_js_generator} ${canvas_yaml}
+    COMMENT "Generating canvas.js file..."
+    VERBATIM
+)
+
+add_custom_target(generate_canvas DEPENDS ${canvas_h} ${canvas_js})
+
+set(headers ${headers} ${canvas_h})
+
+add_dependencies(cvizzu generate_canvas)
