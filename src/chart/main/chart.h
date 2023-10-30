@@ -7,7 +7,6 @@
 
 #include "base/anim/control.h"
 #include "base/gfx/canvas.h"
-#include "base/gui/scheduler.h"
 #include "base/util/eventdispatcher.h"
 #include "chart/animator/animator.h"
 #include "chart/generator/plot.h"
@@ -85,8 +84,6 @@ public:
 	void animate(const OnComplete &onComplete = OnComplete());
 	void setKeyframe();
 	void setAnimation(const Anim::AnimationPtr &animation);
-	[[nodiscard]] const Gen::Marker *markerByIndex(
-	    size_t index) const;
 	[[nodiscard]] Geom::Rect getLogoBoundary() const;
 
 private:

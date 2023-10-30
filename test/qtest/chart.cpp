@@ -7,7 +7,7 @@
 #include "chart/ui/events.h"
 #include "data/datacube/datacube.h"
 
-TestChart::TestChart(GUI::Scheduler &scheduler) : chart(scheduler) {}
+TestChart::TestChart() : chart() {}
 
 void TestChart::prepareData()
 {
@@ -31,7 +31,7 @@ void TestChart::prepareData()
 
 	chart.getChart()
 	    .getEventDispatcher()
-	    .getEvent("pointeron")
+	    .getEvent("pointermove")
 	    ->attach(*this);
 }
 

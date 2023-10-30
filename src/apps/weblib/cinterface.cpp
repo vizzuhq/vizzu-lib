@@ -372,11 +372,6 @@ void chart_setKeyframe(APIHandles::Chart chart)
 	return Interface::getInstance().setKeyframe(chart);
 }
 
-const char *chart_markerData(APIHandles::Chart chart, unsigned id)
-{
-	return Interface::getInstance().getMarkerData(chart, id);
-}
-
 void anim_control(APIHandles::Chart chart,
     const char *command,
     const char *param)

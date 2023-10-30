@@ -1,67 +1,6 @@
 #include "jscriptcanvas.h"
 
-extern "C" {
-extern void
-canvas_textBoundary(const void *, const char *, double *, double *);
-extern void
-canvas_setClipRect(const void *, double, double, double, double);
-extern void
-canvas_setClipCircle(const void *, double, double, double);
-extern void canvas_setClipPolygon(const void *);
-extern void
-canvas_setBrushColor(const void *, double, double, double, double);
-extern void
-canvas_setLineColor(const void *, double, double, double, double);
-extern void canvas_setLineWidth(const void *, double);
-extern void canvas_setFont(const void *, const char *);
-extern void canvas_beginDropShadow(const void *);
-extern void canvas_setDropShadowBlur(const void *, double);
-extern void canvas_setDropShadowColor(const void *,
-    double,
-    double,
-    double,
-    double);
-extern void canvas_setDropShadowOffset(const void *, double, double);
-extern void canvas_endDropShadow(const void *);
-extern void canvas_beginPolygon(const void *);
-extern void canvas_addPoint(const void *, double, double);
-extern void canvas_addBezier(const void *,
-    double,
-    double,
-    double,
-    double,
-    double,
-    double);
-extern void canvas_endPolygon(const void *);
-extern void
-canvas_rectangle(const void *, double, double, double, double);
-extern void canvas_circle(const void *, double, double, double);
-extern void canvas_line(const void *, double, double, double, double);
-extern void canvas_text(const void *,
-    double,
-    double,
-    double,
-    double,
-    const char *);
-extern void canvas_setBrushGradient(const void *,
-    double,
-    double,
-    double,
-    double,
-    size_t,
-    const void *);
-extern void canvas_frameBegin(const void *);
-extern void canvas_frameEnd(const void *);
-extern void canvas_transform(const void *,
-    double,
-    double,
-    double,
-    double,
-    double,
-    double);
-extern void canvas_save(const void *);
-extern void canvas_restore(const void *);
-}
+#include "canvas.h"
 
 namespace Vizzu::Main
 {

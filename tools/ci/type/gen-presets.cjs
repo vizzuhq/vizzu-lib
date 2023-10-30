@@ -128,10 +128,8 @@ $import:
 `
 
   const content = warningText + YAML.stringify(schema, null, 2)
-  const formattedContent = await prettier.format(content, {
-    parser: 'yaml',
-    tabWidth: 2
-  })
+  const cfg = await prettier.resolveConfig(__dirname)
+  const formattedContent = await prettier.format(content, { ...cfg, parser: 'yaml' })
   fs.writeFileSync(outputPath, formattedContent)
 }
 

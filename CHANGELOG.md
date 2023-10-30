@@ -56,6 +56,7 @@
   `Vizzu.feature()`
 - TypeScript interface made more typesafe, while the javascript api got ported to 
 - TypeScript.
+- `pointeron` event removed, `pointerleave` event added. 
 
 ## [0.8.1] - 2023-08-15
 

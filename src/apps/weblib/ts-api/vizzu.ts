@@ -79,7 +79,7 @@ export default class Vizzu {
     element specified by its ID or DOM object. The new chart is empty by 
     default, but can be set to an initial state in the second optional 
     parameter. */
-  constructor(options: string | HTMLElement | VizzuOptions, initState?: Anim.Keyframes) {
+  constructor(options: string | HTMLElement | VizzuOptions, initState?: Anim.Target) {
     const opts = this._processOptions(options)
 
     this._container = opts.container
@@ -96,7 +96,12 @@ export default class Vizzu {
     this._anim = this.initializing
 
     if (initState) {
-      this.initializing = this.animate(initState, { duration: 0 }).then(() => this)
+      this.initializing = this.animate([
+        {
+          target: initState,
+          options: { duration: 0 }
+        }
+      ]).then(() => this)
     }
   }
 

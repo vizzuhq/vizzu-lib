@@ -1,4 +1,4 @@
-import { CVizzu, Renderer } from '../cvizzu.types'
+import { CVizzu } from '../cvizzu.types'
 
 import { ObjectRegistry } from './objregistry.js'
 import { CEnv } from './cenv.js'
@@ -6,17 +6,18 @@ import { CData } from './cdata.js'
 import { CChart } from './cchart.js'
 import { CCanvas } from './ccanvas.js'
 import { CAnimControl } from './canimctrl.js'
+import { Canvas } from './canvas'
 
 export class Module extends CEnv {
   constructor(wasm: CVizzu) {
     super(wasm, new ObjectRegistry(wasm._object_free))
     this._wasm.callback = this._callStatic(this._wasm._callback)
-    this._wasm.renders = {}
+    this._wasm.canvases = {}
     this.setLogging(false)
   }
 
-  registerRenderer(cCanvas: CCanvas, renderer: Renderer): void {
-    this._wasm.renders[cCanvas.getId()] = renderer
+  registerRenderer(cCanvas: CCanvas, canvas: Canvas): void {
+    this._wasm.canvases[cCanvas.getId()] = canvas
   }
 
   version(): string {

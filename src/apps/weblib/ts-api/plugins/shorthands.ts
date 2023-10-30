@@ -35,7 +35,6 @@ export type LazyTarget = Anim.Target & {
 
 export type AnyTarget = LazyTarget | AnyChart | Snapshot
 export type AnyOptions = Anim.Options | Anim.Duration | null
-export type AnyControlOptions = Anim.ControlOptions | Anim.Duration | null
 
 export interface LazyKeyframe {
   target: AnyTarget
@@ -45,7 +44,7 @@ export interface LazyKeyframe {
 export type AnyKeyframe = LazyKeyframe | AnyTarget
 export type LazyKeyframes = AnyKeyframe[]
 export type AnyAnimTarget = LazyKeyframes | AnyTarget | CAnimation
-export type AnyAnimOptions = AnyControlOptions | AnyOptions
+export type AnyAnimOptions = Anim.ControlOptions & AnyOptions
 
 interface LazyPrepareAnimationContext {
   target: AnyAnimTarget

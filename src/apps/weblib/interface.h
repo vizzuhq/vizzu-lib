@@ -108,8 +108,6 @@ public:
 	void animate(ObjectRegistry::Handle chart,
 	    void (*callback)(bool));
 	void setKeyframe(ObjectRegistry::Handle chart);
-	const char *getMarkerData(ObjectRegistry::Handle chart,
-	    unsigned id);
 	void animControl(ObjectRegistry::Handle chart,
 	    const char *command,
 	    const char *param);
@@ -142,26 +140,9 @@ private:
 		Snapshot snapshot;
 	};
 
-	struct CScheduler : GUI::Scheduler
-	{
-		struct ScheduledTask
-		{
-			Task task;
-			CScheduler *scheduler;
-			std::list<ScheduledTask>::iterator it;
-		};
-
-		void schedule(const Task &task,
-		    std::chrono::steady_clock::time_point time) final;
-
-		std::list<ScheduledTask> tasks;
-		std::mutex mutex;
-	};
-
 	std::shared_ptr<Vizzu::Chart> getChart(
 	    ObjectRegistry::Handle chart);
 
-	CScheduler scheduler;
 	ObjectRegistry objects;
 };
 

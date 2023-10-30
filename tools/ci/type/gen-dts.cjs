@@ -40,22 +40,23 @@ class DTSGenerator {
   }
 
   async writeFile(outputPath) {
-    const formatted = await prettier.format(this._content, {
-      parser: 'typescript',
-      semi: false,
-      tabWidth: 2,
-      singleQuote: true,
-      printWidth: 100,
-      trailingComma: 'none'
-    })
+    const cfg = await prettier.resolveConfig(__dirname)
+    const formatted = await prettier.format(
+      this._content,
+      Object.assign(cfg, { parser: 'typescript' })
+    )
+    const dir = path.dirname(outputPath)
+    if (!fs.existsSync(dir)) {
+      fs.mkdirSync(dir, { recursive: true })
+    }
     fs.writeFileSync(outputPath, formatted)
     this._content = ''
   }
 
   async generate(schemas, outputDir) {
     this._namespaces = [...Object.keys(schemas)]
-    const namespaceOrder = ['data', 'config', 'styles', 'anim', 'presets']
-    for (const name of namespaceOrder) {
+    for (const name of this._namespaces) {
+      console.log(`Generating ${name}.ts`)
       if (schemas[name]) this.addModule(schemas[name])
       else throw new Error(`Schema ${name} not found`)
       await this.writeFile(outputDir + `/${name}.ts`)

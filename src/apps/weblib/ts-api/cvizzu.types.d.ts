@@ -1,3 +1,5 @@
+import { Canvas } from './module/canvas'
+
 export type CPointer = number
 export type CString = CPointer
 export type CException = CPointer
@@ -12,6 +14,7 @@ export type CRecordPtr = CPointer
 export type CRecordValue = CPointer
 export type CPointPtr = CPointer
 export type CArrayPtr = CPointer
+export type CColorGradientPtr = CPointer
 
 export type PtrType =
   | 'i1'
@@ -40,21 +43,10 @@ export interface ModuleOptions {
   locateFile?: (path: string) => string
 }
 
-export interface Renderer {
-  canvas(): HTMLCanvasElement
-  dc(): CanvasRenderingContext2D
-  frameBegin(): void
-  frameEnd(): void
-  lineWidthNotification(width: number): void
-  noneZeroLineWidth(): boolean
-  startPolygonNotification(): boolean
-  endPolygonNotification(): void
-}
-
 export interface CVizzu {
   // decorations
   callback: (task: CFunction, obj: CPointer) => void
-  renders: { [key: CPointer]: Renderer }
+  canvases: { [key: CPointer]: Canvas }
 
   // members
   HEAPU8: Uint8Array
@@ -134,10 +126,11 @@ export interface CVizzu {
   _chart_relToCanvasCoords(chart: CChartPtr, rx: number, ry: number): CPointPtr
   _chart_canvasToRelCoords(chart: CChartPtr, x: number, y: number): CPointPtr
   _chart_setKeyframe(chart: CChartPtr): void
-  _chart_markerData(chart: CChartPtr, id: number): CString
   _addEventListener(chart: CChartPtr, name: CString, callback: CFunction): void
   _removeEventListener(chart: CChartPtr, name: CString, callback: CFunction): void
   _event_preventDefault(event: CEventPtr): void
   _anim_control(chart: CChartPtr, command: CString, param: CString): void
   _anim_setValue(chart: CChartPtr, path: CString, value: CString): void
 }
+
+export declare const Module: CVizzu

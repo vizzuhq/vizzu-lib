@@ -5,6 +5,7 @@
 #include "base/conv/auto_json.h"
 #include "base/io/log.h"
 
+#include "canvas.h"
 #include "interfacejs.h"
 #include "jscriptcanvas.h"
 #include "jsfunctionwrapper.h"
@@ -228,18 +229,6 @@ void Interface::setKeyframe(ObjectRegistry::Handle chart)
 	getChart(chart)->setKeyframe();
 }
 
-const char *Interface::getMarkerData(ObjectRegistry::Handle chart,
-    unsigned id)
-{
-	auto &&chartPtr = getChart(chart);
-	thread_local std::string res;
-	if (const auto *marker = chartPtr->markerByIndex(id))
-		res = marker->toJSON();
-	else
-		res = {};
-	return res.c_str();
-}
-
 void Interface::animControl(ObjectRegistry::Handle chart,
     const char *command,
     const char *param)
@@ -311,13 +300,13 @@ const char *Interface::dataMetaInfo(ObjectRegistry::Handle chart)
 
 ObjectRegistry::Handle Interface::createChart()
 {
-	auto &&widget = std::make_shared<UI::ChartWidget>(scheduler);
+	auto &&widget = std::make_shared<UI::ChartWidget>();
 
 	widget->doSetCursor =
 	    [&](const std::shared_ptr<Gfx::ICanvas> &target,
 	        GUI::Cursor cursor)
 	{
-		::setCursor(
+		::canvas_setCursor(
 		    std::static_pointer_cast<Vizzu::Main::JScriptCanvas>(
 		        target)
 		        .get(),
@@ -418,32 +407,6 @@ void Interface::pointerMove(ObjectRegistry::Handle chart,
 	objects.get<UI::ChartWidget>(chart)->onPointerMove(
 	    objects.get<Vizzu::Main::JScriptCanvas>(canvas),
 	    GUI::PointerEvent(pointerId, Geom::Point{x, y}));
-}
-
-void Interface::CScheduler::schedule(const Task &task,
-    std::chrono::steady_clock::time_point time)
-{
-	auto it = [this, &task, lock = std::lock_guard{mutex}]
-	{
-		return tasks.emplace(tasks.end(), task, this);
-	}();
-	it->it = it;
-
-	::callLater(
-	    [](void *task)
-	    {
-		    create_unique_ptr(static_cast<ScheduledTask *>(task),
-		        [](ScheduledTask *task)
-		        {
-			        auto lock =
-			            std::lock_guard{task->scheduler->mutex};
-			        task->scheduler->tasks.erase(task->it);
-		        })
-		        ->task();
-	    },
-	    std::to_address(it),
-	    static_cast<int>(
-	        (time - std::chrono::steady_clock::now()).count()));
 }
 
 }

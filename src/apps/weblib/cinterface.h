@@ -122,7 +122,6 @@ extern const Point *chart_relToCanvasCoords(APIHandles::Chart chart,
 extern const Point *
 chart_canvasToRelCoords(APIHandles::Chart chart, double x, double y);
 extern void chart_setKeyframe(APIHandles::Chart chart);
-const char *chart_markerData(APIHandles::Chart chart, unsigned id);
 extern void addEventListener(APIHandles::Chart chart,
     const char *name,
     void (*callback)(APIHandles::Event event, const char *));
