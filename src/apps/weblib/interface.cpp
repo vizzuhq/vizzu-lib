@@ -299,7 +299,7 @@ const char *Interface::dataMetaInfo(ObjectRegistry::Handle chart)
 
 ObjectRegistry::Handle Interface::createChart()
 {
-	auto &&widget = std::make_shared<UI::ChartWidget>(scheduler);
+	auto &&widget = std::make_shared<UI::ChartWidget>();
 
 	widget->doSetCursor =
 	    [&](const std::shared_ptr<Gfx::ICanvas> &target,
@@ -406,32 +406,6 @@ void Interface::pointerMove(ObjectRegistry::Handle chart,
 	objects.get<UI::ChartWidget>(chart)->onPointerMove(
 	    objects.get<Vizzu::Main::JScriptCanvas>(canvas),
 	    GUI::PointerEvent(pointerId, Geom::Point{x, y}));
-}
-
-void Interface::CScheduler::schedule(const Task &task,
-    std::chrono::steady_clock::time_point time)
-{
-	auto it = [this, &task, lock = std::lock_guard{mutex}]
-	{
-		return tasks.emplace(tasks.end(), task, this);
-	}();
-	it->it = it;
-
-	::callLater(
-	    [](void *task)
-	    {
-		    create_unique_ptr(static_cast<ScheduledTask *>(task),
-		        [](ScheduledTask *task)
-		        {
-			        auto lock =
-			            std::lock_guard{task->scheduler->mutex};
-			        task->scheduler->tasks.erase(task->it);
-		        })
-		        ->task();
-	    },
-	    std::to_address(it),
-	    static_cast<int>(
-	        (time - std::chrono::steady_clock::now()).count()));
 }
 
 }

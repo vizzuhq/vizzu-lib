@@ -3,6 +3,7 @@
 
 #include <QApplication>
 #include <QMouseEvent>
+#include <QTimer>
 
 #include "apps/qutils/canvas.h"
 
@@ -10,7 +11,7 @@
 
 Window::Window(QWidget *parent) :
     QMainWindow(parent),
-    chart(scheduler),
+    chart(),
     ui(std::make_unique<Ui::Window>())
 {
 	ui->setupUi(this);
@@ -32,12 +33,13 @@ void Window::animStep()
 {
 	auto now = std::chrono::steady_clock::now();
 	chart.getChart().getChart().getAnimControl().update(now);
-	scheduler.schedule(
+#ifndef __clang_analyzer__
+	return QTimer::singleShot(25,
 	    [this]
 	    {
 		    animStep();
-	    },
-	    now + std::chrono::milliseconds(25));
+	    });
+#endif
 }
 
 Window::~Window() = default;

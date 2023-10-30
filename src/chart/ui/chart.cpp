@@ -10,8 +10,7 @@
 namespace Vizzu::UI
 {
 
-ChartWidget::ChartWidget(GUI::Scheduler &scheduler) :
-    scheduler(scheduler)
+ChartWidget::ChartWidget()
 {
 	chart.onChanged = [this]()
 	{

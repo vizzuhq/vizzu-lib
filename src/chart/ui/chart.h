@@ -4,7 +4,6 @@
 #include <optional>
 
 #include "base/gui/pointer.h"
-#include "base/gui/scheduler.h"
 #include "base/gui/widget.h"
 #include "base/util/eventdispatcher.h"
 #include "chart/main/chart.h"
@@ -21,7 +20,7 @@ public:
 	    doSetCursor;
 	std::function<void(const std::string &)> openUrl;
 
-	explicit ChartWidget(GUI::Scheduler &scheduler);
+	explicit ChartWidget();
 	~ChartWidget() override;
 
 	void onPointerDown(const std::shared_ptr<Gfx::ICanvas> &,
@@ -54,7 +53,6 @@ public:
 
 private:
 	Chart chart;
-	std::reference_wrapper<GUI::Scheduler> scheduler;
 	Util::EventDispatcher::event_ptr onClick;
 	Util::EventDispatcher::event_ptr onPointerMoveEvent;
 	Util::EventDispatcher::event_ptr onWheelEvent;
