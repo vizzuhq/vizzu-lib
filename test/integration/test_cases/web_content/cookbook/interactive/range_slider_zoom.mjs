@@ -1,8 +1,10 @@
 import { data } from '../../../../test_data/chart_types_eu.mjs'
-import { lastAnim } from '../../../../utils/utils.mjs'
+import { LastAnimation } from '../../../../utils/lastanimation.mjs'
 
 const testSteps = [
   (chart) => {
+    chart.feature(new LastAnimation())
+
     const rangeMax = 21
     const rangeMin = 2
     let range = rangeMax
@@ -70,7 +72,7 @@ const testSteps = [
     input.value = '20'
     const event = new Event('input')
     input.dispatchEvent(event)
-    return lastAnim(chart)
+    return chart.feature.lastAnimation.last()
   }
 ]
 

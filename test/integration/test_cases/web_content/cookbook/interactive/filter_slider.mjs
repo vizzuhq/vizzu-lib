@@ -1,8 +1,10 @@
 import { data } from '../../../../test_data/music_industry_history_1.mjs'
-import { lastAnim } from '../../../../utils/utils.mjs'
+import { LastAnimation } from '../../../../utils/lastanimation.mjs'
 
 const testSteps = [
   (chart) => {
+    chart.feature(new LastAnimation())
+
     const input = document.createElement('input')
     input.id = 'slider'
     input.type = 'range'
@@ -40,7 +42,7 @@ const testSteps = [
     input.value = '2000'
     const event = new Event('input')
     input.dispatchEvent(event)
-    return lastAnim(chart)
+    return chart.feature.lastAnimation.last()
   }
 ]
 

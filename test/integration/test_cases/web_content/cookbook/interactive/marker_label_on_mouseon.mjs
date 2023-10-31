@@ -1,4 +1,5 @@
 import { data } from '../../../../test_data/chart_types_eu.mjs'
+import { Mouse } from '../../../../utils/mouse.mjs'
 
 const testSteps = [
   (chart) => {
@@ -27,6 +28,11 @@ const testSteps = [
         title: 'Label shown on mouse-on'
       }
     })
+  },
+
+  (chart) => {
+    new Mouse(chart).move(477, 178)
+    return chart.animate({}, 1)
   }
 ]
 

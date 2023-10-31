@@ -1,43 +1,52 @@
+import { LastAnimation } from './lastanimation.mjs'
+
 export class Mouse {
   constructor(chart) {
-    this._chart = chart._chart
+    chart.feature(new LastAnimation())
+    this._chart = chart
+  }
+
+  expectedAnimation() {
+    return this._chart.feature.lastAnimation.last()
+  }
+
+  click(x, y) {
+    return this.down(x, y).up(x, y)
   }
 
   down(x, y) {
-    this._chart._cChart._call(this._chart._cChart._wasm._vizzu_pointerDown)(
-      this._chart._render._ccanvas.getId(),
-      0,
-      x,
-      y
-    )
+    this._dispatch('pointerdown', x, y)
     return this
   }
 
   move(x, y) {
-    this._chart._cChart._call(this._chart._cChart._wasm._vizzu_pointerMove)(
-      this._chart._render._ccanvas.getId(),
-      0,
-      x,
-      y
-    )
+    this._dispatch('pointermove', x, y)
     return this
   }
 
   up(x, y) {
-    this._chart._cChart._call(this._chart._cChart._wasm._vizzu_pointerUp)(
-      this._chart._render._ccanvas.getId(),
-      0,
-      x,
-      y
-    )
+    this._dispatch('pointerup', x, y)
     return this
   }
 
   wheel(delta) {
-    this._chart._cChart._call(this._chart._cChart._wasm._vizzu_wheel)(
-      this._chart._render._ccanvas.getId(),
-      delta
-    )
+    const event = new WheelEvent('wheel', {
+      bubbles: true,
+      cancelable: true,
+      deltaY: delta
+    })
+    this._chart.getCanvasElement().dispatchEvent(event)
     return this
+  }
+
+  _dispatch(type, x, y) {
+    const event = new PointerEvent(type, {
+      bubbles: true,
+      cancelable: true,
+      pointerId: 1,
+      clientX: x,
+      clientY: y
+    })
+    this._chart.getCanvasElement().dispatchEvent(event)
   }
 }
