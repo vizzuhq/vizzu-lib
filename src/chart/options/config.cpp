@@ -37,26 +37,6 @@ using ExtractType =
     ExtractIf<std::remove_cvref_t<std::invoke_result_t<decltype(Mptr),
         decltype(Refl::Name::getBase(Mptr))>>>;
 
-template <auto Mptr, auto Set>
-inline constexpr std::pair<std::string_view, Config::Accessor>
-    Config::unique_accessor = {
-        Refl::Name::in_data_name<
-            Refl::Name::name<decltype(Mptr), Mptr>()>,
-        {.get =
-                [](const Options &options)
-            {
-	            return Conv::toString(
-	                ExtractType<Mptr>{}(std::invoke(Mptr, options)));
-            },
-            .set =
-                [](OptionsSetter &setter, const std::string &value)
-            {
-	            std::invoke(Set,
-	                setter,
-	                Conv::parse<typename ExtractType<Mptr>::type>(
-	                    value));
-            }}};
-
 template <auto Mptr>
 inline constexpr std::pair<std::string_view, Config::Accessor>
     Config::accessor = {Refl::Name::in_data_name<
@@ -102,8 +82,19 @@ const Config::Accessors &Config::getAccessors()
 	    accessor<&Options::reverse>,
 	    accessor<&Options::align>,
 	    accessor<&Options::split>,
-	    unique_accessor<&Options::tooltip,
-	        &OptionsSetter::showTooltip>};
+	    {"tooltip",
+	        {.get =
+	                [](const Options &options)
+	            {
+		            return Conv::toString(options.tooltip);
+	            },
+	            .set =
+	                [](OptionsSetter &setter,
+	                    const std::string &value)
+	            {
+		            setter.showTooltip(
+		                Conv::parse<std::optional<uint64_t>>(value));
+	            }}}};
 
 	return accessors;
 }

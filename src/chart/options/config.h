@@ -36,10 +36,6 @@ private:
 		    const std::string &);
 	};
 
-	template <auto Mptr, auto Set>
-	static const std::pair<std::string_view, Config::Accessor>
-	    unique_accessor;
-
 	template <auto Mptr>
 	static const std::pair<std::string_view, Config::Accessor>
 	    accessor;
