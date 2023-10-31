@@ -12,12 +12,6 @@ bool isAxis(ChannelId type)
 	return type == ChannelId::x || type == ChannelId::y;
 }
 
-Channel::Channel(Type type, double def, bool stackable) :
-    type(type),
-    defaultValue(def),
-    stackable(stackable)
-{}
-
 Channel Channel::makeChannel(Type id)
 {
 	switch (id) {

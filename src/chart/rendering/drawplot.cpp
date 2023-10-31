@@ -12,16 +12,16 @@ namespace Vizzu::Draw
 DrawPlot::DrawPlot(const DrawingContext &context) :
     DrawingContext(context)
 {
-	auto plotElement = std::make_unique<Events::Targets::Plot>();
-
 	DrawBackground(*this,
 	    layout.plot,
 	    rootStyle.plot,
 	    rootEvents.draw.plot.background,
-	    std::move(plotElement));
+	    std::make_unique<Events::Targets::Plot>());
 
 	drawArea(false);
-	DrawAxes(*this).drawBase();
+
+	DrawAxes axes(*this);
+	axes.drawBase();
 
 	auto clip = rootStyle.plot.overflow == Styles::Overflow::hidden;
 
@@ -35,7 +35,7 @@ DrawPlot::DrawPlot(const DrawingContext &context) :
 
 	drawMarkerLabels();
 
-	DrawAxes(*this).drawLabels();
+	axes.drawLabels();
 }
 
 void DrawPlot::clipPlotArea()

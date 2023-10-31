@@ -30,12 +30,6 @@ public:
 
 	static Channel makeChannel(Type id);
 
-	Channel(const Channel &channel) = default;
-	Channel(Channel &&) = default;
-	Channel &operator=(const Channel &) = default;
-	Channel &operator=(Channel &&) = default;
-
-	Channel(Type type, double def, bool stackable);
 	std::pair<bool, OptionalIndex> addSeries(
 	    const Data::SeriesIndex &index,
 	    std::optional<size_t> pos = std::nullopt);
@@ -60,20 +54,20 @@ public:
 	bool operator==(const Channel &other) const;
 
 	Type type;
-	OptionalIndex measureId;
-	DimensionIndices dimensionIds;
 	double defaultValue;
 	bool stackable;
-	ChannelRange range;
+	OptionalIndex measureId{};
+	DimensionIndices dimensionIds{};
+	ChannelRange range{};
 	std::size_t labelLevel{};
 	std::string title = "auto";
-	Base::AutoBool axisLine;
-	Base::AutoBool axisLabels;
-	Base::AutoBool ticks;
-	Base::AutoBool guides;
-	Base::AutoBool markerGuides;
-	Base::AutoBool interlacing;
-	Base::AutoParam<double> step;
+	Base::AutoBool axisLine{};
+	Base::AutoBool axisLabels{};
+	Base::AutoBool ticks{};
+	Base::AutoBool guides{};
+	Base::AutoBool markerGuides{};
+	Base::AutoBool interlacing{};
+	Base::AutoParam<double> step{};
 };
 
 Channel::DimensionIndices operator&(

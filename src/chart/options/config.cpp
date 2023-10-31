@@ -8,12 +8,6 @@
 namespace Vizzu::Gen
 {
 
-const Config::Accessors &Config::getAccessors()
-{
-	static const auto accessors = Config::initAccessors();
-	return accessors;
-}
-
 template <class T> struct ExtractIf : std::identity
 {
 	using type = T;
@@ -39,28 +33,9 @@ template <> struct ExtractIf<Math::FuzzyBool>
 };
 
 template <auto Mptr>
-using ExtractType = ExtractIf<std::remove_cvref_t<
-    std::invoke_result_t<decltype(Mptr), Options>>>;
-
-template <auto Mptr, auto Set>
-inline constexpr std::pair<std::string_view, Config::Accessor>
-    Config::unique_accessor = {
-        Refl::Name::in_data_name<
-            Refl::Name::name<decltype(Mptr), Mptr>()>,
-        {.get =
-                [](const Options &options)
-            {
-	            return Conv::toString(
-	                ExtractType<Mptr>{}(std::invoke(Mptr, options)));
-            },
-            .set =
-                [](OptionsSetter &setter, const std::string &value)
-            {
-	            std::invoke(Set,
-	                setter,
-	                Conv::parse<typename ExtractType<Mptr>::type>(
-	                    value));
-            }}};
+using ExtractType =
+    ExtractIf<std::remove_cvref_t<std::invoke_result_t<decltype(Mptr),
+        decltype(Refl::Name::getBase(Mptr))>>>;
 
 template <auto Mptr>
 inline constexpr std::pair<std::string_view, Config::Accessor>
@@ -80,17 +55,135 @@ inline constexpr std::pair<std::string_view, Config::Accessor>
 	                    value);
             }}};
 
+const Config::Accessors &Config::getAccessors()
+{
+	static const Config::Accessors accessors = {
+	    accessor<&Options::title>,
+	    accessor<&Options::subtitle>,
+	    accessor<&Options::caption>,
+	    accessor<&Options::legend>,
+	    accessor<&Options::coordSystem>,
+	    {"rotate",
+	        {.get =
+	                [](const Options &options)
+	            {
+		            return Conv::toString(
+		                90 * options.angle / (M_PI / 2));
+	            },
+	            .set =
+	                [](OptionsSetter &setter,
+	                    const std::string &value)
+	            {
+		            setter.rotate(Conv::parse<double>(value) / 90);
+	            }}},
+	    accessor<&Options::geometry>,
+	    accessor<&Options::orientation>,
+	    accessor<&Options::sort>,
+	    accessor<&Options::reverse>,
+	    accessor<&Options::align>,
+	    accessor<&Options::split>,
+	    {"tooltip",
+	        {.get =
+	                [](const Options &options)
+	            {
+		            return Conv::toString(options.tooltip);
+	            },
+	            .set =
+	                [](OptionsSetter &setter,
+	                    const std::string &value)
+	            {
+		            setter.showTooltip(
+		                Conv::parse<std::optional<uint64_t>>(value));
+	            }}}};
+
+	return accessors;
+}
+
+template <auto Mptr>
+const std::pair<std::string_view, Config::ChannelAccessor>
+    Config::channel_accessor{
+        Refl::Name::in_data_name<
+            Refl::Name::name<decltype(Mptr), Mptr>()>,
+        {.get =
+                [](const Channel &channel)
+            {
+	            return Conv::toString(
+	                ExtractType<Mptr>{}(std::invoke(Mptr, channel)));
+            },
+            .set =
+                [](OptionsSetter &setter,
+                    const ChannelId &channel,
+                    const std::string &value)
+            {
+	            std::invoke(Mptr,
+	                setter.getOptions().getChannels().at(channel)) =
+	                Conv::parse<typename ExtractType<Mptr>::type>(
+	                    value);
+            }}};
+
+const Config::ChannelAccessors &Config::getChannelAccessors()
+{
+	static const ChannelAccessors accessors{
+	    channel_accessor<&Channel::title>,
+	    {"set", {}},
+	    channel_accessor<&Channel::stackable>,
+	    {"range.min",
+	        {.get =
+	                [](const Channel &channel)
+	            {
+		            return Conv::toString(channel.range.min);
+	            },
+	            .set =
+	                [](OptionsSetter &setter,
+	                    const ChannelId &id,
+	                    const std::string &value)
+	            {
+		            setter.getOptions()
+		                .getChannels()
+		                .at(id)
+		                .range.min =
+		                Conv::parse<OptionalChannelExtrema>(value);
+	            }}},
+	    {"range.max",
+	        {.get =
+	                [](const Channel &channel)
+	            {
+		            return Conv::toString(channel.range.max);
+	            },
+	            .set =
+	                [](OptionsSetter &setter,
+	                    const ChannelId &id,
+	                    const std::string &value)
+	            {
+		            setter.getOptions()
+		                .getChannels()
+		                .at(id)
+		                .range.max =
+		                Conv::parse<OptionalChannelExtrema>(value);
+	            }}},
+	    channel_accessor<&Channel::labelLevel>,
+	    {"axis", channel_accessor<&Channel::axisLine>.second},
+	    channel_accessor<&Channel::ticks>,
+	    channel_accessor<&Channel::interlacing>,
+	    channel_accessor<&Channel::guides>,
+	    channel_accessor<&Channel::markerGuides>,
+	    {"labels", channel_accessor<&Channel::axisLabels>.second},
+	    channel_accessor<&Channel::step>};
+	return accessors;
+}
+
 std::list<std::string> Config::listParams()
 {
 	std::list<std::string> res;
 	for (const auto &accessor : getAccessors())
 		res.emplace_back(accessor.first);
 
-	auto channelParams = listChannelParams();
+	auto channelParams =
+	    std::ranges::views::keys(getChannelAccessors());
 	for (auto channelName : Refl::enum_names<ChannelId>) {
-		for (auto &param : channelParams)
-			res.push_back(
-			    "channels." + std::string{channelName} + "." + param);
+		for (const auto &param : channelParams)
+			res.push_back("channels." + std::string{channelName} + "."
+			              + std::string{param});
 	}
 
 	return res;
@@ -134,67 +227,34 @@ void Config::setChannelParam(const std::string &path,
 	auto id = Conv::parse<ChannelId>(parts.at(1));
 	auto property = parts.at(2);
 
-	if (property == "title") { setter.setAxisTitle(id, value); }
-	else if (property == "axis") {
-		setter.setAxisLine(id, Conv::parse<Base::AutoBool>(value));
-	}
-	else if (property == "labels") {
-		setter.setAxisLabels(id, Conv::parse<Base::AutoBool>(value));
-	}
-	else if (property == "ticks") {
-		setter.setTicks(id, Conv::parse<Base::AutoBool>(value));
-	}
-	else if (property == "interlacing") {
-		setter.setInterlacing(id, Conv::parse<Base::AutoBool>(value));
-	}
-	else if (property == "guides") {
-		setter.setGuides(id, Conv::parse<Base::AutoBool>(value));
-	}
-	else if (property == "markerGuides") {
-		setter.setMarkerGuides(id,
-		    Conv::parse<Base::AutoBool>(value));
-	}
-	else if (property == "step") {
-		setter.setStep(id,
-		    Conv::parse<Base::AutoParam<double>>(value));
-	}
-	else if (property == "attach") {
+	if (property == "attach") {
 		setter.addSeries(id, value);
+		return;
 	}
-	else if (property == "detach") {
+	if (property == "detach") {
 		setter.deleteSeries(id, value);
+		return;
 	}
-	else if (property == "set") {
+	if (property == "set") {
 		if (parts.size() == 3 && value == "null")
 			setter.clearSeries(id);
 		else {
 			if (std::stoi(parts.at(3)) == 0) setter.clearSeries(id);
 			setter.addSeries(id, value);
 		}
+		return;
 	}
-	else if (property == "stackable") {
-		setter.setStackable(id, Conv::parse<bool>(value));
+
+	if (property == "range") property += "." + parts.at(3);
+
+	const auto &accessors = getChannelAccessors();
+	if (auto it = accessors.find(property); it != accessors.end()) {
+		return it->second.set(setter, id, value);
 	}
-	else if (property == "range") {
-		if (parts.size() >= 4 && parts.at(3) == "min") {
-			setter.setRangeMin(id,
-			    Conv::parse<OptionalChannelExtrema>(value));
-		}
-		else if (parts.size() >= 4 && parts.at(3) == "max") {
-			setter.setRangeMax(id,
-			    Conv::parse<OptionalChannelExtrema>(value));
-		}
-		else
-			throw std::logic_error(
-			    path + "/" + value + ": invalid range setting");
-	}
-	else if (property == "labelLevel") {
-		setter.setLabelLevel(id, Conv::parse<std::size_t>(value));
-	}
-	else
-		throw std::logic_error(
-		    path + "/" + value
-		    + ": invalid channel parameter: " + property);
+
+	throw std::logic_error(
+	    path + "/" + value
+	    + ": invalid channel parameter: " + property);
 }
 
 std::string Config::getChannelParam(const std::string &path) const
@@ -205,96 +265,19 @@ std::string Config::getChannelParam(const std::string &path) const
 
 	const auto &channel = setter.getOptions().getChannels().at(id);
 
-	if (property == "title") { return Conv::toString(channel.title); }
-	if (property == "axis") {
-		return Conv::toString(channel.axisLine);
-	}
-	if (property == "labels") {
-		return Conv::toString(channel.axisLabels);
-	}
-	if (property == "ticks") { return Conv::toString(channel.ticks); }
-	if (property == "interlacing") {
-		return Conv::toString(channel.interlacing);
-	}
-	if (property == "guides") {
-		return Conv::toString(channel.guides);
-	}
-	if (property == "markerGuides") {
-		return Conv::toString(channel.markerGuides);
-	}
 	if (property == "set") {
 		auto list = channel.dimensionNames(*setter.getTable());
 		auto measure = channel.measureName(*setter.getTable());
 		if (!measure.empty()) list.push_front(measure);
 		return Conv::toJSON(list);
 	}
-	if (property == "stackable") {
-		return Conv::toString(channel.stackable);
-	}
-	if (property == "range") {
-		if (parts.size() == 4 && parts.at(3) == "min") {
-			return Conv::toString(channel.range.min);
-		}
-		if (parts.size() == 4 && parts.at(3) == "max") {
-			return Conv::toString(channel.range.max);
-		}
-		throw std::logic_error(path + ": invalid range parameter");
-	}
-	if (property == "labelLevel") {
-		return Conv::toString(channel.labelLevel);
+
+	if (property == "range") property += "." + parts.at(3);
+
+	const auto &accessors = getChannelAccessors();
+	if (auto it = accessors.find(property); it != accessors.end()) {
+		return it->second.get(channel);
 	}
 	throw std::logic_error(path + ": invalid channel parameter");
 }
-
-std::list<std::string> Config::listChannelParams()
-{
-	return {"title",
-	    "set",
-	    "stackable",
-	    "range.min",
-	    "range.max",
-	    "labelLevel",
-	    "axis",
-	    "ticks",
-	    "interlacing",
-	    "guides",
-	    "markerGuides",
-	    "labels"};
-}
-
-Config::Accessors Config::initAccessors()
-{
-	Accessors res;
-
-	res.emplace(accessor<&Options::title>);
-	res.emplace(accessor<&Options::subtitle>);
-	res.emplace(accessor<&Options::caption>);
-	res.emplace(accessor<&Options::legend>);
-	res.emplace(accessor<&Options::coordSystem>);
-
-	res.insert({"rotate",
-	    {.get =
-	            [](const Options &options)
-	        {
-		        return Conv::toString(
-		            90 * options.angle / (M_PI / 2));
-	        },
-	        .set =
-	            [](OptionsSetter &setter, const std::string &value)
-	        {
-		        setter.rotate(Conv::parse<double>(value) / 90);
-	        }}});
-
-	res.emplace(accessor<&Options::geometry>);
-	res.emplace(accessor<&Options::orientation>);
-	res.emplace(accessor<&Options::sort>);
-	res.emplace(accessor<&Options::reverse>);
-	res.emplace(accessor<&Options::align>);
-	res.emplace(accessor<&Options::split>);
-	res.emplace(unique_accessor<&Options::tooltip,
-	    &OptionsSetter::showTooltip>);
-
-	return res;
-}
-
 }
