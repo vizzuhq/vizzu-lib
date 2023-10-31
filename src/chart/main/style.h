@@ -20,7 +20,7 @@
 namespace Vizzu::Styles
 {
 
-template <typename T> using Param = ::Style::Param<T>;
+using ::Style::Param;
 
 enum class Visibility { hidden, visible };
 enum class Overflow { hidden, visible };

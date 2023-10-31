@@ -38,28 +38,6 @@ public:
 	OptionsSetter &rotate(double ccwQuadrant);
 	OptionsSetter &setAngle(double ccwQuadrant);
 	OptionsSetter &setFilter(const Data::Filter &filter);
-	OptionsSetter &setLabelLevel(const ChannelId &channelId,
-	    std::size_t level);
-	OptionsSetter &setRangeMin(const ChannelId &channelId,
-	    const OptionalChannelExtrema &value);
-	OptionsSetter &setRangeMax(const ChannelId &channelId,
-	    const OptionalChannelExtrema &value);
-	OptionsSetter &setStackable(const ChannelId &channelId,
-	    bool value);
-	OptionsSetter &setAxisTitle(const ChannelId &channelId,
-	    const std::string &title);
-	OptionsSetter &setAxisLine(const ChannelId &channelId,
-	    Base::AutoBool enable);
-	OptionsSetter &setAxisLabels(const ChannelId &channelId,
-	    Base::AutoBool enable);
-	OptionsSetter &setTicks(const ChannelId &channelId,
-	    Base::AutoBool enable);
-	OptionsSetter &setGuides(const ChannelId &channelId,
-	    Base::AutoBool enable);
-	OptionsSetter &setMarkerGuides(const ChannelId &channelId,
-	    Base::AutoBool enable);
-	OptionsSetter &setInterlacing(const ChannelId &channelId,
-	    Base::AutoBool enable);
 	OptionsSetter &setStep(const ChannelId &channelId,
 	    Base::AutoParam<double> step);
 	OptionsSetter &addMarkerInfo(Options::MarkerId marker);
