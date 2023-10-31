@@ -38,8 +38,6 @@ public:
 	OptionsSetter &rotate(double ccwQuadrant);
 	OptionsSetter &setAngle(double ccwQuadrant);
 	OptionsSetter &setFilter(const Data::Filter &filter);
-	OptionsSetter &setStep(const ChannelId &channelId,
-	    Base::AutoParam<double> step);
 	OptionsSetter &addMarkerInfo(Options::MarkerId marker);
 	OptionsSetter &moveMarkerInfo(Options::MarkerId from,
 	    Options::MarkerId to);

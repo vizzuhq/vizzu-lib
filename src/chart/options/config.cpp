@@ -176,7 +176,8 @@ const Config::ChannelAccessors &Config::getChannelAccessors()
 	    channel_accessor<&Channel::interlacing>,
 	    channel_accessor<&Channel::guides>,
 	    channel_accessor<&Channel::markerGuides>,
-	    {"labels", channel_accessor<&Channel::axisLabels>.second}};
+	    {"labels", channel_accessor<&Channel::axisLabels>.second},
+	    channel_accessor<&Channel::step>};
 	return accessors;
 }
 
@@ -235,11 +236,6 @@ void Config::setChannelParam(const std::string &path,
 	auto id = Conv::parse<ChannelId>(parts.at(1));
 	auto property = parts.at(2);
 
-	if (property == "step") {
-		setter.setStep(id,
-		    Conv::parse<Base::AutoParam<double>>(value));
-		return;
-	}
 	if (property == "attach") {
 		setter.addSeries(id, value);
 		return;

@@ -85,13 +85,6 @@ OptionsSetter &OptionsSetter::setFilter(const Data::Filter &filter)
 	return *this;
 }
 
-OptionsSetter &OptionsSetter::setStep(const ChannelId &channelId,
-    Base::AutoParam<double> step)
-{
-	options.getChannels().at(channelId).step = step;
-	return *this;
-}
-
 OptionsSetter &OptionsSetter::addMarkerInfo(Options::MarkerId marker)
 {
 	if (!options.getMarkerInfoId(marker).has_value()) {

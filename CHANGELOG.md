@@ -30,6 +30,7 @@
 - Layout stretched to the bottom of the canvas. 
 - Legend accepts only the acceptable channel values.
 - From now the dimension axis title is shown if set.
+- "step" was not listed in chart channel accessors.
 
 ### Added
 
