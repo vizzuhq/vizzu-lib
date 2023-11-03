@@ -4,7 +4,6 @@ import { Snapshot } from '../module/cchart.js'
 import Vizzu from '../vizzu.js'
 
 import { getCSSCustomPropsForElement, propsToObject } from './cssutils.js'
-import { HtmlCanvasApi } from '../htmlcanvas.js'
 
 export class CSSProperties implements Plugin {
   private _chart?: Vizzu
@@ -28,7 +27,7 @@ export class CSSProperties implements Plugin {
     return {
       prepareAnimation: (ctx: PrepareAnimationContext, next: () => void): void => {
         const props = getCSSCustomPropsForElement(
-          (this._chart!.feature['htmlCanvas'] as HtmlCanvasApi).element,
+          this._chart!.feature.htmlCanvas.element,
           this.api.prefix
         )
         if (Array.isArray(ctx.target))

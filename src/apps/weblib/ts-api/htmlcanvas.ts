@@ -168,11 +168,3 @@ export class HtmlCanvas implements Plugin {
     return resizeObserver
   }
 }
-
-declare module './vizzu' {
-  interface Vizzu {
-    get feature(): Features & {
-      htmlCanvas: HtmlCanvasApi
-    }
-  }
-}

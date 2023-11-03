@@ -46,7 +46,7 @@ export class PointerEvents implements Plugin {
 
   register(vizzu: Vizzu): void {
     this._vizzu = vizzu
-    this._canvasApi = this._vizzu?.feature['htmlCanvas'] as HtmlCanvasApi
+    this._canvasApi = this._vizzu?.feature.htmlCanvas
   }
 
   unregister(): void {
@@ -64,7 +64,7 @@ export class PointerEvents implements Plugin {
       throw new NotInitializedError()
     }
 
-    this._canvas = (this._vizzu.feature['htmlCanvas'] as HtmlCanvasApi).element
+    this._canvas = this._vizzu.feature.htmlCanvas.element
     for (const [key, value] of Object.entries(this._handlers)) {
       this._canvas.addEventListener(key, value)
     }

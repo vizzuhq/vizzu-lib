@@ -14,7 +14,8 @@ import { Mirrored } from './tsutils.js'
 import { NotInitializedError, CancelError } from './errors.js'
 import { Plugin, PluginApi, PluginRegistry, Hooks } from './plugins.js'
 import Presets from './plugins/presets.js'
-import { LazyCanvasOptions } from './htmlcanvas.js'
+import { LazyCanvasOptions, HtmlCanvasApi } from './htmlcanvas.js'
+import { CoordSystemApi } from './plugins/coordsys.js'
 
 /** Options for the library. */
 export type LibOptions = LoaderOptions
@@ -37,6 +38,8 @@ export type Feature =
   | 'tooltip'
   | 'rendering'
   | 'cssProperties'
+  | 'coordSystem'
+  | 'htmlCanvas'
   | 'shorthands'
   | 'pivotData'
   | 'pointerEvents'
@@ -48,7 +51,10 @@ export interface FeatureOptions {
 export type VizzuOptions = FeatureOptions & LazyCanvasOptions
 
 export type FeatureFunction = (feature: Feature | Plugin, enabled?: boolean) => PluginApi
-export interface Features extends Record<string, PluginApi>, FeatureFunction {}
+export interface Features extends Record<string, PluginApi>, FeatureFunction {
+  coordSystem: CoordSystemApi
+  htmlCanvas: HtmlCanvasApi
+}
 
 /** Class representing a single chart in Vizzu. */
 export default class Vizzu {

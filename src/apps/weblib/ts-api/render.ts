@@ -35,7 +35,7 @@ export class Render implements Plugin, Canvas {
 
   constructor(module: Module, cchart: CChart, canvas: HtmlCanvas) {
     this._canvas = canvas
-    this._canvas.onchange = () => {
+    this._canvas.onchange = (): void => {
       this.updateFrame(true)
     }
     this._enabled = true
