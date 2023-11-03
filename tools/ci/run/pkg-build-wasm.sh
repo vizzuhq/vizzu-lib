@@ -25,7 +25,7 @@ popd
 # test wasm size
 
 wget 'https://vizzu-lib-main.storage.googleapis.com/lib/size.txt' -O build/cmake-wasm/weblib/size_downloaded.txt
-python tools/ci/size_check.py
+node tools/ci/sizeCheck.cjs
 
 # build ts
 
