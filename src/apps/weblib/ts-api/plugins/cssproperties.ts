@@ -28,7 +28,7 @@ export class CSSProperties implements Plugin {
     return {
       prepareAnimation: (ctx: PrepareAnimationContext, next: () => void): void => {
         const props = getCSSCustomPropsForElement(
-          (this._chart!.feature['htmlCanvas'] as HtmlCanvasApi).element(),
+          (this._chart!.feature['htmlCanvas'] as HtmlCanvasApi).element,
           this.api.prefix
         )
         if (Array.isArray(ctx.target))

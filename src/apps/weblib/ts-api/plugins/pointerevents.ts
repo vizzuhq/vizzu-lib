@@ -64,7 +64,7 @@ export class PointerEvents implements Plugin {
       throw new NotInitializedError()
     }
 
-    this._canvas = (this._vizzu.feature['htmlCanvas'] as HtmlCanvasApi).element()
+    this._canvas = (this._vizzu.feature['htmlCanvas'] as HtmlCanvasApi).element
     for (const [key, value] of Object.entries(this._handlers)) {
       this._canvas.addEventListener(key, value)
     }
@@ -90,7 +90,7 @@ export class PointerEvents implements Plugin {
   private _getCoords(evt: MouseEvent): number[] {
     const clientPos = { x: evt.clientX, y: evt.clientY }
     if (!this._canvasApi) throw new NotInitializedError()
-    const pos = this._canvasApi.clientToRender(clientPos)
+    const pos = this._canvasApi.clientToCanvas(clientPos)
     return [pos.x, pos.y]
   }
 }

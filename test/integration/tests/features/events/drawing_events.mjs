@@ -24,7 +24,7 @@ let receivedEvents = []
 let isErrorLogged = false
 
 function overlay(e, chart) {
-  const convert = chart.getConverter('plot-area', 'relative', 'canvas')
+  const coordSystem = chart.feature.coordSystem
   const ctx = e.renderingContext
   ctx.save()
   ctx.fillStyle = '#FF00000F'
@@ -52,9 +52,9 @@ function overlay(e, chart) {
   } else {
     if (e.detail.rect && e.detail.rect.pos && e.detail.rect.size) {
       const r = e.detail.rect
-      const pos = convert(r.pos)
+      const pos = coordSystem.toCanvas(r.pos)
       const bottomRight = { x: r.pos.x + r.size.x, y: r.pos.y + r.size.y }
-      const br = convert(bottomRight)
+      const br = coordSystem.toCanvas(bottomRight)
       const size = { x: br.x - pos.x, y: br.y - pos.y }
       ctx.fillRect(pos.x, pos.y, size.x, size.y)
       ctx.fillStyle = '#FF0000A0'
@@ -62,8 +62,8 @@ function overlay(e, chart) {
     } else if (e.detail.line) {
       const l = e.detail.line
       ctx.beginPath()
-      const beg = convert(l.begin)
-      const end = convert(l.end)
+      const beg = coordSystem.toCanvas(l.begin)
+      const end = coordSystem.toCanvas(l.end)
       ctx.moveTo(beg.x, beg.y)
       ctx.lineTo(end.x, end.y)
       ctx.stroke()

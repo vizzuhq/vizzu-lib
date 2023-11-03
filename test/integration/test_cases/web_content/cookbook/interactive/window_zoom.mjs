@@ -93,9 +93,9 @@ const testSteps = [
       }
 
       applyZoom() {
-        const convert = this.chart.getConverter('plot-area', 'canvas', 'relative')
-        const coords0 = convert(this.data0.position)
-        const coords1 = convert(this.data1.position)
+        const coordSystem = chart.feature.coordSystem
+        const coords0 = coordSystem.toRelative(this.data0.position)
+        const coords1 = coordSystem.toRelative(this.data1.position)
         this.applyZoomOnAxis(this.x, coords0.x, coords1.x)
         this.applyZoomOnAxis(this.y, coords0.y, coords1.y)
         this.update()

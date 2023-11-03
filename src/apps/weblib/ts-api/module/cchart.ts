@@ -1,9 +1,8 @@
-import { CString, CFunction, CEventPtr, CPointPtr } from '../cvizzu.types'
+import { CString, CFunction, CEventPtr } from '../cvizzu.types'
 
 import * as Anim from '../types/anim.js'
 import * as Config from '../types/config.js'
 import * as Styles from '../types/styles.js'
-import { Point } from '../geom.js'
 
 import { CObject, CEnv } from './cenv.js'
 import { CPointerClosure } from './objregistry.js'
@@ -92,23 +91,6 @@ export class CChart extends CObject {
       this._wasm._free(cname)
     }
     this._wasm.removeFunction(cfunc)
-  }
-
-  toCanvasCoords(point: Point): Point {
-    const ptr = this._call(this._wasm._chart_relToCanvasCoords)(point.x, point.y)
-    return this._getPoint(ptr)
-  }
-
-  toRelCoords(point: Point): Point {
-    const ptr = this._call(this._wasm._chart_canvasToRelCoords)(point.x, point.y)
-    return this._getPoint(ptr)
-  }
-
-  private _getPoint(ptr: CPointPtr): Point {
-    return {
-      x: this._wasm.getValue(ptr, 'double'),
-      y: this._wasm.getValue(ptr + 8, 'double')
-    }
   }
 
   pointerdown(pointerId: number, x: number, y: number): void {

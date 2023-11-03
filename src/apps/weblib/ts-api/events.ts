@@ -405,7 +405,7 @@ export class Events {
       state.canceled = true
     }
     if (param.type.endsWith('-draw') || param.type.startsWith('draw-')) {
-      param.renderingContext = this._canvas.context()
+      param.renderingContext = this._canvas.context
     }
     return param
   }

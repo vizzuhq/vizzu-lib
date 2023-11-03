@@ -2,7 +2,6 @@ import * as Anim from './types/anim.js'
 import * as Data from './types/data.js'
 import * as Config from './types/config.js'
 import * as Styles from './types/styles.js'
-import { CoordinateType, PointConverter } from './geom.js'
 import { EventType, EventMap, EventHandler } from './events.js'
 import { loader, LoaderOptions } from './module/loader.js'
 import { Chart } from './chart.js'
@@ -271,12 +270,6 @@ export default class Vizzu {
   store(): Snapshot {
     if (!this._chart) throw new NotInitializedError()
     return this._chart.store()
-  }
-
-  /** Returns a converter function. */
-  getConverter(target: `plot${string}`, from: CoordinateType, to: CoordinateType): PointConverter {
-    if (!this._chart) throw new NotInitializedError()
-    return this._chart.getConverter(target, from, to)
   }
 
   /** Removes the reference of the chart from every place it attached itself,

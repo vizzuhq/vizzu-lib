@@ -15,9 +15,9 @@ const testSteps = [
     }
 
     const toCanvasRect = (rect) => {
-      const convert = chart.getConverter('plot-area', 'relative', 'canvas')
-      const pos = convert({ x: rect.pos.x, y: rect.pos.y + rect.size.y })
-      const pos2 = convert({ x: rect.pos.x + rect.size.x, y: rect.pos.y })
+      const coordSystem = chart.feature.coordSystem
+      const pos = coordSystem.toCanvas({ x: rect.pos.x, y: rect.pos.y + rect.size.y })
+      const pos2 = coordSystem.toCanvas({ x: rect.pos.x + rect.size.x, y: rect.pos.y })
       return { pos, size: { x: pos2.x - pos.x, y: pos2.y - pos.y } }
     }
 

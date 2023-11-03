@@ -1,5 +1,5 @@
 import * as Geom from './geom.js'
-import { PluginApi } from './plugins.js'
+import { Plugin, PluginApi } from './plugins.js'
 import './vizzu.js'
 
 export interface CanvasOptions {
@@ -12,11 +12,12 @@ export type HtmlCanvasContext = CanvasRenderingContext2D
 
 export interface HtmlCanvasApi extends PluginApi {
   /** Returns the underlying canvas element. */
-  element(): HTMLCanvasElement
-  clientToRender(clientPos: Geom.Point): Geom.Point
+  get element(): HTMLCanvasElement
+  clientToCanvas(clientPos: Geom.Point): Geom.Point
+  canvasToClient(renderPos: Geom.Point): Geom.Point
 }
 
-export class HtmlCanvas {
+export class HtmlCanvas implements Plugin {
   onchange: () => void = () => {}
   private _container?: HTMLElement
   private _offscreenCanvas: HTMLCanvasElement
@@ -33,8 +34,9 @@ export class HtmlCanvas {
 
   get api(): HtmlCanvasApi {
     return {
-      element: this.element.bind(this),
-      clientToRender: this._clientToRender.bind(this)
+      element: this.element,
+      clientToCanvas: this._clientToCanvas.bind(this),
+      canvasToClient: this._canvasToClient.bind(this)
     }
   }
 
@@ -77,11 +79,11 @@ export class HtmlCanvas {
     if (this._container) this._container.removeChild(this._mainCanvas)
   }
 
-  element(): HTMLCanvasElement {
+  get element(): HTMLCanvasElement {
     return this._mainCanvas
   }
 
-  context(): CanvasRenderingContext2D {
+  get context(): CanvasRenderingContext2D {
     return this._offscreenContext
   }
 
@@ -116,18 +118,33 @@ export class HtmlCanvas {
     this._context.drawImage(this._offscreenCanvas, 0, 0)
   }
 
-  private _clientToRender(clientPos: Geom.Point): Geom.Point {
-    const rect = this._clientRect()
-    const scaleX = rect.width / (this._mainCanvas.width / this._scaleFactor)
-    const scaleY = rect.height / (this._mainCanvas.height / this._scaleFactor)
+  private _clientRect(): DOMRect {
+    return this._mainCanvas.getBoundingClientRect()
+  }
+
+  private _canvasScale(clientRect: DOMRect): Geom.Point {
     return {
-      x: (clientPos.x - rect.x) / scaleX,
-      y: (clientPos.y - rect.y) / scaleY
+      x: clientRect.width / (this._mainCanvas.width / this._scaleFactor),
+      y: clientRect.height / (this._mainCanvas.height / this._scaleFactor)
     }
   }
 
-  private _clientRect(): DOMRect {
-    return this._mainCanvas.getBoundingClientRect()
+  private _clientToCanvas(clientPos: Geom.Point): Geom.Point {
+    const rect = this._clientRect()
+    const scale = this._canvasScale(rect)
+    return {
+      x: (clientPos.x - rect.x) / scale.x,
+      y: (clientPos.y - rect.y) / scale.y
+    }
+  }
+
+  private _canvasToClient(renderPos: Geom.Point): Geom.Point {
+    const rect = this._clientRect()
+    const scale = this._canvasScale(rect)
+    return {
+      x: rect.x + renderPos.x * scale.x,
+      y: rect.y + renderPos.y * scale.y
+    }
   }
 
   private _toCanvasElement(element: HTMLElement): HTMLCanvasElement {

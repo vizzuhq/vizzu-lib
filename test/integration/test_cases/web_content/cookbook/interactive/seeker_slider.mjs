@@ -18,7 +18,7 @@ const testSteps = [
     input.min = 0
     input.max = 1000
     input.style = 'width: 500px; position: absolute; top: 540px; left: 30px;'
-    chart.feature.htmlCanvas.element().parentElement.appendChild(input)
+    chart.feature.htmlCanvas.element.parentElement.appendChild(input)
 
     const animation = chart.animate({
       x: 'Country',

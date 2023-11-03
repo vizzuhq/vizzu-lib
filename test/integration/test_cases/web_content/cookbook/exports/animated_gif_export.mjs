@@ -17,8 +17,8 @@ const testSteps = [
       workers: 4,
       workerScript: URL.createObjectURL(workerBlob),
       quality: 10,
-      width: chart.feature.htmlCanvas.element().width,
-      height: chart.feature.htmlCanvas.element().height
+      width: chart.feature.htmlCanvas.element.width,
+      height: chart.feature.htmlCanvas.element.height
     })
 
     chart.on('draw-complete', (event) => {

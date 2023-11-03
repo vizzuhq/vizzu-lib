@@ -26,7 +26,7 @@ const testSteps = [
 
     function drawComplete(event) {
       const ctx = event.renderingContext
-      const canvas = chart.feature.htmlCanvas.element()
+      const canvas = chart.feature.htmlCanvas.element
       const imageData = ctx.getImageData(0, 0, canvas.clientWidth, canvas.clientHeight)
       createImageBitmap(imageData).then((image) => {
         images.push(image)
@@ -45,7 +45,7 @@ const testSteps = [
       })
       .then((chart) => {
         const handle = setInterval(() => {
-          const ctx = chart.feature.htmlCanvas.element().getContext('2d')
+          const ctx = chart.feature.htmlCanvas.element.getContext('2d')
           if (!drawImages(ctx)) clearInterval(handle)
         }, 40)
       })

@@ -2,7 +2,6 @@ import * as Anim from './types/anim.js'
 import * as Config from './types/config.js'
 import * as Styles from './types/styles.js'
 import * as D from './types/data.js'
-import { Point, CoordinateType, PointConverter } from './geom.js'
 import { Module } from './module/module.js'
 import { CChart, Snapshot } from './module/cchart.js'
 import { CAnimControl, CAnimation } from './module/canimctrl.js'
@@ -21,6 +20,7 @@ import { Mirrored } from './tsutils.js'
 import { HtmlCanvas } from './htmlcanvas.js'
 import { VizzuOptions } from './vizzu.js'
 import { AnimControl } from './animcontrol.js'
+import { CoordSystem } from './plugins/coordsys.js'
 
 export class Chart {
   private _cChart: CChart
@@ -52,6 +52,7 @@ export class Chart {
     this._plugins.register(new Logging(this._module.setLogging.bind(this._module)), false)
     this._plugins.register(this._canvas, true)
     this._plugins.register(this._render, true)
+    this._plugins.register(new CoordSystem(this._module.getCoordSystem(this._cChart)), true)
     this._plugins.register(new CSSProperties(), false)
     this._plugins.register(new Shorthands(), true)
     this._plugins.register(new PivotData(), true)
@@ -115,17 +116,6 @@ export class Chart {
     this._canvas.destruct()
     if (this._updateInterval) clearInterval(this._updateInterval)
     delete this._updateInterval
-  }
-
-  getConverter(target: string, from: CoordinateType, to: CoordinateType): PointConverter {
-    if (typeof target === 'string' && target.startsWith('plot')) {
-      if (this._cChart) {
-        const chart = this._cChart
-        if (from === 'relative' || to === 'canvas') return (p: Point) => chart.toCanvasCoords(p)
-        if (from === 'canvas' || to === 'relative') return (p: Point) => chart.toRelCoords(p)
-      }
-    }
-    return (point: Point) => point
   }
 
   version(): string {

@@ -54,7 +54,7 @@ export class Render implements Plugin, Canvas {
   }
 
   setCursor(name: CString): void {
-    this._canvas.element().style.cursor = this._ccanvas.getString(name)
+    this._canvas.element.style.cursor = this._ccanvas.getString(name)
   }
 
   frameBegin(): void {
@@ -67,67 +67,67 @@ export class Render implements Plugin, Canvas {
   }
 
   setClipRect(x: number, y: number, sizex: number, sizey: number): void {
-    const dc = this._canvas.context()
+    const dc = this._canvas.context
     dc.beginPath()
     dc.rect(x, y, sizex, sizey)
     dc.clip()
   }
 
   setClipCircle(x: number, y: number, radius: number): void {
-    const dc = this._canvas.context()
+    const dc = this._canvas.context
     dc.beginPath()
     dc.arc(x, y, radius, 0, 6.28318530718)
     dc.clip()
   }
 
   setClipPolygon(): void {
-    const dc = this._canvas.context()
+    const dc = this._canvas.context
     dc.closePath()
     dc.clip()
     this._polygonInProgress = false
   }
 
   setBrushColor(r: number, g: number, b: number, a: number): void {
-    const dc = this._canvas.context()
+    const dc = this._canvas.context
     dc.fillStyle = 'rgba(' + r * 255 + ',' + g * 255 + ',' + b * 255 + ',' + a + ')'
   }
 
   setLineColor(r: number, g: number, b: number, a: number): void {
-    const dc = this._canvas.context()
+    const dc = this._canvas.context
     dc.strokeStyle = 'rgba(' + r * 255 + ',' + g * 255 + ',' + b * 255 + ',' + a + ')'
   }
 
   setLineWidth(width: number): void {
-    const dc = this._canvas.context()
+    const dc = this._canvas.context
     dc.lineWidth = width
     this._currentLineWidth = width
   }
 
   setFont(font: CString): void {
-    const dc = this._canvas.context()
+    const dc = this._canvas.context
     dc.font = this._ccanvas.getString(font)
   }
 
   beginDropShadow(): void {}
 
   setDropShadowBlur(radius: number): void {
-    const dc = this._canvas.context()
+    const dc = this._canvas.context
     dc.shadowBlur = radius
   }
 
   setDropShadowColor(r: number, g: number, b: number, a: number): void {
-    const dc = this._canvas.context()
+    const dc = this._canvas.context
     dc.shadowColor = 'rgba(' + r * 255 + ',' + g * 255 + ',' + b * 255 + ',' + a + ')'
   }
 
   setDropShadowOffset(x: number, y: number): void {
-    const dc = this._canvas.context()
+    const dc = this._canvas.context
     dc.shadowOffsetX = x
     dc.shadowOffsetY = y
   }
 
   endDropShadow(): void {
-    const dc = this._canvas.context()
+    const dc = this._canvas.context
     dc.shadowBlur = 0
     dc.shadowOffsetX = 0
     dc.shadowOffsetY = 0
@@ -135,24 +135,24 @@ export class Render implements Plugin, Canvas {
   }
 
   beginPolygon(): void {
-    const dc = this._canvas.context()
+    const dc = this._canvas.context
     dc.beginPath()
   }
 
   addPoint(x: number, y: number): void {
-    const dc = this._canvas.context()
+    const dc = this._canvas.context
     if (!this._polygonInProgress) dc.moveTo(x, y)
     else dc.lineTo(x, y)
     this._polygonInProgress = true
   }
 
   addBezier(c0x: number, c0y: number, c1x: number, c1y: number, x: number, y: number): void {
-    const dc = this._canvas.context()
+    const dc = this._canvas.context
     dc.bezierCurveTo(c0x, c0y, c1x, c1y, x, y)
   }
 
   endPolygon(): void {
-    const dc = this._canvas.context()
+    const dc = this._canvas.context
     dc.closePath()
     dc.fill()
     if (this._currentLineWidth !== 0) dc.stroke()
@@ -160,7 +160,7 @@ export class Render implements Plugin, Canvas {
   }
 
   rectangle(x: number, y: number, sizex: number, sizey: number): void {
-    const dc = this._canvas.context()
+    const dc = this._canvas.context
     dc.beginPath()
     dc.rect(x, y, sizex, sizey)
     dc.fill()
@@ -168,7 +168,7 @@ export class Render implements Plugin, Canvas {
   }
 
   circle(x: number, y: number, radius: number): void {
-    const dc = this._canvas.context()
+    const dc = this._canvas.context
     dc.beginPath()
     dc.arc(x, y, radius, 0, 6.28318530718)
     dc.fill()
@@ -176,7 +176,7 @@ export class Render implements Plugin, Canvas {
   }
 
   line(x1: number, y1: number, x2: number, y2: number): void {
-    const dc = this._canvas.context()
+    const dc = this._canvas.context
     dc.beginPath()
     dc.moveTo(x1, y1)
     dc.lineTo(x2, y2)
@@ -184,7 +184,7 @@ export class Render implements Plugin, Canvas {
   }
 
   textBoundary(text: CString, sizeX: CPointer, sizeY: CPointer): void {
-    const dc = this._canvas.context()
+    const dc = this._canvas.context
     let metrics = dc.measureText(this._ccanvas.getString(text))
     const width = metrics.width
     metrics = dc.measureText('Op')
@@ -194,7 +194,7 @@ export class Render implements Plugin, Canvas {
   }
 
   text(x: number, y: number, sizex: number, sizey: number, text: CString): void {
-    const dc = this._canvas.context()
+    const dc = this._canvas.context
     dc.textAlign = 'left'
     dc.textBaseline = 'top'
     x = x + (sizex < 0 ? -sizex : 0)
@@ -210,7 +210,7 @@ export class Render implements Plugin, Canvas {
     stopCount: number,
     stopsPtr: CColorGradientPtr
   ): void {
-    const dc = this._canvas.context()
+    const dc = this._canvas.context
     const grd = dc.createLinearGradient(x1, y1, x2, y2)
     this._ccanvas
       .getColorGradient(stopsPtr, stopCount)
@@ -219,17 +219,17 @@ export class Render implements Plugin, Canvas {
   }
 
   transform(a: number, b: number, c: number, d: number, e: number, f: number): void {
-    const dc = this._canvas.context()
+    const dc = this._canvas.context
     dc.transform(a, b, c, d, e, f)
   }
 
   save(): void {
-    const dc = this._canvas.context()
+    const dc = this._canvas.context
     dc.save()
   }
 
   restore(): void {
-    const dc = this._canvas.context()
+    const dc = this._canvas.context
     dc.restore()
   }
 }
