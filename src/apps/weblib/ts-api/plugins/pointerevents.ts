@@ -1,8 +1,8 @@
 import Vizzu from '../vizzu.js'
 import { Plugin } from '../plugins.js'
 import { CChart } from '../module/cchart.js'
-import { RenderingApi } from '../render.js'
 import { NotInitializedError } from '../errors.js'
+import { HtmlCanvasApi } from '../htmlcanvas.js'
 
 interface Handlers {
   pointermove: (event: PointerEvent) => void
@@ -14,13 +14,14 @@ interface Handlers {
 
 export class PointerEvents implements Plugin {
   private _vizzu?: Vizzu
-  private _rendering?: RenderingApi
+  private _canvasApi?: HtmlCanvasApi
   private _canvas?: HTMLCanvasElement
   private _handlers?: Handlers
   private _enabled = false
 
   meta = {
-    name: 'pointerEvents'
+    name: 'pointerEvents',
+    depends: ['htmlCanvas']
   }
 
   constructor(cChart: CChart) {
@@ -45,8 +46,7 @@ export class PointerEvents implements Plugin {
 
   register(vizzu: Vizzu): void {
     this._vizzu = vizzu
-
-    this._rendering = this._vizzu?.feature('rendering') as RenderingApi
+    this._canvasApi = this._vizzu?.feature['htmlCanvas'] as HtmlCanvasApi
   }
 
   unregister(): void {
@@ -64,7 +64,7 @@ export class PointerEvents implements Plugin {
       throw new NotInitializedError()
     }
 
-    this._canvas = this._vizzu.getCanvasElement()
+    this._canvas = (this._vizzu.feature['htmlCanvas'] as HtmlCanvasApi).element()
     for (const [key, value] of Object.entries(this._handlers)) {
       this._canvas.addEventListener(key, value)
     }
@@ -89,8 +89,8 @@ export class PointerEvents implements Plugin {
 
   private _getCoords(evt: MouseEvent): number[] {
     const clientPos = { x: evt.clientX, y: evt.clientY }
-    if (!this._rendering) throw new NotInitializedError()
-    const pos = this._rendering.clientToRenderCoor(clientPos)
+    if (!this._canvasApi) throw new NotInitializedError()
+    const pos = this._canvasApi.clientToRender(clientPos)
     return [pos.x, pos.y]
   }
 }

@@ -15,6 +15,7 @@ import { Mirrored } from './tsutils.js'
 import { NotInitializedError, CancelError } from './errors.js'
 import { Plugin, PluginApi, PluginRegistry, Hooks } from './plugins.js'
 import Presets from './plugins/presets.js'
+import { LazyCanvasOptions } from './htmlcanvas.js'
 
 /** Options for the library. */
 export type LibOptions = LoaderOptions
@@ -41,10 +42,11 @@ export type Feature =
   | 'pivotData'
   | 'pointerEvents'
 
-export interface VizzuOptions {
-  container: HTMLElement
+export interface FeatureOptions {
   features?: Plugin[]
 }
+
+export type VizzuOptions = FeatureOptions & LazyCanvasOptions
 
 export type FeatureFunction = (feature: Feature | Plugin, enabled?: boolean) => PluginApi
 export interface Features extends Record<string, PluginApi>, FeatureFunction {}
@@ -56,7 +58,6 @@ export default class Vizzu {
     an error before this promise is resolved.  */
   initializing: Promise<Vizzu>
   private _chart?: Chart
-  private _container: HTMLElement
   private _anim: AnimCompleting
   private _plugins: PluginRegistry
 
@@ -79,15 +80,11 @@ export default class Vizzu {
     element specified by its ID or DOM object. The new chart is empty by 
     default, but can be set to an initial state in the second optional 
     parameter. */
-  constructor(options: string | HTMLElement | VizzuOptions, initState?: Anim.Target) {
-    const opts = this._processOptions(options)
-
-    this._container = opts.container
-
-    this._plugins = new PluginRegistry(this, opts.features)
+  constructor(options: VizzuOptions, initState?: Anim.Target) {
+    this._plugins = new PluginRegistry(this, this._getFeatureList(options))
 
     this.initializing = loader.initialize().then((module) => {
-      this._chart = new Chart(module, this._container, this._plugins)
+      this._chart = new Chart(module, options, this._plugins)
       this._chart.registerBuiltins()
       this._chart.start()
       return this
@@ -105,27 +102,11 @@ export default class Vizzu {
     }
   }
 
-  private _processOptions(options: unknown): VizzuOptions {
-    const opts =
-      typeof options !== 'object' || options instanceof HTMLElement
-        ? { container: options }
-        : options
-
-    if (opts === null || !('container' in opts)) {
-      throw new Error('container not specified')
+  private _getFeatureList(options: VizzuOptions): Plugin[] {
+    if (typeof options === 'object' && options !== null && 'features' in options) {
+      return options.features
     }
-
-    let container = opts.container
-
-    if (typeof container === 'string') {
-      container = document.getElementById(container)
-    }
-
-    if (!(container instanceof HTMLElement)) {
-      throw new Error(`Cannot find container ${opts.container} to render Vizzu!`)
-    }
-
-    return { ...opts, container }
+    return [] as Plugin[]
   }
 
   /** If called as a function:
@@ -231,7 +212,7 @@ export default class Vizzu {
       }
       if (!this._chart) throw new NotInitializedError()
       this._chart.runAnimation(callback)
-      activate(new AnimControl(this._chart.getCAnimControl()))
+      activate(this._chart.getAnimControl())
     })
   }
 
@@ -239,25 +220,13 @@ export default class Vizzu {
     @deprecated since version 0.4.0  */
   get animation(): AnimControl {
     if (!this._chart) throw new NotInitializedError()
-    return new AnimControl(this._chart.getCAnimControl())
+    return this._chart.getAnimControl()
   }
 
   /** Returns the version number of the library. */
   version(): string {
     if (!this._chart) throw new NotInitializedError()
     return this._chart.version()
-  }
-
-  /** Returns the underlying canvas element. */
-  getCanvasElement(): HTMLCanvasElement {
-    if (!this._chart) throw new NotInitializedError()
-    return this._chart.getCanvasElement()
-  }
-
-  /** Re-renders the chart. */
-  forceUpdate(): void {
-    if (!this._chart) throw new NotInitializedError()
-    this._chart.forceUpdate()
   }
 
   /** Property for read-only access to data metainfo object. */

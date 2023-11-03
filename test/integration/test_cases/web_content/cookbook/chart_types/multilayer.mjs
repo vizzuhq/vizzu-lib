@@ -2,7 +2,7 @@ import { data } from '../../../../test_data/chart_types_eu.mjs'
 
 const testSteps = [
   async (chart) => {
-    const container = chart.getCanvasElement()
+    const container = chart.feature.htmlCanvas.element()
     const container2 = document.createElement('canvas')
 
     container2.style = `

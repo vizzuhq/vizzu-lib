@@ -6,7 +6,7 @@ const testSteps = [
     chart.feature(new LastAnimation())
     const select = document.createElement('select')
     select.style = 'position: absolute; top: 40px; left: 300px;'
-    chart.getCanvasElement().parentElement.appendChild(select)
+    chart.feature.htmlCanvas.element().parentElement.appendChild(select)
 
     const options = ['Value 2 (+)', 'Value 3 (+)', 'Value 1 (+)']
     for (let i = 0; i < options.length; i++) {

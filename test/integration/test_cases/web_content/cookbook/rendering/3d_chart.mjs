@@ -19,14 +19,14 @@ const testSteps = [
     renderer.setClearColor(0xffffff, 1)
     let scene = new THREE.Scene()
 
-    const width = chart.getCanvasElement().width
-    const height = chart.getCanvasElement().height
+    const width = chart.feature.htmlCanvas.element().width
+    const height = chart.feature.htmlCanvas.element().height
 
     renderer.setSize(width, height)
     renderer.domElement.style = `
 		position: absolute; 
-		top: ${chart.getCanvasElement().offsetTop}px; 
-		left: ${chart.getCanvasElement().offsetLeft}px;
+		top: ${chart.feature.htmlCanvas.element().offsetTop}px; 
+		left: ${chart.feature.htmlCanvas.element().offsetLeft}px;
 		visibility: hidden;
 	`
     document.body.appendChild(renderer.domElement)

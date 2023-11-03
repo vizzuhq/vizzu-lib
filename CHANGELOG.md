@@ -37,8 +37,6 @@
   triggered on.
 - Drawing events are containing drawing geometry in an improved format.
 - Missing TypeScript definitions for Event objects added.
-- `getCanvasElement()` introduced to expose the underlying HTML canvas element.
-- `forceUpdate()` introduced to trigger chart re-rendering.
 - Converter functions to convert between canvas and relative coordinates.
 - Orientation new default parameter: `auto`.
 - New dataseries `unit` parameter introduced, undocumented unit parsing from 
@@ -52,11 +50,14 @@
 - Plugin interface introduced, new plugins can be registed through `Vizzu.feature()`.
 - CSS parameter usage feature is disabled by default and can be enabled through
   `Vizzu.feature()` with name `cssProperties`.
-- `shorthands`, `pointerEvents`, `pivotData` features can be disabled through
+- `shorthands`, `pointerEvents`, `pivotData`, `rendering` features can be disabled through
   `Vizzu.feature()`
 - TypeScript interface made more typesafe, while the javascript api got ported to 
 - TypeScript.
 - `pointeron` event removed, `pointerleave` event added. 
+- `Vizzu.feature.htmlCanvas.element()` introduced to expose the underlying HTML canvas element.
+- `Vizzu.feature.rendering.update()` introduced to trigger chart re-rendering.
+
 
 ## [0.8.1] - 2023-08-15
 

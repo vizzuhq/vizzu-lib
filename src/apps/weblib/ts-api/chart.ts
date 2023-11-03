@@ -18,72 +18,45 @@ import { Tooltip } from './plugins/tooltip.js'
 import { PointerEvents } from './plugins/pointerevents.js'
 import { CSSProperties } from './plugins/cssproperties.js'
 import { Mirrored } from './tsutils.js'
+import { HtmlCanvas } from './htmlcanvas.js'
+import { VizzuOptions } from './vizzu.js'
+import { AnimControl } from './animcontrol.js'
 
 export class Chart {
   private _cChart: CChart
   private _render: Render
   private _module: Module
-  private _container: HTMLElement
-  private _canvas: HTMLCanvasElement
+  private _canvas: HtmlCanvas
   private _cData: CData
   private _data: Data
   private _events: Events
   private _plugins: PluginRegistry
-  private _resizeObserver: ResizeObserver
   private _updateInterval?: ReturnType<typeof setTimeout>
 
-  constructor(module: Module, container: HTMLElement, plugins: PluginRegistry) {
+  constructor(module: Module, options: VizzuOptions, plugins: PluginRegistry) {
     this._plugins = plugins
-    this._container = container
     this._module = module
 
-    this._canvas = this._createCanvas()
+    this._canvas = new HtmlCanvas(HtmlCanvas.extractOptions(options))
 
     this._cChart = this._module.createChart()
     this._cData = this._module.getData(this._cChart)
     this._data = new Data(this._cData)
-    this._render = new Render(this._module, this._cChart, this._canvas, false)
-    this._events = new Events(this._cChart, this._render)
+
+    this._render = new Render(this._module, this._cChart, this._canvas)
+    this._events = new Events(this._cChart, this._canvas)
     this._plugins.init(this._events)
-    this._resizeObserver = this._createResizeObserverFor(this._canvas)
   }
 
   registerBuiltins(): void {
     this._plugins.register(new Logging(this._module.setLogging.bind(this._module)), false)
+    this._plugins.register(this._canvas, true)
     this._plugins.register(this._render, true)
     this._plugins.register(new CSSProperties(), false)
     this._plugins.register(new Shorthands(), true)
     this._plugins.register(new PivotData(), true)
     this._plugins.register(new PointerEvents(this._cChart), true)
     this._plugins.register(new Tooltip(), false)
-  }
-
-  private _createResizeObserverFor(canvas: HTMLCanvasElement): ResizeObserver {
-    const resizeObserver = new ResizeObserver(() => {
-      this._render.updateFrame(true)
-    })
-    resizeObserver.observe(canvas)
-    return resizeObserver
-  }
-
-  private _createCanvas(): HTMLCanvasElement {
-    let canvas = null
-    const placeholder = this._container
-
-    if (placeholder instanceof HTMLCanvasElement) {
-      canvas = placeholder
-    } else {
-      canvas = document.createElement('CANVAS')
-      canvas.style.width = '100%'
-      canvas.style.height = '100%'
-      placeholder.appendChild(canvas)
-    }
-
-    if (!(canvas instanceof HTMLCanvasElement)) {
-      throw new Error('Error initializing <canvas> for Vizzu!')
-    }
-
-    return canvas
   }
 
   start(): void {
@@ -139,11 +112,9 @@ export class Chart {
   }
 
   destruct(): void {
-    this._resizeObserver.disconnect()
+    this._canvas.destruct()
     if (this._updateInterval) clearInterval(this._updateInterval)
     delete this._updateInterval
-    if (this._container && this._container !== this._canvas)
-      this._container.removeChild(this._canvas)
   }
 
   getConverter(target: string, from: CoordinateType, to: CoordinateType): PointConverter {
@@ -159,14 +130,6 @@ export class Chart {
 
   version(): string {
     return this._module.version()
-  }
-
-  getCanvasElement(): HTMLCanvasElement {
-    return this._canvas
-  }
-
-  forceUpdate(): void {
-    this._render.updateFrame(true)
   }
 
   get data(): Mirrored<D.Metainfo> {
@@ -197,7 +160,11 @@ export class Chart {
     return this._cChart.storeSnapshot()
   }
 
-  getCAnimControl(): CAnimControl {
+  getAnimControl(): AnimControl {
+    return new AnimControl(this._getCAnimControl())
+  }
+
+  private _getCAnimControl(): CAnimControl {
     return this._module.getAnimControl(this._cChart)
   }
 }

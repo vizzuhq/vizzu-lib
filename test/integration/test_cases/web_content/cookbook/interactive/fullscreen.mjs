@@ -16,7 +16,7 @@ const testSteps = [
 			}
 			</style>
 		`
-    chart.getCanvasElement().parentElement.appendChild(btnStyle)
+    chart.feature.htmlCanvas.element().parentElement.appendChild(btnStyle)
 
     const button = document.createElement('button')
     button.style.background = 'transparent'
@@ -28,7 +28,7 @@ const testSteps = [
     button.style.height = '22px'
     button.style.position = 'absolute'
     button.style.top = '30px'
-    button.style.left = chart.getCanvasElement().width - 30 + 'px'
+    button.style.left = chart.feature.htmlCanvas.element().width - 30 + 'px'
 
     button.classList.add('vizzu-button')
     button.innerHTML = `
@@ -36,12 +36,12 @@ const testSteps = [
 			<path id="fullscreen_pass" d="M9.000,12.000 L12.000,12.000 L12.000,9.000 L15.000,9.000 L15.000,15.000 L12.000,15.000 L9.000,15.000 L9.000,12.000 zM9.000,-0.000 L15.000,-0.000 L15.000,6.000 L12.000,6.000 L12.000,3.000 L9.000,3.000 L9.000,-0.000 zM3.000,9.000 L3.000,12.000 L6.000,12.000 L6.000,15.000 L-0.000,15.000 L-0.000,9.000 L3.000,9.000 zM-0.000,-0.000 L6.000,-0.000 L6.000,3.000 L3.000,3.000 L3.000,6.000 L-0.000,6.000 L-0.000,-0.000 z" fill="#A2A2A2" />
 		</svg>
 		`
-    chart.getCanvasElement().parentElement.appendChild(button)
+    chart.feature.htmlCanvas.element().parentElement.appendChild(button)
 
     button.addEventListener('click', (event) => {
       if (document.fullscreenElement) document.exitFullscreen()
       else {
-        const controlledElement = chart.getCanvasElement()
+        const controlledElement = chart.feature.htmlCanvas.element()
         const requestMethod =
           controlledElement.requestFullScreen ||
           controlledElement.webkitRequestFullScreen ||

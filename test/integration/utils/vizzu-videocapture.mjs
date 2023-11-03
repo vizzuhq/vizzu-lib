@@ -38,7 +38,9 @@ export default class VideoCapture {
 
   _init() {
     const recordedChunks = []
-    const stream = this.chart.getCanvasElement().captureStream(this.options.stream.frameRate)
+    const stream = this.chart.feature.htmlCanvas
+      .element()
+      .captureStream(this.options.stream.frameRate)
     this.mediaRecorder = new MediaRecorder(stream, this.options.recorder)
 
     this.mediaRecorder.ondataavailable = (e) => {

@@ -2,7 +2,7 @@ import { CFunction } from './cvizzu.types'
 import { PluginListeners } from './plugins.js'
 
 import { CChart, CEvent } from './module/cchart.js'
-import { Render } from './render.js'
+import { HtmlCanvas, HtmlCanvasContext } from './htmlcanvas.js'
 
 import * as Data from './types/data.js'
 import * as Anim from './types/anim.js'
@@ -225,7 +225,7 @@ export interface Event<T> {
   preventDefault(): void
   /** For drawing events the rendering context of the underlying 
     canvas set up for drawing the element. */
-  renderingContext?: CanvasRenderingContext2D
+  renderingContext?: HtmlCanvasContext
 }
 export interface PointerDetail {
   pointerId: number | null
@@ -300,12 +300,12 @@ type EventHandlers<T extends EventType> = {
 
 export class Events {
   private _cChart: CChart
-  private _render: Render
+  private _canvas: HtmlCanvas
   private _eventHandlers: EventHandlers<EventType> = {}
 
-  constructor(cChart: CChart, render: Render) {
+  constructor(cChart: CChart, canvas: HtmlCanvas) {
     this._cChart = cChart
-    this._render = render
+    this._canvas = canvas
   }
 
   add<T extends EventType>(eventName: T, handler: EventHandler<EventMap[T]>): void {
@@ -405,7 +405,7 @@ export class Events {
       state.canceled = true
     }
     if (param.type.endsWith('-draw') || param.type.startsWith('draw-')) {
-      param.renderingContext = this._render.dc()
+      param.renderingContext = this._canvas.context()
     }
     return param
   }
