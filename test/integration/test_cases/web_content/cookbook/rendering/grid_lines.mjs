@@ -7,9 +7,9 @@ const testSteps = [
   },
   (chart) => {
     const toCanvasRect = (rect) => {
-      const convert = chart.getConverter('plot-area', 'relative', 'canvas')
-      const pos = convert({ x: rect.pos.x, y: rect.pos.y + rect.size.y })
-      const pos2 = convert({ x: rect.pos.x + rect.size.x, y: rect.pos.y })
+      const coordSystem = chart.feature.coordSystem
+      const pos = coordSystem.toCanvas({ x: rect.pos.x, y: rect.pos.y + rect.size.y })
+      const pos2 = coordSystem.toCanvas({ x: rect.pos.x + rect.size.x, y: rect.pos.y })
       return { pos, size: { x: pos2.x - pos.x, y: pos2.y - pos.y } }
     }
 
@@ -23,16 +23,16 @@ const testSteps = [
 
       ctx.lineWidth = 1
 
-      const convert = chart.getConverter('plot-area', 'canvas', 'relative')
+      const coordSystem = chart.feature.coordSystem
 
-      if (convert({ x: 0, y: rect.pos.y }).y !== 1) {
+      if (coordSystem.toRelative({ x: 0, y: rect.pos.y }).y !== 1) {
         ctx.beginPath()
         ctx.moveTo(rect.pos.x, rect.pos.y)
         ctx.lineTo(rect.pos.x + rect.size.x, rect.pos.y)
         ctx.stroke()
       }
 
-      if (convert({ x: 0, y: rect.pos.y + rect.size.y }).y !== 1) {
+      if (coordSystem.toRelative({ x: 0, y: rect.pos.y + rect.size.y }).y !== 1) {
         ctx.beginPath()
         ctx.moveTo(rect.pos.x, rect.pos.y + rect.size.y)
         ctx.lineTo(rect.pos.x + rect.size.x, rect.pos.y + rect.size.y)

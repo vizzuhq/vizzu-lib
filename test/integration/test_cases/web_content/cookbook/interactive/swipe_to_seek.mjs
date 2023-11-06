@@ -54,7 +54,7 @@ const testSteps = [
     chart.on('pointermove', (event) => {
       if (lastPointerX) {
         const pointerX = event.detail.position.x
-        const diff = (2 * (pointerX - lastPointerX)) / chart.getCanvasElement().width
+        const diff = (2 * (pointerX - lastPointerX)) / chart.feature.htmlCanvas.element.width
         seek((progress + diff) * 100)
         lastPointerX = pointerX
       }

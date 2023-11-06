@@ -6,9 +6,9 @@ const testSteps = [
     const THREE = await import('https://unpkg.com/three/build/three.module.js')
 
     const toCanvasRect = (rect) => {
-      const convert = chart.getConverter('plot-area', 'relative', 'canvas')
-      const pos = convert({ x: rect.pos.x, y: rect.pos.y + rect.size.y })
-      const pos2 = convert({ x: rect.pos.x + rect.size.x, y: rect.pos.y })
+      const coordSystem = chart.feature.coordSystem
+      const pos = coordSystem.toCanvas({ x: rect.pos.x, y: rect.pos.y + rect.size.y })
+      const pos2 = coordSystem.toCanvas({ x: rect.pos.x + rect.size.x, y: rect.pos.y })
       return { pos, size: { x: pos2.x - pos.x, y: pos2.y - pos.y } }
     }
 
@@ -19,14 +19,14 @@ const testSteps = [
     renderer.setClearColor(0xffffff, 1)
     let scene = new THREE.Scene()
 
-    const width = chart.getCanvasElement().width
-    const height = chart.getCanvasElement().height
+    const width = chart.feature.htmlCanvas.element.width
+    const height = chart.feature.htmlCanvas.element.height
 
     renderer.setSize(width, height)
     renderer.domElement.style = `
 		position: absolute; 
-		top: ${chart.getCanvasElement().offsetTop}px; 
-		left: ${chart.getCanvasElement().offsetLeft}px;
+		top: ${chart.feature.htmlCanvas.element.offsetTop}px; 
+		left: ${chart.feature.htmlCanvas.element.offsetLeft}px;
 		visibility: hidden;
 	`
     document.body.appendChild(renderer.domElement)

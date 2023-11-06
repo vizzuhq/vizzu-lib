@@ -35,7 +35,7 @@ export class Mouse {
       cancelable: true,
       deltaY: delta
     })
-    this._chart.getCanvasElement().dispatchEvent(event)
+    this._chart.feature.htmlCanvas.element.dispatchEvent(event)
     return this
   }
 
@@ -47,6 +47,6 @@ export class Mouse {
       clientX: x,
       clientY: y
     })
-    this._chart.getCanvasElement().dispatchEvent(event)
+    this._chart.feature.htmlCanvas.element.dispatchEvent(event)
   }
 }

@@ -52,7 +52,7 @@ const testSteps = [
 
     const throttle = new Throttle()
 
-    chart.getCanvasElement().addEventListener('wheel', (event) => {
+    chart.feature.htmlCanvas.element.addEventListener('wheel', (event) => {
       event.preventDefault()
     })
 
@@ -74,8 +74,8 @@ const testSteps = [
     })
 
     chart.on('pointermove', (event) => {
-      const convert = chart.getConverter('plot-area', 'canvas', 'relative')
-      const rel = convert(event.detail.position)
+      const coordSystem = chart.feature.coordSystem
+      const rel = coordSystem.toRelative(event.detail.position)
       zoomer.trackPos(rel.x)
     })
 

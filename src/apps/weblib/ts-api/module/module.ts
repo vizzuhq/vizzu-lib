@@ -6,6 +6,7 @@ import { CData } from './cdata.js'
 import { CChart } from './cchart.js'
 import { CCanvas } from './ccanvas.js'
 import { CAnimControl } from './canimctrl.js'
+import { CCoordSystem } from './ccoordsys.js'
 import { Canvas } from './canvas'
 
 export class Module extends CEnv {
@@ -30,6 +31,10 @@ export class Module extends CEnv {
 
   getData(cChart: CChart): CData {
     return new CData(cChart.getId, this)
+  }
+
+  getCoordSystem(cChart: CChart): CCoordSystem {
+    return new CCoordSystem(cChart.getId, this)
   }
 
   getAnimControl(cChart: CChart): CAnimControl {

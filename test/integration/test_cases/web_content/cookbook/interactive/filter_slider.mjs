@@ -12,7 +12,7 @@ const testSteps = [
     input.max = 2020
     input.value = 2020
     input.style = 'width: 500px; position: absolute; top: 540px; left: 30px;'
-    chart.getCanvasElement().parentElement.appendChild(input)
+    chart.feature.htmlCanvas.element.parentElement.appendChild(input)
 
     input.oninput = (e) => {
       chart.animate(

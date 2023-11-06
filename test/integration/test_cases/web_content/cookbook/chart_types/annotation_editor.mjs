@@ -4,7 +4,7 @@ const testSteps = [
   async (chart) => {
     await import('https://cdn.jsdelivr.net/npm/markerjs2@2.29.0/markerjs2.min.js')
 
-    const markerArea = new markerjs2.MarkerArea(chart.getCanvasElement())
+    const markerArea = new markerjs2.MarkerArea(chart.feature.htmlCanvas.element)
 
     markerArea.show()
 

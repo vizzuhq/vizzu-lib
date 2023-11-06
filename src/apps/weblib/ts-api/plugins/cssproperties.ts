@@ -9,7 +9,8 @@ export class CSSProperties implements Plugin {
   private _chart?: Vizzu
 
   meta = {
-    name: 'cssProperties'
+    name: 'cssProperties',
+    depends: ['htmlCanvas']
   }
 
   api = {
@@ -25,7 +26,10 @@ export class CSSProperties implements Plugin {
   get hooks(): PluginHooks {
     return {
       prepareAnimation: (ctx: PrepareAnimationContext, next: () => void): void => {
-        const props = getCSSCustomPropsForElement(this._chart!.getCanvasElement(), this.api.prefix)
+        const props = getCSSCustomPropsForElement(
+          this._chart!.feature.htmlCanvas.element,
+          this.api.prefix
+        )
         if (Array.isArray(ctx.target))
           ctx.target.forEach(({ target }) => {
             if (!(target instanceof Snapshot)) {

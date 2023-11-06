@@ -20,9 +20,9 @@ const testSteps = [
     )
 
     chart.on('plot-area-draw', (event) => {
-      const convert = chart.getConverter('plot-area', 'relative', 'canvas')
-      const p0 = convert({ x: 0, y: 0 })
-      const p1 = convert({ x: 1, y: 1 })
+      const coordSystem = chart.feature.coordSystem
+      const p0 = coordSystem.toCanvas({ x: 0, y: 0 })
+      const p1 = coordSystem.toCanvas({ x: 1, y: 1 })
       event.renderingContext.globalAlpha = 0.25 // the map image is too dark
       event.renderingContext.drawImage(map, p0.x, p0.y, p1.x - p0.x, p1.y - p0.y)
       event.renderingContext.globalAlpha = 1

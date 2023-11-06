@@ -8,10 +8,10 @@ const testSteps = [
     chart.on('pointermove', (event) => {
       if (event.target?.tagName === 'plot-marker') {
         labelToShow.value = event.target.values['Value 5 (+/-)']
-        chart.forceUpdate()
+        chart.feature.rendering.update()
       } else {
         labelToShow.value = ''
-        chart.forceUpdate()
+        chart.feature.rendering.update()
       }
     })
 

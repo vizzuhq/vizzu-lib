@@ -51,7 +51,7 @@ try {
             return testSteps[0](chart)
           })
           steps.push((chart) => {
-            chart.forceUpdate()
+            chart.feature.rendering.update()
             return chart
           })
           for (let i = 1; i < testSteps.length; i++) {
@@ -92,7 +92,7 @@ try {
           }
           return promise.then((chart) => {
             setInterval(() => {
-              chart.forceUpdate()
+              chart.feature.rendering.update()
             }, 50)
             videoRecorder.stop()
           })
