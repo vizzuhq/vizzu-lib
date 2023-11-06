@@ -335,11 +335,20 @@ void Interface::update(ObjectRegistry::Handle chart,
     ObjectRegistry::Handle canvas,
     double width,
     double height,
+    double timeInMSecs,
     RenderControl renderControl)
 {
 	auto &&widget = objects.get<UI::ChartWidget>(chart);
-	auto now = std::chrono::steady_clock::now();
-	widget->getChart().getAnimControl().update(now);
+
+	std::chrono::duration<double, std::milli> milliSecs(timeInMSecs);
+
+	auto nanoSecs =
+	    std::chrono::duration_cast<std::chrono::nanoseconds>(
+	        milliSecs);
+
+	::Anim::TimePoint time(nanoSecs);
+
+	widget->getChart().getAnimControl().update(time);
 
 	const Geom::Size size{width, height};
 
