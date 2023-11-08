@@ -1,6 +1,5 @@
 import * as Geom from './geom.js'
 import { Plugin, PluginApi } from './plugins.js'
-import './vizzu.js'
 
 export interface CanvasOptions {
   element: HTMLElement
