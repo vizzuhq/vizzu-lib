@@ -128,7 +128,7 @@ void Chart::draw(Gfx::ICanvas &canvas)
 
 		auto coordSys = getCoordSystem();
 
-		Draw::RenderedChart rendered(coordSys, actPlot.get());
+		Draw::RenderedChart rendered(coordSys, actPlot);
 
 		Draw::DrawingContext context(canvas,
 		    layout,
