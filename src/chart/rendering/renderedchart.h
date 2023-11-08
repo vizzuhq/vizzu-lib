@@ -59,8 +59,7 @@ class RenderedChart
 public:
 	RenderedChart() = default;
 	explicit RenderedChart(const CoordinateSystem &coordinateSystem,
-	    std::shared_ptr<const Gen::Plot> plot =
-	        std::shared_ptr<const Gen::Plot>()) :
+	    std::shared_ptr<const Gen::Plot> plot) :
 	    coordinateSystem(coordinateSystem),
 	    plot(std::move(plot))
 	{}
