@@ -2,6 +2,8 @@ name: Docker Build and Push vizzu-dev-desktop
 
 on:
   push:
+    branches-ignore:
+      - main
     paths:
       - '**/vizzu-dev-desktop'
       - '**/docker-vizzu-dev-desktop.yml'

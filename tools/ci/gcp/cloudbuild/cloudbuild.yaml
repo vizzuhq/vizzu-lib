@@ -131,7 +131,9 @@ steps:
         if [ "$_ISRELEASE" == "true" ]
         then
           mkdir -p dist
-          gsutil -m cp -r 'gs://vizzu-lib-main-sha/lib-$SHORT_SHA/*' 'dist'
+          gsutil cp 'gs://vizzu-lib-main-sha/lib-$SHORT_SHA/vizzu.min.js' 'dist/vizzu.min.js'
+          gsutil cp 'gs://vizzu-lib-main-sha/lib-$SHORT_SHA/cvizzu.wasm' 'dist/cvizzu.wasm'
+          ./tools/ci/run/pkg-build-ts.sh
         else
           gsutil -m cp -r 'dist/*' 'gs://vizzu-lib-main-sha/lib-$SHORT_SHA'
           for file in build/js/*
