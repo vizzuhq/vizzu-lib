@@ -12,7 +12,6 @@ import { Canvas } from './canvas'
 export class Module extends CEnv {
   constructor(wasm: CVizzu) {
     super(wasm, new ObjectRegistry(wasm._object_free))
-    this._wasm.callback = this._callStatic(this._wasm._callback)
     this._wasm.canvases = {}
     this.setLogging(false)
   }

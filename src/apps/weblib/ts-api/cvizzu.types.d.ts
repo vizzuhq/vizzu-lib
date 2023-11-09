@@ -45,7 +45,6 @@ export interface ModuleOptions {
 
 export interface CVizzu {
   // decorations
-  callback: (task: CFunction, obj: CPointer) => void
   canvases: { [key: CPointer]: Canvas }
 
   // members
@@ -63,7 +62,6 @@ export interface CVizzu {
   ExceptionInfo: CExceptionInfoConstructor
 
   // exported functions
-  _callback(task: CFunction, obj: CPointer): void
   _vizzu_createChart(): CChartPtr
   _vizzu_createCanvas(): CCanvasPtr
   _vizzu_pointerDown(
