@@ -1,6 +1,6 @@
 import * as Data from '../types/data.js'
 import * as Config from '../types/config.js'
-
+import { recursiveCopy } from '../utils.js'
 import { presetConfigs } from './presetconfigs.js'
 
 type RawPresetConfigs = typeof presetConfigs
@@ -50,7 +50,7 @@ export default class Presets {
   }
 
   private _createPresetConfig(presetName: PresetNames): Config.Chart {
-    const presetConfig = this._presetConfigs[presetName]
+    const presetConfig = recursiveCopy(this._presetConfigs[presetName])
     const channelBase = { ...this._nullConfig().channels, ...presetConfig!.channels }
     const base = Object.assign(this._nullConfig(), presetConfig)
     base.channels = channelBase
