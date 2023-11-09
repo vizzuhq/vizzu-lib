@@ -1,5 +1,5 @@
 steps:
-  - name: vizzu/vizzu-dev-wasm:0.8
+  - name: vizzu/vizzu-dev-wasm:0.9
     id: init
     waitFor:
       - '-'
@@ -11,7 +11,7 @@ steps:
         npm run init
     dir: /workspace
 
-  - name: vizzu/vizzu-dev-wasm:0.8
+  - name: vizzu/vizzu-dev-wasm:0.9
     id: ci-src
     waitFor:
       - init
@@ -28,7 +28,7 @@ steps:
           npm run lint-src
         fi
     dir: /workspace
-  - name: vizzu/vizzu-dev-wasm:0.8
+  - name: vizzu/vizzu-dev-wasm:0.9
     id: ci-docs
     waitFor:
       - init
@@ -45,7 +45,7 @@ steps:
           npm run lint-docs
         fi
     dir: /workspace
-  - name: vizzu/vizzu-dev-wasm:0.8
+  - name: vizzu/vizzu-dev-wasm:0.9
     id: ci-tools
     waitFor:
       - init
@@ -64,7 +64,7 @@ steps:
         fi
     dir: /workspace
 
-  - name: vizzu/vizzu-dev-desktop:0.8
+  - name: vizzu/vizzu-dev-desktop:0.9
     id: build-desktop-clangformat
     waitFor:
       - ci-src
@@ -83,7 +83,7 @@ steps:
         fi
     dir: /workspace
 
-  - name: vizzu/vizzu-dev-desktop:0.8
+  - name: vizzu/vizzu-dev-desktop:0.9
     id: build-desktop-clangtidy
     waitFor:
       - build-desktop-clangformat
@@ -99,7 +99,7 @@ steps:
           ./tools/ci/run/pkg-build-desktop-clangtidy.sh
         fi
     dir: /workspace
-  - name: vizzu/vizzu-dev-wasm:0.8
+  - name: vizzu/vizzu-dev-wasm:0.9
     id: build-wasm
     waitFor:
       - build-desktop-clangformat
@@ -119,7 +119,7 @@ steps:
         fi
     dir: /workspace
 
-  - name: vizzu/vizzu-dev-wasm:0.8
+  - name: vizzu/vizzu-dev-wasm:0.9
     id: lib-sha
     waitFor:
       - build-wasm
@@ -143,7 +143,7 @@ steps:
         fi
     dir: /workspace
 
-  - name: vizzu/vizzu-dev-wasm:0.8
+  - name: vizzu/vizzu-dev-wasm:0.9
     id: test
     waitFor:
       - lib-sha
@@ -158,7 +158,7 @@ steps:
         fi
     dir: /workspace
 
-  - name: vizzu/vizzu-dev-wasm:0.8
+  - name: vizzu/vizzu-dev-wasm:0.9
     id: docs
     waitFor:
       - test
@@ -199,7 +199,7 @@ steps:
     secretEnv:
       - VIZZUHQ_GITHUB_SSH
 
-  - name: vizzu/vizzu-dev-wasm:0.8
+  - name: vizzu/vizzu-dev-wasm:0.9
     id: release
     waitFor:
       - docs
