@@ -304,7 +304,8 @@ To release `Vizzu`, follow the steps below:
 
 - If the major or minor version has changed, increase the version in
   `.github/workflows/docker-vizzu-dev-desktop.yml`,
-  `.github/workflows/docker-vizzu-dev-wasm.yml` and `CONTRIBUTING.md`.
+  `.github/workflows/docker-vizzu-dev-wasm.yml`,
+  `tools/ci/gcp/cloudbuild/cloudbuild.yaml` and `CONTRIBUTING.md`.
 
 - Set the release and release date in `CHANGELOG.md`, under the `Unreleased`
   title.
