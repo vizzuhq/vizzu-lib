@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+## [0.9.0] - 2023-11-09
+
 ### Fixed
 
 - Implemented deep copying of received values to ensure the original data 
