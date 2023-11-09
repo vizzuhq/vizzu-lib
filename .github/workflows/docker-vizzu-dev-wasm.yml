@@ -4,6 +4,7 @@ on:
   push:
     paths:
       - '**/vizzu-dev-wasm'
+      - '**/docker-vizzu-dev-wasm.yml'
 
 jobs:
   build-and-push:
@@ -19,6 +20,6 @@ jobs:
       - name: Build and Push Docker Image
         run: |
           IMAGE="vizzu-dev-wasm"
-          IMAGE_NAME="vizzu/$IMAGE:0.8"
+          IMAGE_NAME="vizzu/$IMAGE:0.9"
           docker build -t $IMAGE_NAME -f tools/ci/docker/$IMAGE .
           docker push $IMAGE_NAME

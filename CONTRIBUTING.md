@@ -79,7 +79,7 @@ docker run -i -t -v .:/workspace vizzu/vizzu-dev-desktop bash
 or you can use a specific version of the prebuilt image:
 
 ```sh
-docker run -i -t -v .:/workspace vizzu/vizzu-dev-desktop:0.8 bash
+docker run -i -t -v .:/workspace vizzu/vizzu-dev-desktop:0.9 bash
 ```
 
 Run the following commands to build and run the `WASM` version's development
@@ -93,7 +93,7 @@ docker run -i -t -v .:/workspace vizzu/vizzu-dev-wasm bash
 or you can use a specific version of the prebuilt image:
 
 ```sh
-docker run -i -t -v .:/workspace vizzu/vizzu-dev-wasm:0.8 bash
+docker run -i -t -v .:/workspace vizzu/vizzu-dev-wasm:0.9 bash
 ```
 
 ### Building the project
@@ -304,7 +304,8 @@ To release `Vizzu`, follow the steps below:
 
 - If the major or minor version has changed, increase the version in
   `.github/workflows/docker-vizzu-dev-desktop.yml`,
-  `.github/workflows/docker-vizzu-dev-wasm.yml` and `CONTRIBUTING.md`.
+  `.github/workflows/docker-vizzu-dev-wasm.yml`,
+  `tools/ci/gcp/cloudbuild/cloudbuild.yaml` and `CONTRIBUTING.md`.
 
 - Set the release and release date in `CHANGELOG.md`, under the `Unreleased`
   title.
