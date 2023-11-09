@@ -64,7 +64,7 @@ struct Line
 		auto projection = ((point - begin).dot(getDirection()))
 		                / (length() * length());
 
-		projection = std::max(0.0, std::min(projection, 1.0));
+		projection = std::clamp(projection, 0.0, 1.0);
 
 		auto nearestPoint = at(projection);
 
