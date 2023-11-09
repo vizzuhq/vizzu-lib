@@ -1,7 +1,6 @@
 #include "drawaxes.h"
 
 #include "chart/rendering/drawguides.h"
-#include "chart/rendering/drawinterlacing.h"
 #include "chart/rendering/orientedlabel.h"
 
 #include "drawlabel.h"
@@ -15,7 +14,7 @@ DrawAxes::DrawAxes(const DrawingContext &context) :
 
 void DrawAxes::drawBase()
 {
-	DrawInterlacing(*this, false);
+	interlacing.drawGeometries();
 
 	drawAxis(Gen::ChannelId::x);
 	drawAxis(Gen::ChannelId::y);
@@ -25,7 +24,7 @@ void DrawAxes::drawBase()
 
 void DrawAxes::drawLabels()
 {
-	DrawInterlacing(*this, true);
+	interlacing.drawTexts();
 
 	drawDimensionLabels(true);
 	drawDimensionLabels(false);
@@ -267,8 +266,7 @@ void DrawAxes::drawDimensionLabels(bool horizontal)
 	if (axis.enabled) {
 		canvas.setFont(Gfx::Font{labelStyle});
 
-		Gen::DimensionAxis::Values::const_iterator it;
-		for (it = axis.begin(); it != axis.end(); ++it) {
+		for (auto it = axis.begin(); it != axis.end(); ++it) {
 			drawDimensionLabel(horizontal, origo, it);
 		}
 	}
@@ -279,31 +277,25 @@ void DrawAxes::drawDimensionLabel(bool horizontal,
     Gen::DimensionAxis::Values::const_iterator it)
 {
 	const auto &enabled = horizontal ? plot.guides.x : plot.guides.y;
-	auto axisIndex =
-	    horizontal ? Gen::ChannelId::x : Gen::ChannelId::y;
 
-	const auto &labelStyle = rootStyle.plot.getAxis(axisIndex).label;
-	auto textColor = *labelStyle.color;
-
-	auto text = it->second.label;
 	auto weight =
 	    it->second.weight * static_cast<double>(enabled.labels);
 	if (weight == 0) return;
 
-	auto ident = Geom::Point::Ident(horizontal);
-	auto normal = Geom::Point::Ident(!horizontal);
+	auto axisIndex =
+	    horizontal ? Gen::ChannelId::x : Gen::ChannelId::y;
+	const auto &labelStyle = rootStyle.plot.getAxis(axisIndex).label;
 
-	typedef Styles::AxisLabel::Position Pos;
 	labelStyle.position->visit(
 	    [this,
 	        &labelStyle,
 	        &it,
 	        &horizontal,
 	        &origo,
-	        &ident,
-	        &normal,
-	        &text,
-	        &textColor,
+	        ident = Geom::Point::Ident(horizontal),
+	        normal = Geom::Point::Ident(!horizontal),
+	        &text = it->second.label,
+	        textColor = *labelStyle.color,
 	        &weight](int index, const auto &position)
 	    {
 		    if (labelStyle.position->interpolates()
@@ -313,9 +305,8 @@ void DrawAxes::drawDimensionLabel(bool horizontal,
 		    Geom::Point refPos;
 
 		    switch (position.value) {
-		    case Pos::max_edge:
-			    refPos = Geom::Point::Ident(!horizontal);
-			    break;
+			    using Pos = Styles::AxisLabel::Position;
+		    case Pos::max_edge: refPos = normal; break;
 		    case Pos::axis: refPos = origo.comp(!horizontal); break;
 		    default:
 		    case Pos::min_edge: refPos = Geom::Point(); break;

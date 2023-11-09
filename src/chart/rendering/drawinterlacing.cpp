@@ -8,12 +8,20 @@
 namespace Vizzu::Draw
 {
 
-DrawInterlacing::DrawInterlacing(const DrawingContext &context,
-    bool text) :
+DrawInterlacing::DrawInterlacing(const DrawingContext &context) :
     DrawingContext(context)
+{}
+
+void DrawInterlacing::drawGeometries()
 {
-	draw(true, text);
-	draw(false, text);
+	draw(true, false);
+	draw(false, false);
+}
+
+void DrawInterlacing::drawTexts()
+{
+	draw(true, true);
+	draw(false, true);
 }
 
 void DrawInterlacing::draw(bool horizontal, bool text)
@@ -274,7 +282,7 @@ void DrawInterlacing::drawDataLabel(
 		    auto sign = 1 - 2 * under;
 
 		    auto posDir = coordSys.convertDirectionAt(
-		        Geom::Line(refPos, refPos + normal));
+		        {refPos, refPos + normal});
 
 		    posDir = posDir.extend(sign);
 
