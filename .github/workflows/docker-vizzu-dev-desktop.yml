@@ -4,6 +4,7 @@ on:
   push:
     paths:
       - '**/vizzu-dev-desktop'
+      - '**/docker-vizzu-dev-desktop.yml'
 
 jobs:
   build-and-push:
