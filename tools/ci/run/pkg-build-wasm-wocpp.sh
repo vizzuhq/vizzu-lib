@@ -30,4 +30,3 @@ fi
 
 npm run pkg-build-ts
 npm run pkg-rollup-js
-npm run pkg-build-js

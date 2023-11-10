@@ -111,12 +111,13 @@ steps:
       - |-
         if [ "$_ISRELEASE" == "true" ]
         then
-          echo "skipped"
+          ./tools/ci/pkg-build-wasm-wocpp-gsutil.sh $SHORT_SHA
         else
           source /root/.bashrc &&
           ./tools/ci/run/pkg-build-wasm.sh
-          ./tools/ci/run/pkg-init-js.sh
         fi
+        ./tools/ci/run/pkg-set-version-js.sh
+        ./tools/ci/run/pkg-build-js.sh
     dir: /workspace
 
   - name: vizzu/vizzu-dev-wasm:0.9
@@ -130,10 +131,7 @@ steps:
       - |-
         if [ "$_ISRELEASE" == "true" ]
         then
-          mkdir -p dist
-          gsutil cp 'gs://vizzu-lib-main-sha/lib-$SHORT_SHA/vizzu.min.js' 'dist/vizzu.min.js'
-          gsutil cp 'gs://vizzu-lib-main-sha/lib-$SHORT_SHA/cvizzu.wasm' 'dist/cvizzu.wasm'
-          ./tools/ci/run/pkg-build-ts.sh
+          echo "skipped"
         else
           gsutil -m cp -r 'dist/*' 'gs://vizzu-lib-main-sha/lib-$SHORT_SHA'
           for file in build/js/*
@@ -210,7 +208,7 @@ steps:
       - '-c'
       - '-e'
       - |-
-        ./tools/ci/run/pkg-init-js.sh
+        ./tools/ci/run/pkg-set-version-js.sh
         npm config set registry=https://registry.npmjs.org/
         npm config set //registry.npmjs.org/:_authToken=$$VIZZUHQ_NPM_API
         if [ "$_ISRELEASE" == "true" ]

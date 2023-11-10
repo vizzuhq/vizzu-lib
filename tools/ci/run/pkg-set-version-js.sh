@@ -9,4 +9,4 @@ node ./tools/ci/version.cjs $version
 sed -i  '/\#\# \[Unreleased\]/,/\#\#\ \[/{//!d}' CHANGELOG.md
 sed -i '/\#\# \[Unreleased\]/d' CHANGELOG.md
 
-npm run pkg-build-js $version
+npm version $version --no-git-tag-version

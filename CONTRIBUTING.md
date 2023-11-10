@@ -152,6 +152,7 @@ If you used the above script to build the `WASM` version, the minified
 in order to create the npm package:
 
 ```sh
+npm run pkg-set-version-js
 npm run pkg-build-js
 ```
 
@@ -160,7 +161,9 @@ npm run pkg-build-js
 **Note:** You can build the `npm` package without building the `WASM` version:
 
 ```sh
-npm run pkg-build-jsonly
+npm run pkg-build-wasm-wocpp
+npm run pkg-set-version-js
+npm run pkg-build-js
 ```
 
 ### CI

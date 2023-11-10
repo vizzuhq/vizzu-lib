@@ -107,11 +107,12 @@
     "pkg-build-desktop-clangformat": "./tools/ci/run/pkg-build-desktop-clangformat.sh",
     "pkg-build-desktop-clangtidy": "./tools/ci/run/pkg-build-desktop-clangtidy.sh",
     "pkg-build-wasm": "./tools/ci/run/pkg-build-wasm.sh",
+    "pkg-build-wasm-wocpp": "./tools/ci/run/pkg-build-wasm-wocpp.sh",
+    "pkg-build-wasm-wocpp-gsutil": "./tools/ci/run/pkg-build-wasm-wocpp-gsutil.sh",
     "pkg-build-ts": "./tools/ci/run/pkg-build-ts.sh",
     "pkg-rollup-js": "./tools/ci/run/pkg-rollup-js.sh",
-    "pkg-init-js": "./tools/ci/run/pkg-init-js.sh",
+    "pkg-set-version-js": "./tools/ci/run/pkg-set-version-js.sh",
     "pkg-build-js": "./tools/ci/run/pkg-build-js.sh",
-    "pkg-build-jsonly": "./tools/ci/run/pkg-build-jsonly.sh",
     "pkg-purge-js": "./tools/ci/run/pkg-purge-js.sh"
   },
   "devDependencies": {

@@ -37,4 +37,4 @@ npm run test-unit-src
 
 # rollup js
 
-./tools/ci/run/pkg-rollup-js.sh
+npm run pkg-rollup-js
