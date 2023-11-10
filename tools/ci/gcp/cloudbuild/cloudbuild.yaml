@@ -111,7 +111,7 @@ steps:
       - |-
         if [ "$_ISRELEASE" == "true" ]
         then
-          ./tools/ci/pkg-build-wasm-wocpp-gsutil.sh $SHORT_SHA
+          ./tools/ci/run/pkg-build-wasm-wocpp-gsutil.sh $SHORT_SHA
         else
           source /root/.bashrc &&
           ./tools/ci/run/pkg-build-wasm.sh
