@@ -442,7 +442,7 @@ void Plot::addSeparation()
 				ranges[i].include(size);
 				if (static_cast<double>(marker.enabled) > 0)
 					anyEnabled[i] = true;
-				++i;
+				++i %= ranges.size();
 			}
 		}
 
@@ -455,7 +455,7 @@ void Plot::addSeparation()
 			          + (anyEnabled[i - 1] ? max.getMax() / 15 : 0);
 
 		for (auto &bucketIt : subBuckets) {
-			int i = 0;
+			auto i = 0U;
 			for (auto &itemIt : bucketIt.second) {
 				auto &marker = markers[itemIt.second];
 				auto size =
@@ -465,7 +465,7 @@ void Plot::addSeparation()
 				auto newSize = aligner.getAligned(size);
 
 				marker.setSizeBy(!options->isHorizontal(), newSize);
-				++i;
+				++i %= ranges.size();
 			}
 		}
 	}
