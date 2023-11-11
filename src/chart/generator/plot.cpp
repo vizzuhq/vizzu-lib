@@ -298,15 +298,14 @@ void Plot::normalizeXY()
 
 void Plot::calcMeasureAxises(const Data::DataTable &dataTable)
 {
-	for (auto i = 0U; i < std::size(measureAxises.axises); ++i) {
-		auto id = static_cast<ChannelId>(i);
-		measureAxises.at(id) = calcAxis(id, dataTable);
-	}
+	for (auto i = 0U; i < std::size(measureAxises.axises); ++i)
+		calcMeasureAxis(static_cast<ChannelId>(i), dataTable);
 }
 
-MeasureAxis Plot::calcAxis(ChannelId type,
+void Plot::calcMeasureAxis(ChannelId type,
     const Data::DataTable &dataTable)
 {
+	auto &axis = measureAxises.at(type);
 	const auto &scale = options->getChannels().at(type);
 	if (!scale.isEmpty() && scale.measureId) {
 		commonAxises.at(type).title =
@@ -316,21 +315,21 @@ MeasureAxis Plot::calcAxis(ChannelId type,
 
 		if (type == options->subAxisType()
 		    && options->align == Base::Align::Type::stretch) {
-			return {Math::Range<double>(0, 100),
+			axis = {Math::Range<double>(0, 100),
 			    "%",
 			    scale.step.getValue()};
 		}
-
-		auto colIndex = scale.measureId->getColIndex();
-		auto unit = colIndex
-		              ? dataTable.getInfo(colIndex.value()).getUnit()
-		              : std::string{};
-		return {stats.channels[type].range,
-		    unit,
-		    scale.step.getValue()};
+		else {
+			auto colIndex = scale.measureId->getColIndex();
+			axis = {stats.channels[type].range,
+			    colIndex
+			        ? dataTable.getInfo(colIndex.value()).getUnit()
+			        : std::string{},
+			    scale.step.getValue()};
+		}
 	}
-
-	return {};
+	else
+		axis = {};
 }
 
 void Plot::calcDimensionAxises(const Data::DataTable &table)
