@@ -27,7 +27,8 @@ const char *vizzu_errorMessage(APIHandles::Exception exceptionPtr,
 {
 	std::string_view type_info = typeinfo->name();
 
-	if (type_info.starts_with("St")) { // std::
+	if (type_info.starts_with("St")
+	    || type_info.starts_with("NSt")) { // std::
 		constexpr auto valid = "abcdefghijklmnopqrstuvwxyz_";
 		auto last = type_info.find_last_of(valid);
 		auto first = type_info.find_last_not_of(valid, last);

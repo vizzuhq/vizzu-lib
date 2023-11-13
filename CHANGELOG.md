@@ -2,6 +2,9 @@
 
 ## [Unreleased]
 
+### Fixed
+- Fix crash on split with no measure
+
 ## [0.9.0] - 2023-11-10
 
 ### Fixed
