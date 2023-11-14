@@ -7,11 +7,7 @@
 namespace Anim
 {
 
-Control::Control(Controllable &controlled) :
-    controlled(controlled),
-    progress(0.0),
-    lastProgress(0.0)
-{}
+Control::Control(Controllable &controlled) : controlled(controlled) {}
 
 void Control::setOnFinish(OnFinish onFinish)
 {
