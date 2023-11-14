@@ -105,6 +105,7 @@ nav:
       - tutorial/geometry.md
       - Channels & legend: tutorial/channels_legend.md
       - Group/stack: tutorial/group_stack.md
+      - tutorial/stacking_explanation.md
       - tutorial/sorting.md
       - Align & range: tutorial/align_range.md
       - Changing dimensions: tutorial/changing_dimensions.md
