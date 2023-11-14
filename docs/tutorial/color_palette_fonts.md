@@ -25,7 +25,6 @@ you should add
 
 {!tutorial/setup_config.md!}
 
-
 ```javascript
 chart.animate({
     style: {

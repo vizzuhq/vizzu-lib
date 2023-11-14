@@ -17,7 +17,6 @@ ascending order.
 
 {!tutorial/setup_config.md!}
 
-
 ```javascript
 chart.animate({
     config: {

@@ -19,7 +19,6 @@ from the chart.
 
 {!tutorial/setup_config.md!}
 
-
 ```javascript
 chart.animate({
     data: {

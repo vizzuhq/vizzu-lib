@@ -18,7 +18,6 @@ the default animation options.
 
 {!tutorial/setup_config.md!}
 
-
 ```javascript
 chart.animate({
     config: {

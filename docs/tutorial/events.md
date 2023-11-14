@@ -18,7 +18,6 @@ block with information about the clicked chart element.
 
 {!tutorial/setup_config.md!}
 
-
 ```javascript
 function clickHandler(event) {
     alert(JSON.stringify(event.target));
