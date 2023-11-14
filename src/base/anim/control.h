@@ -42,7 +42,7 @@ public:
 		              : Direction::normal;
 	}
 
-	[[nodiscard]] Duration getPosition() const { return position; };
+	[[nodiscard]] Duration getPosition() const;
 	[[nodiscard]] double getProgress() const;
 
 	[[nodiscard]] bool isRunning() const
@@ -67,8 +67,8 @@ protected:
 	bool cancelled{};
 	bool finished{};
 	Controllable &controlled;
-	Duration position;
-	Duration lastPosition;
+	double progress{0.0};
+	double lastProgress{0.0};
 	PlayState playState{PlayState::paused};
 	Direction direction{Direction::normal};
 	double speed{1.0};
@@ -83,6 +83,9 @@ protected:
 
 private:
 	void finish(bool preRun);
+	void setProgress(double value);
+	void setPosition(Duration pos);
+	[[nodiscard]] double positionToProgress(Duration pos) const;
 };
 
 }

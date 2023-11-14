@@ -3,7 +3,9 @@
 ## [Unreleased]
 
 ### Fixed
-- Fix crash on split with no measure
+
+- Fixed crash on splitted chart with no measure.
+- Fixed refresh of chart when duration is 0.
 
 ## [0.9.0] - 2023-11-10
 

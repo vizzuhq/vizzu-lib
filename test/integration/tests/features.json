@@ -2,31 +2,31 @@
   "suite": "/test/integration/tests/features",
   "test": {
     "aggregators/aggregators": {
-      "refs": ["91f1c04"]
+      "refs": ["bd61770"]
     },
     "aggregators/aggregators_together": {
       "refs": ["0e6a340"]
     },
     "axis_title_positioning": {
-      "refs": ["e5557cb"]
+      "refs": ["9fc11e0"]
     },
     "data_input/object_records": {
-      "refs": ["752b04e"]
+      "refs": ["9d5443f"]
     },
     "events/drawing_events": {
       "refs": ["c34d5dd"]
     },
     "subtitle_caption": {
-      "refs": ["530ec05"]
+      "refs": ["5c04f20"]
     },
     "cssproperties": {
-      "refs": ["0262a34"]
+      "refs": ["f3212ba"]
     },
     "anim/speed": {
       "refs": ["7b07504"]
     },
     "presets": {
-      "refs": ["3cbd2f7"]
+      "refs": ["55a7fb8"]
     }
   }
 }
