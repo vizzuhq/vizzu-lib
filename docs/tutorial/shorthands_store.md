@@ -21,7 +21,6 @@ animate method, you can simplify your code by using only the object of the
 
 {!tutorial/setup_config.md!}
 
-
 ```javascript
 chart.animate({
     // config: {

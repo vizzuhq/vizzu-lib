@@ -18,7 +18,6 @@ still on the `color` channel.
 
 {!tutorial/setup_config.md!}
 
-
 ```javascript
 chart.animate({
     config: {

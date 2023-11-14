@@ -9,6 +9,7 @@
       </div>
      </body>
     </html>
+
     ```
 
     In `JavaScript`, initialize and configure the chart:

@@ -7,7 +7,7 @@ Promise.all([mdChartLoaded]).then((results) => {
     series: [
       { name: 'D', values: ['A', 'B', 'C'] },
       { name: 'M', values: [6.1, 3.5, 1.4] },
-      { name: 'i', values: [1, 1, 1] },
+      { name: 'i', values: [1, 1, 1] }
     ]
   }
   const mdchart = new MdChart(data, 'tutorial')
@@ -16,108 +16,119 @@ Promise.all([mdChartLoaded]).then((results) => {
     // tutorial_01
     {
       anims: [
-        chart => chart.animate({
-          config: {
-            title: 'Stacking explanation',
-            channels: {
-              x: {
-                set: ['D', 'i'],
-                range: { max: 3 },
-                axis: true,
-                labels: false,
-                title: 'x: [ dimension ]',
-                interlacing: false,
-                markerGuides: true,
-                ticks: false
-              },
-              y: {
-                set: null,
-                axis: true,
-                labels: false,
-                title: null,
-                interlacing: false
-              },
-              color: 'D',
-              label: ['D'],
+        (chart) =>
+          chart.animate(
+            {
+              config: {
+                title: 'Stacking explanation',
+                channels: {
+                  x: {
+                    set: ['D', 'i'],
+                    range: { max: 3 },
+                    axis: true,
+                    labels: false,
+                    title: 'x: [ dimension ]',
+                    interlacing: false,
+                    markerGuides: true,
+                    ticks: false
+                  },
+                  y: {
+                    set: null,
+                    axis: true,
+                    labels: false,
+                    title: null,
+                    interlacing: false
+                  },
+                  color: 'D',
+                  label: ['D']
+                },
+                legend: null
+              }
             },
-            legend: null
-          }
-        }, animOptions),
-        chart => chart.animate({
-          config: {
-            channels: {
-              x: {
-                set: ['D','M'],
-                range: { max: 12 },
-                axis: true,
-                labels: true,
-                title: 'x: [ measure, dimension ]',
-                interlacing: false,
-                markerGuides: true,
-                ticks: true
-              },
-              y: {
-                set: null,
-                axis: true,
-                labels: false,
-                title: null,
-                interlacing: false
-              },
-              color: 'D',
-              label: ['D']
-            }
-          }
-        }, animOptions),
-        chart => chart.animate({
-          config: {
-            channels: {
-              x: {
-                set: 'M',
-                range: { max: 7 },
-                axis: true,
-                labels: true,
-                title: 'x: [ measure ]',
-                interlacing: false,
-                markerGuides: true,
-                ticks: true
-              },
-              y: {
-                set: null,
-                axis: true,
-                labels: false,
-                title: null,
-                interlacing: false
-              },
-              color: 'D',
-              label: ['D']
-            }
-          }
-        }, animOptions),
-        chart => chart.animate({
-          config: {
-            channels: {
-              x: {
-                set: ['D', 'i'],
-                range: { max: 3 },
-                axis: true,
-                labels: false,
-                title: 'x: [ dimension ]',
-                interlacing: false,
-                markerGuides: true,
-                ticks: false
-              },
-              y: { set: null,
-                axis: true,
-                labels: false,
-                title: null,
-                interlacing: false
-              },
-              color: 'D',
-              label: ['D'],
+            animOptions
+          ),
+        (chart) =>
+          chart.animate(
+            {
+              config: {
+                channels: {
+                  x: {
+                    set: ['D', 'M'],
+                    range: { max: 12 },
+                    axis: true,
+                    labels: true,
+                    title: 'x: [ measure, dimension ]',
+                    interlacing: false,
+                    markerGuides: true,
+                    ticks: true
+                  },
+                  y: {
+                    set: null,
+                    axis: true,
+                    labels: false,
+                    title: null,
+                    interlacing: false
+                  },
+                  color: 'D',
+                  label: ['D']
+                }
+              }
             },
-            legend: null
-          }
-        }, animOptions)
+            animOptions
+          ),
+        (chart) =>
+          chart.animate(
+            {
+              config: {
+                channels: {
+                  x: {
+                    set: 'M',
+                    range: { max: 7 },
+                    axis: true,
+                    labels: true,
+                    title: 'x: [ measure ]',
+                    interlacing: false,
+                    markerGuides: true,
+                    ticks: true
+                  },
+                  y: {
+                    set: null,
+                    axis: true,
+                    labels: false,
+                    title: null,
+                    interlacing: false
+                  },
+                  color: 'D',
+                  label: ['D']
+                }
+              }
+            },
+            animOptions
+          ),
+        (chart) =>
+          chart.animate(
+            {
+              config: {
+                channels: {
+                  x: {
+                    set: ['D', 'i'],
+                    range: { max: 3 },
+                    axis: true,
+                    labels: false,
+                    title: 'x: [ dimension ]',
+                    interlacing: false,
+                    markerGuides: true,
+                    ticks: false
+                  },
+                  y: { set: null, axis: true, labels: false, title: null, interlacing: false },
+                  color: 'D',
+                  label: ['D']
+                },
+                legend: null
+              }
+            },
+            animOptions
+          )
       ]
     }
   ])

@@ -15,7 +15,6 @@ In this step, we seek forward to `50%` of progress after the animation starts.
 
 {!tutorial/setup_config.md!}
 
-
 ```javascript
 chart.animate({
     config: {
