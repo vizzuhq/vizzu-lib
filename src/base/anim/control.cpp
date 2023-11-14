@@ -9,8 +9,8 @@ namespace Anim
 
 Control::Control(Controllable &controlled) :
     controlled(controlled),
-    position(Duration(0.0)),
-    lastPosition(Duration(0.0))
+    progress(0.0),
+    lastProgress(0.0)
 {}
 
 void Control::setOnFinish(OnFinish onFinish)
@@ -31,32 +31,47 @@ void Control::seek(const std::string &value)
 		seekTime(Duration(value));
 }
 
-void Control::seekProgress(double value)
+Duration Control::getPosition() const
 {
-	seekTime(controlled.getDuration() * value);
+	return controlled.getDuration() * progress;
 }
 
-double Control::getProgress() const
+double Control::getProgress() const { return progress; }
+
+void Control::seekProgress(double value)
 {
-	auto duration = static_cast<double>(controlled.getDuration());
-	return duration == 0 ? 0
-	                     : static_cast<double>(position) / duration;
+	setProgress(value);
+	update();
+}
+
+void Control::setProgress(double value)
+{
+	progress = value;
+
+	if (progress > 1.0) {
+		playState = PlayState::paused;
+		progress = 1.0;
+	}
+	else if (progress < 0.0) {
+		playState = PlayState::paused;
+		progress = 0.0;
+	}
 }
 
 void Control::seekTime(Duration pos)
 {
-	position = pos;
+	seekProgress(positionToProgress(pos));
+}
 
-	if (position > controlled.getDuration()) {
-		playState = PlayState::paused;
-		position = controlled.getDuration();
-	}
-	else if (position < Duration(0)) {
-		playState = PlayState::paused;
-		position = Duration(0);
-	}
+void Control::setPosition(Duration pos)
+{
+	setProgress(positionToProgress(pos));
+}
 
-	update();
+double Control::positionToProgress(Duration pos) const
+{
+	return pos == Duration(0.0) ? 0.0
+	                            : pos / controlled.getDuration();
 }
 
 void Control::setSpeed(double speed)
@@ -65,15 +80,9 @@ void Control::setSpeed(double speed)
 	update();
 }
 
-bool Control::atStartPosition() const
-{
-	return position == Duration(0.0);
-}
+bool Control::atStartPosition() const { return progress <= 0.0; }
 
-bool Control::atEndPosition() const
-{
-	return position == controlled.getDuration();
-}
+bool Control::atEndPosition() const { return progress >= 1.0; }
 
 bool Control::atIntermediatePosition() const
 {
@@ -84,7 +93,7 @@ void Control::reset()
 {
 	playState = PlayState::paused;
 	direction = Direction::normal;
-	position = Duration(0.0);
+	progress = 0.0;
 	speed = 1.0;
 	actTime = TimePoint();
 	cancelled = false;
@@ -95,7 +104,7 @@ void Control::stop()
 {
 	playState = PlayState::paused;
 	direction = Direction::normal;
-	position = Duration(0.0);
+	progress = 0.0;
 	update();
 }
 
@@ -103,7 +112,7 @@ void Control::cancel()
 {
 	playState = PlayState::paused;
 	direction = Direction::normal;
-	position = Duration(0.0);
+	progress = 0.0;
 	cancelled = true;
 	update();
 }
@@ -114,22 +123,23 @@ void Control::update(const TimePoint &time)
 {
 	if (actTime == TimePoint()) actTime = time;
 
-	const Duration step{time - std::exchange(actTime, time)};
 	auto running = playState == PlayState::running;
 
-	if (running && step != Duration(0.0)) {
-		if (direction == Direction::normal)
-			seekTime(position + step * speed);
-		else
-			seekTime(position - step * speed);
+	Duration timeStep{time - std::exchange(actTime, time)};
+
+	timeStep = timeStep * speed
+	         * (direction == Direction::normal ? 1.0 : -1.0);
+
+	if (running && timeStep != Duration(0.0)) {
+		setPosition(getPosition() + timeStep);
 	}
 
-	if (lastPosition != position) {
-		controlled.setPosition(position);
+	if (lastProgress != progress) {
+		controlled.setPosition(getPosition());
 		if (onChange) onChange();
 	}
 
-	lastPosition = position;
+	lastProgress = progress;
 
 	finish(running);
 }

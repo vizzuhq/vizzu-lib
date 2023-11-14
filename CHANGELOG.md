@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+### Fixed
+
+- Fixed refresh of chart when duration is 0.
+
 ## [0.9.0] - 2023-11-10
 
 ### Fixed
