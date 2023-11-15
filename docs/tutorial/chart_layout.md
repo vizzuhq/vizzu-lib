@@ -18,9 +18,7 @@ are aligned.
 
 <div id="tutorial_01"></div>
 
-{!tutorial/setup.md!}
-
-{!tutorial/setup_config.md!}
+{!tutorial/assets/setup/setup_c.md!}
 
 ```javascript
 chart.animate({

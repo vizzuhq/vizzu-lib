@@ -14,9 +14,7 @@ block with information about the clicked chart element.
 
 <div id="tutorial_01"></div>
 
-{!tutorial/setup.md!}
-
-{!tutorial/setup_config.md!}
+{!tutorial/assets/setup/setup_c.md!}
 
 ```javascript
 function clickHandler(event) {

@@ -1,4 +1,3 @@
-??? info "Info - How to setup Vizzu"
     In `HTML`, create a placeholder element that will contain the rendered
     chart.
 
@@ -21,8 +20,4 @@
     let chart = new Vizzu('myVizzu')
 
     await chart.initializing
-
-    chart.animate({
-        data
-    })
     ```

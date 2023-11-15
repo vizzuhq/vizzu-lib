@@ -1,0 +1,5 @@
+    ```javascript
+    chart.animate({
+        data
+    })
+    ```

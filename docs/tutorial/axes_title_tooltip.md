@@ -15,7 +15,7 @@ the measure (`Popularity`) to the y-axis using the set property.
 
 <div id="tutorial_01"></div>
 
-{!tutorial/setup.md!}
+{!tutorial/assets/setup/setup_a.md!}
 
 ```javascript
 chart.animate({
