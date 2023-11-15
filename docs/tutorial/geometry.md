@@ -17,21 +17,6 @@ Switching the geometry to area.
 ```javascript
 chart.animate({
     config: {
-        channels: {
-            y: {
-                set: ['Popularity']
-            },
-            x: {
-                set: ['Genres']
-            },
-        },
-    }
-})
-```
-
-```javascript
-chart.animate({
-    config: {
         geometry: 'area',
     }
 })

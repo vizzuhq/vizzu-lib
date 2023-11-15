@@ -25,21 +25,6 @@ them differently with the `style` object introduced in the
 chart.animate({
     config: {
         channels: {
-            y: {
-                set: ['Popularity']
-            },
-            x: {
-                set: ['Genres']
-            },
-        },
-    }
-})
-```
-
-```javascript
-chart.animate({
-    config: {
-        channels: {
             label: {
                 attach: ['Popularity']
             }
