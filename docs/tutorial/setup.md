@@ -20,6 +20,8 @@
 
     let chart = new Vizzu('myVizzu')
 
+    await chart.initializing
+
     chart.animate({
         data
     })
