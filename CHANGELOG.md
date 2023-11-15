@@ -61,8 +61,7 @@
   `Vizzu.feature()` with name `cssProperties`.
 - `shorthands`, `pointerEvents`, `pivotData`, `rendering` features can be disabled through
   `Vizzu.feature()`
-- TypeScript interface made more typesafe, while the javascript api got ported to 
-- TypeScript.
+- TypeScript interface made more typesafe, while the javascript api got ported to TypeScript.
 - `pointeron` event removed, `pointerleave` event added. 
 - `Vizzu.feature.htmlCanvas.element` introduced to expose the underlying HTML canvas element.
 - `Vizzu.feature.rendering.update()` introduced to trigger chart re-rendering.
