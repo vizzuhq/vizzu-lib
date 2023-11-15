@@ -173,8 +173,8 @@ steps:
         chmod 400 /root/.ssh/id_rsa
         ssh-keyscan -t rsa github.com > /root/.ssh/known_hosts
         git clone --single-branch --branch main --depth 1 'git@github.com:vizzuhq/vizzu-lib-doc'
-        git config --global user.name "David Vegh"
-        git config --global user.email "veghdev@gmail.com"
+        git config --global user.name "$$VIZZUHQ_GITHUB_USER"
+        git config --global user.email "$$VIZZUHQ_GITHUB_EMAIL"
         npm run docs-gen-thumbnail-gsutil
         if [ "$_ISRELEASE" == "true" ]
         then
@@ -198,6 +198,8 @@ steps:
     dir: /workspace
     secretEnv:
       - VIZZUHQ_GITHUB_SSH
+      - VIZZUHQ_GITHUB_USER
+      - VIZZUHQ_GITHUB_EMAIL
 
   - name: vizzu/vizzu-dev-wasm:0.9
     id: release
@@ -263,6 +265,10 @@ availableSecrets:
       env: VIZZUHQ_GITHUB_SSH
     - versionName: projects/418279184538/secrets/VIZZUHQ_GITHUB_API/versions/latest
       env: VIZZUHQ_GITHUB_API
+    - versionName: projects/418279184538/secrets/VIZZUHQ_GITHUB_USER/versions/latest
+      env: VIZZUHQ_GITHUB_USER
+    - versionName: projects/418279184538/secrets/VIZZUHQ_GITHUB_EMAIL/versions/latest
+      env: VIZZUHQ_GITHUB_EMAIL
     - versionName: projects/418279184538/secrets/VIZZUHQ_NPM_API/versions/latest
       env: VIZZUHQ_NPM_API
 timeout: 2400s

@@ -9,7 +9,8 @@ test_report.tgz
 
 __pycache__
 
-.venv
+.venv*
+vizzu_dev*
 .pdm-python
 
 docs/examples/**/*.png
