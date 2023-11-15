@@ -21,7 +21,7 @@ whereas on a bar chart, horizontally.
 
 <div id="tutorial_01"></div>
 
-{!tutorial/assets/setup/setup_c.md!}
+{!tutorial/assets/setup/setup_c!}
 
 Change align and configures the y axis labels to disappear during the animation.
 

@@ -19,7 +19,7 @@ them differently with the `style` object introduced in the
 
 <div id="tutorial_01"></div>
 
-{!tutorial/assets/setup/setup_b.md!}
+{!tutorial/assets/setup/setup_b!}
 
 ```javascript
 chart.animate({

@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+## [0.9.1] - 2023-11-15
+
 ### Fixed
 
 - Fixed crash on splitted chart with no measure.

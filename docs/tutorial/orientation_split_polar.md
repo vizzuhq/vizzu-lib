@@ -14,7 +14,7 @@ only use temporarily.
 
 <div id="tutorial_01"></div>
 
-{!tutorial/assets/setup/setup_c.md!}
+{!tutorial/assets/setup/setup_c!}
 
 ```javascript
 chart.animate({
