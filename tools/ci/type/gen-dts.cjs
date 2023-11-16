@@ -177,7 +177,7 @@ class DTSGenerator {
   _getType(name, definition) {
     const type = this._getRawType(name, definition)
     if (definition.nullable) {
-      return `${type} | null`
+      return `(${type} | null)`
     } else {
       return type
     }

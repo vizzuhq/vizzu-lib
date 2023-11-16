@@ -88,9 +88,9 @@ export class Data {
     }
   }
 
-  private _detectType(values: (string | number)[]): D.SeriesType | null {
+  private _detectType(values: (string | number | null)[]): D.SeriesType | null {
     if (Array.isArray(values) && values.length) {
-      if (typeof values[0] === 'number') {
+      if (typeof values[0] === 'number' || values[0] === null) {
         return 'measure'
       } else if (typeof values[0] === 'string') {
         return 'dimension'
