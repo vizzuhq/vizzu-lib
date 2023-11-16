@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+### Fixed
+
+- TypeScript definition fixed, measures can contain null values. 
+ 
 ## [0.9.1] - 2023-11-15
 
 ### Fixed

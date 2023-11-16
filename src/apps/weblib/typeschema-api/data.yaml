@@ -107,7 +107,9 @@ definitions:
       - type: array
         items: { type: string }
       - type: array
-        items: { type: number }
+        items:
+          type: number
+          nullable: true
 
   Series:
     $extends: SeriesMetaInfo
