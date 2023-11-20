@@ -2,7 +2,6 @@
 
 #include <utility>
 
-#include "base/refl/auto_accessor.h"
 #include "base/text/valueunit.h"
 
 namespace Anim
@@ -152,38 +151,6 @@ void Control::finish(bool preRun)
 			onFinish(true);
 			finished = true;
 		}
-	}
-}
-
-void Control::setValue(std::string_view path,
-    const std::string &value)
-{
-	if (path == "seek") { seek(value); }
-	else if (path == "cancel") {
-		cancel();
-	}
-	else if (path == "stop") {
-		stop();
-	}
-	else if (auto &&set_accessor =
-	             Refl::Access::getAccessor<Control::Option>(path)
-	                 .set) {
-		set_accessor(options, value);
-	}
-	else {
-		throw std::logic_error("invalid animation command");
-	}
-	update();
-}
-
-std::string Control::getValue(std::string_view path)
-{
-	if (auto &&get_accessor =
-	        Refl::Access::getAccessor<Control::Option>(path).get) {
-		return get_accessor(options);
-	}
-	else {
-		throw std::logic_error("invalid animation command");
 	}
 }
 

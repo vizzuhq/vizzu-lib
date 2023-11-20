@@ -19,8 +19,7 @@ export class AnimControl {
     percentage. Seeking the animation to the end position while the animation
     is paused will not trigger the animation complete promise to resolve. */
   seek(value: Position): this {
-    const param = typeof value !== 'string' ? value.toString() : value
-    this._setParam('seek', param)
+    this.position = value
     return this
   }
 
@@ -58,7 +57,8 @@ export class AnimControl {
 
   /** Setting the position of the animation. */
   set position(value: Position) {
-    this.seek(value)
+    const param = typeof value !== 'string' ? value.toString() : value
+    this._setParam('position', param)
   }
 
   /** Getting the position of the animation. */

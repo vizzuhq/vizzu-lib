@@ -4,6 +4,7 @@
 
 #include "base/conv/auto_json.h"
 #include "base/io/log.h"
+#include "base/refl/auto_accessor.h"
 
 #include "canvas.h"
 #include "interfacejs.h"
@@ -230,25 +231,47 @@ void Interface::setKeyframe(ObjectRegistry::Handle chart)
 }
 
 void Interface::setAnimControlValue(ObjectRegistry::Handle chart,
-    const char *path,
+    std::string_view path,
     const char *value)
 {
 	auto &&chartPtr = getChart(chart);
 	auto &ctrl = chartPtr->getAnimControl();
 
-	ctrl.setValue(path, value);
+	if (path == "position") { ctrl.seek(value); }
+	else if (path == "cancel") {
+		ctrl.cancel();
+	}
+	else if (path == "stop") {
+		ctrl.stop();
+	}
+	else if (auto &&set_accessor =
+	             Refl::Access::getAccessor<::Anim::Control::Option>(
+	                 path)
+	                 .set) {
+		set_accessor(ctrl.getOptions(), value);
+	}
+	else {
+		throw std::logic_error("invalid animation command");
+	}
+	ctrl.update();
 }
 
 const char *Interface::getAnimControlValue(
     ObjectRegistry::Handle chart,
-    const char *path)
+    std::string_view path)
 {
 	thread_local std::string res;
 
 	auto &&chartPtr = getChart(chart);
 	auto &ctrl = chartPtr->getAnimControl();
 
-	res = ctrl.getValue(path);
+	if (auto &&get_accessor =
+	        Refl::Access::getAccessor<::Anim::Control::Option>(path)
+	            .get) {
+		res = get_accessor(ctrl.getOptions());
+	}
+	else
+		throw std::logic_error("invalid animation command");
 
 	return res.c_str();
 }

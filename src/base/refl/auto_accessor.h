@@ -18,6 +18,7 @@ template <class Object> struct Accessor
 	void (*set)(Object &, const std::string &);
 };
 
+#ifndef __clang_analyzer__
 template <class Object,
     class Members =
         decltype(Refl::Members::get_member_functors<Object>(nullptr)),
@@ -47,18 +48,23 @@ constexpr std::initializer_list<
 	                        std::tuple_element_t<Ix, Members>>(o);
 	                    member = Conv::parse<Type>(str);
                     }}}...};
+#endif
 
 template <class Object>
 static const std::map<std::string_view, Accessor<Object>> &
 getAccessors()
 {
 	static const std::map<std::string_view, Accessor<Object>>
-	    &accessors{accessor_pairs<Object>};
+	    &accessors{
+#ifndef __clang_analyzer__
+	        accessor_pairs<Object>
+#endif
+	    };
 	return accessors;
 }
 
 template <class Object>
-Accessor<Object> getAccessor(std::string_view member)
+Accessor<Object> getAccessor(const std::string_view &member)
 {
 	auto &accessors = getAccessors<Object>();
 	if (auto it = accessors.find(member); it != accessors.end())
