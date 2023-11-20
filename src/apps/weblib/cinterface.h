@@ -133,7 +133,7 @@ extern void anim_control(APIHandles::Chart chart,
 extern void anim_control_setValue(APIHandles::Chart chart,
     const char *path,
     const char *value);
-extern void anim_control_getValue(APIHandles::Chart chart,
+extern const char *anim_control_getValue(APIHandles::Chart chart,
     const char *path);
 extern void anim_setValue(APIHandles::Chart chart,
     const char *path,

@@ -2,6 +2,7 @@
 
 #include <utility>
 
+#include "base/refl/auto_accessor.h"
 #include "base/text/valueunit.h"
 
 namespace Anim
@@ -34,11 +35,7 @@ Duration Control::getPosition() const
 
 double Control::getProgress() const { return options.position; }
 
-void Control::seekProgress(double value)
-{
-	setProgress(value);
-	update();
-}
+void Control::seekProgress(double value) { setProgress(value); }
 
 void Control::setProgress(double value)
 {
@@ -86,11 +83,6 @@ bool Control::atEndPosition() const
 	return options.position >= 1.0;
 }
 
-bool Control::atIntermediatePosition() const
-{
-	return !atStartPosition() && !atEndPosition();
-}
-
 void Control::reset()
 {
 	options = {PlayState::paused};
@@ -104,7 +96,6 @@ void Control::stop()
 	options.playState = PlayState::paused;
 	options.direction = Direction::normal;
 	options.position = 0.0;
-	update();
 }
 
 void Control::cancel()
@@ -113,7 +104,6 @@ void Control::cancel()
 	options.direction = Direction::normal;
 	options.position = 0.0;
 	cancelled = true;
-	update();
 }
 
 void Control::update() { update(actTime); }
@@ -162,6 +152,38 @@ void Control::finish(bool preRun)
 			onFinish(true);
 			finished = true;
 		}
+	}
+}
+
+void Control::setValue(std::string_view path,
+    const std::string &value)
+{
+	if (path == "seek") { seek(value); }
+	else if (path == "cancel") {
+		cancel();
+	}
+	else if (path == "stop") {
+		stop();
+	}
+	else if (auto &&set_accessor =
+	             Refl::Access::getAccessor<Control::Option>(path)
+	                 .set) {
+		set_accessor(options, value);
+	}
+	else {
+		throw std::logic_error("invalid animation command");
+	}
+	update();
+}
+
+std::string Control::getValue(std::string_view path)
+{
+	if (auto &&get_accessor =
+	        Refl::Access::getAccessor<Control::Option>(path).get) {
+		return get_accessor(options);
+	}
+	else {
+		throw std::logic_error("invalid animation command");
 	}
 }
 

@@ -212,10 +212,7 @@ void Animation::animate(const ::Anim::Control::Option &options,
 
 	completionCallback = std::move(onThisCompletes);
 	::Anim::Control::reset();
-	::Anim::Control::setPlayState(options.playState);
-	::Anim::Control::setDirection(options.direction);
-	::Anim::Control::seekProgress(options.position);
-	::Anim::Control::setSpeed(options.speed);
+	this->options = options;
 	onBegin();
 }
 

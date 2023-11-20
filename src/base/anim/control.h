@@ -2,6 +2,7 @@
 #define BASE_ANIM_CONTROL_H
 
 #include <functional>
+#include <map>
 
 #include "base/anim/controllable.h"
 #include "base/util/event.h"
@@ -35,13 +36,14 @@ public:
 	void seek(const std::string &value);
 	void seekProgress(double value);
 	void seekTime(Duration pos);
-	void pause() { options.playState = PlayState::paused; }
-	void play() { options.playState = PlayState::running; }
 	void setPlayState(PlayState state) { options.playState = state; }
 	void setDirection(Direction dir) { options.direction = dir; }
 	void setSpeed(double speed);
 	void stop();
 	void cancel();
+
+	void setValue(std::string_view path, const std::string &value);
+	std::string getValue(std::string_view path);
 
 	void reverse()
 	{
@@ -58,14 +60,8 @@ public:
 		return options.playState == PlayState::running;
 	};
 
-	[[nodiscard]] bool isReversed() const
-	{
-		return options.direction == Direction::reverse;
-	};
-
 	[[nodiscard]] bool atStartPosition() const;
 	[[nodiscard]] bool atEndPosition() const;
-	[[nodiscard]] bool atIntermediatePosition() const;
 
 	Util::Event<> onBegin;
 	Util::Event<> onComplete;

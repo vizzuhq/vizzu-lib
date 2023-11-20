@@ -229,29 +229,27 @@ void Interface::setKeyframe(ObjectRegistry::Handle chart)
 	getChart(chart)->setKeyframe();
 }
 
-void Interface::animControl(ObjectRegistry::Handle chart,
-    const char *command,
-    const char *param)
+void Interface::setAnimControlValue(ObjectRegistry::Handle chart,
+    const char *path,
+    const char *value)
 {
 	auto &&chartPtr = getChart(chart);
 	auto &ctrl = chartPtr->getAnimControl();
-	const std::string cmd(command);
-	if (cmd == "seek")
-		ctrl.seek(param);
-	else if (cmd == "setSpeed")
-		ctrl.setSpeed(std::stod(param));
-	else if (cmd == "pause")
-		ctrl.pause();
-	else if (cmd == "play")
-		ctrl.play();
-	else if (cmd == "stop")
-		ctrl.stop();
-	else if (cmd == "cancel")
-		ctrl.cancel();
-	else if (cmd == "reverse")
-		ctrl.reverse();
-	else
-		throw std::logic_error("invalid animation command");
+
+	ctrl.setValue(path, value);
+}
+const char *Interface::getAnimControlValue(
+    ObjectRegistry::Handle chart,
+    const char *path)
+{
+	thread_local std::string res;
+
+	auto &&chartPtr = getChart(chart);
+	auto &ctrl = chartPtr->getAnimControl();
+
+	res = ctrl.getValue(path);
+
+	return res.c_str();
 }
 
 void Interface::setAnimValue(ObjectRegistry::Handle chart,

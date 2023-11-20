@@ -47,7 +47,6 @@ set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} \
 '_chart_relToCanvasCoords',\
 '_chart_canvasToRelCoords',\
 '_chart_setKeyframe',\
-'_anim_control',\
 '_anim_control_setValue',\
 '_anim_control_getValue',\
 '_anim_setValue'] \
