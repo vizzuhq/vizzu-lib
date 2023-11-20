@@ -380,6 +380,26 @@ void anim_control(APIHandles::Chart chart,
 	    param);
 }
 
+void anim_control_setValue([[maybe_unused]] APIHandles::Chart chart,
+    [[maybe_unused]] const char *path,
+    [[maybe_unused]] const char *value)
+{
+	/*
+	return Interface::getInstance().animControl(chart,
+	    path,
+	    value);
+	    */
+}
+
+void anim_control_getValue([[maybe_unused]] APIHandles::Chart chart,
+    [[maybe_unused]] const char *path)
+{
+	/*
+	return Interface::getInstance().animControl(chart,
+	    path);
+	    */
+}
+
 void anim_setValue(APIHandles::Chart chart,
     const char *path,
     const char *value)

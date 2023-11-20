@@ -24,7 +24,7 @@ public:
 
 	void setAnimation(const Anim::AnimationPtr &animation);
 
-	void animate(const Options::Control &options = Options::Control(),
+	void animate(const ::Anim::Control::Option &options = {},
 	    const Animation::OnComplete &onThisCompletes =
 	        Animation::OnComplete());
 

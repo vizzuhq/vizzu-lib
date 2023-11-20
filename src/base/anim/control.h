@@ -15,6 +15,14 @@ public:
 	enum class PlayState { paused, running };
 	enum class Direction { normal, reverse };
 
+	struct Option
+	{
+		PlayState playState{PlayState::running};
+		Direction direction{Direction::normal};
+		double position{0.0};
+		double speed{1.0};
+	};
+
 	using OnChange = std::function<void()>;
 	using OnFinish = std::function<void(bool)>;
 
@@ -27,19 +35,19 @@ public:
 	void seek(const std::string &value);
 	void seekProgress(double value);
 	void seekTime(Duration pos);
-	void pause() { playState = PlayState::paused; }
-	void play() { playState = PlayState::running; }
-	void setPlayState(PlayState state) { playState = state; }
-	void setDirection(Direction dir) { direction = dir; }
+	void pause() { options.playState = PlayState::paused; }
+	void play() { options.playState = PlayState::running; }
+	void setPlayState(PlayState state) { options.playState = state; }
+	void setDirection(Direction dir) { options.direction = dir; }
 	void setSpeed(double speed);
 	void stop();
 	void cancel();
 
 	void reverse()
 	{
-		direction = direction == Direction::normal
-		              ? Direction::reverse
-		              : Direction::normal;
+		options.direction = options.direction == Direction::normal
+		                      ? Direction::reverse
+		                      : Direction::normal;
 	}
 
 	[[nodiscard]] Duration getPosition() const;
@@ -47,12 +55,12 @@ public:
 
 	[[nodiscard]] bool isRunning() const
 	{
-		return playState == PlayState::running;
+		return options.playState == PlayState::running;
 	};
 
 	[[nodiscard]] bool isReversed() const
 	{
-		return direction == Direction::reverse;
+		return options.direction == Direction::reverse;
 	};
 
 	[[nodiscard]] bool atStartPosition() const;
@@ -63,15 +71,12 @@ public:
 	Util::Event<> onComplete;
 
 protected:
-	bool changed{};
 	bool cancelled{};
 	bool finished{};
 	Controllable &controlled;
-	double progress{0.0};
-	double lastProgress{0.0};
-	PlayState playState{PlayState::paused};
-	Direction direction{Direction::normal};
-	double speed{1.0};
+	Option options{PlayState::paused};
+	double lastPosition{0.0};
+
 	TimePoint actTime;
 	OnFinish onFinish;
 	OnChange onChange;

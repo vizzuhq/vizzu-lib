@@ -204,7 +204,7 @@ void Animation::addKeyframe(const Gen::PlotPtr &source,
 	::Anim::Sequence::addKeyframe(keyframe);
 }
 
-void Animation::animate(const Options::Control &options,
+void Animation::animate(const ::Anim::Control::Option &options,
     OnComplete onThisCompletes)
 {
 	if (isRunning())

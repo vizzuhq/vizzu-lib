@@ -22,7 +22,7 @@ void Animator::setAnimation(const Anim::AnimationPtr &animation)
 	nextAnimation = animation;
 }
 
-void Animator::animate(const Options::Control &options,
+void Animator::animate(const ::Anim::Control::Option &options,
     const Animation::OnComplete &onThisCompletes)
 {
 	if (running)
