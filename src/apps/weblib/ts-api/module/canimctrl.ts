@@ -4,11 +4,11 @@ import { CObject } from './cenv.js'
 export class CAnimation extends CObject {}
 
 export class CAnimControl extends CObject {
-  animControl(command: string, param = ''): void {
+  setAnimControl(command: string, param = ''): void {
     const ccommand = this._toCString(command)
     const cparam = this._toCString(param)
     try {
-      this._call(this._wasm._anim_control)(ccommand, cparam)
+      this._call(this._wasm._anim_control_setValue)(ccommand, cparam)
     } finally {
       this._wasm._free(cparam)
       this._wasm._free(ccommand)

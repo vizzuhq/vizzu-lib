@@ -29,18 +29,18 @@ export class AnimControl {
   // eslint-disable-next-line  accessor-pairs
   set speed(value: number) {
     const param = typeof value !== 'string' ? value.toString() : value
-    this._animControl('setSpeed', param)
+    this._animControl('speed', param)
   }
 
   /** Pauses the controlled animation. */
   pause(): this {
-    this._animControl('pause')
+    this._animControl('playState', 'paused')
     return this
   }
 
   /** Plays/resumes playing of the controlled animation. */
   play(): this {
-    this._animControl('play')
+    this._animControl('playState', 'running')
     return this
   }
 
@@ -56,13 +56,19 @@ export class AnimControl {
     return this
   }
 
-  /** Changes the direction of the controlled animation. */
+  /** Changes the direction of the controlled animation to reverse. */
   reverse(): this {
-    this._animControl('reverse')
+    this._animControl('direction', 'reverse')
+    return this
+  }
+
+  /** Changes the direction of the controlled animation to forward. */
+  forward(): this {
+    this._animControl('direction', 'normal')
     return this
   }
 
   private _animControl(command: string, param = ''): void {
-    this._cControl.animControl(command, param)
+    this._cControl.setAnimControl(command, param)
   }
 }
