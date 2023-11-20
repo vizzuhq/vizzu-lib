@@ -9,5 +9,5 @@ fi
 
 python3.10 -m venv --copies ".venv" || python3 -m venv --copies ".venv"
 source .venv/bin/activate
-pip install pdm==2.8.0
+pip install pdm==2.10.3
 pdm install -p tools/ci
