@@ -371,18 +371,17 @@ void chart_setKeyframe(APIHandles::Chart chart)
 	return Interface::getInstance().setKeyframe(chart);
 }
 
-void anim_control_setValue([[maybe_unused]] APIHandles::Chart chart,
-    [[maybe_unused]] const char *path,
-    [[maybe_unused]] const char *value)
+void anim_control_setValue(APIHandles::Chart chart,
+    const char *path,
+    const char *value)
 {
 	return Interface::getInstance().setAnimControlValue(chart,
 	    path,
 	    value);
 }
 
-const char *anim_control_getValue(
-    [[maybe_unused]] APIHandles::Chart chart,
-    [[maybe_unused]] const char *path)
+const char *anim_control_getValue(APIHandles::Chart chart,
+    const char *path)
 {
 	return Interface::getInstance().getAnimControlValue(chart, path);
 }

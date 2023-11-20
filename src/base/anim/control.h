@@ -2,7 +2,6 @@
 #define BASE_ANIM_CONTROL_H
 
 #include <functional>
-#include <map>
 
 #include "base/anim/controllable.h"
 #include "base/util/event.h"
@@ -44,13 +43,6 @@ public:
 
 	void setValue(std::string_view path, const std::string &value);
 	std::string getValue(std::string_view path);
-
-	void reverse()
-	{
-		options.direction = options.direction == Direction::normal
-		                      ? Direction::reverse
-		                      : Direction::normal;
-	}
 
 	[[nodiscard]] Duration getPosition() const;
 	[[nodiscard]] double getProgress() const;
