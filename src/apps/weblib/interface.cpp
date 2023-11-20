@@ -238,6 +238,7 @@ void Interface::setAnimControlValue(ObjectRegistry::Handle chart,
 
 	ctrl.setValue(path, value);
 }
+
 const char *Interface::getAnimControlValue(
     ObjectRegistry::Handle chart,
     const char *path)
