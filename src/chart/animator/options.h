@@ -52,18 +52,8 @@ public:
 		[[nodiscard]] RegroupStrategy getRegroupStrategy() const;
 	};
 
-	struct Control
-	{
-		::Anim::Control::PlayState playState{
-		    ::Anim::Control::PlayState::running};
-		::Anim::Control::Direction direction{
-		    ::Anim::Control::Direction::normal};
-		double position{0.0};
-		double speed{1.0};
-	};
-
 	Keyframe keyframe;
-	Control control;
+	::Anim::Control::Option control;
 
 	void set(const std::string &path, const std::string &value);
 };

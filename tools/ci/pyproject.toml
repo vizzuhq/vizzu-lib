@@ -11,7 +11,7 @@ license = {text = "Apache-2.0"}
 
 [tool.pdm.dev-dependencies]
 packagetool = [
-    "pdm==2.8.0",
+    "pdm==2.10.3",
 ]
 codequality = [
     "black",

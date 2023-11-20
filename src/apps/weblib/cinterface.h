@@ -127,9 +127,11 @@ extern void removeEventListener(APIHandles::Chart chart,
     const char *name,
     void (*callback)(APIHandles::Event event, const char *));
 extern void event_preventDefault(APIHandles::Event event);
-extern void anim_control(APIHandles::Chart chart,
-    const char *command,
-    const char *param);
+extern void anim_control_setValue(APIHandles::Chart chart,
+    const char *path,
+    const char *value);
+extern const char *anim_control_getValue(APIHandles::Chart chart,
+    const char *path);
 extern void anim_setValue(APIHandles::Chart chart,
     const char *path,
     const char *value);
