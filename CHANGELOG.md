@@ -5,6 +5,7 @@
 ### Fixed
 
 - Fixed redraw on browser zoom (bug since 0.9.0).
+- Fixed clearing of the canvas before rendering when devicePixelRatio is not 1.
 - TypeScript definition fixed, measures can contain null values. 
 
 ### Added

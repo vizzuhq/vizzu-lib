@@ -102,6 +102,7 @@ export class HtmlCanvas implements Plugin {
       this._mainCanvas.height = this._cssHeight * this._scaleFactor
       this._offscreenCanvas.width = this._cssWidth * this._scaleFactor
       this._offscreenCanvas.height = this._cssHeight * this._scaleFactor
+      this._offscreenContext.setTransform(1, 0, 0, 1, 0, 0)
       this._offscreenContext.translate(0.5, 0.5)
       this._offscreenContext.scale(this._scaleFactor, this._scaleFactor)
     }
@@ -110,12 +111,7 @@ export class HtmlCanvas implements Plugin {
   }
 
   frameBegin(): void {
-    this._offscreenContext.clearRect(
-      -1,
-      -1,
-      this._mainCanvas.width + 1,
-      this._mainCanvas.height + 1
-    )
+    this._offscreenContext.clearRect(-1, -1, this._cssWidth + 2, this._cssHeight + 2)
   }
 
   frameEnd(): void {
