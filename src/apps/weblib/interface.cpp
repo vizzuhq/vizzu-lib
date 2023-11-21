@@ -237,7 +237,7 @@ void Interface::setAnimControlValue(ObjectRegistry::Handle chart,
 	auto &&chartPtr = getChart(chart);
 	auto &ctrl = chartPtr->getAnimControl();
 
-	if (path == "position") { ctrl.seek(value); }
+	if (path == "seek") { ctrl.seek(value); }
 	else if (path == "cancel") {
 		ctrl.cancel();
 	}

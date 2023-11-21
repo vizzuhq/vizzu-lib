@@ -15,11 +15,12 @@ export class AnimControl {
     return this._cControl.storeAnim()
   }
 
-  /** @deprecated Seeks the animation to the position specified by time or progress 
+  /** Seeks the animation to the position specified by time or progress
     percentage. Seeking the animation to the end position while the animation
     is paused will not trigger the animation complete promise to resolve. */
   seek(value: Position): this {
-    this.position = value
+    const param = typeof value !== 'string' ? value.toString() : value
+    this._setParam('seek', param)
     return this
   }
 
@@ -56,7 +57,7 @@ export class AnimControl {
   }
 
   /** Setting the position of the animation. */
-  set position(value: Position) {
+  set position(value: number) {
     const param = typeof value !== 'string' ? value.toString() : value
     this._setParam('position', param)
   }
