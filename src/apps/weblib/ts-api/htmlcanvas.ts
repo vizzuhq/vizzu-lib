@@ -24,6 +24,7 @@ export class HtmlCanvas implements Plugin {
   private _mainCanvas: HTMLCanvasElement
   private _context: CanvasRenderingContext2D
   private _resizeObserver: ResizeObserver
+  private _resizeHandler: () => void
   private _prevUpdateHash: string = ''
   private _scaleFactor: number = 1
   private _cssWidth: number = 1
@@ -71,9 +72,14 @@ export class HtmlCanvas implements Plugin {
     this._context = ctx
     this.calcSize()
     this._resizeObserver = this._createResizeObserverFor(this._mainCanvas)
+    this._resizeHandler = (): void => {
+      this.onchange()
+    }
+    window.addEventListener('resize', this._resizeHandler)
   }
 
   destruct(): void {
+    window.removeEventListener('resize', this._resizeHandler)
     this._resizeObserver.disconnect()
     if (this._container) this._container.removeChild(this._mainCanvas)
   }

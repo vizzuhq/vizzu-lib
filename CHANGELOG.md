@@ -4,13 +4,14 @@
 
 ### Fixed
 
+- Fixed redraw on browser zoom (bug since 0.9.0).
 - TypeScript definition fixed, measures can contain null values. 
 
 ### Added
 
 - Animation control object expose properties `position`, `direction`, `speed` 
   and `playState` to be able to query the current state of the animation, and
-  to be more conform with the Web Animation API. Old methods got deprecated. 
+  to be more conform with the Web Animation API. 
 
 ## [0.9.1] - 2023-11-15
 
