@@ -5,7 +5,13 @@
 ### Fixed
 
 - TypeScript definition fixed, measures can contain null values. 
- 
+
+### Added
+
+- Animation control object expose properties `position`, `direction`, `speed` 
+  and `playState` to be able to query the current state of the animation, and
+  to be more conform with the Web Animation API. Old methods got deprecated. 
+
 ## [0.9.1] - 2023-11-15
 
 ### Fixed

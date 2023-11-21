@@ -68,13 +68,13 @@ export class AnimControl {
 
   /** @deprecated Pauses the controlled animation. */
   pause(): this {
-    this._setParam('playState', 'paused')
+    this.playState = 'paused'
     return this
   }
 
   /** @deprecated Plays/resumes playing of the controlled animation. */
   play(): this {
-    this._setParam('playState', 'running')
+    this.playState = 'running'
     return this
   }
 
@@ -92,7 +92,7 @@ export class AnimControl {
 
   /** @deprecated Changes the direction of the controlled animation to reverse. */
   reverse(): this {
-    this._setParam('direction', 'reverse')
+    this.direction = this.direction === 'reverse' ? 'normal' : 'reverse'
     return this
   }
 
