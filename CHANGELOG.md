@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+## [0.9.2] - 2023-11-22
+
 ### Fixed
 
 - Fixed redraw on browser zoom (bug since 0.9.0).
