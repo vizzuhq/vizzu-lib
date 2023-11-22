@@ -39,7 +39,7 @@ Data::DataCubeOptions::IndexSet Channels::getDimensions() const
 	return dimensions;
 }
 
-Data::DataCubeOptions::IndexSet Channels::getSeries() const
+Data::DataCubeOptions::IndexSet Channels::getMeasures() const
 {
 	Data::DataCubeOptions::IndexSet series;
 
@@ -74,7 +74,7 @@ Data::DataCubeOptions::IndexSet Channels::getRealSeries(
 
 Data::DataCubeOptions Channels::getDataCubeOptions() const
 {
-	return {getDimensions(), getSeries()};
+	return {getDimensions(), getMeasures()};
 }
 
 std::pair<bool, Channel::OptionalIndex> Channels::addSeries(

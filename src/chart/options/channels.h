@@ -29,7 +29,7 @@ public:
 
 	[[nodiscard]] Data::DataCubeOptions::IndexSet
 	getDimensions() const;
-	[[nodiscard]] Data::DataCubeOptions::IndexSet getSeries() const;
+	[[nodiscard]] Data::DataCubeOptions::IndexSet getMeasures() const;
 	[[nodiscard]] Data::DataCubeOptions::IndexSet getDimensions(
 	    const std::vector<ChannelId> &channelTypes) const;
 	[[nodiscard]] Data::DataCubeOptions::IndexSet getRealSeries(
