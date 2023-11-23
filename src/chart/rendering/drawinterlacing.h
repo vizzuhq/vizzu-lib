@@ -9,7 +9,10 @@ namespace Vizzu::Draw
 class DrawInterlacing : private DrawingContext
 {
 public:
-	DrawInterlacing(const DrawingContext &context, bool text);
+	explicit DrawInterlacing(const DrawingContext &context);
+
+	void drawGeometries();
+	void drawTexts();
 
 private:
 	void draw(bool horizontal, bool text);

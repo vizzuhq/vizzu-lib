@@ -8,12 +8,20 @@
 namespace Vizzu::Draw
 {
 
-DrawInterlacing::DrawInterlacing(const DrawingContext &context,
-    bool text) :
+DrawInterlacing::DrawInterlacing(const DrawingContext &context) :
     DrawingContext(context)
+{}
+
+void DrawInterlacing::drawGeometries()
 {
-	draw(true, text);
-	draw(false, text);
+	draw(true, false);
+	draw(false, false);
+}
+
+void DrawInterlacing::drawTexts()
+{
+	draw(true, true);
+	draw(false, true);
 }
 
 void DrawInterlacing::draw(bool horizontal, bool text)
@@ -34,13 +42,12 @@ void DrawInterlacing::draw(bool horizontal, bool text)
 
 	auto step = axis.step.calculate();
 
-	auto stepHigh = Math::Renard::R5().ceil(step);
-	stepHigh = std::min(axis.step.max(),
-	    std::max(stepHigh, axis.step.min()));
-
-	auto stepLow = Math::Renard::R5().floor(step);
-	stepLow =
-	    std::min(axis.step.max(), std::max(stepLow, axis.step.min()));
+	auto stepHigh = std::clamp(Math::Renard::R5().ceil(step),
+	    axis.step.min(),
+	    axis.step.max());
+	auto stepLow = std::clamp(Math::Renard::R5().floor(step),
+	    axis.step.min(),
+	    axis.step.max());
 
 	if (stepHigh == step) {
 		draw(axis.enabled,
@@ -240,16 +247,13 @@ void DrawInterlacing::drawDataLabel(
 		str += unit;
 	}
 
-	auto normal = Geom::Point::Ident(horizontal);
-
-	typedef Styles::AxisLabel::Position Pos;
 	labelStyle.position->visit(
 	    [this,
 	        &labelStyle,
 	        &axisEnabled,
 	        &tickPos,
 	        &horizontal,
-	        &normal,
+	        normal = Geom::Point::Ident(horizontal),
 	        &str,
 	        &textColor](int index, const auto &position)
 	    {
@@ -259,11 +263,16 @@ void DrawInterlacing::drawDataLabel(
 
 		    Geom::Point refPos = tickPos;
 
-		    if (position.value == Pos::min_edge)
+		    switch (position.value) {
+			    using Pos = Styles::AxisLabel::Position;
+		    case Pos::min_edge:
 			    refPos[horizontal ? 0 : 1] = 0.0;
-
-		    else if (position.value == Pos::max_edge)
+			    break;
+		    case Pos::max_edge:
 			    refPos[horizontal ? 0 : 1] = 1.0;
+			    break;
+		    default: break;
+		    }
 
 		    auto under = labelStyle.position->interpolates()
 		                   ? labelStyle.side->get(index).value
@@ -274,7 +283,7 @@ void DrawInterlacing::drawDataLabel(
 		    auto sign = 1 - 2 * under;
 
 		    auto posDir = coordSys.convertDirectionAt(
-		        Geom::Line(refPos, refPos + normal));
+		        {refPos, refPos + normal});
 
 		    posDir = posDir.extend(sign);
 

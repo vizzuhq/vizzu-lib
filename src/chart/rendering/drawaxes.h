@@ -4,6 +4,7 @@
 #include "base/geom/line.h"
 
 #include "drawingcontext.h"
+#include "drawinterlacing.h"
 
 namespace Vizzu::Draw
 {
@@ -29,6 +30,8 @@ private:
 	void drawDimensionLabel(bool horizontal,
 	    const Geom::Point &origo,
 	    Gen::DimensionAxis::Values::const_iterator it);
+
+	DrawInterlacing interlacing{*this};
 };
 
 }
