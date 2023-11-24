@@ -89,9 +89,9 @@ plugins:
   - gen-files:
       scripts:
         - pages/gen_pages.py
-  #       - examples/gen_examples.py
-  #       - reference/gen_reference.py
-  #       - style/gen_style_reference.py
+        - examples/gen_examples.py
+        - reference/gen_reference.py
+        - style/gen_style_reference.py
 
 nav:
   - Home: index.md
