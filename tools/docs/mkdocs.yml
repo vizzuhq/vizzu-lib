@@ -89,9 +89,9 @@ plugins:
   - gen-files:
       scripts:
         - pages/gen_pages.py
-        - examples/gen_examples.py
-        - reference/gen_reference.py
-        - style/gen_style_reference.py
+  #       - examples/gen_examples.py
+  #       - reference/gen_reference.py
+  #       - style/gen_style_reference.py
 
 nav:
   - Home: index.md
@@ -120,6 +120,7 @@ nav:
       - Shorthands & Store: tutorial/shorthands_store.md
       - Chart presets: tutorial/chart_presets.md
       - tutorial/style.md
+      - tutorial/writing_plugins.md
   - Examples:
       - examples/index.md
       - Preset charts: examples/presets/
