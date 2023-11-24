@@ -38,6 +38,7 @@ docs = [
     "mkdocs-literate-nav",
     "mkdocs-autorefs",
     "mkdocs-gen-files",
+    "mkdocs-placeholder-plugin>=0.4.1",
     "mike",
     "pyyaml",
     "types-pyyaml",

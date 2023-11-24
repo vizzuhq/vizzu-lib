@@ -37,7 +37,7 @@ the plugin. It has the following fields:
 export class ExamplePlugin implements Plugins.Plugin {
     meta = {
         name: 'examplePlugin',
-        version: '0.9.1',
+        version: 'xCURRENT_LIB_VERSIONx',
         depends: []
     }
 }

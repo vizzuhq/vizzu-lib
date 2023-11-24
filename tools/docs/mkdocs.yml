@@ -86,6 +86,7 @@ plugins:
   - literate-nav:
       implicit_index: true
   - autorefs
+  - placeholder
   - gen-files:
       scripts:
         - pages/gen_pages.py

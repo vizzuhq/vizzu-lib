@@ -3,9 +3,10 @@
 
 [metadata]
 groups = ["default", "codequality", "docs", "packagetool"]
-strategy = ["cross_platform"]
-lock_version = "4.4"
-content_hash = "sha256:5fa638f204eae191ae1db9b1a5b14a16bf96b6ce152a514455b269dba5d039e0"
+cross_platform = true
+static_urls = false
+lock_version = "4.3"
+content_hash = "sha256:2a2ea4394d724d9d3e237f82c6f825b6cf17e087b539c4375888b75d6bff8013"
 
 [[package]]
 name = "astroid"
@@ -835,6 +836,19 @@ summary = "Extension pack for Python Markdown and MkDocs Material."
 files = [
     {file = "mkdocs_material_extensions-1.3-py3-none-any.whl", hash = "sha256:0297cc48ba68a9fdd1ef3780a3b41b534b0d0df1d1181a44676fda5f464eeadc"},
     {file = "mkdocs_material_extensions-1.3.tar.gz", hash = "sha256:f0446091503acb110a7cab9349cbc90eeac51b58d1caa92a704a81ca1e24ddbd"},
+]
+
+[[package]]
+name = "mkdocs-placeholder-plugin"
+version = "0.4.1"
+requires_python = ">=3.9"
+summary = "Add dynamic placeholders to your mkdocs page"
+dependencies = [
+    "mkdocs>=1.4.0",
+]
+files = [
+    {file = "mkdocs-placeholder-plugin-0.4.1.tar.gz", hash = "sha256:268ac6f1020a6c02e31358d390d68fc09fd1f7062101ce7787769be10678dc4e"},
+    {file = "mkdocs_placeholder_plugin-0.4.1-py3-none-any.whl", hash = "sha256:976eb16659d38741d4345fd371d8137ad20051247680b68f27da943b6181778f"},
 ]
 
 [[package]]
