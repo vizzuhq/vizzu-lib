@@ -50,7 +50,7 @@ defined in the returned object:
 - `prepareAnimation`: Called when the animate() parameters gets set in the
   library to prepare the animation.
 - `registerAnimation`: Called when the animate() method called, and the lib
-  shedules the call to the animation queue.
+  schedules the call to the animation queue.
 - `runAnimation`: Called when all animate() parameter set and animation can be
   started. 
 
@@ -66,8 +66,12 @@ export class ExamplePlugin implements Plugins.Plugin {
     get hooks(): Plugins.PluginHooks {
         return {
             prepareAnimation: (ctx: Plugins.PrepareAnimationContext, next: () => void): void => {
-                if ('config' in ctx.target) {
-                    ctx.target.config.title = ctx.target.config?.color ?? 'Example plugin'
+                const config = ctx.target[0].target.config
+                if (config.channels.color) {
+                    config.title = Object.values(config.channels.color)[0][0]
+                    this.hasChanged = true
+                } else {
+                    config.title = 'Example plugin'
                 }
                 next()
             }
@@ -77,7 +81,7 @@ export class ExamplePlugin implements Plugins.Plugin {
 ```
 
 The hooks can also have a `priority` number that decides the order the
-registered plugins run. It’s a float value, ranging from 0 (first) to 1 (last).
+registered plugins run. It’s a float value, ranging from 0 (last) to 1 (first).
 
 ```typescript
 export class ExamplePlugin implements Plugins.Plugin {
@@ -85,12 +89,16 @@ export class ExamplePlugin implements Plugins.Plugin {
         return {
             prepareAnimation: Object.assign(
                 (ctx: Plugins.PrepareAnimationContext, next: () => void): void => {
-					if ('config' in ctx.target) {
-						ctx.target.config.title = ctx.target.config?.color ?? 'Example plugin'
-					}
-					next()
+                    const config = ctx.target[0].target.config
+                    if (config.channels.color) {
+                        config.title = Object.values(config.channels.color)[0][0]
+                        this.hasChanged = true
+                    } else {
+                        config.title = 'Example plugin'
+                    }
+                    next()
 				},
-                { priority: 1 }
+                { priority: .9 }
             )
         }
     }
@@ -125,17 +133,16 @@ export class ExamplePlugin implements Plugins.Plugin {
         return {
             prepareAnimation: Object.assign(
                 (ctx: Plugins.PrepareAnimationContext, next: () => void): void => {
-					if ('config' in ctx.target) {
-						if (ctx.target.config.color) {
-							this.hasChanged = true
-							ctx.target.config.title = ctx.target.config.color
-						} else {
-							ctx.target.config.title = 'Example plugin'
-						}
-					}
-					next()
+                    const config = ctx.target[0].target.config
+                    if (config.channels.color) {
+                        config.title = Object.values(config.channels.color)[0][0]
+                        this.hasChanged = true
+                    } else {
+                        config.title = 'Example plugin'
+                    }
+                    next()
 				},
-                { priority: 1 }
+                { priority: .9 }
             )
         }
     }
@@ -191,3 +198,6 @@ anim.activated.then(() => {
     }
 })
 ```
+
+!!! info
+    For more information check out our plugins at <https://github.com/vizzuhq/vizzu-lib-ext>.
