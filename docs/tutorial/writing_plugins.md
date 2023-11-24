@@ -1,20 +1,20 @@
 # Writing plugins
 
-## What are plugins
+## What is a plugin
 
-Plugins are custom classes which can change the chart config or data in runtime
-or they can even modify the displayed chart. They work by providing functions to
+A plugin is a custom class that can change the chart config or data in runtime
+or it can even modify the displayed chart. It works by providing functions to
 the chart instance which will be called automatically or manually at certain
-points of the animation process. Plugins are recommended for custom charts when
+points in the animation process. Plugins are recommended for custom charts when
 the available configuration options are not enough.
 
 The functions of the plugin can be **hooks** which are called automatically at
 certain points during the rendering, **API functions** which can be called
-manually or **listeners** that are connected to certain events.
+manually or **listeners** that are connected to certain (predefined) events.
 
 ## How to write a plugin
 
-To write a plugin, first import the `Plugin` interface.
+To write a plugin, first import the `Plugins` module.
 
 ```typescript
 import { type Plugins } from 'vizzu'
@@ -158,7 +158,7 @@ Define a getter method for the listeners property as follows:
 get listeners(): Plugins.PluginListeners {
     return {
         [Events.EventType.pointerup]: (): void => {
-            console.log('Example plugin: pointerup event')
+            console.log('You clicked on the chart')
         }
     }
 }
