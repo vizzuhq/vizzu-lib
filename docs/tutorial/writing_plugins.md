@@ -124,7 +124,7 @@ interface ExamplePluginApi extends Plugins.PluginApi {
 export class ExamplePlugin implements Plugins.Plugin {
 	meta: Plugins.PluginMeta = {
 		name: 'examplePlugin',
-		version: '0.9.1',
+        version: 'xCURRENT_LIB_VERSIONx',
 		depends: []
 	}
 	private hasChanged: boolean = false
