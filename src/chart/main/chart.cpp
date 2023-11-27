@@ -148,9 +148,9 @@ void Chart::draw(Gfx::ICanvas &canvas)
 		actPlot->getOptions()->legend.visit(
 		    [&](int, const auto &legend)
 		    {
-			    if (legend.value)
+			    if (*legend.value)
 				    Draw::DrawLegend(context,
-				        Gen::Options::toChannel(*legend.value),
+				        Gen::Options::toChannel(**legend.value),
 				        legend.weight);
 		    });
 

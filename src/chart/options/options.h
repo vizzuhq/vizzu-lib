@@ -49,7 +49,7 @@ public:
 
 	using MarkerId = uint64_t;
 	using Heading = ::Anim::Interpolated<std::optional<std::string>>;
-	using LegendType = Base::AutoParam<LegendId>;
+	using LegendType = Base::AutoParam<std::optional<LegendId>>;
 	using Legend = ::Anim::Interpolated<LegendType>;
 	using OrientationType = Base::AutoParam<Gen::Orientation>;
 	using Orientation = ::Anim::Interpolated<OrientationType>;

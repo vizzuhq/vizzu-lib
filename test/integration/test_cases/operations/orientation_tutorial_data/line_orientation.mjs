@@ -20,7 +20,7 @@ const testSteps = [
     chart.animate({
       config: {
         channels: {
-          y: { detach: ['Values 1'], range: { min: null, max: null } },
+          y: { detach: ['Values 1'], range: { min: 'auto', max: 'auto' } },
           x: { attach: ['Values 1'] },
           color: { attach: ['Timeseries'] }
         },

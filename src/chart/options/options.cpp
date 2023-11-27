@@ -234,7 +234,7 @@ uint64_t Options::generateMarkerInfoId()
 void Options::setAutoParameters()
 {
 	if (legend.get().isAuto()) {
-		Base::AutoParam<LegendId> tmp = legend.get();
+		LegendType tmp = legend.get();
 		tmp.setAuto(getAutoLegend());
 		legend = tmp;
 	}
@@ -373,8 +373,8 @@ bool Options::labelsShownFor(const Data::SeriesIndex &series) const
 {
 	return channels.at(ChannelId::x).labelSeries() == series
 	    || channels.at(ChannelId::y).labelSeries() == series
-	    || (legend.get()
-	        && channels.at(toChannel(*legend.get())).labelSeries()
+	    || (legend.get() && *legend.get()
+	        && channels.at(toChannel(**legend.get())).labelSeries()
 	               == series);
 }
 

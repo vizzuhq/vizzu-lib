@@ -23,10 +23,8 @@ definitions:
     properties:
       min:
         $ref: ChannelExtrema
-        nullable: true
       max:
         $ref: ChannelExtrema
-        nullable: true
 
   AutoBool:
     oneOf:

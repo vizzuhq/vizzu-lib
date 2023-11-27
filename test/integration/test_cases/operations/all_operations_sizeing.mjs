@@ -111,7 +111,7 @@ const testSteps = [
           y: { detach: ['Categ. Parent'] },
           x: {
             detach: ['Values 1', 'Timeseries'],
-            range: { min: null, max: null }
+            range: { min: 'auto', max: 'auto' }
           },
           size: { attach: ['Values 3', 'Timeseries'] }
         },
