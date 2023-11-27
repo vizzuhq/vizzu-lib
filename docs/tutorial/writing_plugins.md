@@ -28,7 +28,8 @@ export class ExamplePlugin implements Plugins.Plugin {
 ```
 
 The class can have a `meta` property which provides the basic configuration for
-the plugin. It has the following fields: 
+the plugin. It has the following fields:
+
 - `name`: the name of the plugin
 - `version`: the version of the **library** the plugin is compatible with
 - `depends`: an array of strings describing other plugins this one depends on
@@ -52,7 +53,7 @@ defined in the returned object:
 - `registerAnimation`: Called when the animate() method called, and the lib
   schedules the call to the animation queue.
 - `runAnimation`: Called when all animate() parameter set and animation can be
-  started. 
+  started.
 
 Let’s add a simple function to the `prepareAnimation` phase. We’d like to
 automatically set the chart title to the name of the data series which is
@@ -200,4 +201,5 @@ anim.activated.then(() => {
 ```
 
 !!! info
-    For more information check out our plugins at <https://github.com/vizzuhq/vizzu-lib-ext>.
+    For more information check out our plugins at
+    <https://github.com/vizzuhq/vizzu-lib-ext>.
