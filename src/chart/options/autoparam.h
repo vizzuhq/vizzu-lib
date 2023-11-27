@@ -24,7 +24,7 @@ public:
 
 	explicit AutoParam(const std::string &s) : autoSet(s == "auto")
 	{
-		if (!autoSet) value = Conv::parse<std::optional<Type>>(s);
+		if (!autoSet) value = Conv::parse<Type>(s);
 	}
 
 	explicit operator std::string() const
