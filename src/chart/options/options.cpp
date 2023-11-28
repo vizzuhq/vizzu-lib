@@ -234,7 +234,7 @@ uint64_t Options::generateMarkerInfoId()
 void Options::setAutoParameters()
 {
 	if (legend.get().isAuto()) {
-		Base::AutoParam<LegendId> tmp = legend.get();
+		LegendType tmp = legend.get();
 		tmp.setAuto(getAutoLegend());
 		legend = tmp;
 	}

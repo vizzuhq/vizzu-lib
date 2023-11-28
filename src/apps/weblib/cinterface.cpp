@@ -89,6 +89,11 @@ const char *vizzu_errorMessage(APIHandles::Exception exceptionPtr,
 			    static_cast<const std::bad_function_call *>(
 			        exceptionPtr);
 			break;
+		case hash("bad_variant_access"):
+			realException =
+			    static_cast<const std::bad_variant_access *>(
+			        exceptionPtr);
+			break;
 		}
 
 		if (realException) return realException->what();
