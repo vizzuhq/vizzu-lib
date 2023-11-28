@@ -12,7 +12,7 @@ Switching the geometry to area.
 
 <div id="tutorial_01"></div>
 
-{!tutorial/assets/setup/setup_b!}
+{% include-markdown "tutorial/assets/setup/setup_b" %}
 
 ```javascript
 chart.animate({

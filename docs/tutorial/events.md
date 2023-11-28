@@ -14,7 +14,7 @@ block with information about the clicked chart element.
 
 <div id="tutorial_01"></div>
 
-{!tutorial/assets/setup/setup_c!}
+{% include-markdown "tutorial/assets/setup/setup_c" %}
 
 ```javascript
 function clickHandler(event) {

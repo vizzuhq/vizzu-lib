@@ -14,8 +14,8 @@
     In `JavaScript`, initialize and configure the chart:
 
     ```javascript
-    import Vizzu from 'https://cdn.jsdelivr.net/npm/vizzu@latest/dist/vizzu.min.js'
-    import data from 'https://lib.vizzuhq.com/latest/assets/data/music_data.js'
+    import Vizzu from 'https://cdn.jsdelivr.net/npm/vizzu@xLIB_MINOR_VERSIONx/dist/vizzu.min.js'
+    import data from 'https://lib.vizzuhq.com/xLIB_MINOR_VERSIONx/assets/data/music_data.js'
 
     let chart = new Vizzu('myVizzu')
 

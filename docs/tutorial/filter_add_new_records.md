@@ -15,7 +15,7 @@ from the chart.
 
 <div id="tutorial_01"></div>
 
-{!tutorial/assets/setup/setup_c!}
+{% include-markdown "tutorial/assets/setup/setup_c" %}
 
 ```javascript
 chart.animate({

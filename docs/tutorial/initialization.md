@@ -18,7 +18,7 @@ initialize the library, and then you can start setting up the first chart by
 calling the animate method.
 
 ```javascript
-import Vizzu from 'https://cdn.jsdelivr.net/npm/vizzu@latest/dist/vizzu.min.js';
+import Vizzu from 'https://cdn.jsdelivr.net/npm/vizzu@xLIB_MINOR_VERSIONx/dist/vizzu.min.js';
 
 let chart = new Vizzu('myVizzu')
 

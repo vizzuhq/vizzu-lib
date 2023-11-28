@@ -123,13 +123,13 @@ class Docs:
                 continue
             with open(path, "rt", encoding="utf8") as f_src:
                 dst = path.relative_to(docs_path)
-                content = f_src.read()
                 if path.suffix == ".md":
+                    content = f_src.read()
                     content = Vizzu.set_version(content)
                     content = Markdown.format(content)
                     mkdocs_gen_files.set_edit_path(dst, dst)
-                with mkdocs_gen_files.open(dst, "w") as f_dst:
-                    f_dst.write(content)
+                    with mkdocs_gen_files.open(dst, "w") as f_dst:
+                        f_dst.write(content)
 
 
 def main() -> None:
