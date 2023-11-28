@@ -98,7 +98,7 @@ export class ExamplePlugin implements Plugins.Plugin {
                         config.title = 'Example plugin'
                     }
                     next()
-				},
+                },
                 { priority: .9 }
             )
         }
@@ -123,12 +123,12 @@ interface ExamplePluginApi extends Plugins.PluginApi {
 }
 
 export class ExamplePlugin implements Plugins.Plugin {
-	meta: Plugins.PluginMeta = {
-		name: 'examplePlugin',
+    meta: Plugins.PluginMeta = {
+        name: 'examplePlugin',
         version: 'xCURRENT_LIB_VERSIONx',
-		depends: []
-	}
-	private hasChanged: boolean = false
+        depends: []
+    }
+    private hasChanged: boolean = false
 
     get hooks(): Plugins.PluginHooks {
         return {
@@ -142,19 +142,19 @@ export class ExamplePlugin implements Plugins.Plugin {
                         config.title = 'Example plugin'
                     }
                     next()
-				},
+                },
                 { priority: .9 }
             )
         }
     }
 
-	get api(): ExamplePluginApi {
-		return {
-			hasDefaultTitle: (): boolean => {
-				return !this.hasChanged
-			}
-		}
-	}
+    get api(): ExamplePluginApi {
+        return {
+            hasDefaultTitle: (): boolean => {
+                return !this.hasChanged
+            }
+        }
+    }
 }
 ```
 
