@@ -38,7 +38,7 @@ the plugin. It has the following fields:
 export class ExamplePlugin implements Plugins.Plugin {
     meta = {
         name: 'examplePlugin',
-        version: 'xCURRENT_LIB_VERSIONx',
+        version: 'xLIB_PATCH_VERSIONx',
         depends: []
     }
 }
@@ -125,7 +125,7 @@ interface ExamplePluginApi extends Plugins.PluginApi {
 export class ExamplePlugin implements Plugins.Plugin {
     meta: Plugins.PluginMeta = {
         name: 'examplePlugin',
-        version: 'xCURRENT_LIB_VERSIONx',
+        version: 'xLIB_PATCH_VERSIONx',
         depends: []
     }
     private hasChanged: boolean = false
