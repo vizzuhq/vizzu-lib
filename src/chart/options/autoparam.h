@@ -11,7 +11,7 @@
 namespace Vizzu::Base
 {
 
-template <typename Type> struct AutoParam
+template <typename Type, bool nullable = false> struct AutoParam
 {
 public:
 	AutoParam() : autoSet(true) {}
@@ -24,13 +24,23 @@ public:
 
 	explicit AutoParam(const std::string &s) : autoSet(s == "auto")
 	{
-		if (!autoSet) value = Conv::parse<Type>(s);
+		if (!autoSet) {
+			if constexpr (nullable) {
+				value = Conv::parse<std::optional<Type>>(s);
+			}
+			else {
+				value = Conv::parse<Type>(s);
+			}
+		}
 	}
 
 	explicit operator std::string() const
 	{
 		if (autoSet) return "auto";
-		return Conv::toString(value);
+		if constexpr (nullable) { return Conv::toString(value); }
+		else {
+			return Conv::toString(*value);
+		}
 	}
 
 	explicit operator bool() const
