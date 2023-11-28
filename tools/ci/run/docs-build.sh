@@ -13,4 +13,5 @@ rm -rf docs/readme
 cp -r vizzu-lib-doc/docs/readme docs/
 
 source .venv/bin/activate
+python tools/docs/placeholder.py
 mkdocs build -f ./tools/docs/mkdocs.yml

@@ -13,6 +13,7 @@ __pycache__
 vizzu_dev*
 .pdm-python
 
+placeholder-plugin.yaml
 docs/examples/**/*.png
 docs/examples/**/*.mp4
 docs/examples/**/*.webm

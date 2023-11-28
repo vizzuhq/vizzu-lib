@@ -72,8 +72,6 @@ markdown_extensions:
       use_pygments: false
   - pymdownx.details
   - pymdownx.superfences
-  - markdown_include.include:
-      base_path: docs
 
 plugins:
   - mike:
@@ -86,6 +84,7 @@ plugins:
   - literate-nav:
       implicit_index: true
   - autorefs
+  - include-markdown
   - placeholder
   - gen-files:
       scripts:
