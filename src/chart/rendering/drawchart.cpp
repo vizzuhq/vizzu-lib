@@ -9,26 +9,27 @@
 
 namespace Vizzu::Draw
 {
-template <class T>
-void DrawChart::drawHeading(const Gen::Options::Heading &option,
-    const Styles::Label &style,
-    const Geom::Rect &layout,
-    const Util::EventDispatcher::event_ptr &event)
+template <class T, class MemberGetter>
+void DrawChart::drawHeading(const MemberGetter &&getter)
 {
-	option.visit(
-	    [&layout, &style, &event, this](int, const auto &weighted)
-	    {
-		    if (weighted.value.has_value()) {
-			    DrawLabel(*this,
-			        Geom::TransformedRect::fromRect(layout),
-			        *weighted.value,
-			        style,
-			        event,
-			        std::make_unique<T>(*weighted.value),
-			        DrawLabel::Options(true,
-			            std::max(weighted.weight * 2 - 1, 0.0)));
-		    }
-	    });
+	getter(getOptions())
+	    .visit(
+	        [&layout = getter(layout),
+	            &style = getter(rootStyle),
+	            &event = getter(rootEvents.draw),
+	            this](int, const auto &weighted)
+	        {
+		        if (weighted.value.has_value()) {
+			        DrawLabel(*this,
+			            Geom::TransformedRect::fromRect(layout),
+			            *weighted.value,
+			            style,
+			            event,
+			            std::make_unique<T>(*weighted.value),
+			            DrawLabel::Options(true,
+			                std::max(weighted.weight * 2 - 1, 0.0)));
+		        }
+	        });
 }
 
 void DrawChart::draw()
@@ -55,22 +56,23 @@ void DrawChart::draw()
 				        legend.weight);
 		    });
 
-		drawHeading<Events::Targets::ChartTitle>(getOptions().title,
-		    rootStyle.title,
-		    layout.title,
-		    rootEvents.draw.title);
+		drawHeading<Events::Targets::ChartTitle>(
+		    [](auto &obj) -> decltype((obj.title))
+		    {
+			    return (obj.title);
+		    });
 
 		drawHeading<Events::Targets::ChartSubtitle>(
-		    getOptions().subtitle,
-		    rootStyle.subtitle,
-		    layout.subtitle,
-		    rootEvents.draw.subtitle);
+		    [](auto &obj) -> decltype((obj.subtitle))
+		    {
+			    return (obj.subtitle);
+		    });
 
 		drawHeading<Events::Targets::ChartCaption>(
-		    getOptions().caption,
-		    rootStyle.caption,
-		    layout.caption,
-		    rootEvents.draw.caption);
+		    [](auto &obj) -> decltype((obj.caption))
+		    {
+			    return (obj.caption);
+		    });
 
 		DrawMarkerInfo(layout, canvas, *plot);
 	}
