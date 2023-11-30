@@ -71,7 +71,7 @@ void TreeMap::setupVector(std::vector<Item> &items,
 		size_t subCnt = 0;
 		for (const auto &item : level.second) {
 			auto &c = subChart.markers[subCnt];
-			Geom::Rect rect = c.rect().positive();
+			auto rect = c.rect().positive();
 			items[item.second].position = rect.topRight();
 			items[item.second].size = rect.size;
 			++subCnt;
