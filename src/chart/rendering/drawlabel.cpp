@@ -51,9 +51,7 @@ DrawLabel::DrawLabel(const DrawingContext &context,
 	trRect.size = textRect.size;
 
 	if (this->onDraw->invoke(
-	        Events::Events::OnTextDrawEvent(*eventTarget,
-	            trRect,
-	            text))) {
+	        Events::OnTextDrawEvent(*eventTarget, trRect, text))) {
 		canvas.transform(transform);
 
 		canvas.text(Geom::Rect(Geom::Point(), textRect.size), text);
