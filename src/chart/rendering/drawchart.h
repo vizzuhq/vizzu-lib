@@ -9,7 +9,7 @@ namespace Vizzu::Draw
 
 class DrawChart : public DrawingContext
 {
-	template <class T, class MemberGetter>
+	template <auto targetGetter, class MemberGetter>
 	void drawHeading(const MemberGetter &&getter);
 
 public:

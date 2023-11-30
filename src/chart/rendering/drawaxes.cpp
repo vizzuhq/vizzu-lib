@@ -50,8 +50,8 @@ Geom::Line DrawAxes::getAxis(Gen::ChannelId axisIndex) const
 
 void DrawAxes::drawAxis(Gen::ChannelId axisIndex)
 {
-	auto eventTarget = std::make_unique<Events::Targets::Axis>(
-	    axisIndex == Gen::ChannelId::x);
+	auto eventTarget =
+	    Events::Targets::axis(axisIndex == Gen::ChannelId::x);
 
 	auto lineBaseColor = *rootStyle.plot.getAxis(axisIndex).color
 	                   * static_cast<double>(plot->anyAxisSet);
@@ -239,8 +239,7 @@ void DrawAxes::drawTitle(Gen::ChannelId axisIndex)
 			    title.value,
 			    titleStyle,
 			    rootEvents.draw.plot.axis.title,
-			    std::make_unique<Events::Targets::AxisTitle>(
-			        title.value,
+			    Events::Targets::axisTitle(title.value,
 			        axisIndex == Gen::ChannelId::x),
 			    DrawLabel::Options(false, 1.0, upsideDown));
 
@@ -336,8 +335,7 @@ void DrawAxes::drawDimensionLabel(bool horizontal,
 		        textColor * weight * position.weight,
 		        *labelStyle.backgroundColor,
 		        rootEvents.draw.plot.axis.label,
-		        std::make_unique<Events::Targets::AxisLabel>(text,
-		            horizontal));
+		        Events::Targets::axisLabel(text, horizontal));
 	    });
 }
 

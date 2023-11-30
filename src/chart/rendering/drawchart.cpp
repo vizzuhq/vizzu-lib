@@ -9,7 +9,7 @@
 
 namespace Vizzu::Draw
 {
-template <class T, class MemberGetter>
+template <auto targetGetter, class MemberGetter>
 void DrawChart::drawHeading(const MemberGetter &&getter)
 {
 	getter(getOptions())
@@ -25,7 +25,7 @@ void DrawChart::drawHeading(const MemberGetter &&getter)
 			            *weighted.value,
 			            style,
 			            event,
-			            std::make_unique<T>(*weighted.value),
+			            targetGetter(*weighted.value),
 			            DrawLabel::Options(true,
 			                std::max(weighted.weight * 2 - 1, 0.0)));
 		        }
@@ -35,15 +35,14 @@ void DrawChart::drawHeading(const MemberGetter &&getter)
 void DrawChart::draw()
 {
 	if (plot
-	    && (!rootEvents.draw.begin
-	        || rootEvents.draw.begin->invoke(
-	            Util::EventDispatcher::Params{}))) {
+	    && rootEvents.draw.begin->invoke(
+	        Util::EventDispatcher::Params{})) {
 
 		DrawBackground(*this,
 		    layout.boundary.outline(Geom::Size::Square(1)),
 		    rootStyle,
 		    rootEvents.draw.background,
-		    std::make_unique<Events::Targets::Root>());
+		    Events::Targets::root());
 
 		DrawPlot{*this};
 
@@ -56,19 +55,19 @@ void DrawChart::draw()
 				        legend.weight);
 		    });
 
-		drawHeading<Events::Targets::ChartTitle>(
+		drawHeading<&Events::Targets::chartTitle>(
 		    [](auto &obj) -> decltype((obj.title))
 		    {
 			    return (obj.title);
 		    });
 
-		drawHeading<Events::Targets::ChartSubtitle>(
+		drawHeading<&Events::Targets::chartSubtitle>(
 		    [](auto &obj) -> decltype((obj.subtitle))
 		    {
 			    return (obj.subtitle);
 		    });
 
-		drawHeading<Events::Targets::ChartCaption>(
+		drawHeading<&Events::Targets::chartCaption>(
 		    [](auto &obj) -> decltype((obj.caption))
 		    {
 			    return (obj.caption);
@@ -77,7 +76,7 @@ void DrawChart::draw()
 		DrawMarkerInfo(layout, canvas, *plot);
 	}
 
-	if (auto logoElement = std::make_unique<Events::Targets::Logo>();
+	if (auto logoElement = Events::Targets::logo();
 	    rootEvents.draw.logo->invoke(
 	        Events::OnRectDrawEvent(*logoElement,
 	            {layout.logo, false}))) {
