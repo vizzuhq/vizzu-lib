@@ -1,11 +1,6 @@
 #include "chart.h"
 
-#include "chart/rendering/drawbackground.h"
 #include "chart/rendering/drawchart.h"
-#include "chart/rendering/drawlabel.h"
-#include "chart/rendering/drawlegend.h"
-#include "chart/rendering/drawmarkerinfo.h"
-#include "chart/rendering/drawplot.h"
 #include "data/datacube/datacube.h"
 
 namespace Vizzu
@@ -110,8 +105,7 @@ void Chart::draw(Gfx::ICanvas &canvas)
 	                    actPlot,
 	                    actPlot ? actPlot->getStyle()
 	                            : stylesheet.getDefaultParams(),
-	                    getCoordSystem(),
-	                    renderedChart = {}}}
+	                    renderedChart}}
 	    .draw();
 }
 
@@ -126,28 +120,6 @@ Gen::PlotPtr Chart::plot(const Gen::PlotOptionsPtr &options)
 	    options,
 	    computedStyles,
 	    false);
-}
-
-Draw::CoordinateSystem Chart::getCoordSystem() const
-{
-	if (actPlot) {
-		const auto &rootStyle = actPlot->getStyle();
-
-		auto plotArea = rootStyle.plot.contentRect(layout.plot,
-		    rootStyle.calculatedSize());
-
-		const auto &options = *actPlot->getOptions();
-
-		return {plotArea,
-		    options.angle,
-		    options.coordSystem,
-		    actPlot->keepAspectRatio};
-	}
-	return {layout.plotArea,
-	    0.0,
-	    ::Anim::Interpolated<Gen::CoordSystem>{
-	        Gen::CoordSystem::cartesian},
-	    Math::FuzzyBool()};
 }
 
 }

@@ -27,7 +27,7 @@ void MarkerRenderer::drawLines(const Styles::Guide &style,
 	auto blended = AbstractMarker::createInterpolated(marker,
 	    getOptions(),
 	    plot->getStyle(),
-	    coordSys,
+	    renderedChart.getCoordSys(),
 	    plot->getMarkers(),
 	    0);
 
@@ -89,7 +89,7 @@ void MarkerRenderer::draw()
 	if (getOptions().geometry.contains(Gen::ShapeType::line)
 	    && getOptions().geometry.contains(Gen::ShapeType::circle)) {
 		const CircleMarker circle(marker,
-		    coordSys,
+		    renderedChart.getCoordSys(),
 		    getOptions(),
 		    rootStyle);
 
@@ -99,7 +99,7 @@ void MarkerRenderer::draw()
 		    [this](int index, auto value)
 		    {
 			    const ConnectingMarker line(marker,
-			        coordSys,
+			        renderedChart.getCoordSys(),
 			        getOptions(),
 			        rootStyle,
 			        plot->getMarkers(),
@@ -116,7 +116,7 @@ void MarkerRenderer::draw()
 			auto blended0 = AbstractMarker::createInterpolated(marker,
 			    getOptions(),
 			    rootStyle,
-			    coordSys,
+			    renderedChart.getCoordSys(),
 			    plot->getMarkers(),
 			    index);
 
@@ -162,7 +162,7 @@ void MarkerRenderer::drawLabel()
 	auto blended = AbstractMarker::createInterpolated(marker,
 	    getOptions(),
 	    plot->getStyle(),
-	    coordSys,
+	    renderedChart.getCoordSys(),
 	    plot->getMarkers(),
 	    0);
 
@@ -219,8 +219,8 @@ void MarkerRenderer::draw(const AbstractMarker &abstractMarker,
 	if (line) {
 		auto line = abstractMarker.getLine();
 
-		auto p0 = coordSys.convert(line.begin);
-		auto p1 = coordSys.convert(line.end);
+		auto p0 = renderedChart.getCoordSys().convert(line.begin);
+		auto p1 = renderedChart.getCoordSys().convert(line.end);
 
 		canvas.setLineColor(
 		    colors.second
@@ -272,7 +272,8 @@ void MarkerRenderer::drawLabel(const AbstractMarker &abstractMarker,
 	auto labelPos = labelStyle.position->combine<Geom::Line>(
 	    [this, &abstractMarker](int, const auto &position)
 	    {
-		    return abstractMarker.getLabelPos(position, coordSys);
+		    return abstractMarker.getLabelPos(position,
+		        renderedChart.getCoordSys());
 	    });
 
 	auto textColor = (*labelStyle.filter)(color)*weight;

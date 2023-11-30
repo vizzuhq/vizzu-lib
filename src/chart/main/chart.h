@@ -13,7 +13,6 @@
 #include "chart/main/layout.h"
 #include "chart/main/stylesheet.h"
 #include "chart/options/config.h"
-#include "chart/rendering/painter/coordinatesystem.h"
 #include "chart/rendering/renderedchart.h"
 #include "data/table/datatable.h"
 
@@ -68,7 +67,6 @@ public:
 	{
 		return eventDispatcher;
 	}
-	[[nodiscard]] Draw::CoordinateSystem getCoordSystem() const;
 	[[nodiscard]] const Draw::RenderedChart &getRenderedChart() const
 	{
 		return renderedChart;

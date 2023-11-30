@@ -143,7 +143,9 @@ void Interface::relToCanvasCoords(ObjectRegistry::Handle chart,
     double &x,
     double &y)
 {
-	auto to = getChart(chart)->getCoordSystem().convert({rx, ry});
+	auto to =
+	    getChart(chart)->getRenderedChart().getCoordSys().convert(
+	        {rx, ry});
 	x = to.x;
 	y = to.y;
 }
@@ -154,7 +156,9 @@ void Interface::canvasToRelCoords(ObjectRegistry::Handle chart,
     double &rx,
     double &ry)
 {
-	auto to = getChart(chart)->getCoordSystem().getOriginal({x, y});
+	auto to =
+	    getChart(chart)->getRenderedChart().getCoordSys().getOriginal(
+	        {x, y});
 	rx = to.x;
 	ry = to.y;
 }

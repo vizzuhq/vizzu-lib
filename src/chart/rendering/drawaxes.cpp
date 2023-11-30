@@ -187,8 +187,9 @@ void DrawAxes::drawTitle(Gen::ChannelId axisIndex)
 
 			auto offset = getTitleOffset(axisIndex, index, fades);
 
-			auto posDir = coordSys.convertDirectionAt(
-			    Geom::Line(relCenter, relCenter + normal));
+			auto posDir =
+			    renderedChart.getCoordSys().convertDirectionAt(
+			        Geom::Line(relCenter, relCenter + normal));
 
 			auto posAngle = posDir.getDirection().angle();
 
@@ -324,8 +325,9 @@ void DrawAxes::drawDimensionLabel(bool horizontal,
 
 		    auto sign = 1 - 2 * under;
 
-		    auto posDir = coordSys.convertDirectionAt(
-		        Geom::Line(relCenter, relCenter + normal));
+		    auto posDir =
+		        renderedChart.getCoordSys().convertDirectionAt(
+		            Geom::Line(relCenter, relCenter + normal));
 
 		    posDir = posDir.extend(sign);
 

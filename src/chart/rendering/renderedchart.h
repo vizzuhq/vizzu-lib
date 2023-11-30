@@ -72,6 +72,11 @@ public:
 	[[nodiscard]] const Util::EventTarget *find(
 	    const Geom::Point &point) const;
 
+	[[nodiscard]] const CoordinateSystem &getCoordSys() const
+	{
+		return coordinateSystem;
+	}
+
 private:
 	CoordinateSystem coordinateSystem;
 	std::shared_ptr<const Gen::Plot> plot;

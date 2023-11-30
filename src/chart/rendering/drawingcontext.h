@@ -22,10 +22,8 @@ public:
 	    const Events &events,
 	    const std::shared_ptr<Gen::Plot> &plot,
 	    const Styles::Chart &styles,
-	    const CoordinateSystem &coordSys,
 	    RenderedChart &renderedChart) :
 	    plot(plot),
-	    coordSys(coordSys),
 	    canvas(canvas),
 	    painter(*static_cast<Painter *>(canvas.getPainter())),
 	    rootStyle(styles),
@@ -33,11 +31,29 @@ public:
 	    layout(layout),
 	    renderedChart(renderedChart)
 	{
-		painter.setCoordSys(coordSys);
+		if (plot) {
+			auto plotArea = styles.plot.contentRect(layout.plot,
+			    styles.calculatedSize());
+			const auto &options = *plot->getOptions();
+			renderedChart = RenderedChart{{plotArea,
+			                                  options.angle,
+			                                  options.coordSystem,
+			                                  plot->keepAspectRatio},
+			    plot};
+		}
+		else {
+			renderedChart = RenderedChart{
+			    {layout.plotArea,
+			        0.0,
+			        ::Anim::Interpolated<Gen::CoordSystem>{
+			            Gen::CoordSystem::cartesian},
+			        Math::FuzzyBool()},
+			    plot};
+		}
+		painter.setCoordSys(renderedChart.getCoordSys());
 	}
 
 	const std::shared_ptr<Gen::Plot> &plot;
-	const CoordinateSystem &coordSys;
 	Gfx::ICanvas &canvas;
 	Painter &painter;
 	const Styles::Chart &rootStyle;
