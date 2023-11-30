@@ -24,6 +24,7 @@ public:
 	    const Styles::Chart &styles,
 	    RenderedChart &renderedChart) :
 	    plot(plot),
+	    coordSys(renderedChart.getCoordSys()),
 	    canvas(canvas),
 	    painter(*static_cast<Painter *>(canvas.getPainter())),
 	    rootStyle(styles),
@@ -50,10 +51,11 @@ public:
 			        Math::FuzzyBool()},
 			    plot};
 		}
-		painter.setCoordSys(renderedChart.getCoordSys());
+		painter.setCoordSys(coordSys);
 	}
 
 	const std::shared_ptr<Gen::Plot> &plot;
+	const CoordinateSystem &coordSys;
 	Gfx::ICanvas &canvas;
 	Painter &painter;
 	const Styles::Chart &rootStyle;

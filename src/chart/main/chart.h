@@ -61,7 +61,6 @@ public:
 		return animator->getActAnimation();
 	}
 	Anim::Options &getAnimOptions() { return nextAnimOptions; }
-	Events &getEvents() { return events; }
 	[[nodiscard]] const Layout &getLayout() const { return layout; }
 	Util::EventDispatcher &getEventDispatcher()
 	{

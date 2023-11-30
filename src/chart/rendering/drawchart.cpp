@@ -16,7 +16,7 @@ void DrawChart::drawHeading(const Gen::Options::Heading &option,
     const Util::EventDispatcher::event_ptr &event)
 {
 	option.visit(
-	    [&, this](int, const auto &weighted)
+	    [&layout, &style, &event, this](int, const auto &weighted)
 	    {
 		    if (weighted.value.has_value()) {
 			    DrawLabel(*this,
@@ -47,7 +47,7 @@ void DrawChart::draw()
 		DrawPlot{*this};
 
 		plot->getOptions()->legend.visit(
-		    [&, this](int, const auto &legend)
+		    [this](int, const auto &legend)
 		    {
 			    if (legend.value)
 				    DrawLegend(*this,

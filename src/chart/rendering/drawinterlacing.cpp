@@ -283,9 +283,8 @@ void DrawInterlacing::drawDataLabel(
 
 		    auto sign = 1 - 2 * under;
 
-		    auto posDir =
-		        renderedChart.getCoordSys().convertDirectionAt(
-		            {refPos, refPos + normal});
+		    auto posDir = coordSys.convertDirectionAt(
+		        {refPos, refPos + normal});
 
 		    posDir = posDir.extend(sign);
 
@@ -311,8 +310,7 @@ void DrawInterlacing::drawSticks(double tickIntensity,
 	const auto &tickStyle = axisStyle.ticks;
 
 	auto tickLength = tickStyle.length->get(
-	    renderedChart.getCoordSys().getRect().size.getCoord(
-	        horizontal),
+	    coordSys.getRect().size.getCoord(horizontal),
 	    axisStyle.label.calculatedSize());
 
 	if (tickStyle.color->isTransparent() || tickLength == 0
@@ -329,8 +327,8 @@ void DrawInterlacing::drawSticks(double tickIntensity,
 	auto direction =
 	    horizontal ? Geom::Point::X(-1) : Geom::Point::Y(-1);
 
-	auto tickLine = renderedChart.getCoordSys().convertDirectionAt(
-	    Geom::Line(tickPos, tickPos + direction));
+	auto tickLine =
+	    coordSys.convertDirectionAt({tickPos, tickPos + direction});
 
 	tickLine = tickLine.segment(0, tickLength);
 
