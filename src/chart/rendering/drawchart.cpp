@@ -79,14 +79,14 @@ void DrawChart::draw()
 	if (auto logoElement = std::make_unique<Events::Targets::Logo>();
 	    rootEvents.draw.logo->invoke(
 	        Events::OnRectDrawEvent(*logoElement,
-	            {layout.logoBoundary, false}))) {
+	            {layout.logo, false}))) {
 
-		Logo(canvas).draw(layout.logoBoundary.pos,
-		    layout.logoBoundary.width(),
+		Logo(canvas).draw(layout.logo.pos,
+		    layout.logo.width(),
 		    *rootStyle.logo.filter);
 
 		renderedChart.emplace(
-		    Geom::TransformedRect::fromRect(layout.logoBoundary),
+		    Geom::TransformedRect::fromRect(layout.logo),
 		    std::move(logoElement));
 	}
 
