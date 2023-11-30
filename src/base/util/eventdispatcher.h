@@ -56,7 +56,7 @@ public:
 		virtual ~Event();
 
 		std::string name() const;
-		bool invoke(Params &&params = Params());
+		bool invoke(Params &&params = Params{});
 		void attach(std::uint64_t id, handler_fn handler);
 		void detach(std::uint64_t id);
 		explicit operator bool() const;

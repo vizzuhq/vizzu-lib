@@ -34,9 +34,7 @@ void DrawChart::drawHeading(const MemberGetter &&getter)
 
 void DrawChart::draw()
 {
-	if (plot
-	    && rootEvents.draw.begin->invoke(
-	        Util::EventDispatcher::Params{})) {
+	if (plot && rootEvents.draw.begin->invoke()) {
 
 		DrawBackground(*this,
 		    layout.boundary.outline(Geom::Size::Square(1)),
@@ -90,8 +88,6 @@ void DrawChart::draw()
 		    std::move(logoElement));
 	}
 
-	if (rootEvents.draw.complete)
-		rootEvents.draw.complete->invoke(
-		    Util::EventDispatcher::Params{});
+	rootEvents.draw.complete->invoke();
 }
 }
