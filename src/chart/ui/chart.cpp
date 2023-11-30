@@ -85,7 +85,7 @@ void ChartWidget::onPointerUp(
 	if (onClick->invoke(PointerEvent(event.pointerId,
 	        event.pos,
 	        chart.getRenderedChart().find(event.pos)))) {
-		if (chart.getLogoBoundary().contains(event.pos)) {
+		if (chart.getLayout().logo.contains(event.pos)) {
 			if (openUrl)
 				openUrl(
 				    Main::siteUrl + std::string("?utm_source=logo"));
@@ -143,7 +143,7 @@ void ChartWidget::updateCursor(
     const std::shared_ptr<Gfx::ICanvas> &canvas,
     const Geom::Point &pos)
 {
-	if (chart.getLogoBoundary().contains(pos))
+	if (chart.getLayout().logo.contains(pos))
 		return setCursor(canvas, GUI::Cursor::push);
 
 	if (!chart.getAnimControl().isRunning())

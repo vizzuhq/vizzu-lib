@@ -20,15 +20,15 @@ public:
 	DrawingContext(Gfx::ICanvas &canvas,
 	    const Layout &layout,
 	    const Events &events,
-	    const Gen::Plot &plot,
+	    const std::shared_ptr<Gen::Plot> &plot,
+	    const Styles::Chart &styles,
 	    const CoordinateSystem &coordSys,
 	    RenderedChart &renderedChart) :
 	    plot(plot),
 	    coordSys(coordSys),
 	    canvas(canvas),
 	    painter(*static_cast<Painter *>(canvas.getPainter())),
-	    options(*plot.getOptions()),
-	    rootStyle(plot.getStyle()),
+	    rootStyle(styles),
 	    rootEvents(events),
 	    layout(layout),
 	    renderedChart(renderedChart)
@@ -36,15 +36,16 @@ public:
 		painter.setCoordSys(coordSys);
 	}
 
-	const Gen::Plot &plot;
+	const std::shared_ptr<Gen::Plot> &plot;
 	const CoordinateSystem &coordSys;
 	Gfx::ICanvas &canvas;
 	Painter &painter;
-	const Gen::Options &options;
 	const Styles::Chart &rootStyle;
 	const Events &rootEvents;
 	const Layout &layout;
 	RenderedChart &renderedChart;
+
+	const Gen::Options &getOptions() { return *plot->getOptions(); }
 };
 
 }

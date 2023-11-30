@@ -19,19 +19,19 @@ void DrawGuides::draw(bool horizontal)
 	auto baseColor = *guideStyle.color;
 	if (baseColor.alpha == 0) return;
 
-	const auto &axises = plot.dimensionAxises;
+	const auto &axises = plot->dimensionAxises;
 	const auto &axis = axises.at(axisId);
 
 	if (axis.enabled && *guideStyle.lineWidth > 0
 	    && (static_cast<double>(
-	            plot.guides.at(axisId).dimensionGuides)
+	            plot->guides.at(axisId).dimensionGuides)
 	        > 0)) {
 		canvas.setLineWidth(*guideStyle.lineWidth);
 
 		for (auto it = axis.begin(); it != axis.end(); ++it) {
 			auto weight = it->second.weight;
 			weight *= static_cast<double>(
-			    plot.guides.at(axisId).dimensionGuides);
+			    plot->guides.at(axisId).dimensionGuides);
 			if (weight == 0) continue;
 
 			auto next = std::next(it);

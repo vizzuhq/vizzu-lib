@@ -22,11 +22,6 @@
 namespace Vizzu
 {
 
-namespace Draw
-{
-class DrawingContext;
-}
-
 class Chart
 {
 public:
@@ -84,7 +79,6 @@ public:
 	void animate(const OnComplete &onComplete = OnComplete());
 	void setKeyframe();
 	void setAnimation(const Anim::AnimationPtr &animation);
-	[[nodiscard]] Geom::Rect getLogoBoundary() const;
 
 private:
 	Layout layout;
@@ -103,13 +97,6 @@ private:
 	Events events;
 
 	Gen::PlotPtr plot(const Gen::PlotOptionsPtr &options);
-
-	template <class T>
-	static void drawHeading(const Draw::DrawingContext &context,
-	    const Gen::Options::Heading &option,
-	    const Styles::Label &style,
-	    const Geom::Rect &layout,
-	    const Util::EventDispatcher::event_ptr &event);
 };
 
 }

@@ -25,20 +25,20 @@ void MarkerRenderer::drawLines(const Styles::Guide &style,
 	if (static_cast<double>(marker.enabled) == 0) return;
 
 	auto blended = AbstractMarker::createInterpolated(marker,
-	    options,
-	    plot.getStyle(),
+	    getOptions(),
+	    plot->getStyle(),
 	    coordSys,
-	    plot.getMarkers(),
+	    plot->getMarkers(),
 	    0);
 
 	auto baseColor =
-	    *style.color * static_cast<double>(plot.anyAxisSet);
+	    *style.color * static_cast<double>(plot->anyAxisSet);
 
 	if (static_cast<double>(blended.enabled) > 0) {
-		if (static_cast<double>(plot.guides.x.guidelines) > 0) {
+		if (static_cast<double>(plot->guides.x.guidelines) > 0) {
 			auto lineColor =
 			    baseColor
-			    * static_cast<double>(plot.guides.x.guidelines);
+			    * static_cast<double>(plot->guides.x.guidelines);
 			canvas.setLineColor(lineColor);
 			auto axisPoint = blended.center.xComp() + origo.yComp();
 			const Geom::Line line(axisPoint, blended.center);
@@ -55,14 +55,14 @@ void MarkerRenderer::drawLines(const Styles::Guide &style,
 				    std::move(guideElement));
 			}
 		}
-		if (static_cast<double>(plot.guides.y.guidelines) > 0) {
+		if (static_cast<double>(plot->guides.y.guidelines) > 0) {
 			blended.center.x = Math::interpolate(blended.center.x,
 			    1.0,
-			    options.coordSystem.factor<double>(
+			    getOptions().coordSystem.factor<double>(
 			        Gen::CoordSystem::polar));
 			auto lineColor =
 			    baseColor
-			    * static_cast<double>(plot.guides.y.guidelines);
+			    * static_cast<double>(plot->guides.y.guidelines);
 			canvas.setLineColor(lineColor);
 			auto axisPoint = blended.center.yComp() + origo.xComp();
 			const Geom::Line line(blended.center, axisPoint);
@@ -86,12 +86,12 @@ void MarkerRenderer::draw()
 {
 	if (!shouldDrawMarkerBody()) return;
 
-	if (options.geometry.contains(Gen::ShapeType::line)
-	    && options.geometry.contains(Gen::ShapeType::circle)) {
+	if (getOptions().geometry.contains(Gen::ShapeType::line)
+	    && getOptions().geometry.contains(Gen::ShapeType::circle)) {
 		const CircleMarker circle(marker,
 		    coordSys,
-		    options,
-		    plot.getStyle());
+		    getOptions(),
+		    rootStyle);
 
 		draw(circle, 1, false);
 
@@ -100,9 +100,9 @@ void MarkerRenderer::draw()
 		    {
 			    const ConnectingMarker line(marker,
 			        coordSys,
-			        options,
-			        plot.getStyle(),
-			        plot.getMarkers(),
+			        getOptions(),
+			        rootStyle,
+			        plot->getMarkers(),
 			        index,
 			        Gen::ShapeType::line);
 
@@ -114,14 +114,14 @@ void MarkerRenderer::draw()
 		    [this](int index, ::Anim::Weighted<uint64_t> value)
 		{
 			auto blended0 = AbstractMarker::createInterpolated(marker,
-			    options,
-			    plot.getStyle(),
+			    getOptions(),
+			    rootStyle,
 			    coordSys,
-			    plot.getMarkers(),
+			    plot->getMarkers(),
 			    index);
 
-			auto lineFactor =
-			    options.geometry.factor<double>(Gen::ShapeType::line);
+			auto lineFactor = getOptions().geometry.factor<double>(
+			    Gen::ShapeType::line);
 
 			draw(blended0,
 			    value.weight * (1 - lineFactor) * (1 - lineFactor),
@@ -130,17 +130,18 @@ void MarkerRenderer::draw()
 		};
 
 		auto containsConnected =
-		    options.geometry.contains(Gen::ShapeType::line)
-		    || options.geometry.contains(Gen::ShapeType::area);
+		    getOptions().geometry.contains(Gen::ShapeType::line)
+		    || getOptions().geometry.contains(Gen::ShapeType::area);
 
 		auto containsSingle =
-		    options.geometry.contains(Gen::ShapeType::rectangle)
-		    || options.geometry.contains(Gen::ShapeType::circle);
+		    getOptions().geometry.contains(Gen::ShapeType::rectangle)
+		    || getOptions().geometry.contains(Gen::ShapeType::circle);
 
 		if (containsConnected) {
 			if (containsSingle) {
 				auto lineIndex =
-				    Gen::isConnecting(options.geometry.get(0).value)
+				    Gen::isConnecting(
+				        getOptions().geometry.get(0).value)
 				        ? 0
 				        : 1;
 
@@ -159,10 +160,10 @@ void MarkerRenderer::drawLabel()
 	if (static_cast<double>(marker.enabled) == 0) return;
 
 	auto blended = AbstractMarker::createInterpolated(marker,
-	    options,
-	    plot.getStyle(),
+	    getOptions(),
+	    plot->getStyle(),
 	    coordSys,
-	    plot.getMarkers(),
+	    plot->getMarkers(),
 	    0);
 
 	drawLabel(blended, 0);
@@ -172,13 +173,14 @@ void MarkerRenderer::drawLabel()
 bool MarkerRenderer::shouldDrawMarkerBody()
 {
 	bool enabled = static_cast<double>(marker.enabled) > 0;
-	if (options.geometry.factor<Math::FuzzyBool>(Gen::ShapeType::area)
+	if (getOptions().geometry.factor<Math::FuzzyBool>(
+	        Gen::ShapeType::area)
 	    != false) {
 		const auto *prev0 =
-		    ConnectingMarker::getPrev(marker, plot.getMarkers(), 0);
+		    ConnectingMarker::getPrev(marker, plot->getMarkers(), 0);
 
 		const auto *prev1 =
-		    ConnectingMarker::getPrev(marker, plot.getMarkers(), 1);
+		    ConnectingMarker::getPrev(marker, plot->getMarkers(), 1);
 
 		if (prev0) enabled |= static_cast<double>(prev0->enabled) > 0;
 		if (prev1) enabled |= static_cast<double>(prev1->enabled) > 0;
@@ -386,7 +388,7 @@ std::pair<Gfx::Color, Gfx::Color> MarkerRenderer::getColor(
 
 	double highlight = 0.0;
 	double anyHighlight = 0.0;
-	auto markerInfo = plot.getMarkersInfo();
+	auto markerInfo = plot->getMarkersInfo();
 	for (auto &info : markerInfo) {
 		auto allHighlight = 0.0;
 		info.second.visit(
@@ -430,7 +432,7 @@ Gfx::Color MarkerRenderer::getSelectedColor(bool label)
 
 	return Math::interpolate(orig,
 	    interpolated,
-	    static_cast<double>(plot.anySelected));
+	    static_cast<double>(plot->anySelected));
 }
 
 }
