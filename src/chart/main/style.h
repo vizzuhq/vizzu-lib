@@ -343,6 +343,7 @@ struct ChartParams
 struct Chart : Padding, Box, Font, ChartParams
 {
 	static const Font &getDefaultFont();
+	static const Gfx::ColorPalette &getDefaultColorPalette();
 	static Chart def();
 
 	void setup();

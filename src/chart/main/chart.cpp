@@ -176,6 +176,9 @@ void Chart::draw(Gfx::ICanvas &canvas)
 
 		renderedChart = std::move(rendered);
 	}
+	else {
+		renderedChart = {};
+	}
 
 	auto logoRect = getLogoBoundary();
 	if (auto logoElement = std::make_unique<Events::Targets::Logo>();

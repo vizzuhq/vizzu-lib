@@ -99,7 +99,7 @@ void OrientedLabelRenderer::render(const OrientedLabel &label,
 		canvas.save();
 		canvas.setTextColor(textColor);
 
-		Events::Events::OnTextDrawEvent eventObj(*eventTarget,
+		Events::OnTextDrawEvent eventObj(*eventTarget,
 		    label.rect,
 		    label.text);
 

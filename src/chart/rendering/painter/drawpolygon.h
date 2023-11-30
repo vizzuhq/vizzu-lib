@@ -1,5 +1,5 @@
-#ifndef DRAW_H
-#define DRAW_H
+#ifndef DRAWPOLYGON_H
+#define DRAWPOLYGON_H
 
 #include <array>
 #include <vector>
