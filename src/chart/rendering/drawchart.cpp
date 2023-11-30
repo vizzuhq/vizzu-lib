@@ -40,13 +40,13 @@ void DrawChart::draw()
 
 		DrawBackground(*this,
 		    layout.boundary.outline(Geom::Size::Square(1)),
-		    plot->getStyle(),
+		    rootStyle,
 		    rootEvents.draw.background,
 		    std::make_unique<Events::Targets::Root>());
 
 		DrawPlot{*this};
 
-		plot->getOptions()->legend.visit(
+		getOptions().legend.visit(
 		    [this](int, const auto &legend)
 		    {
 			    if (legend.value)
@@ -55,21 +55,20 @@ void DrawChart::draw()
 				        legend.weight);
 		    });
 
-		drawHeading<Events::Targets::ChartTitle>(
-		    plot->getOptions()->title,
-		    plot->getStyle().title,
+		drawHeading<Events::Targets::ChartTitle>(getOptions().title,
+		    rootStyle.title,
 		    layout.title,
 		    rootEvents.draw.title);
 
 		drawHeading<Events::Targets::ChartSubtitle>(
-		    plot->getOptions()->subtitle,
-		    plot->getStyle().subtitle,
+		    getOptions().subtitle,
+		    rootStyle.subtitle,
 		    layout.subtitle,
 		    rootEvents.draw.subtitle);
 
 		drawHeading<Events::Targets::ChartCaption>(
-		    plot->getOptions()->caption,
-		    plot->getStyle().caption,
+		    getOptions().caption,
+		    rootStyle.caption,
 		    layout.caption,
 		    rootEvents.draw.caption);
 

@@ -35,12 +35,12 @@ public:
 		if (plot) {
 			auto plotArea = styles.plot.contentRect(layout.plot,
 			    styles.calculatedSize());
-			const auto &options = *plot->getOptions();
-			renderedChart = RenderedChart{{plotArea,
-			                                  options.angle,
-			                                  options.coordSystem,
-			                                  plot->keepAspectRatio},
-			    plot};
+			renderedChart =
+			    RenderedChart{{plotArea,
+			                      getOptions().angle,
+			                      getOptions().coordSystem,
+			                      plot->keepAspectRatio},
+			        plot};
 		}
 		else {
 			renderedChart = RenderedChart{

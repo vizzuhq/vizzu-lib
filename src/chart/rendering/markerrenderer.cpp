@@ -26,7 +26,7 @@ void MarkerRenderer::drawLines(const Styles::Guide &style,
 
 	auto blended = AbstractMarker::createInterpolated(marker,
 	    getOptions(),
-	    plot->getStyle(),
+	    rootStyle,
 	    coordSys,
 	    plot->getMarkers(),
 	    0);
@@ -161,7 +161,7 @@ void MarkerRenderer::drawLabel()
 
 	auto blended = AbstractMarker::createInterpolated(marker,
 	    getOptions(),
-	    plot->getStyle(),
+	    rootStyle,
 	    coordSys,
 	    plot->getMarkers(),
 	    0);
