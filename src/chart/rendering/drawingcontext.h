@@ -22,7 +22,7 @@ struct DrawingContext
 	const Styles::Chart &rootStyle;
 	const Events &rootEvents;
 
-	const Gen::Options &getOptions() const
+	[[nodiscard]] const Gen::Options &getOptions() const
 	{
 		return *plot->getOptions();
 	}

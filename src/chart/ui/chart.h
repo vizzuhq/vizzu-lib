@@ -63,7 +63,9 @@ private:
 
 	void updateCursor(const std::shared_ptr<Gfx::ICanvas> &,
 	    const Geom::Point &pos);
-	const Gen::Marker *getIfMarker(const Util::EventTarget *);
+
+	[[nodiscard]] static const Gen::Marker *getIfMarker(
+	    const Util::EventTarget *);
 };
 
 }
