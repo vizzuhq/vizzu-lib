@@ -30,7 +30,7 @@ DrawLegend::DrawLegend(const DrawingContext &context,
 	    layout.legend,
 	    style,
 	    events.background,
-	    std::make_unique<Events::Targets::Legend>(channelType));
+	    Events::Targets::legend(channelType));
 
 	if (static_cast<std::size_t>(type)
 	    < std::size(plot->measureAxises.axises)) {
@@ -66,9 +66,7 @@ void DrawLegend::drawTitle(const ::Anim::String &title, double mul)
 		        title.value,
 		        style.title,
 		        events.title,
-		        std::make_unique<Events::Targets::LegendTitle>(
-		            title.value,
-		            type),
+		        Events::Targets::legendTitle(title.value, type),
 		        DrawLabel::Options(true,
 		            title.weight * weight * mul));
 	    });
@@ -93,8 +91,7 @@ void DrawLegend::drawDimension(const Gen::DimensionAxis &axis)
 				    value.second.label,
 				    style.label,
 				    events.label,
-				    std::make_unique<Events::Targets::LegendLabel>(
-				        value.second.label,
+				    Events::Targets::legendLabel(value.second.label,
 				        type),
 				    DrawLabel::Options(true, alpha));
 			}
@@ -145,8 +142,7 @@ void DrawLegend::drawMarker(const Gfx::Color &color,
 	                  Styles::Legend::Marker::Type::circle)
 	            * rect.size.minSize() / 2.0;
 
-	auto markerElement =
-	    std::make_unique<Events::Targets::LegendMarker>(type);
+	auto markerElement = Events::Targets::legendMarker(type);
 
 	if (events.marker->invoke(
 	        Events::OnRectDrawEvent(*markerElement, {rect, false}))) {
@@ -184,15 +180,12 @@ void DrawLegend::extremaLabel(double value, int pos)
 	    *style.label.numberScale);
 	auto itemRect = getItemRect(pos);
 
-	auto labelElement =
-	    std::make_unique<Events::Targets::LegendLabel>(text, type);
-
 	DrawLabel(*this,
 	    getLabelRect(itemRect),
 	    text,
 	    style.label,
 	    events.label,
-	    std::move(labelElement),
+	    Events::Targets::legendLabel(text, type),
 	    DrawLabel::Options(true, weight * enabled));
 }
 
@@ -206,8 +199,7 @@ void DrawLegend::colorBar(const Geom::Rect &rect)
 	canvas.setLineColor(Gfx::Color::Transparent());
 	canvas.setLineWidth(0);
 
-	auto barElement =
-	    std::make_unique<Events::Targets::LegendBar>(type);
+	auto barElement = Events::Targets::legendBar(type);
 
 	if (events.bar->invoke(
 	        Events::OnRectDrawEvent(*barElement, {rect, false}))) {
@@ -237,8 +229,7 @@ void DrawLegend::lightnessBar(const Geom::Rect &rect)
 	canvas.setLineColor(Gfx::Color::Transparent());
 	canvas.setLineWidth(0);
 
-	auto barElement =
-	    std::make_unique<Events::Targets::LegendBar>(type);
+	auto barElement = Events::Targets::legendBar(type);
 
 	if (events.bar->invoke(
 	        Events::OnRectDrawEvent(*barElement, {rect, false}))) {
@@ -257,8 +248,7 @@ void DrawLegend::sizeBar(const Geom::Rect &rect)
 	canvas.setBrushColor(Gfx::Color::Gray(0.8) * (weight * enabled));
 	canvas.setLineWidth(0);
 
-	auto barElement =
-	    std::make_unique<Events::Targets::LegendBar>(type);
+	auto barElement = Events::Targets::legendBar(type);
 
 	if (events.bar->invoke(
 	        Events::OnRectDrawEvent(*barElement, {rect, false}))) {

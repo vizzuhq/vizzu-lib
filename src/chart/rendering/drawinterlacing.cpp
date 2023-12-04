@@ -205,9 +205,8 @@ void DrawInterlacing::draw(
 					painter.setPolygonToCircleFactor(0);
 					painter.setPolygonStraightFactor(0);
 
-					auto eventTarget = std::make_unique<
-					    Events::Targets::AxisInterlacing>(
-					    !horizontal);
+					auto eventTarget =
+					    Events::Targets::axisInterlacing(!horizontal);
 
 					if (rootEvents.draw.plot.axis.interlacing->invoke(
 					        Events::OnRectDrawEvent(*eventTarget,
@@ -295,8 +294,7 @@ void DrawInterlacing::drawDataLabel(
 		        textColor * position.weight,
 		        *labelStyle.backgroundColor,
 		        rootEvents.draw.plot.axis.label,
-		        std::make_unique<Events::Targets::AxisLabel>(str,
-		            !horizontal));
+		        Events::Targets::axisLabel(str, !horizontal));
 	    });
 }
 
@@ -347,8 +345,7 @@ void DrawInterlacing::drawSticks(double tickIntensity,
 		    }
 	    });
 
-	auto eventTarget =
-	    std::make_unique<Events::Targets::AxisTick>(!horizontal);
+	auto eventTarget = Events::Targets::axisTick(!horizontal);
 
 	if (rootEvents.draw.plot.axis.tick->invoke(
 	        Events::OnLineDrawEvent(*eventTarget,

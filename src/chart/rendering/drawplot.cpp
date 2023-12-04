@@ -16,7 +16,7 @@ DrawPlot::DrawPlot(const DrawingContext &context) :
 	    layout.plot,
 	    rootStyle.plot,
 	    rootEvents.draw.plot.background,
-	    std::make_unique<Events::Targets::Plot>());
+	    Events::Targets::plot());
 
 	drawArea(false);
 
@@ -46,7 +46,7 @@ void DrawPlot::clipPlotArea()
 
 void DrawPlot::drawArea(bool clip)
 {
-	auto areaElement = std::make_unique<Events::Targets::Area>();
+	auto areaElement = Events::Targets::area();
 
 	auto rect = Geom::Rect{Geom::Point(), Geom::Size::Identity()};
 	painter.setPolygonToCircleFactor(0.0);
@@ -61,8 +61,7 @@ void DrawPlot::drawArea(bool clip)
 			canvas.setBrushColor(*rootStyle.plot.areaColor);
 			canvas.setLineColor(*rootStyle.plot.areaColor);
 			canvas.setLineWidth(0);
-			if (!rootEvents.draw.plot.area
-			    || rootEvents.draw.plot.area->invoke(
+			if (rootEvents.draw.plot.area->invoke(
 			        std::move(eventObj))) {
 				painter.drawPolygon(rect.points(), false);
 				renderedChart.emplace(Rect{rect, true},
@@ -70,8 +69,7 @@ void DrawPlot::drawArea(bool clip)
 			}
 			canvas.setLineWidth(0);
 		}
-		else if (!rootEvents.draw.plot.area
-		         || rootEvents.draw.plot.area->invoke(
+		else if (rootEvents.draw.plot.area->invoke(
 		             std::move(eventObj))) {
 			renderedChart.emplace(Rect{rect, true},
 			    std::move(areaElement));
