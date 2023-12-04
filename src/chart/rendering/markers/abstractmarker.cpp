@@ -159,8 +159,8 @@ Geom::Line AbstractMarker::getLabelPos(
 		center = side.center();
 	}
 
-	auto res = coordSys.convertDirectionAt(
-	    Geom::Line(center, center + direction));
+	auto res =
+	    coordSys.convertDirectionAt({center, center + direction});
 
 	if (position != Pos::center)
 		res.shift(res.getDirection() * radius);

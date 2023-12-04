@@ -81,16 +81,16 @@ void DrawPlot::drawArea(bool clip)
 
 void DrawPlot::drawMarkerGuides()
 {
-	const auto &style = plot.getStyle().plot.marker.guides;
+	const auto &style = rootStyle.plot.marker.guides;
 
 	if (!style.color->isTransparent() && *style.lineWidth > 0
-	    && static_cast<double>(plot.anyAxisSet) > 0
-	    && plot.guides.hasAnyGuides()) {
+	    && static_cast<double>(plot->anyAxisSet) > 0
+	    && plot->guides.hasAnyGuides()) {
 		canvas.setLineWidth(*style.lineWidth);
 
-		auto origo = plot.measureAxises.origo();
+		auto origo = plot->measureAxises.origo();
 
-		for (const auto &marker : plot.getMarkers())
+		for (const auto &marker : plot->getMarkers())
 			MarkerRenderer(marker, *this).drawLines(style, origo);
 
 		canvas.setLineWidth(0);
@@ -99,13 +99,13 @@ void DrawPlot::drawMarkerGuides()
 
 void DrawPlot::drawMarkers()
 {
-	for (const auto &marker : plot.getMarkers())
+	for (const auto &marker : plot->getMarkers())
 		MarkerRenderer(marker, *this).draw();
 }
 
 void DrawPlot::drawMarkerLabels()
 {
-	for (const auto &marker : plot.getMarkers())
+	for (const auto &marker : plot->getMarkers())
 		MarkerRenderer(marker, *this).drawLabel();
 }
 

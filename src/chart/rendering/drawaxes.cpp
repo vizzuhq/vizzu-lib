@@ -37,7 +37,7 @@ Geom::Line DrawAxes::getAxis(Gen::ChannelId axisIndex) const
 {
 	auto horizontal = axisIndex == Gen::ChannelId::x;
 
-	auto offset = plot.measureAxises.other(axisIndex).origo();
+	auto offset = plot->measureAxises.other(axisIndex).origo();
 
 	auto direction = Geom::Point::Ident(horizontal);
 
@@ -54,7 +54,7 @@ void DrawAxes::drawAxis(Gen::ChannelId axisIndex)
 	    axisIndex == Gen::ChannelId::x);
 
 	auto lineBaseColor = *rootStyle.plot.getAxis(axisIndex).color
-	                   * static_cast<double>(plot.anyAxisSet);
+	                   * static_cast<double>(plot->anyAxisSet);
 
 	if (lineBaseColor.alpha <= 0) return;
 
@@ -63,7 +63,7 @@ void DrawAxes::drawAxis(Gen::ChannelId axisIndex)
 	if (!line.isPoint()) {
 		auto lineColor =
 		    lineBaseColor
-		    * static_cast<double>(plot.guides.at(axisIndex).axis);
+		    * static_cast<double>(plot->guides.at(axisIndex).axis);
 
 		canvas.save();
 
@@ -97,7 +97,7 @@ Geom::Point DrawAxes::getTitleBasePos(Gen::ChannelId axisIndex,
 	case Pos::min_edge: break;
 	case Pos::max_edge: orthogonal = 1.0; break;
 	case Pos::axis:
-		orthogonal = plot.measureAxises.other(axisIndex).origo();
+		orthogonal = plot->measureAxises.other(axisIndex).origo();
 		break;
 	}
 
@@ -158,7 +158,7 @@ Geom::Point DrawAxes::getTitleOffset(Gen::ChannelId axisIndex,
 
 void DrawAxes::drawTitle(Gen::ChannelId axisIndex)
 {
-	const auto &titleString = plot.commonAxises.at(axisIndex).title;
+	const auto &titleString = plot->commonAxises.at(axisIndex).title;
 
 	const auto &titleStyle = rootStyle.plot.getAxis(axisIndex).title;
 
@@ -188,7 +188,7 @@ void DrawAxes::drawTitle(Gen::ChannelId axisIndex)
 			auto offset = getTitleOffset(axisIndex, index, fades);
 
 			auto posDir = coordSys.convertDirectionAt(
-			    Geom::Line(relCenter, relCenter + normal));
+			    {relCenter, relCenter + normal});
 
 			auto posAngle = posDir.getDirection().angle();
 
@@ -259,8 +259,8 @@ void DrawAxes::drawDimensionLabels(bool horizontal)
 	auto textColor = *labelStyle.color;
 	if (textColor.alpha == 0.0) return;
 
-	auto origo = plot.measureAxises.origo();
-	const auto &axises = plot.dimensionAxises;
+	auto origo = plot->measureAxises.origo();
+	const auto &axises = plot->dimensionAxises;
 	const auto &axis = axises.at(axisIndex);
 
 	if (axis.enabled) {
@@ -276,7 +276,8 @@ void DrawAxes::drawDimensionLabel(bool horizontal,
     const Geom::Point &origo,
     Gen::DimensionAxis::Values::const_iterator it)
 {
-	const auto &enabled = horizontal ? plot.guides.x : plot.guides.y;
+	const auto &enabled =
+	    horizontal ? plot->guides.x : plot->guides.y;
 
 	auto weight =
 	    it->second.weight * static_cast<double>(enabled.labels);
@@ -324,7 +325,7 @@ void DrawAxes::drawDimensionLabel(bool horizontal,
 		    auto sign = 1 - 2 * under;
 
 		    auto posDir = coordSys.convertDirectionAt(
-		        Geom::Line(relCenter, relCenter + normal));
+		        {relCenter, relCenter + normal});
 
 		    posDir = posDir.extend(sign);
 

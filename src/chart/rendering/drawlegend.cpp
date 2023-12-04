@@ -33,17 +33,17 @@ DrawLegend::DrawLegend(const DrawingContext &context,
 	    std::make_unique<Events::Targets::Legend>(channelType));
 
 	if (static_cast<std::size_t>(type)
-	    < std::size(plot.measureAxises.axises)) {
+	    < std::size(plot->measureAxises.axises)) {
 		canvas.save();
 		canvas.setClipRect(contentRect);
 
-		const auto measureAxis = plot.measureAxises.at(type);
-		const auto dimensionAxis = plot.dimensionAxises.at(type);
+		const auto measureAxis = plot->measureAxises.at(type);
+		const auto dimensionAxis = plot->dimensionAxises.at(type);
 
 		const auto measureEnabled =
 		    measureAxis.enabled.calculate<double>();
 
-		drawTitle(plot.commonAxises.at(type).title,
+		drawTitle(plot->commonAxises.at(type).title,
 		    dimensionAxis.enabled ? 1.0 : measureEnabled);
 
 		if (dimensionAxis.enabled) drawDimension(dimensionAxis);
@@ -141,7 +141,7 @@ void DrawLegend::drawMarker(const Gfx::Color &color,
 	canvas.setLineColor(color);
 	canvas.setLineWidth(0);
 
-	auto radius = plot.getStyle().legend.marker.type->factor<double>(
+	auto radius = rootStyle.legend.marker.type->factor<double>(
 	                  Styles::Legend::Marker::Type::circle)
 	            * rect.size.minSize() / 2.0;
 
@@ -201,7 +201,7 @@ void DrawLegend::colorBar(const Geom::Rect &rect)
 	canvas.save();
 
 	canvas.setBrushGradient(rect.leftSide(),
-	    Gfx::ColorGradient{*plot.getStyle().plot.marker.colorGradient
+	    Gfx::ColorGradient{*rootStyle.plot.marker.colorGradient
 	                       * (weight * enabled)});
 	canvas.setLineColor(Gfx::Color::Transparent());
 	canvas.setLineWidth(0);
