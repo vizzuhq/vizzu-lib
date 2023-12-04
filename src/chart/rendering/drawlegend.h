@@ -28,11 +28,11 @@ private:
 	{
 		Gfx::ICanvas &canvas;
 		Geom::Rect contentRect;
-		Gen::ChannelId type;
-		double weight;
-		double itemHeight;
-		double titleHeight;
-		double markerSize;
+		Gen::ChannelId type{};
+		double weight{};
+		double itemHeight{};
+		double titleHeight{};
+		double markerSize{};
 		const Gen::MeasureAxis &measure;
 		const Gen::DimensionAxis &dimension;
 		double measureEnabled = measure.enabled.calculate<double>();
@@ -48,13 +48,13 @@ private:
 	void drawMarker(const Info &info,
 	    const Gfx::Color &color,
 	    const Geom::Rect &rect) const;
-	[[nodiscard]] Geom::Rect getItemRect(const Info &info,
-	    double index) const;
-	[[nodiscard]] Geom::Rect getMarkerRect(const Info &info,
-	    const Geom::Rect &itemRect) const;
-	[[nodiscard]] Geom::TransformedRect getLabelRect(const Info &info,
-	    const Geom::Rect &itemRect) const;
-	[[nodiscard]] Geom::Rect getBarRect(const Info &info) const;
+	[[nodiscard]] static Geom::Rect getItemRect(const Info &info,
+	    double index);
+	[[nodiscard]] static Geom::Rect getMarkerRect(const Info &info,
+	    const Geom::Rect &itemRect);
+	[[nodiscard]] static Geom::TransformedRect
+	getLabelRect(const Info &info, const Geom::Rect &itemRect);
+	[[nodiscard]] static Geom::Rect getBarRect(const Info &info);
 
 	void extremaLabel(const Info &info, double value, int pos) const;
 	void colorBar(const Info &info, const Geom::Rect &rect) const;

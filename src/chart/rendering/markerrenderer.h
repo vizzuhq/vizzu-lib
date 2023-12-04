@@ -19,8 +19,9 @@ public:
 	Painter &painter;
 
 private:
-	bool shouldDrawMarkerBody(const Gen::Marker &marker) const;
-	std::pair<Gfx::Color, Gfx::Color> getColor(
+	[[nodiscard]] bool shouldDrawMarkerBody(
+	    const Gen::Marker &marker) const;
+	[[nodiscard]] std::pair<Gfx::Color, Gfx::Color> getColor(
 	    const AbstractMarker &abstractMarker,
 	    double factor,
 	    bool label = false) const;
@@ -30,8 +31,8 @@ private:
 	void drawLabel(const AbstractMarker &abstractMarker,
 	    size_t index) const;
 
-	Gfx::Color getSelectedColor(const Gen::Marker &marker,
-	    bool label) const;
+	[[nodiscard]] Gfx::Color
+	getSelectedColor(const Gen::Marker &marker, bool label) const;
 	[[nodiscard]] std::string getLabelText(
 	    const ::Anim::Interpolated<Gen::Marker::Label> &label,
 	    size_t index) const;

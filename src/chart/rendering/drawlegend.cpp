@@ -29,7 +29,7 @@ void DrawLegend::draw(Gfx::ICanvas &canvas,
 	    .dimension = plot->dimensionAxises.at(channelType),
 	};
 
-	DrawBackground{{*this}}.draw(canvas,
+	DrawBackground{{ctx()}}.draw(canvas,
 	    legendLayout,
 	    style,
 	    *events.background,
@@ -60,7 +60,7 @@ void DrawLegend::drawTitle(const Info &info) const
 	    {
 		    if (title.weight <= 0) return;
 
-		    DrawLabel{{*this}}.draw(info.canvas,
+		    DrawLabel{{ctx()}}.draw(info.canvas,
 		        Geom::TransformedRect::fromRect(rect),
 		        title.value,
 		        style.title,
@@ -75,7 +75,7 @@ void DrawLegend::drawDimension(const Info &info) const
 {
 	if (!info.dimensionEnabled) return;
 
-	auto label = DrawLabel{{*this}};
+	auto label = DrawLabel{{ctx()}};
 	for (const auto &value : info.dimension) {
 		if (value.second.weight <= 0) continue;
 
@@ -102,8 +102,7 @@ void DrawLegend::drawDimension(const Info &info) const
 	}
 }
 
-Geom::Rect DrawLegend::getItemRect(const Info &info,
-    double index) const
+Geom::Rect DrawLegend::getItemRect(const Info &info, double index)
 {
 	Geom::Rect res = info.contentRect;
 	res.pos.y += info.titleHeight + index * info.itemHeight;
@@ -113,7 +112,7 @@ Geom::Rect DrawLegend::getItemRect(const Info &info,
 }
 
 Geom::Rect DrawLegend::getMarkerRect(const Info &info,
-    const Geom::Rect &itemRect) const
+    const Geom::Rect &itemRect)
 {
 	Geom::Rect res = itemRect;
 	res.pos.y += info.itemHeight / 2.0 - info.markerSize / 2.0;
@@ -122,7 +121,7 @@ Geom::Rect DrawLegend::getMarkerRect(const Info &info,
 }
 
 Geom::TransformedRect DrawLegend::getLabelRect(const Info &info,
-    const Geom::Rect &itemRect) const
+    const Geom::Rect &itemRect)
 {
 	Geom::Rect res = itemRect;
 	res.pos.x += info.markerSize;
@@ -183,7 +182,7 @@ void DrawLegend::extremaLabel(const Info &info,
 	    static_cast<size_t>(*style.label.maxFractionDigits),
 	    *style.label.numberScale);
 
-	DrawLabel{{*this}}.draw(info.canvas,
+	DrawLabel{{ctx()}}.draw(info.canvas,
 	    getLabelRect(info, getItemRect(info, pos)),
 	    text,
 	    style.label,
@@ -192,7 +191,7 @@ void DrawLegend::extremaLabel(const Info &info,
 	    DrawLabel::Options(true, info.measureWeight));
 }
 
-Geom::Rect DrawLegend::getBarRect(const Info &info) const
+Geom::Rect DrawLegend::getBarRect(const Info &info)
 {
 	Geom::Rect res = info.contentRect;
 	res.pos.y += info.titleHeight + info.itemHeight / 2.0;

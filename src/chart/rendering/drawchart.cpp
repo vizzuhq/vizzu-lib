@@ -12,7 +12,7 @@ namespace Vizzu::Draw
 void DrawChart::drawBackground(Gfx::ICanvas &canvas,
     const Geom::Rect &bounds) const
 {
-	DrawBackground{{*this}}.draw(canvas,
+	DrawBackground{{ctx()}}.draw(canvas,
 	    bounds,
 	    rootStyle,
 	    *rootEvents.draw.background,
@@ -23,13 +23,13 @@ void DrawChart::drawPlot(Gfx::ICanvas &canvas,
     Painter &painter,
     const Geom::Rect &plotRect) const
 {
-	DrawPlot{{*this}}.draw(canvas, painter, plotRect);
+	DrawPlot{{ctx()}}.draw(canvas, painter, plotRect);
 }
 
 void DrawChart::drawLegend(Gfx::ICanvas &canvas,
     const Geom::Rect &bounds) const
 {
-	auto &&legendObj = DrawLegend{{*this}};
+	auto &&legendObj = DrawLegend{{ctx()}};
 
 	getOptions().legend.visit(
 	    [&legendObj, &canvas, &bounds](int, const auto &legend)
@@ -56,7 +56,7 @@ void DrawChart::drawHeading(Gfx::ICanvas &canvas,
 	            this](int, const auto &weighted)
 	        {
 		        if (weighted.value.has_value()) {
-			        DrawLabel{{*this}}.draw(canvas,
+			        DrawLabel{{ctx()}}.draw(canvas,
 			            Geom::TransformedRect::fromRect(layout),
 			            *weighted.value,
 			            style,
@@ -71,7 +71,7 @@ void DrawChart::drawHeading(Gfx::ICanvas &canvas,
 void DrawChart::drawMarkerInfo(Gfx::ICanvas &canvas,
     const Geom::Rect &bounds) const
 {
-	DrawMarkerInfo{{*this}}.draw(canvas, bounds);
+	DrawMarkerInfo{{ctx()}, rootStyle.tooltip}.draw(canvas, bounds);
 }
 
 void DrawChart::drawLogo(Gfx::ICanvas &canvas,

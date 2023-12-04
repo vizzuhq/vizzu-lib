@@ -73,7 +73,7 @@ double DrawLabel::getHeight(const Styles::Label &style,
 
 Geom::Rect DrawLabel::alignText(const Geom::Rect &contentRect,
     const Styles::Label &style,
-    const Geom::Size &textSize) const
+    const Geom::Size &textSize)
 {
 	Geom::Rect res;
 	res.size = textSize;

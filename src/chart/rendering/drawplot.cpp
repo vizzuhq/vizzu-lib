@@ -13,7 +13,7 @@ void DrawPlot::draw(Gfx::ICanvas &canvas,
     Painter &painter,
     const Geom::Rect &plotRect) const
 {
-	DrawBackground{{*this}}.draw(canvas,
+	DrawBackground{{ctx()}}.draw(canvas,
 	    plotRect,
 	    rootStyle.plot,
 	    *rootEvents.draw.plot.background,
@@ -21,7 +21,10 @@ void DrawPlot::draw(Gfx::ICanvas &canvas,
 
 	drawPlotArea(canvas, painter, false);
 
-	DrawAxes axes{{*this}, canvas, painter};
+	auto axes = DrawAxes{{ctx()},
+	    canvas,
+	    painter,
+	    {{ctx()}, canvas, painter}};
 	axes.drawGeometries();
 
 	auto clip = rootStyle.plot.overflow == Styles::Overflow::hidden;
@@ -31,7 +34,7 @@ void DrawPlot::draw(Gfx::ICanvas &canvas,
 		drawPlotArea(canvas, painter, true);
 	}
 
-	MarkerRenderer markerRenderer{{*this}, canvas, painter};
+	auto markerRenderer = MarkerRenderer{{ctx()}, canvas, painter};
 	markerRenderer.drawLines();
 
 	markerRenderer.drawMarkers();

@@ -8,19 +8,19 @@
 namespace Vizzu::Draw
 {
 
-void DrawInterlacing::drawGeometries()
+void DrawInterlacing::drawGeometries() const
 {
 	draw(true, false);
 	draw(false, false);
 }
 
-void DrawInterlacing::drawTexts()
+void DrawInterlacing::drawTexts() const
 {
 	draw(true, true);
 	draw(false, true);
 }
 
-void DrawInterlacing::draw(bool horizontal, bool text)
+void DrawInterlacing::draw(bool horizontal, bool text) const
 {
 	auto axisIndex =
 	    horizontal ? Gen::ChannelId::y : Gen::ChannelId::x;
@@ -88,7 +88,7 @@ void DrawInterlacing::draw(
     double stepSize,
     double weight,
     double rangeSize,
-    bool text)
+    bool text) const
 {
 	const auto &enabled =
 	    horizontal ? plot->guides.y : plot->guides.x;
@@ -225,7 +225,7 @@ void DrawInterlacing::drawDataLabel(
     const Geom::Point &tickPos,
     double value,
     const std::string &unit,
-    const Gfx::Color &textColor)
+    const Gfx::Color &textColor) const
 {
 	auto axisIndex =
 	    horizontal ? Gen::ChannelId::y : Gen::ChannelId::x;
@@ -283,7 +283,7 @@ void DrawInterlacing::drawDataLabel(
 
 		    posDir = posDir.extend(sign);
 
-		    OrientedLabelRenderer labelRenderer{{*this},
+		    OrientedLabelRenderer labelRenderer{{ctx()},
 		        canvas,
 		        painter};
 		    auto label =
@@ -298,7 +298,7 @@ void DrawInterlacing::drawDataLabel(
 
 void DrawInterlacing::drawSticks(double tickIntensity,
     bool horizontal,
-    const Geom::Point &tickPos)
+    const Geom::Point &tickPos) const
 {
 	auto axisIndex =
 	    horizontal ? Gen::ChannelId::y : Gen::ChannelId::x;

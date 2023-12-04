@@ -301,7 +301,7 @@ void MarkerRenderer::drawLabel(const AbstractMarker &abstractMarker,
 	auto centered = labelStyle.position->factor<double>(
 	    Styles::MarkerLabel::Position::center);
 
-	OrientedLabelRenderer labelRenderer{{*this}, canvas, painter};
+	OrientedLabelRenderer labelRenderer{{ctx()}, canvas, painter};
 
 	labelRenderer.render(
 	    labelRenderer.create(text, labelPos, labelStyle, centered),

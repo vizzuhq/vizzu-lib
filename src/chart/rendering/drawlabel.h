@@ -40,9 +40,10 @@ public:
 	    Gfx::ICanvas &canvas);
 
 private:
-	Geom::Rect alignText(const Geom::Rect &contentRect,
+	[[nodiscard]] static Geom::Rect alignText(
+	    const Geom::Rect &contentRect,
 	    const Styles::Label &style,
-	    const Geom::Size &textSize) const;
+	    const Geom::Size &textSize);
 };
 
 }

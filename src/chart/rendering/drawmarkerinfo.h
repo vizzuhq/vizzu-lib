@@ -48,7 +48,7 @@ public:
 
 	void draw(Gfx::ICanvas &canvas, const Geom::Rect &boundary) const;
 
-	const Styles::Tooltip &style = rootStyle.tooltip;
+	const Styles::Tooltip &style;
 
 private:
 	void fadeInMarkerInfo(Gfx::ICanvas &canvas,

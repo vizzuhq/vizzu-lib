@@ -26,6 +26,8 @@ struct DrawingContext
 	{
 		return *plot->getOptions();
 	}
+
+	[[nodiscard]] const DrawingContext &ctx() const { return *this; }
 };
 
 }
