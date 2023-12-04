@@ -2,23 +2,24 @@
 #define DRAW_PLOT_H
 
 #include "drawingcontext.h"
+#include "markerrenderer.h"
 
 namespace Vizzu::Draw
 {
 
 class AbstractMarker;
 
-class DrawPlot : private DrawingContext
+class DrawPlot : public DrawingContext
 {
 public:
-	explicit DrawPlot(const DrawingContext &context);
+	void draw(Gfx::ICanvas &canvas,
+	    Painter &painter,
+	    const Geom::Rect &plotRect) const;
 
 private:
-	void drawArea(bool clip);
-	void clipPlotArea();
-	void drawMarkerGuides();
-	void drawMarkers();
-	void drawMarkerLabels();
+	void drawPlotArea(Gfx::ICanvas &canvas,
+	    Painter &painter,
+	    bool clip) const;
 };
 
 }

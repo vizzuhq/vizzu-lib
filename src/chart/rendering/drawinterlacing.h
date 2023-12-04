@@ -6,13 +6,14 @@
 namespace Vizzu::Draw
 {
 
-class DrawInterlacing : private DrawingContext
+class DrawInterlacing : public DrawingContext
 {
 public:
-	explicit DrawInterlacing(const DrawingContext &context);
-
 	void drawGeometries();
 	void drawTexts();
+
+	Gfx::ICanvas &canvas;
+	Painter &painter;
 
 private:
 	void draw(bool horizontal, bool text);

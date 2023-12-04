@@ -10,14 +10,13 @@
 namespace Vizzu::Draw
 {
 
-class DrawBackground : public DrawingContext
+struct DrawBackground : DrawingContext
 {
-public:
-	DrawBackground(const DrawingContext &context,
+	void draw(Gfx::ICanvas &canvas,
 	    const Geom::Rect &rect,
 	    const Styles::Box &style,
 	    const Util::EventDispatcher::event_ptr &onDraw,
-	    std::unique_ptr<Util::EventTarget> eventTarget);
+	    std::unique_ptr<Util::EventTarget> &&eventTarget) const;
 };
 
 }

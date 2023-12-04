@@ -7,20 +7,23 @@
 namespace Vizzu::Draw
 {
 
-DrawMarkerInfo::MarkerDC::MarkerDC(DrawMarkerInfo &parent,
+DrawMarkerInfo::MarkerDC::MarkerDC(const DrawMarkerInfo &parent,
+    Gfx::ICanvas &canvas,
+    const Geom::Rect &boundary,
     Content &content) :
-    parent(parent)
+    parent(parent),
+    canvas(canvas)
 {
 	loadMarker(content);
 	fillTextBox(content);
 	calculateLayout();
-	if (bubble.pos.x + bubble.size.x > parent.layout.boundary.size.x)
+	if (bubble.pos.x + bubble.size.x > boundary.size.x)
 		calculateLayout(Geom::Point{-1, 0});
-	if (bubble.pos.x <= parent.layout.boundary.pos.x)
+	if (bubble.pos.x <= boundary.pos.x)
 		calculateLayout(Geom::Point{1, 0});
-	if (bubble.pos.y + bubble.size.y > parent.layout.boundary.size.y)
+	if (bubble.pos.y + bubble.size.y > boundary.size.y)
 		calculateLayout(Geom::Point{0, -1});
-	if (bubble.pos.y <= parent.layout.boundary.pos.y)
+	if (bubble.pos.y <= boundary.pos.y)
 		calculateLayout(Geom::Point{0, 1});
 }
 
@@ -32,29 +35,29 @@ void DrawMarkerInfo::MarkerDC::draw(double weight)
 	color2.alpha = weight;
 	color3.alpha *= weight;
 	auto offset = *parent.style.dropShadow;
-	parent.canvas.setLineWidth(*parent.style.borderWidth);
-	parent.canvas.setLineColor(color2);
-	parent.canvas.setBrushColor(color1);
-	parent.canvas.beginDropShadow();
-	parent.canvas.setDropShadowBlur(2.0 * offset);
-	parent.canvas.setDropShadowColor(color3);
-	parent.canvas.setDropShadowOffset(Geom::Point{0, offset});
-	Gfx::Draw::InfoBubble{parent.canvas,
+	canvas.setLineWidth(*parent.style.borderWidth);
+	canvas.setLineColor(color2);
+	canvas.setBrushColor(color1);
+	canvas.beginDropShadow();
+	canvas.setDropShadowBlur(2.0 * offset);
+	canvas.setDropShadowColor(color3);
+	canvas.setDropShadowOffset(Geom::Point{0, offset});
+	Gfx::Draw::InfoBubble{canvas,
 	    bubble,
 	    *parent.style.borderRadius,
 	    *parent.style.arrowSize,
 	    arrow};
-	parent.canvas.endDropShadow();
-	Gfx::Draw::InfoBubble{parent.canvas,
+	canvas.endDropShadow();
+	Gfx::Draw::InfoBubble{canvas,
 	    bubble,
 	    *parent.style.borderRadius,
 	    *parent.style.arrowSize,
 	    arrow};
-	parent.canvas.save();
-	parent.canvas.setClipRect(bubble);
+	canvas.save();
+	canvas.setClipRect(bubble);
 	text << bubble.pos;
-	text.draw(parent.canvas, weight);
-	parent.canvas.restore();
+	text.draw(canvas, weight);
+	canvas.restore();
 }
 
 void DrawMarkerInfo::MarkerDC::interpolate(double weight1,
@@ -70,19 +73,19 @@ void DrawMarkerInfo::MarkerDC::interpolate(double weight1,
 void DrawMarkerInfo::MarkerDC::loadMarker(Content &cnt)
 {
 	const auto &marker =
-	    parent.plot.getMarkers()[cnt.markerId.value()];
+	    parent.plot->getMarkers()[cnt.markerId.value()];
 
 	auto blendedMarker =
 	    Draw::AbstractMarker::createInterpolated(marker,
-	        *parent.plot.getOptions(),
-	        parent.plot.getStyle(),
-	        *parent.coordSystem,
-	        parent.plot.getMarkers(),
+	        parent.getOptions(),
+	        parent.rootStyle,
+	        parent.coordSys,
+	        parent.plot->getMarkers(),
 	        0);
 
 	auto line =
 	    blendedMarker.getLabelPos(Styles::MarkerLabel::Position::top,
-	        *parent.coordSystem);
+	        parent.coordSys);
 	dataPoint = line.begin;
 	labelDir = line.end - line.begin;
 }
@@ -147,7 +150,7 @@ void DrawMarkerInfo::MarkerDC::fillTextBox(Content &cnt)
 
 void DrawMarkerInfo::MarkerDC::calculateLayout(Geom::Point hint)
 {
-	bubble.size = text.measure(parent.canvas);
+	bubble.size = text.measure(canvas);
 	if (hint.isNull()) {
 		// orientation: horizontal, right
 		if ((labelDir.x > 0 && labelDir.y > 0
@@ -196,58 +199,62 @@ void DrawMarkerInfo::MarkerDC::calculateLayout(Geom::Point hint)
 		    arrow.y - bubble.size.y - *parent.style.arrowSize;
 }
 
-DrawMarkerInfo::DrawMarkerInfo(const Layout &layout,
-    Gfx::ICanvas &canvas,
-    const Gen::Plot &plot) :
-    layout(layout),
-    canvas(canvas),
-    plot(plot),
-    style(plot.getStyle().tooltip)
+void DrawMarkerInfo::draw(Gfx::ICanvas &canvas,
+    const Geom::Rect &boundary) const
 {
-	coordSystem.emplace(layout.plotArea,
-	    plot.getOptions()->angle,
-	    plot.getOptions()->coordSystem,
-	    plot.keepAspectRatio);
-	for (const auto &info : plot.getMarkersInfo()) {
+	for (const auto &info : plot->getMarkersInfo()) {
 		if (info.second.count == 0) continue;
 		auto weight1 = info.second.values[0].weight;
 		const auto &cnt1 = info.second.values[0].value;
 		if (info.second.count == 1 && cnt1) {
-			MarkerDC dc(*this, cnt1);
+			MarkerDC dc(*this, canvas, boundary, cnt1);
 			dc.draw(weight1);
 		}
 		else if (info.second.count == 2) {
 			auto weight2 = info.second.values[1].weight;
 			const auto &cnt2 = info.second.values[1].value;
 			if (!cnt1 && cnt2)
-				fadeInMarkerInfo(cnt2, weight2);
+				fadeInMarkerInfo(canvas, boundary, cnt2, weight2);
 			else if (cnt1 && !cnt2)
-				fadeOutMarkerInfo(cnt1, weight1);
+				fadeOutMarkerInfo(canvas, boundary, cnt1, weight1);
 			else if (cnt1 && cnt2)
-				moveMarkerInfo(cnt1, weight1, cnt2, weight2);
+				moveMarkerInfo(canvas,
+				    boundary,
+				    cnt1,
+				    weight1,
+				    cnt2,
+				    weight2);
 		}
 	}
 }
 
-void DrawMarkerInfo::fadeInMarkerInfo(Content &cnt, double weight)
+void DrawMarkerInfo::fadeInMarkerInfo(Gfx::ICanvas &canvas,
+    const Geom::Rect &boundary,
+    Content &cnt,
+    double weight) const
 {
-	MarkerDC dc(*this, cnt);
+	MarkerDC dc(*this, canvas, boundary, cnt);
 	dc.draw(weight);
 }
 
-void DrawMarkerInfo::fadeOutMarkerInfo(Content &cnt, double weight)
+void DrawMarkerInfo::fadeOutMarkerInfo(Gfx::ICanvas &canvas,
+    const Geom::Rect &boundary,
+    Content &cnt,
+    double weight) const
 {
-	MarkerDC dc(*this, cnt);
+	MarkerDC dc(*this, canvas, boundary, cnt);
 	dc.draw(weight);
 }
 
-void DrawMarkerInfo::moveMarkerInfo(Content &cnt1,
+void DrawMarkerInfo::moveMarkerInfo(Gfx::ICanvas &canvas,
+    const Geom::Rect &boundary,
+    Content &cnt1,
     double weight1,
     Content &cnt2,
-    double weight2)
+    double weight2) const
 {
-	MarkerDC dc1(*this, cnt1);
-	MarkerDC dc2(*this, cnt2);
+	MarkerDC dc1(*this, canvas, boundary, cnt1);
+	MarkerDC dc2(*this, canvas, boundary, cnt2);
 	dc1.interpolate(weight1, dc2, weight2);
 	dc1.draw(weight1);
 	dc2.draw(weight2);

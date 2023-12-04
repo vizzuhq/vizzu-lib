@@ -9,13 +9,15 @@
 namespace Vizzu::Draw
 {
 
-class DrawAxes : private DrawingContext
+class DrawAxes : public DrawingContext
 {
 public:
-	explicit DrawAxes(const DrawingContext &context);
-
-	void drawBase();
+	void drawGeometries();
 	void drawLabels();
+
+	Gfx::ICanvas &canvas;
+	Painter &painter;
+	DrawInterlacing interlacing{{*this}, canvas, painter};
 
 private:
 	[[nodiscard]] Geom::Line getAxis(Gen::ChannelId axisIndex) const;
@@ -30,8 +32,6 @@ private:
 	void drawDimensionLabel(bool horizontal,
 	    const Geom::Point &origo,
 	    Gen::DimensionAxis::Values::const_iterator it);
-
-	DrawInterlacing interlacing{*this};
 };
 
 }

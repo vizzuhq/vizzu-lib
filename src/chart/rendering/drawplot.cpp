@@ -9,46 +9,47 @@
 namespace Vizzu::Draw
 {
 
-DrawPlot::DrawPlot(const DrawingContext &context) :
-    DrawingContext(context)
+void DrawPlot::draw(Gfx::ICanvas &canvas,
+    Painter &painter,
+    const Geom::Rect &plotRect) const
 {
-	DrawBackground(*this,
-	    layout.plot,
+	DrawBackground{{*this}}.draw(canvas,
+	    plotRect,
 	    rootStyle.plot,
 	    rootEvents.draw.plot.background,
 	    Events::Targets::plot());
 
-	drawArea(false);
+	drawPlotArea(canvas, painter, false);
 
-	DrawAxes axes(*this);
-	axes.drawBase();
+	DrawAxes axes{{*this}, canvas, painter};
+	axes.drawGeometries();
 
 	auto clip = rootStyle.plot.overflow == Styles::Overflow::hidden;
 
-	if (clip) clipPlotArea();
+	if (clip) {
+		canvas.save();
+		drawPlotArea(canvas, painter, true);
+	}
 
-	drawMarkerGuides();
+	MarkerRenderer markerRenderer{{*this}, canvas, painter};
+	markerRenderer.drawLines();
 
-	drawMarkers();
+	markerRenderer.drawMarkers();
 
 	if (clip) canvas.restore();
 
-	drawMarkerLabels();
+	markerRenderer.drawLabels();
 
 	axes.drawLabels();
 }
 
-void DrawPlot::clipPlotArea()
-{
-	canvas.save();
-	drawArea(true);
-}
-
-void DrawPlot::drawArea(bool clip)
+void DrawPlot::drawPlotArea(Gfx::ICanvas &canvas,
+    Painter &painter,
+    bool clip) const
 {
 	auto areaElement = Events::Targets::area();
 
-	auto rect = Geom::Rect{Geom::Point(), Geom::Size::Identity()};
+	auto rect = Geom::Rect::Ident();
 	painter.setPolygonToCircleFactor(0.0);
 	painter.setPolygonStraightFactor(0.0);
 	painter.setResMode(ResolutionMode::High);
@@ -75,36 +76,6 @@ void DrawPlot::drawArea(bool clip)
 			    std::move(areaElement));
 		}
 	}
-}
-
-void DrawPlot::drawMarkerGuides()
-{
-	const auto &style = rootStyle.plot.marker.guides;
-
-	if (!style.color->isTransparent() && *style.lineWidth > 0
-	    && static_cast<double>(plot->anyAxisSet) > 0
-	    && plot->guides.hasAnyGuides()) {
-		canvas.setLineWidth(*style.lineWidth);
-
-		auto origo = plot->measureAxises.origo();
-
-		for (const auto &marker : plot->getMarkers())
-			MarkerRenderer(marker, *this).drawLines(style, origo);
-
-		canvas.setLineWidth(0);
-	}
-}
-
-void DrawPlot::drawMarkers()
-{
-	for (const auto &marker : plot->getMarkers())
-		MarkerRenderer(marker, *this).draw();
-}
-
-void DrawPlot::drawMarkerLabels()
-{
-	for (const auto &marker : plot->getMarkers())
-		MarkerRenderer(marker, *this).drawLabel();
 }
 
 }

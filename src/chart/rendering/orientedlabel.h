@@ -18,10 +18,11 @@ public:
 	const std::string &text;
 };
 
-class OrientedLabelRenderer : private DrawingContext
+class OrientedLabelRenderer : public DrawingContext
 {
 public:
-	explicit OrientedLabelRenderer(const DrawingContext &context);
+	Gfx::ICanvas &canvas;
+	Painter &painter;
 
 	[[nodiscard]] OrientedLabel create(const std::string &text,
 	    const Geom::Line &labelPos,

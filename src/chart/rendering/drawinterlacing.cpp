@@ -8,10 +8,6 @@
 namespace Vizzu::Draw
 {
 
-DrawInterlacing::DrawInterlacing(const DrawingContext &context) :
-    DrawingContext(context)
-{}
-
 void DrawInterlacing::drawGeometries()
 {
 	draw(true, false);
@@ -287,7 +283,9 @@ void DrawInterlacing::drawDataLabel(
 
 		    posDir = posDir.extend(sign);
 
-		    OrientedLabelRenderer labelRenderer(*this);
+		    OrientedLabelRenderer labelRenderer{{*this},
+		        canvas,
+		        painter};
 		    auto label =
 		        labelRenderer.create(str, posDir, labelStyle, 0);
 		    labelRenderer.render(label,

@@ -5,12 +5,11 @@
 namespace Vizzu::Draw
 {
 
-DrawBackground::DrawBackground(const DrawingContext &context,
+void DrawBackground::draw(Gfx::ICanvas &canvas,
     const Geom::Rect &rect,
     const Styles::Box &style,
     const Util::EventDispatcher::event_ptr &onDraw,
-    std::unique_ptr<Util::EventTarget> eventTarget) :
-    DrawingContext(context)
+    std::unique_ptr<Util::EventTarget> &&eventTarget) const
 {
 	Events::OnRectDrawEvent eventObj(*eventTarget, {rect, false});
 	if (!style.borderColor->isTransparent()

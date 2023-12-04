@@ -28,22 +28,21 @@ public:
 		bool flip;
 	};
 
-	DrawLabel(const DrawingContext &context,
+	void draw(Gfx::ICanvas &canvas,
 	    const Geom::TransformedRect &rect,
 	    const std::string &text,
 	    const Styles::Label &style,
 	    const Util::EventDispatcher::event_ptr &onDraw,
 	    std::unique_ptr<Util::EventTarget> eventTarget,
-	    Options options = Options());
+	    Options options = Options()) const;
 
 	static double getHeight(const Styles::Label &style,
 	    Gfx::ICanvas &canvas);
 
 private:
-	Geom::Rect contentRect;
-	const Styles::Label &style;
-	const Util::EventDispatcher::event_ptr &onDraw;
-	Geom::Rect alignText(const Geom::Size &textSize);
+	Geom::Rect alignText(const Geom::Rect &contentRect,
+	    const Styles::Label &style,
+	    const Geom::Size &textSize) const;
 };
 
 }

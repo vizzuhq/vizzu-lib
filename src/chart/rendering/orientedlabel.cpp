@@ -5,11 +5,6 @@
 namespace Vizzu::Draw
 {
 
-OrientedLabelRenderer::OrientedLabelRenderer(
-    const DrawingContext &context) :
-    DrawingContext(context)
-{}
-
 OrientedLabel OrientedLabelRenderer::create(const std::string &text,
     const Geom::Line &labelPos,
     const Styles::OrientedLabel &labelStyle,

@@ -3,8 +3,7 @@
 namespace Vizzu::Draw
 {
 
-DrawGuides::DrawGuides(const DrawingContext &context) :
-    DrawingContext(context)
+void DrawGuides::draw()
 {
 	draw(true);
 	draw(false);

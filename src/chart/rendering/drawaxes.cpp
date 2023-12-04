@@ -8,18 +8,14 @@
 namespace Vizzu::Draw
 {
 
-DrawAxes::DrawAxes(const DrawingContext &context) :
-    DrawingContext(context)
-{}
-
-void DrawAxes::drawBase()
+void DrawAxes::drawGeometries()
 {
 	interlacing.drawGeometries();
 
 	drawAxis(Gen::ChannelId::x);
 	drawAxis(Gen::ChannelId::y);
 
-	DrawGuides(*this);
+	DrawGuides{{*this}, canvas, painter}.draw();
 }
 
 void DrawAxes::drawLabels()
@@ -234,7 +230,7 @@ void DrawAxes::drawTitle(Gen::ChannelId axisIndex)
 			auto upsideDown =
 			    realAngle > M_PI / 2.0 && realAngle < 3 * M_PI / 2.0;
 
-			[[maybe_unused]] const DrawLabel label(*this,
+			DrawLabel{{*this}}.draw(canvas,
 			    Geom::TransformedRect{transform, Geom::Size{size}},
 			    title.value,
 			    titleStyle,
@@ -328,7 +324,9 @@ void DrawAxes::drawDimensionLabel(bool horizontal,
 
 		    posDir = posDir.extend(sign);
 
-		    OrientedLabelRenderer labelRenderer(*this);
+		    OrientedLabelRenderer labelRenderer{{*this},
+		        canvas,
+		        painter};
 		    auto label =
 		        labelRenderer.create(text, posDir, labelStyle, 0);
 		    labelRenderer.render(label,
