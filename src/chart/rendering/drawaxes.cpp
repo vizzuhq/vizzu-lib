@@ -234,7 +234,7 @@ void DrawAxes::drawTitle(Gen::ChannelId axisIndex)
 			    Geom::TransformedRect{transform, Geom::Size{size}},
 			    title.value,
 			    titleStyle,
-			    rootEvents.draw.plot.axis.title,
+			    *rootEvents.draw.plot.axis.title,
 			    Events::Targets::axisTitle(title.value,
 			        axisIndex == Gen::ChannelId::x),
 			    DrawLabel::Options(false, 1.0, upsideDown));
@@ -332,7 +332,7 @@ void DrawAxes::drawDimensionLabel(bool horizontal,
 		    labelRenderer.render(label,
 		        textColor * weight * position.weight,
 		        *labelStyle.backgroundColor,
-		        rootEvents.draw.plot.axis.label,
+		        *rootEvents.draw.plot.axis.label,
 		        Events::Targets::axisLabel(text, horizontal));
 	    });
 }

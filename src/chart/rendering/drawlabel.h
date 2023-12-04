@@ -32,7 +32,7 @@ public:
 	    const Geom::TransformedRect &rect,
 	    const std::string &text,
 	    const Styles::Label &style,
-	    const Util::EventDispatcher::event_ptr &onDraw,
+	    Util::EventDispatcher::Event &onDraw,
 	    std::unique_ptr<Util::EventTarget> eventTarget,
 	    Options options = Options()) const;
 

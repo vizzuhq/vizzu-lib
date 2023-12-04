@@ -32,7 +32,7 @@ public:
 	void render(const OrientedLabel &label,
 	    const Gfx::Color &textColor,
 	    const Gfx::Color &bgColor,
-	    const Util::EventDispatcher::event_ptr &event,
+	    Util::EventDispatcher::Event &event,
 	    std::unique_ptr<Util::EventTarget> eventTarget);
 };
 

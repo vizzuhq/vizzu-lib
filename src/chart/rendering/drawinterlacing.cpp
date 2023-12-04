@@ -291,7 +291,7 @@ void DrawInterlacing::drawDataLabel(
 		    labelRenderer.render(label,
 		        textColor * position.weight,
 		        *labelStyle.backgroundColor,
-		        rootEvents.draw.plot.axis.label,
+		        *rootEvents.draw.plot.axis.label,
 		        Events::Targets::axisLabel(str, !horizontal));
 	    });
 }

@@ -15,7 +15,7 @@ struct DrawBackground : DrawingContext
 	void draw(Gfx::ICanvas &canvas,
 	    const Geom::Rect &rect,
 	    const Styles::Box &style,
-	    const Util::EventDispatcher::event_ptr &onDraw,
+	    Util::EventDispatcher::Event &onDraw,
 	    std::unique_ptr<Util::EventTarget> &&eventTarget) const;
 };
 

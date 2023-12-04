@@ -32,7 +32,6 @@ void Painter::drawPolygon(const std::array<Geom::Point, 4> &ps,
 	Draw::DrawPolygon::Options options(system);
 	options.circ = polygonOptions.toCircleFactor;
 	options.linear = polygonOptions.straightFactor;
-	options.resolutionMode = mode;
 	Draw::DrawPolygon(ps, options, getCanvas(), clip);
 }
 

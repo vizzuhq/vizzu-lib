@@ -16,7 +16,7 @@ void DrawPlot::draw(Gfx::ICanvas &canvas,
 	DrawBackground{{*this}}.draw(canvas,
 	    plotRect,
 	    rootStyle.plot,
-	    rootEvents.draw.plot.background,
+	    *rootEvents.draw.plot.background,
 	    Events::Targets::plot());
 
 	drawPlotArea(canvas, painter, false);

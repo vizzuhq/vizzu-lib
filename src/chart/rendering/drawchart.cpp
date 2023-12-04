@@ -15,7 +15,7 @@ void DrawChart::drawBackground(Gfx::ICanvas &canvas,
 	DrawBackground{{*this}}.draw(canvas,
 	    bounds,
 	    rootStyle,
-	    rootEvents.draw.background,
+	    *rootEvents.draw.background,
 	    Events::Targets::root());
 }
 
@@ -51,7 +51,7 @@ void DrawChart::drawHeading(Gfx::ICanvas &canvas,
 	    .visit(
 	        [&layout = getter(layout),
 	            &style = getter(rootStyle),
-	            &event = getter(rootEvents.draw),
+	            &event = *getter(rootEvents.draw),
 	            &canvas,
 	            this](int, const auto &weighted)
 	        {

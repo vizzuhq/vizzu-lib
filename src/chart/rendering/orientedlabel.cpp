@@ -78,7 +78,7 @@ OrientedLabel OrientedLabelRenderer::create(const std::string &text,
 void OrientedLabelRenderer::render(const OrientedLabel &label,
     const Gfx::Color &textColor,
     const Gfx::Color &bgColor,
-    const Util::EventDispatcher::event_ptr &event,
+    Util::EventDispatcher::Event &event,
     std::unique_ptr<Util::EventTarget> eventTarget)
 {
 	if (!bgColor.isTransparent()) {
@@ -98,7 +98,7 @@ void OrientedLabelRenderer::render(const OrientedLabel &label,
 		    label.rect,
 		    label.text);
 
-		if (event->invoke(std::move(eventObj))) {
+		if (event.invoke(std::move(eventObj))) {
 			canvas.transform(label.rect.transform);
 			canvas.text(label.contentRect, label.text);
 			renderedChart.emplace(label.rect, std::move(eventTarget));

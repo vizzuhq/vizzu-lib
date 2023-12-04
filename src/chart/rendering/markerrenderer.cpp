@@ -307,7 +307,7 @@ void MarkerRenderer::drawLabel(const AbstractMarker &abstractMarker,
 	    labelRenderer.create(text, labelPos, labelStyle, centered),
 	    textColor,
 	    bgColor,
-	    rootEvents.draw.plot.marker.label,
+	    *rootEvents.draw.plot.marker.label,
 	    Events::Targets::markerLabel(text, marker));
 }
 

@@ -32,7 +32,7 @@ void DrawLegend::draw(Gfx::ICanvas &canvas,
 	DrawBackground{{*this}}.draw(canvas,
 	    legendLayout,
 	    style,
-	    events.background,
+	    *events.background,
 	    Events::Targets::legend(channelType));
 
 	canvas.save();
@@ -64,7 +64,7 @@ void DrawLegend::drawTitle(const Info &info) const
 		        Geom::TransformedRect::fromRect(rect),
 		        title.value,
 		        style.title,
-		        events.title,
+		        *events.title,
 		        Events::Targets::legendTitle(title.value, info.type),
 		        DrawLabel::Options(true,
 		            title.weight * info.weight * mul));
@@ -95,7 +95,7 @@ void DrawLegend::drawDimension(const Info &info) const
 		    getLabelRect(info, itemRect),
 		    value.second.label,
 		    style.label,
-		    events.label,
+		    *events.label,
 		    Events::Targets::legendLabel(value.second.label,
 		        info.type),
 		    DrawLabel::Options(true, alpha));
@@ -187,7 +187,7 @@ void DrawLegend::extremaLabel(const Info &info,
 	    getLabelRect(info, getItemRect(info, pos)),
 	    text,
 	    style.label,
-	    events.label,
+	    *events.label,
 	    Events::Targets::legendLabel(text, info.type),
 	    DrawLabel::Options(true, info.measureWeight));
 }

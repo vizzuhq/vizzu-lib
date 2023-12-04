@@ -7,7 +7,7 @@ void DrawLabel::draw(Gfx::ICanvas &canvas,
     const Geom::TransformedRect &rect,
     const std::string &text,
     const Styles::Label &style,
-    const Util::EventDispatcher::event_ptr &onDraw,
+    Util::EventDispatcher::Event &onDraw,
     std::unique_ptr<Util::EventTarget> eventTarget,
     Options options) const
 {
@@ -48,7 +48,7 @@ void DrawLabel::draw(Gfx::ICanvas &canvas,
 	trRect.transform = transform;
 	trRect.size = textRect.size;
 
-	if (onDraw->invoke(
+	if (onDraw.invoke(
 	        Events::OnTextDrawEvent(*eventTarget, trRect, text))) {
 		canvas.transform(transform);
 

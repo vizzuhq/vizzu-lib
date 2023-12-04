@@ -8,7 +8,7 @@ namespace Vizzu::Draw
 void DrawBackground::draw(Gfx::ICanvas &canvas,
     const Geom::Rect &rect,
     const Styles::Box &style,
-    const Util::EventDispatcher::event_ptr &onDraw,
+    Util::EventDispatcher::Event &onDraw,
     std::unique_ptr<Util::EventTarget> &&eventTarget) const
 {
 	Events::OnRectDrawEvent eventObj(*eventTarget, {rect, false});
@@ -17,7 +17,7 @@ void DrawBackground::draw(Gfx::ICanvas &canvas,
 		canvas.setBrushColor(*style.backgroundColor);
 		canvas.setLineColor(*style.borderColor);
 		canvas.setLineWidth(*style.borderWidth);
-		if (onDraw->invoke(std::move(eventObj))) {
+		if (onDraw.invoke(std::move(eventObj))) {
 			canvas.rectangle(rect);
 			renderedChart.emplace(
 			    Geom::TransformedRect::fromRect(rect),
@@ -25,7 +25,7 @@ void DrawBackground::draw(Gfx::ICanvas &canvas,
 		}
 		canvas.setLineWidth(0);
 	}
-	else if (onDraw->invoke(std::move(eventObj))) {
+	else if (onDraw.invoke(std::move(eventObj))) {
 		renderedChart.emplace(Geom::TransformedRect::fromRect(rect),
 		    std::move(eventTarget));
 	}
