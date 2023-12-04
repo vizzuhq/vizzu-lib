@@ -29,6 +29,7 @@ public:
 	    const Gen::PlotOptionsPtr &options,
 	    Gfx::ICanvas &info);
 
+private:
 	void setLogoBoundary(const Styles::Logo &logoStyle);
 };
 
