@@ -41,7 +41,7 @@ export class CChart extends CObject {
 
   update(cCanvas: CCanvas, width: number, height: number, renderControl: number): void {
     this._cCanvas = cCanvas
-    this._call(this._wasm._vizzu_update)(cCanvas.getId(), width, height, renderControl)
+    this._call(this._wasm._vizzu_update)(cCanvas.getId(), width, height, renderControl, true)
   }
 
   animate(callback: (ok: boolean) => void): void {

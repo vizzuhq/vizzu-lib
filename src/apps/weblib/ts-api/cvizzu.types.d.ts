@@ -93,7 +93,8 @@ export interface CVizzu {
     canvas: CCanvasPtr,
     width: number,
     height: number,
-    renderControl: number
+    renderControl: number,
+    highResolution: boolean
   ): void
   _vizzu_errorMessage(exceptionPtr: CException, typeinfo: CTypeInfo): CString
   _vizzu_version(): CString
