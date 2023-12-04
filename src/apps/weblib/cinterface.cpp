@@ -184,13 +184,15 @@ void vizzu_update(APIHandles::Chart chart,
     APIHandles::Canvas canvas,
     double width,
     double height,
-    int renderControl)
+    int renderControl,
+    int highResolution)
 {
 	return Interface::getInstance().update(chart,
 	    canvas,
 	    width,
 	    height,
-	    static_cast<Interface::RenderControl>(renderControl));
+	    static_cast<Interface::RenderControl>(renderControl),
+	    static_cast<bool>(highResolution));
 }
 
 const char *style_getList() { return Interface::getStyleList(); }

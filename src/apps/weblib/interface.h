@@ -47,7 +47,8 @@ public:
 	    ObjectRegistry::Handle canvas,
 	    double width,
 	    double height,
-	    RenderControl renderControl);
+	    RenderControl renderControl,
+	    bool highResolution);
 
 	ObjectRegistry::Handle storeAnim(ObjectRegistry::Handle chart);
 	void restoreAnim(ObjectRegistry::Handle chart,

@@ -36,7 +36,8 @@ public:
 	void setCursor(const std::shared_ptr<Gfx::ICanvas> &,
 	    GUI::Cursor cursor) const override;
 	void onChanged() override;
-	void onDraw(const std::shared_ptr<Gfx::ICanvas> &) override;
+	void onDraw(const std::shared_ptr<Gfx::ICanvas> &,
+	    bool highResolution) override;
 	void onUpdateSize(const std::shared_ptr<Gfx::ICanvas> &,
 	    Geom::Size size) override;
 

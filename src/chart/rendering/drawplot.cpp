@@ -51,7 +51,6 @@ void DrawPlot::drawArea(bool clip)
 	auto rect = Geom::Rect{Geom::Point(), Geom::Size::Identity()};
 	painter.setPolygonToCircleFactor(0.0);
 	painter.setPolygonStraightFactor(0.0);
-	painter.setResMode(ResolutionMode::High);
 
 	if (clip) { painter.drawPolygon(rect.points(), true); }
 	else {

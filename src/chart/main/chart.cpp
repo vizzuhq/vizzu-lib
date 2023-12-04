@@ -97,8 +97,12 @@ Gen::OptionsSetter Chart::getSetter()
 	return setter;
 }
 
-void Chart::draw(Gfx::ICanvas &canvas)
+void Chart::draw(Gfx::ICanvas &canvas, bool highResolution)
 {
+	static_cast<Draw::Painter *>(canvas.getPainter())
+	    ->setResMode(highResolution ? Draw::ResolutionMode::High
+	                                : Draw::ResolutionMode::Low);
+
 	Draw::DrawChart{Draw::DrawingContext{canvas,
 	                    layout,
 	                    events,

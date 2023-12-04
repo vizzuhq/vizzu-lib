@@ -31,7 +31,8 @@ public:
 	virtual void onChanged() = 0;
 	virtual void setCursor(const std::shared_ptr<Gfx::ICanvas> &,
 	    Cursor cursor) const = 0;
-	virtual void onDraw(const std::shared_ptr<Gfx::ICanvas> &) = 0;
+	virtual void onDraw(const std::shared_ptr<Gfx::ICanvas> &,
+	    bool highResolution) = 0;
 	virtual void onUpdateSize(const std::shared_ptr<Gfx::ICanvas> &,
 	    Geom::Size) = 0;
 	[[nodiscard]] virtual Geom::Size getSize(

@@ -126,9 +126,10 @@ Geom::Size ChartWidget::getSize(
 	return chart.getLayout().boundary.size;
 }
 
-void ChartWidget::onDraw(const std::shared_ptr<Gfx::ICanvas> &canvas)
+void ChartWidget::onDraw(const std::shared_ptr<Gfx::ICanvas> &canvas,
+    bool highResolution)
 {
-	chart.draw(*canvas);
+	chart.draw(*canvas, highResolution);
 	needUpdate = false;
 }
 

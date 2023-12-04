@@ -201,7 +201,6 @@ void MarkerRenderer::draw(const AbstractMarker &abstractMarker,
 	         : static_cast<double>(abstractMarker.morphToCircle));
 	painter.setPolygonStraightFactor(
 	    static_cast<double>(abstractMarker.linear));
-	painter.setResMode(ResolutionMode::High);
 
 	auto colors = getColor(abstractMarker, factor);
 
