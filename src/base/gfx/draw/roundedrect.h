@@ -13,6 +13,8 @@ public:
 	RoundedRect(ICanvas &canvas,
 	    const Geom::Rect &rect,
 	    double radius);
+
+protected:
 	void corner(Geom::Point corner,
 	    const Geom::Point &dir0,
 	    const Geom::Point &dir1);
