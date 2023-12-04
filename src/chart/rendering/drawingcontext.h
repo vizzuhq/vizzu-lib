@@ -63,7 +63,7 @@ public:
 	const Layout &layout;
 	RenderedChart &renderedChart;
 
-	const Gen::Options &getOptions() const
+	[[nodiscard]] const Gen::Options &getOptions() const
 	{
 		return *plot->getOptions();
 	}
