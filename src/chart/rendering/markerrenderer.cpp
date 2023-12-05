@@ -309,15 +309,8 @@ std::string MarkerRenderer::getLabelText(size_t index) const
 		valueStr = Text::SmartString::fromNumber(value,
 		    *labelStyle.numberFormat,
 		    static_cast<size_t>(*labelStyle.maxFractionDigits),
-		    *labelStyle.numberScale);
-
-		if (!values[index].value.unit.empty()) {
-			if (*labelStyle.numberFormat
-			    != Text::NumberFormat::prefixed)
-				valueStr += " ";
-
-			valueStr += values[index].value.unit;
-		}
+		    *labelStyle.numberScale,
+		    values[index].value.unit);
 	}
 
 	auto indexStr = values[index].value.indexStr;

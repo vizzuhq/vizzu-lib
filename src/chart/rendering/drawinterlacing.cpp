@@ -238,14 +238,8 @@ void DrawInterlacing::drawDataLabel(
 	auto str = Text::SmartString::fromNumber(value,
 	    *labelStyle.numberFormat,
 	    static_cast<size_t>(*labelStyle.maxFractionDigits),
-	    *labelStyle.numberScale);
-
-	if (!unit.empty()) {
-		if (*labelStyle.numberFormat != Text::NumberFormat::prefixed)
-			str += " ";
-
-		str += unit;
-	}
+	    *labelStyle.numberScale,
+	    unit);
 
 	labelStyle.position->visit(
 	    [this,

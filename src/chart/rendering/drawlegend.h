@@ -37,7 +37,7 @@ private:
 
 	void drawTitle(const ::Anim::String &title, double mul);
 
-	void extremaLabel(double value, int pos);
+	void extremaLabel(double value, const std::string &unit, int pos);
 	void colorBar(const Geom::Rect &rect);
 	void lightnessBar(const Geom::Rect &rect);
 	void sizeBar(const Geom::Rect &rect);

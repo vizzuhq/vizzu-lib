@@ -51,7 +51,8 @@ std::vector<std::string> SmartString::split(const std::string &str,
 std::string SmartString::fromNumber(double value,
     NumberFormat format,
     size_t maxFractionDigits,
-    const NumberScale &numberScale)
+    const NumberScale &numberScale,
+    const std::string &unit)
 {
 	Conv::NumberToString converter{
 	    static_cast<int>(maxFractionDigits)};
@@ -67,7 +68,9 @@ std::string SmartString::fromNumber(double value,
 			auto prefix = numberScale.at(num.exponent);
 
 			return converter(num.signedCoef())
-			     + (!prefix.empty() ? " " + prefix : "");
+			     + (prefix.empty() && unit.empty()
+			             ? ""
+			             : " " + prefix + unit);
 		}
 		break;
 	}
@@ -77,14 +80,14 @@ std::string SmartString::fromNumber(double value,
 	case NumberFormat::none:
 	default: break;
 	}
-	return converter(value);
+	return converter(value) + (unit.empty() ? "" : " " + unit);
 }
 
-std::string SmartString::escape(const std::string &str, char specChar)
+std::string SmartString::escape(const std::string &str)
 {
 	std::string result;
 	for (const auto &ch : str) {
-		if ((ch == '\\') || specChar == ch) result.push_back('\\');
+		if ((ch == '\\') || '"' == ch) result.push_back('\\');
 		result.push_back(ch);
 	}
 	return result;
