@@ -65,7 +65,7 @@ struct MeasureAxis
 {
 	::Anim::Interpolated<bool> enabled{false};
 	Math::Range<double> range = Math::Range<double>(0, 1);
-	std::string unit;
+	::Anim::Interpolated<std::string> unit;
 	::Anim::Interpolated<double> step{1.0};
 	MeasureAxis() = default;
 	MeasureAxis(Math::Range<double> interval,

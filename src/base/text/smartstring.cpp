@@ -68,8 +68,8 @@ std::string SmartString::fromNumber(double value,
 			auto prefix = numberScale.at(num.exponent);
 
 			return converter(num.signedCoef())
-			     + (prefix.empty() && unit.empty()
-			             ? ""
+			     + (prefix.empty() && (unit.empty() || unit == "%")
+			             ? unit
 			             : " " + prefix + unit);
 		}
 		break;
@@ -80,7 +80,8 @@ std::string SmartString::fromNumber(double value,
 	case NumberFormat::none:
 	default: break;
 	}
-	return converter(value) + (unit.empty() ? "" : " " + unit);
+	return converter(value)
+	     + (unit.empty() || unit == "%" ? unit : " " + unit);
 }
 
 std::string SmartString::escape(const std::string &str)

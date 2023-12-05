@@ -158,8 +158,18 @@ void DrawLegend::drawMeasure(const Gen::MeasureAxis &axis)
 {
 	enabled = axis.enabled.calculate<double>();
 
-	extremaLabel(axis.range.getMax(), axis.unit, 0);
-	extremaLabel(axis.range.getMin(), axis.unit, 5);
+	axis.unit.visit(
+	    [this, &axis](int, const auto &unit)
+	    {
+		    extremaLabel(axis.range.getMax(),
+		        unit.value,
+		        0,
+		        unit.weight);
+		    extremaLabel(axis.range.getMin(),
+		        unit.value,
+		        5,
+		        unit.weight);
+	    });
 
 	auto bar = getBarRect();
 
@@ -174,7 +184,8 @@ void DrawLegend::drawMeasure(const Gen::MeasureAxis &axis)
 
 void DrawLegend::extremaLabel(double value,
     const std::string &unit,
-    int pos)
+    int pos,
+    double plusWeight)
 {
 	auto text = Text::SmartString::fromNumber(value,
 	    *style.label.numberFormat,
@@ -189,7 +200,7 @@ void DrawLegend::extremaLabel(double value,
 	    style.label,
 	    events.label,
 	    Events::Targets::legendLabel(text, type),
-	    DrawLabel::Options(true, weight * enabled));
+	    DrawLabel::Options(true, weight * enabled * plusWeight));
 }
 
 void DrawLegend::colorBar(const Geom::Rect &rect)
