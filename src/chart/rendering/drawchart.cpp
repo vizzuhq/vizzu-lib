@@ -9,18 +9,54 @@
 
 namespace Vizzu::Draw
 {
+void DrawChart::drawBackground(Gfx::ICanvas &canvas,
+    const Geom::Rect &bounds) const
+{
+	DrawBackground{{ctx()}}.draw(canvas,
+	    bounds,
+	    rootStyle,
+	    *rootEvents.draw.background,
+	    Events::Targets::root());
+}
+
+void DrawChart::drawPlot(Gfx::ICanvas &canvas,
+    Painter &painter,
+    const Geom::Rect &plotRect) const
+{
+	DrawPlot{{ctx()}}.draw(canvas, painter, plotRect);
+}
+
+void DrawChart::drawLegend(Gfx::ICanvas &canvas,
+    const Geom::Rect &bounds) const
+{
+	auto &&legendObj = DrawLegend{{ctx()}};
+
+	getOptions().legend.visit(
+	    [&legendObj, &canvas, &bounds](int, const auto &legend)
+	    {
+		    if (legend.value)
+			    legendObj.draw(canvas,
+			        bounds,
+			        Gen::Options::toChannel(*legend.value),
+			        legend.weight);
+	    });
+}
+
 template <auto targetGetter, class MemberGetter>
-void DrawChart::drawHeading(const MemberGetter &&getter)
+void DrawChart::drawHeading(Gfx::ICanvas &canvas,
+    const Layout &layout,
+    const MemberGetter &&getter) const
 {
 	getter(getOptions())
 	    .visit(
 	        [&layout = getter(layout),
 	            &style = getter(rootStyle),
-	            &event = getter(rootEvents.draw),
+	            &event = *getter(rootEvents.draw),
+	            &canvas,
 	            this](int, const auto &weighted)
 	        {
 		        if (weighted.value.has_value()) {
-			        DrawLabel(*this,
+			        DrawLabel{{ctx()}}.draw(canvas,
 			            Geom::TransformedRect::fromRect(layout),
 			            *weighted.value,
 			            style,
@@ -32,61 +68,67 @@ void DrawChart::drawHeading(const MemberGetter &&getter)
 	        });
 }
 
-void DrawChart::draw()
+void DrawChart::drawMarkerInfo(Gfx::ICanvas &canvas,
+    const Geom::Rect &bounds) const
 {
+	DrawMarkerInfo{{ctx()}, rootStyle.tooltip}.draw(canvas, bounds);
+}
+
+void DrawChart::drawLogo(Gfx::ICanvas &canvas,
+    const Geom::Rect &bounds) const
+{
+	if (auto logoElement = Events::Targets::logo();
+	    rootEvents.draw.logo->invoke(
+	        Events::OnRectDrawEvent(*logoElement, {bounds, false}))) {
+
+		Logo(canvas).draw(bounds.pos,
+		    bounds.width(),
+		    *rootStyle.logo.filter);
+
+		renderedChart.emplace(Geom::TransformedRect::fromRect(bounds),
+		    std::move(logoElement));
+	}
+}
+
+void DrawChart::draw(Gfx::ICanvas &canvas, const Layout &layout) const
+{
+	Painter &painter = *static_cast<Painter *>(canvas.getPainter());
+	painter.setCoordSys(coordSys);
+
 	if (plot && rootEvents.draw.begin->invoke()) {
 
-		DrawBackground(*this,
-		    layout.boundary.outline(Geom::Size::Square(1)),
-		    rootStyle,
-		    rootEvents.draw.background,
-		    Events::Targets::root());
+		drawBackground(canvas,
+		    layout.boundary.outline(Geom::Size::Square(1)));
 
-		DrawPlot{*this};
+		drawPlot(canvas, painter, layout.plot);
 
-		getOptions().legend.visit(
-		    [this](int, const auto &legend)
-		    {
-			    if (legend.value)
-				    DrawLegend(*this,
-				        Gen::Options::toChannel(*legend.value),
-				        legend.weight);
-		    });
+		drawLegend(canvas, layout.legend);
 
-		drawHeading<&Events::Targets::chartTitle>(
+		drawHeading<&Events::Targets::chartTitle>(canvas,
+		    layout,
 		    [](auto &obj) -> decltype((obj.title))
 		    {
 			    return (obj.title);
 		    });
 
-		drawHeading<&Events::Targets::chartSubtitle>(
+		drawHeading<&Events::Targets::chartSubtitle>(canvas,
+		    layout,
 		    [](auto &obj) -> decltype((obj.subtitle))
 		    {
 			    return (obj.subtitle);
 		    });
 
-		drawHeading<&Events::Targets::chartCaption>(
+		drawHeading<&Events::Targets::chartCaption>(canvas,
+		    layout,
 		    [](auto &obj) -> decltype((obj.caption))
 		    {
 			    return (obj.caption);
 		    });
 
-		DrawMarkerInfo(layout, canvas, *plot);
+		drawMarkerInfo(canvas, layout.boundary);
 	}
 
-	if (auto logoElement = Events::Targets::logo();
-	    rootEvents.draw.logo->invoke(
-	        Events::OnRectDrawEvent(*logoElement,
-	            {layout.logo, false}))) {
-
-		Logo(canvas).draw(layout.logo.pos,
-		    layout.logo.width(),
-		    *rootStyle.logo.filter);
-
-		renderedChart.emplace(
-		    Geom::TransformedRect::fromRect(layout.logo),
-		    std::move(logoElement));
-	}
+	drawLogo(canvas, layout.logo);
 
 	rootEvents.draw.complete->invoke();
 }

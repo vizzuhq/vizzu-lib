@@ -103,14 +103,21 @@ void Chart::draw(Gfx::ICanvas &canvas, bool highResolution)
 	    ->setResMode(highResolution ? Draw::ResolutionMode::High
 	                                : Draw::ResolutionMode::Low);
 
-	Draw::DrawChart{Draw::DrawingContext{canvas,
-	                    layout,
-	                    events,
-	                    actPlot,
+	renderedChart = Draw::RenderedChart{
+	    actPlot ? Draw::CoordinateSystem{layout.plotArea,
+	        actPlot->getOptions()->angle,
+	        actPlot->getOptions()->coordSystem,
+	        actPlot->keepAspectRatio}
+	            : Draw::CoordinateSystem{layout.plotArea},
+	    actPlot};
+
+	Draw::DrawChart{Draw::DrawingContext{actPlot,
+	                    renderedChart,
+	                    renderedChart.getCoordSys(),
 	                    actPlot ? actPlot->getStyle()
 	                            : stylesheet.getDefaultParams(),
-	                    renderedChart}}
-	    .draw();
+	                    events}}
+	    .draw(canvas, layout);
 }
 
 Gen::PlotPtr Chart::plot(const Gen::PlotOptionsPtr &options)
