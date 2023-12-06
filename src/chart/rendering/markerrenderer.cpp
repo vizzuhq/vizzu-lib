@@ -331,18 +331,11 @@ std::string MarkerRenderer::getLabelText(
 			                   return value.value.value_or(0);
 		                   })
 		               : values[index].value.value.value();
-		valueStr = Text::SmartString::fromNumber(value,
+		valueStr = Text::SmartString::fromPhysicalValue(value,
 		    *labelStyle.numberFormat,
 		    static_cast<size_t>(*labelStyle.maxFractionDigits),
-		    *labelStyle.numberScale);
-
-		if (!values[index].value.unit.empty()) {
-			if (*labelStyle.numberFormat
-			    != Text::NumberFormat::prefixed)
-				valueStr += " ";
-
-			valueStr += values[index].value.unit;
-		}
+		    *labelStyle.numberScale,
+		    values[index].value.unit);
 	}
 
 	auto indexStr = values[index].value.indexStr;

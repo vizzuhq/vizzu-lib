@@ -159,8 +159,20 @@ void DrawLegend::drawMeasure(const Info &info) const
 {
 	if (info.measureEnabled <= 0) return;
 
-	extremaLabel(info, info.measure.range.getMax(), 0);
-	extremaLabel(info, info.measure.range.getMin(), 5);
+	axis.unit.visit(
+	    [this, &axis](int, const auto &unit)
+	    {
+		    extremaLabel(info,
+		        info.measure.range.getMax(),
+		        unit.value,
+		        0,
+		        unit.weight);
+		    extremaLabel(info,
+		        info.measure.range.getMin(),
+		        unit.value,
+		        5,
+		        unit.weight);
+	    });
 
 	auto bar = getBarRect(info);
 
@@ -175,12 +187,15 @@ void DrawLegend::drawMeasure(const Info &info) const
 
 void DrawLegend::extremaLabel(const Info &info,
     double value,
-    int pos) const
+    const std::string &unit,
+    int pos,
+    double plusWeight) const
 {
-	auto text = Text::SmartString::fromNumber(value,
+	auto text = Text::SmartString::fromPhysicalValue(value,
 	    *style.label.numberFormat,
 	    static_cast<size_t>(*style.label.maxFractionDigits),
-	    *style.label.numberScale);
+	    *style.label.numberScale,
+	    unit);
 
 	DrawLabel{{ctx()}}.draw(info.canvas,
 	    getLabelRect(info, getItemRect(info, pos)),
@@ -188,7 +203,7 @@ void DrawLegend::extremaLabel(const Info &info,
 	    style.label,
 	    *events.label,
 	    Events::Targets::legendLabel(text, info.type),
-	    DrawLabel::Options(true, info.measureWeight));
+	    DrawLabel::Options(true, info.measureWeight * plusWeight));
 }
 
 Geom::Rect DrawLegend::getBarRect(const Info &info)

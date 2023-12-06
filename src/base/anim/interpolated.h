@@ -207,7 +207,7 @@ public:
 		return T();
 	}
 
-	template <typename T = Type> [[nodiscard]] Type min() const
+	template <typename T = Type> [[nodiscard]] T min() const
 	{
 		return (this->count == 1) ? this->values[0].value
 		     : (this->count == 2) ? std::min(this->values[0].value,
@@ -215,7 +215,7 @@ public:
 		                          : INFINITY;
 	}
 
-	template <typename T = Type> [[nodiscard]] Type max() const
+	template <typename T = Type> [[nodiscard]] T max() const
 	{
 		return (this->count == 1) ? this->values[0].value
 		     : (this->count == 2) ? std::max(this->values[0].value,

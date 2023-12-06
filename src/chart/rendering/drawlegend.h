@@ -56,7 +56,11 @@ private:
 	getLabelRect(const Info &info, const Geom::Rect &itemRect);
 	[[nodiscard]] static Geom::Rect getBarRect(const Info &info);
 
-	void extremaLabel(const Info &info, double value, int pos) const;
+	void extremaLabel(const Info &info,
+	    double value,
+	    const std::string &unit,
+	    int pos,
+	    double plusWeight) const;
 	void colorBar(const Info &info, const Geom::Rect &rect) const;
 	void lightnessBar(const Info &info, const Geom::Rect &rect) const;
 	void sizeBar(const Info &info, const Geom::Rect &rect) const;
