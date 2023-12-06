@@ -159,8 +159,8 @@ void DrawLegend::drawMeasure(const Info &info) const
 {
 	if (info.measureEnabled <= 0) return;
 
-	axis.unit.visit(
-	    [this, &axis](int, const auto &unit)
+	info.measure.unit.visit(
+	    [this, &info](int, const auto &unit)
 	    {
 		    extremaLabel(info,
 		        info.measure.range.getMax(),
