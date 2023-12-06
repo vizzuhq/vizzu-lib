@@ -228,24 +228,12 @@ void DrawInterlacing::drawDataLabel(
     bool horizontal,
     const Geom::Point &tickPos,
     double value,
-    const std::string &unit,
+    const ::Anim::Interpolated<std::string> &unit,
     const Gfx::Color &textColor)
 {
 	auto axisIndex =
 	    horizontal ? Gen::ChannelId::y : Gen::ChannelId::x;
 	const auto &labelStyle = rootStyle.plot.getAxis(axisIndex).label;
-
-	auto str = Text::SmartString::fromNumber(value,
-	    *labelStyle.numberFormat,
-	    static_cast<size_t>(*labelStyle.maxFractionDigits),
-	    *labelStyle.numberScale);
-
-	if (!unit.empty()) {
-		if (*labelStyle.numberFormat != Text::NumberFormat::prefixed)
-			str += " ";
-
-		str += unit;
-	}
 
 	labelStyle.position->visit(
 	    [this,
@@ -254,11 +242,15 @@ void DrawInterlacing::drawDataLabel(
 	        &tickPos,
 	        &horizontal,
 	        normal = Geom::Point::Ident(horizontal),
-	        &str,
+	        &unit,
+	        &value,
 	        &textColor](int index, const auto &position)
 	    {
 		    if (labelStyle.position->interpolates()
-		        && !axisEnabled.get(index).value)
+		        && !axisEnabled
+		                .get(std::min<uint64_t>(axisEnabled.count - 1,
+		                    index))
+		                .value)
 			    return;
 
 		    Geom::Point refPos = tickPos;
@@ -275,26 +267,50 @@ void DrawInterlacing::drawDataLabel(
 		    }
 
 		    auto under = labelStyle.position->interpolates()
-		                   ? labelStyle.side->get(index).value
+		                   ? labelStyle.side
+		                             ->get(std::min<uint64_t>(
+		                                 labelStyle.side->count - 1,
+		                                 index))
+		                             .value
 		                         == Styles::AxisLabel::Side::negative
 		                   : labelStyle.side->factor<double>(
 		                       Styles::AxisLabel::Side::negative);
-
-		    auto sign = 1 - 2 * under;
-
-		    auto posDir = coordSys.convertDirectionAt(
-		        {refPos, refPos + normal});
-
-		    posDir = posDir.extend(sign);
-
-		    OrientedLabelRenderer labelRenderer(*this);
-		    auto label =
-		        labelRenderer.create(str, posDir, labelStyle, 0);
-		    labelRenderer.render(label,
-		        textColor * position.weight,
-		        *labelStyle.backgroundColor,
-		        rootEvents.draw.plot.axis.label,
-		        Events::Targets::axisLabel(str, !horizontal));
+		    unit.visit(
+		        [this,
+		            &unit,
+		            &labelStyle,
+		            &index,
+		            &value,
+		            posDir = coordSys
+		                         .convertDirectionAt(
+		                             {refPos, refPos + normal})
+		                         .extend(1 - 2 * under),
+		            &textColor,
+		            &position,
+		            &horizontal](int index2, const auto &wUnit)
+		        {
+			        if (labelStyle.position->interpolates()
+			            && unit.interpolates() && index != index2)
+				        return;
+			        auto unitStr = wUnit.value;
+			        auto str =
+			            Text::SmartString::fromPhysicalValue(value,
+			                *labelStyle.numberFormat,
+			                static_cast<size_t>(
+			                    *labelStyle.maxFractionDigits),
+			                *labelStyle.numberScale,
+			                unitStr);
+			        OrientedLabelRenderer labelRenderer(*this);
+			        auto label = labelRenderer.create(str,
+			            posDir,
+			            labelStyle,
+			            0);
+			        labelRenderer.render(label,
+			            textColor * position.weight * wUnit.weight,
+			            *labelStyle.backgroundColor * wUnit.weight,
+			            rootEvents.draw.plot.axis.label,
+			            Events::Targets::axisLabel(str, !horizontal));
+		        });
 	    });
 }
 

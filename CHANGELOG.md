@@ -2,6 +2,17 @@
 
 ## [Unreleased]
 
+### Fixed
+
+- When only logo rendered chart resized, the previous drawn logo position was not deleted.   
+- At the mouse events the lib is not queried the exact rendered chart position through API.
+- On axis labels sometimes missed a space character between value and unit.
+- Rendered label units are suddenly disappeared when target plot does not contain a unit.
+
+### Added
+
+- Units on legend. 
+
 ## [0.9.2] - 2023-11-22
 
 ### Fixed

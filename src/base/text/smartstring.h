@@ -23,30 +23,16 @@ public:
 	    bool ignoreEmpty = false,
 	    const char *parens = nullptr);
 
-	static std::string join(const auto &vector, char separator = ',')
-	{
-		std::string joined;
-		bool needSep = false;
-		for (const auto &s : vector) {
-			if (needSep)
-				joined += separator;
-			else
-				needSep = true;
-			joined.append(s);
-		}
-		return joined;
-	}
-
 	static void trim(std::string &string,
 	    int (*ignore)(int) = &isspace);
 
-	static std::string fromNumber(double value,
+	static std::string fromPhysicalValue(double value,
 	    NumberFormat format = NumberFormat::none,
 	    size_t maxFractionDigits = 2,
-	    const NumberScale &numberScale = NumberScale{});
+	    const NumberScale &numberScale = NumberScale{},
+	    const std::string &unit = "");
 
-	static std::string escape(const std::string &str,
-	    char specChar = '\"');
+	static std::string escape(const std::string &str);
 };
 
 }
