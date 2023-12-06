@@ -306,7 +306,7 @@ std::string MarkerRenderer::getLabelText(size_t index) const
 			                   return value.value.value_or(0);
 		                   })
 		               : values[index].value.value.value();
-		valueStr = Text::SmartString::fromNumber(value,
+		valueStr = Text::SmartString::fromPhysicalValue(value,
 		    *labelStyle.numberFormat,
 		    static_cast<size_t>(*labelStyle.maxFractionDigits),
 		    *labelStyle.numberScale,

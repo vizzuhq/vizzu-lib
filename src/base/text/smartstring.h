@@ -26,7 +26,7 @@ public:
 	static void trim(std::string &string,
 	    int (*ignore)(int) = &isspace);
 
-	static std::string fromNumber(double value,
+	static std::string fromPhysicalValue(double value,
 	    NumberFormat format = NumberFormat::none,
 	    size_t maxFractionDigits = 2,
 	    const NumberScale &numberScale = NumberScale{},

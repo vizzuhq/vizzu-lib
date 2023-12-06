@@ -48,7 +48,7 @@ std::vector<std::string> SmartString::split(const std::string &str,
 	return result;
 }
 
-std::string SmartString::fromNumber(double value,
+std::string SmartString::fromPhysicalValue(double value,
     NumberFormat format,
     size_t maxFractionDigits,
     const NumberScale &numberScale,
@@ -88,7 +88,7 @@ std::string SmartString::escape(const std::string &str)
 {
 	std::string result;
 	for (const auto &ch : str) {
-		if ((ch == '\\') || '"' == ch) result.push_back('\\');
+		if ((ch == '\\') || ch == '"') result.push_back('\\');
 		result.push_back(ch);
 	}
 	return result;

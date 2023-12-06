@@ -293,12 +293,13 @@ void DrawInterlacing::drawDataLabel(
 			            && unit.interpolates() && index != index2)
 				        return;
 			        auto unitStr = wUnit.value;
-			        auto str = Text::SmartString::fromNumber(value,
-			            *labelStyle.numberFormat,
-			            static_cast<size_t>(
-			                *labelStyle.maxFractionDigits),
-			            *labelStyle.numberScale,
-			            unitStr);
+			        auto str =
+			            Text::SmartString::fromPhysicalValue(value,
+			                *labelStyle.numberFormat,
+			                static_cast<size_t>(
+			                    *labelStyle.maxFractionDigits),
+			                *labelStyle.numberScale,
+			                unitStr);
 			        OrientedLabelRenderer labelRenderer(*this);
 			        auto label = labelRenderer.create(str,
 			            posDir,

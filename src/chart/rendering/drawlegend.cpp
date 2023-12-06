@@ -187,7 +187,7 @@ void DrawLegend::extremaLabel(double value,
     int pos,
     double plusWeight)
 {
-	auto text = Text::SmartString::fromNumber(value,
+	auto text = Text::SmartString::fromPhysicalValue(value,
 	    *style.label.numberFormat,
 	    static_cast<size_t>(*style.label.maxFractionDigits),
 	    *style.label.numberScale,
