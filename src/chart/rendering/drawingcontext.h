@@ -36,7 +36,7 @@ public:
 			auto plotArea = styles.plot.contentRect(layout.plot,
 			    styles.calculatedSize());
 			renderedChart =
-			    RenderedChart{{plotArea,
+			    RenderedChart{CoordinateSystem{plotArea,
 			                      getOptions().angle,
 			                      getOptions().coordSystem,
 			                      plot->keepAspectRatio},
@@ -44,7 +44,7 @@ public:
 		}
 		else {
 			renderedChart = RenderedChart{
-			    {layout.plotArea,
+			    CoordinateSystem{layout.plotArea,
 			        0.0,
 			        ::Anim::Interpolated<Gen::CoordSystem>{
 			            Gen::CoordSystem::cartesian},
@@ -63,7 +63,10 @@ public:
 	const Layout &layout;
 	RenderedChart &renderedChart;
 
-	const Gen::Options &getOptions() { return *plot->getOptions(); }
+	[[nodiscard]] const Gen::Options &getOptions() const
+	{
+		return *plot->getOptions();
+	}
 };
 
 }

@@ -44,8 +44,7 @@ void MarkerRenderer::drawLines(const Styles::Guide &style,
 			const Geom::Line line(axisPoint, blended.center);
 
 			auto guideElement =
-			    std::make_unique<Events::Targets::MarkerGuide>(marker,
-			        false);
+			    Events::Targets::markerGuide(marker, false);
 
 			if (rootEvents.draw.plot.marker.guide->invoke(
 			        Events::OnLineDrawEvent(*guideElement,
@@ -68,8 +67,7 @@ void MarkerRenderer::drawLines(const Styles::Guide &style,
 			const Geom::Line line(blended.center, axisPoint);
 
 			auto guideElement =
-			    std::make_unique<Events::Targets::MarkerGuide>(marker,
-			        true);
+			    Events::Targets::markerGuide(marker, true);
 
 			if (rootEvents.draw.plot.marker.guide->invoke(
 			        Events::OnLineDrawEvent(*guideElement,
@@ -212,8 +210,7 @@ void MarkerRenderer::draw(const AbstractMarker &abstractMarker,
 
 	auto boundary = abstractMarker.getBoundary();
 
-	auto markerElement =
-	    std::make_unique<Events::Targets::Marker>(marker);
+	auto markerElement = Events::Targets::marker(marker);
 
 	if (line) {
 		auto line = abstractMarker.getLine();
@@ -287,7 +284,7 @@ void MarkerRenderer::drawLabel(const AbstractMarker &abstractMarker,
 	    textColor,
 	    bgColor,
 	    rootEvents.draw.plot.marker.label,
-	    std::make_unique<Events::Targets::MarkerLabel>(text, marker));
+	    Events::Targets::markerLabel(text, marker));
 }
 
 std::string MarkerRenderer::getLabelText(size_t index) const
@@ -308,18 +305,11 @@ std::string MarkerRenderer::getLabelText(size_t index) const
 			                   return value.value.value_or(0);
 		                   })
 		               : values[index].value.value.value();
-		valueStr = Text::SmartString::fromNumber(value,
+		valueStr = Text::SmartString::fromPhysicalValue(value,
 		    *labelStyle.numberFormat,
 		    static_cast<size_t>(*labelStyle.maxFractionDigits),
-		    *labelStyle.numberScale);
-
-		if (!values[index].value.unit.empty()) {
-			if (*labelStyle.numberFormat
-			    != Text::NumberFormat::prefixed)
-				valueStr += " ";
-
-			valueStr += values[index].value.unit;
-		}
+		    *labelStyle.numberScale,
+		    values[index].value.unit);
 	}
 
 	auto indexStr = values[index].value.indexStr;

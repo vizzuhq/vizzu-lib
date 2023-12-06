@@ -49,17 +49,18 @@ MeasureAxis interpolate(const MeasureAxis &op0,
 	if (op0.enabled.get() && op1.enabled.get()) {
 		res.range = Math::interpolate(op0.range, op1.range, factor);
 		res.step = interpolate(op0.step, op1.step, factor);
+		res.unit = interpolate(op0.unit, op1.unit, factor);
 	}
 	else if (op0.enabled.get()) {
 		res.range = op0.range;
 		res.step = op0.step;
+		res.unit = op0.unit;
 	}
 	else if (op1.enabled.get()) {
 		res.range = op1.range;
 		res.step = op1.step;
+		res.unit = op1.unit;
 	}
-
-	res.unit = op1.unit;
 
 	return res;
 }

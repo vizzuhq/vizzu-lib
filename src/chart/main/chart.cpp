@@ -10,7 +10,7 @@ Chart::Chart() :
     animator(std::make_shared<Anim::Animator>()),
     stylesheet(Styles::Chart::def()),
     computedStyles(stylesheet.getDefaultParams()),
-    events(*this)
+    events(getEventDispatcher())
 {
 	stylesheet.setActiveParams(actStyles);
 	nextOptions = std::make_shared<Gen::Options>();
