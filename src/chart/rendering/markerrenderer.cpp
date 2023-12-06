@@ -27,7 +27,7 @@ void MarkerRenderer::drawLines() const
 	auto origo = plot->measureAxises.origo();
 
 	for (auto &marker : plot->getMarkers()) {
-		if (static_cast<double>(marker.enabled) == 0) return;
+		if (static_cast<double>(marker.enabled) == 0) continue;
 
 		auto blended = AbstractMarker::createInterpolated(marker,
 		    getOptions(),
@@ -92,7 +92,7 @@ void MarkerRenderer::drawLines() const
 void MarkerRenderer::drawMarkers() const
 {
 	for (auto &marker : plot->getMarkers()) {
-		if (!shouldDrawMarkerBody(marker)) return;
+		if (!shouldDrawMarkerBody(marker)) continue;
 
 		if (getOptions().geometry.contains(Gen::ShapeType::line)
 		    && getOptions().geometry.contains(
@@ -174,7 +174,7 @@ void MarkerRenderer::drawMarkers() const
 void MarkerRenderer::drawLabels() const
 {
 	for (auto &marker : plot->getMarkers()) {
-		if (static_cast<double>(marker.enabled) == 0) return;
+		if (static_cast<double>(marker.enabled) == 0) continue;
 
 		auto blended = AbstractMarker::createInterpolated(marker,
 		    getOptions(),
