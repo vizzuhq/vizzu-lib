@@ -6,10 +6,13 @@
 namespace Vizzu::Draw
 {
 
-class DrawGuides : private DrawingContext
+class DrawGuides : public DrawingContext
 {
 public:
-	explicit DrawGuides(const DrawingContext &context);
+	void draw();
+
+	Gfx::ICanvas &canvas;
+	Painter &painter;
 
 private:
 	void draw(bool horizontal);

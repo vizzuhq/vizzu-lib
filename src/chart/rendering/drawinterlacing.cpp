@@ -8,23 +8,19 @@
 namespace Vizzu::Draw
 {
 
-DrawInterlacing::DrawInterlacing(const DrawingContext &context) :
-    DrawingContext(context)
-{}
-
-void DrawInterlacing::drawGeometries()
+void DrawInterlacing::drawGeometries() const
 {
 	draw(true, false);
 	draw(false, false);
 }
 
-void DrawInterlacing::drawTexts()
+void DrawInterlacing::drawTexts() const
 {
 	draw(true, true);
 	draw(false, true);
 }
 
-void DrawInterlacing::draw(bool horizontal, bool text)
+void DrawInterlacing::draw(bool horizontal, bool text) const
 {
 	auto axisIndex =
 	    horizontal ? Gen::ChannelId::y : Gen::ChannelId::x;
@@ -92,7 +88,7 @@ void DrawInterlacing::draw(
     double stepSize,
     double weight,
     double rangeSize,
-    bool text)
+    bool text) const
 {
 	const auto &enabled =
 	    horizontal ? plot->guides.y : plot->guides.x;
@@ -229,7 +225,7 @@ void DrawInterlacing::drawDataLabel(
     const Geom::Point &tickPos,
     double value,
     const ::Anim::Interpolated<std::string> &unit,
-    const Gfx::Color &textColor)
+    const Gfx::Color &textColor) const
 {
 	auto axisIndex =
 	    horizontal ? Gen::ChannelId::y : Gen::ChannelId::x;
@@ -300,7 +296,9 @@ void DrawInterlacing::drawDataLabel(
 			                    *labelStyle.maxFractionDigits),
 			                *labelStyle.numberScale,
 			                unitStr);
-			        OrientedLabelRenderer labelRenderer(*this);
+			        OrientedLabelRenderer labelRenderer{{ctx()},
+			            canvas,
+			            painter};
 			        auto label = labelRenderer.create(str,
 			            posDir,
 			            labelStyle,
@@ -308,7 +306,7 @@ void DrawInterlacing::drawDataLabel(
 			        labelRenderer.render(label,
 			            textColor * position.weight * wUnit.weight,
 			            *labelStyle.backgroundColor * wUnit.weight,
-			            rootEvents.draw.plot.axis.label,
+			            *rootEvents.draw.plot.axis.label,
 			            Events::Targets::axisLabel(str, !horizontal));
 		        });
 	    });
@@ -316,7 +314,7 @@ void DrawInterlacing::drawDataLabel(
 
 void DrawInterlacing::drawSticks(double tickIntensity,
     bool horizontal,
-    const Geom::Point &tickPos)
+    const Geom::Point &tickPos) const
 {
 	auto axisIndex =
 	    horizontal ? Gen::ChannelId::y : Gen::ChannelId::x;

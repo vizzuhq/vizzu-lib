@@ -5,12 +5,11 @@
 namespace Vizzu::Draw
 {
 
-DrawBackground::DrawBackground(const DrawingContext &context,
+void DrawBackground::draw(Gfx::ICanvas &canvas,
     const Geom::Rect &rect,
     const Styles::Box &style,
-    const Util::EventDispatcher::event_ptr &onDraw,
-    std::unique_ptr<Util::EventTarget> eventTarget) :
-    DrawingContext(context)
+    Util::EventDispatcher::Event &onDraw,
+    std::unique_ptr<Util::EventTarget> &&eventTarget) const
 {
 	Events::OnRectDrawEvent eventObj(*eventTarget, {rect, false});
 	if (!style.borderColor->isTransparent()
@@ -18,7 +17,7 @@ DrawBackground::DrawBackground(const DrawingContext &context,
 		canvas.setBrushColor(*style.backgroundColor);
 		canvas.setLineColor(*style.borderColor);
 		canvas.setLineWidth(*style.borderWidth);
-		if (onDraw->invoke(std::move(eventObj))) {
+		if (onDraw.invoke(std::move(eventObj))) {
 			canvas.rectangle(rect);
 			renderedChart.emplace(
 			    Geom::TransformedRect::fromRect(rect),
@@ -26,7 +25,7 @@ DrawBackground::DrawBackground(const DrawingContext &context,
 		}
 		canvas.setLineWidth(0);
 	}
-	else if (onDraw->invoke(std::move(eventObj))) {
+	else if (onDraw.invoke(std::move(eventObj))) {
 		renderedChart.emplace(Geom::TransformedRect::fromRect(rect),
 		    std::move(eventTarget));
 	}

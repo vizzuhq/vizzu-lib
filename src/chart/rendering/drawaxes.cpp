@@ -8,21 +8,17 @@
 namespace Vizzu::Draw
 {
 
-DrawAxes::DrawAxes(const DrawingContext &context) :
-    DrawingContext(context)
-{}
-
-void DrawAxes::drawBase()
+void DrawAxes::drawGeometries() const
 {
 	interlacing.drawGeometries();
 
 	drawAxis(Gen::ChannelId::x);
 	drawAxis(Gen::ChannelId::y);
 
-	DrawGuides(*this);
+	DrawGuides{{ctx()}, canvas, painter}.draw();
 }
 
-void DrawAxes::drawLabels()
+void DrawAxes::drawLabels() const
 {
 	interlacing.drawTexts();
 
@@ -48,7 +44,7 @@ Geom::Line DrawAxes::getAxis(Gen::ChannelId axisIndex) const
 	return {};
 }
 
-void DrawAxes::drawAxis(Gen::ChannelId axisIndex)
+void DrawAxes::drawAxis(Gen::ChannelId axisIndex) const
 {
 	auto eventTarget =
 	    Events::Targets::axis(axisIndex == Gen::ChannelId::x);
@@ -156,7 +152,7 @@ Geom::Point DrawAxes::getTitleOffset(Gen::ChannelId axisIndex,
 	         : Geom::Point{orthogonal, -parallel};
 }
 
-void DrawAxes::drawTitle(Gen::ChannelId axisIndex)
+void DrawAxes::drawTitle(Gen::ChannelId axisIndex) const
 {
 	const auto &titleString = plot->commonAxises.at(axisIndex).title;
 
@@ -234,11 +230,11 @@ void DrawAxes::drawTitle(Gen::ChannelId axisIndex)
 			auto upsideDown =
 			    realAngle > M_PI / 2.0 && realAngle < 3 * M_PI / 2.0;
 
-			[[maybe_unused]] const DrawLabel label(*this,
+			DrawLabel{{ctx()}}.draw(canvas,
 			    Geom::TransformedRect{transform, Geom::Size{size}},
 			    title.value,
 			    titleStyle,
-			    rootEvents.draw.plot.axis.title,
+			    *rootEvents.draw.plot.axis.title,
 			    Events::Targets::axisTitle(title.value,
 			        axisIndex == Gen::ChannelId::x),
 			    DrawLabel::Options(false, 1.0, upsideDown));
@@ -248,7 +244,7 @@ void DrawAxes::drawTitle(Gen::ChannelId axisIndex)
 	}
 }
 
-void DrawAxes::drawDimensionLabels(bool horizontal)
+void DrawAxes::drawDimensionLabels(bool horizontal) const
 {
 	auto axisIndex =
 	    horizontal ? Gen::ChannelId::x : Gen::ChannelId::y;
@@ -273,7 +269,7 @@ void DrawAxes::drawDimensionLabels(bool horizontal)
 
 void DrawAxes::drawDimensionLabel(bool horizontal,
     const Geom::Point &origo,
-    Gen::DimensionAxis::Values::const_iterator it)
+    Gen::DimensionAxis::Values::const_iterator it) const
 {
 	const auto &enabled =
 	    horizontal ? plot->guides.x : plot->guides.y;
@@ -328,13 +324,15 @@ void DrawAxes::drawDimensionLabel(bool horizontal,
 
 		    posDir = posDir.extend(sign);
 
-		    OrientedLabelRenderer labelRenderer(*this);
+		    OrientedLabelRenderer labelRenderer{{ctx()},
+		        canvas,
+		        painter};
 		    auto label =
 		        labelRenderer.create(text, posDir, labelStyle, 0);
 		    labelRenderer.render(label,
 		        textColor * weight * position.weight,
 		        *labelStyle.backgroundColor,
-		        rootEvents.draw.plot.axis.label,
+		        *rootEvents.draw.plot.axis.label,
 		        Events::Targets::axisLabel(text, horizontal));
 	    });
 }
