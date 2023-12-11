@@ -11,29 +11,25 @@
 namespace Vizzu::Draw
 {
 
-AbstractMarker AbstractMarker::create(const Gen::Marker &marker,
-    const Gen::Options &options,
+AbstractMarker AbstractMarker::create(const DrawingContext &ctx,
+    const Gen::Marker &marker,
     const Gen::ShapeType &shapeType,
-    const Styles::Chart &style,
-    const CoordinateSystem &coordSys,
-    const Gen::Plot::Markers &markers,
     size_t lineIndex)
 {
 	switch (shapeType) {
 	case Gen::ShapeType::rectangle:
-		return RectangleMarker(marker, options, style);
+		return RectangleMarker(marker,
+		    ctx.getOptions(),
+		    ctx.rootStyle);
 	case Gen::ShapeType::circle:
-		return CircleMarker(marker, coordSys, options, style);
+		return CircleMarker(marker,
+		    ctx.coordSys,
+		    ctx.getOptions(),
+		    ctx.rootStyle);
 	case Gen::ShapeType::area:
 	case Gen::ShapeType::line:
-		return ConnectingMarker(marker,
-		    coordSys,
-		    options,
-		    style,
-		    markers,
-		    lineIndex,
-		    shapeType);
-	default: return {marker, options};
+		return ConnectingMarker(ctx, marker, lineIndex, shapeType);
+	default: return {marker, ctx.getOptions()};
 	}
 }
 
@@ -46,25 +42,13 @@ AbstractMarker AbstractMarker::createInterpolated(
 
 	auto fromShapeType = options.geometry.get(0).value;
 
-	auto fromMarker = create(marker,
-	    options,
-	    fromShapeType,
-	    ctx.rootStyle,
-	    ctx.coordSys,
-	    ctx.plot->getMarkers(),
-	    lineIndex);
+	auto fromMarker = create(ctx, marker, fromShapeType, lineIndex);
 
 	auto toShapeType = options.geometry.get(1).value;
 
 	if (fromShapeType == toShapeType) return fromMarker;
 
-	auto toMarker = create(marker,
-	    options,
-	    toShapeType,
-	    ctx.rootStyle,
-	    ctx.coordSys,
-	    ctx.plot->getMarkers(),
-	    lineIndex);
+	auto toMarker = create(ctx, marker, toShapeType, lineIndex);
 
 	AbstractMarker aMarker(marker, options);
 	aMarker.enabled = fromMarker.enabled + toMarker.enabled;

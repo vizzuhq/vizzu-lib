@@ -49,12 +49,9 @@ protected:
 	AbstractMarker(const Gen::Marker &marker,
 	    const Gen::Options &options);
 
-	static AbstractMarker create(const Gen::Marker &marker,
-	    const Gen::Options &options,
+	static AbstractMarker create(const DrawingContext &ctx,
+	    const Gen::Marker &marker,
 	    const Gen::ShapeType &shapeType,
-	    const Styles::Chart &style,
-	    const CoordinateSystem &coordSys,
-	    const Gen::Plot::Markers &markers,
 	    size_t lineIndex);
 };
 

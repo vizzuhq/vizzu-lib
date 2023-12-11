@@ -5,28 +5,26 @@
 namespace Vizzu::Draw
 {
 
-ConnectingMarker::ConnectingMarker(const Gen::Marker &marker,
-    const CoordinateSystem &coordSys,
-    const Gen::Options &options,
-    const Styles::Chart &style,
-    const Gen::Plot::Markers &markers,
+ConnectingMarker::ConnectingMarker(const DrawingContext &ctx,
+    const Gen::Marker &marker,
     size_t lineIndex,
     Gen::ShapeType type) :
-    AbstractMarker(marker, options)
+    AbstractMarker(marker, ctx.getOptions())
 {
 	auto isLine = type == Gen::ShapeType::line;
 	auto isArea = type == Gen::ShapeType::area;
 
-	auto polar = options.coordSystem.factor<Math::FuzzyBool>(
+	auto polar = ctx.getOptions().coordSystem.factor<Math::FuzzyBool>(
 	    Gen::CoordSystem::polar);
-	auto horizontal = options.orientation.factor<Math::FuzzyBool>(
-	    Gen::Orientation::horizontal);
+	auto horizontal =
+	    ctx.getOptions().orientation.factor<Math::FuzzyBool>(
+	        Gen::Orientation::horizontal);
 
 	linear = !polar || horizontal;
 
 	lineWidth[0] = lineWidth[1] = 0;
 
-	enabled = options.geometry.factor<Math::FuzzyBool>(type);
+	enabled = ctx.getOptions().geometry.factor<Math::FuzzyBool>(type);
 
 	labelEnabled = enabled && marker.enabled;
 
@@ -35,7 +33,8 @@ ConnectingMarker::ConnectingMarker(const Gen::Marker &marker,
 	connected = enabled && Math::FuzzyBool(weight);
 
 	if (weight > 0.0) {
-		const auto *prev = getPrev(marker, markers, lineIndex);
+		const auto *prev =
+		    getPrev(marker, ctx.plot->getMarkers(), lineIndex);
 		if (prev) {
 			labelEnabled =
 			    enabled && (marker.enabled || prev->enabled);
@@ -60,8 +59,10 @@ ConnectingMarker::ConnectingMarker(const Gen::Marker &marker,
 
 	if (labelEnabled != false) {
 
-		auto minWidth = isLine ? *style.plot.marker.lineMinWidth : 0;
-		auto maxWidth = isLine ? *style.plot.marker.lineMaxWidth : 0;
+		auto minWidth =
+		    isLine ? *ctx.rootStyle.plot.marker.lineMinWidth : 0;
+		auto maxWidth =
+		    isLine ? *ctx.rootStyle.plot.marker.lineMaxWidth : 0;
 
 		lineWidth[1] =
 		    std::max(maxWidth * marker.sizeFactor, minWidth);
@@ -76,7 +77,8 @@ ConnectingMarker::ConnectingMarker(const Gen::Marker &marker,
 		                  ? marker.size.yComp() * horizontalFactor
 		                  : marker.size.xComp() * horizontalFactor);
 
-		const auto *prev = getPrev(marker, markers, lineIndex);
+		const auto *prev =
+		    getPrev(marker, ctx.plot->getMarkers(), lineIndex);
 
 		if (prev) {
 			auto prevSpacing = prev->spacing * prev->size / 2;
@@ -113,7 +115,7 @@ ConnectingMarker::ConnectingMarker(const Gen::Marker &marker,
 		center = Geom::Point{pos.x, 0};
 	}
 
-	radius = lineWidth[1] * coordSys.getRect().size.minSize();
+	radius = lineWidth[1] * ctx.coordSys.getRect().size.minSize();
 
 	dataRect.pos = isLine ? points[2] : points[1];
 	dataRect.size = Geom::Size{points[2] - dataRect.pos};

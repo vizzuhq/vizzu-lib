@@ -13,124 +13,129 @@
 namespace Vizzu::Draw
 {
 
-void MarkerRenderer::drawLines() const
+void MarkerRenderer::drawLines(Gfx::ICanvas &canvas,
+    Painter &painter) const
 {
 	const auto &style = rootStyle.plot.marker.guides;
 
 	if (style.color->isTransparent() || *style.lineWidth <= 0
-	    || static_cast<double>(plot->anyAxisSet) <= 0
-	    || !plot->guides.hasAnyGuides())
+	    || plot->anyAxisSet == false || !plot->guides.hasAnyGuides())
 		return;
 
 	canvas.setLineWidth(*style.lineWidth);
 
 	auto origo = plot->measureAxises.origo();
 
-	auto baseColor =
-	    *style.color * static_cast<double>(plot->anyAxisSet);
+	auto baseColor = *style.color * double{plot->anyAxisSet};
 
 	auto xMarkerGuides = double{plot->guides.x.markerGuides};
 	auto yMarkerGuides = double{plot->guides.y.markerGuides};
 	auto xLineColor = baseColor * xMarkerGuides;
 	auto yLineColor = baseColor * yMarkerGuides;
 
-	for (auto &marker : plot->getMarkers()) {
-		if (static_cast<double>(marker.enabled) == 0) continue;
+	for (const auto &blended : markers) {
+		if (blended.marker.enabled == false
+		    || blended.enabled == false)
+			continue;
 
-		auto blended =
-		    AbstractMarker::createInterpolated(ctx(), marker, 0);
+		if (xMarkerGuides > 0) {
+			canvas.setLineColor(xLineColor);
+			auto axisPoint = blended.center.xComp() + origo.yComp();
+			const Geom::Line line(axisPoint, blended.center);
 
-		if (static_cast<double>(blended.enabled) > 0) {
-			if (xMarkerGuides > 0) {
-				canvas.setLineColor(xLineColor);
-				auto axisPoint =
-				    blended.center.xComp() + origo.yComp();
-				const Geom::Line line(axisPoint, blended.center);
+			auto guideElement =
+			    Events::Targets::markerGuide(blended.marker, false);
 
-				auto guideElement =
-				    Events::Targets::markerGuide(marker, false);
-
-				if (rootEvents.draw.plot.marker.guide->invoke(
-				        Events::OnLineDrawEvent(*guideElement,
-				            {line, true}))) {
-					painter.drawLine(line);
-					renderedChart.emplace(Draw::Line{line, true},
-					    std::move(guideElement));
-				}
+			if (rootEvents.draw.plot.marker.guide->invoke(
+			        Events::OnLineDrawEvent(*guideElement,
+			            {line, true}))) {
+				painter.drawLine(line);
+				renderedChart.emplace(Draw::Line{line, true},
+				    std::move(guideElement));
 			}
-			if (yMarkerGuides > 0) {
-				auto center = Geom::Point{blended.center};
-				center.x = Math::interpolate(center.x,
-				    1.0,
-				    getOptions().coordSystem.factor<double>(
-				        Gen::CoordSystem::polar));
-				canvas.setLineColor(yLineColor);
-				auto axisPoint = center.yComp() + origo.xComp();
-				const Geom::Line line(center, axisPoint);
+		}
+		if (yMarkerGuides > 0) {
+			auto center = Geom::Point{blended.center};
+			center.x = Math::interpolate(center.x,
+			    1.0,
+			    getOptions().coordSystem.factor<double>(
+			        Gen::CoordSystem::polar));
+			canvas.setLineColor(yLineColor);
+			auto axisPoint = center.yComp() + origo.xComp();
+			const Geom::Line line(center, axisPoint);
 
-				auto guideElement =
-				    Events::Targets::markerGuide(marker, true);
+			auto guideElement =
+			    Events::Targets::markerGuide(blended.marker, true);
 
-				if (rootEvents.draw.plot.marker.guide->invoke(
-				        Events::OnLineDrawEvent(*guideElement,
-				            {line, true}))) {
-					painter.drawLine(line);
-					renderedChart.emplace(Draw::Line{line, true},
-					    std::move(guideElement));
-				}
+			if (rootEvents.draw.plot.marker.guide->invoke(
+			        Events::OnLineDrawEvent(*guideElement,
+			            {line, true}))) {
+				painter.drawLine(line);
+				renderedChart.emplace(Draw::Line{line, true},
+				    std::move(guideElement));
 			}
 		}
 	}
 	canvas.setLineWidth(0);
 }
 
-void MarkerRenderer::drawMarkers() const
+void MarkerRenderer::drawMarkers(Gfx::ICanvas &canvas,
+    Painter &painter) const
 {
-	for (auto &marker : plot->getMarkers()) {
-		if (!shouldDrawMarkerBody(marker)) continue;
-
+	for (const auto &blended : markers) {
 		if (getOptions().geometry.contains(Gen::ShapeType::line)
 		    && getOptions().geometry.contains(
 		        Gen::ShapeType::circle)) {
-			const CircleMarker circle(marker,
+			const CircleMarker circle(blended.marker,
 			    coordSys,
 			    getOptions(),
 			    rootStyle);
 
-			draw(circle, 1, false);
+			draw(canvas, painter, circle, 1, false);
 
-			marker.prevMainMarkerIdx.visit(
-			    [this, &marker](int index, auto value)
+			blended.marker.prevMainMarkerIdx.visit(
+			    [this, &blended, &canvas, &painter](int index,
+			        auto value)
 			    {
-				    const ConnectingMarker line(marker,
-				        coordSys,
-				        getOptions(),
-				        rootStyle,
-				        plot->getMarkers(),
-				        index,
-				        Gen::ShapeType::line);
-
-				    draw(line, value.weight, true);
+				    draw(canvas,
+				        painter,
+				        ConnectingMarker{ctx(),
+				            blended.marker,
+				            static_cast<size_t>(index),
+				            Gen::ShapeType::line},
+				        value.weight,
+				        true);
 			    });
 		}
 		else {
-			auto drawMarker = [this, &marker](int index,
-			                      ::Anim::Weighted<uint64_t> value)
+			std::optional<AbstractMarker> other;
+			auto drawMarker =
+			    [this, &blended, &other, &canvas, &painter](int index,
+			        ::Anim::Weighted<uint64_t> value)
 			{
-				auto blended0 =
-				    AbstractMarker::createInterpolated(ctx(),
-				        marker,
-				        index);
+				if (index == 1 && !other) {
+					other.emplace(
+					    AbstractMarker::createInterpolated(ctx(),
+					        blended.marker,
+					        1));
+				}
+				const auto &blended0 = index == 0 ? blended : *other;
 
 				auto lineFactor =
 				    getOptions().geometry.factor<double>(
 				        Gen::ShapeType::line);
 
-				draw(blended0,
+				draw(canvas,
+				    painter,
+				    blended0,
 				    value.weight * (1 - lineFactor)
 				        * (1 - lineFactor),
 				    false);
-				draw(blended0, value.weight * sqrt(lineFactor), true);
+				draw(canvas,
+				    painter,
+				    blended0,
+				    value.weight * sqrt(lineFactor),
+				    true);
 			};
 
 			auto containsConnected =
@@ -155,7 +160,8 @@ void MarkerRenderer::drawMarkers() const
 					    ::Anim::Weighted<uint64_t>(0));
 				}
 				else
-					marker.prevMainMarkerIdx.visit(drawMarker);
+					blended.marker.prevMainMarkerIdx.visit(
+					    drawMarker);
 			}
 			else
 				drawMarker(0, ::Anim::Weighted<uint64_t>(0));
@@ -163,49 +169,47 @@ void MarkerRenderer::drawMarkers() const
 	}
 }
 
-void MarkerRenderer::drawLabels() const
+void MarkerRenderer::drawLabels(Gfx::ICanvas &canvas) const
 {
-	for (auto &marker : plot->getMarkers()) {
-		if (static_cast<double>(marker.enabled) == 0) continue;
-
-		auto blended =
-		    AbstractMarker::createInterpolated(ctx(), marker, 0);
-
-		drawLabel(blended, 0);
-		drawLabel(blended, 1);
+	for (const auto &blended : markers) {
+		if (blended.marker.enabled == false) continue;
+		drawLabel(canvas, blended, 0);
+		drawLabel(canvas, blended, 1);
 	}
 }
 
 bool MarkerRenderer::shouldDrawMarkerBody(
     const Gen::Marker &marker) const
 {
-	bool enabled = static_cast<double>(marker.enabled) > 0;
-	if (getOptions().geometry.factor<Math::FuzzyBool>(
-	        Gen::ShapeType::area)
-	    != false) {
-		const auto *prev0 =
-		    ConnectingMarker::getPrev(marker, plot->getMarkers(), 0);
+	bool enabled = marker.enabled != false;
+	if (!enabled
+	    && getOptions().geometry.factor<Math::FuzzyBool>(
+	           Gen::ShapeType::area)
+	           != false) {
 
-		const auto *prev1 =
-		    ConnectingMarker::getPrev(marker, plot->getMarkers(), 1);
-
-		if (prev0) enabled |= static_cast<double>(prev0->enabled) > 0;
-		if (prev1) enabled |= static_cast<double>(prev1->enabled) > 0;
+		if (const auto *prev0 = ConnectingMarker::getPrev(marker,
+		        plot->getMarkers(),
+		        0))
+			enabled |= prev0->enabled != false;
+		if (const auto *prev1 = ConnectingMarker::getPrev(marker,
+		        plot->getMarkers(),
+		        1))
+			enabled |= prev1->enabled != false;
 	}
 	return enabled;
 }
 
-void MarkerRenderer::draw(const AbstractMarker &abstractMarker,
+void MarkerRenderer::draw(Gfx::ICanvas &canvas,
+    Painter &painter,
+    const AbstractMarker &abstractMarker,
     double factor,
-    bool line) const
+    bool isLine) const
 {
-	if (static_cast<double>(abstractMarker.enabled) == 0
-	    || factor == 0)
-		return;
+	if (abstractMarker.enabled == false || factor == 0) return;
 
 	painter.setPolygonToCircleFactor(
-	    line ? 0.0
-	         : static_cast<double>(abstractMarker.morphToCircle));
+	    isLine ? 0.0
+	           : static_cast<double>(abstractMarker.morphToCircle));
 	painter.setPolygonStraightFactor(
 	    static_cast<double>(abstractMarker.linear));
 	painter.setResMode(ResolutionMode::High);
@@ -223,7 +227,7 @@ void MarkerRenderer::draw(const AbstractMarker &abstractMarker,
 	auto markerElement =
 	    Events::Targets::marker(abstractMarker.marker);
 
-	if (line) {
+	if (isLine) {
 		auto line = abstractMarker.getLine();
 
 		auto p0 = coordSys.convert(line.begin);
@@ -269,10 +273,11 @@ void MarkerRenderer::draw(const AbstractMarker &abstractMarker,
 	canvas.restore();
 }
 
-void MarkerRenderer::drawLabel(const AbstractMarker &abstractMarker,
+void MarkerRenderer::drawLabel(Gfx::ICanvas &canvas,
+    const AbstractMarker &abstractMarker,
     size_t index) const
 {
-	if (static_cast<double>(abstractMarker.labelEnabled) == 0) return;
+	if (abstractMarker.labelEnabled == false) return;
 	const auto &marker = abstractMarker.marker;
 
 	auto weight = marker.label.values[index].weight;
@@ -340,7 +345,7 @@ std::string MarkerRenderer::getLabelText(
 	auto indexStr = values[index].value.indexStr;
 
 	typedef Styles::MarkerLabel::Format Format;
-	switch (static_cast<Format>(*labelStyle.format)) {
+	switch (*labelStyle.format) {
 	default:
 	case Format::measureFirst: {
 		auto text = valueStr;
@@ -450,6 +455,18 @@ Gfx::Color MarkerRenderer::getSelectedColor(const Gen::Marker &marker,
 	return Math::interpolate(orig,
 	    interpolated,
 	    static_cast<double>(plot->anySelected));
+}
+
+MarkerRenderer MarkerRenderer::create(const DrawingContext &ctx)
+{
+	MarkerRenderer res{{ctx}, {}};
+	for (auto &marker : res.plot->getMarkers()) {
+		if (!res.shouldDrawMarkerBody(marker)) continue;
+
+		res.markers.push_back(
+		    AbstractMarker::createInterpolated(ctx, marker, 0));
+	}
+	return res;
 }
 
 }
