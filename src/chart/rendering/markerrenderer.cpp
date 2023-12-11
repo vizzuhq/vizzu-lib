@@ -26,25 +26,23 @@ void MarkerRenderer::drawLines() const
 
 	auto origo = plot->measureAxises.origo();
 
+	auto baseColor =
+	    *style.color * static_cast<double>(plot->anyAxisSet);
+
+	auto xMarkerGuides = double{plot->guides.x.markerGuides};
+	auto yMarkerGuides = double{plot->guides.y.markerGuides};
+	auto xLineColor = baseColor * xMarkerGuides;
+	auto yLineColor = baseColor * yMarkerGuides;
+
 	for (auto &marker : plot->getMarkers()) {
 		if (static_cast<double>(marker.enabled) == 0) continue;
 
-		auto blended = AbstractMarker::createInterpolated(marker,
-		    getOptions(),
-		    rootStyle,
-		    coordSys,
-		    plot->getMarkers(),
-		    0);
-
-		auto baseColor =
-		    *style.color * static_cast<double>(plot->anyAxisSet);
+		auto blended =
+		    AbstractMarker::createInterpolated(ctx(), marker, 0);
 
 		if (static_cast<double>(blended.enabled) > 0) {
-			if (static_cast<double>(plot->guides.x.guidelines) > 0) {
-				auto lineColor =
-				    baseColor
-				    * static_cast<double>(plot->guides.x.guidelines);
-				canvas.setLineColor(lineColor);
+			if (xMarkerGuides > 0) {
+				canvas.setLineColor(xLineColor);
 				auto axisPoint =
 				    blended.center.xComp() + origo.yComp();
 				const Geom::Line line(axisPoint, blended.center);
@@ -60,18 +58,15 @@ void MarkerRenderer::drawLines() const
 					    std::move(guideElement));
 				}
 			}
-			if (static_cast<double>(plot->guides.y.guidelines) > 0) {
-				blended.center.x = Math::interpolate(blended.center.x,
+			if (yMarkerGuides > 0) {
+				auto center = Geom::Point{blended.center};
+				center.x = Math::interpolate(center.x,
 				    1.0,
 				    getOptions().coordSystem.factor<double>(
 				        Gen::CoordSystem::polar));
-				auto lineColor =
-				    baseColor
-				    * static_cast<double>(plot->guides.y.guidelines);
-				canvas.setLineColor(lineColor);
-				auto axisPoint =
-				    blended.center.yComp() + origo.xComp();
-				const Geom::Line line(blended.center, axisPoint);
+				canvas.setLineColor(yLineColor);
+				auto axisPoint = center.yComp() + origo.xComp();
+				const Geom::Line line(center, axisPoint);
 
 				auto guideElement =
 				    Events::Targets::markerGuide(marker, true);
@@ -123,11 +118,8 @@ void MarkerRenderer::drawMarkers() const
 			                      ::Anim::Weighted<uint64_t> value)
 			{
 				auto blended0 =
-				    AbstractMarker::createInterpolated(marker,
-				        getOptions(),
-				        rootStyle,
-				        coordSys,
-				        plot->getMarkers(),
+				    AbstractMarker::createInterpolated(ctx(),
+				        marker,
 				        index);
 
 				auto lineFactor =
@@ -176,12 +168,8 @@ void MarkerRenderer::drawLabels() const
 	for (auto &marker : plot->getMarkers()) {
 		if (static_cast<double>(marker.enabled) == 0) continue;
 
-		auto blended = AbstractMarker::createInterpolated(marker,
-		    getOptions(),
-		    rootStyle,
-		    coordSys,
-		    plot->getMarkers(),
-		    0);
+		auto blended =
+		    AbstractMarker::createInterpolated(ctx(), marker, 0);
 
 		drawLabel(blended, 0);
 		drawLabel(blended, 1);
@@ -255,7 +243,11 @@ void MarkerRenderer::draw(const AbstractMarker &abstractMarker,
 			    colors.second
 			        * static_cast<double>(abstractMarker.connected));
 
-			renderedChart.emplace(Draw::Marker{abstractMarker.marker},
+			renderedChart.emplace(
+			    Draw::Marker{abstractMarker.marker.enabled != false,
+			        abstractMarker.shapeType,
+			        abstractMarker.points,
+			        abstractMarker.lineWidth},
 			    std::move(markerElement));
 		}
 	}
@@ -264,7 +256,11 @@ void MarkerRenderer::draw(const AbstractMarker &abstractMarker,
 		        Events::OnRectDrawEvent(*markerElement,
 		            {boundary, true}))) {
 			painter.drawPolygon(abstractMarker.points);
-			renderedChart.emplace(Draw::Marker{abstractMarker.marker},
+			renderedChart.emplace(
+			    Draw::Marker{abstractMarker.marker.enabled != false,
+			        abstractMarker.shapeType,
+			        abstractMarker.points,
+			        abstractMarker.lineWidth},
 			    std::move(markerElement));
 		}
 	}

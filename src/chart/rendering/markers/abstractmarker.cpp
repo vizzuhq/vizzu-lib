@@ -21,7 +21,7 @@ AbstractMarker AbstractMarker::create(const Gen::Marker &marker,
 {
 	switch (shapeType) {
 	case Gen::ShapeType::rectangle:
-		return RectangleMarker(marker, coordSys, options, style);
+		return RectangleMarker(marker, options, style);
 	case Gen::ShapeType::circle:
 		return CircleMarker(marker, coordSys, options, style);
 	case Gen::ShapeType::area:
@@ -33,26 +33,25 @@ AbstractMarker AbstractMarker::create(const Gen::Marker &marker,
 		    markers,
 		    lineIndex,
 		    shapeType);
-	default: return {marker, coordSys, options};
+	default: return {marker, options};
 	}
 }
 
 AbstractMarker AbstractMarker::createInterpolated(
+    const DrawingContext &ctx,
     const Gen::Marker &marker,
-    const Gen::Options &options,
-    const Styles::Chart &style,
-    const CoordinateSystem &coordSys,
-    const Gen::Plot::Markers &markers,
     size_t lineIndex)
 {
+	auto &options = ctx.getOptions();
+
 	auto fromShapeType = options.geometry.get(0).value;
 
 	auto fromMarker = create(marker,
 	    options,
 	    fromShapeType,
-	    style,
-	    coordSys,
-	    markers,
+	    ctx.rootStyle,
+	    ctx.coordSys,
+	    ctx.plot->getMarkers(),
 	    lineIndex);
 
 	auto toShapeType = options.geometry.get(1).value;
@@ -62,12 +61,12 @@ AbstractMarker AbstractMarker::createInterpolated(
 	auto toMarker = create(marker,
 	    options,
 	    toShapeType,
-	    style,
-	    coordSys,
-	    markers,
+	    ctx.rootStyle,
+	    ctx.coordSys,
+	    ctx.plot->getMarkers(),
 	    lineIndex);
 
-	AbstractMarker aMarker(marker, coordSys, options);
+	AbstractMarker aMarker(marker, options);
 	aMarker.enabled = fromMarker.enabled + toMarker.enabled;
 	aMarker.labelEnabled =
 	    fromMarker.labelEnabled + toMarker.labelEnabled;
@@ -168,65 +167,18 @@ Geom::Line AbstractMarker::getLabelPos(
 	return res;
 }
 
-bool AbstractMarker::bounds(const Geom::Point &point)
-{
-	if (static_cast<double>(enabled) == 0) return false;
-
-	/** Approximated solution */
-	auto isInside = shapeType.combine<Math::FuzzyBool>(
-	    [this, &point](int, const Gen::ShapeType &shapeType)
-	    {
-		    switch (shapeType) {
-		    case Gen::ShapeType::rectangle:
-		    case Gen::ShapeType::area:
-			    return Math::FuzzyBool{
-			        Geom::ConvexQuad(points).contains(point, 0.01)};
-		    case Gen::ShapeType::circle:
-			    return Math::FuzzyBool{
-			        Geom::Circle(Geom::Rect::Boundary(points),
-			            Geom::Circle::FromRect::sameWidth)
-			            .overlaps(Geom::Circle(point, 0.01), 0.1)};
-		    case Gen::ShapeType::line:
-			    return Math::FuzzyBool{
-			        lineToQuad(10.0).contains(coordSys.convert(point),
-			            0.1)};
-		    }
-		    return Math::FuzzyBool{false};
-	    });
-
-	return isInside != false;
-}
-
-Geom::ConvexQuad AbstractMarker::lineToQuad(double atLeastWidth) const
-{
-	auto line = getLine();
-
-	auto pBeg = coordSys.convert(line.begin);
-	auto pEnd = coordSys.convert(line.end);
-
-	auto wBeg = lineWidth[0] * coordSys.getRect().size.minSize();
-	auto wEnd = lineWidth[1] * coordSys.getRect().size.minSize();
-	return Geom::ConvexQuad::Isosceles(pBeg,
-	    pEnd,
-	    std::max(atLeastWidth, wBeg * 2),
-	    std::max(atLeastWidth, wEnd * 2));
-}
-
 AbstractMarker::AbstractMarker(const Gen::Marker &marker,
-    const CoordinateSystem &coordSys,
     const Gen::Options &options) :
     marker(marker),
-    coordSys(coordSys),
     shapeType(options.geometry),
     enabled(false),
     labelEnabled(false)
 {}
 
 SingleDrawMarker::SingleDrawMarker(const Gen::Marker &marker,
-    const CoordinateSystem &coordSys,
     const Gen::Options &options,
     Gen::ShapeType type) :
-    AbstractMarker(marker, coordSys, options)
+    AbstractMarker(marker, options)
 {
 	enabled = options.geometry.factor<Math::FuzzyBool>(type)
 	       && marker.enabled;

@@ -12,7 +12,7 @@ ConnectingMarker::ConnectingMarker(const Gen::Marker &marker,
     const Gen::Plot::Markers &markers,
     size_t lineIndex,
     Gen::ShapeType type) :
-    AbstractMarker(marker, coordSys, options)
+    AbstractMarker(marker, options)
 {
 	auto isLine = type == Gen::ShapeType::line;
 	auto isArea = type == Gen::ShapeType::area;
