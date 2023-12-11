@@ -42,7 +42,7 @@ AbstractMarker AbstractMarker::createInterpolated(
     const Gen::Marker &marker,
     size_t lineIndex)
 {
-	auto &options = ctx.getOptions();
+	const auto &options = ctx.getOptions();
 
 	auto fromShapeType = options.geometry.get(0).value;
 

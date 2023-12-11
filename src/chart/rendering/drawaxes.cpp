@@ -324,16 +324,13 @@ void DrawAxes::drawDimensionLabel(bool horizontal,
 
 		    posDir = posDir.extend(sign);
 
-		    OrientedLabelRenderer labelRenderer{{ctx()},
-		        canvas,
-		        painter};
-		    auto label =
-		        labelRenderer.create(text, posDir, labelStyle, 0);
-		    labelRenderer.render(label,
-		        textColor * weight * position.weight,
-		        *labelStyle.backgroundColor,
-		        *rootEvents.draw.plot.axis.label,
-		        Events::Targets::axisLabel(text, horizontal));
+		    OrientedLabel::create(canvas, text, posDir, labelStyle, 0)
+		        .draw(canvas,
+		            renderedChart,
+		            textColor * weight * position.weight,
+		            *labelStyle.backgroundColor,
+		            *rootEvents.draw.plot.axis.label,
+		            Events::Targets::axisLabel(text, horizontal));
 	    });
 }
 

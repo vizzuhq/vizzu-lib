@@ -297,14 +297,17 @@ void MarkerRenderer::drawLabel(const AbstractMarker &abstractMarker,
 	auto centered = labelStyle.position->factor<double>(
 	    Styles::MarkerLabel::Position::center);
 
-	OrientedLabelRenderer labelRenderer{{ctx()}, canvas, painter};
-
-	labelRenderer.render(
-	    labelRenderer.create(text, labelPos, labelStyle, centered),
-	    textColor,
-	    bgColor,
-	    *rootEvents.draw.plot.marker.label,
-	    Events::Targets::markerLabel(text, marker));
+	OrientedLabel::create(canvas,
+	    text,
+	    labelPos,
+	    labelStyle,
+	    centered)
+	    .draw(canvas,
+	        renderedChart,
+	        textColor,
+	        bgColor,
+	        *rootEvents.draw.plot.marker.label,
+	        Events::Targets::markerLabel(text, marker));
 }
 
 std::string MarkerRenderer::getLabelText(
