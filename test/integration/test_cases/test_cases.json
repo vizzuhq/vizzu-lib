@@ -185,13 +185,13 @@
       "refs": ["42fb179"]
     },
     "data_fault_and_formats/column_rectangle_less_disc": {
-      "refs": ["89ac33c"]
+      "refs": ["dc55892"]
     },
     "data_fault_and_formats/column_rectangle_more_conti": {
       "refs": ["c2c2362"]
     },
     "data_fault_and_formats/column_rectangle_more_disc": {
-      "refs": ["3cb6eae"]
+      "refs": ["dbc5ef0"]
     },
     "data_fault_and_formats/rectangle_data_cube": {
       "refs": ["4b66407"]
@@ -506,7 +506,7 @@
       "refs": ["03a5cfe"]
     },
     "web_content/analytical_operations/compare/stream_stacked": {
-      "refs": ["7ecb9ca"]
+      "refs": ["13a4f7f"]
     },
     "web_content/analytical_operations/compare/waterfall": {
       "refs": ["16a3b23"]

@@ -232,7 +232,7 @@ void Sheet::setAfterStyles(Gen::Plot &plot, const Layout &layout)
 			ranges.push_back(next_range);
 		}
 
-		xLabel.angle.emplace(has_collision * 45);
+		xLabel.angle.emplace(has_collision * M_PI / 4);
 	}
 }
 
