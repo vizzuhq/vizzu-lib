@@ -220,10 +220,7 @@ double Marker::getValueForChannel(const Channels &channels,
 		else
 			value = singlevalue;
 
-		if (enabled) {
-			if (measure) stat.trackSingle(singlevalue);
-			stat.track(value);
-		}
+		if (enabled) { stat.track(value); }
 	}
 	return value;
 }

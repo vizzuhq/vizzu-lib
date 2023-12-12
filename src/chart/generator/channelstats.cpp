@@ -22,15 +22,6 @@ void ChannelStats::track(double value)
 	range.include(value);
 }
 
-void ChannelStats::trackSingle(double value)
-{
-	if (isDimension)
-		throw std::logic_error(
-		    "internal error: invalid dimension channel tracking");
-
-	sum += value;
-}
-
 void ChannelStats::track(const Marker::Id &id)
 {
 	if (isDimension)

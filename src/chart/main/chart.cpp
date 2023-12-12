@@ -123,10 +123,14 @@ Gen::PlotPtr Chart::plot(const Gen::PlotOptionsPtr &options)
 	computedStyles =
 	    stylesheet.getFullParams(options, layout.boundary.size);
 
-	return std::make_shared<Gen::Plot>(table,
+	auto res = std::make_shared<Gen::Plot>(table,
 	    options,
 	    computedStyles,
 	    false);
+
+	Styles::Sheet::setAfterStyles(*res, layout);
+
+	return res;
 }
 
 }

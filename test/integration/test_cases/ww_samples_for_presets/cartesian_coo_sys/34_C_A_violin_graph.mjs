@@ -21,6 +21,11 @@ const testSteps = [
       },
       style: {
         plot: {
+          xAxis: {
+            label: {
+              angle: 0.0
+            }
+          },
           yAxis: {
             interlacing: { color: '#ffffff00' },
             label: { numberScale: 'K, M, B, T' }

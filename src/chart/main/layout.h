@@ -20,8 +20,6 @@ public:
 	Geom::Rect legend;
 	Geom::Rect plot;
 	Geom::Rect plotArea;
-	Geom::Rect xTitle;
-	Geom::Rect yTitle;
 	Geom::Rect logo;
 
 	void setBoundary(const Geom::Rect &boundary,

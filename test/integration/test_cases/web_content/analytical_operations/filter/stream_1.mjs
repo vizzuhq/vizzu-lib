@@ -19,6 +19,11 @@ const testSteps = [
       },
       style: {
         plot: {
+          xAxis: {
+            label: {
+              angle: 0.0
+            }
+          },
           yAxis: {
             label: {
               numberScale: 'K, M, B, T'

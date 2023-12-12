@@ -6,6 +6,15 @@
 
 #include "style.h"
 
+namespace Vizzu
+{
+class Layout;
+namespace Gen
+{
+class Plot;
+}
+}
+
 namespace Vizzu::Styles
 {
 
@@ -19,6 +28,8 @@ public:
 	    const Geom::Size &size);
 
 	static double baseFontSize(const Geom::Size &size, bool rounded);
+
+	static void setAfterStyles(Gen::Plot &plot, const Layout &layout);
 
 private:
 	using Base::getFullParams;

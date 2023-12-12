@@ -3,6 +3,9 @@
 #include <cmath>
 
 #include "base/style/impl.tpp"
+#include "chart/generator/plot.h"
+
+#include "layout.h"
 
 template Style::ParamRegistry<Vizzu::Styles::Chart>::ParamRegistry();
 
@@ -81,11 +84,16 @@ void Sheet::setAxis()
 
 void Sheet::setAxisLabels()
 {
+	auto &def = defaultParams.plot.xAxis.label;
 	if (options->coordSystem.get() == Gen::CoordSystem::polar) {
-		auto &def = defaultParams.plot.xAxis.label;
 		def.position = AxisLabel::Position::max_edge;
 		def.side = AxisLabel::Side::positive;
 	}
+	else if (const auto &xAxis =
+	             options->getChannels().at(Gen::ChannelId::x);
+	         !xAxis.isEmpty() && xAxis.isDimension()
+	         && options->angle == 0)
+		def.angle.reset();
 }
 
 void Sheet::setAxisTitle()
@@ -172,6 +180,60 @@ void Sheet::setData()
 	    options->getChannels().at(Gen::ChannelId::size).isEmpty()
 	        ? 0.0105
 	        : 0.006;
+}
+
+void Sheet::setAfterStyles(Gen::Plot &plot, const Layout &layout)
+{
+	auto &style = plot.getStyle();
+	style.setup();
+
+	if (auto &xLabel = style.plot.xAxis.label; !xLabel.angle) {
+		auto plotX = layout.plotArea.size.x;
+		if (plotX == 0.0) {
+			plotX = layout.boundary.size.x;
+
+			auto em = style.calculatedSize();
+			if (plot.getOptions()->legend.get())
+				plotX -=
+				    style.legend.computedWidth(layout.boundary.size.x,
+				        em);
+
+			plotX -= style.plot.toMargin({plotX, 0}, em).getSpace().x;
+		}
+
+		auto fontRelativeHalfApproxWidth =
+		    xLabel.calculatedSize() * 0.45 / 2.0 / plotX;
+
+		std::vector<Math::Range<double>> ranges;
+		bool has_collision = false;
+		for (const auto &pair :
+		    plot.dimensionAxises.at(Gen::ChannelId::x)) {
+
+			if (pair.second.weight == 0) continue;
+
+			auto rangeCenter = pair.second.range.middle();
+			auto textHalfApproxWidth =
+			    static_cast<double>(pair.second.label.size())
+			    * fontRelativeHalfApproxWidth;
+
+			auto next_range =
+			    Math::Range<double>{rangeCenter - textHalfApproxWidth,
+			        rangeCenter + textHalfApproxWidth};
+
+			if (std::any_of(ranges.begin(),
+			        ranges.end(),
+			        [&next_range](const Math::Range<double> &other)
+			        {
+				        return other.includes(next_range);
+			        })) {
+				has_collision = true;
+				break;
+			}
+			ranges.push_back(next_range);
+		}
+
+		xLabel.angle.emplace(has_collision * 45);
+	}
 }
 
 }
