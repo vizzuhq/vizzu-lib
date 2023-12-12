@@ -63,7 +63,7 @@ public:
 			    + ": non-existent style parameter");
 	}
 
-	static std::string getParam(const Params &params,
+	[[nodiscard]] static std::string getParam(const Params &params,
 	    const std::string &path)
 	{
 		auto &paramReg = Style::ParamRegistry<Params>::instance();

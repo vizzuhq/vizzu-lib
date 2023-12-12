@@ -38,7 +38,7 @@ public:
 	Styles::Sheet &getStylesheet() { return stylesheet; }
 	Styles::Chart &getStyles() { return actStyles; }
 
-	const Styles::Chart &getComputedStyles() const;
+	[[nodiscard]] const Styles::Chart &getComputedStyles() const;
 
 	void setStyles(const Styles::Chart &styles)
 	{
