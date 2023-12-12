@@ -296,18 +296,20 @@ void DrawInterlacing::drawDataLabel(
 			                    *labelStyle.maxFractionDigits),
 			                *labelStyle.numberScale,
 			                unitStr);
-			        OrientedLabelRenderer labelRenderer{{ctx()},
-			            canvas,
-			            painter};
-			        auto label = labelRenderer.create(str,
+			        OrientedLabel::create(canvas,
+			            str,
 			            posDir,
 			            labelStyle,
-			            0);
-			        labelRenderer.render(label,
-			            textColor * position.weight * wUnit.weight,
-			            *labelStyle.backgroundColor * wUnit.weight,
-			            *rootEvents.draw.plot.axis.label,
-			            Events::Targets::axisLabel(str, !horizontal));
+			            0)
+			            .draw(canvas,
+			                renderedChart,
+			                textColor * position.weight
+			                    * wUnit.weight,
+			                *labelStyle.backgroundColor
+			                    * wUnit.weight,
+			                *rootEvents.draw.plot.axis.label,
+			                Events::Targets::axisLabel(str,
+			                    !horizontal));
 		        });
 	    });
 }

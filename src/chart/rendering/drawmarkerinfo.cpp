@@ -76,11 +76,8 @@ void DrawMarkerInfo::MarkerDC::loadMarker(Content &cnt)
 	    parent.plot->getMarkers()[cnt.markerId.value()];
 
 	auto blendedMarker =
-	    Draw::AbstractMarker::createInterpolated(marker,
-	        parent.getOptions(),
-	        parent.rootStyle,
-	        parent.coordSys,
-	        parent.plot->getMarkers(),
+	    Draw::AbstractMarker::createInterpolated(parent.ctx(),
+	        marker,
 	        0);
 
 	auto line =

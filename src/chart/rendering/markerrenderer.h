@@ -11,12 +11,13 @@ namespace Vizzu::Draw
 class MarkerRenderer : public DrawingContext
 {
 public:
-	void drawLines() const;
-	void drawMarkers() const;
-	void drawLabels() const;
+	static MarkerRenderer create(const DrawingContext &ctx);
 
-	Gfx::ICanvas &canvas;
-	Painter &painter;
+	void drawLines(Gfx::ICanvas &canvas, Painter &painter) const;
+	void drawMarkers(Gfx::ICanvas &canvas, Painter &painter) const;
+	void drawLabels(Gfx::ICanvas &canvas) const;
+
+	std::vector<AbstractMarker> markers;
 
 private:
 	[[nodiscard]] bool shouldDrawMarkerBody(
@@ -25,10 +26,13 @@ private:
 	    const AbstractMarker &abstractMarker,
 	    double factor,
 	    bool label = false) const;
-	void draw(const AbstractMarker &abstractMarker,
+	void draw(Gfx::ICanvas &canvas,
+	    Painter &painter,
+	    const AbstractMarker &abstractMarker,
 	    double factor,
-	    bool line) const;
-	void drawLabel(const AbstractMarker &abstractMarker,
+	    bool isLine) const;
+	void drawLabel(Gfx::ICanvas &canvas,
+	    const AbstractMarker &abstractMarker,
 	    size_t index) const;
 
 	[[nodiscard]] Gfx::Color
