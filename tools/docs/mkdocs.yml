@@ -74,6 +74,9 @@ markdown_extensions:
   - pymdownx.superfences
 
 plugins:
+  - exclude:
+      glob:
+        - tutorial/assets/**
   - mike:
       version_selector: true
       alias_type: symlink
