@@ -35,9 +35,20 @@ void TestChart::prepareData()
 	    ->attach(*this);
 }
 
-void TestChart::operator()(Util::EventDispatcher::Params &)
+void TestChart::operator()(Util::EventDispatcher::Params &params)
 {
-	chart.getChart().getSetter().showTooltip({});
+	std::optional<uint64_t> markerId;
+	using Marker = Vizzu::Events::Targets::Marker;
+	using MarkerChild = Vizzu::Events::Targets::MarkerChild;
+
+	auto marker = dynamic_cast<const Marker *>(params.target);
+	if (!marker)
+		if (auto c = dynamic_cast<const MarkerChild *>(params.target))
+			marker = &c->parent;
+	if (marker) markerId.emplace(marker->marker.idx);
+
+	chart.getChart().getSetter().showTooltip(markerId);
+	chart.getChart().setKeyframe();
 	chart.getChart().animate();
 }
 
