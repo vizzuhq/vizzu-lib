@@ -157,7 +157,7 @@ const Gen::Marker *ChartWidget::getIfMarker(
     const Util::EventTarget *target)
 {
 	if (!target) [[unlikely]]
-		throw std::runtime_error("Nothing at this position");
+		return nullptr;
 
 	const auto *element =
 	    static_cast<const Events::Targets::Element *>(target);
