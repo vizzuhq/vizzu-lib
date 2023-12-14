@@ -14,6 +14,9 @@ Animator::Animator() :
 void Animator::addKeyframe(const Gen::PlotPtr &plot,
     const Options::Keyframe &options)
 {
+	if (running)
+		throw std::logic_error("animation already in progress");
+
 	nextAnimation->addKeyframe(plot, options);
 }
 
