@@ -123,7 +123,7 @@ Gen::PlotPtr Chart::plot(const Gen::PlotOptionsPtr &options)
 	    stylesheet.getFullParams(options, layout.boundary.size),
 	    false);
 
-	Styles::Sheet::setAfterStyles(*res, layout);
+	Styles::Sheet::setAfterStyles(*res, layout.boundary.size);
 
 	return res;
 }

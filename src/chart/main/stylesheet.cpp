@@ -182,27 +182,22 @@ void Sheet::setData()
 	        : 0.006;
 }
 
-void Sheet::setAfterStyles(Gen::Plot &plot, const Layout &layout)
+void Sheet::setAfterStyles(Gen::Plot &plot, const Geom::Size &size)
 {
 	auto &style = plot.getStyle();
 	style.setup();
 
 	if (auto &xLabel = style.plot.xAxis.label; !xLabel.angle) {
-		auto plotX = layout.plotArea.size.x;
-		if (plotX == 0.0) {
-			plotX = layout.boundary.size.x;
+		auto plotX = size.x;
 
-			auto em = style.calculatedSize();
-			if (plot.getOptions()->legend.get())
-				plotX -=
-				    style.legend.computedWidth(layout.boundary.size.x,
-				        em);
+		auto em = style.calculatedSize();
+		if (plot.getOptions()->legend.get())
+			plotX -= style.legend.computedWidth(plotX, em);
 
-			plotX -= style.plot.toMargin({plotX, 0}, em).getSpace().x;
-		}
+		plotX -= style.plot.toMargin({plotX, 0}, em).getSpace().x;
 
 		auto fontRelativeHalfApproxWidth =
-		    xLabel.calculatedSize() * 0.45 / 2.0 / plotX;
+		    xLabel.calculatedSize() * 0.575 / 2.0 / plotX;
 
 		std::vector<Math::Range<double>> ranges;
 		bool has_collision = false;

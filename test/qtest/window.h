@@ -19,6 +19,8 @@ public:
 	~Window() override;
 	void paintEvent(QPaintEvent *) override;
 
+	void resizeEvent(QResizeEvent *) override;
+
 private:
 	TestChart chart;
 	std::unique_ptr<Ui::Window> ui;
