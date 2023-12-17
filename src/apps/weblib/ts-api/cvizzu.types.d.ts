@@ -127,7 +127,8 @@ export interface CVizzu {
   _addEventListener(chart: CChartPtr, name: CString, callback: CFunction): void
   _removeEventListener(chart: CChartPtr, name: CString, callback: CFunction): void
   _event_preventDefault(event: CEventPtr): void
-  _anim_control(chart: CChartPtr, command: CString, param: CString): void
+  _anim_control_setValue(chart: CChartPtr, command: CString, param: CString): void
+  _anim_control_getValue(chart: CChartPtr, command: CString): CString
   _anim_setValue(chart: CChartPtr, path: CString, value: CString): void
 }
 

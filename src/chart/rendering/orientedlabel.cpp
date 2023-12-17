@@ -5,19 +5,13 @@
 namespace Vizzu::Draw
 {
 
-OrientedLabelRenderer::OrientedLabelRenderer(
-    const DrawingContext &context) :
-    DrawingContext(context)
-{}
-
-OrientedLabel OrientedLabelRenderer::create(const std::string &text,
+OrientedLabel OrientedLabel::create(Gfx::ICanvas &canvas,
+    const std::string &text,
     const Geom::Line &labelPos,
     const Styles::OrientedLabel &labelStyle,
-    double centered) const
+    double centered)
 {
-	OrientedLabel res(text);
-
-	if (text.empty()) return res;
+	if (text.empty()) return {text};
 
 	const Gfx::Font font(labelStyle);
 	canvas.setFont(font);
@@ -72,26 +66,24 @@ OrientedLabel OrientedLabelRenderer::create(const std::string &text,
 		transform =
 		    transform * Geom::AffineTransform(paddedSize, 1.0, -M_PI);
 
-	res.rect.transform = transform;
-	res.rect.size = Geom::Size{paddedSize};
-
-	res.contentRect = Geom::Rect(margin.topLeft(), neededSize);
-
-	return res;
+	return {text,
+	    {transform, {paddedSize}},
+	    {margin.topLeft(), neededSize}};
 }
 
-void OrientedLabelRenderer::render(const OrientedLabel &label,
+void OrientedLabel::draw(Gfx::ICanvas &canvas,
+    RenderedChart &renderedChart,
     const Gfx::Color &textColor,
     const Gfx::Color &bgColor,
-    const Util::EventDispatcher::event_ptr &event,
-    std::unique_ptr<Util::EventTarget> eventTarget)
+    Util::EventDispatcher::Event &event,
+    std::unique_ptr<Util::EventTarget> eventTarget) const
 {
 	if (!bgColor.isTransparent()) {
 		canvas.save();
 		canvas.setBrushColor(bgColor);
 		canvas.setLineColor(bgColor);
-		canvas.transform(label.rect.transform);
-		canvas.rectangle(Geom::Rect(Geom::Point(), label.rect.size));
+		canvas.transform(rect.transform);
+		canvas.rectangle(Geom::Rect(Geom::Point(), rect.size));
 		canvas.restore();
 	}
 
@@ -99,14 +91,12 @@ void OrientedLabelRenderer::render(const OrientedLabel &label,
 		canvas.save();
 		canvas.setTextColor(textColor);
 
-		Events::Events::OnTextDrawEvent eventObj(*eventTarget,
-		    label.rect,
-		    label.text);
+		Events::OnTextDrawEvent eventObj(*eventTarget, rect, text);
 
-		if (event->invoke(std::move(eventObj))) {
-			canvas.transform(label.rect.transform);
-			canvas.text(label.contentRect, label.text);
-			renderedChart.emplace(label.rect, std::move(eventTarget));
+		if (event.invoke(std::move(eventObj))) {
+			canvas.transform(rect.transform);
+			canvas.text(contentRect, text);
+			renderedChart.emplace(rect, std::move(eventTarget));
 		}
 		canvas.restore();
 	}

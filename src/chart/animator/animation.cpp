@@ -204,7 +204,7 @@ void Animation::addKeyframe(const Gen::PlotPtr &source,
 	::Anim::Sequence::addKeyframe(keyframe);
 }
 
-void Animation::animate(const Options::Control &options,
+void Animation::animate(const ::Anim::Control::Option &options,
     OnComplete onThisCompletes)
 {
 	if (isRunning())
@@ -212,10 +212,7 @@ void Animation::animate(const Options::Control &options,
 
 	completionCallback = std::move(onThisCompletes);
 	::Anim::Control::reset();
-	::Anim::Control::setPlayState(options.playState);
-	::Anim::Control::setDirection(options.direction);
-	::Anim::Control::seekProgress(options.position);
-	::Anim::Control::setSpeed(options.speed);
+	this->options = options;
 	onBegin();
 }
 

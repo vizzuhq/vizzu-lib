@@ -234,7 +234,7 @@ uint64_t Options::generateMarkerInfoId()
 void Options::setAutoParameters()
 {
 	if (legend.get().isAuto()) {
-		Base::AutoParam<LegendId> tmp = legend.get();
+		LegendType tmp = legend.get();
 		tmp.setAuto(getAutoLegend());
 		legend = tmp;
 	}
@@ -276,7 +276,7 @@ Gen::Orientation Options::getAutoOrientation() const
 std::optional<Options::LegendId> Options::getAutoLegend() const
 {
 	auto series = channels.getDimensions();
-	series.merge(channels.getSeries());
+	series.merge(channels.getMeasures());
 
 	for (auto id : channels.at(ChannelId::label).dimensionIds)
 		series.erase(id);

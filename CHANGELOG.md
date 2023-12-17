@@ -4,8 +4,30 @@
 
 ### Fixed
 
+- When only logo rendered chart resized, the previous drawn logo position was not deleted.   
+- At the mouse events the lib is not queried the exact rendered chart position through API.
+- On axis labels sometimes missed a space character between value and unit.
+- Rendered label units are suddenly disappeared when target plot does not contain a unit.
+
+### Added
+
+- Units on legend. 
+
+## [0.9.2] - 2023-11-22
+
+### Fixed
+
+- Fixed redraw on browser zoom (bug since 0.9.0).
+- Fixed clearing of the canvas before rendering when devicePixelRatio is not 1.
 - TypeScript definition fixed, measures can contain null values. 
- 
+- Orientation and channel min/max cannot be null, only auto
+
+### Added
+
+- Animation control object expose properties `position`, `direction`, `speed` 
+  and `playState` to be able to query the current state of the animation, and
+  to be more conform with the Web Animation API. 
+
 ## [0.9.1] - 2023-11-15
 
 ### Fixed

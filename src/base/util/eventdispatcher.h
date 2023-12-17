@@ -55,8 +55,8 @@ public:
 		Event(EventDispatcher &owner, const char *name);
 		virtual ~Event();
 
-		std::string name() const;
-		bool invoke(Params &&params = Params());
+		[[nodiscard]] const std::string &name() const;
+		bool invoke(Params &&params = Params{});
 		void attach(std::uint64_t id, handler_fn handler);
 		void detach(std::uint64_t id);
 		explicit operator bool() const;

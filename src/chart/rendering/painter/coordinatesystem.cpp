@@ -89,16 +89,6 @@ Geom::Point PolarDescartesTransform::getOriginal(
 	return {0.5 - polar.y / usedAngle, (polar.x - radius) / mapped.y};
 }
 
-Math::FuzzyBool PolarDescartesTransform::getPolar() const
-{
-	return polar;
-}
-
-bool PolarDescartesTransform::atEndState() const
-{
-	return polar == false || polar == true;
-}
-
 Geom::Size PolarDescartesTransform::mappedSize() const
 {
 	return {1.0, (2.0 - static_cast<double>(polar)) / 2.0};
@@ -180,11 +170,6 @@ Geom::Point CompoundTransform::getOriginal(const Geom::Point &p) const
 }
 
 Geom::Rect CompoundTransform::getRect() const { return rect; }
-
-Geom::Point CompoundTransform::justRotate(const Geom::Point &p) const
-{
-	return rotate(p, true, Geom::Point());
-}
 
 Geom::Point CompoundTransform::rotate(const Geom::Point &point,
     bool invert,

@@ -76,22 +76,21 @@ void ChartWidget::onPointerUp(
     const std::shared_ptr<Gfx::ICanvas> &canvas,
     const GUI::PointerEvent &event)
 {
-	const auto *clickedMarker = getMarkerAt(event.pos);
+	const auto *eventTarget =
+	    chart.getRenderedChart().find(event.pos);
 
-	onPointerUpEvent->invoke(PointerEvent(event.pointerId,
-	    event.pos,
-	    chart.getRenderedChart().find(event.pos)));
+	onPointerUpEvent->invoke(
+	    PointerEvent(event.pointerId, event.pos, eventTarget));
 
-	if (onClick->invoke(PointerEvent(event.pointerId,
-	        event.pos,
-	        chart.getRenderedChart().find(event.pos)))) {
-		if (chart.getLogoBoundary().contains(event.pos)) {
+	if (onClick->invoke(
+	        PointerEvent(event.pointerId, event.pos, eventTarget))) {
+		if (chart.getLayout().logo.contains(event.pos)) {
 			if (openUrl)
 				openUrl(
 				    Main::siteUrl + std::string("?utm_source=logo"));
 		}
 		else if (auto plot = chart.getPlot()) {
-			if (clickedMarker)
+			if (const auto *clickedMarker = getIfMarker(eventTarget))
 				Gen::Selector(*plot).toggleMarker(
 				    const_cast<Gen::Marker &>( // NOLINT
 				        *clickedMarker));
@@ -143,21 +142,25 @@ void ChartWidget::updateCursor(
     const std::shared_ptr<Gfx::ICanvas> &canvas,
     const Geom::Point &pos)
 {
-	if (chart.getLogoBoundary().contains(pos))
+	if (chart.getLayout().logo.contains(pos))
 		return setCursor(canvas, GUI::Cursor::push);
 
 	if (!chart.getAnimControl().isRunning())
 		if (auto plot = chart.getPlot())
-			if (plot->anySelected || getMarkerAt(pos))
+			if (plot->anySelected
+			    || getIfMarker(chart.getRenderedChart().find(pos)))
 				return setCursor(canvas, GUI::Cursor::push);
 	return setCursor(canvas, GUI::Cursor::point);
 }
 
-const Gen::Marker *ChartWidget::getMarkerAt(const Geom::Point &pos)
+const Gen::Marker *ChartWidget::getIfMarker(
+    const Util::EventTarget *target)
 {
+	if (!target) [[unlikely]]
+		return nullptr;
+
 	const auto *element =
-	    static_cast<const Events::Targets::Element *>(
-	        chart.getRenderedChart().find(pos));
+	    static_cast<const Events::Targets::Element *>(target);
 
 	return element->tagName == "plot-marker"
 	         ? &static_cast<const Events::Targets::Marker *>(element)

@@ -8,15 +8,19 @@
 namespace Vizzu::Draw
 {
 
-DrawInterlacing::DrawInterlacing(const DrawingContext &context,
-    bool text) :
-    DrawingContext(context)
+void DrawInterlacing::drawGeometries() const
 {
-	draw(true, text);
-	draw(false, text);
+	draw(true, false);
+	draw(false, false);
 }
 
-void DrawInterlacing::draw(bool horizontal, bool text)
+void DrawInterlacing::drawTexts() const
+{
+	draw(true, true);
+	draw(false, true);
+}
+
+void DrawInterlacing::draw(bool horizontal, bool text) const
 {
 	auto axisIndex =
 	    horizontal ? Gen::ChannelId::y : Gen::ChannelId::x;
@@ -26,7 +30,7 @@ void DrawInterlacing::draw(bool horizontal, bool text)
 
 	if (!text && interlacingColor.alpha <= 0.0) return;
 
-	const auto &axis = plot.measureAxises.at(axisIndex);
+	const auto &axis = plot->measureAxises.at(axisIndex);
 
 	if (!axis.range.isReal()) return;
 
@@ -34,13 +38,12 @@ void DrawInterlacing::draw(bool horizontal, bool text)
 
 	auto step = axis.step.calculate();
 
-	auto stepHigh = Math::Renard::R5().ceil(step);
-	stepHigh = std::min(axis.step.max(),
-	    std::max(stepHigh, axis.step.min()));
-
-	auto stepLow = Math::Renard::R5().floor(step);
-	stepLow =
-	    std::min(axis.step.max(), std::max(stepLow, axis.step.min()));
+	auto stepHigh = std::clamp(Math::Renard::R5().ceil(step),
+	    axis.step.min(),
+	    axis.step.max());
+	auto stepLow = std::clamp(Math::Renard::R5().floor(step),
+	    axis.step.min(),
+	    axis.step.max());
 
 	if (stepHigh == step) {
 		draw(axis.enabled,
@@ -85,18 +88,19 @@ void DrawInterlacing::draw(
     double stepSize,
     double weight,
     double rangeSize,
-    bool text)
+    bool text) const
 {
-	const auto &enabled = horizontal ? plot.guides.y : plot.guides.x;
+	const auto &enabled =
+	    horizontal ? plot->guides.y : plot->guides.x;
 
 	auto axisIndex =
 	    horizontal ? Gen::ChannelId::y : Gen::ChannelId::x;
 
 	const auto &axisStyle = rootStyle.plot.getAxis(axisIndex);
 
-	const auto &axis = plot.measureAxises.at(axisIndex);
+	const auto &axis = plot->measureAxises.at(axisIndex);
 
-	const auto origo = plot.measureAxises.origo();
+	const auto origo = plot->measureAxises.origo();
 
 	if (static_cast<double>(enabled.interlacings || enabled.axisSticks
 	                        || enabled.labels)
@@ -197,9 +201,8 @@ void DrawInterlacing::draw(
 					painter.setPolygonToCircleFactor(0);
 					painter.setPolygonStraightFactor(0);
 
-					auto eventTarget = std::make_unique<
-					    Events::Targets::AxisInterlacing>(
-					    !horizontal);
+					auto eventTarget =
+					    Events::Targets::axisInterlacing(!horizontal);
 
 					if (rootEvents.draw.plot.axis.interlacing->invoke(
 					        Events::OnRectDrawEvent(*eventTarget,
@@ -221,78 +224,99 @@ void DrawInterlacing::drawDataLabel(
     bool horizontal,
     const Geom::Point &tickPos,
     double value,
-    const std::string &unit,
-    const Gfx::Color &textColor)
+    const ::Anim::Interpolated<std::string> &unit,
+    const Gfx::Color &textColor) const
 {
 	auto axisIndex =
 	    horizontal ? Gen::ChannelId::y : Gen::ChannelId::x;
 	const auto &labelStyle = rootStyle.plot.getAxis(axisIndex).label;
 
-	auto str = Text::SmartString::fromNumber(value,
-	    *labelStyle.numberFormat,
-	    static_cast<size_t>(*labelStyle.maxFractionDigits),
-	    *labelStyle.numberScale);
-
-	if (!unit.empty()) {
-		if (*labelStyle.numberFormat != Text::NumberFormat::prefixed)
-			str += " ";
-
-		str += unit;
-	}
-
-	auto normal = Geom::Point::Ident(horizontal);
-
-	typedef Styles::AxisLabel::Position Pos;
 	labelStyle.position->visit(
 	    [this,
 	        &labelStyle,
 	        &axisEnabled,
 	        &tickPos,
 	        &horizontal,
-	        &normal,
-	        &str,
+	        normal = Geom::Point::Ident(horizontal),
+	        &unit,
+	        &value,
 	        &textColor](int index, const auto &position)
 	    {
 		    if (labelStyle.position->interpolates()
-		        && !axisEnabled.get(index).value)
+		        && !axisEnabled
+		                .get(std::min<uint64_t>(axisEnabled.count - 1,
+		                    index))
+		                .value)
 			    return;
 
 		    Geom::Point refPos = tickPos;
 
-		    if (position.value == Pos::min_edge)
+		    switch (position.value) {
+			    using Pos = Styles::AxisLabel::Position;
+		    case Pos::min_edge:
 			    refPos[horizontal ? 0 : 1] = 0.0;
-
-		    else if (position.value == Pos::max_edge)
+			    break;
+		    case Pos::max_edge:
 			    refPos[horizontal ? 0 : 1] = 1.0;
+			    break;
+		    default: break;
+		    }
 
 		    auto under = labelStyle.position->interpolates()
-		                   ? labelStyle.side->get(index).value
+		                   ? labelStyle.side
+		                             ->get(std::min<uint64_t>(
+		                                 labelStyle.side->count - 1,
+		                                 index))
+		                             .value
 		                         == Styles::AxisLabel::Side::negative
 		                   : labelStyle.side->factor<double>(
 		                       Styles::AxisLabel::Side::negative);
-
-		    auto sign = 1 - 2 * under;
-
-		    auto posDir = coordSys.convertDirectionAt(
-		        Geom::Line(refPos, refPos + normal));
-
-		    posDir = posDir.extend(sign);
-
-		    OrientedLabelRenderer labelRenderer(*this);
-		    auto label =
-		        labelRenderer.create(str, posDir, labelStyle, 0);
-		    labelRenderer.render(label,
-		        textColor * position.weight,
-		        *labelStyle.backgroundColor,
-		        rootEvents.draw.plot.axis.label,
-		        std::make_unique<Events::Targets::AxisLabel>(str,
-		            !horizontal));
+		    unit.visit(
+		        [this,
+		            &unit,
+		            &labelStyle,
+		            &index,
+		            &value,
+		            posDir = coordSys
+		                         .convertDirectionAt(
+		                             {refPos, refPos + normal})
+		                         .extend(1 - 2 * under),
+		            &textColor,
+		            &position,
+		            &horizontal](int index2, const auto &wUnit)
+		        {
+			        if (labelStyle.position->interpolates()
+			            && unit.interpolates() && index != index2)
+				        return;
+			        auto unitStr = wUnit.value;
+			        auto str =
+			            Text::SmartString::fromPhysicalValue(value,
+			                *labelStyle.numberFormat,
+			                static_cast<size_t>(
+			                    *labelStyle.maxFractionDigits),
+			                *labelStyle.numberScale,
+			                unitStr);
+			        OrientedLabel::create(canvas,
+			            str,
+			            posDir,
+			            labelStyle,
+			            0)
+			            .draw(canvas,
+			                renderedChart,
+			                textColor * position.weight
+			                    * wUnit.weight,
+			                *labelStyle.backgroundColor
+			                    * wUnit.weight,
+			                *rootEvents.draw.plot.axis.label,
+			                Events::Targets::axisLabel(str,
+			                    !horizontal));
+		        });
 	    });
 }
 
 void DrawInterlacing::drawSticks(double tickIntensity,
     bool horizontal,
-    const Geom::Point &tickPos)
+    const Geom::Point &tickPos) const
 {
 	auto axisIndex =
 	    horizontal ? Gen::ChannelId::y : Gen::ChannelId::x;
@@ -317,8 +341,8 @@ void DrawInterlacing::drawSticks(double tickIntensity,
 	auto direction =
 	    horizontal ? Geom::Point::X(-1) : Geom::Point::Y(-1);
 
-	auto tickLine = coordSys.convertDirectionAt(
-	    Geom::Line(tickPos, tickPos + direction));
+	auto tickLine =
+	    coordSys.convertDirectionAt({tickPos, tickPos + direction});
 
 	tickLine = tickLine.segment(0, tickLength);
 
@@ -337,8 +361,7 @@ void DrawInterlacing::drawSticks(double tickIntensity,
 		    }
 	    });
 
-	auto eventTarget =
-	    std::make_unique<Events::Targets::AxisTick>(!horizontal);
+	auto eventTarget = Events::Targets::axisTick(!horizontal);
 
 	if (rootEvents.draw.plot.axis.tick->invoke(
 	        Events::OnLineDrawEvent(*eventTarget,

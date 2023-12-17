@@ -29,28 +29,24 @@ void Control::seek(const std::string &value)
 
 Duration Control::getPosition() const
 {
-	return controlled.getDuration() * progress;
+	return controlled.getDuration() * options.position;
 }
 
-double Control::getProgress() const { return progress; }
+double Control::getProgress() const { return options.position; }
 
-void Control::seekProgress(double value)
-{
-	setProgress(value);
-	update();
-}
+void Control::seekProgress(double value) { setProgress(value); }
 
 void Control::setProgress(double value)
 {
-	progress = value;
+	options.position = value;
 
-	if (progress > 1.0) {
-		playState = PlayState::paused;
-		progress = 1.0;
+	if (options.position > 1.0) {
+		options.playState = PlayState::paused;
+		options.position = 1.0;
 	}
-	else if (progress < 0.0) {
-		playState = PlayState::paused;
-		progress = 0.0;
+	else if (options.position < 0.0) {
+		options.playState = PlayState::paused;
+		options.position = 0.0;
 	}
 }
 
@@ -72,25 +68,23 @@ double Control::positionToProgress(Duration pos) const
 
 void Control::setSpeed(double speed)
 {
-	this->speed = std::max(0.0, speed);
+	options.speed = std::max(0.0, speed);
 	update();
 }
 
-bool Control::atStartPosition() const { return progress <= 0.0; }
-
-bool Control::atEndPosition() const { return progress >= 1.0; }
-
-bool Control::atIntermediatePosition() const
+bool Control::atStartPosition() const
 {
-	return !atStartPosition() && !atEndPosition();
+	return options.position <= 0.0;
+}
+
+bool Control::atEndPosition() const
+{
+	return options.position >= 1.0;
 }
 
 void Control::reset()
 {
-	playState = PlayState::paused;
-	direction = Direction::normal;
-	progress = 0.0;
-	speed = 1.0;
+	options = {PlayState::paused};
 	actTime = TimePoint();
 	cancelled = false;
 	finished = false;
@@ -98,19 +92,17 @@ void Control::reset()
 
 void Control::stop()
 {
-	playState = PlayState::paused;
-	direction = Direction::normal;
-	progress = 0.0;
-	update();
+	options.playState = PlayState::paused;
+	options.direction = Direction::normal;
+	options.position = 0.0;
 }
 
 void Control::cancel()
 {
-	playState = PlayState::paused;
-	direction = Direction::normal;
-	progress = 0.0;
+	options.playState = PlayState::paused;
+	options.direction = Direction::normal;
+	options.position = 0.0;
 	cancelled = true;
-	update();
 }
 
 void Control::update() { update(actTime); }
@@ -119,23 +111,23 @@ void Control::update(const TimePoint &time)
 {
 	if (actTime == TimePoint()) actTime = time;
 
-	auto running = playState == PlayState::running;
+	auto running = options.playState == PlayState::running;
 
 	Duration timeStep{time - std::exchange(actTime, time)};
 
-	timeStep = timeStep * speed
-	         * (direction == Direction::normal ? 1.0 : -1.0);
+	timeStep = timeStep * options.speed
+	         * (options.direction == Direction::normal ? 1.0 : -1.0);
 
 	if (running && timeStep != Duration(0.0)) {
 		setPosition(getPosition() + timeStep);
 	}
 
-	if (lastProgress != progress) {
+	if (lastPosition != options.position) {
 		controlled.setPosition(getPosition());
 		if (onChange) onChange();
 	}
 
-	lastProgress = progress;
+	lastPosition = options.position;
 
 	finish(running);
 }
@@ -150,10 +142,11 @@ void Control::finish(bool preRun)
 		}
 	}
 	else if (preRun
-	         && ((direction == Direction::normal && atEndPosition())
-	             || (direction == Direction::reverse
+	         && ((options.direction == Direction::normal
+	                 && atEndPosition())
+	             || (options.direction == Direction::reverse
 	                 && atStartPosition()))
-	         && playState != PlayState::running) {
+	         && options.playState != PlayState::running) {
 		if (!finished && onFinish) {
 			onFinish(true);
 			finished = true;

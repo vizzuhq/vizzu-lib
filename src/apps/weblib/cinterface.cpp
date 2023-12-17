@@ -89,6 +89,11 @@ const char *vizzu_errorMessage(APIHandles::Exception exceptionPtr,
 			    static_cast<const std::bad_function_call *>(
 			        exceptionPtr);
 			break;
+		case hash("bad_variant_access"):
+			realException =
+			    static_cast<const std::bad_variant_access *>(
+			        exceptionPtr);
+			break;
 		}
 
 		if (realException) return realException->what();
@@ -371,13 +376,19 @@ void chart_setKeyframe(APIHandles::Chart chart)
 	return Interface::getInstance().setKeyframe(chart);
 }
 
-void anim_control(APIHandles::Chart chart,
-    const char *command,
-    const char *param)
+void anim_control_setValue(APIHandles::Chart chart,
+    const char *path,
+    const char *value)
 {
-	return Interface::getInstance().animControl(chart,
-	    command,
-	    param);
+	return Interface::getInstance().setAnimControlValue(chart,
+	    path,
+	    value);
+}
+
+const char *anim_control_getValue(APIHandles::Chart chart,
+    const char *path)
+{
+	return Interface::getInstance().getAnimControlValue(chart, path);
 }
 
 void anim_setValue(APIHandles::Chart chart,

@@ -15,7 +15,7 @@ DataCube::DataCube(const DataTable &table,
     table(&table)
 {
 	if (options.getDimensions().empty()
-	    && options.getSeries().empty())
+	    && options.getMeasures().empty())
 		return;
 
 	MultiIndex sizes;
@@ -35,7 +35,7 @@ DataCube::DataCube(const DataTable &table,
 		dimBySeries.insert({idx, DimIndex(sizes.size() - 1)});
 	}
 
-	auto series = options.getSeries();
+	auto series = options.getMeasures();
 
 	if (series.empty()) series.emplace_back(SeriesType::Exists);
 

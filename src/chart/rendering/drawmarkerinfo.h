@@ -8,10 +8,12 @@
 #include "chart/main/style.h"
 #include "painter/coordinatesystem.h"
 
+#include "drawingcontext.h"
+
 namespace Vizzu::Draw
 {
 
-class DrawMarkerInfo
+class DrawMarkerInfo : public DrawingContext
 {
 	friend class MarkerDC;
 
@@ -22,13 +24,17 @@ public:
 	class MarkerDC
 	{
 	public:
-		MarkerDC(DrawMarkerInfo &parent, Content &content);
+		MarkerDC(const DrawMarkerInfo &parent,
+		    Gfx::ICanvas &canvas,
+		    const Geom::Rect &boundary,
+		    Content &content);
 		void draw(double weight);
 		void
 		interpolate(double weight1, MarkerDC &other, double weight2);
 
 	protected:
-		DrawMarkerInfo &parent;
+		const DrawMarkerInfo &parent;
+		Gfx::ICanvas &canvas;
 		TextBox text;
 		Geom::Point dataPoint;
 		Geom::Point labelDir;
@@ -40,23 +46,25 @@ public:
 		void calculateLayout(Geom::Point hint = Geom::Point{0, 0});
 	};
 
-	DrawMarkerInfo(const Layout &layout,
-	    Gfx::ICanvas &canvas,
-	    const Gen::Plot &plot);
+	void draw(Gfx::ICanvas &canvas, const Geom::Rect &boundary) const;
 
-private:
-	const Layout &layout;
-	Gfx::ICanvas &canvas;
-	const Gen::Plot &plot;
-	std::optional<Draw::CoordinateSystem> coordSystem;
 	const Styles::Tooltip &style;
 
-	void fadeInMarkerInfo(Content &cnt, double weight);
-	void fadeOutMarkerInfo(Content &cnt, double weight);
-	void moveMarkerInfo(Content &cnt1,
+private:
+	void fadeInMarkerInfo(Gfx::ICanvas &canvas,
+	    const Geom::Rect &boundary,
+	    Content &cnt,
+	    double weight) const;
+	void fadeOutMarkerInfo(Gfx::ICanvas &canvas,
+	    const Geom::Rect &boundary,
+	    Content &cnt,
+	    double weight) const;
+	void moveMarkerInfo(Gfx::ICanvas &canvas,
+	    const Geom::Rect &boundary,
+	    Content &cnt1,
 	    double weight1,
 	    Content &cnt2,
-	    double weight2);
+	    double weight2) const;
 };
 
 }

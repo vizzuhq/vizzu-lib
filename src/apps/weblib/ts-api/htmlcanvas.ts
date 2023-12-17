@@ -24,6 +24,7 @@ export class HtmlCanvas implements Plugin {
   private _mainCanvas: HTMLCanvasElement
   private _context: CanvasRenderingContext2D
   private _resizeObserver: ResizeObserver
+  private _resizeHandler: () => void
   private _prevUpdateHash: string = ''
   private _scaleFactor: number = 1
   private _cssWidth: number = 1
@@ -71,9 +72,14 @@ export class HtmlCanvas implements Plugin {
     this._context = ctx
     this.calcSize()
     this._resizeObserver = this._createResizeObserverFor(this._mainCanvas)
+    this._resizeHandler = (): void => {
+      this.onchange()
+    }
+    window.addEventListener('resize', this._resizeHandler)
   }
 
   destruct(): void {
+    window.removeEventListener('resize', this._resizeHandler)
     this._resizeObserver.disconnect()
     if (this._container) this._container.removeChild(this._mainCanvas)
   }
@@ -96,6 +102,7 @@ export class HtmlCanvas implements Plugin {
       this._mainCanvas.height = this._cssHeight * this._scaleFactor
       this._offscreenCanvas.width = this._cssWidth * this._scaleFactor
       this._offscreenCanvas.height = this._cssHeight * this._scaleFactor
+      this._offscreenContext.setTransform(1, 0, 0, 1, 0, 0)
       this._offscreenContext.translate(0.5, 0.5)
       this._offscreenContext.scale(this._scaleFactor, this._scaleFactor)
     }
@@ -104,12 +111,7 @@ export class HtmlCanvas implements Plugin {
   }
 
   frameBegin(): void {
-    this._offscreenContext.clearRect(
-      -1,
-      -1,
-      this._mainCanvas.width + 1,
-      this._mainCanvas.height + 1
-    )
+    this._offscreenContext.clearRect(-1, -1, this._cssWidth + 2, this._cssHeight + 2)
   }
 
   frameEnd(): void {

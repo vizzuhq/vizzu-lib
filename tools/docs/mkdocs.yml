@@ -72,10 +72,11 @@ markdown_extensions:
       use_pygments: false
   - pymdownx.details
   - pymdownx.superfences
-  - markdown_include.include:
-      base_path: docs
 
 plugins:
+  - exclude:
+      glob:
+        - tutorial/assets/**
   - mike:
       version_selector: true
       alias_type: symlink
@@ -86,6 +87,8 @@ plugins:
   - literate-nav:
       implicit_index: true
   - autorefs
+  - include-markdown
+  - placeholder
   - gen-files:
       scripts:
         - pages/gen_pages.py
@@ -120,6 +123,7 @@ nav:
       - Shorthands & Store: tutorial/shorthands_store.md
       - Chart presets: tutorial/chart_presets.md
       - tutorial/style.md
+      - tutorial/writing_plugins.md
   - Examples:
       - examples/index.md
       - Preset charts: examples/presets/

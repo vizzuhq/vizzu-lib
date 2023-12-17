@@ -10,9 +10,6 @@ requires-python = ">=3.10"
 license = {text = "Apache-2.0"}
 
 [tool.pdm.dev-dependencies]
-packagetool = [
-    "pdm==2.8.0",
-]
 codequality = [
     "black",
     "pylint",
@@ -31,13 +28,15 @@ docs = [
     "mdformat-footnote",
     "mdformat-frontmatter",
     "mdx_truly_sane_lists",
-    "markdown-include>=0.8.1",
     "mkdocs",
     "mkdocs-material",
     "mkdocs-section-index",
     "mkdocs-literate-nav",
     "mkdocs-autorefs",
     "mkdocs-gen-files",
+    "mkdocs-placeholder-plugin>=0.4.1",
+    "mkdocs-include-markdown-plugin",
+    "mkdocs-exclude",
     "mike",
     "pyyaml",
     "types-pyyaml",

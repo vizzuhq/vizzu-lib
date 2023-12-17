@@ -11,10 +11,8 @@ import mkdocs_gen_files  # type: ignore
 REPO_PATH = Path(__file__).parent / ".." / ".." / ".."
 TOOLS_PATH = REPO_PATH / "tools"
 MKDOCS_PATH = TOOLS_PATH / "docs"
-VIZZU_LIB_PATH = REPO_PATH / "vizzu-lib"
 
 sys.path.insert(0, str(TOOLS_PATH / "modules"))
-sys.path.insert(0, str(TOOLS_PATH / "ci"))
 sys.path.insert(0, str(MKDOCS_PATH))
 
 from chdir import (  # pylint: disable=import-error, wrong-import-position, wrong-import-order
@@ -22,9 +20,6 @@ from chdir import (  # pylint: disable=import-error, wrong-import-position, wron
 )
 from vizzu import (  # pylint: disable=import-error, wrong-import-position, wrong-import-order
     Vizzu,
-)
-from markdown_format import (  # pylint: disable=import-error, wrong-import-position, wrong-import-order
-    Markdown,
 )
 from config import (  # pylint: disable=import-error, wrong-import-position, wrong-import-order
     MkdocsConfig,
@@ -112,31 +107,9 @@ class Page:
             f_dst.write(content)
 
 
-class Docs:
-    # pylint: disable=too-few-public-methods
-
-    @staticmethod
-    def generate(skip: Optional[List[str]] = None) -> None:
-        docs_path = REPO_PATH / "docs"
-        for path in list(docs_path.rglob("*.md")) + list(docs_path.rglob("*.js")):
-            if skip and path.name in skip:
-                continue
-            with open(path, "rt", encoding="utf8") as f_src:
-                dst = path.relative_to(docs_path)
-                content = f_src.read()
-                if path.suffix == ".md":
-                    content = Vizzu.set_version(content)
-                    content = Markdown.format(content)
-                    mkdocs_gen_files.set_edit_path(dst, dst)
-                with mkdocs_gen_files.open(dst, "w") as f_dst:
-                    f_dst.write(content)
-
-
 def main() -> None:
     with chdir(REPO_PATH):
         config = MkdocsConfig.load(MKDOCS_PATH / "mkdocs.yml")
-
-        Docs.generate()
 
         IndexPages.generate(
             nav_item=config["nav"],

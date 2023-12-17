@@ -31,7 +31,7 @@ EventDispatcher::Event::Event(EventDispatcher &owner,
 
 EventDispatcher::Event::~Event() = default;
 
-std::string EventDispatcher::Event::name() const
+const std::string &EventDispatcher::Event::name() const
 {
 	return uniqueName;
 }

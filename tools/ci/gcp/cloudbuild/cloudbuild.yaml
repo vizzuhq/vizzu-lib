@@ -154,7 +154,7 @@ steps:
         if [ "$_ISRELEASE" == "true" ]; then
           echo "skipped"
         else
-          ./tools/ci/run/test-gsutil.sh
+          ./tools/ci/run/test-gsutil.sh $SHORT_SHA
         fi
     dir: /workspace
 

@@ -22,7 +22,7 @@ public:
 	void addKeyframe(const Gen::PlotPtr &next,
 	    const Options::Keyframe &options);
 
-	void animate(const Options::Control &options,
+	void animate(const ::Anim::Control::Option &options,
 	    OnComplete onThisCompletes = OnComplete());
 
 private:

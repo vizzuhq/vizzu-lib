@@ -20,6 +20,7 @@ public:
 	{
 		this->system = system;
 	}
+
 	void setResMode(const ResolutionMode &mode) { this->mode = mode; }
 
 	void drawLine(const Geom::Line &line);

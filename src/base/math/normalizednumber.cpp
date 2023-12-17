@@ -27,7 +27,7 @@ NormalizedNumber::NormalizedNumber(double value, double base) :
 		positive = sign == 1;
 		exponent = Floating(value).orderOfMagnitude(base);
 		coefficient = value / pow(base, exponent);
-		coefficient = std::min(std::max(1.0, coefficient), base);
+		coefficient = std::clamp(coefficient, 1.0, base);
 	}
 	else {
 		positive = true;

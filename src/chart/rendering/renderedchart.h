@@ -34,7 +34,20 @@ public:
 class Marker
 {
 public:
-	const Gen::Marker &marker;
+	bool enabled;
+	::Anim::Interpolated<Gen::ShapeType> shapeType;
+	std::array<Geom::Point, 4> points;
+	std::array<double, 2> lineWidth;
+
+	[[nodiscard]] bool bounds(const CoordinateSystem &coordSys,
+	    const Geom::Point &point) const;
+
+private:
+	[[nodiscard]] Geom::ConvexQuad lineToQuad(
+	    const CoordinateSystem &coordSys,
+	    double atLeastWidth) const;
+
+	[[nodiscard]] Geom::Line getLine() const;
 };
 
 class DrawingElement
@@ -71,6 +84,11 @@ public:
 
 	[[nodiscard]] const Util::EventTarget *find(
 	    const Geom::Point &point) const;
+
+	[[nodiscard]] const CoordinateSystem &getCoordSys() const
+	{
+		return coordinateSystem;
+	}
 
 private:
 	CoordinateSystem coordinateSystem;

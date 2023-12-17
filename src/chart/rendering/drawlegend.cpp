@@ -8,218 +8,239 @@
 namespace Vizzu::Draw
 {
 
-DrawLegend::DrawLegend(const DrawingContext &context,
+void DrawLegend::draw(Gfx::ICanvas &canvas,
+    const Geom::Rect &legendLayout,
     Gen::ChannelId channelType,
-    double weight) :
-    DrawingContext(context),
-    colorBuilder(context.rootStyle.plot.marker.lightnessRange(),
-        *context.rootStyle.plot.marker.colorPalette,
-        *context.rootStyle.plot.marker.colorGradient),
-    events(context.rootEvents.draw.legend),
-    style(context.rootStyle.legend),
-    type(channelType),
-    weight(weight),
-    itemHeight(DrawLabel::getHeight(style.label, canvas)),
-    titleHeight(DrawLabel::getHeight(style.title, canvas))
+    double weight) const
 {
+	auto contentRect =
+	    style.contentRect(legendLayout, rootStyle.calculatedSize());
 
-	contentRect = style.contentRect(layout.legend,
-	    context.rootStyle.calculatedSize());
+	auto &&info = Info{
+	    .canvas = canvas,
+	    .contentRect = contentRect,
+	    .type = channelType,
+	    .weight = weight,
+	    .itemHeight = DrawLabel::getHeight(style.label, canvas),
+	    .titleHeight = DrawLabel::getHeight(style.title, canvas),
+	    .markerSize = style.marker.size->get(contentRect.size.y,
+	        style.label.calculatedSize()),
+	    .measure = plot->measureAxises.at(channelType),
+	    .dimension = plot->dimensionAxises.at(channelType),
+	};
 
-	DrawBackground(*this,
-	    layout.legend,
+	DrawBackground{{ctx()}}.draw(canvas,
+	    legendLayout,
 	    style,
-	    events.background,
-	    std::make_unique<Events::Targets::Legend>(channelType));
+	    *events.background,
+	    Events::Targets::legend(channelType));
 
-	if (static_cast<std::size_t>(type)
-	    < std::size(plot.measureAxises.axises)) {
-		canvas.save();
-		canvas.setClipRect(contentRect);
+	canvas.save();
+	canvas.setClipRect(contentRect);
 
-		const auto measureAxis = plot.measureAxises.at(type);
-		const auto dimensionAxis = plot.dimensionAxises.at(type);
+	drawTitle(info);
 
-		const auto measureEnabled =
-		    measureAxis.enabled.calculate<double>();
+	drawDimension(info);
 
-		drawTitle(plot.commonAxises.at(type).title,
-		    dimensionAxis.enabled ? 1.0 : measureEnabled);
+	drawMeasure(info);
 
-		if (dimensionAxis.enabled) drawDimension(dimensionAxis);
-
-		if (measureEnabled > 0) drawMeasure(measureAxis);
-
-		canvas.restore();
-	}
+	canvas.restore();
 }
 
-void DrawLegend::drawTitle(const ::Anim::String &title, double mul)
+void DrawLegend::drawTitle(const Info &info) const
 {
-	auto rect = contentRect;
-	rect.size.y += titleHeight;
-	title.visit(
-	    [this, &rect, &mul](int, const auto &title)
+	auto rect = info.contentRect;
+	rect.size.y += info.titleHeight;
+	plot->commonAxises.at(info.type).title.visit(
+	    [this,
+	        &info,
+	        &rect,
+	        mul = std::max<double>(info.measureEnabled,
+	            info.dimensionEnabled)](int, const auto &title)
 	    {
-		    DrawLabel(*this,
+		    if (title.weight <= 0) return;
+
+		    DrawLabel{{ctx()}}.draw(info.canvas,
 		        Geom::TransformedRect::fromRect(rect),
 		        title.value,
 		        style.title,
-		        events.title,
-		        std::make_unique<Events::Targets::LegendTitle>(
-		            title.value,
-		            type),
+		        *events.title,
+		        Events::Targets::legendTitle(title.value, info.type),
 		        DrawLabel::Options(true,
-		            title.weight * weight * mul));
+		            title.weight * info.weight * mul));
 	    });
 }
 
-void DrawLegend::drawDimension(const Gen::DimensionAxis &axis)
+void DrawLegend::drawDimension(const Info &info) const
 {
-	enabled = static_cast<double>(axis.enabled);
+	if (!info.dimensionEnabled) return;
 
-	for (const auto &value : axis) {
-		if (value.second.weight > 0) {
-			auto itemRect = getItemRect(value.second.range.getMin());
-			if (itemRect.y().getMax() < contentRect.y().getMax()) {
-				auto alpha = value.second.weight * weight * enabled;
-				auto markerColor =
-				    colorBuilder.render(value.second.colorBase)
-				    * alpha;
-				drawMarker(markerColor, getMarkerRect(itemRect));
+	auto label = DrawLabel{{ctx()}};
+	for (const auto &value : info.dimension) {
+		if (value.second.weight <= 0) continue;
 
-				DrawLabel(*this,
-				    getLabelRect(itemRect),
-				    value.second.label,
-				    style.label,
-				    events.label,
-				    std::make_unique<Events::Targets::LegendLabel>(
-				        value.second.label,
-				        type),
-				    DrawLabel::Options(true, alpha));
-			}
-		}
+		auto itemRect =
+		    getItemRect(info, value.second.range.getMin());
+
+		if (itemRect.y().getMax() >= info.contentRect.y().getMax())
+			continue;
+
+		auto alpha = value.second.weight * info.weight;
+
+		drawMarker(info,
+		    colorBuilder.render(value.second.colorBase) * alpha,
+		    getMarkerRect(info, itemRect));
+
+		label.draw(info.canvas,
+		    getLabelRect(info, itemRect),
+		    value.second.label,
+		    style.label,
+		    *events.label,
+		    Events::Targets::legendLabel(value.second.label,
+		        info.type),
+		    DrawLabel::Options(true, alpha));
 	}
 }
 
-Geom::Rect DrawLegend::getItemRect(double index) const
+Geom::Rect DrawLegend::getItemRect(const Info &info, double index)
 {
-	Geom::Rect res = contentRect;
-	res.pos.y += titleHeight + index * itemHeight;
-	res.size.y = itemHeight;
+	Geom::Rect res = info.contentRect;
+	res.pos.y += info.titleHeight + index * info.itemHeight;
+	res.size.y = info.itemHeight;
 	if (res.size.x < 0) res.size.x = 0;
 	return res;
 }
 
-Geom::Rect DrawLegend::getMarkerRect(const Geom::Rect &itemRect) const
+Geom::Rect DrawLegend::getMarkerRect(const Info &info,
+    const Geom::Rect &itemRect)
 {
-	auto markerSize = style.marker.size->get(contentRect.size.y,
-	    style.label.calculatedSize());
 	Geom::Rect res = itemRect;
-	res.pos.y += itemHeight / 2.0 - markerSize / 2.0;
-	res.size = Geom::Size::Square(markerSize);
+	res.pos.y += info.itemHeight / 2.0 - info.markerSize / 2.0;
+	res.size = Geom::Size::Square(info.markerSize);
 	return res;
 }
 
-Geom::TransformedRect DrawLegend::getLabelRect(
-    const Geom::Rect &itemRect) const
+Geom::TransformedRect DrawLegend::getLabelRect(const Info &info,
+    const Geom::Rect &itemRect)
 {
-	auto markerSize = style.marker.size->get(contentRect.size.y,
-	    style.label.calculatedSize());
 	Geom::Rect res = itemRect;
-	res.pos.x += markerSize;
-	res.size.x -= std::max(0.0, res.size.x - markerSize);
+	res.pos.x += info.markerSize;
+	res.size.x -= std::max(0.0, res.size.x - info.markerSize);
 	return Geom::TransformedRect::fromRect(res);
 }
 
-void DrawLegend::drawMarker(const Gfx::Color &color,
-    const Geom::Rect &rect)
+void DrawLegend::drawMarker(const Info &info,
+    const Gfx::Color &color,
+    const Geom::Rect &rect) const
 {
-	canvas.save();
+	info.canvas.save();
 
-	canvas.setBrushColor(color);
-	canvas.setLineColor(color);
-	canvas.setLineWidth(0);
+	info.canvas.setBrushColor(color);
+	info.canvas.setLineColor(color);
+	info.canvas.setLineWidth(0);
 
-	auto radius = plot.getStyle().legend.marker.type->factor<double>(
+	auto radius = rootStyle.legend.marker.type->factor<double>(
 	                  Styles::Legend::Marker::Type::circle)
 	            * rect.size.minSize() / 2.0;
 
-	auto markerElement =
-	    std::make_unique<Events::Targets::LegendMarker>(type);
+	auto markerElement = Events::Targets::legendMarker(info.type);
 
 	if (events.marker->invoke(
 	        Events::OnRectDrawEvent(*markerElement, {rect, false}))) {
-		Gfx::Draw::RoundedRect(canvas, rect, radius);
+		Gfx::Draw::RoundedRect(info.canvas, rect, radius);
 		renderedChart.emplace(Geom::TransformedRect::fromRect(rect),
 		    std::move(markerElement));
 	}
 
-	canvas.restore();
+	info.canvas.restore();
 }
 
-void DrawLegend::drawMeasure(const Gen::MeasureAxis &axis)
+void DrawLegend::drawMeasure(const Info &info) const
 {
-	enabled = axis.enabled.calculate<double>();
+	if (info.measureEnabled <= 0) return;
 
-	extremaLabel(axis.range.getMax(), 0);
-	extremaLabel(axis.range.getMin(), 5);
+	info.measure.unit.visit(
+	    [this, &info](int, const auto &unit)
+	    {
+		    extremaLabel(info,
+		        info.measure.range.getMax(),
+		        unit.value,
+		        0,
+		        unit.weight);
+		    extremaLabel(info,
+		        info.measure.range.getMin(),
+		        unit.value,
+		        5,
+		        unit.weight);
+	    });
 
-	auto bar = getBarRect();
+	auto bar = getBarRect(info);
 
 	using ST = Gen::ChannelId;
-	switch (type) {
-	case ST::color: colorBar(bar); break;
-	case ST::lightness: lightnessBar(bar); break;
-	case ST::size: sizeBar(bar); break;
+	switch (info.type) {
+	case ST::color: colorBar(info, bar); break;
+	case ST::lightness: lightnessBar(info, bar); break;
+	case ST::size: sizeBar(info, bar); break;
 	default: break;
 	}
 }
 
-void DrawLegend::extremaLabel(double value, int pos)
+void DrawLegend::extremaLabel(const Info &info,
+    double value,
+    const std::string &unit,
+    int pos,
+    double plusWeight) const
 {
-	auto text = Text::SmartString::fromNumber(value,
+	auto text = Text::SmartString::fromPhysicalValue(value,
 	    *style.label.numberFormat,
 	    static_cast<size_t>(*style.label.maxFractionDigits),
-	    *style.label.numberScale);
-	auto itemRect = getItemRect(pos);
+	    *style.label.numberScale,
+	    unit);
 
-	auto labelElement =
-	    std::make_unique<Events::Targets::LegendLabel>(text, type);
-
-	DrawLabel(*this,
-	    getLabelRect(itemRect),
+	DrawLabel{{ctx()}}.draw(info.canvas,
+	    getLabelRect(info, getItemRect(info, pos)),
 	    text,
 	    style.label,
-	    events.label,
-	    std::move(labelElement),
-	    DrawLabel::Options(true, weight * enabled));
+	    *events.label,
+	    Events::Targets::legendLabel(text, info.type),
+	    DrawLabel::Options(true, info.measureWeight * plusWeight));
 }
 
-void DrawLegend::colorBar(const Geom::Rect &rect)
+Geom::Rect DrawLegend::getBarRect(const Info &info)
 {
-	canvas.save();
+	Geom::Rect res = info.contentRect;
+	res.pos.y += info.titleHeight + info.itemHeight / 2.0;
+	res.size.y = 5 * info.itemHeight;
+	res.size.x = info.markerSize;
+	return res;
+}
 
-	canvas.setBrushGradient(rect.leftSide(),
-	    Gfx::ColorGradient{*plot.getStyle().plot.marker.colorGradient
-	                       * (weight * enabled)});
-	canvas.setLineColor(Gfx::Color::Transparent());
-	canvas.setLineWidth(0);
+void DrawLegend::colorBar(const Info &info,
+    const Geom::Rect &rect) const
+{
+	info.canvas.save();
+
+	info.canvas.setBrushGradient(rect.leftSide(),
+	    Gfx::ColorGradient{*rootStyle.plot.marker.colorGradient
+	                       * info.measureWeight});
+	info.canvas.setLineColor(Gfx::Color::Transparent());
+	info.canvas.setLineWidth(0);
 
 	auto barElement =
-	    std::make_unique<Events::Targets::LegendBar>(type);
+	    Events::Targets::legendBar(Gen::ChannelId::color);
 
 	if (events.bar->invoke(
 	        Events::OnRectDrawEvent(*barElement, {rect, false}))) {
-		canvas.rectangle(rect);
+		info.canvas.rectangle(rect);
 		renderedChart.emplace(Geom::TransformedRect::fromRect(rect),
 		    std::move(barElement));
 	}
 
-	canvas.restore();
+	info.canvas.restore();
 }
 
-void DrawLegend::lightnessBar(const Geom::Rect &rect)
+void DrawLegend::lightnessBar(const Info &info,
+    const Geom::Rect &rect) const
 {
 	Gfx::ColorGradient gradient;
 
@@ -230,59 +251,50 @@ void DrawLegend::lightnessBar(const Geom::Rect &rect)
 	gradient.stops.emplace_back(1.0,
 	    colorBuilder.render(Gen::ColorBase(0U, 1.0)));
 
-	canvas.save();
+	info.canvas.save();
 
-	canvas.setBrushGradient(rect.leftSide(),
-	    Gfx::ColorGradient{gradient * (weight * enabled)});
-	canvas.setLineColor(Gfx::Color::Transparent());
-	canvas.setLineWidth(0);
+	info.canvas.setBrushGradient(rect.leftSide(),
+	    Gfx::ColorGradient{gradient * info.measureWeight});
+	info.canvas.setLineColor(Gfx::Color::Transparent());
+	info.canvas.setLineWidth(0);
 
 	auto barElement =
-	    std::make_unique<Events::Targets::LegendBar>(type);
+	    Events::Targets::legendBar(Gen::ChannelId::lightness);
 
 	if (events.bar->invoke(
 	        Events::OnRectDrawEvent(*barElement, {rect, false}))) {
-		canvas.rectangle(rect);
+		info.canvas.rectangle(rect);
 		renderedChart.emplace(Geom::TransformedRect::fromRect(rect),
 		    std::move(barElement));
 	}
 
-	canvas.restore();
+	info.canvas.restore();
 }
 
-void DrawLegend::sizeBar(const Geom::Rect &rect)
+void DrawLegend::sizeBar(const Info &info,
+    const Geom::Rect &rect) const
 {
-	canvas.save();
+	info.canvas.save();
 
-	canvas.setBrushColor(Gfx::Color::Gray(0.8) * (weight * enabled));
-	canvas.setLineWidth(0);
+	info.canvas.setBrushColor(
+	    Gfx::Color::Gray(0.8) * info.measureWeight);
+	info.canvas.setLineWidth(0);
 
 	auto barElement =
-	    std::make_unique<Events::Targets::LegendBar>(type);
+	    Events::Targets::legendBar(Gen::ChannelId::size);
 
 	if (events.bar->invoke(
 	        Events::OnRectDrawEvent(*barElement, {rect, false}))) {
-		canvas.beginPolygon();
-		canvas.addPoint(rect.bottomLeft());
-		canvas.addPoint(rect.bottomRight());
-		canvas.addPoint(rect.topSide().center());
-		canvas.endPolygon();
+		info.canvas.beginPolygon();
+		info.canvas.addPoint(rect.bottomLeft());
+		info.canvas.addPoint(rect.bottomRight());
+		info.canvas.addPoint(rect.topSide().center());
+		info.canvas.endPolygon();
 		renderedChart.emplace(Geom::TransformedRect::fromRect(rect),
 		    std::move(barElement));
 	}
 
-	canvas.restore();
-}
-
-Geom::Rect DrawLegend::getBarRect() const
-{
-	auto markerSize = style.marker.size->get(contentRect.size.y,
-	    style.label.calculatedSize());
-	Geom::Rect res = contentRect;
-	res.pos.y += titleHeight + itemHeight / 2.0;
-	res.size.y = 5 * itemHeight;
-	res.size.x = markerSize;
-	return res;
+	info.canvas.restore();
 }
 
 }
