@@ -69,7 +69,7 @@
     "type": "npm-run-all type:*",
     "type:tools": "npm-run-all type-tools:*",
     "type-tools:py": "./tools/ci/run/type-mypy-py.sh tools",
-    "test": "npm-run-all test:e2e",
+    "test": "node test/integration/test.cjs",
     "test:unit": "NODE_OPTIONS='--experimental-vm-modules' npx jest --config test/unit/jest.config.js --verbose",
     "test:e2e": "node test/integration/test.cjs",
     "test:e2e-unit": "npx jest --config=./test/integration/modules/jest.config.cjs --verbose",
