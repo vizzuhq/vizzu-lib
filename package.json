@@ -113,6 +113,9 @@
     "pkg-build:wasm-wocpp": "./tools/ci/run/pkg-build-wasm-wocpp.sh",
     "pkg-build:wasm-wocpp-gsutil": "./tools/ci/run/pkg-build-wasm-wocpp-gsutil.sh"
   },
+  "dependencies": {
+    "type-fest": "^4.6.0"
+  },
   "devDependencies": {
     "@rollup/plugin-terser": "^0.4.3",
     "@tsconfig/strictest": "^2.0.2",
@@ -140,7 +143,6 @@
     "rollup": "^3.29.2",
     "serve-static": "^1.15.0",
     "strip-color": "^0.1.0",
-    "type-fest": "^4.6.0",
     "typedoc": "~0.25.2",
     "typedoc-plugin-markdown": "~3.16.0",
     "typedoc-plugin-rename-defaults": "~0.6.4",
