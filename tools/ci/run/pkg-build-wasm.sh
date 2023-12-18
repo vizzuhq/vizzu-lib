@@ -29,12 +29,12 @@ node tools/ci/sizeCheck.cjs
 
 # build ts
 
-npm run pkg-build-ts
+npm run build:ts
 
 # test js
 
-npm run test-unit-src
+npm run test:unit
 
 # rollup js
 
-npm run pkg-rollup-js
+npm run rollup
