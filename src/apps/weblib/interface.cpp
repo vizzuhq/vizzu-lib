@@ -361,7 +361,8 @@ void Interface::update(ObjectRegistry::Handle chart,
     ObjectRegistry::Handle canvas,
     double width,
     double height,
-    RenderControl renderControl)
+    RenderControl renderControl,
+    bool highResolution)
 {
 	auto &&widget = objects.get<UI::ChartWidget>(chart);
 	auto now = std::chrono::steady_clock::now();
@@ -379,7 +380,7 @@ void Interface::update(ObjectRegistry::Handle chart,
 	    || renderControl == force) {
 		canvasPtr->frameBegin();
 		widget->onUpdateSize(canvasPtr, size);
-		widget->onDraw(canvasPtr);
+		widget->onDraw(canvasPtr, highResolution);
 		canvasPtr->frameEnd();
 	}
 }

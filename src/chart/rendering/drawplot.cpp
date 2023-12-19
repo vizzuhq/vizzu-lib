@@ -55,7 +55,6 @@ void DrawPlot::drawPlotArea(Gfx::ICanvas &canvas,
 	auto rect = Geom::Rect::Ident();
 	painter.setPolygonToCircleFactor(0.0);
 	painter.setPolygonStraightFactor(0.0);
-	painter.setResMode(ResolutionMode::High);
 
 	if (clip) { painter.drawPolygon(rect.points(), true); }
 	else {

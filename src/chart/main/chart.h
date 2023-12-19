@@ -30,7 +30,7 @@ public:
 	Event onChanged;
 
 	Chart();
-	void draw(Gfx::ICanvas &canvas);
+	void draw(Gfx::ICanvas &canvas, bool highResolution);
 	void setBoundRect(const Geom::Rect &rect, Gfx::ICanvas &info);
 
 	Data::DataTable &getTable() { return table; }
