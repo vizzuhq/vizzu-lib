@@ -80,15 +80,6 @@ public:
 		    });
 	}
 
-	[[nodiscard]] MultiIndex getProjectionOf(
-	    const MultiIndex &multiIndex) const
-	{
-		MultiIndex res = multiIndex;
-		for (const auto &sliceIndex : *this)
-			res[sliceIndex.dimIndex] = sliceIndex.index;
-		return res;
-	}
-
 	[[nodiscard]] bool hardEqual(const SubSliceIndex &other) const
 	{
 		if (size() != other.size()) return false;
