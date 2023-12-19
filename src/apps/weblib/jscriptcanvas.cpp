@@ -1,16 +1,10 @@
 #include "jscriptcanvas.h"
 
 #include "canvas.h"
+#include "interfacejs.h"
 
 namespace Vizzu::Main
 {
-
-Geom::Size JScriptCanvas::textBoundary(const std::string &text)
-{
-	Geom::Size res;
-	::canvas_textBoundary(this, text.c_str(), &res.x, &res.y);
-	return res;
-}
 
 Geom::Rect JScriptCanvas::getClipRect() const
 {
@@ -244,4 +238,14 @@ void JScriptCanvas::resetStates()
 	clipRect = std::nullopt;
 }
 
+}
+
+Geom::Size Gfx::ICanvas::textBoundary(const Gfx::Font &font,
+    const std::string &text)
+{
+	thread_local std::string fontCache;
+	fontCache = font.toCSS();
+	Geom::Size res;
+	::textBoundary(fontCache.c_str(), text.c_str(), &res.x, &res.y);
+	return res;
 }

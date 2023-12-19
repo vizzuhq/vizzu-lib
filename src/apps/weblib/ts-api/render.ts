@@ -1,4 +1,4 @@
-import { CPointer, CString, CColorGradientPtr } from './cvizzu.types'
+import { CString, CColorGradientPtr } from './cvizzu.types'
 import { Plugin, PluginApi } from './plugins.js'
 import { Canvas } from './module/canvas.js'
 import { Module } from './module/module.js'
@@ -181,16 +181,6 @@ export class Render implements Plugin, Canvas {
     dc.moveTo(x1, y1)
     dc.lineTo(x2, y2)
     if (this._currentLineWidth !== 0) dc.stroke()
-  }
-
-  textBoundary(text: CString, sizeX: CPointer, sizeY: CPointer): void {
-    const dc = this._canvas.context
-    let metrics = dc.measureText(this._ccanvas.getString(text))
-    const width = metrics.width
-    metrics = dc.measureText('Op')
-    const height = metrics.actualBoundingBoxAscent + metrics.actualBoundingBoxDescent
-    this._ccanvas.setNumber(sizeX, width)
-    this._ccanvas.setNumber(sizeY, height)
   }
 
   text(x: number, y: number, sizex: number, sizey: number, text: CString): void {

@@ -21,7 +21,6 @@ Canvas:
   rectangle: { x: number, y: number, sizex: number, sizey: number }
   circle: { x: number, y: number, radius: number }
   line: { x1: number, y1: number, x2: number, y2: number }
-  textBoundary: { text: C.CString, sizeX: C.CPointer/double *, sizeY: C.CPointer/double * }
   text: { x: number, y: number, sizex: number, sizey: number, text: C.CString }
   setBrushGradient:
     {
