@@ -32,7 +32,7 @@ const testSteps = [
           label: 'Value 5 (+/-)'
         },
         title: 'Rectangle Marker Label Positions - Center',
-        rotate: 90
+        angle: Math.PI / 2
       }
     }),
 
@@ -45,7 +45,7 @@ const testSteps = [
           label: { attach: ['Value 5 (+/-)', 'Country'] }
         },
         title: 'Polar Coordinate',
-        rotate: 180,
+        angle: (Math.PI * 3) / 2,
         coordSystem: 'polar'
       }
     })

@@ -34,7 +34,7 @@ export default class Presets {
       align: 'none',
       coordSystem: 'cartesian',
       orientation: 'auto',
-      rotate: 0,
+      angle: 0,
       split: false,
       geometry: 'rectangle',
       channels: {

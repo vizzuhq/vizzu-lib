@@ -35,8 +35,6 @@ public:
 	    std::optional<size_t> pos);
 	OptionsSetter &deleteSeries(const ChannelId &channelId,
 	    const Data::SeriesIndex &index);
-	OptionsSetter &rotate(double ccwQuadrant);
-	OptionsSetter &setAngle(double ccwQuadrant);
 	OptionsSetter &setFilter(const Data::Filter &filter);
 	OptionsSetter &addMarkerInfo(Options::MarkerId marker);
 	OptionsSetter &moveMarkerInfo(Options::MarkerId from,

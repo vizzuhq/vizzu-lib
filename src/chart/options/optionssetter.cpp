@@ -67,18 +67,6 @@ OptionsSetter &OptionsSetter::clearSeries(const ChannelId &channelId)
 	return *this;
 }
 
-OptionsSetter &OptionsSetter::rotate(double ccwQuadrant)
-{
-	options.angle += ccwQuadrant * M_PI / 2;
-	return *this;
-}
-
-OptionsSetter &OptionsSetter::setAngle(double ccwQuadrant)
-{
-	options.angle = ccwQuadrant * M_PI / 2;
-	return *this;
-}
-
 OptionsSetter &OptionsSetter::setFilter(const Data::Filter &filter)
 {
 	options.dataFilter = filter;

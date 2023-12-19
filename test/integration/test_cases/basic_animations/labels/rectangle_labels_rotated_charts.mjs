@@ -38,7 +38,7 @@ const testSteps = [
     chart.animate({
       config: {
         title: 'Rectangle Marker Label Positions - Top',
-        rotate: 10
+        angle: Math.PI / 18
       },
       style: {
         plot: {
@@ -55,7 +55,7 @@ const testSteps = [
     chart.animate({
       config: {
         title: 'Rectangle Marker Label Positions - Left',
-        rotate: 10
+        angle: (Math.PI * 2) / 18
       },
       style: {
         plot: {
@@ -71,7 +71,7 @@ const testSteps = [
     chart.animate({
       config: {
         title: 'Rectangle Marker Label Positions - Bottom',
-        rotate: 10
+        angle: (Math.PI * 3) / 18
       },
       style: {
         plot: {
@@ -87,7 +87,7 @@ const testSteps = [
     chart.animate({
       config: {
         title: 'Rectangle Marker Label Positions - Right',
-        rotate: 10
+        angle: (Math.PI * 4) / 18
       },
       style: {
         plot: {
@@ -103,7 +103,7 @@ const testSteps = [
     chart.animate({
       config: {
         title: 'Rectangle Marker Label Positions - Center/Horizontal',
-        rotate: 10
+        angle: (Math.PI * 5) / 18
       },
       style: {
         plot: {
@@ -119,7 +119,7 @@ const testSteps = [
     chart.animate({
       config: {
         title: 'Rectangle Marker Label Positions - Center/Tangential',
-        rotate: 10
+        angle: (Math.PI * 6) / 18
       },
       style: {
         plot: {
@@ -135,7 +135,7 @@ const testSteps = [
     chart.animate({
       config: {
         title: 'Rectangle Marker Label Positions - Center/Normal',
-        rotate: 10
+        angle: (Math.PI * 7) / 18
       },
       style: {
         plot: {
@@ -151,7 +151,7 @@ const testSteps = [
     chart.animate({
       config: {
         title: 'Rectangle Marker Label Positions - Center/Vertical',
-        rotate: 10
+        angle: (Math.PI * 8) / 18
       },
       style: {
         plot: {
@@ -171,7 +171,7 @@ const testSteps = [
           label: { attach: ['Value 2 (+)'] }
         },
         title: 'Change Continuous',
-        rotate: 10
+        angle: (Math.PI * 9) / 18
       },
       style: {
         plot: {
@@ -193,7 +193,7 @@ const testSteps = [
           label: { attach: ['Value 2 (+)', 'Country'] }
         },
         title: 'Polar Coordinate',
-        rotate: 180,
+        angle: (Math.PI * 27) / 18,
         coordSystem: 'polar'
       },
       style: {
@@ -210,7 +210,7 @@ const testSteps = [
     chart.animate({
       config: {
         title: 'Rectangle Marker Label Positions - Left',
-        rotate: 10
+        angle: (Math.PI * 28) / 18
       },
       style: {
         plot: {
@@ -226,7 +226,7 @@ const testSteps = [
     chart.animate({
       config: {
         title: 'Rectangle Marker Label Positions - Bottom',
-        rotate: 10
+        angle: (Math.PI * 29) / 18
       },
       style: {
         plot: {
@@ -242,7 +242,7 @@ const testSteps = [
     chart.animate({
       config: {
         title: 'Rectangle Marker Label Positions - Right',
-        rotate: 10
+        angle: (Math.PI * 30) / 18
       },
       style: {
         plot: {
@@ -258,7 +258,7 @@ const testSteps = [
     chart.animate({
       config: {
         title: 'Rectangle Marker Label Positions - Center/Horizontal',
-        rotate: 10
+        angle: (Math.PI * 31) / 18
       },
       style: {
         plot: {
@@ -275,7 +275,7 @@ const testSteps = [
     chart.animate({
       config: {
         title: 'Rectangle Marker Label Positions - Top/Normal',
-        rotate: 10
+        angle: (Math.PI * 32) / 18
       },
       style: {
         plot: {
@@ -292,7 +292,7 @@ const testSteps = [
     chart.animate({
       config: {
         title: 'Rectangle Marker Label Positions - Top/Vertical',
-        rotate: 10
+        angle: (Math.PI * 33) / 18
       },
       style: {
         plot: {
@@ -308,7 +308,7 @@ const testSteps = [
     chart.animate({
       config: {
         title: 'Rectangle Marker Label Positions - Top/Tangential',
-        rotate: 10
+        angle: (Math.PI * 34) / 18
       },
       style: {
         plot: {
@@ -324,7 +324,7 @@ const testSteps = [
     chart.animate({
       config: {
         title: 'Rectangle Marker Label Positions - Top/Angle',
-        rotate: 10
+        angle: (Math.PI * 35) / 18
       },
       style: {
         plot: {
@@ -344,7 +344,7 @@ const testSteps = [
           size: { attach: ['Value 2 (+)'] }
         },
         title: 'Without Coordinate',
-        rotate: 10,
+        angle: (Math.PI * 36) / 18,
         coordSystem: 'cartesian'
       },
       style: {
@@ -362,7 +362,7 @@ const testSteps = [
     chart.animate({
       config: {
         title: 'Rectangle Marker Label Positions - Center/Horizontal',
-        rotate: 10
+        angle: (Math.PI * 37) / 18
       },
       style: {
         plot: {
@@ -392,7 +392,7 @@ const testSteps = [
     chart.animate({
       config: {
         title: 'Rectangle Marker Label Positions - Left',
-        rotate: 10
+        angle: (Math.PI * 38) / 18
       },
       style: {
         plot: {
@@ -408,7 +408,7 @@ const testSteps = [
     chart.animate({
       config: {
         title: 'Rectangle Marker Label Positions - Bottom',
-        rotate: 10
+        angle: (Math.PI * 39) / 18
       },
       style: {
         plot: {
@@ -424,7 +424,7 @@ const testSteps = [
     chart.animate({
       config: {
         title: 'Rectangle Marker Label Positions - Right',
-        rotate: 10
+        angle: (Math.PI * 40) / 18
       },
       style: {
         plot: {
@@ -440,7 +440,7 @@ const testSteps = [
     chart.animate({
       config: {
         title: 'Rectangle Marker Label Positions - Center/Horizontal',
-        rotate: 10
+        angle: (Math.PI * 41) / 18
       },
       style: {
         plot: {
@@ -457,7 +457,7 @@ const testSteps = [
     chart.animate({
       config: {
         title: 'Rectangle Marker Label Positions - Top/Normal',
-        rotate: 10
+        angle: (Math.PI * 42) / 18
       },
       style: {
         plot: {
@@ -474,7 +474,7 @@ const testSteps = [
     chart.animate({
       config: {
         title: 'Rectangle Marker Label Positions - Top/Vertical',
-        rotate: -360
+        angle: (Math.PI * 6) / 18
       },
       style: {
         plot: {
@@ -490,7 +490,7 @@ const testSteps = [
     chart.animate({
       config: {
         title: 'Rectangle Marker Label Positions - Top/Tangential',
-        rotate: 100
+        angle: (Math.PI * 16) / 18
       },
       style: {
         plot: {
@@ -506,7 +506,7 @@ const testSteps = [
     chart.animate({
       config: {
         title: 'Rectangle Marker Label Positions - Top/Angle',
-        rotate: 380
+        angle: (Math.PI * 54) / 18
       },
       style: {
         plot: {
