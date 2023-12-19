@@ -92,8 +92,11 @@ void Sheet::setAxisLabels()
 	else if (const auto &xAxis =
 	             options->getChannels().at(Gen::ChannelId::x);
 	         !xAxis.isEmpty() && xAxis.isDimension()
-	         && options->angle == 0)
+	         && options->angle == 0) {
 		def.angle.reset();
+		// def.paddingLeft = Gfx::Length::Emphemeral(2 / 12.0);
+		// def.paddingRight = Gfx::Length::Emphemeral(2 / 12.0);
+	}
 }
 
 void Sheet::setAxisTitle()
@@ -196,8 +199,7 @@ void Sheet::setAfterStyles(Gen::Plot &plot, const Geom::Size &size)
 
 		plotX -= style.plot.toMargin({plotX, 0}, em).getSpace().x;
 
-		auto fontRelativeHalfApproxWidth =
-		    xLabel.calculatedSize() * 0.575 / 2.0 / plotX;
+		auto font = Gfx::Font{xLabel};
 
 		std::vector<Math::Range<double>> ranges;
 		bool has_collision = false;
@@ -206,14 +208,18 @@ void Sheet::setAfterStyles(Gen::Plot &plot, const Geom::Size &size)
 
 			if (pair.second.weight == 0) continue;
 
+			auto textBoundary =
+			    Gfx::ICanvas::textBoundary(font, pair.second.label);
+			auto textXMargin = 0.; // xLabel.toMargin(textBoundary,
+			                       // font.size).getSpace().x;
+			auto xHalfSize =
+			    (textBoundary.x + textXMargin) / plotX / 2.0;
+
 			auto rangeCenter = pair.second.range.middle();
-			auto textHalfApproxWidth =
-			    static_cast<double>(pair.second.label.size())
-			    * fontRelativeHalfApproxWidth;
 
 			auto next_range =
-			    Math::Range<double>{rangeCenter - textHalfApproxWidth,
-			        rangeCenter + textHalfApproxWidth};
+			    Math::Range<double>{rangeCenter - xHalfSize,
+			        rangeCenter + xHalfSize};
 
 			if (std::any_of(ranges.begin(),
 			        ranges.end(),

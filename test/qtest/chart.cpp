@@ -11,8 +11,15 @@ TestChart::TestChart() : chart() {}
 
 void TestChart::prepareData()
 {
-	std::vector<std::string>
-	    cat1{"A", "A", "A", "B", "B", "B", "C", "C", "C"};
+	std::vector<std::string> cat1{"AAAAAAAAAa",
+	    "AAAAAAAAAa",
+	    "AAAAAAAAAa",
+	    "BbbbBBBB",
+	    "BbbbBBBB",
+	    "BbbbBBBB",
+	    "C",
+	    "C",
+	    "C"};
 	std::vector<std::string> cat2{"aasd",
 	    "bíyx",
 	    "cAxyyxc",
@@ -159,10 +166,10 @@ void TestChart::run()
 		IO::log() << "step 1";
 		auto setter = chart.getChart().getSetter();
 		setter.addSeries(ChannelId::x, "Cat1");
-		setter.addSeries(ChannelId::x, "exists()");
+		// setter.addSeries(ChannelId::x, "exists()");
 		setter.addSeries(ChannelId::y, "Val");
 		setter.addSeries(ChannelId::label, "Val");
-		setter.addSeries(ChannelId::x, "Val");
+		// setter.addSeries(ChannelId::x, "Val");
 		setter.addSeries(ChannelId::y, "Cat2");
 		setter.addSeries(ChannelId::color, "Cat2");
 		chart.getChart().getStyles().plot.marker.label.filter =
@@ -176,7 +183,7 @@ void TestChart::run()
 		        Vizzu::Styles::Text::TextAlign::left);
 		setter.getOptions().title = "Example VIZZU Chart";
 		chart.getChart().setKeyframe();
-		chart.getChart().animate(step1b);
+		chart.getChart().animate(/*step1b*/);
 	};
 
 	step1(true);
