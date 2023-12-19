@@ -4,6 +4,8 @@
 
 ### Fixed
 
+- Type-fest dependency added as normal instead of dev.
+- Added missing `cvizzu.d.ts` and `cvizzu.types.d.ts` to the `npm` package.
 - When only logo rendered chart resized, the previous drawn logo position was not deleted.   
 - At the mouse events the lib is not queried the exact rendered chart position through API.
 - On axis labels sometimes missed a space character between value and unit.
