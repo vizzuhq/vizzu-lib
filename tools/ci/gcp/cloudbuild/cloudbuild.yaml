@@ -13,7 +13,7 @@ steps:
     dir: /workspace
 
   - name: vizzu/vizzu-dev-wasm:0.9
-    id: ci-src
+    id: check_src
     waitFor:
       - init
     entrypoint: bash
@@ -30,7 +30,7 @@ steps:
         fi
     dir: /workspace
   - name: vizzu/vizzu-dev-wasm:0.9
-    id: ci-docs
+    id: check_docs
     waitFor:
       - init
     entrypoint: bash
@@ -47,7 +47,7 @@ steps:
         fi
     dir: /workspace
   - name: vizzu/vizzu-dev-wasm:0.9
-    id: ci-tools
+    id: check_tools
     waitFor:
       - init
     entrypoint: bash
@@ -66,11 +66,11 @@ steps:
     dir: /workspace
 
   - name: vizzu/vizzu-dev-desktop:0.9
-    id: build-desktop-clangformat
+    id: build_desktop_clangformat
     waitFor:
-      - ci-src
-      - ci-docs
-      - ci-tools
+      - check_src
+      - check_docs
+      - check_tools
     entrypoint: bash
     args:
       - '-c'
@@ -85,9 +85,9 @@ steps:
     dir: /workspace
 
   - name: vizzu/vizzu-dev-desktop:0.9
-    id: build-desktop-clangtidy
+    id: build_desktop_clangtidy
     waitFor:
-      - build-desktop-clangformat
+      - build_desktop_clangformat
     entrypoint: bash
     args:
       - '-c'
@@ -101,9 +101,9 @@ steps:
         fi
     dir: /workspace
   - name: vizzu/vizzu-dev-wasm:0.9
-    id: build-wasm
+    id: build_wasm
     waitFor:
-      - build-desktop-clangformat
+      - build_desktop_clangformat
     entrypoint: bash
     args:
       - '-c'
@@ -122,9 +122,9 @@ steps:
     dir: /workspace
 
   - name: vizzu/vizzu-dev-wasm:0.9
-    id: lib-sha
+    id: lib_sha
     waitFor:
-      - build-wasm
+      - build_wasm
     entrypoint: bash
     args:
       - '-c'
@@ -147,7 +147,7 @@ steps:
   - name: vizzu/vizzu-dev-wasm:0.9
     id: test
     waitFor:
-      - lib-sha
+      - lib_sha
     entrypoint: bash
     args:
       - '-c'
@@ -203,7 +203,7 @@ steps:
       - VIZZUHQ_GITHUB_EMAIL
 
   - name: vizzu/vizzu-dev-wasm:0.9
-    id: release
+    id: publish
     waitFor:
       - docs
     entrypoint: bash
@@ -232,7 +232,7 @@ steps:
   - name: gcr.io/cloud-builders/gsutil
     id: lib
     waitFor:
-      - release
+      - publish
     entrypoint: bash
     args:
       - '-c'
