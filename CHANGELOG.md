@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+## [0.9.3] - 2023-12-20
+
 ### Fixed
 
 - Corrected listing of Type-fest dependency from development to normal.
