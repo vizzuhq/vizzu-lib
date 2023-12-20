@@ -73,19 +73,6 @@ void Array<T>::visitSubSlice(const SubSliceIndex &subSliceIndex,
 }
 
 template <typename T>
-void Array<T>::visitSubSlicesTill(
-    const SubSliceIndex &targetSubSliceIndex,
-    const std::function<void(const SubSliceIndex &)> &visitor) const
-{
-	SubSliceIndex subSliceIndex;
-	subSliceIndex.reserve(targetSubSliceIndex.size());
-	this->visitSubSlicesTill(targetSubSliceIndex,
-	    visitor,
-	    subSliceIndex,
-	    false);
-}
-
-template <typename T>
 void Array<T>::visitSubSlice(const SubSliceIndex &subSliceIndex,
     const std::function<void(const T &)> &visitor,
     MultiIndex &multiIndex) const
@@ -107,58 +94,6 @@ void Array<T>::visitSubSlice(const SubSliceIndex &subSliceIndex,
 			}
 		multiIndex.resize(dim);
 	}
-}
-
-template <typename T>
-void Array<T>::visitSubSlicesTill(
-    const SubSliceIndex &targetSubSliceIndex,
-    const std::function<void(const SubSliceIndex &)> &visitor,
-    SubSliceIndex &subSliceIndex,
-    bool whole) const
-{
-	if (subSliceIndex.size() == targetSubSliceIndex.size()) {
-		visitor(subSliceIndex);
-	}
-	else {
-		auto level = subSliceIndex.size();
-		auto dimIndex = targetSubSliceIndex[level].dimIndex;
-		subSliceIndex.push_back({dimIndex, Index(0)});
-
-		auto maxIndex = whole ? sizes[dimIndex] - 1
-		                      : targetSubSliceIndex[level].index;
-
-		for (auto i = 0U; i <= maxIndex; ++i) {
-			subSliceIndex[level].index = Index(i);
-			visitSubSlicesTill(targetSubSliceIndex,
-			    visitor,
-			    subSliceIndex,
-			    i != targetSubSliceIndex[level].index);
-		}
-		subSliceIndex.pop_back();
-	}
-}
-
-template <typename T>
-MultiIndex Array<T>::subSliceIndexMaxAt(
-    const SubSliceIndex &subSliceIndex,
-    const MultiIndex &multiIndex) const
-{
-	MultiIndex res = multiIndex;
-	for (const auto &sliceIndex : subSliceIndex)
-		res[sliceIndex.dimIndex] =
-		    Index{sizes[sliceIndex.dimIndex] - 1};
-	return res;
-}
-
-template <typename T>
-size_t Array<T>::lastIndexCountAt(
-    const SubSliceIndex &subSliceIndex) const
-{
-	auto count = 0;
-	for (const auto &sliceIndex : subSliceIndex)
-		if (sliceIndex.index == sizes[sliceIndex.dimIndex] - 1)
-			++count;
-	return count;
 }
 
 template <typename T> MultiIndex Array<T>::maxIndex() const

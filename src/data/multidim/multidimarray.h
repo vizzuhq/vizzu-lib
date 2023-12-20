@@ -64,18 +64,7 @@ public:
 	void visitSubSlice(const SubSliceIndex &subSliceIndex,
 	    const std::function<void(const T &)> &visitor) const;
 
-	void visitSubSlicesTill(const SubSliceIndex &targetSubSliceIndex,
-	    const std::function<void(const SubSliceIndex &)> &visitor)
-	    const;
-
-	[[nodiscard]] MultiIndex subSliceIndexMaxAt(
-	    const SubSliceIndex &subSliceIndex,
-	    const MultiIndex &multiIndex) const;
-
 	[[nodiscard]] MultiIndex maxIndex() const;
-
-	[[nodiscard]] size_t lastIndexCountAt(
-	    const SubSliceIndex &subSliceIndex) const;
 
 	[[nodiscard]] bool empty() const;
 	[[nodiscard]] size_t unfoldedSize() const;
@@ -90,11 +79,6 @@ private:
 	void visitSubSlice(const SubSliceIndex &subSliceIndex,
 	    const std::function<void(const T &)> &visitor,
 	    MultiIndex &multiIndex) const;
-
-	void visitSubSlicesTill(const SubSliceIndex &targetSubSliceIndex,
-	    const std::function<void(const SubSliceIndex &)> &visitor,
-	    SubSliceIndex &subSliceIndex,
-	    bool whole) const;
 };
 
 }

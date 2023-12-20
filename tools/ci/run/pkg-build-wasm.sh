@@ -31,6 +31,10 @@ node tools/ci/sizeCheck.cjs
 
 npm run build:ts
 
+# test d.ts
+
+npm run type:src
+
 # test js
 
 npm run test:unit
