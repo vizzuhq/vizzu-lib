@@ -6,6 +6,7 @@
 
 ### Fixed
 
+- Orientation and channel min/max cannot be null, only auto
 - Corrected listing of Type-fest dependency from development to normal.
 - Added missing `cvizzu.d.ts` and `cvizzu.types.d.ts` to the npm package.
 - Logo positioning issue in charts when only the logo is rendered and the chart is resized.
@@ -25,7 +26,6 @@
 - Fixed redraw on browser zoom (bug since 0.9.0).
 - Fixed clearing of the canvas before rendering when devicePixelRatio is not 1.
 - TypeScript definition fixed, measures can contain null values. 
-- Orientation and channel min/max cannot be null, only auto
 
 ### Added
 
