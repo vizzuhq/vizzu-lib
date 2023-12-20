@@ -129,9 +129,10 @@ class TestConfigUpdater {
 
 	#writeConfig(configPath, config) {
 		return prettier
-			.format(JSON.stringify(config, null, 2), {
+			.format(JSON.stringify(config, null, '\t'), {
 				parser: 'json',
-				tabWidth: 2
+				tabWidth: 4,
+				useTabs: true
 			})
 			.then((stringifiedConfig) => {
 				return fs

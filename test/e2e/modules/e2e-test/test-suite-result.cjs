@@ -155,10 +155,11 @@ class TestSuiteResult {
 								return a
 							}, {})
 						const formattedConfigDataReady = prettier.format(
-							JSON.stringify(configData, null, 2),
+							JSON.stringify(configData, null, '\t'),
 							{
 								parser: 'json',
-								tabWidth: 2
+								tabWidth: 4,
+								useTabs: true
 							}
 						)
 						formattedConfigDataReady.then((formattedConfigData) => {

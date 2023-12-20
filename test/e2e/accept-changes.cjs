@@ -14,9 +14,10 @@ function copyHashes(failHashFile, refHashFile) {
 			refHashData.test[testFilename].refs[0] = failHashData.test[testFilename].refs[0]
 	}
 
-	const formattedRefHashDataReady = prettier.format(JSON.stringify(refHashData, null, 2), {
+	const formattedRefHashDataReady = prettier.format(JSON.stringify(refHashData, null, '\t'), {
 		parser: 'json',
-		tabWidth: 2
+		tabWidth: 4,
+		useTabs: true
 	})
 	formattedRefHashDataReady.then((formattedRefHashData) => {
 		fs.writeFileSync(refHashFile, formattedRefHashData)
