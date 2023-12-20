@@ -1,7 +1,7 @@
 mergeInto(LibraryManager.library, {
-  openUrl: function (url) {
-    window.open(UTF8ToString(url), '_blank')
-  },
+	openUrl: function (url) {
+		window.open(UTF8ToString(url), '_blank')
+	},
   textBoundary: function (font, text, sizeX, sizeY) {
     const dc = Module.measureCanvas
     dc.font = UTF8ToString(font)

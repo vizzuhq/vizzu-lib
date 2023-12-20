@@ -63,19 +63,7 @@ const Config::Accessors &Config::getAccessors()
 	    accessor<&Options::caption>,
 	    accessor<&Options::legend>,
 	    accessor<&Options::coordSystem>,
-	    {"rotate",
-	        {.get =
-	                [](const Options &options)
-	            {
-		            return Conv::toString(
-		                90 * options.angle / (M_PI / 2));
-	            },
-	            .set =
-	                [](OptionsSetter &setter,
-	                    const std::string &value)
-	            {
-		            setter.rotate(Conv::parse<double>(value) / 90);
-	            }}},
+	    accessor<&Options::angle>,
 	    accessor<&Options::geometry>,
 	    accessor<&Options::orientation>,
 	    accessor<&Options::sort>,

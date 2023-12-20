@@ -1,240 +1,240 @@
 ---
 $import:
-  Data: ./data
+    Data: ./data
 
 definitions:
-  ChannelExtrema:
-    description: |
-      Units: 
-      - no unit: the same unit as in the data;
-      - %: percentage relative to the min/max of the data; 
-      - min,max: offset from min/max of the data;
-      - auto: automatic range based on chart config;
-    oneOf:
-      - type: number
-      - { type: string, mask: /:number:%/ }
-      - { type: string, mask: /:number:min/ }
-      - { type: string, mask: /:number:max/ }
-      - { type: string, enum: [auto] }
-
-  ChannelRange:
-    description: Channel range specifies how to scale the represented data.
-    type: object
-    properties:
-      min:
-        $ref: ChannelExtrema
-      max:
-        $ref: ChannelExtrema
-
-  AutoBool:
-    oneOf:
-      - type: boolean
-      - { type: string, enum: [auto] }
-
-  Channel:
-    description: |
-      Channels are the main building blocks of the chart. Each channel describes
-      a particular aspect of the markers (vertical & horizontal position, color, etc.)
-      and connects them to the underlying data. A single measure and an ordered list of
-      dimensions can be on each channel. The dimensions will recursively slice the
-      measure on the channel. The channels are represented on the chart as an 
-      axis or legend.
-    type: object
-    properties:
-      title:
+    ChannelExtrema:
         description: |
-          This title is shown on the axis or legend corresponding to the channel.
-          If 'auto', the title will be the name of the measure attached to
-          that channel.
+            Units: 
+            - no unit: the same unit as in the data;
+            - %: percentage relative to the min/max of the data; 
+            - min,max: offset from min/max of the data;
+            - auto: automatic range based on chart config;
         oneOf:
-          - type: string
-          - { type: string, enum: [auto] }
-        nullable: true
-      set:
-        description: List of data series descriptors on the channel.
-        $ref: Data:SeriesList
-        nullable: true
-      attach:
-        description: |
-          List of data series descriptors to be added to the 
-          channel beside the ones already added.
-        $ref: Data:SeriesList
-      detach:
-        description: |
-          List of data series descriptors to be removed from the 
-          channel.
-        $ref: Data:SeriesList
-      range:
-        description: |
-          Specifies the range that determines how the represented data scales 
-          on the channel.
-        $ref: ChannelRange
-      labelLevel:
-        description: |
-          Only one dimension can be shown on an axis or legend by
-          name. This index specifies which attached series should be used.
-        type: number
-      axis:
-        description: Enables the axis line on axis channels.
-        $ref: AutoBool
-      labels:
-        description: Enables the axis labels on axis channels.
-        $ref: AutoBool
-      ticks:
-        description: Enables the axis ticks on axis channels showing measure data.
-        $ref: AutoBool
-      interlacing:
-        description: Enables the interlacing on axis channels showing measure data.
-        $ref: AutoBool
-      guides:
-        description: Enables the grid lines on axis channels showing dimension data.
-        $ref: AutoBool
-      markerGuides:
-        description: |
-          Enables the guide lines on axis channels showing measure data
-          for all marker positions.
-        $ref: AutoBool
-      step:
-        description: |
-          Base interval of the interlacing on the axis.
+            - type: number
+            - { type: string, mask: /:number:%/ }
+            - { type: string, mask: /:number:min/ }
+            - { type: string, mask: /:number:max/ }
+            - { type: string, enum: [auto] }
+
+    ChannelRange:
+        description: Channel range specifies how to scale the represented data.
+        type: object
+        properties:
+            min:
+                $ref: ChannelExtrema
+            max:
+                $ref: ChannelExtrema
+
+    AutoBool:
         oneOf:
-          - type: number
-          - { type: string, enum: [auto] }
+            - type: boolean
+            - { type: string, enum: [auto] }
 
-  Channels:
-    description: |
-      Channel configuration. Setting a channel to null will remove all data series from it.
-    type: object
-    properties:
-      x:
-        $ref: Channel
+    Channel:
         description: |
-          Parameters for the X-axis, determining the position of the markers on the 
-          x-axis - or their angle when using polar coordinates. 
-          Note: leaving x and y channels empty will result in a 
-          chart "without coordinates" like a Treemap or a Bubble Chart.
-      y:
-        $ref: Channel
-        description: |
-          Parameters for the Y-axis, determining the position of the markers on the 
-          y-axis - or their radius when using polar coordinates) .
-      color:
-        $ref: Channel
-        description: |
-          Parameters for the markers' base color. The markers' actual color can 
-          also be affected by the lightness channel.
-      lightness:
-        $ref: Channel
-        description: Parameters for markers' lightness.
-      size:
-        $ref: Channel
-        description: |
-          Parameters for the markers' size. Effective only for circle and line
-          geometry affecting the circle area or the line width respectively.
-      label:
-        $ref: Channel
-        description: |
-          Parameters for the content of the labels that appear on the markers.
-      noop:
-        $ref: Channel
-        description: |
-          Splits the markers as all the other channels, but have no 
-          effect on the markers' appearance. Thus, it only works with dimensions.
+            Channels are the main building blocks of the chart. Each channel describes
+            a particular aspect of the markers (vertical & horizontal position, color, etc.)
+            and connects them to the underlying data. A single measure and an ordered list of
+            dimensions can be on each channel. The dimensions will recursively slice the
+            measure on the channel. The channels are represented on the chart as an 
+            axis or legend.
+        type: object
+        properties:
+            title:
+                description: |
+                    This title is shown on the axis or legend corresponding to the channel.
+                    If 'auto', the title will be the name of the measure attached to
+                    that channel.
+                oneOf:
+                    - type: string
+                    - { type: string, enum: [auto] }
+                nullable: true
+            set:
+                description: List of data series descriptors on the channel.
+                $ref: Data:SeriesList
+                nullable: true
+            attach:
+                description: |
+                    List of data series descriptors to be added to the 
+                    channel beside the ones already added.
+                $ref: Data:SeriesList
+            detach:
+                description: |
+                    List of data series descriptors to be removed from the 
+                    channel.
+                $ref: Data:SeriesList
+            range:
+                description: |
+                    Specifies the range that determines how the represented data scales 
+                    on the channel.
+                $ref: ChannelRange
+            labelLevel:
+                description: |
+                    Only one dimension can be shown on an axis or legend by
+                    name. This index specifies which attached series should be used.
+                type: number
+            axis:
+                description: Enables the axis line on axis channels.
+                $ref: AutoBool
+            labels:
+                description: Enables the axis labels on axis channels.
+                $ref: AutoBool
+            ticks:
+                description: Enables the axis ticks on axis channels showing measure data.
+                $ref: AutoBool
+            interlacing:
+                description: Enables the interlacing on axis channels showing measure data.
+                $ref: AutoBool
+            guides:
+                description: Enables the grid lines on axis channels showing dimension data.
+                $ref: AutoBool
+            markerGuides:
+                description: |
+                    Enables the guide lines on axis channels showing measure data
+                    for all marker positions.
+                $ref: AutoBool
+            step:
+                description: |
+                    Base interval of the interlacing on the axis.
+                oneOf:
+                    - type: number
+                    - { type: string, enum: [auto] }
 
-  Chart:
-    description: |
-      The config contains all of the parameters needed to render a particular 
-      static chart or a state of an animated chart.
-    type: object
-    properties:
-      channels:
+    Channels:
         description: |
-          List of the chart's channels' configuration. The chart object also 
-          extends the channels object as a configuration shorthand.
-        $ref: Channels
-      title:
+            Channel configuration. Setting a channel to null will remove all data series from it.
+        type: object
+        properties:
+            x:
+                $ref: Channel
+                description: |
+                    Parameters for the X-axis, determining the position of the markers on the 
+                    x-axis - or their angle when using polar coordinates. 
+                    Note: leaving x and y channels empty will result in a 
+                    chart "without coordinates" like a Treemap or a Bubble Chart.
+            y:
+                $ref: Channel
+                description: |
+                    Parameters for the Y-axis, determining the position of the markers on the 
+                    y-axis - or their radius when using polar coordinates) .
+            color:
+                $ref: Channel
+                description: |
+                    Parameters for the markers' base color. The markers' actual color can 
+                    also be affected by the lightness channel.
+            lightness:
+                $ref: Channel
+                description: Parameters for markers' lightness.
+            size:
+                $ref: Channel
+                description: |
+                    Parameters for the markers' size. Effective only for circle and line
+                    geometry affecting the circle area or the line width respectively.
+            label:
+                $ref: Channel
+                description: |
+                    Parameters for the content of the labels that appear on the markers.
+            noop:
+                $ref: Channel
+                description: |
+                    Splits the markers as all the other channels, but have no 
+                    effect on the markers' appearance. Thus, it only works with dimensions.
+
+    Chart:
         description: |
-          This is the title shown on the top of the chart.
-          If set to null, the title will not be shown and will not take up any
-          space in the chart layout.
-        type: string
-        nullable: true
-      subtitle:
-        description: |
-          This is the subtitle shown on the top of the chart under the title.
-          If set to null, the subtitle will not be shown and will not take up any
-          space in the chart layout.
-        type: string
-        nullable: true
-      caption:
-        description: |
-          This is the caption shown on the bottom of the chart.
-          If set to null, the caption will not be shown and will not take up any
-          space in the chart layout.
-        type: string
-        nullable: true
-      legend:
-        description: |
-          Specifies which channel should be shown on the legend.
-          If set to null, the legend will not be shown and will not take up any
-          space in the chart layout.
-          If set to auto, the internal logic will select the most suitable channel
-          for the legend.
-        type: string
-        enum: [color, lightness, size, auto]
-        nullable: true
-      coordSystem:
-        description: |
-          Sets the coordinate system for the chart. Switch to the 'polar' 
-          coordinate system to create a chart from the pie/radial chart family.
-        type: string
-        enum: [cartesian, polar]
-      rotate:
-        description: |
-          Rotates the plot area by the specified angle in degree. 
-          Note: this is an experimental, not tested feature.
-        type: number
-      geometry:
-        description: |
-          Sets the geometric elements used for the markers to represent the data.
-        type: string
-        enum: [rectangle, circle, area, line]
-      orientation:
-        description: |
-          If both axes have measures on them, this parameter sets the 
-          orientation of the chart, meaning to which axis the graphical elements 
-          are oriented to.
-        type: string
-        enum: [auto, horizontal, vertical]
-      sort:
-        description: |
-          - 'none': markers are sorted in the order as the corresponding data 
-                    appear in the data set.
-          - 'byValue': markers will be sorted by the corresponding measure (if present)
-          in decreasing order.
-        type: string
-        enum: [none, byValue]
-      reverse:
-        description: Reverts the order of the markers if set.
-        type: boolean
-      align:
-        description: |
-          Sets the alignment of the markers with relation to the x- or the y-axis depending
-          on where the measure is. In case both axes have measures on them, this is determined 
-          by the `orientation` of the chart.
-        type: string
-        enum: [none, min, center, max, stretch]
-      split:
-        description: |
-          If set to true, markers will be split by the dimension(s) along the axis.
-          This works if you have at least one dimension and a measure on the same axis.In case 
-          both axes have measures and dimension(s) on them, this is determined by the 
-          `orientation` of the chart.
-        type: boolean
-      tooltip:
-        description: |
-          Index of the marker, the tooltip should be turned on. This parameter is not needed
-          to set manually, tooltip will be taken care of autamatically when `tooltip` feature
-          is enabled.
-        type: number
-        nullable: true
+            The config contains all of the parameters needed to render a particular 
+            static chart or a state of an animated chart.
+        type: object
+        properties:
+            channels:
+                description: |
+                    List of the chart's channels' configuration. The chart object also 
+                    extends the channels object as a configuration shorthand.
+                $ref: Channels
+            title:
+                description: |
+                    This is the title shown on the top of the chart.
+                    If set to null, the title will not be shown and will not take up any
+                    space in the chart layout.
+                type: string
+                nullable: true
+            subtitle:
+                description: |
+                    This is the subtitle shown on the top of the chart under the title.
+                    If set to null, the subtitle will not be shown and will not take up any
+                    space in the chart layout.
+                type: string
+                nullable: true
+            caption:
+                description: |
+                    This is the caption shown on the bottom of the chart.
+                    If set to null, the caption will not be shown and will not take up any
+                    space in the chart layout.
+                type: string
+                nullable: true
+            legend:
+                description: |
+                    Specifies which channel should be shown on the legend.
+                    If set to null, the legend will not be shown and will not take up any
+                    space in the chart layout.
+                    If set to auto, the internal logic will select the most suitable channel
+                    for the legend.
+                type: string
+                enum: [color, lightness, size, auto]
+                nullable: true
+            coordSystem:
+                description: |
+                    Sets the coordinate system for the chart. Switch to the 'polar' 
+                    coordinate system to create a chart from the pie/radial chart family.
+                type: string
+                enum: [cartesian, polar]
+            angle:
+                description: |
+                    Rotates the plot area to the specified angle in radian. 
+                    Note: this is an experimental, not tested feature.
+                type: number
+            geometry:
+                description: |
+                    Sets the geometric elements used for the markers to represent the data.
+                type: string
+                enum: [rectangle, circle, area, line]
+            orientation:
+                description: |
+                    If both axes have measures on them, this parameter sets the 
+                    orientation of the chart, meaning to which axis the graphical elements 
+                    are oriented to.
+                type: string
+                enum: [auto, horizontal, vertical]
+            sort:
+                description: |
+                    - 'none': markers are sorted in the order as the corresponding data 
+                              appear in the data set.
+                    - 'byValue': markers will be sorted by the corresponding measure (if present)
+                    in decreasing order.
+                type: string
+                enum: [none, byValue]
+            reverse:
+                description: Reverts the order of the markers if set.
+                type: boolean
+            align:
+                description: |
+                    Sets the alignment of the markers with relation to the x- or the y-axis depending
+                    on where the measure is. In case both axes have measures on them, this is determined 
+                    by the `orientation` of the chart.
+                type: string
+                enum: [none, min, center, max, stretch]
+            split:
+                description: |
+                    If set to true, markers will be split by the dimension(s) along the axis.
+                    This works if you have at least one dimension and a measure on the same axis.In case 
+                    both axes have measures and dimension(s) on them, this is determined by the 
+                    `orientation` of the chart.
+                type: boolean
+            tooltip:
+                description: |
+                    Index of the marker, the tooltip should be turned on. This parameter is not needed
+                    to set manually, tooltip will be taken care of autamatically when `tooltip` feature
+                    is enabled.
+                type: number
+                nullable: true

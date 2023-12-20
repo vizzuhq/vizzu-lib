@@ -1,23 +1,23 @@
 .not-collapsible-style {
-  text-align: left;
-  font-size: 0.8rem;
-  margin: 5px;
+	text-align: left;
+	font-size: 0.8rem;
+	margin: 5px;
 }
 
 .collapsible-style,
 .allbtn-style {
-  cursor: pointer;
-  font-size: 0.8rem;
-  margin: 5px;
+	cursor: pointer;
+	font-size: 0.8rem;
+	margin: 5px;
 }
 
 .collapsible-style:hover button,
 .allbtn-style:hover button {
-  color: #4171cd;
+	color: #4171cd;
 }
 
 .collapsible-style-content {
-  max-height: 0;
-  overflow: hidden;
-  transition: max-height 0.1s ease-out;
+	max-height: 0;
+	overflow: hidden;
+	transition: max-height 0.1s ease-out;
 }

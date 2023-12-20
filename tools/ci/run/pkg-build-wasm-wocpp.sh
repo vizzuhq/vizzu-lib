@@ -28,5 +28,5 @@ if [ "$SUCCESS" = false ]; then
     exit 1
 fi
 
-npm run pkg-build-ts
-npm run pkg-rollup-js
+npm run build:ts
+npm run rollup
