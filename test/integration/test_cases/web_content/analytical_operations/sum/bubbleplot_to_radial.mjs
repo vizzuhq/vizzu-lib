@@ -11,53 +11,53 @@ const description = `This Vizzu animation consist of 2 steps (animates):
 - remove the Dimension from the X-axis 
 - add the remaining Measure to the Label channel`
 const testSteps = [
-  (chart) =>
-    chart.animate({
-      data,
-      config: {
-        channels: {
-          x: ['Joy factors', 'Value 6 (+/-)'],
-          y: 'Value 5 (+/-)',
-          color: 'Joy factors',
-          size: 'Value 2 (+)',
-          noop: 'Country_code'
-        },
+	(chart) =>
+		chart.animate({
+			data,
+			config: {
+				channels: {
+					x: ['Joy factors', 'Value 6 (+/-)'],
+					y: 'Value 5 (+/-)',
+					color: 'Joy factors',
+					size: 'Value 2 (+)',
+					noop: 'Country_code'
+				},
 
-        geometry: 'circle'
-      },
-      style: {
-        plot: {
-          marker: {
-            guides: { color: '#ffffff00' }
-          }
-        }
-      }
-    }),
+				geometry: 'circle'
+			},
+			style: {
+				plot: {
+					marker: {
+						guides: { color: '#ffffff00' }
+					}
+				}
+			}
+		}),
 
-  (chart) =>
-    chart.animate({
-      config: {
-        channels: {
-          x: ['Country_code', 'Value 2 (+)'],
-          y: { set: 'Joy factors', range: { min: '-30%' } },
-          noop: null
-        },
+	(chart) =>
+		chart.animate({
+			config: {
+				channels: {
+					x: ['Country_code', 'Value 2 (+)'],
+					y: { set: 'Joy factors', range: { min: '-30%' } },
+					noop: null
+				},
 
-        geometry: 'rectangle',
-        orientation: 'vertical',
-        coordSystem: 'polar'
-      }
-    }),
+				geometry: 'rectangle',
+				orientation: 'vertical',
+				coordSystem: 'polar'
+			}
+		}),
 
-  (chart) =>
-    chart.animate({
-      config: {
-        channels: {
-          x: 'Value 2 (+)',
-          label: 'Value 2 (+)'
-        }
-      }
-    })
+	(chart) =>
+		chart.animate({
+			config: {
+				channels: {
+					x: 'Value 2 (+)',
+					label: 'Value 2 (+)'
+				}
+			}
+		})
 ]
 
 export { description }

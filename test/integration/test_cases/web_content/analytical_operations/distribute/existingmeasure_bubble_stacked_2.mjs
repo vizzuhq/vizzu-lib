@@ -6,38 +6,38 @@ const description = `- move the Size channel's Dimension to the X-axis
 - null the Label channel
 - switch the Geometry from Circle to Rectangle`
 const testSteps = [
-  (chart) =>
-    chart.animate({
-      data: data_4,
+	(chart) =>
+		chart.animate({
+			data: data_4,
 
-      config: {
-        channels: {
-          color: 'Country',
-          size: ['Year', 'Value 2 (+)'],
-          label: 'Value 2 (+)'
-        },
+			config: {
+				channels: {
+					color: 'Country',
+					size: ['Year', 'Value 2 (+)'],
+					label: 'Value 2 (+)'
+				},
 
-        geometry: 'circle'
-      }
-    }),
+				geometry: 'circle'
+			}
+		}),
 
-  (chart) =>
-    chart.animate({
-      config: {
-        channels: {
-          x: 'Year',
-          y: ['Country', 'Value 2 (+)'],
-          size: null,
-          label: null
-        },
+	(chart) =>
+		chart.animate({
+			config: {
+				channels: {
+					x: 'Year',
+					y: ['Country', 'Value 2 (+)'],
+					size: null,
+					label: null
+				},
 
-        geometry: 'rectangle'
-      }
-    }),
-  (chart) => {
-    chart.feature('tooltip', true)
-    return chart
-  }
+				geometry: 'rectangle'
+			}
+		}),
+	(chart) => {
+		chart.feature('tooltip', true)
+		return chart
+	}
 ]
 
 export { description }

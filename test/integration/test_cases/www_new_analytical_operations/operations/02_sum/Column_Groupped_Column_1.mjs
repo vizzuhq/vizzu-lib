@@ -4,35 +4,35 @@ const description = `- remove that Dimension from the X-axis, whitch is not on t
 - shift the other Dimension from X-axis to the Y-axis
 - add the Measure to the Label channel too`
 const testSteps = [
-  (chart) =>
-    chart.animate({
-      data: data_6,
+	(chart) =>
+		chart.animate({
+			data: data_6,
 
-      config: {
-        channels: {
-          x: ['Year', 'Country'],
-          y: 'Value 2 (+)',
-          color: 'Country'
-        },
-        title: 'Title'
-      }
-    }),
+			config: {
+				channels: {
+					x: ['Year', 'Country'],
+					y: 'Value 2 (+)',
+					color: 'Country'
+				},
+				title: 'Title'
+			}
+		}),
 
-  (chart) =>
-    chart.animate({
-      config: {
-        channels: {
-          x: null,
-          y: ['Country', 'Value 2 (+)'],
-          label: 'Value 2 (+)'
-        },
-        title: 'Title'
-      }
-    }),
-  (chart) => {
-    chart.feature('tooltip', true)
-    return chart
-  }
+	(chart) =>
+		chart.animate({
+			config: {
+				channels: {
+					x: null,
+					y: ['Country', 'Value 2 (+)'],
+					label: 'Value 2 (+)'
+				},
+				title: 'Title'
+			}
+		}),
+	(chart) => {
+		chart.feature('tooltip', true)
+		return chart
+	}
 ]
 
 export { description }

@@ -1,31 +1,31 @@
 import { data } from '../../../../test_data/chart_types_eu.mjs'
 
 class Binner {
-  constructor(min, max, count) {
-    this.min = min
-    this.max = max
-    this.count = count
-  }
+	constructor(min, max, count) {
+		this.min = min
+		this.max = max
+		this.count = count
+	}
 
-  getBin(x) {
-    let bin = Math.floor(((x - this.min) / (this.max - this.min)) * this.count)
-    if (bin < 0) bin = 0
-    if (bin >= this.count) bin = this.count - 1
-    return bin
-  }
+	getBin(x) {
+		let bin = Math.floor(((x - this.min) / (this.max - this.min)) * this.count)
+		if (bin < 0) bin = 0
+		if (bin >= this.count) bin = this.count - 1
+		return bin
+	}
 
-  getBinStr(x) {
-    const bin = this.getBin(x)
-    const binWidth = (this.max - this.min) / this.count
-    const binStart = this.min + bin * binWidth
-    const binEnd = binStart + binWidth
-    return `${binStart.toFixed(2)} - ${binEnd.toFixed(2)}`
-  }
+	getBinStr(x) {
+		const bin = this.getBin(x)
+		const binWidth = (this.max - this.min) / this.count
+		const binStart = this.min + bin * binWidth
+		const binEnd = binStart + binWidth
+		return `${binStart.toFixed(2)} - ${binEnd.toFixed(2)}`
+	}
 
-  getBinSeries(measure, name = 'bin') {
-    const bins = measure.values.map((v) => this.getBinStr(v))
-    return { name, type: 'dimension', values: bins }
-  }
+	getBinSeries(measure, name = 'bin') {
+		const bins = measure.values.map((v) => this.getBinStr(v))
+		return { name, type: 'dimension', values: bins }
+	}
 }
 
 const continous = 'Value 1 (+)'
@@ -43,36 +43,36 @@ measure.values.sort()
 } */
 
 const testSteps = [
-  (chart) => {
-    const binner = new Binner(0, 1, 12)
-    data.series.push(binner.getBinSeries(measure))
+	(chart) => {
+		const binner = new Binner(0, 1, 12)
+		data.series.push(binner.getBinSeries(measure))
 
-    return chart.animate({
-      data: Object.assign(
-        {
-          series: [binner.getBinSeries(measure)]
-        },
-        data
-      ),
-      config: {
-        channels: {
-          x: 'bin',
-          y: 'count()',
-          label: 'count()',
-          noop: null
-        },
-        title: 'Histogram of Value 1',
-        geometry: 'rectangle'
-      },
-      style: {
-        plot: {
-          marker: {
-            rectangleSpacing: 0
-          }
-        }
-      }
-    })
-  }
+		return chart.animate({
+			data: Object.assign(
+				{
+					series: [binner.getBinSeries(measure)]
+				},
+				data
+			),
+			config: {
+				channels: {
+					x: 'bin',
+					y: 'count()',
+					label: 'count()',
+					noop: null
+				},
+				title: 'Histogram of Value 1',
+				geometry: 'rectangle'
+			},
+			style: {
+				plot: {
+					marker: {
+						rectangleSpacing: 0
+					}
+				}
+			}
+		})
+	}
 ]
 /*
 for (let i = 0; i < 10; i++) {

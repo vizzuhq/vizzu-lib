@@ -5,35 +5,35 @@ const description = `- move the Dimension from the X-axis & replace the Measure 
 - add a new Measure to the X-axis
 - switch the Geometry from Rectangle (default) to Circe`
 const testSteps = [
-  (chart) =>
-    chart.animate({
-      data: data_8,
+	(chart) =>
+		chart.animate({
+			data: data_8,
 
-      config: {
-        channels: {
-          x: 'Country',
-          y: 'Value 2 (+)',
-          label: 'Value 2 (+)'
-        }
-      }
-    }),
+			config: {
+				channels: {
+					x: 'Country',
+					y: 'Value 2 (+)',
+					label: 'Value 2 (+)'
+				}
+			}
+		}),
 
-  (chart) =>
-    chart.animate({
-      config: {
-        channels: {
-          x: 'Value 4 (+/-)',
-          color: 'Country',
-          label: 'Country'
-        },
+	(chart) =>
+		chart.animate({
+			config: {
+				channels: {
+					x: 'Value 4 (+/-)',
+					color: 'Country',
+					label: 'Country'
+				},
 
-        geometry: 'circle'
-      }
-    }),
-  (chart) => {
-    chart.feature('tooltip', true)
-    return chart
-  }
+				geometry: 'circle'
+			}
+		}),
+	(chart) => {
+		chart.feature('tooltip', true)
+		return chart
+	}
 ]
 
 export { description }

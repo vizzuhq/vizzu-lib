@@ -7,42 +7,42 @@ const description = `- Move the Size channel's Dimension to the X-axis
 - switch the Geometry from Circle to Area`
 
 const testSteps = [
-  (chart) =>
-    chart.animate({
-      data: data_6,
+	(chart) =>
+		chart.animate({
+			data: data_6,
 
-      config: {
-        channels: {
-          x: null,
-          y: null,
-          color: 'Country',
-          size: ['Year', 'Value 2 (+)'],
-          label: 'Value 2 (+)'
-        },
-        title: 'Title',
-        geometry: 'circle'
-      }
-    }),
+			config: {
+				channels: {
+					x: null,
+					y: null,
+					color: 'Country',
+					size: ['Year', 'Value 2 (+)'],
+					label: 'Value 2 (+)'
+				},
+				title: 'Title',
+				geometry: 'circle'
+			}
+		}),
 
-  (chart) =>
-    chart.animate({
-      config: {
-        channels: {
-          x: 'Year',
-          y: ['Country', 'Value 2 (+)'],
-          color: 'Country',
-          size: null,
-          label: null
-        },
-        title: 'Title',
-        geometry: 'area'
-      }
-    }),
+	(chart) =>
+		chart.animate({
+			config: {
+				channels: {
+					x: 'Year',
+					y: ['Country', 'Value 2 (+)'],
+					color: 'Country',
+					size: null,
+					label: null
+				},
+				title: 'Title',
+				geometry: 'area'
+			}
+		}),
 
-  (chart) => {
-    chart.feature('tooltip', true)
-    return chart
-  }
+	(chart) => {
+		chart.feature('tooltip', true)
+		return chart
+	}
 ]
 
 export { description }

@@ -5,37 +5,37 @@ const description = `- remove the Dimension from Y-axis
 - set the Align parameter from 'stretch' to 'min'
 - switch the Geometry from Area to Line`
 const testSteps = [
-  (chart) =>
-    chart.animate({
-      data: data_6,
+	(chart) =>
+		chart.animate({
+			data: data_6,
 
-      config: {
-        channels: {
-          x: 'Year',
-          y: ['Value 2 (+)', 'Country'],
-          color: 'Country'
-        },
+			config: {
+				channels: {
+					x: 'Year',
+					y: ['Value 2 (+)', 'Country'],
+					color: 'Country'
+				},
 
-        geometry: 'area',
-        align: 'stretch'
-      }
-    }),
+				geometry: 'area',
+				align: 'stretch'
+			}
+		}),
 
-  (chart) =>
-    chart.animate({
-      config: {
-        channels: {
-          y: 'Value 2 (+)'
-        },
+	(chart) =>
+		chart.animate({
+			config: {
+				channels: {
+					y: 'Value 2 (+)'
+				},
 
-        geometry: 'line',
-        align: 'min'
-      }
-    }),
-  (chart) => {
-    chart.feature('tooltip', true)
-    return chart
-  }
+				geometry: 'line',
+				align: 'min'
+			}
+		}),
+	(chart) => {
+		chart.feature('tooltip', true)
+		return chart
+	}
 ]
 
 export { title }

@@ -5,45 +5,45 @@ const description = `- add the Measure to the Label channel too
 - set the Align parameter from 'stretch' to 'min'
 - set the Split parameter to true`
 const testSteps = [
-  (chart) =>
-    chart.animate({
-      data: data_8,
+	(chart) =>
+		chart.animate({
+			data: data_8,
 
-      config: {
-        channels: {
-          x: 'Year',
-          y: ['Country', 'Value 2 (+)'],
-          color: 'Country'
-        },
+			config: {
+				channels: {
+					x: 'Year',
+					y: ['Country', 'Value 2 (+)'],
+					color: 'Country'
+				},
 
-        align: 'stretch'
-      }
-    }),
-  (chart) =>
-    chart.animate({
-      config: {
-        channels: {
-          label: 'Value 2 (+)'
-        },
+				align: 'stretch'
+			}
+		}),
+	(chart) =>
+		chart.animate({
+			config: {
+				channels: {
+					label: 'Value 2 (+)'
+				},
 
-        align: 'min',
-        split: true
-      },
-      style: {
-        plot: {
-          marker: {
-            label: {
-              position: 'top',
-              fontSize: '0.6em'
-            }
-          }
-        }
-      }
-    }),
-  (chart) => {
-    chart.feature('tooltip', true)
-    return chart
-  }
+				align: 'min',
+				split: true
+			},
+			style: {
+				plot: {
+					marker: {
+						label: {
+							position: 'top',
+							fontSize: '0.6em'
+						}
+					}
+				}
+			}
+		}),
+	(chart) => {
+		chart.feature('tooltip', true)
+		return chart
+	}
 ]
 
 export { title }

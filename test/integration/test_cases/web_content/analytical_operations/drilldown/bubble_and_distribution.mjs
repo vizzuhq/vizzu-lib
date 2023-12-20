@@ -10,48 +10,48 @@ const description = `This Vizzu animation consist of 2 steps (animates):
 - move the new Sub Dimension to the No-Operation (Noop) channel
 - null the Label channel`
 const testSteps = [
-  (chart) =>
-    chart.animate({
-      data: data_8,
+	(chart) =>
+		chart.animate({
+			data: data_8,
 
-      config: {
-        channels: {
-          color: 'Country',
-          size: 'Value 2 (+)',
-          label: 'Value 2 (+)'
-        },
+			config: {
+				channels: {
+					color: 'Country',
+					size: 'Value 2 (+)',
+					label: 'Value 2 (+)'
+				},
 
-        geometry: 'circle'
-      }
-    }),
+				geometry: 'circle'
+			}
+		}),
 
-  (chart) =>
-    chart.animate({
-      config: {
-        channels: {
-          size: ['Year', 'Value 2 (+)']
-        },
+	(chart) =>
+		chart.animate({
+			config: {
+				channels: {
+					size: ['Year', 'Value 2 (+)']
+				},
 
-        geometry: 'circle'
-      }
-    }),
+				geometry: 'circle'
+			}
+		}),
 
-  (chart) =>
-    chart.animate({
-      config: {
-        channels: {
-          x: 'Value 1 (+)',
-          y: 'Value 3 (+)',
-          noop: 'Year',
-          size: 'Value 2 (+)',
-          label: null
-        }
-      }
-    }),
-  (chart) => {
-    chart.feature('tooltip', true)
-    return chart
-  }
+	(chart) =>
+		chart.animate({
+			config: {
+				channels: {
+					x: 'Value 1 (+)',
+					y: 'Value 3 (+)',
+					noop: 'Year',
+					size: 'Value 2 (+)',
+					label: null
+				}
+			}
+		}),
+	(chart) => {
+		chart.feature('tooltip', true)
+		return chart
+	}
 ]
 
 export { description }

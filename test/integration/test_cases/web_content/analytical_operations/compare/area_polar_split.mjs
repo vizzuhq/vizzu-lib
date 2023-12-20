@@ -4,38 +4,38 @@ const description = `- remove the Dimension from Y-axis a
 - set the Split parameter from true to false
 - switch the Geometry from Area to Line`
 const testSteps = [
-  (chart) =>
-    chart.animate({
-      data: data_8,
+	(chart) =>
+		chart.animate({
+			data: data_8,
 
-      config: {
-        channels: {
-          x: 'Year',
-          y: ['Value 1 (+)', 'Country'],
-          color: 'Country'
-        },
+			config: {
+				channels: {
+					x: 'Year',
+					y: ['Value 1 (+)', 'Country'],
+					color: 'Country'
+				},
 
-        geometry: 'area',
-        split: true,
-        coordSystem: 'polar'
-      }
-    }),
+				geometry: 'area',
+				split: true,
+				coordSystem: 'polar'
+			}
+		}),
 
-  (chart) =>
-    chart.animate({
-      config: {
-        channels: {
-          y: 'Value 1 (+)'
-        },
+	(chart) =>
+		chart.animate({
+			config: {
+				channels: {
+					y: 'Value 1 (+)'
+				},
 
-        geometry: 'line',
-        split: false
-      }
-    }),
-  (chart) => {
-    chart.feature('tooltip', true)
-    return chart
-  }
+				geometry: 'line',
+				split: false
+			}
+		}),
+	(chart) => {
+		chart.feature('tooltip', true)
+		return chart
+	}
 ]
 
 export { description }

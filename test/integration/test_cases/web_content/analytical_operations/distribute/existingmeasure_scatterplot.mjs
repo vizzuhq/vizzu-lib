@@ -10,70 +10,70 @@ const description = `This Vizzu animation has 4 simple steps (4 animates):
 
 4th: back`
 const testSteps = [
-  (chart) =>
-    chart.animate({
-      data,
-      config: {
-        channels: {
-          x: 'Value 5 (+/-)',
-          y: 'Value 6 (+/-)',
-          /* The noop channel splits the markers as all the other channels
+	(chart) =>
+		chart.animate({
+			data,
+			config: {
+				channels: {
+					x: 'Value 5 (+/-)',
+					y: 'Value 6 (+/-)',
+					/* The noop channel splits the markers as all the other channels
                 but will have no effect on the markers’ appearance. */
-          noop: 'Joy factors',
-          /* Lightness channel is used to assist the viewer
+					noop: 'Joy factors',
+					/* Lightness channel is used to assist the viewer
                 in following the animation. */
-          lightness: 'Year'
-        },
+					lightness: 'Year'
+				},
 
-        geometry: 'circle'
-      }
-    }),
+				geometry: 'circle'
+			}
+		}),
 
-  (chart) =>
-    chart.animate({
-      config: {
-        channels: {
-          x: 'Year'
-        },
+	(chart) =>
+		chart.animate({
+			config: {
+				channels: {
+					x: 'Year'
+				},
 
-        orientation: 'horizontal'
-      }
-    }),
+				orientation: 'horizontal'
+			}
+		}),
 
-  (chart) =>
-    chart.animate({
-      config: {
-        channels: {
-          x: 'Value 5 (+/-)'
-        }
-      }
-    }),
+	(chart) =>
+		chart.animate({
+			config: {
+				channels: {
+					x: 'Value 5 (+/-)'
+				}
+			}
+		}),
 
-  (chart) =>
-    chart.animate({
-      config: {
-        channels: {
-          y: 'Joy factors',
-          noop: null
-        },
+	(chart) =>
+		chart.animate({
+			config: {
+				channels: {
+					y: 'Joy factors',
+					noop: null
+				},
 
-        orientation: 'vertical'
-      }
-    }),
+				orientation: 'vertical'
+			}
+		}),
 
-  (chart) =>
-    chart.animate({
-      config: {
-        channels: {
-          y: 'Value 6 (+/-)',
-          noop: 'Joy factors'
-        }
-      }
-    }),
-  (chart) => {
-    chart.feature('tooltip', true)
-    return chart
-  }
+	(chart) =>
+		chart.animate({
+			config: {
+				channels: {
+					y: 'Value 6 (+/-)',
+					noop: 'Joy factors'
+				}
+			}
+		}),
+	(chart) => {
+		chart.feature('tooltip', true)
+		return chart
+	}
 ]
 
 export { description }

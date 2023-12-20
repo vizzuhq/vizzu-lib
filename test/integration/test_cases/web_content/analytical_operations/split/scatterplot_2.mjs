@@ -4,38 +4,38 @@ const description = `- add the Dimension which is on the Color channel to the X-
 - set the Orientation parameter to 'horizontal'
 - set the Split parameter to true`
 const testSteps = [
-  (chart) =>
-    chart.animate({
-      data: data_4,
+	(chart) =>
+		chart.animate({
+			data: data_4,
 
-      config: {
-        channels: {
-          x: 'Value 2 (+)',
-          y: 'Value 3 (+)',
-          noop: 'Year',
-          color: 'Country'
-        },
+			config: {
+				channels: {
+					x: 'Value 2 (+)',
+					y: 'Value 3 (+)',
+					noop: 'Year',
+					color: 'Country'
+				},
 
-        geometry: 'circle'
-      }
-    }),
+				geometry: 'circle'
+			}
+		}),
 
-  (chart) =>
-    chart.animate({
-      config: {
-        channels: {
-          y: ['Value 3 (+)', 'Country']
-        },
+	(chart) =>
+		chart.animate({
+			config: {
+				channels: {
+					y: ['Value 3 (+)', 'Country']
+				},
 
-        geometry: 'circle',
-        orientation: 'horizontal',
-        split: true
-      }
-    }),
-  (chart) => {
-    chart.feature('tooltip', true)
-    return chart
-  }
+				geometry: 'circle',
+				orientation: 'horizontal',
+				split: true
+			}
+		}),
+	(chart) => {
+		chart.feature('tooltip', true)
+		return chart
+	}
 ]
 
 export { description }
