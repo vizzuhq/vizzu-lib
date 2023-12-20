@@ -1,0 +1,20 @@
+{
+	"suite": "/test/e2e/modules/e2e-test/test-cases/test-suite-1",
+	"test": {
+		"example-group-1/example-1": {
+			"refs": ["1111111"]
+		},
+		"example-group-1/example-2": {
+			"refs": ["2222222"]
+		},
+		"example-group-2/example-3": {
+			"refs": ["3333333"]
+		},
+		"example-group-2/example-4": {
+			"refs": ["4444444"]
+		},
+		"example-group-2/example-5": {
+			"refs": ["5555555"]
+		}
+	}
+}

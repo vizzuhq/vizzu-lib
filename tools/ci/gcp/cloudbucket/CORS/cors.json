@@ -1,9 +1,9 @@
 [
-  {
-    "origin": ["*"],
-    "method": ["GET", "POST", "HEAD"],
-    "responseHeader": ["*"],
-    "ExposeHeaders": ["*"],
-    "maxAgeSeconds": 3600
-  }
+	{
+		"origin": ["*"],
+		"method": ["GET", "POST", "HEAD"],
+		"responseHeader": ["*"],
+		"ExposeHeaders": ["*"],
+		"maxAgeSeconds": 3600
+	}
 ]

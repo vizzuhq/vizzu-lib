@@ -213,14 +213,14 @@ script: `type:tools`.
 
 #### Testing
 
-Run the following command to start integration testing:
+Run the following command to start e2e testing:
 
 ```sh
 npm test
 ```
 
-For information on how integration testing works and what options it has, please
-see the program help:
+For information on how e2e testing works and what options it has, please see the
+program help:
 
 ```sh
 npm test -- --help
