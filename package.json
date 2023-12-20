@@ -13,7 +13,6 @@
 		"./*.json": "./*.json"
 	},
 	"files": [
-		"CHANGELOG.md",
 		"LICENSE",
 		"package.json",
 		"README.md",
