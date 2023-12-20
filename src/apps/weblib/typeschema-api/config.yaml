@@ -189,9 +189,9 @@ definitions:
           coordinate system to create a chart from the pie/radial chart family.
         type: string
         enum: [cartesian, polar]
-      rotate:
+      angle:
         description: |
-          Rotates the plot area by the specified angle in degree. 
+          Rotates the plot area to the specified angle in radian. 
           Note: this is an experimental, not tested feature.
         type: number
       geometry:

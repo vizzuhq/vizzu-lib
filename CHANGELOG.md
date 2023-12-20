@@ -10,6 +10,7 @@
 - At the mouse events the lib is not queried the exact rendered chart position through API.
 - On axis labels sometimes missed a space character between value and unit.
 - Rendered label units are suddenly disappeared when target plot does not contain a unit.
+- Remove "rotate" setting, add "angle" setting.
 
 ### Added
 
