@@ -22,15 +22,15 @@ Canvas:
     circle: { x: number, y: number, radius: number }
     line: { x1: number, y1: number, x2: number, y2: number }
     text: { x: number, y: number, sizex: number, sizey: number, text: C.CString }
-  setBrushGradient:
-    {
-      x1: number,
-      y1: number,
-      x2: number,
-      y2: number,
-      stopCount: number/size_t,
-      stops: C.CColorGradientPtr
-    }
-  transform: { a: number, b: number, c: number, d: number, e: number, f: number }
-  save: {}
-  restore: {}
+    setBrushGradient:
+        {
+            x1: number,
+            y1: number,
+            x2: number,
+            y2: number,
+            stopCount: number/size_t,
+            stops: C.CColorGradientPtr
+        }
+    transform: { a: number, b: number, c: number, d: number, e: number, f: number }
+    save: {}
+    restore: {}

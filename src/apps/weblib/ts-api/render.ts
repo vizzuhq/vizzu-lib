@@ -184,13 +184,13 @@ export class Render implements Plugin, Canvas {
 	}
 
 	text(x: number, y: number, sizex: number, sizey: number, text: CString): void {
-    const dc = this._canvas.context
-    dc.textAlign = 'left'
-    dc.textBaseline = 'top'
-    x = x + (sizex < 0 ? -sizex : 0)
-    y = y + (sizey < 0 ? -sizey : 0)
-    dc.fillText(this._ccanvas.getString(text), x, y)
-  }
+		const dc = this._canvas.context
+		dc.textAlign = 'left'
+		dc.textBaseline = 'top'
+		x = x + (sizex < 0 ? -sizex : 0)
+		y = y + (sizey < 0 ? -sizey : 0)
+		dc.fillText(this._ccanvas.getString(text), x, y)
+	}
 
 	setBrushGradient(
 		x1: number,

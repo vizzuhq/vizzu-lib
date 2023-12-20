@@ -92,11 +92,8 @@ void Sheet::setAxisLabels()
 	else if (const auto &xAxis =
 	             options->getChannels().at(Gen::ChannelId::x);
 	         !xAxis.isEmpty() && xAxis.isDimension()
-	         && options->angle == 0) {
+	         && options->angle == 0)
 		def.angle.reset();
-		// def.paddingLeft = Gfx::Length::Emphemeral(2 / 12.0);
-		// def.paddingRight = Gfx::Length::Emphemeral(2 / 12.0);
-	}
 }
 
 void Sheet::setAxisTitle()
@@ -210,8 +207,8 @@ void Sheet::setAfterStyles(Gen::Plot &plot, const Geom::Size &size)
 
 			auto textBoundary =
 			    Gfx::ICanvas::textBoundary(font, pair.second.label);
-			auto textXMargin = 0.; // xLabel.toMargin(textBoundary,
-			                       // font.size).getSpace().x;
+			auto textXMargin =
+			    xLabel.toMargin(textBoundary, font.size).getSpace().x;
 			auto xHalfSize =
 			    (textBoundary.x + textXMargin) / plotX / 2.0;
 

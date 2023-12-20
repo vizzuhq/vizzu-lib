@@ -46,7 +46,7 @@ export interface ModuleOptions {
 export interface CVizzu {
 	// decorations
 	canvases: { [key: CPointer]: Canvas }
-  measureCanvas: CanvasRenderingContext2D
+	measureCanvas: CanvasRenderingContext2D
 
 	// members
 	HEAPU8: Uint8Array

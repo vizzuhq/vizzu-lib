@@ -12,7 +12,7 @@ export class CCanvas extends CObject {
 		return new CColorGradient(this, stops, stopCount)
 	}
 
-  getString(text: CString): string {
-    return this._wasm.UTF8ToString(text)
-  }
+	getString(text: CString): string {
+		return this._wasm.UTF8ToString(text)
+	}
 }
