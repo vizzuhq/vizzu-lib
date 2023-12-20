@@ -1,5 +1,5 @@
 {
-	"suite": "/test/integration/tests/fixes",
+	"suite": "/test/e2e/tests/fixes",
 	"test": {
 		"75": {
 			"refs": ["e97e29b"]

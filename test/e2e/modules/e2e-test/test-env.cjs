@@ -10,7 +10,7 @@ class TestEnv {
 	}
 
 	static getTestSuiteRelativePath() {
-		return 'test/integration'
+		return 'test/e2e'
 	}
 
 	static getTestSuiteReportPath() {

@@ -3,7 +3,7 @@ const pngjs = require('pngjs')
 const path = require('path')
 const fs = require('fs')
 
-const TestEnv = require('../../../modules/integration-test/test-env.cjs')
+const TestEnv = require('../../../modules/e2e-test/test-env.cjs')
 
 class TestCaseResult {
 	#cnsl

@@ -1,5 +1,5 @@
 {
-	"suite": "/test/integration/tests/style_tests",
+	"suite": "/test/e2e/tests/style_tests",
 	"test": {
 		"plot/backgroundColor/hex/animated_black-white": {
 			"refs": ["d5034b9"]

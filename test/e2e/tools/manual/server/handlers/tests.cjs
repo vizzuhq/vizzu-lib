@@ -1,8 +1,8 @@
 const fs = require('fs').promises
 
-const TestEnv = require('../../../../modules/integration-test/test-env.cjs')
-const TestCasesConfig = require('../../../../modules/integration-test/test-case/test-cases-config.cjs')
-const TestCases = require('../../../../modules/integration-test/test-case/test-cases.cjs')
+const TestEnv = require('../../../../modules/e2e-test/test-env.cjs')
+const TestCasesConfig = require('../../../../modules/e2e-test/test-case/test-cases-config.cjs')
+const TestCases = require('../../../../modules/e2e-test/test-case/test-cases.cjs')
 
 class TestsHandler {
 	#testCaseModule

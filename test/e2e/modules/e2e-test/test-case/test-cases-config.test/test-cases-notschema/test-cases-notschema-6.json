@@ -1,5 +1,5 @@
 {
-	"suite": "/test/integration/modules/integration-test/test-cases/test-suite",
+	"suite": "/test/e2e/modules/e2e-test/test-cases/test-suite",
 	"test": {
 		"example": {
 			"refs": ""

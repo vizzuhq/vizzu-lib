@@ -2,7 +2,7 @@ const path = require('path')
 const fs = require('fs')
 const prettier = require('prettier')
 
-const TestEnv = require('../../modules/integration-test/test-env.cjs')
+const TestEnv = require('../../modules/e2e-test/test-env.cjs')
 
 class TestSuiteResult {
 	#cnsl
@@ -35,7 +35,7 @@ class TestSuiteResult {
 				)
 				this.#cnsl.log(
 					''.padEnd(this.#cnsl.getTestStatusPad() + 5, ' ') +
-						'http://127.0.0.1:8080/test/integration/tools/manual/client?testFile=' +
+						'http://127.0.0.1:8080/test/e2e/tools/manual/client?testFile=' +
 						testCase.testFile +
 						'&testType=' +
 						testCase.testType +

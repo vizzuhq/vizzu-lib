@@ -5,7 +5,7 @@ const fetch = require('node-fetch')
 const WorkspaceHost = require('../../modules/workspace/workspace-host.cjs')
 const BrowserChrome = require('../../modules/browser/puppeteer-chrome.cjs')
 const VizzuUrl = require('../../modules/vizzu/vizzu-url.cjs')
-const TestEnv = require('../../modules/integration-test/test-env.cjs')
+const TestEnv = require('../../modules/e2e-test/test-env.cjs')
 
 class VizzuVersion {
 	static getVizzuUrlVersion(vizzuUrl) {
@@ -29,7 +29,7 @@ class VizzuVersion {
 							.getUrl(
 								'http://127.0.0.1:' +
 									String(workspaceHostServerPort) +
-									'/test/integration/modules/vizzu/vizzu-version-client/index.html' +
+									'/test/e2e/modules/vizzu/vizzu-version-client/index.html' +
 									'?vizzuUrl=' +
 									vizzuUrl
 							)

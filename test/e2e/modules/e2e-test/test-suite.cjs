@@ -6,12 +6,12 @@ const AggregateErrorReady = import('aggregate-error')
 const WorkspaceHost = require('../../modules/workspace/workspace-host.cjs')
 const BrowsersChrome = require('../../modules/browser/browsers-chrome.cjs')
 const VizzuUrl = require('../../modules/vizzu/vizzu-url.cjs')
-const TestEnv = require('../../modules/integration-test/test-env.cjs')
-const TestConsole = require('../../modules/integration-test/test-console.cjs')
-const TestCase = require('../../modules/integration-test/test-case/test-case.cjs')
-const TestCasesConfig = require('../../modules/integration-test/test-case/test-cases-config.cjs')
-const TestCases = require('../../modules/integration-test/test-case/test-cases.cjs')
-const TestSuiteResult = require('../../modules/integration-test/test-suite-result.cjs')
+const TestEnv = require('../../modules/e2e-test/test-env.cjs')
+const TestConsole = require('../../modules/e2e-test/test-console.cjs')
+const TestCase = require('../../modules/e2e-test/test-case/test-case.cjs')
+const TestCasesConfig = require('../../modules/e2e-test/test-case/test-cases-config.cjs')
+const TestCases = require('../../modules/e2e-test/test-case/test-cases.cjs')
+const TestSuiteResult = require('../../modules/e2e-test/test-suite-result.cjs')
 
 class TestSuite {
 	#cnsl

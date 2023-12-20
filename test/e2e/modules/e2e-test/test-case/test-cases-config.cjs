@@ -4,7 +4,7 @@ const Ajv = require('ajv')
 
 const assert = require('../../../modules/console/assert.cjs')
 const WorkspacePath = require('../../../modules/workspace/workspace-path.cjs')
-const TestEnv = require('../../../modules/integration-test/test-env.cjs')
+const TestEnv = require('../../../modules/e2e-test/test-env.cjs')
 
 class TestCasesConfig {
 	static getConfig(configPathList) {

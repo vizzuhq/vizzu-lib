@@ -1,5 +1,5 @@
 {
-	"suite": "/test/integration/tests/config_tests",
+	"suite": "/test/e2e/tests/config_tests",
 	"test": {
 		"geometry/static_area": {
 			"refs": ["809bba0"]

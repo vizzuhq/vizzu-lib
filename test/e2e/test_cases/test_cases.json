@@ -1,5 +1,5 @@
 {
-	"suite": "/test/integration/test_cases",
+	"suite": "/test/e2e/test_cases",
 	"test": {
 		"basic_animations/anim_order/circle_without_2_carte_horizontal": {
 			"refs": ["be265b7"]

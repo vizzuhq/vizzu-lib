@@ -1,5 +1,5 @@
 {
-	"suite": "/test/integration/tests/features",
+	"suite": "/test/e2e/tests/features",
 	"test": {
 		"aggregators/aggregators": {
 			"refs": ["bd61770"]

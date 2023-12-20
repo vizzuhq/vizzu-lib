@@ -1,7 +1,7 @@
 const path = require('path')
 
-const TestEnv = require('../../../modules/integration-test/test-env.cjs')
-const TestCaseResult = require('../../../modules/integration-test/test-case/test-case-result.cjs')
+const TestEnv = require('../../../modules/e2e-test/test-env.cjs')
+const TestCaseResult = require('../../../modules/e2e-test/test-case/test-case-result.cjs')
 
 class TestCase {
 	static runTestCase(testCaseObj, vizzuUrl, vizzuRefUrl) {
@@ -52,7 +52,7 @@ class TestCase {
 				.getUrl(
 					'http://127.0.0.1:' +
 						String(testCaseObj.workspaceHostServerPort) +
-						'/test/integration/modules/integration-test/client/index.html' +
+						'/test/e2e/modules/e2e-test/client/index.html' +
 						'?testFile=' +
 						testCaseObj.testCase.testFile +
 						'&testType=' +

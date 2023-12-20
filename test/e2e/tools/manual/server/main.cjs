@@ -1,5 +1,5 @@
 const WorkspaceHost = require('../../../modules/workspace/workspace-host.cjs')
-const TestEnv = require('../../../modules/integration-test/test-env.cjs')
+const TestEnv = require('../../../modules/e2e-test/test-env.cjs')
 
 const LibsHandler = require('./handlers/libs.cjs')
 const TestsHandler = require('./handlers/tests.cjs')
@@ -36,7 +36,7 @@ class ManualServer {
 			this.#setRouteValidateTestCase()
 
 			console.log(
-				`[ W. HOST ] [ http://127.0.0.1:${this.#workspaceHostServerPort}/test/integration/tools/manual/client ] press CTRL + C to stop`
+				`[ W. HOST ] [ http://127.0.0.1:${this.#workspaceHostServerPort}/test/e2e/tools/manual/client ] press CTRL + C to stop`
 			)
 		})
 	}

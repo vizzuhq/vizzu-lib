@@ -7,7 +7,7 @@ async function getWebContentHash() {
 		'web_content/presets/',
 		'web_content/static/'
 	]
-	const fileContent = fs.readFileSync('./test/integration/test_cases/test_cases.json', 'utf8')
+	const fileContent = fs.readFileSync('./test/e2e/test_cases/test_cases.json', 'utf8')
 
 	const jsonContent = JSON.parse(fileContent)
 	let filteredItems = []

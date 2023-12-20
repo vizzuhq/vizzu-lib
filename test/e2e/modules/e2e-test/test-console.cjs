@@ -1,7 +1,7 @@
 const path = require('path')
 const fs = require('fs')
 
-const TestEnv = require('../../modules/integration-test/test-env.cjs')
+const TestEnv = require('../../modules/e2e-test/test-env.cjs')
 const Console = require('../../modules/console/console.cjs')
 
 class TestConsole extends Console {
@@ -17,7 +17,7 @@ class TestConsole extends Console {
 	constructor(fileLog) {
 		if (fileLog) {
 			// eslint-disable-next-line no-var
-			var filePrefix = 'integration.test'
+			var filePrefix = 'e2e.test'
 			const pathPrefix = 'logs'
 			// eslint-disable-next-line no-var
 			var testSuiteLogPath = path.join(TestEnv.getTestSuiteReportPath(), pathPrefix)

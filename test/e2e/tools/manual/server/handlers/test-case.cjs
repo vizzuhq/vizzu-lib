@@ -2,7 +2,7 @@ const fs = require('fs').promises
 const path = require('path')
 const prettier = require('prettier')
 
-const TestEnv = require('../../../../modules/integration-test/test-env.cjs')
+const TestEnv = require('../../../../modules/e2e-test/test-env.cjs')
 
 class TestCaseHandler {
 	#testCaseModule

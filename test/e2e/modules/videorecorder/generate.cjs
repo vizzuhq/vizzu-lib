@@ -8,9 +8,9 @@ const AggregateErrorReady = import('aggregate-error')
 const WorkspaceHost = require('../../modules/workspace/workspace-host.cjs')
 const BrowsersChrome = require('../../modules/browser/browsers-chrome.cjs')
 const VizzuUrl = require('../../modules/vizzu/vizzu-url.cjs')
-const TestEnv = require('../../modules/integration-test/test-env.cjs')
-const TestCasesConfig = require('../../modules/integration-test/test-case/test-cases-config.cjs')
-const TestCases = require('../../modules/integration-test/test-case/test-cases.cjs')
+const TestEnv = require('../../modules/e2e-test/test-env.cjs')
+const TestCasesConfig = require('../../modules/e2e-test/test-case/test-cases-config.cjs')
+const TestCases = require('../../modules/e2e-test/test-case/test-cases.cjs')
 
 function checkFileExist(path, timeout = 5000) {
 	let totalTime = 0
@@ -277,8 +277,8 @@ try {
 				'\n'
 		)
 		.default('c', [
-			'/test/integration/test_cases/test_cases.json',
-			'/test/integration/tests/style_tests.json'
+			'/test/e2e/test_cases/test_cases.json',
+			'/test/e2e/tests/style_tests.json'
 		])
 
 		.string('vizzu')

@@ -191,21 +191,21 @@ describe('resolveVizzuUrl()', () => {
 			})
 
 			describe('with relative path', () => {
-				const local1 = './test/integration/test_report/unit/vizzu'
+				const local1 = './test/e2e/test_report/unit/vizzu'
 				test('if ' + local1, () => {
 					return VizzuUrl.resolveVizzuUrl(local1, root, '.').then((url) => {
 						expect(url).toBe(path.resolve(local1 + VizzuUrl.getVizzuJs()))
 					})
 				})
 
-				const local2 = './test/integration/test_report/unit/vizzu/'
+				const local2 = './test/e2e/test_report/unit/vizzu/'
 				test('if ' + local2, () => {
 					return VizzuUrl.resolveVizzuUrl(local2, root, '.').then((url) => {
 						expect(url).toBe(path.resolve(local2 + 'vizzu.js'))
 					})
 				})
 
-				const local3 = './test/integration/test_report/unit/vizzu' + VizzuUrl.getVizzuJs()
+				const local3 = './test/e2e/test_report/unit/vizzu' + VizzuUrl.getVizzuJs()
 				test('if ' + local3, () => {
 					return VizzuUrl.resolveVizzuUrl(local3, root, '.').then((url) => {
 						expect(url).toBe(path.resolve(local3))
@@ -213,7 +213,7 @@ describe('resolveVizzuUrl()', () => {
 				})
 
 				const local4 =
-					'./test/integration/test_report/unit/vizzu' + VizzuUrl.getVizzuMinJs()
+					'./test/e2e/test_report/unit/vizzu' + VizzuUrl.getVizzuMinJs()
 				test('if ' + local4, () => {
 					return VizzuUrl.resolveVizzuUrl(local4, root, '.').then((url) => {
 						expect(url).toBe(path.resolve(local4))
@@ -222,28 +222,28 @@ describe('resolveVizzuUrl()', () => {
 			})
 
 			describe('with absolute path', () => {
-				const local1 = '/test/integration/test_report/unit/vizzu'
+				const local1 = '/test/e2e/test_report/unit/vizzu'
 				test('if ' + local1, () => {
 					return VizzuUrl.resolveVizzuUrl(local1, root, '.').then((url) => {
 						expect(url).toBe(path.resolve(root + local1 + VizzuUrl.getVizzuJs()))
 					})
 				})
 
-				const local2 = '/test/integration/test_report/unit/vizzu/'
+				const local2 = '/test/e2e/test_report/unit/vizzu/'
 				test('if ' + local2, () => {
 					return VizzuUrl.resolveVizzuUrl(local2, root, '.').then((url) => {
 						expect(url).toBe(path.resolve(root + local2 + 'vizzu.js'))
 					})
 				})
 
-				const local3 = '/test/integration/test_report/unit/vizzu' + VizzuUrl.getVizzuJs()
+				const local3 = '/test/e2e/test_report/unit/vizzu' + VizzuUrl.getVizzuJs()
 				test('if ' + local3, () => {
 					return VizzuUrl.resolveVizzuUrl(local3, root, '.').then((url) => {
 						expect(url).toBe(path.resolve(root + local3))
 					})
 				})
 
-				const local4 = '/test/integration/test_report/unit/vizzu' + VizzuUrl.getVizzuMinJs()
+				const local4 = '/test/e2e/test_report/unit/vizzu' + VizzuUrl.getVizzuMinJs()
 				test('if ' + local4, () => {
 					return VizzuUrl.resolveVizzuUrl(local4, root, '.').then((url) => {
 						expect(url).toBe(path.resolve(root + local4))

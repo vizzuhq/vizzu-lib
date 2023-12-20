@@ -14,7 +14,7 @@ module.exports = {
 			extends: ['@vizzu/eslint-config/standard']
 		},
 		{
-			files: ['test/integration/test_cases/**', 'test/integration/test_data/**'],
+			files: ['test/e2e/test_cases/**', 'test/e2e/test_data/**'],
 			extends: ['@vizzu/eslint-config/standard'],
 			rules: {
 				camelcase: 'off'

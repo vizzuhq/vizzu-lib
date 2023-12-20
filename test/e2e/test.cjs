@@ -1,7 +1,7 @@
 const yargs = require('yargs')
 
 const VizzuVersion = require('./modules/vizzu/vizzu-version.cjs')
-const TestSuite = require('./modules/integration-test/test-suite.cjs')
+const TestSuite = require('./modules/e2e-test/test-suite.cjs')
 
 const catchError = (err) => {
 	process.exitCode = 1
@@ -20,7 +20,7 @@ try {
 	const usage = `
 Usage: $0 [tests] [options]
 
-The integration test aims to comprehensively test the Vizzu library by executing animations represented as a promise chain of animate function calls.
+The e2e test aims to comprehensively test the Vizzu library by executing animations represented as a promise chain of animate function calls.
 Each test case follows predefined animation steps and calculates a hash based on the generated canvas image data for each step.
 The test validation compares the calculated hash values with the expected values stored for each test case.
 
@@ -56,11 +56,11 @@ Please note that the test require Chrome, ChromeDriver and Selenium Webdriver to
 				'\n(relative or absolute path where the repo folder is the root)'
 		)
 		.default('c', [
-			'/test/integration/test_cases/test_cases.json',
-			'/test/integration/tests/config_tests.json',
-			'/test/integration/tests/style_tests.json',
-			'/test/integration/tests/features.json',
-			'/test/integration/tests/fixes.json'
+			'/test/e2e/test_cases/test_cases.json',
+			'/test/e2e/tests/config_tests.json',
+			'/test/e2e/tests/style_tests.json',
+			'/test/e2e/tests/features.json',
+			'/test/e2e/tests/fixes.json'
 		])
 
 		.choices('Werror', ['noref', 'sameref'])

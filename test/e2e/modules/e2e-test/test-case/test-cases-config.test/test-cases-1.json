@@ -1,5 +1,5 @@
 {
-	"suite": "/test/integration/modules/integration-test/test-cases/test-suite-1",
+	"suite": "/test/e2e/modules/e2e-test/test-cases/test-suite-1",
 	"test": {
 		"example-group-1/example-1": {
 			"refs": ["1111111"]
