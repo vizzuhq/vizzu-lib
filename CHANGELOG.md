@@ -4,17 +4,17 @@
 
 ### Fixed
 
-- Type-fest dependency added as normal instead of dev.
-- Added missing `cvizzu.d.ts` and `cvizzu.types.d.ts` to the `npm` package.
-- When only logo rendered chart resized, the previous drawn logo position was not deleted.   
-- At the mouse events the lib is not queried the exact rendered chart position through API.
-- On axis labels sometimes missed a space character between value and unit.
-- Rendered label units are suddenly disappeared when target plot does not contain a unit.
-- Remove "rotate" setting, add "angle" setting.
+- Corrected listing of Type-fest dependency from development to normal.
+- Added missing `cvizzu.d.ts` and `cvizzu.types.d.ts` to the npm package.
+- Logo positioning issue in charts when only the logo is rendered and the chart is resized.
+- API issue where exact chart position was not accurately queried during mouse events.
+- Missing space between value and unit in axis labels.
+- Bug fixed where rendered label units disappeared when target plot did not contain a unit.
+- Configuration of experimental plot rotation feature changed from relative `rotate` to absolute `angle`. 
 
 ### Added
 
-- Units on legend. 
+- Units on legend.
 
 ## [0.9.2] - 2023-11-22
 
