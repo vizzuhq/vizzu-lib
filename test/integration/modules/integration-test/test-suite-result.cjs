@@ -47,7 +47,7 @@ class TestSuiteResult {
       this.#cnsl.log('\n')
       this.#cnsl.log(
         ''.padEnd(this.#cnsl.getTestStatusPad() + 5, ' ') +
-          'npm run test-man --' +
+          'npm run test:man --' +
           ' ' +
           this.#testSuiteResults.MANUAL_FORMATTED.map((s) => `'${s}'`).join(' ')
       )

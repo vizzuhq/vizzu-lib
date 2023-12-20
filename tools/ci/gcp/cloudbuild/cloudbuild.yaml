@@ -8,7 +8,8 @@ steps:
       - '-c'
       - '-e'
       - |-
-        npm run init
+        npm install &&
+        ./tools/ci/run/init-py.sh
     dir: /workspace
 
   - name: vizzu/vizzu-dev-wasm:0.9
@@ -24,8 +25,8 @@ steps:
         then
           echo "skipped"
         else
-          npm run format-src
-          npm run lint-src
+          npm run format:src
+          npm run lint:src
         fi
     dir: /workspace
   - name: vizzu/vizzu-dev-wasm:0.9
@@ -41,8 +42,8 @@ steps:
         then
           echo "skipped"
         else
-          npm run format-docs
-          npm run lint-docs
+          npm run format:docs
+          npm run lint:docs
         fi
     dir: /workspace
   - name: vizzu/vizzu-dev-wasm:0.9
@@ -58,9 +59,9 @@ steps:
         then
           echo "skipped"
         else
-          npm run format-tools
-          npm run lint-tools
-          npm run type-tools
+          npm run format:tools
+          npm run lint:tools
+          npm run type:tools
         fi
     dir: /workspace
 
@@ -175,15 +176,15 @@ steps:
         git clone --single-branch --branch main --depth 1 'git@github.com:vizzuhq/vizzu-lib-doc'
         git config --global user.name "$$VIZZUHQ_GITHUB_USER"
         git config --global user.email "$$VIZZUHQ_GITHUB_EMAIL"
-        npm run docs-gen-thumbnail-gsutil
+        npm run gen-thumbnail-gsutil
         if [ "$_ISRELEASE" == "true" ]
         then
           git remote add vizzu-lib-doc git@github.com:vizzuhq/vizzu-lib-doc
           git fetch git@github.com:vizzuhq/vizzu-lib-doc gh-pages:gh-pages --depth=1
-          npm run docs-deploy
+          npm run deploy-docs
           git push vizzu-lib-doc gh-pages:gh-pages
         else
-          npm run docs-build
+          npm run build-docs
           if [ "$BRANCH_NAME" == "main" ]; then
             cd vizzu-lib-doc
             git checkout -b gh-pages-dev
@@ -216,7 +217,7 @@ steps:
         if [ "$_ISRELEASE" == "true" ]
         then
           npm publish
-          npm run pkg-purge-js
+          npm run purge
           git fetch --depth=1
           echo $$VIZZUHQ_GITHUB_API | gh auth login --with-token
           gh release upload $(git describe --tags --abbrev=0) build/js/*tgz --clobber
