@@ -276,10 +276,7 @@ try {
 				'\n(relative or absolute path where the repo folder is the root)' +
 				'\n'
 		)
-		.default('c', [
-			'/test/e2e/test_cases/test_cases.json',
-			'/test/e2e/tests/style_tests.json'
-		])
+		.default('c', ['/test/e2e/test_cases/test_cases.json', '/test/e2e/tests/style_tests.json'])
 
 		.string('vizzu')
 		.nargs('vizzu', 1)

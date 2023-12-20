@@ -219,8 +219,8 @@ Run the following command to start e2e testing:
 npm test
 ```
 
-For information on how e2e testing works and what options it has, please
-see the program help:
+For information on how e2e testing works and what options it has, please see the
+program help:
 
 ```sh
 npm test -- --help

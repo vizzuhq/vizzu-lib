@@ -212,8 +212,7 @@ describe('resolveVizzuUrl()', () => {
 					})
 				})
 
-				const local4 =
-					'./test/e2e/test_report/unit/vizzu' + VizzuUrl.getVizzuMinJs()
+				const local4 = './test/e2e/test_report/unit/vizzu' + VizzuUrl.getVizzuMinJs()
 				test('if ' + local4, () => {
 					return VizzuUrl.resolveVizzuUrl(local4, root, '.').then((url) => {
 						expect(url).toBe(path.resolve(local4))

@@ -16,7 +16,5 @@ test('if getTestSuiteReportPath() returns testSuiteReportPath', () => {
 })
 
 test('if getTestSuiteResultsPath() returns testSuiteResultsPath', () => {
-	expect(TestEnv.getTestSuiteResultsPath()).toBe(
-		path.join(ws, 'test/e2e/test_report/results')
-	)
+	expect(TestEnv.getTestSuiteResultsPath()).toBe(path.join(ws, 'test/e2e/test_report/results'))
 })

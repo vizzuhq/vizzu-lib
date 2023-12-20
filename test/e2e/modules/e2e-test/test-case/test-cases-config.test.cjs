@@ -26,9 +26,7 @@ describe('getConfig()', () => {
 
 		test('if configPath is not file, err is thrown', () => {
 			return expect(
-				TestCasesConfig.getConfig([
-					'./modules/e2e-test/test-case/test-cases-config.test'
-				])
+				TestCasesConfig.getConfig(['./modules/e2e-test/test-case/test-cases-config.test'])
 			).rejects.toThrow('EISDIR: illegal operation on a directory, read')
 		})
 

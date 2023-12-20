@@ -55,22 +55,18 @@ const testCaseList = [
 		testConfig: '',
 		testRepo: path.join(__dirname, '../../../../..'),
 		testSuite: 'test/e2e/test_report/unit/test-cases/suite1',
-		testFile:
-			'/test/e2e/test_report/unit/test-cases/suite1/testgroup1a/testgroup1b/test1b',
+		testFile: '/test/e2e/test_report/unit/test-cases/suite1/testgroup1a/testgroup1b/test1b',
 		testIndex: undefined,
-		testName:
-			'/test/e2e/test_report/unit/test-cases/suite1/testgroup1a/testgroup1b/test1b',
+		testName: '/test/e2e/test_report/unit/test-cases/suite1/testgroup1a/testgroup1b/test1b',
 		testType: 'single'
 	},
 	{
 		testConfig: '',
 		testRepo: path.join(__dirname, '../../../../..'),
 		testSuite: 'test/e2e/test_report/unit/test-cases/suite1',
-		testFile:
-			'/test/e2e/test_report/unit/test-cases/suite1/testgroup1a/testgroup1b/test1bb',
+		testFile: '/test/e2e/test_report/unit/test-cases/suite1/testgroup1a/testgroup1b/test1bb',
 		testIndex: undefined,
-		testName:
-			'/test/e2e/test_report/unit/test-cases/suite1/testgroup1a/testgroup1b/test1bb',
+		testName: '/test/e2e/test_report/unit/test-cases/suite1/testgroup1a/testgroup1b/test1bb',
 		testType: 'single'
 	},
 	{
@@ -115,22 +111,18 @@ const testCaseList = [
 		testConfig: '',
 		testRepo: path.join(__dirname, '../../../../..'),
 		testSuite: 'test/e2e/test_report/unit/test-cases/suite2',
-		testFile:
-			'/test/e2e/test_report/unit/test-cases/suite2/testgroup2a/testgroup2b/test2b',
+		testFile: '/test/e2e/test_report/unit/test-cases/suite2/testgroup2a/testgroup2b/test2b',
 		testIndex: undefined,
-		testName:
-			'/test/e2e/test_report/unit/test-cases/suite2/testgroup2a/testgroup2b/test2b',
+		testName: '/test/e2e/test_report/unit/test-cases/suite2/testgroup2a/testgroup2b/test2b',
 		testType: 'single'
 	},
 	{
 		testConfig: '',
 		testRepo: path.join(__dirname, '../../../../..'),
 		testSuite: 'test/e2e/test_report/unit/test-cases/suite2',
-		testFile:
-			'/test/e2e/test_report/unit/test-cases/suite2/testgroup2a/testgroup2b/test2bb',
+		testFile: '/test/e2e/test_report/unit/test-cases/suite2/testgroup2a/testgroup2b/test2bb',
 		testIndex: undefined,
-		testName:
-			'/test/e2e/test_report/unit/test-cases/suite2/testgroup2a/testgroup2b/test2bb',
+		testName: '/test/e2e/test_report/unit/test-cases/suite2/testgroup2a/testgroup2b/test2bb',
 		testType: 'single'
 	},
 	{
@@ -173,11 +165,9 @@ const filteredTestCaseList = [
 		testConfig: '',
 		testRepo: path.join(__dirname, '../../../../..'),
 		testSuite: 'test/e2e/test_report/unit/test-cases/suite1',
-		testFile:
-			'/test/e2e/test_report/unit/test-cases/suite1/testgroup1a/testgroup1b/test1bb',
+		testFile: '/test/e2e/test_report/unit/test-cases/suite1/testgroup1a/testgroup1b/test1bb',
 		testIndex: undefined,
-		testName:
-			'/test/e2e/test_report/unit/test-cases/suite1/testgroup1a/testgroup1b/test1bb',
+		testName: '/test/e2e/test_report/unit/test-cases/suite1/testgroup1a/testgroup1b/test1bb',
 		testType: 'single'
 	},
 	{
