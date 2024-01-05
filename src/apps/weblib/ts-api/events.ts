@@ -166,6 +166,7 @@ export interface Axis extends OrientedElement {
 export interface AxisLabel extends TextElement {
 	tagName: 'plot-axis-label'
 	parent: Axis
+	categories?: Data.Record
 }
 
 /** Guideline element of an axis element. */

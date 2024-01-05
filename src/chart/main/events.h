@@ -276,13 +276,13 @@ public:
 			}
 		};
 
-		template <class Base> struct LegendMarkerInfo : Base
+		template <class Base> struct CategoryInfo : Base
 		{
 			std::string_view categoryName;
 			std::string_view categoryValue;
 
 			template <class... Args>
-			explicit LegendMarkerInfo(
+			explicit CategoryInfo(
 			    const std::string_view &categoryName,
 			    const std::string_view &categoryValue,
 			    Args &&...args) :
@@ -372,8 +372,8 @@ public:
 		    const std::string &label,
 		    Gen::ChannelId channel)
 		{
-			return std::make_unique<
-			    LegendMarkerInfo<Text<LegendChild>>>(categoryName,
+			return std::make_unique<CategoryInfo<Text<LegendChild>>>(
+			    categoryName,
 			    categoryValue,
 			    label,
 			    "label",
@@ -392,7 +392,7 @@ public:
 		    const std::string_view &categoryValue,
 		    Gen::ChannelId channel)
 		{
-			return std::make_unique<LegendMarkerInfo<LegendChild>>(
+			return std::make_unique<CategoryInfo<LegendChild>>(
 			    categoryName,
 			    categoryValue,
 			    "marker",
@@ -404,10 +404,15 @@ public:
 			return std::make_unique<LegendChild>("bar", channel);
 		}
 
-		static auto axisLabel(const std::string &label,
+		static auto axisLabel(const std::string_view &categoryName,
+		    const std::string_view &categoryValue,
+		    const std::string &label,
 		    bool horizontal)
 		{
-			return std::make_unique<Text<AxisChild>>(label,
+			return std::make_unique<CategoryInfo<Text<AxisChild>>>(
+			    categoryName,
+			    categoryValue,
+			    label,
 			    "label",
 			    horizontal);
 		}
