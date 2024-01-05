@@ -36,6 +36,11 @@ const testSteps = [
 			},
 			style: {
 				plot: {
+					xAxis: {
+						label: {
+							angle: 0
+						}
+					},
 					yAxis: {
 						label: {
 							numberScale: 'K, M, B, T'
@@ -62,6 +67,15 @@ const testSteps = [
 				},
 
 				split: false
+			},
+			style: {
+				plot: {
+					xAxis: {
+						label: {
+							angle: null
+						}
+					}
+				}
 			}
 		}),
 	(chart) => {

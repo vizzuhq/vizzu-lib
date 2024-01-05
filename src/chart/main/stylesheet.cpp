@@ -89,11 +89,16 @@ void Sheet::setAxisLabels()
 		def.position = AxisLabel::Position::max_edge;
 		def.side = AxisLabel::Side::positive;
 	}
-	else if (const auto &xAxis =
-	             options->getChannels().at(Gen::ChannelId::x);
-	         !xAxis.isEmpty() && xAxis.isDimension()
-	         && options->angle == 0)
-		def.angle.reset();
+	else {
+		def.paddingRight = Gfx::Length::Emphemeral(3 / 12.0);
+		def.paddingLeft = Gfx::Length::Emphemeral(3 / 12.0);
+
+		if (const auto &xAxis =
+		        options->getChannels().at(Gen::ChannelId::x);
+		    !xAxis.isEmpty() && xAxis.isDimension()
+		    && options->angle == 0)
+			def.angle.reset();
+	}
 }
 
 void Sheet::setAxisTitle()

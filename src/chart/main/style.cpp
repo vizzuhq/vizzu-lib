@@ -228,9 +228,9 @@ Chart Chart::def()
 									Padding
 									{
 										.paddingTop = Gfx::Length::Emphemeral(8 / 12.0),
-										.paddingRight = Gfx::Length::Emphemeral(3 / 12.0),
+										.paddingRight = Gfx::Length::Emphemeral(8 / 12.0),
 										.paddingBottom = Gfx::Length::Emphemeral(8 / 12.0),
-										.paddingLeft = Gfx::Length::Emphemeral(3 / 12.0)
+										.paddingLeft = Gfx::Length::Emphemeral(8 / 12.0)
 									},
 									Font
 									{
