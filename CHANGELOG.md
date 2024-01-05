@@ -2,6 +2,11 @@
 
 ## [Unreleased]
 
+
+### Added
+
+- Added optional `categories` member to the `legend-marker`, `legend-label` and `plot-axis-label` events.
+
 ## [0.9.3] - 2023-12-20
 
 ### Fixed
