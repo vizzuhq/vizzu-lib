@@ -293,10 +293,10 @@ public:
 
 			void appendToJSON(Conv::JSONObj &&jsonObj) const override
 			{
-				if (!categoryName.empty() && !categoryValue.empty()) {
-					auto &&nested = jsonObj.nested("categories");
-					nested(categoryName, categoryValue);
-				}
+				if (!categoryName.empty() && !categoryValue.empty())
+					jsonObj.nested(
+					    "categories")(categoryName, categoryValue);
+
 				Base::appendToJSON(std::move(jsonObj));
 			}
 		};
