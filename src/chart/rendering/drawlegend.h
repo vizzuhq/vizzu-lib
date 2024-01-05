@@ -46,6 +46,7 @@ private:
 	void drawMeasure(const Info &info) const;
 
 	void drawMarker(const Info &info,
+	    std::string_view categoryValue,
 	    const Gfx::Color &color,
 	    const Geom::Rect &rect) const;
 	[[nodiscard]] static Geom::Rect getItemRect(const Info &info,

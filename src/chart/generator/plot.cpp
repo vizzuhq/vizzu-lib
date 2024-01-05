@@ -389,6 +389,9 @@ void Plot::calcDimensionAxis(ChannelId type,
 		}
 	}
 	axis.setLabels(dataCube, table);
+
+	if (auto &&series = scale.labelSeries())
+		axis.category = series.value().toString(table);
 }
 
 void Plot::addAlignment()
