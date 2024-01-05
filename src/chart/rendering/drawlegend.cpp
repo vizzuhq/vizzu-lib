@@ -88,6 +88,7 @@ void DrawLegend::drawDimension(const Info &info) const
 		auto alpha = value.second.weight * info.weight;
 
 		drawMarker(info,
+		    value.second.label,
 		    colorBuilder.render(value.second.colorBase) * alpha,
 		    getMarkerRect(info, itemRect));
 
@@ -96,7 +97,9 @@ void DrawLegend::drawDimension(const Info &info) const
 		    value.second.label,
 		    style.label,
 		    *events.label,
-		    Events::Targets::legendLabel(value.second.label,
+		    Events::Targets::legendLabel(info.dimension.category,
+		        value.second.label,
+		        value.second.label,
 		        info.type),
 		    DrawLabel::Options(true, alpha));
 	}
@@ -130,6 +133,7 @@ Geom::TransformedRect DrawLegend::getLabelRect(const Info &info,
 }
 
 void DrawLegend::drawMarker(const Info &info,
+    std::string_view categoryValue,
     const Gfx::Color &color,
     const Geom::Rect &rect) const
 {
@@ -143,7 +147,10 @@ void DrawLegend::drawMarker(const Info &info,
 	                  Styles::Legend::Marker::Type::circle)
 	            * rect.size.minSize() / 2.0;
 
-	auto markerElement = Events::Targets::legendMarker(info.type);
+	auto markerElement =
+	    Events::Targets::legendMarker(info.dimension.category,
+	        categoryValue,
+	        info.type);
 
 	if (events.marker->invoke(
 	        Events::OnRectDrawEvent(*markerElement, {rect, false}))) {
@@ -202,7 +209,7 @@ void DrawLegend::extremaLabel(const Info &info,
 	    text,
 	    style.label,
 	    *events.label,
-	    Events::Targets::legendLabel(text, info.type),
+	    Events::Targets::legendLabel({}, {}, text, info.type),
 	    DrawLabel::Options(true, info.measureWeight * plusWeight));
 }
 

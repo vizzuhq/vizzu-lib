@@ -135,6 +135,7 @@ public:
 	using Values = std::multimap<Data::MultiDim::SliceIndex, Item>;
 
 	bool enabled{false};
+	std::string category{};
 
 	DimensionAxis() = default;
 	bool add(const Data::MultiDim::SliceIndex &index,
