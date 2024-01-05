@@ -202,12 +202,16 @@ export interface LegendTitle extends TextElement {
 export interface LegendMarker extends Element {
 	tagName: 'legend-marker'
 	parent: Legend
+	categoryName?: Data.SeriesName
+	categoryValue?: Data.Value
 }
 
 /** Label element of a legend element. */
 export interface LegendLabel extends TextElement {
 	tagName: 'legend-label'
 	parent: Legend
+	categoryName?: Data.SeriesName
+	categoryValue?: Data.Value
 }
 
 /** Bar element of a legend element indicating a continous interval. */

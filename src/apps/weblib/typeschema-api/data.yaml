@@ -167,7 +167,7 @@ definitions:
         type: object
         properties:
             series:
-                description: The series that make up the the data set.
+                description: The series that make up the data set.
                 type: array
                 items: { $ref: Series }
         required: [series]
