@@ -276,6 +276,31 @@ public:
 			}
 		};
 
+		template <class Base> struct CategoryInfo : Base
+		{
+			std::string_view categoryName;
+			std::string_view categoryValue;
+
+			template <class... Args>
+			explicit CategoryInfo(
+			    const std::string_view &categoryName,
+			    const std::string_view &categoryValue,
+			    Args &&...args) :
+			    Base(std::forward<Args>(args)...),
+			    categoryName(categoryName),
+			    categoryValue(categoryValue)
+			{}
+
+			void appendToJSON(Conv::JSONObj &&jsonObj) const override
+			{
+				if (!categoryName.empty() && !categoryValue.empty())
+					jsonObj.nested(
+					    "categories")(categoryName, categoryValue);
+
+				Base::appendToJSON(std::move(jsonObj));
+			}
+		};
+
 		static auto axis(bool horizontal)
 		{
 			return std::make_unique<Axis>(horizontal);
@@ -342,10 +367,15 @@ public:
 			    marker);
 		}
 
-		static auto legendLabel(const std::string &label,
+		static auto legendLabel(const std::string_view &categoryName,
+		    const std::string_view &categoryValue,
+		    const std::string &label,
 		    Gen::ChannelId channel)
 		{
-			return std::make_unique<Text<LegendChild>>(label,
+			return std::make_unique<CategoryInfo<Text<LegendChild>>>(
+			    categoryName,
+			    categoryValue,
+			    label,
 			    "label",
 			    channel);
 		}
@@ -358,9 +388,15 @@ public:
 			    channel);
 		}
 
-		static auto legendMarker(Gen::ChannelId channel)
+		static auto legendMarker(const std::string_view &categoryName,
+		    const std::string_view &categoryValue,
+		    Gen::ChannelId channel)
 		{
-			return std::make_unique<LegendChild>("marker", channel);
+			return std::make_unique<CategoryInfo<LegendChild>>(
+			    categoryName,
+			    categoryValue,
+			    "marker",
+			    channel);
 		}
 
 		static auto legendBar(Gen::ChannelId channel)
@@ -368,10 +404,15 @@ public:
 			return std::make_unique<LegendChild>("bar", channel);
 		}
 
-		static auto axisLabel(const std::string &label,
+		static auto axisLabel(const std::string_view &categoryName,
+		    const std::string_view &categoryValue,
+		    const std::string &label,
 		    bool horizontal)
 		{
-			return std::make_unique<Text<AxisChild>>(label,
+			return std::make_unique<CategoryInfo<Text<AxisChild>>>(
+			    categoryName,
+			    categoryValue,
+			    label,
 			    "label",
 			    horizontal);
 		}

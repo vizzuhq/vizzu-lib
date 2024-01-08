@@ -31,7 +31,8 @@ private:
 	void drawDimensionLabels(bool horizontal) const;
 	void drawDimensionLabel(bool horizontal,
 	    const Geom::Point &origo,
-	    Gen::DimensionAxis::Values::const_iterator it) const;
+	    Gen::DimensionAxis::Values::const_iterator it,
+	    const std::string_view &category) const;
 };
 
 }

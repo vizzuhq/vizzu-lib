@@ -308,7 +308,9 @@ void DrawInterlacing::drawDataLabel(
 			                *labelStyle.backgroundColor
 			                    * wUnit.weight,
 			                *rootEvents.draw.plot.axis.label,
-			                Events::Targets::axisLabel(str,
+			                Events::Targets::axisLabel({},
+			                    {},
+			                    str,
 			                    !horizontal));
 		        });
 	    });

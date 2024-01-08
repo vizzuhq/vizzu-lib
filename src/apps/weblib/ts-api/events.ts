@@ -166,6 +166,7 @@ export interface Axis extends OrientedElement {
 export interface AxisLabel extends TextElement {
 	tagName: 'plot-axis-label'
 	parent: Axis
+	categories?: Data.Record
 }
 
 /** Guideline element of an axis element. */
@@ -202,12 +203,14 @@ export interface LegendTitle extends TextElement {
 export interface LegendMarker extends Element {
 	tagName: 'legend-marker'
 	parent: Legend
+	categories?: Data.Record
 }
 
 /** Label element of a legend element. */
 export interface LegendLabel extends TextElement {
 	tagName: 'legend-label'
 	parent: Legend
+	categories?: Data.Record
 }
 
 /** Bar element of a legend element indicating a continous interval. */
