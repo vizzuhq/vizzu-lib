@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+### Fixed
+
+- Json serializer control character escape fixed. Some unicode characters
+  were not escaped properly. 
 
 ### Added
 
