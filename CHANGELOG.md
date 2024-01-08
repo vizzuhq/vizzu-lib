@@ -6,6 +6,8 @@
 ### Added
 
 - Added optional `categories` member to the `legend-marker`, `legend-label` and `plot-axis-label` events.
+- Remove unused marker selection and selected marker coloring.
+- Remove cursor modification over logo
 
 ## [0.9.3] - 2023-12-20
 

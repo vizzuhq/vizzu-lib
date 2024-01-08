@@ -15,40 +15,28 @@ class ChartWidget : public GUI::Widget
 {
 public:
 	std::function<void(void)> doChange;
-	std::function<void(const std::shared_ptr<Gfx::ICanvas> &,
-	    GUI::Cursor)>
-	    doSetCursor;
 	std::function<void(const std::string &)> openUrl;
 
 	explicit ChartWidget();
 	~ChartWidget() override;
 
-	void onPointerDown(const std::shared_ptr<Gfx::ICanvas> &,
-	    const GUI::PointerEvent &event) override;
-	void onPointerMove(const std::shared_ptr<Gfx::ICanvas> &,
-	    const GUI::PointerEvent &event) override;
-	void onPointerUp(const std::shared_ptr<Gfx::ICanvas> &,
-	    const GUI::PointerEvent &event) override;
-	void onPointerLeave(const std::shared_ptr<Gfx::ICanvas> &,
-	    const GUI::PointerEvent &event) override;
-	void onWheel(const std::shared_ptr<Gfx::ICanvas> &,
-	    double delta) override;
-	void setCursor(const std::shared_ptr<Gfx::ICanvas> &,
-	    GUI::Cursor cursor) const override;
+	void onPointerDown(const GUI::PointerEvent &event) override;
+	void onPointerMove(const GUI::PointerEvent &event) override;
+	void onPointerUp(const GUI::PointerEvent &event) override;
+	void onPointerLeave(const GUI::PointerEvent &event) override;
+	void onWheel(double delta) override;
 	void onChanged() override;
 	void onDraw(const std::shared_ptr<Gfx::ICanvas> &) override;
 	void onUpdateSize(const std::shared_ptr<Gfx::ICanvas> &,
 	    Geom::Size size) override;
 
-	[[nodiscard]] Geom::Size getSize(
-	    const std::shared_ptr<Gfx::ICanvas> &) const override;
-
 	[[nodiscard]] Chart &getChart() { return chart; }
 
 	[[nodiscard]] bool needsUpdate(
-	    const std::shared_ptr<Gfx::ICanvas> &) const final
+	    const std::shared_ptr<Gfx::ICanvas> &,
+	    Geom::Size size) const final
 	{
-		return needUpdate;
+		return needUpdate || chart.getLayout().boundary.size != size;
 	}
 
 private:
@@ -60,12 +48,6 @@ private:
 	Util::EventDispatcher::event_ptr onPointerUpEvent;
 	Util::EventDispatcher::event_ptr onPointerLeaveEvent;
 	bool needUpdate{true};
-
-	void updateCursor(const std::shared_ptr<Gfx::ICanvas> &,
-	    const Geom::Point &pos);
-
-	[[nodiscard]] static const Gen::Marker *getIfMarker(
-	    const Util::EventTarget *);
 };
 
 }

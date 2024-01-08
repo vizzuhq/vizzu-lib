@@ -441,20 +441,10 @@ Gfx::Color MarkerRenderer::getSelectedColor(const Gen::Marker &marker,
 
 	auto markerColor = colorBuilder.render(marker.colorBase);
 
-	auto orig =
-	    label ? Math::interpolate(markerColor,
-	        rootStyle.plot.marker.label.color->transparent(1.0),
-	        rootStyle.plot.marker.label.color->alpha)
-	          : markerColor;
-
-	auto gray = orig.desaturate().lightnessScaled(0.75);
-	auto interpolated = Math::interpolate(gray,
-	    orig,
-	    static_cast<double>(marker.selected));
-
-	return Math::interpolate(orig,
-	    interpolated,
-	    static_cast<double>(plot->anySelected));
+	return label ? Math::interpolate(markerColor,
+	           rootStyle.plot.marker.label.color->transparent(1.0),
+	           rootStyle.plot.marker.label.color->alpha)
+	             : markerColor;
 }
 
 MarkerRenderer MarkerRenderer::create(const DrawingContext &ctx)

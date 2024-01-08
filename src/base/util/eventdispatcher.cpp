@@ -119,26 +119,4 @@ bool EventDispatcher::destroyEvent(const event_ptr &event)
 {
 	return destroyEvent(event->name().c_str());
 }
-
-void EventDispatcher::registerHandler(uint64_t owner, handler_id id)
-{
-	auto iter = handlerRegistry.find(owner);
-	if (iter == handlerRegistry.end()) {
-		handlerRegistry.insert(
-		    std::make_pair(owner, std::list<handler_id>{}));
-		iter = handlerRegistry.find(owner);
-	}
-	iter->second.push_back(id);
-}
-
-void EventDispatcher::unregisterHandler(const event_ptr &event,
-    uint64_t owner)
-{
-	auto iter = handlerRegistry.find(owner);
-	if (iter != handlerRegistry.end()) {
-		for (auto &item : iter->second) event->detach(item);
-		handlerRegistry.erase(iter);
-	}
-}
-
 }
