@@ -46,6 +46,14 @@ concept SerializableRange =
 
 struct JSON
 {
+	template <class T> inline void escaped(const T &str) const
+	{
+		for (auto ch : str) {
+			if ((ch == '\\') || ch == '"' || ch <= 0x1f) json += '\\';
+			json += ch;
+		}
+	}
+
 	template <class T> inline void primitive(const T &val) const
 	{
 		if constexpr (std::is_floating_point_v<T>) {
@@ -65,7 +73,11 @@ struct JSON
 		}
 		else {
 			json += '\"';
-			json += Text::SmartString::escape(toString(val));
+			if constexpr (std::is_same_v<T, std::string_view>)
+				escaped(val);
+			else
+				escaped(toString(val));
+
 			json += '\"';
 		}
 	}
@@ -266,10 +278,11 @@ struct JSONObj : JSON
 		json += std::exchange(was, true) ? ',' : '{';
 
 		json += '\"';
-		if constexpr (KeyNoEscape) { json.append(key); }
-		else {
-			json += Text::SmartString::escape(std::string{key});
-		}
+		if constexpr (KeyNoEscape)
+			json.append(key);
+		else
+			escaped(key);
+
 		json += "\":";
 		return *this;
 	}
