@@ -51,7 +51,7 @@ struct JSON
 		for (auto ch : str) {
 			if (ch >= 0 && ch <= 31) [[unlikely]] {
 				json += "\\u00";
-				json += '0' + (ch >> 4);
+				json += static_cast<char>('0' + (ch >= 16));
 				json += "0123456789abcdef"[ch % 16];
 				continue;
 			}
