@@ -49,7 +49,8 @@ struct JSON
 	template <class T> inline void escaped(const T &str) const
 	{
 		for (auto ch : str) {
-			if ((ch == '\\') || ch == '"' || ch <= 0x1f) json += '\\';
+			if (ch == '\\' || ch == '"' || (ch >= 0 && ch <= 0x1f))
+				json += '\\';
 			json += ch;
 		}
 	}
