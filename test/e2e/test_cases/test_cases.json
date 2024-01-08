@@ -506,7 +506,7 @@
 			"refs": ["03a5cfe"]
 		},
 		"web_content/analytical_operations/compare/stream_stacked": {
-			"refs": ["f7f0fde"]
+			"refs": ["d2df83f"]
 		},
 		"web_content/analytical_operations/compare/waterfall": {
 			"refs": ["16a3b23"]
@@ -620,7 +620,7 @@
 			"refs": ["669fa0b"]
 		},
 		"web_content/analytical_operations/filter/stream_1": {
-			"refs": ["8d33040"]
+			"refs": ["f153df2"]
 		},
 		"web_content/analytical_operations/filter/stream_2": {
 			"refs": ["42eb797"]
@@ -2045,7 +2045,7 @@
 			"refs": ["a4fcf7c"]
 		},
 		"ww_next_steps/next_steps_byOperations/wOld_animated/other_cartesian_radial_02": {
-			"refs": ["7cf90ec"]
+			"refs": ["251619a"]
 		},
 		"ww_next_steps/next_steps_byOperations/wOld_animated/treemap_radial": {
 			"refs": ["6f96e8b"]
@@ -2441,7 +2441,7 @@
 			"refs": ["0e684b3"]
 		},
 		"ww_noFade/wNoFade_Tests/Marker_label_problem/rotated_bar_to_donut": {
-			"refs": ["1aca6bf"]
+			"refs": ["eb8dbd8"]
 		},
 		"ww_noFade/wNoFade_Tests/Marker_transition_problem/Bubble_Stacked_Bubble_to_Area": {
 			"refs": ["1ffa601"]
