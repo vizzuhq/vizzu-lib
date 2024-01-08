@@ -49,8 +49,15 @@ struct JSON
 	template <class T> inline void escaped(const T &str) const
 	{
 		for (auto ch : str) {
-			if (ch == '\\' || ch == '"' || (ch >= 0 && ch <= 0x1f))
+			if (ch >= 0 && ch <= 31) [[unlikely]] {
+				json += "\\u00";
+				json += '0' + (ch >> 4);
+				json += "0123456789abcdef"[ch % 16];
+				continue;
+			}
+			else if (ch == '\\' || ch == '"')
 				json += '\\';
+
 			json += ch;
 		}
 	}
