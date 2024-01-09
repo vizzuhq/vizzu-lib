@@ -11,6 +11,7 @@
 #include <vector>
 
 #include "base/refl/auto_struct.h"
+#include "base/text/character.h"
 #include "base/text/smartstring.h"
 
 #include "tostring.h"
@@ -51,8 +52,9 @@ struct JSON
 		for (auto ch : str) {
 			if (ch >= 0 && ch <= 31) [[unlikely]] {
 				json += "\\u00";
-				json += static_cast<char>('0' + (ch >= 16));
-				json += "0123456789abcdef"[ch % 16];
+				using Text::Character::toHex;
+				json += toHex(ch >= 16);
+				json += toHex(ch % 16);
 				continue;
 			}
 			else if (ch == '\\' || ch == '"')
