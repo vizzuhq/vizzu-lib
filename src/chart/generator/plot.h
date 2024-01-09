@@ -61,7 +61,6 @@ public:
 
 	static bool dimensionMatch(const Plot &a, const Plot &b);
 
-	Math::FuzzyBool anySelected;
 	Math::FuzzyBool anyAxisSet;
 	CommonAxises commonAxises;
 	MeasureAxises measureAxises;

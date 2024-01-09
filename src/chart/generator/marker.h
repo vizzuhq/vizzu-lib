@@ -36,7 +36,6 @@ public:
 	Geom::Point spacing;
 	double sizeFactor;
 	Math::FuzzyBool enabled;
-	Math::FuzzyBool selected;
 	Data::CellInfo cellInfo;
 
 	struct Label

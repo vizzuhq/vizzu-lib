@@ -328,16 +328,6 @@ ObjectRegistry::Handle Interface::createChart()
 {
 	auto &&widget = std::make_shared<UI::ChartWidget>();
 
-	widget->doSetCursor =
-	    [&](const std::shared_ptr<Gfx::ICanvas> &target,
-	        GUI::Cursor cursor)
-	{
-		::canvas_setCursor(
-		    std::static_pointer_cast<Vizzu::Main::JScriptCanvas>(
-		        target)
-		        .get(),
-		    toCSS(cursor));
-	};
 	widget->openUrl = [&](const std::string &url)
 	{
 		::openUrl(url.c_str());
@@ -372,8 +362,7 @@ void Interface::update(ObjectRegistry::Handle chart,
 	auto &&canvasPtr =
 	    objects.get<Vizzu::Main::JScriptCanvas>(canvas);
 
-	const bool renderNeeded = widget->needsUpdate(canvasPtr)
-	                       || widget->getSize(canvasPtr) != size;
+	const bool renderNeeded = widget->needsUpdate(canvasPtr, size);
 
 	if ((renderControl == allow && renderNeeded)
 	    || renderControl == force) {
@@ -385,54 +374,48 @@ void Interface::update(ObjectRegistry::Handle chart,
 }
 
 void Interface::pointerDown(ObjectRegistry::Handle chart,
-    ObjectRegistry::Handle canvas,
+    ObjectRegistry::Handle,
     int pointerId,
     double x,
     double y)
 {
 	objects.get<UI::ChartWidget>(chart)->onPointerDown(
-	    objects.get<Vizzu::Main::JScriptCanvas>(canvas),
-	    GUI::PointerEvent(pointerId, Geom::Point{x, y}));
+	    {pointerId, Geom::Point{x, y}});
 }
 
 void Interface::pointerUp(ObjectRegistry::Handle chart,
-    ObjectRegistry::Handle canvas,
+    ObjectRegistry::Handle,
     int pointerId,
     double x,
     double y)
 {
 	objects.get<UI::ChartWidget>(chart)->onPointerUp(
-	    objects.get<Vizzu::Main::JScriptCanvas>(canvas),
-	    GUI::PointerEvent(pointerId, Geom::Point{x, y}));
+	    {pointerId, Geom::Point{x, y}});
 }
 
 void Interface::pointerLeave(ObjectRegistry::Handle chart,
-    ObjectRegistry::Handle canvas,
+    ObjectRegistry::Handle,
     int pointerId)
 {
 	objects.get<UI::ChartWidget>(chart)->onPointerLeave(
-	    objects.get<Vizzu::Main::JScriptCanvas>(canvas),
-	    GUI::PointerEvent(pointerId, Geom::Point::Invalid()));
+	    {pointerId, Geom::Point::Invalid()});
 }
 
 void Interface::wheel(ObjectRegistry::Handle chart,
-    ObjectRegistry::Handle canvas,
+    ObjectRegistry::Handle,
     double delta)
 {
-	objects.get<UI::ChartWidget>(chart)->onWheel(
-	    objects.get<Vizzu::Main::JScriptCanvas>(canvas),
-	    delta);
+	objects.get<UI::ChartWidget>(chart)->onWheel(delta);
 }
 
 void Interface::pointerMove(ObjectRegistry::Handle chart,
-    ObjectRegistry::Handle canvas,
+    ObjectRegistry::Handle,
     int pointerId,
     double x,
     double y)
 {
 	objects.get<UI::ChartWidget>(chart)->onPointerMove(
-	    objects.get<Vizzu::Main::JScriptCanvas>(canvas),
-	    GUI::PointerEvent(pointerId, Geom::Point{x, y}));
+	    {pointerId, Geom::Point{x, y}});
 }
 
 }

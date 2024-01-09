@@ -31,7 +31,6 @@ public:
 	using event_map = std::map<std::string, event_ptr>;
 	using handler_list =
 	    std::list<std::pair<std::uint64_t, handler_fn>>;
-	using handler_map = std::map<uint64_t, std::list<handler_id>>;
 
 	class Params
 	{
@@ -95,10 +94,6 @@ public:
 
 protected:
 	event_map eventRegistry;
-	handler_map handlerRegistry;
-
-	void registerHandler(uint64_t owner, handler_id id);
-	void unregisterHandler(const event_ptr &event, uint64_t owner);
 };
 
 }

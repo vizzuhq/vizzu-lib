@@ -326,16 +326,17 @@ bool Planner::positionMorphNeeded() const
 
 bool Planner::needColor() const
 {
-	return source->anySelected != target->anySelected
-	    || (isAnyLegend(Gen::ChannelId::color)
-	        && (source->commonAxises.at(Gen::ChannelId::color)
-	                != target->commonAxises.at(Gen::ChannelId::color)
-	            || source->dimensionAxises.at(Gen::ChannelId::color)
-	                   != target->dimensionAxises.at(
+	return (isAnyLegend(Gen::ChannelId::color)
+	           && (source->commonAxises.at(Gen::ChannelId::color)
+	                   != target->commonAxises.at(
 	                       Gen::ChannelId::color)
-	            || source->measureAxises.at(Gen::ChannelId::color)
-	                   != target->measureAxises.at(
-	                       Gen::ChannelId::color)))
+	               || source->dimensionAxises.at(
+	                      Gen::ChannelId::color)
+	                      != target->dimensionAxises.at(
+	                          Gen::ChannelId::color)
+	               || source->measureAxises.at(Gen::ChannelId::color)
+	                      != target->measureAxises.at(
+	                          Gen::ChannelId::color)))
 	    || (isAnyLegend(Gen::ChannelId::lightness)
 	        && (source->commonAxises.at(Gen::ChannelId::lightness)
 	                != target->commonAxises.at(
@@ -351,8 +352,7 @@ bool Planner::needColor() const
 	        [&](const auto &source, const auto &target)
 	        {
 		        return (source.enabled || target.enabled)
-		            && (source.colorBase != target.colorBase
-		                || source.selected != target.selected);
+		            && source.colorBase != target.colorBase;
 	        });
 }
 

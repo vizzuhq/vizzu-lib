@@ -73,7 +73,6 @@ bool Plot::MarkerInfoContent::operator==(
 }
 
 Plot::Plot(PlotOptionsPtr options, const Plot &other) :
-    anySelected(other.anySelected),
     anyAxisSet(other.anyAxisSet),
     commonAxises(other.commonAxises),
     measureAxises(other.measureAxises),
@@ -90,7 +89,6 @@ Plot::Plot(const Data::DataTable &dataTable,
     PlotOptionsPtr opts,
     Styles::Chart style,
     bool setAutoParams) :
-    anySelected{false},
     dataTable(dataTable),
     options(std::move(opts)),
     style(std::move(style)),
