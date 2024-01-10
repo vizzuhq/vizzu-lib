@@ -14,5 +14,5 @@ jobs:
               env:
                   SLACK_BOT_TOKEN: ${{ secrets.VIZZUHQ_SLACK_API }}
               with:
-                  args: '{\"channel\":\"${{ secrets.VIZZUHQ_SLACK_CHANNEL }}\",\"blocks\":[{\"type\":\"section\",\"text\":{\"type\":\"mrkdwn\",\"text\":\"*PR:* ${{ github.event.pull_request.title }}\n*Description :* ${{ github.event.pull_request.body }}\n*Opened by :* ${{ github.event.pull_request.user.login }}\n*Requested reviewers :* ${{ join(github.event.pull_request.requested_reviewers) }}\n*Merged at:* ${{ github.event.pull_request.merged_at }}\n<${{ github.event.pull_request.html_url }}|View PR>\"}}]}'
+                  args: '{\"channel\":\"${{ secrets.VIZZUHQ_SLACK_CHANNEL }}\",\"blocks\":[{\"type\":\"section\",\"text\":{\"type\":\"mrkdwn\",\"text\":\"*PR:* ${{ github.event.pull_request.title }}\n*Description :* ${{ github.event.pull_request.body }}\n*Opened by :* ${{ github.event.pull_request.user.login }}\n*Requested reviewers :* ${{ join(github.event.pull_request.requested_reviewers.*.login) }}\n*Merged at:* ${{ github.event.pull_request.merged_at }}\n<${{ github.event.pull_request.html_url }}|View PR>\"}}]}'
               if: success()
