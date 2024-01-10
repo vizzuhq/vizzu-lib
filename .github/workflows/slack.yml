@@ -1,14 +1,14 @@
 name: Notify on merged PR
 on:
     pull_request:
-#        types:
-#            - closed
+        types:
+            - closed
 
 jobs:
     notify_merged_pr:
         name: Notify on merged PR
         runs-on: ubuntu-22.04
-        #        if: ${{ github.event.pull_request.merged == true }}
+        if: ${{ github.event.pull_request.merged == true }}
         steps:
             - uses: abinoda/slack-action@master
               env:
