@@ -90,8 +90,8 @@ void Sheet::setAxisLabels()
 		def.side = AxisLabel::Side::positive;
 	}
 	else {
-		def.paddingRight = Gfx::Length::Emphemeral(3 / 12.0);
-		def.paddingLeft = Gfx::Length::Emphemeral(3 / 12.0);
+		def.paddingRight = Gfx::Length::Emphemeral(6 / 12.0);
+		def.paddingLeft = Gfx::Length::Emphemeral(6 / 12.0);
 
 		if (const auto &xAxis =
 		        options->getChannels().at(Gen::ChannelId::x);
