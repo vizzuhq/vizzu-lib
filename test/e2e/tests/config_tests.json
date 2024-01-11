@@ -42,6 +42,9 @@
 		},
 		"dimension_axis_title": {
 			"refs": ["d9bab94"]
+		},
+		"dimension_axis_density": {
+			"refs": ["366be4e"]
 		}
 	}
 }

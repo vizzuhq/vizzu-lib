@@ -94,18 +94,26 @@ bool DimensionAxis::operator==(const DimensionAxis &other) const
 }
 
 void DimensionAxis::setLabels(const Data::DataCube &data,
-    const Data::DataTable &table)
+    const Data::DataTable &table,
+    double step)
 {
-	Values::iterator it;
-	for (it = values.begin(); it != values.end(); ++it) {
+	step = std::max(step, 1.0);
+	double currStep = step;
+
+	for (int curr{}; auto &[slice, item] : values) {
 		auto colIndex =
-		    data.getSeriesByDim(it->first.dimIndex).getColIndex();
+		    data.getSeriesByDim(slice.dimIndex).getColIndex();
 		const auto &categories =
 		    table.getInfo(colIndex.value()).categories();
-		if (it->first.index < categories.size())
-			it->second.label = categories[it->first.index];
+
+		if (slice.index < categories.size())
+			item.categoryValue = categories[slice.index];
 		else
-			it->second.label = "NA";
+			item.categoryValue = "NA";
+
+		if (++curr < currStep) continue;
+		currStep += step;
+		item.label = item.categoryValue;
 	}
 }
 

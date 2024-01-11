@@ -292,6 +292,7 @@ void DrawAxes::drawDimensionLabel(bool horizontal,
 	        ident = Geom::Point::Ident(horizontal),
 	        normal = Geom::Point::Ident(!horizontal),
 	        &text = it->second.label,
+	        &categoryVal = it->second.categoryValue,
 	        textColor = *labelStyle.color,
 	        &weight,
 	        &category](int index, const auto &position)
@@ -333,7 +334,7 @@ void DrawAxes::drawDimensionLabel(bool horizontal,
 		            *labelStyle.backgroundColor,
 		            *rootEvents.draw.plot.axis.label,
 		            Events::Targets::axisLabel(category,
-		                text,
+		                categoryVal,
 		                text,
 		                horizontal));
 	    });

@@ -88,7 +88,7 @@ void DrawLegend::drawDimension(const Info &info) const
 		auto alpha = value.second.weight * info.weight;
 
 		drawMarker(info,
-		    value.second.label,
+		    value.second.categoryValue,
 		    colorBuilder.render(value.second.colorBase) * alpha,
 		    getMarkerRect(info, itemRect));
 
@@ -98,7 +98,7 @@ void DrawLegend::drawDimension(const Info &info) const
 		    style.label,
 		    *events.label,
 		    Events::Targets::legendLabel(info.dimension.category,
-		        value.second.label,
+		        value.second.categoryValue,
 		        value.second.label,
 		        info.type),
 		    DrawLabel::Options(true, alpha));

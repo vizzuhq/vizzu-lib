@@ -100,6 +100,7 @@ public:
 		double value;
 		::Anim::Interpolated<ColorBase> colorBase;
 		std::string label;
+		std::string categoryValue;
 		double weight;
 
 		Item(Math::Range<double> range,
@@ -119,6 +120,7 @@ public:
 		    value(item.value),
 		    colorBase(item.colorBase),
 		    label(item.label),
+		    categoryValue(item.categoryValue),
 		    weight(item.weight * factor)
 		{}
 
@@ -156,7 +158,8 @@ public:
 		return values.cend();
 	}
 	void setLabels(const Data::DataCube &data,
-	    const Data::DataTable &table);
+	    const Data::DataTable &table,
+	    double step);
 
 private:
 	Values values;
