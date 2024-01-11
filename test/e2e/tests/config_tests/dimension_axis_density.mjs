@@ -1,4 +1,4 @@
-let testSteps = [
+const testSteps = [
 	(chart) =>
 		chart.animate({
 			data: {
@@ -19,28 +19,33 @@ let testSteps = [
 	(chart) =>
 		chart.animate(
 			{
-				x: 'C',
-				y: 'Values 2'
+				x: { set: 'C', title: 'Step: 1' },
+				y: 'Values 2',
+				color: 'C',
+				legend: 'color'
 			},
 			0
 		)
 ]
 
-for (let i = 11; i <= 66; i++) {
-	testSteps.push((chart) =>
-		chart.animate(
-			{
-				x: {
-					step: i / 11,
-					title: 'Step: ' + i / 11
-				}
-			},
-			0.3
+for (let i = 1; i <= 5; i++) {
+	for (let j = 12 / i - 1; j >= 1; j--) {
+		const num = (i * j + 1) / (j - 0.0000001)
+		testSteps.push((chart) =>
+			chart.animate(
+				{
+					x: {
+						step: num,
+						title: 'Step: ' + Math.round(num * 1000) / 1000
+					}
+				},
+				0.3
+			)
 		)
-	)
+	}
 }
 
-for (let i = 7; i <= 12; i++) {
+for (let i = 6; i <= 12; i++) {
 	testSteps.push((chart) =>
 		chart.animate(
 			{

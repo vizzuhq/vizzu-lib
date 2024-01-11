@@ -327,16 +327,37 @@ void DrawAxes::drawDimensionLabel(bool horizontal,
 
 		    posDir = posDir.extend(sign);
 
-		    OrientedLabel::create(canvas, text, posDir, labelStyle, 0)
-		        .draw(canvas,
-		            renderedChart,
-		            textColor * weight * position.weight,
-		            *labelStyle.backgroundColor,
-		            *rootEvents.draw.plot.axis.label,
-		            Events::Targets::axisLabel(category,
-		                categoryVal,
-		                text,
-		                horizontal));
+		    auto draw = [&](const ::Anim::Weighted<std::string> &str,
+		                    double plusWeight = 1.0)
+		    {
+			    OrientedLabel::create(canvas,
+			        str.value,
+			        posDir,
+			        labelStyle,
+			        0)
+			        .draw(canvas,
+			            renderedChart,
+			            textColor * weight * str.weight * plusWeight,
+			            *labelStyle.backgroundColor,
+			            *rootEvents.draw.plot.axis.label,
+			            Events::Targets::axisLabel(category,
+			                categoryVal,
+			                str.value,
+			                horizontal));
+		    };
+
+		    if (labelStyle.position->interpolates()
+		        && text.interpolates())
+			    draw(text.get(index), position.weight);
+		    if (!labelStyle.position->interpolates()
+		        && !text.interpolates())
+			    draw(text.get(0));
+		    else if (labelStyle.position->interpolates())
+			    draw(text.get(0), position.weight);
+		    else if (text.interpolates()) {
+			    draw(text.get(0));
+			    draw(text.get(1));
+		    }
 	    });
 }
 

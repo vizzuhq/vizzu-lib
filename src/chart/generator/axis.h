@@ -99,7 +99,7 @@ public:
 		Math::Range<double> range;
 		double value;
 		::Anim::Interpolated<ColorBase> colorBase;
-		std::string label;
+		::Anim::Interpolated<std::string> label;
 		std::string categoryValue;
 		double weight;
 
