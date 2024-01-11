@@ -1,8 +1,5 @@
 #include "chart.h"
 
-#include <utility>
-
-#include "chart/generator/selector.h"
 #include "chart/main/version.h"
 
 #include "events.h"
@@ -43,86 +40,42 @@ void ChartWidget::onChanged()
 	needUpdate = true;
 }
 
-void ChartWidget::setCursor(
-    const std::shared_ptr<Gfx::ICanvas> &canvas,
-    GUI::Cursor cursor) const
+void ChartWidget::onPointerDown(const GUI::PointerEvent &event)
 {
-	if (doSetCursor) doSetCursor(canvas, cursor);
+	onPointerDownEvent->invoke(PointerEvent{event,
+	    chart.getRenderedChart().find(event.position)});
 }
 
-void ChartWidget::onPointerDown(
-    const std::shared_ptr<Gfx::ICanvas> &canvas,
-    const GUI::PointerEvent &event)
+void ChartWidget::onPointerMove(const GUI::PointerEvent &event)
 {
-	updateCursor(canvas, event.pos);
-
-	onPointerDownEvent->invoke(PointerEvent(event.pointerId,
-	    event.pos,
-	    chart.getRenderedChart().find(event.pos)));
+	onPointerMoveEvent->invoke(PointerEvent{event,
+	    chart.getRenderedChart().find(event.position)});
 }
 
-void ChartWidget::onPointerMove(
-    const std::shared_ptr<Gfx::ICanvas> &canvas,
-    const GUI::PointerEvent &event)
-{
-	updateCursor(canvas, event.pos);
-
-	onPointerMoveEvent->invoke(PointerEvent(event.pointerId,
-	    event.pos,
-	    chart.getRenderedChart().find(event.pos)));
-}
-
-void ChartWidget::onPointerUp(
-    const std::shared_ptr<Gfx::ICanvas> &canvas,
-    const GUI::PointerEvent &event)
+void ChartWidget::onPointerUp(const GUI::PointerEvent &event)
 {
 	const auto *eventTarget =
-	    chart.getRenderedChart().find(event.pos);
+	    chart.getRenderedChart().find(event.position);
 
-	onPointerUpEvent->invoke(
-	    PointerEvent(event.pointerId, event.pos, eventTarget));
+	onPointerUpEvent->invoke(PointerEvent{event, eventTarget});
 
-	if (onClick->invoke(
-	        PointerEvent(event.pointerId, event.pos, eventTarget))) {
-		if (chart.getLayout().logo.contains(event.pos)) {
+	if (onClick->invoke(PointerEvent{event, eventTarget})) {
+		if (chart.getLayout().logo.contains(event.position)) {
 			if (openUrl)
 				openUrl(
 				    Main::siteUrl + std::string("?utm_source=logo"));
 		}
-		else if (auto plot = chart.getPlot()) {
-			if (const auto *clickedMarker = getIfMarker(eventTarget))
-				Gen::Selector(*plot).toggleMarker(
-				    const_cast<Gen::Marker &>( // NOLINT
-				        *clickedMarker));
-			else
-				Gen::Selector(*plot).clearSelection();
-			onChanged();
-		}
 	}
-
-	updateCursor(canvas, event.pos);
 }
 
-void ChartWidget::onPointerLeave(
-    const std::shared_ptr<Gfx::ICanvas> &canvas,
-    const GUI::PointerEvent &event)
+void ChartWidget::onPointerLeave(const GUI::PointerEvent &event)
 {
-	updateCursor(canvas, event.pos);
-
-	onPointerLeaveEvent->invoke(
-	    PointerEvent(event.pointerId, event.pos, nullptr));
+	onPointerLeaveEvent->invoke(PointerEvent{event, nullptr});
 }
 
-void ChartWidget::onWheel(const std::shared_ptr<Gfx::ICanvas> &,
-    double delta)
+void ChartWidget::onWheel(double delta)
 {
 	onWheelEvent->invoke(WheelEvent(delta, nullptr));
-}
-
-Geom::Size ChartWidget::getSize(
-    const std::shared_ptr<Gfx::ICanvas> &) const
-{
-	return chart.getLayout().boundary.size;
 }
 
 void ChartWidget::onDraw(const std::shared_ptr<Gfx::ICanvas> &canvas)
@@ -136,36 +89,6 @@ void ChartWidget::onUpdateSize(
     Geom::Size size)
 {
 	chart.setBoundRect(Geom::Rect(Geom::Point{}, size), *canvas);
-}
-
-void ChartWidget::updateCursor(
-    const std::shared_ptr<Gfx::ICanvas> &canvas,
-    const Geom::Point &pos)
-{
-	if (chart.getLayout().logo.contains(pos))
-		return setCursor(canvas, GUI::Cursor::push);
-
-	if (!chart.getAnimControl().isRunning())
-		if (auto plot = chart.getPlot())
-			if (plot->anySelected
-			    || getIfMarker(chart.getRenderedChart().find(pos)))
-				return setCursor(canvas, GUI::Cursor::push);
-	return setCursor(canvas, GUI::Cursor::point);
-}
-
-const Gen::Marker *ChartWidget::getIfMarker(
-    const Util::EventTarget *target)
-{
-	if (!target) [[unlikely]]
-		return nullptr;
-
-	const auto *element =
-	    static_cast<const Events::Targets::Element *>(target);
-
-	return element->tagName == "plot-marker"
-	         ? &static_cast<const Events::Targets::Marker *>(element)
-	                ->marker
-	         : nullptr;
 }
 
 }

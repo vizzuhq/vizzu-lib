@@ -7,16 +7,15 @@
 namespace Vizzu::UI
 {
 
-PointerEvent::PointerEvent(std::optional<int> pointerId,
-    Geom::Point position,
+PointerEvent::PointerEvent(const GUI::PointerEvent &event,
     const Util::EventTarget *target) :
     Util::EventDispatcher::Params(target),
-    PointerEventDetail{position, pointerId}
+    GUI::PointerEvent{event}
 {}
 
 void PointerEvent::appendToJSON(Conv::JSON &obj) const
 {
-	obj.any<PointerEventDetail>(*this);
+	obj.any<GUI::PointerEvent>(*this);
 }
 
 WheelEvent::WheelEvent(double delta,

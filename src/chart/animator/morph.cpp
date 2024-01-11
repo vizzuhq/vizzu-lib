@@ -237,9 +237,6 @@ void Morph::Color::transform(const Gen::Plot &source,
     Gen::Plot &actual,
     double factor) const
 {
-	actual.anySelected =
-	    interpolate(source.anySelected, target.anySelected, factor);
-
 	actual.commonAxises.at(Gen::ChannelId::color) =
 	    interpolate(source.commonAxises.at(Gen::ChannelId::color),
 	        target.commonAxises.at(Gen::ChannelId::color),
@@ -279,8 +276,6 @@ void Morph::Color::transform(const Marker &source,
 {
 	actual.colorBase =
 	    interpolate(source.colorBase, target.colorBase, factor);
-	actual.selected =
-	    interpolate(source.selected, target.selected, factor);
 }
 
 }

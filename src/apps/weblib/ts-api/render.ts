@@ -53,10 +53,6 @@ export class Render implements Plugin, Canvas {
 		}
 	}
 
-	setCursor(name: CString): void {
-		this._canvas.element.style.cursor = this._ccanvas.getString(name)
-	}
-
 	frameBegin(): void {
 		this._currentLineWidth = 1
 		this._canvas.frameBegin()

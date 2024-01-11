@@ -1,7 +1,6 @@
 #include "animator.h"
 
 #include "chart/animator/keyframe.h"
-#include "chart/generator/selector.h"
 
 namespace Vizzu::Anim
 {

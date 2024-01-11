@@ -1,5 +1,4 @@
 Canvas:
-    setCursor: { name: C.CString }
     frameBegin: {}
     frameEnd: {}
     setClipRect: { x: number, y: number, sizex: number, sizey: number }

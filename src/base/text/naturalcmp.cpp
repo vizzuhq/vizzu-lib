@@ -7,7 +7,7 @@
 namespace Text
 {
 
-using SC = Character;
+namespace SC = Character;
 
 NaturalCmp::NaturalCmp(bool ignoreCase, bool ignoreSpace) :
     ignoreCase(ignoreCase),

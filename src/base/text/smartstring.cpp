@@ -10,9 +10,9 @@
 #include "base/math/floating.h"
 #include "base/math/normalizednumber.h"
 
-namespace Text
+namespace Text::SmartString
 {
-void SmartString::trim(std::string &string, int (*ignore)(int))
+void trim(std::string &string, int (*ignore)(int))
 {
 	string.erase(string.begin(),
 	    std::find_if_not(string.begin(), string.end(), ignore));
@@ -22,7 +22,7 @@ void SmartString::trim(std::string &string, int (*ignore)(int))
 	    string.end());
 }
 
-std::vector<std::string> SmartString::split(const std::string &str,
+std::vector<std::string> split(const std::string &str,
     char delim,
     bool ignoreEmpty,
     const char *parens)
@@ -48,7 +48,7 @@ std::vector<std::string> SmartString::split(const std::string &str,
 	return result;
 }
 
-std::string SmartString::fromPhysicalValue(double value,
+std::string fromPhysicalValue(double value,
     NumberFormat format,
     size_t maxFractionDigits,
     const NumberScale &numberScale,
@@ -82,16 +82,6 @@ std::string SmartString::fromPhysicalValue(double value,
 	}
 	return converter(value)
 	     + (unit.empty() || unit == "%" ? unit : " " + unit);
-}
-
-std::string SmartString::escape(const std::string &str)
-{
-	std::string result;
-	for (const auto &ch : str) {
-		if ((ch == '\\') || ch == '"') result.push_back('\\');
-		result.push_back(ch);
-	}
-	return result;
 }
 
 }
