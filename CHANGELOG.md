@@ -6,12 +6,14 @@
 
 - Json serializer control character escape fixed. Some unicode characters
   were not escaped properly. 
+- Fix dimension label transition on axis and legend.
 
 ### Added
 
 - Added optional `categories` member to the `legend-marker`, `legend-label` and `plot-axis-label` events.
 - Remove unused marker selection and selected marker coloring.
-- Remove cursor modification over logo
+- Remove cursor modification over logo.
+- Make `channel.step` option to work on dimensions. 
 
 ## [0.9.3] - 2023-12-20
 
