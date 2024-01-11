@@ -17,43 +17,43 @@
 			"refs": ["a1535ae"]
 		},
 		"basic_animations/anim_order/rectangle_without_2_polar_column": {
-			"refs": ["58c7b11"]
+			"refs": ["244cc5f"]
 		},
 		"basic_animations/coordsystems/area_carte_2_polar": {
-			"refs": ["7ed7ddb"]
+			"refs": ["7b3d87d"]
 		},
 		"basic_animations/coordsystems/circle_without_2_carte": {
 			"refs": ["44524c8"]
 		},
 		"basic_animations/coordsystems/rectangle_carte_2_polar": {
-			"refs": ["e7de461"]
+			"refs": ["6109049"]
 		},
 		"basic_animations/coordsystems/rectangle_without_2_carte": {
 			"refs": ["00e5959"]
 		},
 		"basic_animations/coordsystems/rectangle_without_2_polar": {
-			"refs": ["50448cf"]
+			"refs": ["5bfd4e0"]
 		},
 		"basic_animations/labels/axis/circle_negative_2dis_3con": {
-			"refs": ["c02f310"]
+			"refs": ["6d34d02"]
 		},
 		"basic_animations/labels/marker/area_2dis_3con": {
-			"refs": ["b733b9f"]
+			"refs": ["39a8de7"]
 		},
 		"basic_animations/labels/marker/circle_negative_2dis_3con": {
-			"refs": ["662dcea"]
+			"refs": ["db72798"]
 		},
 		"basic_animations/labels/marker/line_2dis_3con": {
-			"refs": ["4c3b692"]
+			"refs": ["a1c8ac0"]
 		},
 		"basic_animations/labels/marker/padding_test_rectangle_negative_2dis_3con": {
-			"refs": ["92b1313"]
+			"refs": ["5df3408"]
 		},
 		"basic_animations/labels/marker/rectangle_negative_2dis_3con": {
-			"refs": ["ea517e2"]
+			"refs": ["1d1c034"]
 		},
 		"basic_animations/labels/rectangle_labels_rotated_charts": {
-			"refs": ["841537d"]
+			"refs": ["6ee1ac0"]
 		},
 		"basic_animations/legend_transitions/color_2discrete_anim": {
 			"refs": ["955eea3"]
@@ -110,22 +110,22 @@
 			"refs": ["927adbc"]
 		},
 		"basic_animations/markers_morph/marker_trans_neg_1dis_1con": {
-			"refs": ["634b5b5"]
+			"refs": ["b51fba3"]
 		},
 		"basic_animations/someOtherTests/merge_split_area_stream_2dis_1con": {
-			"refs": ["8c99c65"]
+			"refs": ["940d210"]
 		},
 		"basic_animations/someOtherTests/total_time_area_bar": {
-			"refs": ["f4ff755"]
+			"refs": ["4503ca5"]
 		},
 		"basic_animations/someOtherTests/total_time_area_column": {
-			"refs": ["2cf8c1b"]
+			"refs": ["1b27db5"]
 		},
 		"basic_animations/someOtherTests/total_time_bar_line": {
-			"refs": ["1d05e1d"]
+			"refs": ["5fe98b0"]
 		},
 		"basic_animations/someOtherTests/total_time_column_line": {
-			"refs": ["2df511f"]
+			"refs": ["3037126"]
 		},
 		"chart_precision/area_negative_x": {
 			"refs": ["7b8bffc"]
@@ -185,13 +185,13 @@
 			"refs": ["42fb179"]
 		},
 		"data_fault_and_formats/column_rectangle_less_disc": {
-			"refs": ["6635e2a"]
+			"refs": ["dc55892"]
 		},
 		"data_fault_and_formats/column_rectangle_more_conti": {
 			"refs": ["c2c2362"]
 		},
 		"data_fault_and_formats/column_rectangle_more_disc": {
-			"refs": ["c898f70"]
+			"refs": ["dbc5ef0"]
 		},
 		"data_fault_and_formats/rectangle_data_cube": {
 			"refs": ["4b66407"]
@@ -200,13 +200,13 @@
 			"refs": ["997f1a7"]
 		},
 		"lay_out/full_line_negative_2dis_1con": {
-			"refs": ["94ebf92"]
+			"refs": ["7111815"]
 		},
 		"lay_out/legend_plot_coxcomb_rectangle_2dis_1con": {
 			"refs": ["01b0b8e"]
 		},
 		"lay_out/legend_plot_line_negative_2dis_1con": {
-			"refs": ["cf12c46"]
+			"refs": ["49cdf02"]
 		},
 		"lay_out/plot_coxcomb_rectangle_2dis_1con": {
 			"refs": ["797b1fa"]
@@ -224,7 +224,7 @@
 			"refs": ["4263129"]
 		},
 		"operations/all_operations_sizeing": {
-			"refs": ["c43e20a"]
+			"refs": ["95d6654"]
 		},
 		"operations/drilldown_aggregate_tutorial_data/area_drilldown_aggregate": {
 			"refs": ["8f3c3b6"]
@@ -293,7 +293,7 @@
 			"refs": ["fc6a0ae"]
 		},
 		"operations/histogram_2_drilldown_negative_1dis_1con": {
-			"refs": ["e8763ef"]
+			"refs": ["8b3e947"]
 		},
 		"operations/orientation_tutorial_data/area_orientation": {
 			"refs": ["b61766f"]
@@ -317,7 +317,7 @@
 			"refs": ["ab5615c"]
 		},
 		"shorthands/column_shorthands": {
-			"refs": ["80db31c"]
+			"refs": ["70affdf"]
 		},
 		"static_chart_types/cartesian_coo_sys/area_1dis_1con": {
 			"refs": ["4454f52"]
@@ -338,10 +338,10 @@
 			"refs": ["795ad09"]
 		},
 		"static_chart_types/cartesian_coo_sys/column_stacked_rectangle_negative_2dis_1con": {
-			"refs": ["5f5796f"]
+			"refs": ["b4aaf20"]
 		},
 		"static_chart_types/cartesian_coo_sys/column_stacked_rectangle_negative_3dis_1con": {
-			"refs": ["6520a7a"]
+			"refs": ["c71a56a"]
 		},
 		"static_chart_types/cartesian_coo_sys/dotplot_circle_negative_1dis_1con": {
 			"refs": ["3aa634d"]
@@ -356,7 +356,7 @@
 			"refs": ["2ceb802"]
 		},
 		"static_chart_types/cartesian_coo_sys/line_negative_2dis_1con": {
-			"refs": ["28cdf15"]
+			"refs": ["3966d03"]
 		},
 		"static_chart_types/cartesian_coo_sys/marimekko_rectangle_1dis_2con": {
 			"refs": ["1108d45"]
@@ -374,7 +374,7 @@
 			"refs": ["93b7b2b"]
 		},
 		"static_chart_types/cartesian_coo_sys/stacked_area_negative_2dis_1con": {
-			"refs": ["5da2d60"]
+			"refs": ["2ea83ca"]
 		},
 		"static_chart_types/cartesian_coo_sys/waterfall_rectangle_bar_negative_2dis_2con": {
 			"refs": ["c07818d"]
@@ -437,28 +437,28 @@
 			"refs": ["def2298"]
 		},
 		"web_content/analytical_operations/change_dimension/area_stacked": {
-			"refs": ["f53dc55"]
+			"refs": ["018f892"]
 		},
 		"web_content/analytical_operations/change_dimension/column_stacked": {
 			"refs": ["f666c2a"]
 		},
 		"web_content/analytical_operations/change_dimension/dotplot_1": {
-			"refs": ["083b6ff"]
+			"refs": ["ece5e2c"]
 		},
 		"web_content/analytical_operations/change_dimension/dotplot_2": {
-			"refs": ["937b177"]
+			"refs": ["54fde50"]
 		},
 		"web_content/analytical_operations/change_dimension/dotplot_polar": {
 			"refs": ["e0a2880"]
 		},
 		"web_content/analytical_operations/change_dimension/line": {
-			"refs": ["4f46587"]
+			"refs": ["fe5c424"]
 		},
 		"web_content/analytical_operations/change_dimension/line_polar": {
 			"refs": ["9003b50"]
 		},
 		"web_content/analytical_operations/compare/area_100percent_stacked": {
-			"refs": ["7bae058"]
+			"refs": ["ae1efbc"]
 		},
 		"web_content/analytical_operations/compare/area_polar_split": {
 			"refs": ["3ed985a"]
@@ -467,31 +467,31 @@
 			"refs": ["b697914"]
 		},
 		"web_content/analytical_operations/compare/area_split_stacked": {
-			"refs": ["9a2758e"]
+			"refs": ["f134d84"]
 		},
 		"web_content/analytical_operations/compare/area_stacked": {
-			"refs": ["439dcff"]
+			"refs": ["3264c93"]
 		},
 		"web_content/analytical_operations/compare/column_100percent_stacked": {
-			"refs": ["bfc1841"]
+			"refs": ["b887eaa"]
 		},
 		"web_content/analytical_operations/compare/column_groupped_1": {
-			"refs": ["66b6027"]
+			"refs": ["1a662ea"]
 		},
 		"web_content/analytical_operations/compare/column_groupped_2": {
-			"refs": ["f86511f"]
+			"refs": ["30a2a9d"]
 		},
 		"web_content/analytical_operations/compare/column_split_stacked_1": {
-			"refs": ["9d6016a"]
+			"refs": ["028b5f4"]
 		},
 		"web_content/analytical_operations/compare/column_split_stacked_2": {
-			"refs": ["08f1cdb"]
+			"refs": ["402a583"]
 		},
 		"web_content/analytical_operations/compare/column_stacked_1": {
-			"refs": ["b5b137d"]
+			"refs": ["41b1a4e"]
 		},
 		"web_content/analytical_operations/compare/column_stacked_2": {
-			"refs": ["296cf4f"]
+			"refs": ["812c194"]
 		},
 		"web_content/analytical_operations/compare/coxcomb_1": {
 			"refs": ["68b44ab"]
@@ -500,37 +500,37 @@
 			"refs": ["7c30c03"]
 		},
 		"web_content/analytical_operations/compare/line": {
-			"refs": ["0f7dfaa"]
+			"refs": ["8198112"]
 		},
 		"web_content/analytical_operations/compare/line_polar": {
 			"refs": ["03a5cfe"]
 		},
 		"web_content/analytical_operations/compare/stream_stacked": {
-			"refs": ["20bb1e7"]
+			"refs": ["13a4f7f"]
 		},
 		"web_content/analytical_operations/compare/waterfall": {
-			"refs": ["3a7078b"]
+			"refs": ["16a3b23"]
 		},
 		"web_content/analytical_operations/distribute/existingmeasure_area_stacked": {
-			"refs": ["7701b31"]
+			"refs": ["84be0b1"]
 		},
 		"web_content/analytical_operations/distribute/existingmeasure_bubble": {
 			"refs": ["ac20402"]
 		},
 		"web_content/analytical_operations/distribute/existingmeasure_bubble_stacked_1": {
-			"refs": ["d224a12"]
+			"refs": ["70bdcce"]
 		},
 		"web_content/analytical_operations/distribute/existingmeasure_bubble_stacked_2": {
-			"refs": ["a0a6ce4"]
+			"refs": ["1ce90c2"]
 		},
 		"web_content/analytical_operations/distribute/existingmeasure_column_stacked": {
-			"refs": ["bbd7644"]
+			"refs": ["ab90c67"]
 		},
 		"web_content/analytical_operations/distribute/existingmeasure_coxcomb": {
 			"refs": ["dee091c"]
 		},
 		"web_content/analytical_operations/distribute/existingmeasure_dotplot": {
-			"refs": ["8e807c3"]
+			"refs": ["4f4bc72"]
 		},
 		"web_content/analytical_operations/distribute/existingmeasure_scatterplot": {
 			"refs": ["90ef2ac"]
@@ -539,19 +539,19 @@
 			"refs": ["e705f72"]
 		},
 		"web_content/analytical_operations/distribute/existingmeasure_treemap_stacked": {
-			"refs": ["32c28ee"]
+			"refs": ["1d75210"]
 		},
 		"web_content/analytical_operations/distribute/newmeasure_column": {
 			"refs": ["2a392a8"]
 		},
 		"web_content/analytical_operations/distribute/newmeasure_column_split_stacked": {
-			"refs": ["3fbce3a"]
+			"refs": ["4e42333"]
 		},
 		"web_content/analytical_operations/distribute/newmeasure_column_stacked": {
-			"refs": ["1f418df"]
+			"refs": ["17b70ff"]
 		},
 		"web_content/analytical_operations/distribute/newmeasure_dotplot_1": {
-			"refs": ["04b52c9"]
+			"refs": ["477b699"]
 		},
 		"web_content/analytical_operations/distribute/newmeasure_dotplot_2": {
 			"refs": ["7d277a4"]
@@ -563,7 +563,7 @@
 			"refs": ["6f9a654"]
 		},
 		"web_content/analytical_operations/drilldown/area": {
-			"refs": ["4e88a53"]
+			"refs": ["b9a4259"]
 		},
 		"web_content/analytical_operations/drilldown/area_polar": {
 			"refs": ["35b7681"]
@@ -572,10 +572,10 @@
 			"refs": ["17b4851"]
 		},
 		"web_content/analytical_operations/drilldown/column_1": {
-			"refs": ["9225dac"]
+			"refs": ["8b635e9"]
 		},
 		"web_content/analytical_operations/drilldown/column_2": {
-			"refs": ["2138075"]
+			"refs": ["a088dc3"]
 		},
 		"web_content/analytical_operations/drilldown/column_3": {
 			"refs": ["2c51570"]
@@ -584,16 +584,16 @@
 			"refs": ["512091a"]
 		},
 		"web_content/analytical_operations/drilldown/column_stacked": {
-			"refs": ["94d8177"]
+			"refs": ["dcadb20"]
 		},
 		"web_content/analytical_operations/drilldown/donut": {
 			"refs": ["10db8a3"]
 		},
 		"web_content/analytical_operations/drilldown/line_1": {
-			"refs": ["bc51e8d"]
+			"refs": ["5d0b4ca"]
 		},
 		"web_content/analytical_operations/drilldown/line_2": {
-			"refs": ["b950347"]
+			"refs": ["4bb8e34"]
 		},
 		"web_content/analytical_operations/drilldown/line_polar_1": {
 			"refs": ["8d3ec8e"]
@@ -611,16 +611,16 @@
 			"refs": ["e04af22"]
 		},
 		"web_content/analytical_operations/filter/area_stacked": {
-			"refs": ["982d052"]
+			"refs": ["9647e35"]
 		},
 		"web_content/analytical_operations/filter/line": {
-			"refs": ["d06cb35"]
+			"refs": ["4b47ba3"]
 		},
 		"web_content/analytical_operations/filter/line_polar": {
 			"refs": ["669fa0b"]
 		},
 		"web_content/analytical_operations/filter/stream_1": {
-			"refs": ["c83c367"]
+			"refs": ["9d5e039"]
 		},
 		"web_content/analytical_operations/filter/stream_2": {
 			"refs": ["42eb797"]
@@ -635,19 +635,19 @@
 			"refs": ["f20e8be"]
 		},
 		"web_content/analytical_operations/misc/make_space_with_polar": {
-			"refs": ["1cce3fa"]
+			"refs": ["e1404a0"]
 		},
 		"web_content/analytical_operations/split/area_polar_stacked": {
 			"refs": ["1f3406a"]
 		},
 		"web_content/analytical_operations/split/area_stacked": {
-			"refs": ["d36e086"]
+			"refs": ["fb84b42"]
 		},
 		"web_content/analytical_operations/split/column_100percent_stacked": {
-			"refs": ["d28a527"]
+			"refs": ["787bdff"]
 		},
 		"web_content/analytical_operations/split/column_stacked": {
-			"refs": ["3151074"]
+			"refs": ["1e004a2"]
 		},
 		"web_content/analytical_operations/split/coxcomb": {
 			"refs": ["fb8bcf1"]
@@ -662,22 +662,22 @@
 			"refs": ["12bf6f0"]
 		},
 		"web_content/analytical_operations/stretch_to_proportion/area_stacked": {
-			"refs": ["76d0869"]
+			"refs": ["c1c8d86"]
 		},
 		"web_content/analytical_operations/stretch_to_proportion/column_groupped": {
-			"refs": ["abc089c"]
+			"refs": ["96b9af3"]
 		},
 		"web_content/analytical_operations/stretch_to_proportion/column_split_stacked": {
-			"refs": ["95e6d30"]
+			"refs": ["c4722ca"]
 		},
 		"web_content/analytical_operations/stretch_to_proportion/column_stacked": {
-			"refs": ["9346d77"]
+			"refs": ["3079652"]
 		},
 		"web_content/analytical_operations/stretch_to_proportion/line": {
-			"refs": ["216c821"]
+			"refs": ["3ced485"]
 		},
 		"web_content/analytical_operations/sum/area_100percent_stacked": {
-			"refs": ["aede86e"]
+			"refs": ["4fe46e1"]
 		},
 		"web_content/analytical_operations/sum/area_polar_split": {
 			"refs": ["e04e94d"]
@@ -686,10 +686,10 @@
 			"refs": ["d35db18"]
 		},
 		"web_content/analytical_operations/sum/area_split": {
-			"refs": ["c3abdef"]
+			"refs": ["0b319b5"]
 		},
 		"web_content/analytical_operations/sum/area_stacked": {
-			"refs": ["25ae381"]
+			"refs": ["66eb65d"]
 		},
 		"web_content/analytical_operations/sum/bubble": {
 			"refs": ["1597bbf"]
@@ -698,7 +698,7 @@
 			"refs": ["e2bf91b"]
 		},
 		"web_content/analytical_operations/sum/bubble_to_coxcomb": {
-			"refs": ["d33a86f"]
+			"refs": ["4010e8a"]
 		},
 		"web_content/analytical_operations/sum/bubble_to_radial": {
 			"refs": ["adeac72"]
@@ -710,10 +710,10 @@
 			"refs": ["fd48ec4"]
 		},
 		"web_content/analytical_operations/sum/bubbleplot_to_radial": {
-			"refs": ["89b0c9d"]
+			"refs": ["1547dae"]
 		},
 		"web_content/analytical_operations/sum/column_100percent_stacked": {
-			"refs": ["3dbb0ce"]
+			"refs": ["8584e94"]
 		},
 		"web_content/analytical_operations/sum/column_1": {
 			"refs": ["d8122ee"]
@@ -725,19 +725,19 @@
 			"refs": ["5cdbbca"]
 		},
 		"web_content/analytical_operations/sum/column_to_waterfall": {
-			"refs": ["021567a"]
+			"refs": ["14f44ce"]
 		},
 		"web_content/analytical_operations/sum/column_groupped": {
-			"refs": ["9b8781e"]
+			"refs": ["21e1ef1"]
 		},
 		"web_content/analytical_operations/sum/column_split_stacked": {
-			"refs": ["1f7c650"]
+			"refs": ["030e269"]
 		},
 		"web_content/analytical_operations/sum/column_stacked_1": {
 			"refs": ["23fb364"]
 		},
 		"web_content/analytical_operations/sum/column_stacked_2": {
-			"refs": ["86bd0d8"]
+			"refs": ["561a3ac"]
 		},
 		"web_content/analytical_operations/sum/coxcomb_1": {
 			"refs": ["a8bea47"]
@@ -749,13 +749,13 @@
 			"refs": ["dc1c419"]
 		},
 		"web_content/analytical_operations/sum/dotplot": {
-			"refs": ["52ae74f"]
+			"refs": ["fc87038"]
 		},
 		"web_content/analytical_operations/sum/line_1": {
-			"refs": ["d42b8e2"]
+			"refs": ["685b0bd"]
 		},
 		"web_content/analytical_operations/sum/line_2": {
-			"refs": ["35c8146"]
+			"refs": ["eaa8a78"]
 		},
 		"web_content/analytical_operations/sum/line_polar_1": {
 			"refs": ["f4e3003"]
@@ -860,7 +860,7 @@
 			"refs": ["e104842"]
 		},
 		"web_content/infinite": {
-			"refs": ["c831b44"]
+			"refs": ["0336dc0"]
 		},
 		"web_content/presets/chart/column": {
 			"refs": ["6ba52a1"]
@@ -872,7 +872,7 @@
 			"refs": ["b60b323"]
 		},
 		"web_content/presets/chart/column_splitted": {
-			"refs": ["f4fac6b"]
+			"refs": ["e3d2e97"]
 		},
 		"web_content/presets/chart/column_percentage": {
 			"refs": ["2a4d819"]
@@ -914,28 +914,28 @@
 			"refs": ["f7e4ce0"]
 		},
 		"web_content/presets/chart/area_stacked": {
-			"refs": ["a45a5ea"]
+			"refs": ["56d80ec"]
 		},
 		"web_content/presets/chart/area_percentage": {
-			"refs": ["8fb2016"]
+			"refs": ["18ed5c6"]
 		},
 		"web_content/presets/chart/area_splitted": {
-			"refs": ["e7b31d1"]
+			"refs": ["379b15d"]
 		},
 		"web_content/presets/graph/stream": {
-			"refs": ["ed42a9b"]
+			"refs": ["615796b"]
 		},
 		"web_content/presets/graph/stream_vertical": {
-			"refs": ["ae5214b"]
+			"refs": ["61c1430"]
 		},
 		"web_content/presets/graph/violin": {
-			"refs": ["3dc20b1"]
+			"refs": ["2931418"]
 		},
 		"web_content/presets/graph/violin_vertical": {
 			"refs": ["118b2d9"]
 		},
 		"web_content/presets/chart/line": {
-			"refs": ["e51deee"]
+			"refs": ["831b02b"]
 		},
 		"web_content/presets/chart/line_vertical": {
 			"refs": ["fd0d49c"]
@@ -977,7 +977,7 @@
 			"refs": ["6ad6c69"]
 		},
 		"web_content/presets/heatmap": {
-			"refs": ["9fe12c6"]
+			"refs": ["3900bac"]
 		},
 		"web_content/presets/chart/bubble": {
 			"refs": ["04134d0"]
@@ -1004,7 +1004,7 @@
 			"refs": ["0ddd341"]
 		},
 		"web_content/static/chart/column_stacked": {
-			"refs": ["d442396"]
+			"refs": ["514bf91"]
 		},
 		"web_content/static/plot/dot": {
 			"refs": ["13ff196"]
@@ -1031,7 +1031,7 @@
 			"refs": ["2b6b83d"]
 		},
 		"web_content/static/chart/area_stacked": {
-			"refs": ["a45a5ea"]
+			"refs": ["56d80ec"]
 		},
 		"web_content/static/chart/mekko_stacked": {
 			"refs": ["67962d3"]
@@ -1079,100 +1079,100 @@
 			"refs": ["6ad6c69"]
 		},
 		"ww_animTiming/descartes-polar/01_d-p_r-r-r": {
-			"refs": ["136800e"]
+			"refs": ["613bd08"]
 		},
 		"ww_animTiming/descartes-polar/02_d-p_c-r-c": {
-			"refs": ["1126d1a"]
+			"refs": ["4545f3a"]
 		},
 		"ww_animTiming/descartes-polar/03_d-p_a-r-a": {
-			"refs": ["1d8b547"]
+			"refs": ["336378d"]
 		},
 		"ww_animTiming/descartes-polar/04_d-p_l-r-l": {
-			"refs": ["206dd6c"]
+			"refs": ["25e86bc"]
 		},
 		"ww_animTiming/descartes-polar/05_d-p_r-c-r": {
-			"refs": ["9898714"]
+			"refs": ["b65d696"]
 		},
 		"ww_animTiming/descartes-polar/06_d-p_c-c-c": {
-			"refs": ["167288b"]
+			"refs": ["495e636"]
 		},
 		"ww_animTiming/descartes-polar/07_d-p_a-c-a": {
-			"refs": ["8474f5f"]
+			"refs": ["2003df2"]
 		},
 		"ww_animTiming/descartes-polar/08_d-p_l-c-l": {
-			"refs": ["a9ffda6"]
+			"refs": ["d067431"]
 		},
 		"ww_animTiming/descartes-polar/09_d-p_r-a-r": {
-			"refs": ["673cf15"]
+			"refs": ["9027d67"]
 		},
 		"ww_animTiming/descartes-polar/10_d-p_c-a-c": {
-			"refs": ["3b0d5fb"]
+			"refs": ["8ee3908"]
 		},
 		"ww_animTiming/descartes-polar/11_d-p_a-a-a": {
-			"refs": ["2a3dad3"]
+			"refs": ["324bf4b"]
 		},
 		"ww_animTiming/descartes-polar/12_d-p_l-a-l": {
-			"refs": ["fd84cb5"]
+			"refs": ["21ad937"]
 		},
 		"ww_animTiming/descartes-polar/13_d-p_r-l-r": {
-			"refs": ["b3d1ef2"]
+			"refs": ["a491f75"]
 		},
 		"ww_animTiming/descartes-polar/14_d-p_c-l-c": {
-			"refs": ["b66944a"]
+			"refs": ["03bd776"]
 		},
 		"ww_animTiming/descartes-polar/15_d-p_a-l-a": {
-			"refs": ["f584f96"]
+			"refs": ["e0bfdbc"]
 		},
 		"ww_animTiming/descartes-polar/16_d-p_l-l-l": {
-			"refs": ["36f7cb5"]
+			"refs": ["6cae5be"]
 		},
 		"ww_animTiming/descartes-polar_orient/01_d-p_o_r-r-r": {
-			"refs": ["3f3cc61"]
+			"refs": ["a01ddc2"]
 		},
 		"ww_animTiming/descartes-polar_orient/02_d-p_o_c-r-c": {
-			"refs": ["548d48c"]
+			"refs": ["0e357e4"]
 		},
 		"ww_animTiming/descartes-polar_orient/03_d-p_o_a-r-a": {
-			"refs": ["1bd8ec4"]
+			"refs": ["cb40a47"]
 		},
 		"ww_animTiming/descartes-polar_orient/04_d-p_o_l-r-l": {
-			"refs": ["edf0064"]
+			"refs": ["b0b1acf"]
 		},
 		"ww_animTiming/descartes-polar_orient/05_d-p_o_r-c-r": {
-			"refs": ["50566c0"]
+			"refs": ["bf1adce"]
 		},
 		"ww_animTiming/descartes-polar_orient/06_d-p_o_c-c-c": {
-			"refs": ["292ad45"]
+			"refs": ["9104d61"]
 		},
 		"ww_animTiming/descartes-polar_orient/07_d-p_o_a-c-a": {
-			"refs": ["f7e8de2"]
+			"refs": ["234adf8"]
 		},
 		"ww_animTiming/descartes-polar_orient/08_d-p_o_l-c-l": {
-			"refs": ["ea1b57c"]
+			"refs": ["19fe21a"]
 		},
 		"ww_animTiming/descartes-polar_orient/09_d-p_o_r-a-r": {
-			"refs": ["7fbbcf4"]
+			"refs": ["490574c"]
 		},
 		"ww_animTiming/descartes-polar_orient/10_d-p_o_c-a-c": {
-			"refs": ["3f79e19"]
+			"refs": ["f7abd23"]
 		},
 		"ww_animTiming/descartes-polar_orient/11_d-p_o_a-a-a": {
-			"refs": ["628447e"]
+			"refs": ["5a28ea8"]
 		},
 		"ww_animTiming/descartes-polar_orient/12_d-p_o_l-a-l": {
-			"refs": ["716f774"]
+			"refs": ["3692ff5"]
 		},
 		"ww_animTiming/descartes-polar_orient/13_d-p_o_r-l-r": {
-			"refs": ["be13921"]
+			"refs": ["e81aa3f"]
 		},
 		"ww_animTiming/descartes-polar_orient/14_d-p_o_c-l-c": {
-			"refs": ["3dfb204"]
+			"refs": ["8be0c6b"]
 		},
 		"ww_animTiming/descartes-polar_orient/15_d-p_o_a-l-a": {
-			"refs": ["bbfa098"]
+			"refs": ["f5e6ec2"]
 		},
 		"ww_animTiming/descartes-polar_orient/16_d-p_o_l-l-l": {
-			"refs": ["37d64e9"]
+			"refs": ["4ddf6f4"]
 		},
 		"ww_animTiming/descartes/02_d-d_c-r-c": {
 			"refs": ["25c0583"]
@@ -1364,28 +1364,28 @@
 			"refs": ["0d330f3"]
 		},
 		"ww_animTiming/without-polar/01_w-p_r-r-r": {
-			"refs": ["2ccc0bc"]
+			"refs": ["4debb3f"]
 		},
 		"ww_animTiming/without-polar/02_w-p_c-r-c": {
-			"refs": ["32c401d"]
+			"refs": ["778cad5"]
 		},
 		"ww_animTiming/without-polar/05_w-p_r-c-r": {
-			"refs": ["d85c0e0"]
+			"refs": ["55d1db9"]
 		},
 		"ww_animTiming/without-polar/06_w-p_c-c-c": {
 			"refs": ["2a7649b"]
 		},
 		"ww_animTiming/without-polar/09_w-p_r-a-r": {
-			"refs": ["29254c0"]
+			"refs": ["d6bbe4f"]
 		},
 		"ww_animTiming/without-polar/10_w-p_c-a-c": {
-			"refs": ["60d944b"]
+			"refs": ["fbf20f4"]
 		},
 		"ww_animTiming/without-polar/13_w-p_r-l-r": {
-			"refs": ["e3f9562"]
+			"refs": ["b22ca3f"]
 		},
 		"ww_animTiming/without-polar/14_w-p_c-l-c": {
-			"refs": ["880bba6"]
+			"refs": ["5b126f4"]
 		},
 		"ww_animTiming/without-polar_orientation/01_w-p_o_r-r-r": {
 			"refs": ["81fc9cb"]
@@ -1394,10 +1394,10 @@
 			"refs": ["5596473"]
 		},
 		"ww_animTiming/without-polar_orientation/05_w-p_o_r-c-r": {
-			"refs": ["a7c038f"]
+			"refs": ["ce92309"]
 		},
 		"ww_animTiming/without-polar_orientation/06_w-p_o_c-c-c": {
-			"refs": ["7d43db2"]
+			"refs": ["c4ccd0d"]
 		},
 		"ww_animTiming/without-polar_orientation/09_w-p_o_r-a-r": {
 			"refs": ["d4abbe4"]
@@ -1415,97 +1415,97 @@
 			"refs": ["edce2d9"]
 		},
 		"ww_animTiming_TESTS/descartes-polar/02_d-p_c-r-c": {
-			"refs": ["13dcab9"]
+			"refs": ["e4cb32d"]
 		},
 		"ww_animTiming_TESTS/descartes-polar/03_d-p_a-r-a": {
-			"refs": ["0cc1af0"]
+			"refs": ["bb35082"]
 		},
 		"ww_animTiming_TESTS/descartes-polar/04_d-p_l-r-l": {
-			"refs": ["5f15907"]
+			"refs": ["b4b56cf"]
 		},
 		"ww_animTiming_TESTS/descartes-polar/05_d-p_r-c-r": {
-			"refs": ["1eb859b"]
+			"refs": ["bb0d6df"]
 		},
 		"ww_animTiming_TESTS/descartes-polar/06_d-p_c-c-c": {
-			"refs": ["eeb7269"]
+			"refs": ["c3cb642"]
 		},
 		"ww_animTiming_TESTS/descartes-polar/07_d-p_a-c-a": {
-			"refs": ["a020b9c"]
+			"refs": ["461fdec"]
 		},
 		"ww_animTiming_TESTS/descartes-polar/08_d-p_l-c-l": {
-			"refs": ["75b68c6"]
+			"refs": ["fdfdfaa"]
 		},
 		"ww_animTiming_TESTS/descartes-polar/09_d-p_r-a-r": {
-			"refs": ["69f0bb7"]
+			"refs": ["21d4f78"]
 		},
 		"ww_animTiming_TESTS/descartes-polar/10_d-p_c-a-c": {
-			"refs": ["57ad133"]
+			"refs": ["7f4a511"]
 		},
 		"ww_animTiming_TESTS/descartes-polar/11_d-p_a-a-a": {
-			"refs": ["ad8aec0"]
+			"refs": ["f10b2c1"]
 		},
 		"ww_animTiming_TESTS/descartes-polar/12_d-p_l-a-l": {
-			"refs": ["552d1a4"]
+			"refs": ["4d72bc6"]
 		},
 		"ww_animTiming_TESTS/descartes-polar/13_d-p_r-l-r": {
-			"refs": ["be9a388"]
+			"refs": ["38f7786"]
 		},
 		"ww_animTiming_TESTS/descartes-polar/14_d-p_c-l-c": {
-			"refs": ["4aa9c96"]
+			"refs": ["fbcb746"]
 		},
 		"ww_animTiming_TESTS/descartes-polar/15_d-p_a-l-a": {
-			"refs": ["01fd25c"]
+			"refs": ["71bfcbb"]
 		},
 		"ww_animTiming_TESTS/descartes-polar/16_d-p_l-l-l": {
-			"refs": ["dafd6a8"]
+			"refs": ["91d69c9"]
 		},
 		"ww_animTiming_TESTS/descartes-polar_orient/01_d-p_o_r-r-r": {
-			"refs": ["287477a"]
+			"refs": ["87c33d6"]
 		},
 		"ww_animTiming_TESTS/descartes-polar_orient/02_d-p_o_c-r-c": {
-			"refs": ["df8b0cd"]
+			"refs": ["c7981e6"]
 		},
 		"ww_animTiming_TESTS/descartes-polar_orient/03_d-p_o_a-r-a": {
-			"refs": ["c426179"]
+			"refs": ["76d8014"]
 		},
 		"ww_animTiming_TESTS/descartes-polar_orient/04_d-p_o_l-r-l": {
-			"refs": ["f597799"]
+			"refs": ["d4ffa05"]
 		},
 		"ww_animTiming_TESTS/descartes-polar_orient/05_d-p_o_r-c-r": {
-			"refs": ["a7deb71"]
+			"refs": ["43f00a0"]
 		},
 		"ww_animTiming_TESTS/descartes-polar_orient/06_d-p_o_c-c-c": {
-			"refs": ["cf4cf63"]
+			"refs": ["ce69c8a"]
 		},
 		"ww_animTiming_TESTS/descartes-polar_orient/07_d-p_o_a-c-a": {
-			"refs": ["fe6878f"]
+			"refs": ["2f088e8"]
 		},
 		"ww_animTiming_TESTS/descartes-polar_orient/08_d-p_o_l-c-l": {
-			"refs": ["e822c13"]
+			"refs": ["167c694"]
 		},
 		"ww_animTiming_TESTS/descartes-polar_orient/09_d-p_o_r-a-r": {
-			"refs": ["1b32bed"]
+			"refs": ["8c26a23"]
 		},
 		"ww_animTiming_TESTS/descartes-polar_orient/10_d-p_o_c-a-c": {
-			"refs": ["a21bad2"]
+			"refs": ["3f1ed7f"]
 		},
 		"ww_animTiming_TESTS/descartes-polar_orient/11_d-p_o_a-a-a": {
-			"refs": ["fada263"]
+			"refs": ["3959367"]
 		},
 		"ww_animTiming_TESTS/descartes-polar_orient/12_d-p_o_l-a-l": {
-			"refs": ["6bdc57c"]
+			"refs": ["f1fb6a9"]
 		},
 		"ww_animTiming_TESTS/descartes-polar_orient/13_d-p_o_r-l-r": {
-			"refs": ["49b4df1"]
+			"refs": ["b107554"]
 		},
 		"ww_animTiming_TESTS/descartes-polar_orient/14_d-p_o_c-l-c": {
-			"refs": ["3516644"]
+			"refs": ["60499cc"]
 		},
 		"ww_animTiming_TESTS/descartes-polar_orient/15_d-p_o_a-l-a": {
-			"refs": ["73c758f"]
+			"refs": ["ff1f803"]
 		},
 		"ww_animTiming_TESTS/descartes-polar_orient/16_d-p_o_l-l-l": {
-			"refs": ["d9398b0"]
+			"refs": ["66c898c"]
 		},
 		"ww_animTiming_TESTS/descartes/02_d-d_c-r-c": {
 			"refs": ["aa9e9d6"]
@@ -1697,28 +1697,28 @@
 			"refs": ["5c95387"]
 		},
 		"ww_animTiming_TESTS/without-polar/01_w-p_r-r-r": {
-			"refs": ["80c9be6"]
+			"refs": ["be70807"]
 		},
 		"ww_animTiming_TESTS/without-polar/02_w-p_c-r-c": {
-			"refs": ["1360790"]
+			"refs": ["9341567"]
 		},
 		"ww_animTiming_TESTS/without-polar/05_w-p_r-c-r": {
-			"refs": ["4b47dca"]
+			"refs": ["3738cab"]
 		},
 		"ww_animTiming_TESTS/without-polar/06_w-p_c-c-c": {
 			"refs": ["dcb3f76"]
 		},
 		"ww_animTiming_TESTS/without-polar/09_w-p_r-a-r": {
-			"refs": ["5e0b294"]
+			"refs": ["7e9fa0f"]
 		},
 		"ww_animTiming_TESTS/without-polar/10_w-p_c-a-c": {
-			"refs": ["0cb08bc"]
+			"refs": ["b97edbc"]
 		},
 		"ww_animTiming_TESTS/without-polar/13_w-p_r-l-r": {
-			"refs": ["58c41e1"]
+			"refs": ["13d5878"]
 		},
 		"ww_animTiming_TESTS/without-polar/14_w-p_c-l-c": {
-			"refs": ["1ad046f"]
+			"refs": ["2a15690"]
 		},
 		"ww_animTiming_TESTS/without-polar_orientation/01_w-p_o_r-r-r": {
 			"refs": ["fd7f93b"]
@@ -1727,10 +1727,10 @@
 			"refs": ["7a1a8e0"]
 		},
 		"ww_animTiming_TESTS/without-polar_orientation/05_w-p_o_r-c-r": {
-			"refs": ["0b13dee"]
+			"refs": ["4ea7da2"]
 		},
 		"ww_animTiming_TESTS/without-polar_orientation/06_w-p_o_c-c-c": {
-			"refs": ["49ebd95"]
+			"refs": ["f610cd3"]
 		},
 		"ww_animTiming_TESTS/without-polar_orientation/09_w-p_o_r-a-r": {
 			"refs": ["26fc0b8"]
@@ -1748,7 +1748,7 @@
 			"refs": ["df8b392"]
 		},
 		"ww_next_steps/next_steps/02_C_R": {
-			"refs": ["267ddc6"]
+			"refs": ["d3200b8"]
 		},
 		"ww_next_steps/next_steps/02_C_R_water_comparison_sum": {
 			"refs": ["8d0e8af"]
@@ -1763,7 +1763,7 @@
 			"refs": ["705aa0e"]
 		},
 		"ww_next_steps/next_steps/21_C_C_dotplot": {
-			"refs": ["c991435"]
+			"refs": ["2904e90"]
 		},
 		"ww_next_steps/next_steps/22_C_C": {
 			"refs": ["ec4da6c"]
@@ -1772,13 +1772,13 @@
 			"refs": ["f396191"]
 		},
 		"ww_next_steps/next_steps/35_C_A_violin": {
-			"refs": ["af24f40"]
+			"refs": ["25d77e1"]
 		},
 		"ww_next_steps/next_steps/38_C_L_line": {
 			"refs": ["a08c7c4"]
 		},
 		"ww_next_steps/next_steps_Tests/02_C_R": {
-			"refs": ["7c30c14"]
+			"refs": ["f13c899"]
 		},
 		"ww_next_steps/next_steps_Tests/02_C_R_water_comparison_sum": {
 			"refs": ["81c6c1e"]
@@ -1793,7 +1793,7 @@
 			"refs": ["80c5969"]
 		},
 		"ww_next_steps/next_steps_Tests/21_C_C_dotplot": {
-			"refs": ["3551f7a"]
+			"refs": ["54295f5"]
 		},
 		"ww_next_steps/next_steps_Tests/22_C_C": {
 			"refs": ["81fcf00"]
@@ -1871,7 +1871,7 @@
 			"refs": ["d5720b5"]
 		},
 		"ww_next_steps/next_steps_byOperations/distribute/distribution_06": {
-			"refs": ["ad24e8f"]
+			"refs": ["4ef6a21"]
 		},
 		"ww_next_steps/next_steps_byOperations/distribute/distribution_07": {
 			"refs": ["f677f00"]
@@ -2045,7 +2045,7 @@
 			"refs": ["a4fcf7c"]
 		},
 		"ww_next_steps/next_steps_byOperations/wOld_animated/other_cartesian_radial_02": {
-			"refs": ["251619a"]
+			"refs": ["7cf90ec"]
 		},
 		"ww_next_steps/next_steps_byOperations/wOld_animated/treemap_radial": {
 			"refs": ["6f96e8b"]
@@ -2441,7 +2441,7 @@
 			"refs": ["0e684b3"]
 		},
 		"ww_noFade/wNoFade_Tests/Marker_label_problem/rotated_bar_to_donut": {
-			"refs": ["eb8dbd8"]
+			"refs": ["1aca6bf"]
 		},
 		"ww_noFade/wNoFade_Tests/Marker_transition_problem/Bubble_Stacked_Bubble_to_Area": {
 			"refs": ["1ffa601"]
@@ -3011,7 +3011,7 @@
 			"refs": ["508383a"]
 		},
 		"ww_samples_for_presets/cartesian_coo_sys/12_C_R_matrix_chart": {
-			"refs": ["066f42f"]
+			"refs": ["02c960f"]
 		},
 		"ww_samples_for_presets/cartesian_coo_sys/13_C_R_bar_chart_negative": {
 			"refs": ["2fd66d1"]
@@ -3038,7 +3038,7 @@
 			"refs": ["25c68b8"]
 		},
 		"ww_samples_for_presets/cartesian_coo_sys/21_C_C_dot_plot_chart": {
-			"refs": ["714bb74"]
+			"refs": ["1466b36"]
 		},
 		"ww_samples_for_presets/cartesian_coo_sys/22_C_C_scatter_plot": {
 			"refs": ["7a79697"]
@@ -3203,7 +3203,7 @@
 			"refs": ["810d76a"]
 		},
 		"web_content/cookbook/chart_types/historgram": {
-			"refs": ["ead40c0"]
+			"refs": ["18079a9"]
 		},
 		"web_content/cookbook/chart_types/network_graph": {
 			"refs": ["ae6af16"]
@@ -3245,7 +3245,7 @@
 			"refs": ["111a932"]
 		},
 		"web_content/cookbook/rendering/custom_linetype": {
-			"refs": ["3fa7804"]
+			"refs": ["8fe17e9"]
 		},
 		"web_content/cookbook/rendering/gradient_on_marker": {
 			"refs": ["878d4a5"]
@@ -3284,13 +3284,13 @@
 			"refs": ["34f9d9c"]
 		},
 		"web_content/cookbook/data_source/csv_load": {
-			"refs": ["6512bf2"]
+			"refs": ["0be6e8c"]
 		},
 		"web_content/cookbook/rendering/motion_blur": {
 			"refs": ["be67912"]
 		},
 		"web_content/cookbook/style/colorfilter": {
-			"refs": ["9803812"]
+			"refs": ["05406ff"]
 		}
 	}
 }

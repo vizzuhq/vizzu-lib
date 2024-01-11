@@ -89,16 +89,11 @@ void Sheet::setAxisLabels()
 		def.position = AxisLabel::Position::max_edge;
 		def.side = AxisLabel::Side::positive;
 	}
-	else {
-		def.paddingRight = Gfx::Length::Emphemeral(6 / 12.0);
-		def.paddingLeft = Gfx::Length::Emphemeral(6 / 12.0);
-
-		if (const auto &xAxis =
-		        options->getChannels().at(Gen::ChannelId::x);
-		    !xAxis.isEmpty() && xAxis.isDimension()
-		    && options->angle == 0)
-			def.angle.reset();
-	}
+	else if (const auto &xAxis =
+	             options->getChannels().at(Gen::ChannelId::x);
+	         !xAxis.isEmpty() && xAxis.isDimension()
+	         && options->angle == 0)
+		def.angle.reset();
 }
 
 void Sheet::setAxisTitle()
@@ -212,10 +207,11 @@ void Sheet::setAfterStyles(Gen::Plot &plot, const Geom::Size &size)
 
 			auto textBoundary =
 			    Gfx::ICanvas::textBoundary(font, pair.second.label);
-			auto textXMargin =
-			    xLabel.toMargin(textBoundary, font.size).getSpace().x;
+			auto textXHalfMargin =
+			    xLabel.toMargin(textBoundary, font.size).getSpace().x
+			    / 2.0;
 			auto xHalfSize =
-			    (textBoundary.x + textXMargin) / plotX / 2.0;
+			    (textBoundary.x + textXHalfMargin) / plotX / 2.0;
 
 			auto rangeCenter = pair.second.range.middle();
 
