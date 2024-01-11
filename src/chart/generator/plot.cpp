@@ -350,7 +350,8 @@ void Plot::calcDimensionAxis(ChannelId type,
 
 	auto dim = scale.labelLevel;
 
-	if (type == ChannelId::x || type == ChannelId::y) {
+	auto &&isTypeAxis = isAxis(type);
+	if (isTypeAxis) {
 		for (const auto &marker : markers) {
 			const auto &id =
 			    (type == ChannelId::x) == options->isHorizontal()
@@ -386,7 +387,9 @@ void Plot::calcDimensionAxis(ChannelId type,
 			}
 		}
 	}
-	axis.setLabels(dataCube, table);
+	axis.setLabels(dataCube,
+	    table,
+	    isTypeAxis ? scale.step.getValue(1.0) : 1.0);
 
 	if (auto &&series = scale.labelSeries())
 		axis.category = series.value().toString(table);
