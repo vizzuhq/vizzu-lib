@@ -14,6 +14,7 @@
 - Remove unused marker selection and selected marker coloring.
 - Remove cursor modification over logo.
 - Make `channel.step` option to work on dimensions. 
+- When X axis dimension labels are close to each other, they are rotated to avoid overlapping. 
 
 ## [0.9.3] - 2023-12-20
 
