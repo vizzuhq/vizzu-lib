@@ -185,13 +185,13 @@
 			"refs": ["42fb179"]
 		},
 		"data_fault_and_formats/column_rectangle_less_disc": {
-			"refs": ["dc55892"]
+			"refs": ["f93ac85"]
 		},
 		"data_fault_and_formats/column_rectangle_more_conti": {
 			"refs": ["c2c2362"]
 		},
 		"data_fault_and_formats/column_rectangle_more_disc": {
-			"refs": ["dbc5ef0"]
+			"refs": ["ff2afa6"]
 		},
 		"data_fault_and_formats/rectangle_data_cube": {
 			"refs": ["4b66407"]
