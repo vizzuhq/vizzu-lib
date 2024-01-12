@@ -6,13 +6,9 @@
 
 #include "style.h"
 
-namespace Vizzu
-{
-class Layout;
-namespace Gen
+namespace Vizzu::Gen
 {
 class Plot;
-}
 }
 
 namespace Vizzu::Styles

@@ -22,7 +22,7 @@ const testSteps = [
 				plot: {
 					xAxis: {
 						label: {
-							angle: 0.0
+							angle: 0
 						}
 					},
 					yAxis: {
