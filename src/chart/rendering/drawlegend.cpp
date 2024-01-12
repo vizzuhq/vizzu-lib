@@ -88,20 +88,26 @@ void DrawLegend::drawDimension(const Info &info) const
 		auto alpha = value.second.weight * info.weight;
 
 		drawMarker(info,
-		    value.second.label,
+		    value.second.categoryValue,
 		    colorBuilder.render(value.second.colorBase) * alpha,
 		    getMarkerRect(info, itemRect));
 
-		label.draw(info.canvas,
-		    getLabelRect(info, itemRect),
-		    value.second.label,
-		    style.label,
-		    *events.label,
-		    Events::Targets::legendLabel(info.dimension.category,
-		        value.second.label,
-		        value.second.label,
-		        info.type),
-		    DrawLabel::Options(true, alpha));
+		value.second.label.visit(
+		    [&](int, auto &weighted)
+		    {
+			    label.draw(info.canvas,
+			        getLabelRect(info, itemRect),
+			        weighted.value,
+			        style.label,
+			        *events.label,
+			        Events::Targets::legendLabel(
+			            info.dimension.category,
+			            value.second.categoryValue,
+			            weighted.value,
+			            info.type),
+			        DrawLabel::Options(true,
+			            alpha * weighted.weight));
+		    });
 	}
 }
 
