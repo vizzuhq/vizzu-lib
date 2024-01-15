@@ -1026,6 +1026,9 @@
 		},
 		"plot/yAxis/ticks/position/static_outside": {
 			"refs": ["aabb1c2"]
+		},
+		"plot/xAxis/label/autorotate": {
+			"refs": ["1dc0fcf"]
 		}
 	}
 }
