@@ -50,7 +50,7 @@ void DrawLabel::draw(Gfx::ICanvas &canvas,
 	trRect.size = textRect.size;
 
 	if (onDraw.invoke(
-	        Events::OnTextDrawEvent(*eventTarget, trRect, text))) {
+	        Events::OnTextDrawEvent{*eventTarget, trRect, text})) {
 		canvas.transform(transform);
 
 		canvas.text(Geom::Rect(Geom::Point(), textRect.size), text);
