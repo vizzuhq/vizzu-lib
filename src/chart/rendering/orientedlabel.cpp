@@ -16,7 +16,7 @@ OrientedLabel OrientedLabel::create(Gfx::ICanvas &canvas,
 	const Gfx::Font font(labelStyle);
 	canvas.setFont(font);
 
-	auto neededSize = canvas.textBoundary(text);
+	auto neededSize = Gfx::ICanvas::textBoundary(font, text);
 	auto margin = labelStyle.toMargin(neededSize, font.size);
 	auto paddedSize = neededSize + margin.getSpace();
 

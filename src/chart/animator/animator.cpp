@@ -40,8 +40,7 @@ void Animator::animate(const ::Anim::Control::Option &options,
 
 	running = true;
 	stripActAnimation();
-	actAnimation = nextAnimation;
-	nextAnimation = AnimationPtr();
+	actAnimation = std::exchange(nextAnimation, {});
 	setupActAnimation();
 	actAnimation->animate(options, completionCallback);
 }

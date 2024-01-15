@@ -100,3 +100,12 @@ bool Window::eventFilter(QObject *, QEvent *event)
 	}
 	return false;
 }
+void Window::resizeEvent(QResizeEvent *)
+{
+	try {
+		chart.getChart().getChart().setKeyframe();
+		chart.getChart().getChart().animate();
+	}
+	catch (...) {
+	}
+}

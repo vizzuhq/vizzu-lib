@@ -15,6 +15,15 @@ const testSteps = [
 				y: 'Revenue',
 				x: { set: 'Year', ticks: true },
 				title: 'Every 5th label shown on X'
+			},
+			style: {
+				plot: {
+					xAxis: {
+						label: {
+							angle: 0
+						}
+					}
+				}
 			}
 		})
 	}

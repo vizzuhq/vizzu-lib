@@ -27,11 +27,12 @@ void DrawLabel::draw(Gfx::ICanvas &canvas,
 	auto contentRect =
 	    style.contentRect(relRect, style.calculatedSize());
 
-	canvas.setFont(Gfx::Font{style});
+	auto font = Gfx::Font{style};
+	canvas.setFont(font);
 	if (options.setColor)
 		canvas.setTextColor(*style.color * options.alpha);
 
-	auto textSize = canvas.textBoundary(text);
+	auto textSize = Gfx::ICanvas::textBoundary(font, text);
 	auto alignSize = textSize;
 	alignSize.x = std::min(alignSize.x, contentRect.size.x);
 	auto textRect = alignText(contentRect, style, alignSize);
@@ -65,7 +66,7 @@ double DrawLabel::getHeight(const Styles::Label &style,
 {
 	const Gfx::Font font(style);
 	canvas.setFont(font);
-	auto textHeight = canvas.textBoundary("").y;
+	auto textHeight = Gfx::ICanvas::textBoundary(font, "").y;
 	return style.paddingTop->get(textHeight, font.size)
 	     + style.paddingBottom->get(textHeight, font.size)
 	     + textHeight;

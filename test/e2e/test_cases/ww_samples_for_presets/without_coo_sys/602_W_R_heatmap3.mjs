@@ -15,6 +15,15 @@ const testSteps = [
 					lightness: 'Revenue'
 				},
 				title: 'Heatmap2'
+			},
+			style: {
+				plot: {
+					xAxis: {
+						label: {
+							angle: 0
+						}
+					}
+				}
 			}
 		})
 	},

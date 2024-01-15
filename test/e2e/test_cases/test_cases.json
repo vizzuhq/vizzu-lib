@@ -185,13 +185,13 @@
 			"refs": ["42fb179"]
 		},
 		"data_fault_and_formats/column_rectangle_less_disc": {
-			"refs": ["db55dd3"]
+			"refs": ["f93ac85"]
 		},
 		"data_fault_and_formats/column_rectangle_more_conti": {
 			"refs": ["c2c2362"]
 		},
 		"data_fault_and_formats/column_rectangle_more_disc": {
-			"refs": ["2d933e7"]
+			"refs": ["ff2afa6"]
 		},
 		"data_fault_and_formats/rectangle_data_cube": {
 			"refs": ["4b66407"]
@@ -317,7 +317,7 @@
 			"refs": ["ab5615c"]
 		},
 		"shorthands/column_shorthands": {
-			"refs": ["00fe9df"]
+			"refs": ["70affdf"]
 		},
 		"static_chart_types/cartesian_coo_sys/area_1dis_1con": {
 			"refs": ["4454f52"]
@@ -338,7 +338,7 @@
 			"refs": ["795ad09"]
 		},
 		"static_chart_types/cartesian_coo_sys/column_stacked_rectangle_negative_2dis_1con": {
-			"refs": ["cd2b76f"]
+			"refs": ["b4aaf20"]
 		},
 		"static_chart_types/cartesian_coo_sys/column_stacked_rectangle_negative_3dis_1con": {
 			"refs": ["c71a56a"]
@@ -506,7 +506,7 @@
 			"refs": ["03a5cfe"]
 		},
 		"web_content/analytical_operations/compare/stream_stacked": {
-			"refs": ["f7f0fde"]
+			"refs": ["13a4f7f"]
 		},
 		"web_content/analytical_operations/compare/waterfall": {
 			"refs": ["16a3b23"]
@@ -551,7 +551,7 @@
 			"refs": ["17b70ff"]
 		},
 		"web_content/analytical_operations/distribute/newmeasure_dotplot_1": {
-			"refs": ["56f8887"]
+			"refs": ["477b699"]
 		},
 		"web_content/analytical_operations/distribute/newmeasure_dotplot_2": {
 			"refs": ["7d277a4"]
@@ -620,7 +620,7 @@
 			"refs": ["669fa0b"]
 		},
 		"web_content/analytical_operations/filter/stream_1": {
-			"refs": ["8d33040"]
+			"refs": ["9d5e039"]
 		},
 		"web_content/analytical_operations/filter/stream_2": {
 			"refs": ["42eb797"]
@@ -860,7 +860,7 @@
 			"refs": ["e104842"]
 		},
 		"web_content/infinite": {
-			"refs": ["f9fb8da"]
+			"refs": ["0336dc0"]
 		},
 		"web_content/presets/chart/column": {
 			"refs": ["6ba52a1"]
@@ -1763,7 +1763,7 @@
 			"refs": ["705aa0e"]
 		},
 		"ww_next_steps/next_steps/21_C_C_dotplot": {
-			"refs": ["c991435"]
+			"refs": ["2904e90"]
 		},
 		"ww_next_steps/next_steps/22_C_C": {
 			"refs": ["ec4da6c"]
@@ -1772,7 +1772,7 @@
 			"refs": ["f396191"]
 		},
 		"ww_next_steps/next_steps/35_C_A_violin": {
-			"refs": ["bdce840"]
+			"refs": ["25d77e1"]
 		},
 		"ww_next_steps/next_steps/38_C_L_line": {
 			"refs": ["a08c7c4"]
@@ -1793,7 +1793,7 @@
 			"refs": ["80c5969"]
 		},
 		"ww_next_steps/next_steps_Tests/21_C_C_dotplot": {
-			"refs": ["3551f7a"]
+			"refs": ["54295f5"]
 		},
 		"ww_next_steps/next_steps_Tests/22_C_C": {
 			"refs": ["81fcf00"]
@@ -1871,7 +1871,7 @@
 			"refs": ["d5720b5"]
 		},
 		"ww_next_steps/next_steps_byOperations/distribute/distribution_06": {
-			"refs": ["ad24e8f"]
+			"refs": ["4ef6a21"]
 		},
 		"ww_next_steps/next_steps_byOperations/distribute/distribution_07": {
 			"refs": ["f677f00"]
@@ -3011,7 +3011,7 @@
 			"refs": ["508383a"]
 		},
 		"ww_samples_for_presets/cartesian_coo_sys/12_C_R_matrix_chart": {
-			"refs": ["066f42f"]
+			"refs": ["02c960f"]
 		},
 		"ww_samples_for_presets/cartesian_coo_sys/13_C_R_bar_chart_negative": {
 			"refs": ["2fd66d1"]
@@ -3038,7 +3038,7 @@
 			"refs": ["25c68b8"]
 		},
 		"ww_samples_for_presets/cartesian_coo_sys/21_C_C_dot_plot_chart": {
-			"refs": ["714bb74"]
+			"refs": ["1466b36"]
 		},
 		"ww_samples_for_presets/cartesian_coo_sys/22_C_C_scatter_plot": {
 			"refs": ["7a79697"]
@@ -3203,7 +3203,7 @@
 			"refs": ["810d76a"]
 		},
 		"web_content/cookbook/chart_types/historgram": {
-			"refs": ["b048452"]
+			"refs": ["18079a9"]
 		},
 		"web_content/cookbook/chart_types/network_graph": {
 			"refs": ["ae6af16"]

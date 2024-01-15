@@ -54,7 +54,16 @@ const testSteps = [
 						record.Format === 'Vinyl') &&
 					record.Year <= 1999
 			},
-			config: {}
+			config: {},
+			style: {
+				plot: {
+					xAxis: {
+						label: {
+							angle: 0
+						}
+					}
+				}
+			}
 		}),
 
 	(chart) =>
