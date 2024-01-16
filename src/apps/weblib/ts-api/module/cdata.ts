@@ -49,7 +49,7 @@ export class CData extends CObject {
 		categoriesPtrHeap.set(new Uint8Array(categoriesPointer.buffer))
 
 		const indexesPointer = new Int32Array(indexes)
-		const indexesPointerArrayLen = indexes.length * 8
+		const indexesPointerArrayLen = indexes.length * 4
 
 		const indexesArr = this._wasm._malloc(indexesPointerArrayLen)
 		const indexesHeap = new Uint8Array(this._wasm.HEAPU8.buffer, indexesArr, indexesPointerArrayLen)
@@ -65,8 +65,8 @@ export class CData extends CObject {
 			for (const categoryPointer of categoriesPointer) {
 				this._wasm._free(categoryPointer)
 			}
-			this._wasm._free(categoiresPtrArr)
 			this._wasm._free(indexesArr)
+			this._wasm._free(categoiresPtrArr)
 		}
 	}
 
