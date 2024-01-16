@@ -1,7 +1,7 @@
 const data = {
 	series: [
 		{ name: 'Dim', type: 'dimension', values: ['a', 'b'] },
-		{ name: 'Meas', type: 'measure', values: [1, 2] },
+		{ name: 'Meas', type: 'measure', values: [1, 2] }
 	]
 }
 
@@ -25,36 +25,36 @@ const testSteps = [
 			data,
 			config: {
 				x: 'Dim',
-				y: 'Meas',
+				y: 'Meas'
 			}
 		})
 
 		let registry
-  
+
 		let res = new Promise((resolve, reject) => {
 			registry = new FinalizationRegistry((heldValue) => {
-				if (heldValue === "Chart 2") {
-					console.log("Chart 2 is finalized")
+				if (heldValue === 'Chart 2') {
+					console.log('Chart 2 is finalized')
 					resolve(chart)
 				}
-			});
-			registry.register(chart2, "Chart 2");
-			chart2.detach();
-			chart2 = undefined;
-		});
+			})
+			registry.register(chart2, 'Chart 2')
+			chart2.detach()
+			chart2 = undefined
+		})
 
 		if (typeof window.gc === 'function') {
 			// garbage collector should be exposed for this via --expose-gc flag
 			// which seems to be not working through webdriver
 			window.gc()
 		} else {
-			let counter = 0;
-			(function allocateMemory() {
-				Array.from({ length: 1000000 }, () => () => {});
-				if (counter > 5000) return;
-				counter++;
-				setTimeout(allocateMemory);
-			})();	
+			let counter = 0
+			;(function allocateMemory() {
+				Array.from({ length: 1000000 }, () => () => {})
+				if (counter > 5000) return
+				counter++
+				setTimeout(allocateMemory)
+			})()
 		}
 
 		return res
