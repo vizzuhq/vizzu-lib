@@ -3291,48 +3291,6 @@
 		},
 		"web_content/cookbook/style/colorfilter": {
 			"refs": ["05406ff"]
-		},
-		"web_content/cookbook/chart_types/annotation_editor": {
-			"refs": ["e3b0c44"]
-		},
-		"web_content/cookbook/chart_types/annotations": {
-			"refs": ["e3b0c44"]
-		},
-		"web_content/cookbook/chart_types/map": {
-			"refs": ["e3b0c44"]
-		},
-		"web_content/cookbook/chart_types/multilayer": {
-			"refs": ["e3b0c44"]
-		},
-		"web_content/cookbook/data_source/data_from_model": {
-			"refs": ["e3b0c44"]
-		},
-		"web_content/cookbook/data_source/data_from_model2": {
-			"refs": ["e3b0c44"]
-		},
-		"web_content/cookbook/data_source/realtime_data": {
-			"refs": ["b737510"]
-		},
-		"web_content/cookbook/exports/animated_gif_export": {
-			"refs": ["e3b0c44"]
-		},
-		"web_content/cookbook/exports/pptx-export": {
-			"refs": ["e3b0c44"]
-		},
-		"web_content/cookbook/exports/video_export": {
-			"refs": ["e47e75b"]
-		},
-		"web_content/cookbook/interactive/fullscreen": {
-			"refs": ["b04d3ee"]
-		},
-		"web_content/cookbook/interactive/marker_label_on_mouseon": {
-			"refs": ["c6fe75d"]
-		},
-		"web_content/cookbook/interactive/seeker_slider": {
-			"refs": ["2c50c38"]
-		},
-		"web_content/cookbook/interactive/swipe_to_seek": {
-			"refs": ["11b904e"]
 		}
 	}
 }
