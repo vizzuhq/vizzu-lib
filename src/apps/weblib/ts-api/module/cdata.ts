@@ -44,11 +44,11 @@ export class CData extends CObject {
 
 		const categoriesPointerArrayLen = categories.length * 4
 
-		const categoiresPtrArr = this._wasm._malloc(categoriesPointerArrayLen)
-		const categoriesPtrHeap = new Uint8Array(this._wasm.HEAPU8.buffer, categoiresPtrArr, categoriesPointerArrayLen)
+		const categoriesPtrArr = this._wasm._malloc(categoriesPointerArrayLen)
+		const categoriesPtrHeap = new Uint8Array(this._wasm.HEAPU8.buffer, categoriesPtrArr, categoriesPointerArrayLen)
 		categoriesPtrHeap.set(new Uint8Array(categoriesPointer.buffer))
 
-		const indexesPointer = new Int32Array(indexes)
+		const indexesPointer = new Uint32Array(indexes)
 		const indexesPointerArrayLen = indexes.length * 4
 
 		const indexesArr = this._wasm._malloc(indexesPointerArrayLen)
@@ -59,14 +59,14 @@ export class CData extends CObject {
 		const cname = this._toCString(name)
 
 		try {
-			this._call(this._wasm._data_addDimension)(cname, categoiresPtrArr, categories.length, indexesArr, indexes.length)
+			this._call(this._wasm._data_addDimension)(cname, categoriesPtrArr, categories.length, indexesArr, indexes.length)
 		} finally {
 			this._wasm._free(cname)
 			for (const categoryPointer of categoriesPointer) {
 				this._wasm._free(categoryPointer)
 			}
 			this._wasm._free(indexesArr)
-			this._wasm._free(categoiresPtrArr)
+			this._wasm._free(categoriesPtrArr)
 		}
 	}
 

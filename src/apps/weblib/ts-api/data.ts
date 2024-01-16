@@ -82,8 +82,6 @@ export class Data {
 
 		const values = series.values ? series.values : ([] as D.Values)
 
-		const seriesType = series.type ? series.type : this._detectType(values)
-
 		if ('categories' in series) {
 			if (!Array.isArray(series.categories)) {
 				throw new Error('categories field is not an array')
@@ -91,14 +89,17 @@ export class Data {
 			this._checkCategories(values, series.categories)
 			this._addDimension(series.name, values, series.categories)
 		}
-		else if (seriesType === 'dimension') {
-			const { indexes, categories } = this._convertDimension(values)
-			this._addDimension(series.name, indexes, categories)
-		} else if (seriesType === 'measure') {
-			if (!series.unit) series.unit = ''
-			this._addMeasure(series.name, series.unit, values)
-		} else {
-			throw new Error('invalid series type: ' + series.type)
+		else {
+			const seriesType = series.type ? series.type : this._detectType(values)
+			if (seriesType === 'dimension') {
+				const { indexes, categories } = this._convertDimension(values)
+				this._addDimension(series.name, indexes, categories)
+			} else if (seriesType === 'measure') {
+				if (!series.unit) series.unit = ''
+				this._addMeasure(series.name, series.unit, values)
+			} else {
+				throw new Error('invalid series type: ' + series.type)
+			}
 		}
 	}
 
@@ -107,9 +108,8 @@ export class Data {
 			throw new Error('invalid category values')
 		}
 
-		const duplicateCategories = categories.filter((e, i, a) => a.indexOf(e) !== i)
-		if (duplicateCategories.length>0) {
-			throw new Error('duplicate category values:'+ duplicateCategories.join(', '))
+		if ((new Set(categories)).size !== categories.length) {
+			throw new Error('duplicate category values')
 		}
 
 		const filtered = values.filter((value) => value !== null) as number[]
@@ -165,11 +165,28 @@ export class Data {
 		return true
 	}
 
-	private _convertDimension(values: string[]): { indexes: number[], categories: string[] } {
-		const uniques = new Set(values)
-		const categories = Array.from(uniques)
-		const indexes = values.map((value) => categories.indexOf(value))
-		return { indexes, categories }
+	private _convertDimension(values: string[]): { categories: string[], indexes: number[] } {
+		const uniques = new Map();
+		const categories:string[] = [];
+		const indexes = new Array(values.length);
+
+		for (let index = 0; index < values.length; index++) {
+			const value = values[index];
+			if (typeof value !== 'string') {
+				continue;
+			}
+			let uniqueIndex = uniques.get(value);
+
+			if (uniqueIndex === undefined) {
+				uniqueIndex = categories.length;
+				uniques.set(value, uniqueIndex);
+				categories.push(value).toString;
+			}
+
+			indexes[index] = uniqueIndex;
+		};
+
+		return { categories, indexes };
 	}
 
 	private _addMeasure(name: string, unit: string, values: unknown[]): void {
