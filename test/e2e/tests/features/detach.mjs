@@ -31,7 +31,7 @@ const testSteps = [
 
 		let registry
 
-		let res = new Promise((resolve, reject) => {
+		const res = new Promise((resolve, reject) => {
 			registry = new FinalizationRegistry((heldValue) => {
 				if (heldValue === 'Chart 2') {
 					console.log('Chart 2 is finalized')
