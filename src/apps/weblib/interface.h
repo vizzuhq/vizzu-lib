@@ -89,12 +89,12 @@ public:
 	    const char *name,
 	    const char **categories,
 	    std::uint32_t categoriesCount,
-	    std::uint32_t *categoryIndices,
+	    const std::uint32_t *categoryIndices,
 	    std::uint32_t categoryIndicesCount);
 	void addMeasure(ObjectRegistry::Handle chart,
 	    const char *name,
 	    const char *unit,
-	    double *values,
+	    const double *values,
 	    std::uint32_t count);
 	void addRecord(ObjectRegistry::Handle chart,
 	    const char **cells,

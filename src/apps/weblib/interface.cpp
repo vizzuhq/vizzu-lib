@@ -291,7 +291,7 @@ void Interface::addDimension(ObjectRegistry::Handle chart,
     const char *name,
     const char **categories,
     std::uint32_t categoriesCount,
-    std::uint32_t *categoryIndices,
+    const std::uint32_t *categoryIndices,
     std::uint32_t categoryIndicesCount)
 {
 	if (categories) {
@@ -304,7 +304,7 @@ void Interface::addDimension(ObjectRegistry::Handle chart,
 void Interface::addMeasure(ObjectRegistry::Handle chart,
     const char *name,
     const char *unit,
-    double *values,
+    const double *values,
     std::uint32_t count)
 {
 	getChart(chart)->getTable().addColumn(name,

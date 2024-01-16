@@ -287,7 +287,7 @@ void data_addDimension(APIHandles::Chart chart,
     const char *name,
     const char **categories,
     std::uint32_t categoriesCount,
-    std::uint32_t *categoryIndices,
+    const std::uint32_t *categoryIndices,
     std::uint32_t categoryIndicesCount)
 {
 	return Interface::getInstance().addDimension(chart,
@@ -301,7 +301,7 @@ void data_addDimension(APIHandles::Chart chart,
 void data_addMeasure(APIHandles::Chart chart,
     const char *name,
     const char *unit,
-    double *values,
+    const double *values,
     std::uint32_t count)
 {
 	return Interface::getInstance().addMeasure(chart,

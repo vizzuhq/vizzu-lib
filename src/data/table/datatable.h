@@ -48,10 +48,10 @@ public:
 
 	DataIndex addColumn(const std::string &name,
 	    const std::string &unit,
-	    const std::span<double> &values);
+	    const std::span<const double> &values);
 	DataIndex addColumn(const std::string &name,
 	    const std::span<const char *> &categories,
-	    const std::span<std::uint32_t> &values);
+	    const std::span<const std::uint32_t> &values);
 
 	void pushRow(const std::span<const char *> &cells);
 	void pushRow(const TableRow<std::string> &textRow);
