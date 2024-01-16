@@ -87,7 +87,7 @@ export class Data {
 				throw new Error('categories field is not an array')
 			}
 			this._checkCategories(values, series.categories)
-			this._addDimension(series.name, values, series.categories)
+			this._addDimension(series.name, values as number[], series.categories)
 		}
 		else {
 			const seriesType = series.type ? series.type : this._detectType(values)
@@ -165,7 +165,7 @@ export class Data {
 		return true
 	}
 
-	private _convertDimension(values: string[]): { categories: string[], indexes: number[] } {
+	private _convertDimension(values: string[] | (number | null)[]): { categories: string[], indexes: number[] } {
 		const uniques = new Map();
 		const categories:string[] = [];
 		const indexes = new Array(values.length);
@@ -180,7 +180,7 @@ export class Data {
 			if (uniqueIndex === undefined) {
 				uniqueIndex = categories.length;
 				uniques.set(value, uniqueIndex);
-				categories.push(value).toString;
+				categories.push(value).toString();
 			}
 
 			indexes[index] = uniqueIndex;
