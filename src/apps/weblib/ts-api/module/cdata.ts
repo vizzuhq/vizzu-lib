@@ -35,29 +35,38 @@ export class CData extends CObject {
 		return { series: JSON.parse(info) }
 	}
 
-	addDimension(name: string, dimension: string[]): void {
-		const ptrs = new Uint32Array(dimension.length)
-		for (let i = 0; i < dimension.length; i++) {
-			const ptr = this._toCString(dimension[i]!)
-			ptrs[i] = ptr
+	addDimension(name: string, indexes: number[], categories: string[]): void {
+		const categoriesPointer = new Uint32Array(categories.length)
+		for (let i = 0; i < categories.length; i++) {
+			const categorPointer = this._toCString(categories[i]!)
+			categoriesPointer[i] = categorPointer
 		}
 
-		const ptrArrayLen = dimension.length * 4
+		const categoriesPointerArrayLen = categories.length * 4
 
-		const ptrArr = this._wasm._malloc(ptrArrayLen)
-		const ptrHeap = new Uint8Array(this._wasm.HEAPU8.buffer, ptrArr, ptrArrayLen)
-		ptrHeap.set(new Uint8Array(ptrs.buffer))
+		const categoiresPtrArr = this._wasm._malloc(categoriesPointerArrayLen)
+		const categoriesPtrHeap = new Uint8Array(this._wasm.HEAPU8.buffer, categoiresPtrArr, categoriesPointerArrayLen)
+		categoriesPtrHeap.set(new Uint8Array(categoriesPointer.buffer))
+
+		const indexesPointer = new Float64Array(indexes)
+		const indexesPointerArrayLen = indexes.length * 8
+
+		const indexesArr = this._wasm._malloc(indexesPointerArrayLen)
+		const indexesHeap = new Uint8Array(this._wasm.HEAPU8.buffer, indexesArr, indexesPointerArrayLen)
+
+		indexesHeap.set(new Uint8Array(indexesPointer.buffer))
 
 		const cname = this._toCString(name)
 
 		try {
-			this._call(this._wasm._data_addDimension)(cname, ptrArr, dimension.length)
+			this._call(this._wasm._data_addDimension)(cname, categoiresPtrArr, categories.length, indexesArr, indexes.length)
 		} finally {
 			this._wasm._free(cname)
-			for (const ptr of ptrs) {
-				this._wasm._free(ptr)
+			for (const categorPointer of categoriesPointer) {
+				this._wasm._free(categorPointer)
 			}
-			this._wasm._free(ptrArr)
+			this._wasm._free(categoiresPtrArr)
+			this._wasm._free(indexesArr)
 		}
 	}
 

@@ -84,13 +84,35 @@ export class Data {
 
 		const seriesType = series.type ? series.type : this._detectType(values)
 
-		if (seriesType === 'dimension') {
-			this._addDimension(series.name, values)
+		if ('categories' in series) {
+			if (!Array.isArray(series.categories)) {
+				throw new Error('categories field is not an array')
+			}
+			this._checkCategories(values, series.categories)
+			this._addDimension(series.name, values, series.categories)
+		}
+		else if (seriesType === 'dimension') {
+			const { indexes, categories } = this._convertDimension(values)
+			this._addDimension(series.name, indexes, categories)
 		} else if (seriesType === 'measure') {
 			if (!series.unit) series.unit = ''
 			this._addMeasure(series.name, series.unit, values)
 		} else {
 			throw new Error('invalid series type: ' + series.type)
+		}
+	}
+
+	private _checkCategories(values: (string | number | null)[], categories: (string | number | null)[]): void {
+		if (!values.every((value) => value === null || !isNaN(Number(value)))) {
+			throw new Error('invalid category values')
+		}
+
+		const filtered = values.filter((value) => value !== null) as number[]
+		const min = Math.min(...filtered)
+		const max = Math.max(...filtered)
+
+		if (min < 0 || max >= categories.length) {
+			throw new Error('invalid category values')
 		}
 	}
 
@@ -105,20 +127,28 @@ export class Data {
 		return null
 	}
 
-	private _addDimension(name: string, dimension: unknown[]): void {
+	private _addDimension(name: string, indexes: number[], categories: string[]): void {
 		if (typeof name !== 'string') {
 			throw new Error('first parameter should be string')
 		}
 
-		if (!(dimension instanceof Array)) {
+		if (!(indexes instanceof Array)) {
 			throw new Error('second parameter should be an array')
 		}
 
-		if (!this._isStringArray(dimension)) {
+		if (!(categories instanceof Array)) {
+			throw new Error('third parameter should be an array')
+		}
+
+		if (!this._isStringArray(categories)) {
+			throw new Error('third parameter should be an array of strings')
+		}
+
+		if (this._isStringArray(indexes)) {
 			throw new Error('array element should be string')
 		}
 
-		this._cData.addDimension(name, dimension)
+		this._cData.addDimension(name, indexes, categories)
 	}
 
 	private _isStringArray(values: unknown[]): values is string[] {
@@ -128,6 +158,13 @@ export class Data {
 			}
 		}
 		return true
+	}
+
+	private _convertDimension(values: string[]): { categories: string[], indexes: number[] } {
+		const uniques = new Set(values)
+		const categories = Array.from(uniques)
+		const indexes = values.map((value) => categories.indexOf(value))
+		return { indexes, categories }
 	}
 
 	private _addMeasure(name: string, unit: string, values: unknown[]): void {
