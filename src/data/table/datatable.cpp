@@ -91,15 +91,14 @@ DataTable::DataIndex DataTable::addColumn(const std::string &name,
 }
 
 DataTable::DataIndex DataTable::addColumn(const std::string &name,
-    const std::span<const char *> &values)
+    const std::span<const char *> &categories,
+    const std::span<std::uint32_t> &values)
 {
-	return addTypedColumn(name, std::string{}, values);
-}
+	std::vector<const char *> realValues(values.size());
+	for (auto i = 0U; i < values.size(); ++i)
+		realValues[i] = categories[values[i]];
 
-DataTable::DataIndex DataTable::addColumn(const std::string &name,
-    const std::span<std::string> &values)
-{
-	return addTypedColumn(name, std::string{}, values);
+	return addTypedColumn<const char *>(name, {}, realValues);
 }
 
 const ColumnInfo &DataTable::getInfo(ColumnIndex index) const

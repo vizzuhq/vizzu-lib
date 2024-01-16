@@ -286,19 +286,23 @@ const Value *record_getValue(const Vizzu::Data::RowWrapper *record,
 void data_addDimension(APIHandles::Chart chart,
     const char *name,
     const char **categories,
-    int count)
+    std::uint32_t categoriesCount,
+    std::uint32_t *categoryIndices,
+    std::uint32_t categoryIndicesCount)
 {
 	return Interface::getInstance().addDimension(chart,
 	    name,
 	    categories,
-	    count);
+	    categoriesCount,
+	    categoryIndices,
+	    categoryIndicesCount);
 }
 
 void data_addMeasure(APIHandles::Chart chart,
     const char *name,
     const char *unit,
     double *values,
-    int count)
+    std::uint32_t count)
 {
 	return Interface::getInstance().addMeasure(chart,
 	    name,
@@ -309,7 +313,7 @@ void data_addMeasure(APIHandles::Chart chart,
 
 void data_addRecord(APIHandles::Chart chart,
     const char **cells,
-    int count)
+    std::uint32_t count)
 {
 	return Interface::getInstance().addRecord(chart, cells, count);
 }

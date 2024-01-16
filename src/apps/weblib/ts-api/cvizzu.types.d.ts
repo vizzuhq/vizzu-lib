@@ -98,7 +98,14 @@ export interface CVizzu {
 	): void
 	_vizzu_errorMessage(exceptionPtr: CException, typeinfo: CTypeInfo): CString
 	_vizzu_version(): CString
-	_data_addDimension(chart: CChartPtr, name: CString, categories: CArrayPtr, count: number): void
+	_data_addDimension(
+		chart: CChartPtr,
+		name: CString,
+		categories: CArrayPtr,
+		categoriesCount: number,
+		categoryIndices: CArrayPtr,
+		categoryIndicesCount: number
+	): void
 	_data_addMeasure(
 		chart: CChartPtr,
 		name: CString,

@@ -11,9 +11,9 @@ TestChart::TestChart() : chart() {}
 
 void TestChart::prepareData()
 {
-	std::vector<std::string>
+	std::vector<const char *>
 	    cat1{"A", "A", "A", "B", "B", "B", "C", "C", "C"};
-	std::vector<std::string> cat2{"aasd",
+	std::vector<const char *> cat2{"aasd",
 	    "bíyx",
 	    "cAxyyxc",
 	    "aS",

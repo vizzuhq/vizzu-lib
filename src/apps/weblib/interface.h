@@ -88,15 +88,17 @@ public:
 	void addDimension(ObjectRegistry::Handle chart,
 	    const char *name,
 	    const char **categories,
-	    int count);
+	    std::uint32_t categoriesCount,
+	    std::uint32_t *categoryIndices,
+	    std::uint32_t categoryIndicesCount);
 	void addMeasure(ObjectRegistry::Handle chart,
 	    const char *name,
 	    const char *unit,
 	    double *values,
-	    int count);
+	    std::uint32_t count);
 	void addRecord(ObjectRegistry::Handle chart,
 	    const char **cells,
-	    int count);
+	    std::uint32_t count);
 	const char *dataMetaInfo(ObjectRegistry::Handle chart);
 	void addEventListener(ObjectRegistry::Handle chart,
 	    const char *event,
