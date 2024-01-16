@@ -107,6 +107,11 @@ export class Data {
 			throw new Error('invalid category values')
 		}
 
+		const duplicateCategories = categories.filter((e, i, a) => a.indexOf(e) !== i)
+		if (duplicateCategories.length>0) {
+			throw new Error('duplicate category values:'+ duplicateCategories.join(', '))
+		}
+
 		const filtered = values.filter((value) => value !== null) as number[]
 		const min = Math.min(...filtered)
 		const max = Math.max(...filtered)
