@@ -45,9 +45,6 @@
 		},
 		"dimension_axis_density": {
 			"refs": ["9b330fb"]
-		},
-		"x_axis_label_autorotate": {
-			"refs": ["1dc0fcf"]
 		}
 	}
 }
