@@ -103,7 +103,7 @@ export class Data {
 	}
 
 	private _checkCategories(values: (string | number | null)[], categories: (string | number | null)[]): void {
-		if (!values.every((value) => value === null || !isNaN(Number(value)))) {
+		if (!values.every((value) => value === null || Number.isInteger(value))) {
 			throw new Error('invalid category values')
 		}
 
@@ -145,7 +145,7 @@ export class Data {
 		}
 
 		if (this._isStringArray(indexes)) {
-			throw new Error('array element should be string')
+			throw new Error('array element should be number')
 		}
 
 		this._cData.addDimension(name, indexes, categories)
@@ -160,7 +160,7 @@ export class Data {
 		return true
 	}
 
-	private _convertDimension(values: string[]): { categories: string[], indexes: number[] } {
+	private _convertDimension(values: string[]): { indexes: number[], categories: string[] } {
 		const uniques = new Set(values)
 		const categories = Array.from(uniques)
 		const indexes = values.map((value) => categories.indexOf(value))
