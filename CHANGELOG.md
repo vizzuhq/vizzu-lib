@@ -7,6 +7,7 @@
 - Json serializer control character escape fixed. Some unicode characters
   were not escaped properly. 
 - Fix dimension label transition on axis and legend.
+- Through event handler call, when a new event handler is registered, undefined behaviour happened.
 
 ### Added
 
@@ -15,6 +16,7 @@
 - Remove cursor modification over logo.
 - Make `channel.step` option to work on dimensions. 
 - When X axis dimension labels are close to each other, they are rotated to avoid overlapping. 
+- The event handler registration order changed. Now the handlers are called in the opposite order of the registration.
 
 ## [0.9.3] - 2023-12-20
 
