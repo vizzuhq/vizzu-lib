@@ -284,8 +284,10 @@ void DrawAxes::drawDimensionLabel(bool horizontal,
 	    horizontal ? Gen::ChannelId::x : Gen::ChannelId::y;
 	const auto &labelStyle = rootStyle.plot.getAxis(axisIndex).label;
 
+	auto drawLabel = OrientedLabel{{ctx()}};
 	labelStyle.position->visit(
 	    [this,
+	        &drawLabel,
 	        &labelStyle,
 	        &it,
 	        &horizontal,
@@ -331,20 +333,18 @@ void DrawAxes::drawDimensionLabel(bool horizontal,
 		    auto draw = [&](const ::Anim::Weighted<std::string> &str,
 		                    double plusWeight = 1.0)
 		    {
-			    OrientedLabel::create(canvas,
+			    drawLabel.draw(canvas,
 			        str.value,
 			        posDir,
 			        labelStyle,
-			        0)
-			        .draw(canvas,
-			            renderedChart,
-			            textColor * weight * str.weight * plusWeight,
-			            *labelStyle.backgroundColor,
-			            *rootEvents.draw.plot.axis.label,
-			            Events::Targets::axisLabel(category,
-			                categoryVal,
-			                str.value,
-			                horizontal));
+			        0,
+			        textColor * weight * str.weight * plusWeight,
+			        *labelStyle.backgroundColor,
+			        *rootEvents.draw.plot.axis.label,
+			        Events::Targets::axisLabel(category,
+			            categoryVal,
+			            str.value,
+			            horizontal));
 		    };
 
 		    if (labelStyle.position->interpolates()

@@ -231,8 +231,10 @@ void DrawInterlacing::drawDataLabel(
 	    horizontal ? Gen::ChannelId::y : Gen::ChannelId::x;
 	const auto &labelStyle = rootStyle.plot.getAxis(axisIndex).label;
 
+	auto drawLabel = OrientedLabel{{ctx()}};
 	labelStyle.position->visit(
 	    [this,
+	        &drawLabel,
 	        &labelStyle,
 	        &axisEnabled,
 	        &tickPos,
@@ -273,6 +275,7 @@ void DrawInterlacing::drawDataLabel(
 		                       Styles::AxisLabel::Side::negative);
 		    unit.visit(
 		        [this,
+		            &drawLabel,
 		            &unit,
 		            &labelStyle,
 		            &index,
@@ -296,22 +299,18 @@ void DrawInterlacing::drawDataLabel(
 			                    *labelStyle.maxFractionDigits),
 			                *labelStyle.numberScale,
 			                unitStr);
-			        OrientedLabel::create(canvas,
+			        drawLabel.draw(canvas,
 			            str,
 			            posDir,
 			            labelStyle,
-			            0)
-			            .draw(canvas,
-			                renderedChart,
-			                textColor * position.weight
-			                    * wUnit.weight,
-			                *labelStyle.backgroundColor
-			                    * wUnit.weight,
-			                *rootEvents.draw.plot.axis.label,
-			                Events::Targets::axisLabel({},
-			                    {},
-			                    str,
-			                    !horizontal));
+			            0,
+			            textColor * position.weight * wUnit.weight,
+			            *labelStyle.backgroundColor * wUnit.weight,
+			            *rootEvents.draw.plot.axis.label,
+			            Events::Targets::axisLabel({},
+			                {},
+			                str,
+			                !horizontal));
 		        });
 	    });
 }

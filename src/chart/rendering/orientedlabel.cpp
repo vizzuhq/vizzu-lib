@@ -5,14 +5,16 @@
 namespace Vizzu::Draw
 {
 
-OrientedLabel OrientedLabel::create(Gfx::ICanvas &canvas,
+void OrientedLabel::draw(Gfx::ICanvas &canvas,
     const std::string &text,
     const Geom::Line &labelPos,
     const Styles::OrientedLabel &labelStyle,
-    double centered)
+    double centered,
+    const Gfx::Color &textColor,
+    const Gfx::Color &bgColor,
+    Util::EventDispatcher::Event &event,
+    std::unique_ptr<Util::EventTarget> eventTarget) const
 {
-	if (text.empty()) return {text};
-
 	const Gfx::Font font(labelStyle);
 	canvas.setFont(font);
 
@@ -65,18 +67,9 @@ OrientedLabel OrientedLabel::create(Gfx::ICanvas &canvas,
 		transform =
 		    transform * Geom::AffineTransform(paddedSize, 1.0, -M_PI);
 
-	return {text,
-	    {transform, {paddedSize}},
-	    {margin.topLeft(), neededSize}};
-}
+	Geom::TransformedRect rect{transform, {paddedSize}};
+	Geom::Rect contentRect{margin.topLeft(), neededSize};
 
-void OrientedLabel::draw(Gfx::ICanvas &canvas,
-    RenderedChart &renderedChart,
-    const Gfx::Color &textColor,
-    const Gfx::Color &bgColor,
-    Util::EventDispatcher::Event &event,
-    std::unique_ptr<Util::EventTarget> eventTarget) const
-{
 	if (!bgColor.isTransparent()) {
 		canvas.save();
 		canvas.setBrushColor(bgColor);

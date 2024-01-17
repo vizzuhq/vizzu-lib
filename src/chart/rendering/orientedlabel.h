@@ -9,21 +9,13 @@
 namespace Vizzu::Draw
 {
 
-class OrientedLabel
+struct OrientedLabel : DrawingContext
 {
-public:
-	const std::string &text;
-	Geom::TransformedRect rect{};
-	Geom::Rect contentRect{};
-
-	[[nodiscard]] static OrientedLabel create(Gfx::ICanvas &canvas,
+	void draw(Gfx::ICanvas &canvas,
 	    const std::string &text,
 	    const Geom::Line &labelPos,
 	    const Styles::OrientedLabel &labelStyle,
-	    double centered);
-
-	void draw(Gfx::ICanvas &canvas,
-	    RenderedChart &renderedChart,
+	    double centered,
 	    const Gfx::Color &textColor,
 	    const Gfx::Color &bgColor,
 	    Util::EventDispatcher::Event &event,
