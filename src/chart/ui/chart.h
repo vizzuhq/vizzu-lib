@@ -27,14 +27,11 @@ public:
 	void onWheel(double delta) override;
 	void onChanged() override;
 	void onDraw(const std::shared_ptr<Gfx::ICanvas> &) override;
-	void onUpdateSize(const std::shared_ptr<Gfx::ICanvas> &,
-	    Geom::Size size) override;
+	void onUpdateSize(Geom::Size size) override;
 
 	[[nodiscard]] Chart &getChart() { return chart; }
 
-	[[nodiscard]] bool needsUpdate(
-	    const std::shared_ptr<Gfx::ICanvas> &,
-	    Geom::Size size) const final
+	[[nodiscard]] bool needsUpdate(Geom::Size size) const final
 	{
 		return needUpdate || chart.getLayout().boundary.size != size;
 	}

@@ -31,7 +31,7 @@ public:
 
 	Chart();
 	void draw(Gfx::ICanvas &canvas);
-	void setBoundRect(const Geom::Rect &rect, Gfx::ICanvas &info);
+	void setBoundRect(const Geom::Rect &rect);
 
 	Data::DataTable &getTable() { return table; }
 	Gen::OptionsSetter getSetter();

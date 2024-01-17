@@ -24,8 +24,7 @@ public:
 
 	void setBoundary(const Geom::Rect &boundary,
 	    const Styles::Chart &style,
-	    const Gen::PlotOptionsPtr &options,
-	    Gfx::ICanvas &info);
+	    const Gen::PlotOptionsPtr &options);
 
 private:
 	void setLogoBoundary(const Styles::Logo &logoStyle);
