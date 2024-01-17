@@ -73,7 +73,6 @@ bool Plot::MarkerInfoContent::operator==(
 }
 
 Plot::Plot(PlotOptionsPtr options, const Plot &other) :
-    anySelected(other.anySelected),
     anyAxisSet(other.anyAxisSet),
     commonAxises(other.commonAxises),
     measureAxises(other.measureAxises),
@@ -90,7 +89,6 @@ Plot::Plot(const Data::DataTable &dataTable,
     PlotOptionsPtr opts,
     Styles::Chart style,
     bool setAutoParams) :
-    anySelected{false},
     dataTable(dataTable),
     options(std::move(opts)),
     style(std::move(style)),
@@ -298,15 +296,14 @@ void Plot::normalizeXY()
 
 void Plot::calcMeasureAxises(const Data::DataTable &dataTable)
 {
-	for (auto i = 0U; i < std::size(measureAxises.axises); ++i) {
-		auto id = static_cast<ChannelId>(i);
-		measureAxises.at(id) = calcAxis(id, dataTable);
-	}
+	for (auto i = 0U; i < std::size(measureAxises.axises); ++i)
+		calcMeasureAxis(static_cast<ChannelId>(i), dataTable);
 }
 
-MeasureAxis Plot::calcAxis(ChannelId type,
+void Plot::calcMeasureAxis(ChannelId type,
     const Data::DataTable &dataTable)
 {
+	auto &axis = measureAxises.at(type);
 	const auto &scale = options->getChannels().at(type);
 	if (!scale.isEmpty() && scale.measureId) {
 		commonAxises.at(type).title =
@@ -316,21 +313,21 @@ MeasureAxis Plot::calcAxis(ChannelId type,
 
 		if (type == options->subAxisType()
 		    && options->align == Base::Align::Type::stretch) {
-			return {Math::Range<double>(0, 100),
+			axis = {Math::Range<double>(0, 100),
 			    "%",
 			    scale.step.getValue()};
 		}
-
-		auto colIndex = scale.measureId->getColIndex();
-		auto unit = colIndex
-		              ? dataTable.getInfo(colIndex.value()).getUnit()
-		              : std::string{};
-		return {stats.channels[type].range,
-		    unit,
-		    scale.step.getValue()};
+		else {
+			auto colIndex = scale.measureId->getColIndex();
+			axis = {stats.channels[type].range,
+			    colIndex
+			        ? dataTable.getInfo(colIndex.value()).getUnit()
+			        : std::string{},
+			    scale.step.getValue()};
+		}
 	}
-
-	return {};
+	else
+		axis = {};
 }
 
 void Plot::calcDimensionAxises(const Data::DataTable &table)
@@ -353,7 +350,8 @@ void Plot::calcDimensionAxis(ChannelId type,
 
 	auto dim = scale.labelLevel;
 
-	if (type == ChannelId::x || type == ChannelId::y) {
+	auto &&isTypeAxis = isAxis(type);
+	if (isTypeAxis) {
 		for (const auto &marker : markers) {
 			const auto &id =
 			    (type == ChannelId::x) == options->isHorizontal()
@@ -389,7 +387,12 @@ void Plot::calcDimensionAxis(ChannelId type,
 			}
 		}
 	}
-	axis.setLabels(dataCube, table);
+	axis.setLabels(dataCube,
+	    table,
+	    isTypeAxis ? scale.step.getValue(1.0) : 1.0);
+
+	if (auto &&series = scale.labelSeries())
+		axis.category = series.value().toString(table);
 }
 
 void Plot::addAlignment()
@@ -442,7 +445,7 @@ void Plot::addSeparation()
 				ranges[i].include(size);
 				if (static_cast<double>(marker.enabled) > 0)
 					anyEnabled[i] = true;
-				++i;
+				++i %= ranges.size();
 			}
 		}
 
@@ -455,7 +458,7 @@ void Plot::addSeparation()
 			          + (anyEnabled[i - 1] ? max.getMax() / 15 : 0);
 
 		for (auto &bucketIt : subBuckets) {
-			int i = 0;
+			auto i = 0U;
 			for (auto &itemIt : bucketIt.second) {
 				auto &marker = markers[itemIt.second];
 				auto size =
@@ -465,7 +468,7 @@ void Plot::addSeparation()
 				auto newSize = aligner.getAligned(size);
 
 				marker.setSizeBy(!options->isHorizontal(), newSize);
-				++i;
+				++i %= ranges.size();
 			}
 		}
 	}

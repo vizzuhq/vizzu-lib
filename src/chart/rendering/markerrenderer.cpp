@@ -13,39 +13,38 @@
 namespace Vizzu::Draw
 {
 
-MarkerRenderer::MarkerRenderer(const Gen::Marker &marker,
-    const DrawingContext &context) :
-    DrawingContext(context),
-    marker(marker)
-{}
-
-void MarkerRenderer::drawLines(const Styles::Guide &style,
-    const Geom::Point &origo)
+void MarkerRenderer::drawLines(Gfx::ICanvas &canvas,
+    Painter &painter) const
 {
-	if (static_cast<double>(marker.enabled) == 0) return;
+	const auto &style = rootStyle.plot.marker.guides;
 
-	auto blended = AbstractMarker::createInterpolated(marker,
-	    options,
-	    plot.getStyle(),
-	    coordSys,
-	    plot.getMarkers(),
-	    0);
+	if (style.color->isTransparent() || *style.lineWidth <= 0
+	    || plot->anyAxisSet == false || !plot->guides.hasAnyGuides())
+		return;
 
-	auto baseColor =
-	    *style.color * static_cast<double>(plot.anyAxisSet);
+	canvas.setLineWidth(*style.lineWidth);
 
-	if (static_cast<double>(blended.enabled) > 0) {
-		if (static_cast<double>(plot.guides.x.guidelines) > 0) {
-			auto lineColor =
-			    baseColor
-			    * static_cast<double>(plot.guides.x.guidelines);
-			canvas.setLineColor(lineColor);
+	auto origo = plot->measureAxises.origo();
+
+	auto baseColor = *style.color * double{plot->anyAxisSet};
+
+	auto xMarkerGuides = double{plot->guides.x.markerGuides};
+	auto yMarkerGuides = double{plot->guides.y.markerGuides};
+	auto xLineColor = baseColor * xMarkerGuides;
+	auto yLineColor = baseColor * yMarkerGuides;
+
+	for (const auto &blended : markers) {
+		if (blended.marker.enabled == false
+		    || blended.enabled == false)
+			continue;
+
+		if (xMarkerGuides > 0) {
+			canvas.setLineColor(xLineColor);
 			auto axisPoint = blended.center.xComp() + origo.yComp();
 			const Geom::Line line(axisPoint, blended.center);
 
 			auto guideElement =
-			    std::make_unique<Events::Targets::MarkerGuide>(marker,
-			        false);
+			    Events::Targets::markerGuide(blended.marker, false);
 
 			if (rootEvents.draw.plot.marker.guide->invoke(
 			        Events::OnLineDrawEvent(*guideElement,
@@ -55,21 +54,18 @@ void MarkerRenderer::drawLines(const Styles::Guide &style,
 				    std::move(guideElement));
 			}
 		}
-		if (static_cast<double>(plot.guides.y.guidelines) > 0) {
-			blended.center.x = Math::interpolate(blended.center.x,
+		if (yMarkerGuides > 0) {
+			auto center = Geom::Point{blended.center};
+			center.x = Math::interpolate(center.x,
 			    1.0,
-			    options.coordSystem.factor<double>(
+			    getOptions().coordSystem.factor<double>(
 			        Gen::CoordSystem::polar));
-			auto lineColor =
-			    baseColor
-			    * static_cast<double>(plot.guides.y.guidelines);
-			canvas.setLineColor(lineColor);
-			auto axisPoint = blended.center.yComp() + origo.xComp();
-			const Geom::Line line(blended.center, axisPoint);
+			canvas.setLineColor(yLineColor);
+			auto axisPoint = center.yComp() + origo.xComp();
+			const Geom::Line line(center, axisPoint);
 
 			auto guideElement =
-			    std::make_unique<Events::Targets::MarkerGuide>(marker,
-			        true);
+			    Events::Targets::markerGuide(blended.marker, true);
 
 			if (rootEvents.draw.plot.marker.guide->invoke(
 			        Events::OnLineDrawEvent(*guideElement,
@@ -80,123 +76,140 @@ void MarkerRenderer::drawLines(const Styles::Guide &style,
 			}
 		}
 	}
+	canvas.setLineWidth(0);
 }
 
-void MarkerRenderer::draw()
+void MarkerRenderer::drawMarkers(Gfx::ICanvas &canvas,
+    Painter &painter) const
 {
-	if (!shouldDrawMarkerBody()) return;
-
-	if (options.geometry.contains(Gen::ShapeType::line)
-	    && options.geometry.contains(Gen::ShapeType::circle)) {
-		const CircleMarker circle(marker,
-		    coordSys,
-		    options,
-		    plot.getStyle());
-
-		draw(circle, 1, false);
-
-		marker.prevMainMarkerIdx.visit(
-		    [this](int index, auto value)
-		    {
-			    const ConnectingMarker line(marker,
-			        coordSys,
-			        options,
-			        plot.getStyle(),
-			        plot.getMarkers(),
-			        index,
-			        Gen::ShapeType::line);
-
-			    draw(line, value.weight, true);
-		    });
-	}
-	else {
-		auto drawMarker =
-		    [this](int index, ::Anim::Weighted<uint64_t> value)
-		{
-			auto blended0 = AbstractMarker::createInterpolated(marker,
-			    options,
-			    plot.getStyle(),
+	for (const auto &blended : markers) {
+		if (getOptions().geometry.contains(Gen::ShapeType::line)
+		    && getOptions().geometry.contains(
+		        Gen::ShapeType::circle)) {
+			const CircleMarker circle(blended.marker,
 			    coordSys,
-			    plot.getMarkers(),
-			    index);
+			    getOptions(),
+			    rootStyle);
 
-			auto lineFactor =
-			    options.geometry.factor<double>(Gen::ShapeType::line);
+			draw(canvas, painter, circle, 1, false);
 
-			draw(blended0,
-			    value.weight * (1 - lineFactor) * (1 - lineFactor),
-			    false);
-			draw(blended0, value.weight * sqrt(lineFactor), true);
-		};
+			blended.marker.prevMainMarkerIdx.visit(
+			    [this, &blended, &canvas, &painter](int index,
+			        auto value)
+			    {
+				    draw(canvas,
+				        painter,
+				        ConnectingMarker{ctx(),
+				            blended.marker,
+				            static_cast<size_t>(index),
+				            Gen::ShapeType::line},
+				        value.weight,
+				        true);
+			    });
+		}
+		else {
+			std::optional<AbstractMarker> other;
+			auto drawMarker =
+			    [this, &blended, &other, &canvas, &painter](int index,
+			        ::Anim::Weighted<uint64_t> value)
+			{
+				if (index == 1 && !other) {
+					other.emplace(
+					    AbstractMarker::createInterpolated(ctx(),
+					        blended.marker,
+					        1));
+				}
+				const auto &blended0 = index == 0 ? blended : *other;
 
-		auto containsConnected =
-		    options.geometry.contains(Gen::ShapeType::line)
-		    || options.geometry.contains(Gen::ShapeType::area);
+				auto lineFactor =
+				    getOptions().geometry.factor<double>(
+				        Gen::ShapeType::line);
 
-		auto containsSingle =
-		    options.geometry.contains(Gen::ShapeType::rectangle)
-		    || options.geometry.contains(Gen::ShapeType::circle);
+				draw(canvas,
+				    painter,
+				    blended0,
+				    value.weight * (1 - lineFactor)
+				        * (1 - lineFactor),
+				    false);
+				draw(canvas,
+				    painter,
+				    blended0,
+				    value.weight * sqrt(lineFactor),
+				    true);
+			};
 
-		if (containsConnected) {
-			if (containsSingle) {
-				auto lineIndex =
-				    Gen::isConnecting(options.geometry.get(0).value)
-				        ? 0
-				        : 1;
+			auto containsConnected =
+			    getOptions().geometry.contains(Gen::ShapeType::line)
+			    || getOptions().geometry.contains(
+			        Gen::ShapeType::area);
 
-				drawMarker(lineIndex, ::Anim::Weighted<uint64_t>(0));
+			auto containsSingle = getOptions().geometry.contains(
+			                          Gen::ShapeType::rectangle)
+			                   || getOptions().geometry.contains(
+			                       Gen::ShapeType::circle);
+
+			if (containsConnected) {
+				if (containsSingle) {
+					auto lineIndex =
+					    Gen::isConnecting(
+					        getOptions().geometry.get(0).value)
+					        ? 0
+					        : 1;
+
+					drawMarker(lineIndex,
+					    ::Anim::Weighted<uint64_t>(0));
+				}
+				else
+					blended.marker.prevMainMarkerIdx.visit(
+					    drawMarker);
 			}
 			else
-				marker.prevMainMarkerIdx.visit(drawMarker);
+				drawMarker(0, ::Anim::Weighted<uint64_t>(0));
 		}
-		else
-			drawMarker(0, ::Anim::Weighted<uint64_t>(0));
 	}
 }
 
-void MarkerRenderer::drawLabel()
+void MarkerRenderer::drawLabels(Gfx::ICanvas &canvas) const
 {
-	if (static_cast<double>(marker.enabled) == 0) return;
-
-	auto blended = AbstractMarker::createInterpolated(marker,
-	    options,
-	    plot.getStyle(),
-	    coordSys,
-	    plot.getMarkers(),
-	    0);
-
-	drawLabel(blended, 0);
-	drawLabel(blended, 1);
+	for (const auto &blended : markers) {
+		if (blended.marker.enabled == false) continue;
+		drawLabel(canvas, blended, 0);
+		drawLabel(canvas, blended, 1);
+	}
 }
 
-bool MarkerRenderer::shouldDrawMarkerBody()
+bool MarkerRenderer::shouldDrawMarkerBody(
+    const Gen::Marker &marker) const
 {
-	bool enabled = static_cast<double>(marker.enabled) > 0;
-	if (options.geometry.factor<Math::FuzzyBool>(Gen::ShapeType::area)
-	    != false) {
-		const auto *prev0 =
-		    ConnectingMarker::getPrev(marker, plot.getMarkers(), 0);
+	bool enabled = marker.enabled != false;
+	if (!enabled
+	    && getOptions().geometry.factor<Math::FuzzyBool>(
+	           Gen::ShapeType::area)
+	           != false) {
 
-		const auto *prev1 =
-		    ConnectingMarker::getPrev(marker, plot.getMarkers(), 1);
-
-		if (prev0) enabled |= static_cast<double>(prev0->enabled) > 0;
-		if (prev1) enabled |= static_cast<double>(prev1->enabled) > 0;
+		if (const auto *prev0 = ConnectingMarker::getPrev(marker,
+		        plot->getMarkers(),
+		        0))
+			enabled |= prev0->enabled != false;
+		if (const auto *prev1 = ConnectingMarker::getPrev(marker,
+		        plot->getMarkers(),
+		        1))
+			enabled |= prev1->enabled != false;
 	}
 	return enabled;
 }
 
-void MarkerRenderer::draw(const AbstractMarker &abstractMarker,
+void MarkerRenderer::draw(Gfx::ICanvas &canvas,
+    Painter &painter,
+    const AbstractMarker &abstractMarker,
     double factor,
-    bool line)
+    bool isLine) const
 {
-	if (static_cast<double>(abstractMarker.enabled) == 0
-	    || factor == 0)
-		return;
+	if (abstractMarker.enabled == false || factor == 0) return;
 
 	painter.setPolygonToCircleFactor(
-	    line ? 0.0
-	         : static_cast<double>(abstractMarker.morphToCircle));
+	    isLine ? 0.0
+	           : static_cast<double>(abstractMarker.morphToCircle));
 	painter.setPolygonStraightFactor(
 	    static_cast<double>(abstractMarker.linear));
 	painter.setResMode(ResolutionMode::High);
@@ -212,9 +225,9 @@ void MarkerRenderer::draw(const AbstractMarker &abstractMarker,
 	auto boundary = abstractMarker.getBoundary();
 
 	auto markerElement =
-	    std::make_unique<Events::Targets::Marker>(marker);
+	    Events::Targets::marker(abstractMarker.marker);
 
-	if (line) {
+	if (isLine) {
 		auto line = abstractMarker.getLine();
 
 		auto p0 = coordSys.convert(line.begin);
@@ -234,7 +247,11 @@ void MarkerRenderer::draw(const AbstractMarker &abstractMarker,
 			    colors.second
 			        * static_cast<double>(abstractMarker.connected));
 
-			renderedChart.emplace(Draw::Marker{abstractMarker.marker},
+			renderedChart.emplace(
+			    Draw::Marker{abstractMarker.marker.enabled != false,
+			        abstractMarker.shapeType,
+			        abstractMarker.points,
+			        abstractMarker.lineWidth},
 			    std::move(markerElement));
 		}
 	}
@@ -243,7 +260,11 @@ void MarkerRenderer::draw(const AbstractMarker &abstractMarker,
 		        Events::OnRectDrawEvent(*markerElement,
 		            {boundary, true}))) {
 			painter.drawPolygon(abstractMarker.points);
-			renderedChart.emplace(Draw::Marker{abstractMarker.marker},
+			renderedChart.emplace(
+			    Draw::Marker{abstractMarker.marker.enabled != false,
+			        abstractMarker.shapeType,
+			        abstractMarker.points,
+			        abstractMarker.lineWidth},
 			    std::move(markerElement));
 		}
 	}
@@ -252,17 +273,19 @@ void MarkerRenderer::draw(const AbstractMarker &abstractMarker,
 	canvas.restore();
 }
 
-void MarkerRenderer::drawLabel(const AbstractMarker &abstractMarker,
-    size_t index)
+void MarkerRenderer::drawLabel(Gfx::ICanvas &canvas,
+    const AbstractMarker &abstractMarker,
+    size_t index) const
 {
-	if (static_cast<double>(abstractMarker.labelEnabled) == 0) return;
+	if (abstractMarker.labelEnabled == false) return;
+	const auto &marker = abstractMarker.marker;
 
 	auto weight = marker.label.values[index].weight;
 	if (weight == 0.0) return;
 
 	auto color = getColor(abstractMarker, 1, true).second;
 
-	auto text = getLabelText(index);
+	auto text = getLabelText(marker.label, index);
 	if (text.empty()) return;
 
 	const auto &labelStyle = rootStyle.plot.marker.label;
@@ -279,52 +302,50 @@ void MarkerRenderer::drawLabel(const AbstractMarker &abstractMarker,
 	auto centered = labelStyle.position->factor<double>(
 	    Styles::MarkerLabel::Position::center);
 
-	OrientedLabelRenderer labelRenderer(*this);
-
-	labelRenderer.render(
-	    labelRenderer.create(text, labelPos, labelStyle, centered),
-	    textColor,
-	    bgColor,
-	    rootEvents.draw.plot.marker.label,
-	    std::make_unique<Events::Targets::MarkerLabel>(text, marker));
+	OrientedLabel::create(canvas,
+	    text,
+	    labelPos,
+	    labelStyle,
+	    centered)
+	    .draw(canvas,
+	        renderedChart,
+	        textColor,
+	        bgColor,
+	        *rootEvents.draw.plot.marker.label,
+	        Events::Targets::markerLabel(text, marker));
 }
 
-std::string MarkerRenderer::getLabelText(size_t index) const
+std::string MarkerRenderer::getLabelText(
+    const ::Anim::Interpolated<Gen::Marker::Label> &label,
+    size_t index) const
 {
 	const auto &labelStyle = rootStyle.plot.marker.label;
-	const auto &values = marker.label.values;
+	const auto &values = label.values;
 
 	auto needsInterpolation =
-	    marker.label.count == 2
+	    label.count == 2
 	    && (values[0].value.measureId == values[1].value.measureId);
 
 	std::string valueStr;
 	if (values[index].value.hasValue()) {
 		auto value = needsInterpolation
-		               ? marker.label.combine<double>(
+		               ? label.combine<double>(
 		                   [&](int, const auto &value)
 		                   {
 			                   return value.value.value_or(0);
 		                   })
 		               : values[index].value.value.value();
-		valueStr = Text::SmartString::fromNumber(value,
+		valueStr = Text::SmartString::fromPhysicalValue(value,
 		    *labelStyle.numberFormat,
 		    static_cast<size_t>(*labelStyle.maxFractionDigits),
-		    *labelStyle.numberScale);
-
-		if (!values[index].value.unit.empty()) {
-			if (*labelStyle.numberFormat
-			    != Text::NumberFormat::prefixed)
-				valueStr += " ";
-
-			valueStr += values[index].value.unit;
-		}
+		    *labelStyle.numberScale,
+		    values[index].value.unit);
 	}
 
 	auto indexStr = values[index].value.indexStr;
 
 	typedef Styles::MarkerLabel::Format Format;
-	switch (static_cast<Format>(*labelStyle.format)) {
+	switch (*labelStyle.format) {
 	default:
 	case Format::measureFirst: {
 		auto text = valueStr;
@@ -349,9 +370,10 @@ std::string MarkerRenderer::getLabelText(size_t index) const
 std::pair<Gfx::Color, Gfx::Color> MarkerRenderer::getColor(
     const AbstractMarker &abstractMarker,
     double factor,
-    bool label)
+    bool label) const
 {
-	auto selectedColor = getSelectedColor(label);
+	auto selectedColor =
+	    getSelectedColor(abstractMarker.marker, label);
 
 	auto borderAlpha = *rootStyle.plot.marker.borderOpacity;
 	auto fillAlpha = *rootStyle.plot.marker.fillOpacity;
@@ -386,15 +408,16 @@ std::pair<Gfx::Color, Gfx::Color> MarkerRenderer::getColor(
 
 	double highlight = 0.0;
 	double anyHighlight = 0.0;
-	auto markerInfo = plot.getMarkersInfo();
+	auto markerInfo = plot->getMarkersInfo();
 	for (auto &info : markerInfo) {
 		auto allHighlight = 0.0;
 		info.second.visit(
-		    [this, &highlight, &allHighlight](int, const auto &info)
+		    [&highlight,
+		        &allHighlight,
+		        idx = abstractMarker.marker.idx](int,
+		        const auto &info)
 		    {
-			    highlight += info.value.markerId == this->marker.idx
-			                   ? 1.0
-			                   : 0.0;
+			    highlight += info.value.markerId == idx ? 1.0 : 0.0;
 			    if (info.value.markerId.has_value())
 				    allHighlight += info.weight;
 		    });
@@ -408,7 +431,8 @@ std::pair<Gfx::Color, Gfx::Color> MarkerRenderer::getColor(
 	return std::make_pair(finalBorderColor, itemColor);
 }
 
-Gfx::Color MarkerRenderer::getSelectedColor(bool label)
+Gfx::Color MarkerRenderer::getSelectedColor(const Gen::Marker &marker,
+    bool label) const
 {
 	const ColorBuilder colorBuilder(
 	    rootStyle.plot.marker.lightnessRange(),
@@ -417,20 +441,22 @@ Gfx::Color MarkerRenderer::getSelectedColor(bool label)
 
 	auto markerColor = colorBuilder.render(marker.colorBase);
 
-	auto orig =
-	    label ? Math::interpolate(markerColor,
-	        rootStyle.plot.marker.label.color->transparent(1.0),
-	        rootStyle.plot.marker.label.color->alpha)
-	          : markerColor;
+	return label ? Math::interpolate(markerColor,
+	           rootStyle.plot.marker.label.color->transparent(1.0),
+	           rootStyle.plot.marker.label.color->alpha)
+	             : markerColor;
+}
 
-	auto gray = orig.desaturate().lightnessScaled(0.75);
-	auto interpolated = Math::interpolate(gray,
-	    orig,
-	    static_cast<double>(marker.selected));
+MarkerRenderer MarkerRenderer::create(const DrawingContext &ctx)
+{
+	MarkerRenderer res{{ctx}, {}};
+	for (auto &marker : res.plot->getMarkers()) {
+		if (!res.shouldDrawMarkerBody(marker)) continue;
 
-	return Math::interpolate(orig,
-	    interpolated,
-	    static_cast<double>(plot.anySelected));
+		res.markers.push_back(
+		    AbstractMarker::createInterpolated(ctx, marker, 0));
+	}
+	return res;
 }
 
 }

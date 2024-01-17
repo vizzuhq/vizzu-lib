@@ -17,14 +17,12 @@ class ChannelStats
 public:
 	bool isDimension;
 	Math::Range<double> range;
-	double sum{0.0};
 	std::vector<Data::MultiDim::SubSliceIndex> usedIndices;
 
 	ChannelStats() : isDimension(true) {}
 	ChannelStats(const Channel &channel, const Data::DataCube &cube);
 
 	void track(double value);
-	void trackSingle(double value);
 	void track(const Marker::Id &id);
 };
 

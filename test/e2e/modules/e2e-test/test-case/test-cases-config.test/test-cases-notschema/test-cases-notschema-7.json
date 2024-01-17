@@ -1,0 +1,8 @@
+{
+	"suite": "/test/e2e/modules/e2e-test/test-cases/test-suite",
+	"test": {
+		"example": {
+			"animstep": 1
+		}
+	}
+}

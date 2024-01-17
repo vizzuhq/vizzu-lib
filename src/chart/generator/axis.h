@@ -65,7 +65,7 @@ struct MeasureAxis
 {
 	::Anim::Interpolated<bool> enabled{false};
 	Math::Range<double> range = Math::Range<double>(0, 1);
-	std::string unit;
+	::Anim::Interpolated<std::string> unit;
 	::Anim::Interpolated<double> step{1.0};
 	MeasureAxis() = default;
 	MeasureAxis(Math::Range<double> interval,
@@ -99,7 +99,8 @@ public:
 		Math::Range<double> range;
 		double value;
 		::Anim::Interpolated<ColorBase> colorBase;
-		std::string label;
+		::Anim::Interpolated<std::string> label;
+		std::string categoryValue;
 		double weight;
 
 		Item(Math::Range<double> range,
@@ -119,6 +120,7 @@ public:
 		    value(item.value),
 		    colorBase(item.colorBase),
 		    label(item.label),
+		    categoryValue(item.categoryValue),
 		    weight(item.weight * factor)
 		{}
 
@@ -135,6 +137,7 @@ public:
 	using Values = std::multimap<Data::MultiDim::SliceIndex, Item>;
 
 	bool enabled{false};
+	std::string category{};
 
 	DimensionAxis() = default;
 	bool add(const Data::MultiDim::SliceIndex &index,
@@ -155,7 +158,8 @@ public:
 		return values.cend();
 	}
 	void setLabels(const Data::DataCube &data,
-	    const Data::DataTable &table);
+	    const Data::DataTable &table,
+	    double step);
 
 private:
 	Values values;

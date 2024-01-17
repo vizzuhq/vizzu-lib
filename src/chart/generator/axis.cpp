@@ -49,17 +49,18 @@ MeasureAxis interpolate(const MeasureAxis &op0,
 	if (op0.enabled.get() && op1.enabled.get()) {
 		res.range = Math::interpolate(op0.range, op1.range, factor);
 		res.step = interpolate(op0.step, op1.step, factor);
+		res.unit = interpolate(op0.unit, op1.unit, factor);
 	}
 	else if (op0.enabled.get()) {
 		res.range = op0.range;
 		res.step = op0.step;
+		res.unit = op0.unit;
 	}
 	else if (op1.enabled.get()) {
 		res.range = op1.range;
 		res.step = op1.step;
+		res.unit = op1.unit;
 	}
-
-	res.unit = op1.unit;
 
 	return res;
 }
@@ -93,18 +94,26 @@ bool DimensionAxis::operator==(const DimensionAxis &other) const
 }
 
 void DimensionAxis::setLabels(const Data::DataCube &data,
-    const Data::DataTable &table)
+    const Data::DataTable &table,
+    double step)
 {
-	Values::iterator it;
-	for (it = values.begin(); it != values.end(); ++it) {
+	step = std::max(step, 1.0);
+	double currStep = 0.0;
+
+	for (int curr{}; auto &[slice, item] : values) {
 		auto colIndex =
-		    data.getSeriesByDim(it->first.dimIndex).getColIndex();
+		    data.getSeriesByDim(slice.dimIndex).getColIndex();
 		const auto &categories =
 		    table.getInfo(colIndex.value()).categories();
-		if (it->first.index < categories.size())
-			it->second.label = categories[it->first.index];
+
+		if (slice.index < categories.size())
+			item.categoryValue = categories[slice.index];
 		else
-			it->second.label = "NA";
+			item.categoryValue = "NA";
+
+		if (++curr <= currStep) continue;
+		currStep += step;
+		item.label = item.categoryValue;
 	}
 }
 
@@ -114,45 +123,47 @@ DimensionAxis interpolate(const DimensionAxis &op0,
 {
 	DimensionAxis res;
 
-	DimensionAxis::Values::const_iterator it;
-	for (it = op0.values.cbegin(); it != op0.values.cend(); ++it) {
+	for (const auto &[slice, item] : op0.values) {
 		res.enabled = true;
 		res.values.emplace(std::piecewise_construct,
-		    std::tuple{it->first},
-		    std::tuple{it->second, true, 1 - factor});
+		    std::tuple{slice},
+		    std::forward_as_tuple(item, true, 1 - factor));
 	}
 
-	for (it = op1.values.cbegin(); it != op1.values.cend(); ++it) {
+	for (const auto &[slice, item] : op1.values) {
 		res.enabled = true;
-		auto [resIt, end] = res.values.equal_range(it->first);
+		auto [resIt, end] = res.values.equal_range(slice);
 
 		while (resIt != end && resIt->second.end) { ++resIt; }
 
 		if (resIt == end) {
 			res.values.emplace_hint(resIt,
 			    std::piecewise_construct,
-			    std::tuple{it->first},
-			    std::tuple{it->second, false, factor});
+			    std::tuple{slice},
+			    std::forward_as_tuple(item, false, factor));
 		}
 		else {
 			resIt->second.end = true;
 
 			resIt->second.range =
 			    Math::interpolate(resIt->second.range,
-			        it->second.range,
+			        item.range,
 			        factor);
 
 			resIt->second.colorBase =
 			    interpolate(resIt->second.colorBase,
-			        it->second.colorBase,
+			        item.colorBase,
 			        factor);
+
+			resIt->second.label =
+			    interpolate(resIt->second.label, item.label, factor);
 
 			resIt->second.value =
 			    Math::interpolate(resIt->second.value,
-			        it->second.value,
+			        item.value,
 			        factor);
 
-			resIt->second.weight += it->second.weight * factor;
+			resIt->second.weight += item.weight * factor;
 		}
 	}
 

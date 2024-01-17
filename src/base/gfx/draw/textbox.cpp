@@ -164,7 +164,8 @@ Geom::Size TextBox::measure(ICanvas &canvas)
 			line.height = 0;
 			for (auto &text : line.texts) {
 				canvas.setFont(text.font);
-				auto size = canvas.textBoundary(text.content);
+				auto size =
+				    ICanvas::textBoundary(text.font, text.content);
 				text.width = size.x;
 				line.width += size.x;
 				if (size.y > line.height) line.height = size.y;

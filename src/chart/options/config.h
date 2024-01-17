@@ -28,26 +28,35 @@ private:
 		void (*set)(OptionsSetter &, const std::string &);
 	};
 
-	template <auto Mptr, auto Set>
-	static const std::pair<std::string_view, Config::Accessor>
-	    unique_accessor;
+	struct ChannelAccessor
+	{
+		std::string (*get)(const Channel &);
+		void (*set)(OptionsSetter &,
+		    const ChannelId &,
+		    const std::string &);
+	};
 
 	template <auto Mptr>
 	static const std::pair<std::string_view, Config::Accessor>
 	    accessor;
 
+	template <auto Mptr>
+	static const std::pair<std::string_view, Config::ChannelAccessor>
+	    channel_accessor;
+
 	using Accessors = std::map<std::string_view, Accessor>;
+	using ChannelAccessors =
+	    std::map<std::string_view, ChannelAccessor>;
 
 	static const Accessors &getAccessors();
-	OptionsSetter setter;
+	static const ChannelAccessors &getChannelAccessors();
 
-	static Accessors initAccessors();
+	OptionsSetter setter;
 
 	void setChannelParam(const std::string &path,
 	    const std::string &value);
 	[[nodiscard]] std::string getChannelParam(
 	    const std::string &path) const;
-	static std::list<std::string> listChannelParams();
 };
 
 }

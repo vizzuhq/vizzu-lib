@@ -1,37 +1,35 @@
 Canvas:
-  setCursor: { name: C.CString }
-  frameBegin: {}
-  frameEnd: {}
-  setClipRect: { x: number, y: number, sizex: number, sizey: number }
-  setClipCircle: { x: number, y: number, radius: number }
-  setClipPolygon: {}
-  setBrushColor: { r: number, g: number, b: number, a: number }
-  setLineColor: { r: number, g: number, b: number, a: number }
-  setLineWidth: { width: number }
-  setFont: { font: C.CString }
-  beginDropShadow: {}
-  setDropShadowBlur: { radius: number }
-  setDropShadowColor: { r: number, g: number, b: number, a: number }
-  setDropShadowOffset: { x: number, y: number }
-  endDropShadow: {}
-  beginPolygon: {}
-  addPoint: { x: number, y: number }
-  addBezier: { c0x: number, c0y: number, c1x: number, c1y: number, x: number, y: number }
-  endPolygon: {}
-  rectangle: { x: number, y: number, sizex: number, sizey: number }
-  circle: { x: number, y: number, radius: number }
-  line: { x1: number, y1: number, x2: number, y2: number }
-  textBoundary: { text: C.CString, sizeX: C.CPointer/double *, sizeY: C.CPointer/double * }
-  text: { x: number, y: number, sizex: number, sizey: number, text: C.CString }
-  setBrushGradient:
-    {
-      x1: number,
-      y1: number,
-      x2: number,
-      y2: number,
-      stopCount: number/size_t,
-      stops: C.CColorGradientPtr
-    }
-  transform: { a: number, b: number, c: number, d: number, e: number, f: number }
-  save: {}
-  restore: {}
+    frameBegin: {}
+    frameEnd: {}
+    setClipRect: { x: number, y: number, sizex: number, sizey: number }
+    setClipCircle: { x: number, y: number, radius: number }
+    setClipPolygon: {}
+    setBrushColor: { r: number, g: number, b: number, a: number }
+    setLineColor: { r: number, g: number, b: number, a: number }
+    setLineWidth: { width: number }
+    setFont: { font: C.CString }
+    beginDropShadow: {}
+    setDropShadowBlur: { radius: number }
+    setDropShadowColor: { r: number, g: number, b: number, a: number }
+    setDropShadowOffset: { x: number, y: number }
+    endDropShadow: {}
+    beginPolygon: {}
+    addPoint: { x: number, y: number }
+    addBezier: { c0x: number, c0y: number, c1x: number, c1y: number, x: number, y: number }
+    endPolygon: {}
+    rectangle: { x: number, y: number, sizex: number, sizey: number }
+    circle: { x: number, y: number, radius: number }
+    line: { x1: number, y1: number, x2: number, y2: number }
+    text: { x: number, y: number, sizex: number, sizey: number, text: C.CString }
+    setBrushGradient:
+        {
+            x1: number,
+            y1: number,
+            x2: number,
+            y2: number,
+            stopCount: number/size_t,
+            stops: C.CColorGradientPtr
+        }
+    transform: { a: number, b: number, c: number, d: number, e: number, f: number }
+    save: {}
+    restore: {}

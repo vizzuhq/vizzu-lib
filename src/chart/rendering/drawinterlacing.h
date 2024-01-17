@@ -6,31 +6,35 @@
 namespace Vizzu::Draw
 {
 
-class DrawInterlacing : private DrawingContext
+class DrawInterlacing : public DrawingContext
 {
 public:
-	DrawInterlacing(const DrawingContext &context, bool text);
+	void drawGeometries() const;
+	void drawTexts() const;
+
+	Gfx::ICanvas &canvas;
+	Painter &painter;
 
 private:
-	void draw(bool horizontal, bool text);
+	void draw(bool horizontal, bool text) const;
 
 	void draw(const ::Anim::Interpolated<bool> &enabled,
 	    bool horizontal,
 	    double stepSize,
 	    double weight,
 	    double rangeSize,
-	    bool text);
+	    bool text) const;
 
 	void drawDataLabel(const ::Anim::Interpolated<bool> &enabled,
 	    bool horizontal,
 	    const Geom::Point &tickPos,
 	    double value,
-	    const std::string &unit,
-	    const Gfx::Color &textColor);
+	    const ::Anim::Interpolated<std::string> &unit,
+	    const Gfx::Color &textColor) const;
 
 	void drawSticks(double tickIntensity,
 	    bool horizontal,
-	    const Geom::Point &tickPos);
+	    const Geom::Point &tickPos) const;
 };
 
 }

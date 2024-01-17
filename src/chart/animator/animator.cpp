@@ -1,7 +1,6 @@
 #include "animator.h"
 
 #include "chart/animator/keyframe.h"
-#include "chart/generator/selector.h"
 
 namespace Vizzu::Anim
 {
@@ -14,6 +13,9 @@ Animator::Animator() :
 void Animator::addKeyframe(const Gen::PlotPtr &plot,
     const Options::Keyframe &options)
 {
+	if (running)
+		throw std::logic_error("animation already in progress");
+
 	nextAnimation->addKeyframe(plot, options);
 }
 
@@ -22,7 +24,7 @@ void Animator::setAnimation(const Anim::AnimationPtr &animation)
 	nextAnimation = animation;
 }
 
-void Animator::animate(const Options::Control &options,
+void Animator::animate(const ::Anim::Control::Option &options,
     const Animation::OnComplete &onThisCompletes)
 {
 	if (running)
@@ -38,8 +40,7 @@ void Animator::animate(const Options::Control &options,
 
 	running = true;
 	stripActAnimation();
-	actAnimation = nextAnimation;
-	nextAnimation = AnimationPtr();
+	actAnimation = std::exchange(nextAnimation, {});
 	setupActAnimation();
 	actAnimation->animate(options, completionCallback);
 }

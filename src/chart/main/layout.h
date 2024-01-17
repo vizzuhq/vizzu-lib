@@ -20,14 +20,15 @@ public:
 	Geom::Rect legend;
 	Geom::Rect plot;
 	Geom::Rect plotArea;
-	Geom::Rect xTitle;
-	Geom::Rect yTitle;
+	Geom::Rect logo;
 
 	void setBoundary(const Geom::Rect &boundary,
-	    const Gen::Plot &plot,
+	    const Styles::Chart &style,
+	    const Gen::PlotOptionsPtr &options,
 	    Gfx::ICanvas &info);
 
-	void setBoundary(const Geom::Rect &boundary, Gfx::ICanvas &info);
+private:
+	void setLogoBoundary(const Styles::Logo &logoStyle);
 };
 
 }

@@ -9,11 +9,8 @@ namespace Vizzu::Draw
 class ConnectingMarker : public AbstractMarker
 {
 public:
-	ConnectingMarker(const Gen::Marker &marker,
-	    const CoordinateSystem &coordSys,
-	    const Gen::Options &options,
-	    const Styles::Chart &style,
-	    const Gen::Plot::Markers &markers,
+	ConnectingMarker(const DrawingContext &ctx,
+	    const Gen::Marker &marker,
 	    size_t lineIndex,
 	    Gen::ShapeType type);
 

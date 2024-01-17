@@ -49,7 +49,7 @@ public:
 
 	using MarkerId = uint64_t;
 	using Heading = ::Anim::Interpolated<std::optional<std::string>>;
-	using LegendType = Base::AutoParam<LegendId>;
+	using LegendType = Base::AutoParam<LegendId, true>;
 	using Legend = ::Anim::Interpolated<LegendType>;
 	using OrientationType = Base::AutoParam<Gen::Orientation>;
 	using Orientation = ::Anim::Interpolated<OrientationType>;
@@ -115,10 +115,10 @@ public:
 	Heading title{std::nullopt};
 	Heading subtitle{std::nullopt};
 	Heading caption{std::nullopt};
-	Anim::Interpolated<CoordSystem> coordSystem{
+	::Anim::Interpolated<CoordSystem> coordSystem{
 	    CoordSystem::cartesian};
 	double angle{};
-	Anim::Interpolated<ShapeType> geometry{ShapeType::rectangle};
+	::Anim::Interpolated<ShapeType> geometry{ShapeType::rectangle};
 	Orientation orientation{OrientationType{}};
 	Math::FuzzyBool split;
 	Base::Align::Type align{Base::Align::Type::none};

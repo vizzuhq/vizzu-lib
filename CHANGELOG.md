@@ -4,6 +4,60 @@
 
 ### Fixed
 
+- Json serializer control character escape fixed. Some unicode characters
+  were not escaped properly. 
+- Fix dimension label transition on axis and legend.
+
+### Added
+
+- Added optional `categories` member to the `legend-marker`, `legend-label` and `plot-axis-label` events.
+- Remove unused marker selection and selected marker coloring.
+- Remove cursor modification over logo.
+- Make `channel.step` option to work on dimensions. 
+- When X axis dimension labels are close to each other, they are rotated to avoid overlapping. 
+
+## [0.9.3] - 2023-12-20
+
+### Fixed
+
+- Orientation and channel min/max cannot be null, only auto
+- Corrected listing of Type-fest dependency from development to normal.
+- Added missing `cvizzu.d.ts` and `cvizzu.types.d.ts` to the npm package.
+- Logo positioning issue in charts when only the logo is rendered and the chart is resized.
+- API issue where exact chart position was not accurately queried during mouse events.
+- Missing space between value and unit in axis labels.
+- Bug fixed where rendered label units disappeared when target plot did not contain a unit.
+- Configuration of experimental plot rotation feature changed from relative `rotate` to absolute `angle`. 
+
+### Added
+
+- Units on legend.
+
+## [0.9.2] - 2023-11-22
+
+### Fixed
+
+- Fixed redraw on browser zoom (bug since 0.9.0).
+- Fixed clearing of the canvas before rendering when devicePixelRatio is not 1.
+- TypeScript definition fixed, measures can contain null values. 
+
+### Added
+
+- Animation control object expose properties `position`, `direction`, `speed` 
+  and `playState` to be able to query the current state of the animation, and
+  to be more conform with the Web Animation API. 
+
+## [0.9.1] - 2023-11-15
+
+### Fixed
+
+- Fixed crash on splitted chart with no measure.
+- Fixed refresh of chart when duration is 0.
+
+## [0.9.0] - 2023-11-10
+
+### Fixed
+
 - Implemented deep copying of received values to ensure the original data 
   remains unchanged during subsequent modifications.
 - detach() won't fail on not initialized chart.
@@ -30,6 +84,7 @@
 - Layout stretched to the bottom of the canvas. 
 - Legend accepts only the acceptable channel values.
 - From now the dimension axis title is shown if set.
+- "step" was not listed in chart channel accessors.
 
 ### Added
 
@@ -51,8 +106,7 @@
   `Vizzu.feature()` with name `cssProperties`.
 - `shorthands`, `pointerEvents`, `pivotData`, `rendering` features can be disabled through
   `Vizzu.feature()`
-- TypeScript interface made more typesafe, while the javascript api got ported to 
-- TypeScript.
+- TypeScript interface made more typesafe, while the javascript api got ported to TypeScript.
 - `pointeron` event removed, `pointerleave` event added. 
 - `Vizzu.feature.htmlCanvas.element` introduced to expose the underlying HTML canvas element.
 - `Vizzu.feature.rendering.update()` introduced to trigger chart re-rendering.

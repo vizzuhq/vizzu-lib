@@ -4,24 +4,18 @@
 #include <optional>
 
 #include "base/geom/point.h"
+#include "base/gui/pointer.h"
 #include "base/util/eventdispatcher.h"
 
 namespace Vizzu::UI
 {
 
-struct PointerEventDetail
-{
-	Geom::Point position;
-	std::optional<int> pointerId;
-};
-
 class PointerEvent :
     public Util::EventDispatcher::Params,
-    public PointerEventDetail
+    public GUI::PointerEvent
 {
 public:
-	PointerEvent(std::optional<int> pointerId,
-	    Geom::Point position,
+	PointerEvent(const GUI::PointerEvent &event,
 	    const Util::EventTarget *target);
 
 	void appendToJSON(Conv::JSON &obj) const override;

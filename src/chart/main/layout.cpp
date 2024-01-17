@@ -1,14 +1,12 @@
 #include "layout.h"
 
 #include "chart/rendering/drawlabel.h"
+#include "chart/rendering/logo.h"
+
+#include "stylesheet.h"
 
 namespace Vizzu
 {
-
-void Layout::setBoundary(const Geom::Rect &boundary, Gfx::ICanvas &)
-{
-	this->boundary = boundary;
-}
 
 template <class T>
 auto popRectArea(double height,
@@ -30,25 +28,29 @@ auto popRectArea(double height,
 }
 
 void Layout::setBoundary(const Geom::Rect &boundary,
-    const Gen::Plot &plot,
+    const Styles::Chart &style,
+    const Gen::PlotOptionsPtr &options,
     Gfx::ICanvas &info)
 {
-	const auto &style = plot.getStyle();
-	auto em = style.calculatedSize();
-
 	this->boundary = boundary;
+
+	setLogoBoundary(style.logo);
+
+	if (!options) return;
+
+	auto em = style.calculatedSize();
 	auto rect = style.contentRect(boundary, em);
 
 	caption =
 	    popRectArea(Draw::DrawLabel::getHeight(style.caption, info),
-	        plot.getOptions()->caption,
+	        options->caption,
 	        rect,
 	        &Geom::Rect::popTop);
 	caption.setBottom(rect.top());
 	caption.setTop(boundary.top());
 
 	title = popRectArea(Draw::DrawLabel::getHeight(style.title, info),
-	    plot.getOptions()->title,
+	    options->title,
 	    rect,
 	    &Geom::Rect::popBottom,
 	    &Geom::Rect::setBottom,
@@ -56,14 +58,14 @@ void Layout::setBoundary(const Geom::Rect &boundary,
 
 	subtitle =
 	    popRectArea(Draw::DrawLabel::getHeight(style.subtitle, info),
-	        plot.getOptions()->subtitle,
+	        options->subtitle,
 	        rect,
 	        &Geom::Rect::popBottom,
 	        &Geom::Rect::setBottom,
 	        rect.pos.y);
 
 	legend = popRectArea(style.legend.computedWidth(rect.size.x, em),
-	    plot.getOptions()->legend,
+	    options->legend,
 	    rect,
 	    &Geom::Rect::popLeft,
 	    &Geom::Rect::setLeft,
@@ -74,4 +76,20 @@ void Layout::setBoundary(const Geom::Rect &boundary,
 	plotArea = style.plot.contentRect(rect, em);
 }
 
+void Layout::setLogoBoundary(const Styles::Logo &logoStyle)
+{
+	auto logoWidth = logoStyle.width->get(boundary.size.minSize(),
+	    Styles::Sheet::baseFontSize(boundary.size, false));
+
+	auto logoHeight = Draw::Logo::height(logoWidth);
+
+	auto logoPad =
+	    logoStyle.toMargin(Geom::Size{logoWidth, logoHeight},
+	        Styles::Sheet::baseFontSize(boundary.size, false));
+
+	logo = {boundary.topRight()
+	            - Geom::Point{logoPad.right + logoWidth,
+	                logoPad.bottom + logoHeight},
+	    Geom::Size{logoWidth, logoHeight}};
+}
 }

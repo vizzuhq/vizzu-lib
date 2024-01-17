@@ -109,9 +109,11 @@ public:
 	void animate(ObjectRegistry::Handle chart,
 	    void (*callback)(bool));
 	void setKeyframe(ObjectRegistry::Handle chart);
-	void animControl(ObjectRegistry::Handle chart,
-	    const char *command,
-	    const char *param);
+	void setAnimControlValue(ObjectRegistry::Handle chart,
+	    std::string_view path,
+	    const char *value);
+	const char *getAnimControlValue(ObjectRegistry::Handle chart,
+	    std::string_view path);
 	void setAnimValue(ObjectRegistry::Handle chart,
 	    const char *path,
 	    const char *value);

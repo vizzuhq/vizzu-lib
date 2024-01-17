@@ -15,7 +15,7 @@ DataCube::DataCube(const DataTable &table,
     table(&table)
 {
 	if (options.getDimensions().empty()
-	    && options.getSeries().empty())
+	    && options.getMeasures().empty())
 		return;
 
 	MultiIndex sizes;
@@ -35,7 +35,7 @@ DataCube::DataCube(const DataTable &table,
 		dimBySeries.insert({idx, DimIndex(sizes.size() - 1)});
 	}
 
-	auto series = options.getSeries();
+	auto series = options.getMeasures();
 
 	if (series.empty()) series.emplace_back(SeriesType::Exists);
 
@@ -172,25 +172,6 @@ Aggregator DataCube::aggregateAt(const MultiIndex &multiIndex,
 	    });
 
 	return aggregate;
-}
-
-double DataCube::sumTillAt(const SeriesList &colIndices,
-    const SeriesList &sumCols,
-    const MultiIndex &multiIndex,
-    SeriesIndex seriesId) const
-{
-	double sum = 0;
-
-	data.visitSubSlicesTill(subSliceIndex(colIndices, multiIndex),
-	    [this, &multiIndex, &sum, &sumCols, &seriesId](
-	        const SubSliceIndex &subSliceIndex)
-	    {
-		    auto index = subSliceIndex.getProjectionOf(multiIndex);
-		    sum += static_cast<double>(
-		        aggregateAt(index, sumCols, seriesId));
-	    });
-
-	return sum;
 }
 
 Aggregator DataCube::valueAt(const MultiIndex &multiIndex,

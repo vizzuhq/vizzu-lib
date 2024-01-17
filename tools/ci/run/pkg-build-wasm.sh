@@ -25,16 +25,20 @@ popd
 # test wasm size
 
 wget 'https://vizzu-lib-main.storage.googleapis.com/lib/size.txt' -O build/cmake-wasm/weblib/size_downloaded.txt
-python tools/ci/size_check.py
+node tools/ci/sizeCheck.cjs
 
 # build ts
 
-npm run pkg-build-ts
+npm run build:ts
+
+# test d.ts
+
+npm run type:src
 
 # test js
 
-npm run test-unit-src
+npm run test:unit
 
 # rollup js
 
-./tools/ci/run/pkg-rollup-js.sh
+npm run rollup

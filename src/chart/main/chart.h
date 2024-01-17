@@ -13,7 +13,6 @@
 #include "chart/main/layout.h"
 #include "chart/main/stylesheet.h"
 #include "chart/options/config.h"
-#include "chart/rendering/painter/coordinatesystem.h"
 #include "chart/rendering/renderedchart.h"
 #include "data/table/datatable.h"
 
@@ -21,11 +20,6 @@
 
 namespace Vizzu
 {
-
-namespace Draw
-{
-class DrawingContext;
-}
 
 class Chart
 {
@@ -43,7 +37,9 @@ public:
 	Gen::OptionsSetter getSetter();
 	Styles::Sheet &getStylesheet() { return stylesheet; }
 	Styles::Chart &getStyles() { return actStyles; }
-	Styles::Chart &getComputedStyles() { return computedStyles; }
+
+	[[nodiscard]] const Styles::Chart &getComputedStyles() const;
+
 	void setStyles(const Styles::Chart &styles)
 	{
 		actStyles = styles;
@@ -67,13 +63,11 @@ public:
 		return animator->getActAnimation();
 	}
 	Anim::Options &getAnimOptions() { return nextAnimOptions; }
-	Events &getEvents() { return events; }
 	[[nodiscard]] const Layout &getLayout() const { return layout; }
 	Util::EventDispatcher &getEventDispatcher()
 	{
 		return eventDispatcher;
 	}
-	[[nodiscard]] Draw::CoordinateSystem getCoordSystem() const;
 	[[nodiscard]] const Draw::RenderedChart &getRenderedChart() const
 	{
 		return renderedChart;
@@ -84,7 +78,6 @@ public:
 	void animate(const OnComplete &onComplete = OnComplete());
 	void setKeyframe();
 	void setAnimation(const Anim::AnimationPtr &animation);
-	[[nodiscard]] Geom::Rect getLogoBoundary() const;
 
 private:
 	Layout layout;
@@ -97,19 +90,11 @@ private:
 	Styles::Sheet stylesheet;
 	Styles::Chart actStyles;
 	Styles::Chart prevStyles;
-	Styles::Chart computedStyles;
 	Util::EventDispatcher eventDispatcher;
 	Draw::RenderedChart renderedChart;
 	Events events;
 
 	Gen::PlotPtr plot(const Gen::PlotOptionsPtr &options);
-
-	template <class T>
-	static void drawHeading(const Draw::DrawingContext &context,
-	    const Gen::Options::Heading &option,
-	    const Styles::Label &style,
-	    const Geom::Rect &layout,
-	    const Util::EventDispatcher::event_ptr &event);
 };
 
 }

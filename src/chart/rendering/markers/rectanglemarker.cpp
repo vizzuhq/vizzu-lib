@@ -4,13 +4,9 @@ namespace Vizzu::Draw
 {
 
 RectangleMarker::RectangleMarker(const Gen::Marker &marker,
-    const CoordinateSystem &coordSystem,
     const Gen::Options &options,
     const Styles::Chart &style) :
-    SingleDrawMarker(marker,
-        coordSystem,
-        options,
-        Gen::ShapeType::rectangle)
+    SingleDrawMarker(marker, options, Gen::ShapeType::rectangle)
 {
 	linear =
 	    options.coordSystem.factor<double>(Gen::CoordSystem::polar)

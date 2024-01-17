@@ -1,29 +1,29 @@
 .image-gallery {
-  max-width: 320px;
-  border: 1px solid #ddd;
-  margin: 20px;
+	max-width: 320px;
+	border: 1px solid #ddd;
+	margin: 20px;
 }
 
 .image-gallery-w-caption {
-  max-width: 320px;
-  border: 1px solid #ddd;
-  margin: 20px;
-  margin-bottom: 0px !important;
+	max-width: 320px;
+	border: 1px solid #ddd;
+	margin: 20px;
+	margin-bottom: 0px !important;
 }
 
 .image-figure {
-  margin: 0px !important;
+	margin: 0px !important;
 }
 
 .image-caption {
-  margin: 0px;
-  margin-bottom: 20px !important;
-  font-family: 'Roboto' !important;
-  font-style: normal !important;
+	margin: 0px;
+	margin-bottom: 20px !important;
+	font-family: 'Roboto' !important;
+	font-style: normal !important;
 }
 
 .image-center {
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
 }

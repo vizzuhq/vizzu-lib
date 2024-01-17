@@ -9,6 +9,7 @@ namespace Math
 template <size_t N, typename T>
 static T mean(const std::array<T, N> &values)
 {
+	static_assert(N > 0);
 	return std::accumulate(values.begin(), values.end(), T()) / N;
 }
 

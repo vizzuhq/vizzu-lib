@@ -15,12 +15,10 @@
 
 namespace Vizzu
 {
-class Chart;
-
 class Events
 {
 public:
-	explicit Events(Chart &chart);
+	explicit Events(Util::EventDispatcher &ed);
 
 	struct OnUpdateDetail
 	{
@@ -171,21 +169,26 @@ public:
 			}
 		};
 
-		template <typename Parent> struct ChildOf : Element
+		template <typename Parent> struct ParentHolder
 		{
 			Parent parent;
+		};
 
+		template <typename Parent>
+		struct ChildOf : ParentHolder<Parent>, Element
+		{
 			template <typename... Args>
 			explicit ChildOf(const std::string &name,
 			    Args &&...args) :
-			    Element(Parent::name() + "-" + name),
-			    parent(args...)
+			    ParentHolder<Parent>{
+			        Parent{std::forward<Args>(args)...}},
+			    Element(this->parent.tagName + "-" + name)
 			{}
 
 			void appendToJSON(Conv::JSONObj &&jsonObj) const override
 			{
 				Element::appendToJSON(
-				    std::move(jsonObj)("parent", parent));
+				    std::move(jsonObj)("parent", this->parent));
 			}
 		};
 
@@ -205,46 +208,12 @@ public:
 			}
 		};
 
-		template <class Base> struct Label : Text<Base>
-		{
-			template <typename... Args>
-			explicit Label(std::string text, Args &&...args) :
-			    Text<Base>(std::move(text), "label", args...)
-			{}
-		};
-
-		template <class Base> struct Title : Text<Base>
-		{
-			template <typename... Args>
-			explicit Title(std::string text, Args &&...args) :
-			    Text<Base>(std::move(text), "title", args...)
-			{}
-		};
-
-		template <class Base> struct Subtitle : Text<Base>
-		{
-			template <typename... Args>
-			explicit Subtitle(std::string text, Args &&...args) :
-			    Text<Base>(std::move(text), "subtitle", args...)
-			{}
-		};
-
-		template <class Base> struct Caption : Text<Base>
-		{
-			template <typename... Args>
-			explicit Caption(std::string text, Args &&...args) :
-			    Text<Base>(std::move(text), "caption", args...)
-			{}
-		};
-
 		struct Legend : Element
 		{
-			static std::string name() { return "legend"; }
-
 			Gen::ChannelId channel;
 
 			explicit Legend(Gen::ChannelId channel) :
-			    Element(name()),
+			    Element("legend"),
 			    channel(channel)
 			{}
 
@@ -257,12 +226,10 @@ public:
 
 		struct Axis : Element
 		{
-			static std::string name() { return "plot-axis"; }
-
 			bool horizontal;
 
 			explicit Axis(bool horizontal) :
-			    Element(name()),
+			    Element("plot-axis"),
 			    horizontal(horizontal)
 			{}
 
@@ -275,12 +242,10 @@ public:
 
 		struct Marker : Element
 		{
-			static std::string name() { return "plot-marker"; }
-
 			const Gen::Marker &marker;
 
 			explicit Marker(const Gen::Marker &marker) :
-			    Element(name()),
+			    Element("plot-marker"),
 			    marker(marker)
 			{}
 
@@ -291,86 +256,191 @@ public:
 			}
 		};
 
-		struct MarkerGuide : ChildOf<Marker>
+		using LegendChild = ChildOf<Legend>;
+		using AxisChild = ChildOf<Axis>;
+		using MarkerChild = ChildOf<Marker>;
+
+		struct MarkerGuide : MarkerChild
 		{
 			bool horizontal;
 
 			MarkerGuide(const Gen::Marker &marker, bool horizontal) :
-			    ChildOf<Marker>("guide", marker),
+			    MarkerChild("guide", marker),
 			    horizontal(horizontal)
 			{}
 
 			void appendToJSON(Conv::JSONObj &&jsonObj) const override
 			{
-				ChildOf<Marker>::appendToJSON(std::move(
+				MarkerChild::appendToJSON(std::move(
 				    jsonObj)("id", (horizontal ? "x" : "y")));
 			}
 		};
 
-		struct Root : Element
+		template <class Base> struct CategoryInfo : Base
 		{
-			Root() : Element("root") {}
-		};
-		struct Plot : Element
-		{
-			Plot() : Element("plot") {}
-		};
-		struct Area : Element
-		{
-			Area() : Element("plot-area") {}
-		};
-		struct Logo : Element
-		{
-			Logo() : Element("logo") {}
-		};
+			std::string_view categoryName;
+			std::string_view categoryValue;
 
-		using ChartTitle = Title<Element>;
-		using ChartSubtitle = Subtitle<Element>;
-		using ChartCaption = Caption<Element>;
-
-		using MarkerLabel = Label<ChildOf<Marker>>;
-		using LegendChild = ChildOf<Legend>;
-		using LegendLabel = Label<ChildOf<Legend>>;
-		using LegendTitle = Title<ChildOf<Legend>>;
-
-		struct LegendMarker : LegendChild
-		{
-			explicit LegendMarker(Gen::ChannelId channel) :
-			    LegendChild("marker", channel)
+			template <class... Args>
+			explicit CategoryInfo(
+			    const std::string_view &categoryName,
+			    const std::string_view &categoryValue,
+			    Args &&...args) :
+			    Base(std::forward<Args>(args)...),
+			    categoryName(categoryName),
+			    categoryValue(categoryValue)
 			{}
+
+			void appendToJSON(Conv::JSONObj &&jsonObj) const override
+			{
+				if (!categoryName.empty() && !categoryValue.empty())
+					jsonObj.nested("categories")
+					    .template operator()<false>(categoryName,
+					        categoryValue);
+
+				Base::appendToJSON(std::move(jsonObj));
+			}
 		};
 
-		struct LegendBar : LegendChild
+		static auto axis(bool horizontal)
 		{
-			explicit LegendBar(Gen::ChannelId channel) :
-			    LegendChild("bar", channel)
-			{}
-		};
+			return std::make_unique<Axis>(horizontal);
+		}
 
-		using AxisChild = ChildOf<Axis>;
-		using AxisLabel = Label<ChildOf<Axis>>;
-		using AxisTitle = Title<ChildOf<Axis>>;
-
-		struct AxisGuide : AxisChild
+		static auto legend(Gen::ChannelId channel)
 		{
-			explicit AxisGuide(bool horizontal) :
-			    AxisChild("guide", horizontal)
-			{}
-		};
+			return std::make_unique<Legend>(channel);
+		}
 
-		struct AxisTick : AxisChild
+		static auto marker(const Gen::Marker &marker)
 		{
-			explicit AxisTick(bool horizontal) :
-			    AxisChild("tick", horizontal)
-			{}
-		};
+			return std::make_unique<Marker>(marker);
+		}
 
-		struct AxisInterlacing : AxisChild
+		static auto markerGuide(const Gen::Marker &marker,
+		    bool horizontal)
 		{
-			explicit AxisInterlacing(bool horizontal) :
-			    AxisChild("interlacing", horizontal)
-			{}
-		};
+			return std::make_unique<MarkerGuide>(marker, horizontal);
+		}
+
+		static auto root()
+		{
+			return std::make_unique<Element>("root");
+		}
+
+		static auto plot()
+		{
+			return std::make_unique<Element>("plot");
+		}
+
+		static auto area()
+		{
+			return std::make_unique<Element>("plot-area");
+		}
+
+		static auto logo()
+		{
+			return std::make_unique<Element>("logo");
+		}
+
+		static auto chartTitle(const std::string &title)
+		{
+			return std::make_unique<Text<Element>>(title, "title");
+		}
+
+		static auto chartSubtitle(const std::string &subtitle)
+		{
+			return std::make_unique<Text<Element>>(subtitle,
+			    "subtitle");
+		}
+
+		static auto chartCaption(const std::string &caption)
+		{
+			return std::make_unique<Text<Element>>(caption,
+			    "caption");
+		}
+
+		static auto markerLabel(const std::string &label,
+		    const Gen::Marker &marker)
+		{
+			return std::make_unique<Text<MarkerChild>>(label,
+			    "label",
+			    marker);
+		}
+
+		static auto legendLabel(const std::string_view &categoryName,
+		    const std::string_view &categoryValue,
+		    const std::string &label,
+		    Gen::ChannelId channel)
+		{
+			return std::make_unique<CategoryInfo<Text<LegendChild>>>(
+			    categoryName,
+			    categoryValue,
+			    label,
+			    "label",
+			    channel);
+		}
+
+		static auto legendTitle(const std::string &title,
+		    Gen::ChannelId channel)
+		{
+			return std::make_unique<Text<LegendChild>>(title,
+			    "title",
+			    channel);
+		}
+
+		static auto legendMarker(const std::string_view &categoryName,
+		    const std::string_view &categoryValue,
+		    Gen::ChannelId channel)
+		{
+			return std::make_unique<CategoryInfo<LegendChild>>(
+			    categoryName,
+			    categoryValue,
+			    "marker",
+			    channel);
+		}
+
+		static auto legendBar(Gen::ChannelId channel)
+		{
+			return std::make_unique<LegendChild>("bar", channel);
+		}
+
+		static auto axisLabel(const std::string_view &categoryName,
+		    const std::string_view &categoryValue,
+		    const std::string &label,
+		    bool horizontal)
+		{
+			return std::make_unique<CategoryInfo<Text<AxisChild>>>(
+			    categoryName,
+			    categoryValue,
+			    label,
+			    "label",
+			    horizontal);
+		}
+
+		static auto axisTitle(const std::string &title,
+		    bool horizontal)
+		{
+			return std::make_unique<Text<AxisChild>>(title,
+			    "title",
+			    horizontal);
+		}
+
+		static auto axisGuide(bool horizontal)
+		{
+			return std::make_unique<AxisChild>("guide", horizontal);
+		}
+
+		static auto axisTick(bool horizontal)
+		{
+			return std::make_unique<AxisChild>("tick", horizontal);
+		}
+
+		static auto axisInterlacing(bool horizontal)
+		{
+			return std::make_unique<AxisChild>("interlacing",
+			    horizontal);
+		}
 	};
 };
 

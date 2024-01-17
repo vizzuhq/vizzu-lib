@@ -3,16 +3,13 @@
 namespace Vizzu::Draw
 {
 
-DrawLabel::DrawLabel(const DrawingContext &context,
+void DrawLabel::draw(Gfx::ICanvas &canvas,
     const Geom::TransformedRect &rect,
     const std::string &text,
     const Styles::Label &style,
-    const Util::EventDispatcher::event_ptr &onDraw,
+    Util::EventDispatcher::Event &onDraw,
     std::unique_ptr<Util::EventTarget> eventTarget,
-    Options options) :
-    DrawingContext(context),
-    style(style),
-    onDraw(onDraw)
+    Options options) const
 {
 	auto relRect = Geom::Rect{Geom::Point(), rect.size};
 
@@ -27,16 +24,18 @@ DrawLabel::DrawLabel(const DrawingContext &context,
 
 	canvas.save();
 
-	contentRect = style.contentRect(relRect, style.calculatedSize());
+	auto contentRect =
+	    style.contentRect(relRect, style.calculatedSize());
 
-	canvas.setFont(Gfx::Font{style});
+	auto font = Gfx::Font{style};
+	canvas.setFont(font);
 	if (options.setColor)
 		canvas.setTextColor(*style.color * options.alpha);
 
-	auto textSize = canvas.textBoundary(text);
+	auto textSize = Gfx::ICanvas::textBoundary(font, text);
 	auto alignSize = textSize;
 	alignSize.x = std::min(alignSize.x, contentRect.size.x);
-	auto textRect = alignText(alignSize);
+	auto textRect = alignText(contentRect, style, alignSize);
 	textRect.size = textSize;
 
 	auto transform =
@@ -50,10 +49,8 @@ DrawLabel::DrawLabel(const DrawingContext &context,
 	trRect.transform = transform;
 	trRect.size = textRect.size;
 
-	if (this->onDraw->invoke(
-	        Events::Events::OnTextDrawEvent(*eventTarget,
-	            trRect,
-	            text))) {
+	if (onDraw.invoke(
+	        Events::OnTextDrawEvent(*eventTarget, trRect, text))) {
 		canvas.transform(transform);
 
 		canvas.text(Geom::Rect(Geom::Point(), textRect.size), text);
@@ -69,20 +66,22 @@ double DrawLabel::getHeight(const Styles::Label &style,
 {
 	const Gfx::Font font(style);
 	canvas.setFont(font);
-	auto textHeight = canvas.textBoundary("").y;
+	auto textHeight = Gfx::ICanvas::textBoundary(font, "").y;
 	return style.paddingTop->get(textHeight, font.size)
 	     + style.paddingBottom->get(textHeight, font.size)
 	     + textHeight;
 }
 
-Geom::Rect DrawLabel::alignText(const Geom::Size &textSize)
+Geom::Rect DrawLabel::alignText(const Geom::Rect &contentRect,
+    const Styles::Label &style,
+    const Geom::Size &textSize)
 {
 	Geom::Rect res;
 	res.size = textSize;
 	res.pos = contentRect.pos;
 
 	res.pos.x = style.textAlign->combine<double>(
-	    [this, &textSize](int,
+	    [&contentRect, &textSize](int,
 	        const Styles::Text::TextAlign &align) -> double
 	    {
 		    switch (align) {

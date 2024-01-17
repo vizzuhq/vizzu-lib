@@ -4,6 +4,7 @@
 
 #include "base/conv/auto_json.h"
 #include "base/io/log.h"
+#include "base/refl/auto_accessor.h"
 
 #include "canvas.h"
 #include "interfacejs.h"
@@ -142,7 +143,9 @@ void Interface::relToCanvasCoords(ObjectRegistry::Handle chart,
     double &x,
     double &y)
 {
-	auto to = getChart(chart)->getCoordSystem().convert({rx, ry});
+	auto to =
+	    getChart(chart)->getRenderedChart().getCoordSys().convert(
+	        {rx, ry});
 	x = to.x;
 	y = to.y;
 }
@@ -153,7 +156,9 @@ void Interface::canvasToRelCoords(ObjectRegistry::Handle chart,
     double &rx,
     double &ry)
 {
-	auto to = getChart(chart)->getCoordSystem().getOriginal({x, y});
+	auto to =
+	    getChart(chart)->getRenderedChart().getCoordSys().getOriginal(
+	        {x, y});
 	rx = to.x;
 	ry = to.y;
 }
@@ -229,29 +234,50 @@ void Interface::setKeyframe(ObjectRegistry::Handle chart)
 	getChart(chart)->setKeyframe();
 }
 
-void Interface::animControl(ObjectRegistry::Handle chart,
-    const char *command,
-    const char *param)
+void Interface::setAnimControlValue(ObjectRegistry::Handle chart,
+    std::string_view path,
+    const char *value)
 {
 	auto &&chartPtr = getChart(chart);
 	auto &ctrl = chartPtr->getAnimControl();
-	const std::string cmd(command);
-	if (cmd == "seek")
-		ctrl.seek(param);
-	else if (cmd == "setSpeed")
-		ctrl.setSpeed(std::stod(param));
-	else if (cmd == "pause")
-		ctrl.pause();
-	else if (cmd == "play")
-		ctrl.play();
-	else if (cmd == "stop")
-		ctrl.stop();
-	else if (cmd == "cancel")
+
+	if (path == "seek") { ctrl.seek(value); }
+	else if (path == "cancel") {
 		ctrl.cancel();
-	else if (cmd == "reverse")
-		ctrl.reverse();
+	}
+	else if (path == "stop") {
+		ctrl.stop();
+	}
+	else if (auto &&set_accessor =
+	             Refl::Access::getAccessor<::Anim::Control::Option>(
+	                 path)
+	                 .set) {
+		set_accessor(ctrl.getOptions(), value);
+	}
+	else {
+		throw std::logic_error("invalid animation command");
+	}
+	ctrl.update();
+}
+
+const char *Interface::getAnimControlValue(
+    ObjectRegistry::Handle chart,
+    std::string_view path)
+{
+	thread_local std::string res;
+
+	auto &&chartPtr = getChart(chart);
+	auto &ctrl = chartPtr->getAnimControl();
+
+	if (auto &&get_accessor =
+	        Refl::Access::getAccessor<::Anim::Control::Option>(path)
+	            .get) {
+		res = get_accessor(ctrl.getOptions());
+	}
 	else
 		throw std::logic_error("invalid animation command");
+
+	return res.c_str();
 }
 
 void Interface::setAnimValue(ObjectRegistry::Handle chart,
@@ -302,16 +328,6 @@ ObjectRegistry::Handle Interface::createChart()
 {
 	auto &&widget = std::make_shared<UI::ChartWidget>();
 
-	widget->doSetCursor =
-	    [&](const std::shared_ptr<Gfx::ICanvas> &target,
-	        GUI::Cursor cursor)
-	{
-		::canvas_setCursor(
-		    std::static_pointer_cast<Vizzu::Main::JScriptCanvas>(
-		        target)
-		        .get(),
-		    toCSS(cursor));
-	};
 	widget->openUrl = [&](const std::string &url)
 	{
 		::openUrl(url.c_str());
@@ -355,8 +371,7 @@ void Interface::update(ObjectRegistry::Handle chart,
 	auto &&canvasPtr =
 	    objects.get<Vizzu::Main::JScriptCanvas>(canvas);
 
-	const bool renderNeeded = widget->needsUpdate(canvasPtr)
-	                       || widget->getSize(canvasPtr) != size;
+	const bool renderNeeded = widget->needsUpdate(canvasPtr, size);
 
 	if ((renderControl == allow && renderNeeded)
 	    || renderControl == force) {
@@ -368,54 +383,48 @@ void Interface::update(ObjectRegistry::Handle chart,
 }
 
 void Interface::pointerDown(ObjectRegistry::Handle chart,
-    ObjectRegistry::Handle canvas,
+    ObjectRegistry::Handle,
     int pointerId,
     double x,
     double y)
 {
 	objects.get<UI::ChartWidget>(chart)->onPointerDown(
-	    objects.get<Vizzu::Main::JScriptCanvas>(canvas),
-	    GUI::PointerEvent(pointerId, Geom::Point{x, y}));
+	    {pointerId, Geom::Point{x, y}});
 }
 
 void Interface::pointerUp(ObjectRegistry::Handle chart,
-    ObjectRegistry::Handle canvas,
+    ObjectRegistry::Handle,
     int pointerId,
     double x,
     double y)
 {
 	objects.get<UI::ChartWidget>(chart)->onPointerUp(
-	    objects.get<Vizzu::Main::JScriptCanvas>(canvas),
-	    GUI::PointerEvent(pointerId, Geom::Point{x, y}));
+	    {pointerId, Geom::Point{x, y}});
 }
 
 void Interface::pointerLeave(ObjectRegistry::Handle chart,
-    ObjectRegistry::Handle canvas,
+    ObjectRegistry::Handle,
     int pointerId)
 {
 	objects.get<UI::ChartWidget>(chart)->onPointerLeave(
-	    objects.get<Vizzu::Main::JScriptCanvas>(canvas),
-	    GUI::PointerEvent(pointerId, Geom::Point::Invalid()));
+	    {pointerId, Geom::Point::Invalid()});
 }
 
 void Interface::wheel(ObjectRegistry::Handle chart,
-    ObjectRegistry::Handle canvas,
+    ObjectRegistry::Handle,
     double delta)
 {
-	objects.get<UI::ChartWidget>(chart)->onWheel(
-	    objects.get<Vizzu::Main::JScriptCanvas>(canvas),
-	    delta);
+	objects.get<UI::ChartWidget>(chart)->onWheel(delta);
 }
 
 void Interface::pointerMove(ObjectRegistry::Handle chart,
-    ObjectRegistry::Handle canvas,
+    ObjectRegistry::Handle,
     int pointerId,
     double x,
     double y)
 {
 	objects.get<UI::ChartWidget>(chart)->onPointerMove(
-	    objects.get<Vizzu::Main::JScriptCanvas>(canvas),
-	    GUI::PointerEvent(pointerId, Geom::Point{x, y}));
+	    {pointerId, Geom::Point{x, y}});
 }
 
 }

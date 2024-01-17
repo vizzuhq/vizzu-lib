@@ -7,13 +7,9 @@ authors = [
 ]
 dependencies = []
 requires-python = ">=3.10"
-readme = "README.md"
 license = {text = "Apache-2.0"}
 
 [tool.pdm.dev-dependencies]
-packagetool = [
-    "pdm==2.8.0",
-]
 codequality = [
     "black",
     "pylint",
@@ -38,7 +34,10 @@ docs = [
     "mkdocs-literate-nav",
     "mkdocs-autorefs",
     "mkdocs-gen-files",
-    "mike @ git+https://github.com/jimporter/mike.git@master",
+    "mkdocs-placeholder-plugin>=0.4.1",
+    "mkdocs-include-markdown-plugin",
+    "mkdocs-exclude",
+    "mike",
     "pyyaml",
     "types-pyyaml",
     "markdown",
@@ -46,3 +45,6 @@ docs = [
     "Pillow",
     "types-Pillow",
 ]
+
+[tool.setuptools]
+py-modules = []

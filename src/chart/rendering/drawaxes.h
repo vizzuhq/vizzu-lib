@@ -4,17 +4,20 @@
 #include "base/geom/line.h"
 
 #include "drawingcontext.h"
+#include "drawinterlacing.h"
 
 namespace Vizzu::Draw
 {
 
-class DrawAxes : private DrawingContext
+class DrawAxes : public DrawingContext
 {
 public:
-	explicit DrawAxes(const DrawingContext &context);
+	void drawGeometries() const;
+	void drawLabels() const;
 
-	void drawBase();
-	void drawLabels();
+	Gfx::ICanvas &canvas;
+	Painter &painter;
+	DrawInterlacing interlacing;
 
 private:
 	[[nodiscard]] Geom::Line getAxis(Gen::ChannelId axisIndex) const;
@@ -23,12 +26,13 @@ private:
 	[[nodiscard]] Geom::Point getTitleOffset(Gen::ChannelId axisIndex,
 	    int index,
 	    bool fades) const;
-	void drawAxis(Gen::ChannelId axisIndex);
-	void drawTitle(Gen::ChannelId axisIndex);
-	void drawDimensionLabels(bool horizontal);
+	void drawAxis(Gen::ChannelId axisIndex) const;
+	void drawTitle(Gen::ChannelId axisIndex) const;
+	void drawDimensionLabels(bool horizontal) const;
 	void drawDimensionLabel(bool horizontal,
 	    const Geom::Point &origo,
-	    Gen::DimensionAxis::Values::const_iterator it);
+	    Gen::DimensionAxis::Values::const_iterator it,
+	    const std::string_view &category) const;
 };
 
 }

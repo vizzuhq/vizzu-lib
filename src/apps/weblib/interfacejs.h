@@ -3,7 +3,8 @@
 
 extern "C" {
 extern void openUrl(const char *);
-extern void callLater(void (*)(void *), void *, int later);
+extern void
+textBoundary(const char *, const char *, double *, double *);
 }
 
 #endif

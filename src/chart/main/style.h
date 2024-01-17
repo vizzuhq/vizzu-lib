@@ -20,7 +20,7 @@
 namespace Vizzu::Styles
 {
 
-template <typename T> using Param = ::Style::Param<T>;
+using ::Style::Param;
 
 enum class Visibility { hidden, visible };
 enum class Overflow { hidden, visible };
@@ -343,6 +343,7 @@ struct ChartParams
 struct Chart : Padding, Box, Font, ChartParams
 {
 	static const Font &getDefaultFont();
+	static const Gfx::ColorPalette &getDefaultColorPalette();
 	static Chart def();
 
 	void setup();

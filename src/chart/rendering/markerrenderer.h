@@ -8,32 +8,38 @@
 namespace Vizzu::Draw
 {
 
-class MarkerRenderer : private DrawingContext
+class MarkerRenderer : public DrawingContext
 {
 public:
-	MarkerRenderer(const Gen::Marker &marker,
-	    const DrawingContext &context);
-	void drawLines(const Styles::Guide &style,
-	    const Geom::Point &origo);
-	void draw();
-	void drawLabel();
+	static MarkerRenderer create(const DrawingContext &ctx);
+
+	void drawLines(Gfx::ICanvas &canvas, Painter &painter) const;
+	void drawMarkers(Gfx::ICanvas &canvas, Painter &painter) const;
+	void drawLabels(Gfx::ICanvas &canvas) const;
+
+	std::vector<AbstractMarker> markers;
 
 private:
-	const Gen::Marker &marker;
-
-	bool shouldDrawMarkerBody();
-	std::pair<Gfx::Color, Gfx::Color> getColor(
+	[[nodiscard]] bool shouldDrawMarkerBody(
+	    const Gen::Marker &marker) const;
+	[[nodiscard]] std::pair<Gfx::Color, Gfx::Color> getColor(
 	    const AbstractMarker &abstractMarker,
 	    double factor,
-	    bool label = false);
-	void draw(const AbstractMarker &abstractMarker,
+	    bool label = false) const;
+	void draw(Gfx::ICanvas &canvas,
+	    Painter &painter,
+	    const AbstractMarker &abstractMarker,
 	    double factor,
-	    bool line);
-	void drawLabel(const AbstractMarker &abstractMarker,
-	    size_t index);
+	    bool isLine) const;
+	void drawLabel(Gfx::ICanvas &canvas,
+	    const AbstractMarker &abstractMarker,
+	    size_t index) const;
 
-	Gfx::Color getSelectedColor(bool label);
-	[[nodiscard]] std::string getLabelText(size_t index) const;
+	[[nodiscard]] Gfx::Color
+	getSelectedColor(const Gen::Marker &marker, bool label) const;
+	[[nodiscard]] std::string getLabelText(
+	    const ::Anim::Interpolated<Gen::Marker::Label> &label,
+	    size_t index) const;
 };
 
 }

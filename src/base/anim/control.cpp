@@ -7,11 +7,7 @@
 namespace Anim
 {
 
-Control::Control(Controllable &controlled) :
-    controlled(controlled),
-    position(Duration(0.0)),
-    lastPosition(Duration(0.0))
-{}
+Control::Control(Controllable &controlled) : controlled(controlled) {}
 
 void Control::setOnFinish(OnFinish onFinish)
 {
@@ -31,61 +27,64 @@ void Control::seek(const std::string &value)
 		seekTime(Duration(value));
 }
 
-void Control::seekProgress(double value)
+Duration Control::getPosition() const
 {
-	seekTime(controlled.getDuration() * value);
+	return controlled.getDuration() * options.position;
 }
 
-double Control::getProgress() const
+double Control::getProgress() const { return options.position; }
+
+void Control::seekProgress(double value) { setProgress(value); }
+
+void Control::setProgress(double value)
 {
-	auto duration = static_cast<double>(controlled.getDuration());
-	return duration == 0 ? 0
-	                     : static_cast<double>(position) / duration;
+	options.position = value;
+
+	if (options.position > 1.0) {
+		options.playState = PlayState::paused;
+		options.position = 1.0;
+	}
+	else if (options.position < 0.0) {
+		options.playState = PlayState::paused;
+		options.position = 0.0;
+	}
 }
 
 void Control::seekTime(Duration pos)
 {
-	position = pos;
+	seekProgress(positionToProgress(pos));
+}
 
-	if (position > controlled.getDuration()) {
-		playState = PlayState::paused;
-		position = controlled.getDuration();
-	}
-	else if (position < Duration(0)) {
-		playState = PlayState::paused;
-		position = Duration(0);
-	}
+void Control::setPosition(Duration pos)
+{
+	setProgress(positionToProgress(pos));
+}
 
-	update();
+double Control::positionToProgress(Duration pos) const
+{
+	return pos == Duration(0.0) ? 0.0
+	                            : pos / controlled.getDuration();
 }
 
 void Control::setSpeed(double speed)
 {
-	this->speed = std::max(0.0, speed);
+	options.speed = std::max(0.0, speed);
 	update();
 }
 
 bool Control::atStartPosition() const
 {
-	return position == Duration(0.0);
+	return options.position <= 0.0;
 }
 
 bool Control::atEndPosition() const
 {
-	return position == controlled.getDuration();
-}
-
-bool Control::atIntermediatePosition() const
-{
-	return !atStartPosition() && !atEndPosition();
+	return options.position >= 1.0;
 }
 
 void Control::reset()
 {
-	playState = PlayState::paused;
-	direction = Direction::normal;
-	position = Duration(0.0);
-	speed = 1.0;
+	options = {PlayState::paused};
 	actTime = TimePoint();
 	cancelled = false;
 	finished = false;
@@ -93,19 +92,17 @@ void Control::reset()
 
 void Control::stop()
 {
-	playState = PlayState::paused;
-	direction = Direction::normal;
-	position = Duration(0.0);
-	update();
+	options.playState = PlayState::paused;
+	options.direction = Direction::normal;
+	options.position = 0.0;
 }
 
 void Control::cancel()
 {
-	playState = PlayState::paused;
-	direction = Direction::normal;
-	position = Duration(0.0);
+	options.playState = PlayState::paused;
+	options.direction = Direction::normal;
+	options.position = 0.0;
 	cancelled = true;
-	update();
 }
 
 void Control::update() { update(actTime); }
@@ -114,22 +111,23 @@ void Control::update(const TimePoint &time)
 {
 	if (actTime == TimePoint()) actTime = time;
 
-	const Duration step{time - std::exchange(actTime, time)};
-	auto running = playState == PlayState::running;
+	auto running = options.playState == PlayState::running;
 
-	if (running && step != Duration(0.0)) {
-		if (direction == Direction::normal)
-			seekTime(position + step * speed);
-		else
-			seekTime(position - step * speed);
+	Duration timeStep{time - std::exchange(actTime, time)};
+
+	timeStep = timeStep * options.speed
+	         * (options.direction == Direction::normal ? 1.0 : -1.0);
+
+	if (running && timeStep != Duration(0.0)) {
+		setPosition(getPosition() + timeStep);
 	}
 
-	if (lastPosition != position) {
-		controlled.setPosition(position);
+	if (lastPosition != options.position) {
+		controlled.setPosition(getPosition());
 		if (onChange) onChange();
 	}
 
-	lastPosition = position;
+	lastPosition = options.position;
 
 	finish(running);
 }
@@ -144,10 +142,11 @@ void Control::finish(bool preRun)
 		}
 	}
 	else if (preRun
-	         && ((direction == Direction::normal && atEndPosition())
-	             || (direction == Direction::reverse
+	         && ((options.direction == Direction::normal
+	                 && atEndPosition())
+	             || (options.direction == Direction::reverse
 	                 && atStartPosition()))
-	         && playState != PlayState::running) {
+	         && options.playState != PlayState::running) {
 		if (!finished && onFinish) {
 			onFinish(true);
 			finished = true;

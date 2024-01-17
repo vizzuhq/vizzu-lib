@@ -15,6 +15,14 @@ public:
 	enum class PlayState { paused, running };
 	enum class Direction { normal, reverse };
 
+	struct Option
+	{
+		PlayState playState{PlayState::running};
+		Direction direction{Direction::normal};
+		double position{0.0};
+		double speed{1.0};
+	};
+
 	using OnChange = std::function<void()>;
 	using OnFinish = std::function<void(bool)>;
 
@@ -27,51 +35,35 @@ public:
 	void seek(const std::string &value);
 	void seekProgress(double value);
 	void seekTime(Duration pos);
-	void pause() { playState = PlayState::paused; }
-	void play() { playState = PlayState::running; }
-	void setPlayState(PlayState state) { playState = state; }
-	void setDirection(Direction dir) { direction = dir; }
 	void setSpeed(double speed);
 	void stop();
 	void cancel();
 
-	void reverse()
-	{
-		direction = direction == Direction::normal
-		              ? Direction::reverse
-		              : Direction::normal;
-	}
+	Option &getOptions() { return options; }
 
-	[[nodiscard]] Duration getPosition() const { return position; };
+	[[nodiscard]] Duration getPosition() const;
 	[[nodiscard]] double getProgress() const;
 
 	[[nodiscard]] bool isRunning() const
 	{
-		return playState == PlayState::running;
-	};
-
-	[[nodiscard]] bool isReversed() const
-	{
-		return direction == Direction::reverse;
+		return options.playState == PlayState::running;
 	};
 
 	[[nodiscard]] bool atStartPosition() const;
 	[[nodiscard]] bool atEndPosition() const;
-	[[nodiscard]] bool atIntermediatePosition() const;
 
 	Util::Event<> onBegin;
 	Util::Event<> onComplete;
 
+	void update();
+
 protected:
-	bool changed{};
 	bool cancelled{};
 	bool finished{};
 	Controllable &controlled;
-	Duration position;
-	Duration lastPosition;
-	PlayState playState{PlayState::paused};
-	Direction direction{Direction::normal};
-	double speed{1.0};
+	Option options{PlayState::paused};
+	double lastPosition{0.0};
+
 	TimePoint actTime;
 	OnFinish onFinish;
 	OnChange onChange;
@@ -79,10 +71,12 @@ protected:
 	void setOnFinish(OnFinish onFinish);
 	void setOnChange(OnChange onChange);
 	void reset();
-	void update();
 
 private:
 	void finish(bool preRun);
+	void setProgress(double value);
+	void setPosition(Duration pos);
+	[[nodiscard]] double positionToProgress(Duration pos) const;
 };
 
 }
