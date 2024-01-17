@@ -75,7 +75,9 @@ public:
 
 	struct OnTextDrawDetail
 	{
-		Geom::TransformedRect rect;
+		Geom::TransformedRect outerRect;
+		Geom::Rect innerRect;
+		double align;
 		std::string_view text;
 	};
 
@@ -84,10 +86,12 @@ public:
 	    public OnTextDrawDetail
 	{
 		OnTextDrawEvent(const Util::EventTarget &target,
-		    const Geom::TransformedRect &rect,
+		    const Geom::TransformedRect &outerRect,
+		    const Geom::Rect &innerRect,
+		    double align,
 		    const std::string_view &text) :
 		    OnDrawEvent(&target),
-		    OnTextDrawDetail{rect, text}
+		    OnTextDrawDetail{outerRect, innerRect, align, text}
 		{}
 
 		void appendToJSON(Conv::JSON &json) const override

@@ -30,9 +30,9 @@ function overlay(e, chart) {
 	ctx.fillStyle = '#FF00000F'
 	ctx.strokeStyle = '#FF0000A0'
 	if (!e.detail.relative) {
-		if (e.detail.rect && e.detail.rect.size && e.detail.rect.transform) {
-			const size = e.detail.rect.size
-			const t = e.detail.rect.transform
+		if (e.detail.outerRect) {
+			const size = e.detail.outerRect.size
+			const t = e.detail.outerRect.transform
 			ctx.transform(t[0][0], t[1][0], t[0][1], t[1][1], t[0][2], t[1][2])
 			ctx.fillRect(0, 0, size.x, size.y)
 			ctx.fillStyle = '#FF0000A0'

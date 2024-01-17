@@ -281,7 +281,9 @@ export interface LineDrawEvent<T> extends Event<T> {
 }
 
 export interface TextDrawDetail {
-	rect: TransformedRect
+	outerRect: TransformedRect
+	innerRect: Rect
+	align: number
 	text: string
 }
 

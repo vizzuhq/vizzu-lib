@@ -49,8 +49,11 @@ void DrawLabel::draw(Gfx::ICanvas &canvas,
 	trRect.transform = transform;
 	trRect.size = textRect.size;
 
-	if (onDraw.invoke(
-	        Events::OnTextDrawEvent{*eventTarget, trRect, text})) {
+	if (onDraw.invoke(Events::OnTextDrawEvent{*eventTarget,
+	        trRect,
+	        {},
+	        {},
+	        text})) {
 		canvas.transform(transform);
 
 		canvas.text(Geom::Rect(Geom::Point(), textRect.size), text);
@@ -78,8 +81,9 @@ std::pair<Geom::Rect, double> DrawLabel::alignText(
 	Geom::Rect res{contentRect.pos, textSize};
 
 	auto align = style.textAlign->calculate<double>();
-	res.pos.x = contentRect.center().x - textSize.x / 2.0
-	          + (contentRect.size.x - textSize.x) * align;
+	res.pos.x = std::lerp(contentRect.center().x - textSize.x / 2.0,
+	    contentRect.right() - textSize.x,
+	    align);
 
 	return {res, align};
 }

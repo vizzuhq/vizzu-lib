@@ -32,7 +32,7 @@ const testSteps = [
 		chart.on('plot-axis-label-draw', (event) => {
 			if (event.target.parent.id === 'x') return
 			const country = event.detail.text
-			const rect = event.detail.rect
+			const rect = event.detail.outerRect
 			const ctx = event.renderingContext
 			ctx.save()
 			ctx.globalAlpha = tinycolor(ctx.fillStyle).getAlpha() // support fade-in
