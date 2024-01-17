@@ -29,8 +29,7 @@ auto popRectArea(double height,
 
 void Layout::setBoundary(const Geom::Rect &boundary,
     const Styles::Chart &style,
-    const Gen::PlotOptionsPtr &options,
-    Gfx::ICanvas &info)
+    const Gen::PlotOptionsPtr &options)
 {
 	this->boundary = boundary;
 
@@ -41,28 +40,26 @@ void Layout::setBoundary(const Geom::Rect &boundary,
 	auto em = style.calculatedSize();
 	auto rect = style.contentRect(boundary, em);
 
-	caption =
-	    popRectArea(Draw::DrawLabel::getHeight(style.caption, info),
-	        options->caption,
-	        rect,
-	        &Geom::Rect::popTop);
+	caption = popRectArea(Draw::DrawLabel::getHeight(style.caption),
+	    options->caption,
+	    rect,
+	    &Geom::Rect::popTop);
 	caption.setBottom(rect.top());
 	caption.setTop(boundary.top());
 
-	title = popRectArea(Draw::DrawLabel::getHeight(style.title, info),
+	title = popRectArea(Draw::DrawLabel::getHeight(style.title),
 	    options->title,
 	    rect,
 	    &Geom::Rect::popBottom,
 	    &Geom::Rect::setBottom,
 	    rect.pos.y);
 
-	subtitle =
-	    popRectArea(Draw::DrawLabel::getHeight(style.subtitle, info),
-	        options->subtitle,
-	        rect,
-	        &Geom::Rect::popBottom,
-	        &Geom::Rect::setBottom,
-	        rect.pos.y);
+	subtitle = popRectArea(Draw::DrawLabel::getHeight(style.subtitle),
+	    options->subtitle,
+	    rect,
+	    &Geom::Rect::popBottom,
+	    &Geom::Rect::setBottom,
+	    rect.pos.y);
 
 	legend = popRectArea(style.legend.computedWidth(rect.size.x, em),
 	    options->legend,

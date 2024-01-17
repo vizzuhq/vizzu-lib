@@ -359,17 +359,13 @@ void Interface::update(ObjectRegistry::Handle chart,
 
 	const Geom::Size size{width, height};
 
-	auto &&canvasPtr =
-	    objects.get<Vizzu::Main::JScriptCanvas>(canvas);
-
-	const bool renderNeeded = widget->needsUpdate(canvasPtr, size);
-
-	if ((renderControl == allow && renderNeeded)
-	    || renderControl == force) {
-		canvasPtr->frameBegin();
-		widget->onUpdateSize(canvasPtr, size);
-		widget->onDraw(canvasPtr);
-		canvasPtr->frameEnd();
+	if (renderControl == force
+	    || (renderControl == allow && widget->needsUpdate(size))) {
+		auto ptr = objects.get<Vizzu::Main::JScriptCanvas>(canvas);
+		ptr->frameBegin();
+		widget->onUpdateSize(size);
+		widget->onDraw(ptr);
+		ptr->frameEnd();
 	}
 }
 
