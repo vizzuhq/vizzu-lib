@@ -354,12 +354,11 @@ void Interface::update(ObjectRegistry::Handle chart,
     RenderControl renderControl)
 {
 	auto &&widget = objects.get<UI::ChartWidget>(chart);
-	auto now = std::chrono::steady_clock::now();
-	widget->getChart().getAnimControl().update(now);
+	widget->getChart().getAnimControl().update(
+	    std::chrono::steady_clock::now());
 
-	const Geom::Size size{width, height};
-
-	if (renderControl == force
+	if (const Geom::Size size{width, height};
+	    renderControl == force
 	    || (renderControl == allow && widget->needsUpdate(size))) {
 		auto ptr = objects.get<Vizzu::Main::JScriptCanvas>(canvas);
 		ptr->frameBegin();
