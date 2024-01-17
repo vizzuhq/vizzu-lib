@@ -103,7 +103,11 @@ struct Font
 
 struct Text
 {
-	enum class TextAlign { center, left, right };
+	enum class TextAlign : std::int8_t {
+		left = -1,
+		center = 0,
+		right = 1
+	};
 
 	Param<Gfx::Color> color;
 	Param<Anim::Interpolated<TextAlign>> textAlign;

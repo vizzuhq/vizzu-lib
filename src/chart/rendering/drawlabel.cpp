@@ -35,7 +35,7 @@ void DrawLabel::draw(Gfx::ICanvas &canvas,
 	auto textSize = Gfx::ICanvas::textBoundary(font, text);
 	auto alignSize = textSize;
 	alignSize.x = std::min(alignSize.x, contentRect.size.x);
-	auto textRect = alignText(contentRect, style, alignSize);
+	auto [textRect, d] = alignText(contentRect, style, alignSize);
 	textRect.size = textSize;
 
 	auto transform =
@@ -72,32 +72,19 @@ double DrawLabel::getHeight(const Styles::Label &style,
 	     + textHeight;
 }
 
-Geom::Rect DrawLabel::alignText(const Geom::Rect &contentRect,
+std::pair<Geom::Rect, double> DrawLabel::alignText(
+    const Geom::Rect &contentRect,
     const Styles::Label &style,
     const Geom::Size &textSize)
 {
-	Geom::Rect res;
-	res.size = textSize;
-	res.pos = contentRect.pos;
+	Geom::Rect res{contentRect.pos, textSize};
 
-	res.pos.x = style.textAlign->combine<double>(
-	    [&contentRect, &textSize](int,
-	        const Styles::Text::TextAlign &align) -> double
-	    {
-		    switch (align) {
-		    case Styles::Text::TextAlign::left:
-			    return contentRect.left();
+	auto align = style.textAlign->calculate<double>();
+	res.pos.x = std::lerp(contentRect.center().x - textSize.x / 2.0,
+	    contentRect.right() - textSize.x,
+	    align);
 
-		    case Styles::Text::TextAlign::right:
-			    return contentRect.right() - textSize.x;
-
-		    default:
-		    case Styles::Text::TextAlign::center:
-			    return contentRect.center().x - textSize.x / 2.0;
-		    }
-	    });
-
-	return res;
+	return {res, align};
 }
 
 }

@@ -22,18 +22,17 @@ OrientedLabel OrientedLabel::create(Gfx::ICanvas &canvas,
 
 	auto baseAngle = labelPos.getDirection().angle() + M_PI / 2.0;
 
-	typedef Styles::OrientedLabel::Orientation Ori;
 	auto absAngle =
 	    labelStyle.orientation->combine<double>(
 	        [&](int, const auto &orientation)
 	        {
+		        using enum Styles::OrientedLabel::Orientation;
 		        switch (orientation) {
 		        default:
-		        case Ori::horizontal: return 0.0;
-		        case Ori::vertical: return M_PI / 2.0;
-		        case Ori::normal:
-			        return labelPos.getDirection().angle();
-		        case Ori::tangential:
+		        case horizontal: return 0.0;
+		        case vertical: return M_PI / 2.0;
+		        case normal: return labelPos.getDirection().angle();
+		        case tangential:
 			        return labelPos.getDirection().angle()
 			             + M_PI / 2.0;
 		        }

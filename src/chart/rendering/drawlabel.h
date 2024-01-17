@@ -40,7 +40,7 @@ public:
 	    Gfx::ICanvas &canvas);
 
 private:
-	[[nodiscard]] static Geom::Rect alignText(
+	[[nodiscard]] static std::pair<Geom::Rect, double> alignText(
 	    const Geom::Rect &contentRect,
 	    const Styles::Label &style,
 	    const Geom::Size &textSize);
