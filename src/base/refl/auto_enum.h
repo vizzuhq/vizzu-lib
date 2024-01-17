@@ -56,7 +56,9 @@ concept UniqueNames = requires {
 	static_cast<std::string_view>(unique_enum_names(E{}));
 };
 
-template <class E, real_t<E> first, real_t<E>... Ix>
+template <class E,
+    real_t<E> first = from_to<E>().first,
+    real_t<E>... Ix>
 consteval auto whole_array(
     std::integer_sequence<real_t<E>, Ix...> = {})
 {
@@ -83,10 +85,9 @@ consteval auto whole_array(
 }
 
 template <class E>
-constexpr std::array enum_name_holder =
-    Detail::whole_array<E, Detail::from_to<E>().first>(
-        std::make_integer_sequence<Detail::real_t<E>,
-            Detail::count<E>()>{});
+constexpr std::array enum_name_holder = Detail::whole_array<E>(
+    std::make_integer_sequence<Detail::real_t<E>,
+        Detail::count<E>()>{});
 
 template <class E, std::size_t... Ix>
 consteval auto get_names(std::index_sequence<Ix...> = {})
