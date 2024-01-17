@@ -13,6 +13,96 @@ definitions:
         type: string
         enum: [dimension, measure]
 
+    SeriesBase:
+        description: Base type for data series.
+        type: object
+        properties:
+            name:
+                description: Name of the data series. It will be the unique id of the series to 
+                    reference it in various parts of the API, mainly in channel configuration and
+                    in data record filters. This name will also be used by default for Axis and 
+                    Legend title.
+                $ref: SeriesName
+        required: [name]
+
+    StringDimension:
+        $extends: SeriesBase
+        description: Name of a dimension data series.
+        type: object
+        properties:
+            type:
+                description: |
+                    Type of the data series.
+                    If not set, the library will attempt to determine the type based on 
+                    the type of the first value. Number type will result in measure, 
+                    string type will result in dimension.
+                type: string
+                enum: [dimension]
+            values:
+                description: |
+                    The array that contains the values of the data series. The value types 
+                    should match the data series' `type` property. If the data series
+                    is shorter than the longest data series defined, it will be internally 
+                    extended with empty values.
+                type: array
+                items:
+                    $ref: DimensionValue
+
+    IndexDimension:
+        $extends: SeriesBase
+        description: Name of a dimension data series.
+        type: object
+        properties:
+            type:
+                description: |
+                    Type of the data series.
+                    If not set, the library will attempt to determine the type based on 
+                    the type of the first value. Number type will result in measure, 
+                    string type will result in dimension.
+                type: string
+                enum: [dimension]
+            values:
+                description: |
+                    The array that contains the values of the data series. The value types 
+                    should match the data series' `type` property. If the data series
+                    is shorter than the longest data series defined, it will be internally 
+                    extended with empty values.
+                type: array
+                items:
+                    type: number
+            categories:
+                description: Distinct unique values in the series
+                type: array
+                items:
+                    type: string 
+        required: [categories]
+
+    Measure:
+        $extends: SeriesBase
+        description: Name of a measure data series.
+        type: object
+        properties:
+            type:
+                description: |
+                    Type of the data series.
+                    If not set, the library will attempt to determine the type based on 
+                    the type of the first value. Number type will result in measure, 
+                    string type will result in dimension.
+                type: string
+                enum: [measure]
+            values:
+                description: |
+                    The array that contains the values of the data series. The value types 
+                    should match the data series' `type` property. If the data series
+                    is shorter than the longest data series defined, it will be internally 
+                    extended with empty values.
+                type: array
+                items:
+                    $ref: MeasureValue
+            unit:
+                description: Unit of the data series.
+                type: string
+
     SeriesMetaInfo:
         description: Additional info about a data series besides the contained data.
         type: object
@@ -101,15 +191,24 @@ definitions:
             - type: string
             - type: number
 
+    DimensionValue:
+        description: Represents a categorical value
+        type: string
+    
+    MeasureValue:
+        description: Represents a data value
+        type: number
+        nullable: true
+
     Values:
         description: List of data values in a series.
         oneOf:
             - type: array
-              items: { type: string }
+              items: 
+                $ref: DimensionValue
             - type: array
-              items:
-                  type: number
-                  nullable: true
+              items: 
+                $ref: MeasureValue
 
     Series:
         $extends: SeriesMetaInfo

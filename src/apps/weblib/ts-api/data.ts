@@ -82,11 +82,8 @@ export class Data {
 
 		const values = series.values ? series.values : ([] as D.Values)
 
-		if ('categories' in series) {
-			if (!Array.isArray(series.categories)) {
-				throw new Error('categories field is not an array')
-			}
-			this._checkCategories(values, series.categories)
+		if (this._isIndexedDimension(series)) {
+			this._validateIndexedDimension(series)
 			this._addDimension(series.name, values as number[], series.categories)
 		}
 		else {
@@ -103,25 +100,45 @@ export class Data {
 		}
 	}
 
-	private _checkCategories(values: (string | number | null)[], categories: (string | number | null)[]): void {
-		if (!values.every((value) => value === null || Number.isInteger(value))) {
-			throw new Error('invalid category values')
+	private _isIndexedDimension(series: D.Series): series is D.IndexDimension {
+		if (!('categories' in series && Array.isArray(series.categories))) {
+			return false
 		}
+		return true
+	}
 
-		if ((new Set(categories)).size !== categories.length) {
+	private _validateIndexedDimension(series: D.IndexDimension): void {
+		if (series.values && Array.isArray(series.values)) {
+
+			let max = 0
+			for (const value of series.values) {
+				if (value === null) {
+					continue
+				}
+
+				const numberValue = Number(value)
+
+				if (Number.isInteger(numberValue)) {
+					throw new Error('invalid category values')
+				}
+				if (numberValue < 0) {
+					throw new Error('invalid category values')
+				}
+				if (numberValue > max) {
+					max = numberValue
+				}
+			}
+
+			if (max && max >= series.categories.length) {
+				throw new Error('invalid category values')
+			}
+		}
+		if ((new Set(series.categories)).size !== series.categories.length) {
 			throw new Error('duplicate category values')
-		}
-
-		const filtered = values.filter((value) => value !== null) as number[]
-		const min = Math.min(...filtered)
-		const max = Math.max(...filtered)
-
-		if (min < 0 || max >= categories.length) {
-			throw new Error('invalid category values')
 		}
 	}
 
-	private _detectType(values: (string | number | null)[]): D.SeriesType | null {
+	private _detectType(values: D.Values): D.SeriesType | null {
 		if (Array.isArray(values) && values.length) {
 			if (typeof values[0] === 'number' || values[0] === null) {
 				return 'measure'
@@ -149,8 +166,8 @@ export class Data {
 			throw new Error('third parameter should be an array of strings')
 		}
 
-		if (this._isStringArray(indexes)) {
-			throw new Error('array element should be number')
+		if (!this._isMeasureArray(indexes)) {
+			throw new Error('the mesaure index array element should be number')
 		}
 
 		this._cData.addDimension(name, indexes, categories)
@@ -165,9 +182,18 @@ export class Data {
 		return true
 	}
 
-	private _convertDimension(values: string[] | (number | null)[]): { categories: string[], indexes: number[] } {
+	private _isMeasureArray(values: unknown[]): values is string[] {
+		for (const value of values) {
+			if (value !== null && typeof value !== 'number') {
+				return false
+			}
+		}
+		return true
+	}
+
+	private _convertDimension(values: D.Values): { categories: string[], indexes: number[] } {
 		const uniques = new Map();
-		const categories:string[] = [];
+		const categories: string[] = [];
 		const indexes = new Array(values.length);
 
 		for (let index = 0; index < values.length; index++) {
