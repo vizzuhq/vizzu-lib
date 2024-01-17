@@ -36,8 +36,7 @@ public:
 	    std::unique_ptr<Util::EventTarget> eventTarget,
 	    Options options = Options()) const;
 
-	static double getHeight(const Styles::Label &style,
-	    Gfx::ICanvas &canvas);
+	static double getHeight(const Styles::Label &style);
 
 private:
 	[[nodiscard]] static std::pair<Geom::Rect, double> alignText(

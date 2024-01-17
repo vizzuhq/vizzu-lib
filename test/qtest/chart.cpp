@@ -32,7 +32,7 @@ void TestChart::prepareData()
 	chart.getChart()
 	    .getEventDispatcher()
 	    .getEvent("pointermove")
-	    ->attach(*this);
+	    ->attach(0, std::ref(*this));
 }
 
 void TestChart::operator()(Util::EventDispatcher::Params &params)

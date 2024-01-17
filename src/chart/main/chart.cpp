@@ -36,20 +36,18 @@ Chart::Chart() :
 	};
 }
 
-void Chart::setBoundRect(const Geom::Rect &rect, Gfx::ICanvas &info)
+void Chart::setBoundRect(const Geom::Rect &rect)
 {
 	if (actPlot) {
 		actPlot->getStyle().setup();
 		layout.setBoundary(rect,
 		    actPlot->getStyle(),
-		    actPlot->getOptions(),
-		    info);
+		    actPlot->getOptions());
 	}
 	else {
 		layout.setBoundary(rect,
 		    stylesheet.getDefaultParams(),
-		    nullptr,
-		    info);
+		    nullptr);
 	}
 }
 

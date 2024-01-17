@@ -61,11 +61,9 @@ void DrawLabel::draw(Gfx::ICanvas &canvas,
 	canvas.restore();
 }
 
-double DrawLabel::getHeight(const Styles::Label &style,
-    Gfx::ICanvas &canvas)
+double DrawLabel::getHeight(const Styles::Label &style)
 {
 	const Gfx::Font font(style);
-	canvas.setFont(font);
 	auto textHeight = Gfx::ICanvas::textBoundary(font, "").y;
 	return style.paddingTop->get(textHeight, font.size)
 	     + style.paddingBottom->get(textHeight, font.size)
