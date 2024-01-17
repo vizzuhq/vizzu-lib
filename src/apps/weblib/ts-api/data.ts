@@ -80,14 +80,14 @@ export class Data {
 			throw new Error('missing series name')
 		}
 
-		const values = series.values ? series.values : ([] as D.Values)
-
 		if (this._isIndexedDimension(series)) {
 			this._validateIndexedDimension(series)
-			this._addDimension(series.name, values as number[], series.categories)
+			this._addDimension(series.name, series.values ?? [], series.categories)
 		}
 		else {
+			const values = series.values ? series.values : ([] as D.Values)
 			const seriesType = series.type ? series.type : this._detectType(values)
+			
 			if (seriesType === 'dimension') {
 				const { indexes, categories } = this._convertDimension(values)
 				this._addDimension(series.name, indexes, categories)
