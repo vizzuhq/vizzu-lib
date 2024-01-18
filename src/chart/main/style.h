@@ -129,7 +129,7 @@ struct Label : Padding, Font, Text
 {
 	[[nodiscard]] double getHeight() const
 	{
-		auto font = Gfx::Font(*this);
+		auto font = Gfx::Font{*this};
 		auto textHeight = Gfx::ICanvas::textBoundary(font, "").y;
 		return paddingTop->get(textHeight, font.size)
 		     + paddingBottom->get(textHeight, font.size) + textHeight;

@@ -23,7 +23,7 @@ public:
 	struct OnUpdateDetail
 	{
 		::Anim::Duration position;
-		double progress{};
+		[[maybe_unused]] double progress;
 	};
 
 	struct OnUpdateEvent :
@@ -76,8 +76,8 @@ public:
 	struct OnTextDrawDetail
 	{
 		Geom::TransformedRect outerRect;
-		Geom::Rect innerRect;
-		double align;
+		[[maybe_unused]] Geom::Rect innerRect;
+		[[maybe_unused]] double align;
 		std::string_view text;
 	};
 
@@ -86,7 +86,8 @@ public:
 	    public OnTextDrawDetail
 	{
 		template <class... Ts>
-		OnTextDrawEvent(const Util::EventTarget &target, Ts &&...ts) :
+		explicit OnTextDrawEvent(const Util::EventTarget &target,
+		    Ts &&...ts) :
 		    OnDrawEvent(&target),
 		    OnTextDrawDetail{std::forward<Ts>(ts)...}
 		{}
