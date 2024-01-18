@@ -67,8 +67,8 @@ void OrientedLabel::draw(Gfx::ICanvas &canvas,
 		transform =
 		    transform * Geom::AffineTransform(paddedSize, 1.0, -M_PI);
 
-	Geom::TransformedRect rect{transform, {paddedSize}};
-	Geom::Rect contentRect{margin.topLeft(), neededSize};
+	const Geom::TransformedRect rect{transform, {paddedSize}};
+	const Geom::Rect contentRect{margin.topLeft(), neededSize};
 
 	if (!bgColor.isTransparent()) {
 		canvas.save();

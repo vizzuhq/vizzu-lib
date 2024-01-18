@@ -88,7 +88,7 @@ public:
 		OnTextDrawEvent(const Util::EventTarget &target,
 		    const Geom::TransformedRect &outerRect,
 		    const Geom::Rect &innerRect,
-		    double align,
+		    const double &align,
 		    const std::string_view &text) :
 		    OnDrawEvent(&target),
 		    OnTextDrawDetail{outerRect, innerRect, align, text}
