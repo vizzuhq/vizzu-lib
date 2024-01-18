@@ -4,73 +4,58 @@ namespace Vizzu::Draw
 {
 
 void DrawLabel::draw(Gfx::ICanvas &canvas,
-    const Geom::TransformedRect &rect,
+    const Geom::TransformedRect &fullRect,
     const std::string &text,
     const Styles::Label &style,
     Util::EventDispatcher::Event &onDraw,
     std::unique_ptr<Util::EventTarget> eventTarget,
     Options options) const
 {
-	auto relRect = Geom::Rect{Geom::Point(), rect.size};
+	auto relativeRect = Geom::Rect{{}, fullRect.size};
 
 	if (!style.backgroundColor->isTransparent()) {
 		canvas.save();
 		canvas.setBrushColor(*style.backgroundColor);
 		canvas.setLineColor(*style.backgroundColor);
-		canvas.transform(rect.transform);
-		canvas.rectangle(relRect);
+		canvas.transform(fullRect.transform);
+		canvas.rectangle(relativeRect);
 		canvas.restore();
 	}
 
+	auto font = Gfx::Font{style};
+	auto paddedRect = style.contentRect(relativeRect, font.size);
+	auto [alignRect, alignConstant] = alignText(paddedRect,
+	    style,
+	    Gfx::ICanvas::textBoundary(font, text));
+
 	canvas.save();
 
-	auto contentRect =
-	    style.contentRect(relRect, style.calculatedSize());
-
-	auto font = Gfx::Font{style};
 	canvas.setFont(font);
 	if (options.setColor)
 		canvas.setTextColor(*style.color * options.alpha);
 
-	auto textSize = Gfx::ICanvas::textBoundary(font, text);
-	auto alignSize = textSize;
-	alignSize.x = std::min(alignSize.x, contentRect.size.x);
-	auto [textRect, d] = alignText(contentRect, style, alignSize);
-	textRect.size = textSize;
-
-	auto transform =
-	    rect.transform * Geom::AffineTransform(textRect.bottomLeft());
-
-	if (options.flip)
-		transform = transform
-		          * Geom::AffineTransform(textRect.size, 1.0, -M_PI);
-
-	Geom::TransformedRect trRect;
-	trRect.transform = transform;
-	trRect.size = textRect.size;
-
 	if (onDraw.invoke(Events::OnTextDrawEvent{*eventTarget,
-	        trRect,
-	        {},
-	        {},
+	        fullRect,
+	        paddedRect,
+	        alignConstant,
 	        text})) {
-		canvas.transform(transform);
 
-		canvas.text(Geom::Rect(Geom::Point(), textRect.size), text);
+		auto textTransform =
+		    fullRect.transform
+		    * Geom::AffineTransform(alignRect.bottomLeft());
 
-		renderedChart.emplace(trRect, std::move(eventTarget));
+		if (options.flip)
+			textTransform *=
+			    Geom::AffineTransform(alignRect.size, 1.0, -M_PI);
+
+		canvas.transform(textTransform);
+
+		canvas.text({{}, alignRect.size}, text);
+
+		renderedChart.emplace(fullRect, std::move(eventTarget));
 	}
 
 	canvas.restore();
-}
-
-double DrawLabel::getHeight(const Styles::Label &style)
-{
-	const Gfx::Font font(style);
-	auto textHeight = Gfx::ICanvas::textBoundary(font, "").y;
-	return style.paddingTop->get(textHeight, font.size)
-	     + style.paddingBottom->get(textHeight, font.size)
-	     + textHeight;
 }
 
 std::pair<Geom::Rect, double> DrawLabel::alignText(
@@ -81,8 +66,8 @@ std::pair<Geom::Rect, double> DrawLabel::alignText(
 	Geom::Rect res{contentRect.pos, textSize};
 
 	auto align = style.textAlign->calculate<double>();
-	res.pos.x +=
-	    (contentRect.size.x - textSize.x) / 2.0 * (1 + align);
+	if (auto space = contentRect.size.x - textSize.x; space > 0)
+		res.pos.x += space / 2.0 * (1 + align);
 
 	return {res, align};
 }

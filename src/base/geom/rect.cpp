@@ -12,11 +12,6 @@ Rect Rect::CenteredMax()
 	return {Geom::Point::Min() / 2, {Geom::Size::Max()}};
 }
 
-Rect Rect::toRect(const Line &diagonal)
-{
-	return {diagonal.begin, {diagonal.getDirection()}};
-}
-
 Rect Rect::boundary(const Rect &rect) const
 {
 	Rect res = positive();

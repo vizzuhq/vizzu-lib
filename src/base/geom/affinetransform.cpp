@@ -51,17 +51,19 @@ bool AffineTransform::transforms() const
 	return *this != AffineTransform();
 }
 
-AffineTransform AffineTransform::operator*(
-    const AffineTransform &other) const
+AffineTransform &AffineTransform::operator*=(
+    const AffineTransform &other)
 {
 	const auto &[o0, o1] = other.m;
-	return AffineTransform{
-	    Matrix{Row{m[0][0] * o0[0] + m[0][1] * o1[0],
-	               m[0][0] * o0[1] + m[0][1] * o1[1],
-	               m[0][0] * o0[2] + m[0][1] * o1[2] + m[0][2]},
-	        Row{m[1][0] * o0[0] + m[1][1] * o1[0],
-	            m[1][0] * o0[1] + m[1][1] * o1[1],
-	            m[1][0] * o0[2] + m[1][1] * o1[2] + m[1][2]}}};
+
+	m = {Row{m[0][0] * o0[0] + m[0][1] * o1[0],
+	         m[0][0] * o0[1] + m[0][1] * o1[1],
+	         m[0][0] * o0[2] + m[0][1] * o1[2] + m[0][2]},
+	    Row{m[1][0] * o0[0] + m[1][1] * o1[0],
+	        m[1][0] * o0[1] + m[1][1] * o1[1],
+	        m[1][0] * o0[2] + m[1][1] * o1[2] + m[1][2]}};
+
+	return *this;
 }
 
 Geom::Point AffineTransform::operator()(

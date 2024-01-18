@@ -85,8 +85,8 @@ void OrientedLabel::draw(Gfx::ICanvas &canvas,
 
 		if (event.invoke(Events::OnTextDrawEvent{*eventTarget,
 		        rect,
-		        {},
-		        {},
+		        Geom::Rect{},
+		        double{},
 		        text})) {
 			canvas.transform(rect.transform);
 			canvas.text(contentRect, text);

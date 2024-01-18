@@ -29,14 +29,12 @@ public:
 	};
 
 	void draw(Gfx::ICanvas &canvas,
-	    const Geom::TransformedRect &rect,
+	    const Geom::TransformedRect &fullRect,
 	    const std::string &text,
 	    const Styles::Label &style,
 	    Util::EventDispatcher::Event &onDraw,
 	    std::unique_ptr<Util::EventTarget> eventTarget,
 	    Options options = Options()) const;
-
-	static double getHeight(const Styles::Label &style);
 
 private:
 	[[nodiscard]] static std::pair<Geom::Rect, double> alignText(

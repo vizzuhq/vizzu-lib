@@ -40,21 +40,21 @@ void Layout::setBoundary(const Geom::Rect &boundary,
 	auto em = style.calculatedSize();
 	auto rect = style.contentRect(boundary, em);
 
-	caption = popRectArea(Draw::DrawLabel::getHeight(style.caption),
+	caption = popRectArea(style.caption.getHeight(),
 	    options->caption,
 	    rect,
 	    &Geom::Rect::popTop);
 	caption.setBottom(rect.top());
 	caption.setTop(boundary.top());
 
-	title = popRectArea(Draw::DrawLabel::getHeight(style.title),
+	title = popRectArea(style.title.getHeight(),
 	    options->title,
 	    rect,
 	    &Geom::Rect::popBottom,
 	    &Geom::Rect::setBottom,
 	    rect.pos.y);
 
-	subtitle = popRectArea(Draw::DrawLabel::getHeight(style.subtitle),
+	subtitle = popRectArea(style.subtitle.getHeight(),
 	    options->subtitle,
 	    rect,
 	    &Geom::Rect::popBottom,

@@ -4,6 +4,7 @@
 #include "base/anim/interpolated.h"
 #include "base/geom/angle.h"
 #include "base/geom/rect.h"
+#include "base/gfx/canvas.h"
 #include "base/gfx/color.h"
 #include "base/gfx/colorgradient.h"
 #include "base/gfx/colorpalette.h"
@@ -125,7 +126,15 @@ struct Box
 };
 
 struct Label : Padding, Font, Text
-{};
+{
+	[[nodiscard]] double getHeight() const
+	{
+		auto font = Gfx::Font(*this);
+		auto textHeight = Gfx::ICanvas::textBoundary(font, "").y;
+		return paddingTop->get(textHeight, font.size)
+		     + paddingBottom->get(textHeight, font.size) + textHeight;
+	}
+};
 
 struct Tick
 {

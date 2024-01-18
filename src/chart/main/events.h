@@ -85,13 +85,10 @@ public:
 	    public OnDrawEvent,
 	    public OnTextDrawDetail
 	{
-		OnTextDrawEvent(const Util::EventTarget &target,
-		    const Geom::TransformedRect &outerRect,
-		    const Geom::Rect &innerRect,
-		    const double &align,
-		    const std::string_view &text) :
+		template <class... Ts>
+		OnTextDrawEvent(const Util::EventTarget &target, Ts &&...ts) :
 		    OnDrawEvent(&target),
-		    OnTextDrawDetail{outerRect, innerRect, align, text}
+		    OnTextDrawDetail{std::forward<Ts>(ts)...}
 		{}
 
 		void appendToJSON(Conv::JSON &json) const override

@@ -21,8 +21,6 @@ struct Rect
 	template <class Container>
 	static Rect Boundary(const Container &points);
 
-	static Rect toRect(const Line &diagonal);
-
 	static Rect Ident();
 	static Rect CenteredMax();
 
@@ -69,10 +67,7 @@ struct Rect
 
 	[[nodiscard]] Point topLeft() const { return {left(), top()}; }
 	[[nodiscard]] Point topRight() const { return {right(), top()}; }
-	[[nodiscard]] Point bottomLeft() const
-	{
-		return {left(), bottom()};
-	}
+	[[nodiscard]] Point bottomLeft() const { return pos; }
 	[[nodiscard]] Point bottomRight() const
 	{
 		return {right(), bottom()};
