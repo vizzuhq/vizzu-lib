@@ -18,9 +18,9 @@ definitions:
         type: object
         properties:
             name:
-                description: Name of the data series. It will be the unique id of the series to 
+                description: Name of the data series. It will be the unique id of the series to
                     reference it in various parts of the API, mainly in channel configuration and
-                    in data record filters. This name will also be used by default for Axis and 
+                    in data record filters. This name will also be used by default for Axis and
                     Legend title.
                 $ref: SeriesName
         required: [name]
@@ -74,7 +74,7 @@ definitions:
                 description: Distinct unique values in the series
                 type: array
                 items:
-                    type: string 
+                    type: string
         required: [categories]
 
     Measure:
@@ -194,7 +194,7 @@ definitions:
     DimensionValue:
         description: Represents a categorical value
         type: string
-    
+
     MeasureValue:
         description: Represents a data value
         type: number
@@ -204,11 +204,11 @@ definitions:
         description: List of data values in a series.
         oneOf:
             - type: array
-              items: 
-                $ref: DimensionValue
+              items:
+                  $ref: DimensionValue
             - type: array
-              items: 
-                $ref: MeasureValue
+              items:
+                  $ref: MeasureValue
 
     Series:
         $extends: SeriesMetaInfo

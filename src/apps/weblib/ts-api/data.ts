@@ -83,11 +83,10 @@ export class Data {
 		if (this._isIndexedDimension(series)) {
 			this._validateIndexedDimension(series)
 			this._addDimension(series.name, series.values ?? [], series.categories)
-		}
-		else {
+		} else {
 			const values = series.values ? series.values : ([] as D.Values)
 			const seriesType = series.type ? series.type : this._detectType(values)
-			
+
 			if (seriesType === 'dimension') {
 				const { indexes, categories } = this._convertDimension(values)
 				this._addDimension(series.name, indexes, categories)
@@ -109,7 +108,6 @@ export class Data {
 
 	private _validateIndexedDimension(series: D.IndexDimension): void {
 		if (series.values && Array.isArray(series.values)) {
-
 			let max = 0
 			for (const value of series.values) {
 				if (value === null) {
@@ -133,7 +131,7 @@ export class Data {
 				throw new Error('invalid category values')
 			}
 		}
-		if ((new Set(series.categories)).size !== series.categories.length) {
+		if (new Set(series.categories).size !== series.categories.length) {
 			throw new Error('duplicate category values')
 		}
 	}
@@ -191,28 +189,28 @@ export class Data {
 		return true
 	}
 
-	private _convertDimension(values: D.Values): { categories: string[], indexes: number[] } {
-		const uniques = new Map();
-		const categories: string[] = [];
-		const indexes = new Array(values.length);
+	private _convertDimension(values: D.Values): { categories: string[]; indexes: number[] } {
+		const uniques = new Map()
+		const categories: string[] = []
+		const indexes = new Array(values.length)
 
 		for (let index = 0; index < values.length; index++) {
-			const value = values[index];
+			const value = values[index]
 			if (typeof value !== 'string') {
-				continue;
+				continue
 			}
-			let uniqueIndex = uniques.get(value);
+			let uniqueIndex = uniques.get(value)
 
 			if (uniqueIndex === undefined) {
-				uniqueIndex = categories.length;
-				uniques.set(value, uniqueIndex);
-				categories.push(value).toString();
+				uniqueIndex = categories.length
+				uniques.set(value, uniqueIndex)
+				categories.push(value).toString()
 			}
 
-			indexes[index] = uniqueIndex;
-		};
+			indexes[index] = uniqueIndex
+		}
 
-		return { categories, indexes };
+		return { categories, indexes }
 	}
 
 	private _addMeasure(name: string, unit: string, values: unknown[]): void {
