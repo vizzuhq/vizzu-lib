@@ -21,11 +21,8 @@ public:
 	virtual void onWheel(double delta) = 0;
 	virtual void onChanged() = 0;
 	virtual void onDraw(const std::shared_ptr<Gfx::ICanvas> &) = 0;
-	virtual void onUpdateSize(const std::shared_ptr<Gfx::ICanvas> &,
-	    Geom::Size) = 0;
-	[[nodiscard]] virtual bool needsUpdate(
-	    const std::shared_ptr<Gfx::ICanvas> &,
-	    Geom::Size) const = 0;
+	virtual void onUpdateSize(Geom::Size) = 0;
+	[[nodiscard]] virtual bool needsUpdate(Geom::Size) const = 0;
 };
 
 }

@@ -84,11 +84,9 @@ void ChartWidget::onDraw(const std::shared_ptr<Gfx::ICanvas> &canvas)
 	needUpdate = false;
 }
 
-void ChartWidget::onUpdateSize(
-    const std::shared_ptr<Gfx::ICanvas> &canvas,
-    Geom::Size size)
+void ChartWidget::onUpdateSize(Geom::Size size)
 {
-	chart.setBoundRect(Geom::Rect(Geom::Point{}, size), *canvas);
+	chart.setBoundRect(Geom::Rect(Geom::Point{}, size));
 }
 
 }

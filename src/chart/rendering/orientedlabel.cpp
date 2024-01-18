@@ -91,9 +91,8 @@ void OrientedLabel::draw(Gfx::ICanvas &canvas,
 		canvas.save();
 		canvas.setTextColor(textColor);
 
-		Events::OnTextDrawEvent eventObj(*eventTarget, rect, text);
-
-		if (event.invoke(std::move(eventObj))) {
+		if (event.invoke(
+		        Events::OnTextDrawEvent{*eventTarget, rect, text})) {
 			canvas.transform(rect.transform);
 			canvas.text(contentRect, text);
 			renderedChart.emplace(rect, std::move(eventTarget));

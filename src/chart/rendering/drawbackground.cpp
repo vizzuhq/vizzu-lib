@@ -11,8 +11,8 @@ void DrawBackground::draw(Gfx::ICanvas &canvas,
     Util::EventDispatcher::Event &onDraw,
     std::unique_ptr<Util::EventTarget> &&eventTarget) const
 {
-	Events::OnRectDrawEvent eventObj(*eventTarget, {rect, false});
-	if (!style.borderColor->isTransparent()
+	if (Events::OnRectDrawEvent eventObj(*eventTarget, {rect, false});
+	    !style.borderColor->isTransparent()
 	    || !style.backgroundColor->isTransparent()) {
 		canvas.setBrushColor(*style.backgroundColor);
 		canvas.setLineColor(*style.borderColor);

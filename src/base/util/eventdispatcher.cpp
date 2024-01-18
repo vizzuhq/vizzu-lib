@@ -5,13 +5,15 @@
 namespace Util
 {
 
-EventDispatcher::Params::Params(const EventTarget *s) : target(s) {}
+EventDispatcher::Params::Params(const EventTarget *target) :
+    target(target)
+{}
 
 std::string EventDispatcher::Params::toJSON() const
 {
 	std::string res;
 	appendToJSON(
-	    Conv::JSONObj{res}("type", event->name())("target", target)
+	    Conv::JSONObj{res}("type", eventName)("target", target)
 	        .key("detail"));
 	return res;
 }
@@ -23,59 +25,42 @@ void EventDispatcher::Params::appendToJSON(Conv::JSON &obj) const
 
 EventDispatcher::Params::~Params() = default;
 
-EventDispatcher::Event::Event(EventDispatcher &owner,
-    const char *name) :
-    uniqueName(name),
-    owner(owner)
+EventDispatcher::Event::Event(std::string_view name) :
+    uniqueName(name)
 {}
 
 EventDispatcher::Event::~Event() = default;
 
-const std::string &EventDispatcher::Event::name() const
+const std::string_view &EventDispatcher::Event::name() const noexcept
 {
 	return uniqueName;
 }
 
-void EventDispatcher::Event::deactivate() { active = false; }
-
 bool EventDispatcher::Event::invoke(Params &&params)
 {
-	params.event = shared_from_this();
-	for (auto &handler : handlers) {
-		params.handler = static_cast<int>(handler.first);
-		currentlyInvoked = params.handler;
-		handler.second(params);
-		currentlyInvoked = 0;
-	}
-	for (auto &item : handlersToRemove) detach(item.first);
-	handlersToRemove.clear();
+	params.eventName = name();
+
+	for (auto iter = handlers.begin(); iter != handlers.end();)
+		iter++->second(params);
+
 	return !params.preventDefault;
 }
 
 void EventDispatcher::Event::attach(std::uint64_t id,
     handler_fn handler)
 {
-	handlers.emplace_back(id, std::move(handler));
+	handlers.emplace_front(id, std::move(handler));
 }
 
 void EventDispatcher::Event::detach(std::uint64_t id)
 {
-	if (currentlyInvoked != 0)
-		handlersToRemove.emplace_back(currentlyInvoked, handler_fn{});
-	else {
-		for (auto iter = handlers.begin(); iter != handlers.end();
-		     ++iter) {
-			if (iter->first == id) {
-				handlers.erase(iter);
-				break;
-			}
+	for (auto oit = handlers.before_begin(), it = std::next(oit);
+	     it != handlers.end();
+	     oit = it++)
+		if (it->first == id) {
+			handlers.erase_after(oit);
+			break;
 		}
-	}
-}
-
-EventDispatcher::Event::operator bool() const
-{
-	return active && !handlers.empty();
 }
 
 bool EventDispatcher::Event::operator()(Params &&params)
@@ -83,40 +68,34 @@ bool EventDispatcher::Event::operator()(Params &&params)
 	return invoke(std::move(params));
 }
 
-EventDispatcher::~EventDispatcher()
+EventDispatcher::~EventDispatcher() = default;
+
+EventDispatcher::event_ptr EventDispatcher::getEvent(
+    std::string_view name) const
 {
-	for (auto &event : eventRegistry) { event.second->deactivate(); }
+	if (auto iter = eventRegistry.find(name);
+	    iter != eventRegistry.end())
+		return *iter;
+	return {};
 }
 
-EventDispatcher::event_ptr EventDispatcher::getEvent(const char *name)
+const EventDispatcher::event_ptr &EventDispatcher::createEvent(
+    std::string_view name)
 {
-	auto iter = eventRegistry.find(name);
-	if (iter == eventRegistry.end()) return event_ptr{};
-	return iter->second;
-}
+	auto iter_place = eventRegistry.lower_bound(name);
+	if (iter_place == eventRegistry.end()
+	    || (*iter_place)->name() != name)
+		iter_place = eventRegistry.insert(iter_place,
+		    std::make_shared<Event>(name));
 
-EventDispatcher::event_ptr EventDispatcher::createEvent(
-    const char *name)
-{
-	auto iter = eventRegistry.find(name);
-	if (iter != eventRegistry.end()) return iter->second;
-	event_ptr event;
-	event = std::make_shared<Event>(*this, name);
-	eventRegistry.insert(std::make_pair(name, event));
-	return event;
-}
-
-bool EventDispatcher::destroyEvent(const char *name)
-{
-	auto iter = eventRegistry.find(name);
-	if (iter == eventRegistry.end()) return false;
-	iter->second->deactivate();
-	eventRegistry.erase(iter);
-	return true;
+	return *iter_place;
 }
 
 bool EventDispatcher::destroyEvent(const event_ptr &event)
 {
-	return destroyEvent(event->name().c_str());
+	auto iter = eventRegistry.find(event->name());
+	if (iter == eventRegistry.end()) return false;
+	eventRegistry.erase(iter);
+	return true;
 }
 }

@@ -50,8 +50,7 @@ void Window::paintEvent(QPaintEvent *)
 	const Geom::Size size{static_cast<double>(width()),
 	    static_cast<double>(height())};
 
-	chart.getChart().onUpdateSize({std::shared_ptr<void>{}, &canvas},
-	    size);
+	chart.getChart().onUpdateSize(size);
 	canvas.frameBegin();
 	chart.getChart().onDraw({std::shared_ptr<void>{}, &canvas});
 	canvas.frameEnd();

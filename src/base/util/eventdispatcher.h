@@ -1,10 +1,10 @@
 #ifndef UTIL_EVENTDISPATCHER
 #define UTIL_EVENTDISPATCHER
 
+#include <forward_list>
 #include <functional>
-#include <list>
-#include <map>
 #include <memory>
+#include <set>
 #include <string>
 
 #include "base/conv/auto_json.h"
@@ -24,22 +24,18 @@ class EventDispatcher
 public:
 	class Event;
 	class Params;
-	friend class Event;
-	using handler_id = int;
 	using event_ptr = std::shared_ptr<Event>;
 	using handler_fn = std::function<void(Params &)>;
-	using event_map = std::map<std::string, event_ptr>;
 	using handler_list =
-	    std::list<std::pair<std::uint64_t, handler_fn>>;
+	    std::forward_list<std::pair<std::uint64_t, handler_fn>>;
 
 	class Params
 	{
 	public:
-		explicit Params(const EventTarget *sptr = nullptr);
+		explicit Params(const EventTarget *target = nullptr);
 		virtual ~Params();
-		event_ptr event;
+		std::string_view eventName;
 		const EventTarget *target;
-		handler_id handler{0};
 		bool preventDefault{false};
 
 		[[nodiscard]] std::string toJSON() const;
@@ -51,49 +47,52 @@ public:
 		friend class EventDispatcher;
 
 	public:
-		Event(EventDispatcher &owner, const char *name);
+		explicit Event(std::string_view name);
 		virtual ~Event();
 
-		[[nodiscard]] const std::string &name() const;
+		[[nodiscard]] const std::string_view &name() const noexcept;
 		bool invoke(Params &&params = Params{});
 		void attach(std::uint64_t id, handler_fn handler);
 		void detach(std::uint64_t id);
-		explicit operator bool() const;
-		bool operator()(Params &&params);
-
-		template <typename T> void attach(T &handlerOwner)
-		{
-			static_assert(!std::is_const_v<T>);
-			attach(std::hash<T *>{}(std::addressof(handlerOwner)),
-			    std::ref(handlerOwner));
-		}
-
-		template <typename T> void detach(T &handlerOwner)
-		{
-			static_assert(!std::is_const_v<T>);
-			detach(std::hash<T *>{}(std::addressof(handlerOwner)));
-		}
+		[[nodiscard]] bool operator()(Params &&params);
 
 	protected:
-		bool active{true};
-		std::string uniqueName;
+		std::string_view uniqueName;
 		handler_list handlers;
-		EventDispatcher &owner;
-		handler_id currentlyInvoked{0};
-		handler_list handlersToRemove;
-
-		void deactivate();
 	};
 
 	virtual ~EventDispatcher();
 
-	event_ptr getEvent(const char *name);
-	event_ptr createEvent(const char *name);
-	bool destroyEvent(const char *name);
+	[[nodiscard]] event_ptr getEvent(std::string_view name) const;
+
+	[[nodiscard]] const event_ptr &createEvent(std::string_view name);
+
 	bool destroyEvent(const event_ptr &event);
 
 protected:
-	event_map eventRegistry;
+	struct EventPtrComp
+	{
+		using is_transparent = std::true_type;
+		[[nodiscard]] bool operator()(const event_ptr &lhs,
+		    const std::string_view &rhs) const noexcept
+		{
+			return lhs->name() < rhs;
+		}
+
+		[[nodiscard]] bool operator()(const std::string_view &lhs,
+		    const event_ptr &rhs) const noexcept
+		{
+			return lhs < rhs->name();
+		}
+
+		[[nodiscard]] bool operator()(const event_ptr &lhs,
+		    const event_ptr &rhs) const noexcept
+		{
+			return lhs->name() < rhs->name();
+		}
+	};
+
+	std::set<event_ptr, EventPtrComp> eventRegistry;
 };
 
 }

@@ -41,19 +41,14 @@ public:
 		}
 	};
 
-	struct OnDrawEvent : public Util::EventDispatcher::Params
-	{
-		explicit OnDrawEvent(const Util::EventTarget &target) :
-		    Util::EventDispatcher::Params(&target)
-		{}
-	};
+	using OnDrawEvent = Util::EventDispatcher::Params;
 
 	struct OnRectDrawEvent : public OnDrawEvent
 	{
 		Draw::Rect rect;
 		OnRectDrawEvent(const Util::EventTarget &target,
 		    const Draw::Rect &rect) :
-		    OnDrawEvent(target),
+		    OnDrawEvent(&target),
 		    rect(rect)
 		{}
 
@@ -68,7 +63,7 @@ public:
 		Draw::Line line;
 		OnLineDrawEvent(const Util::EventTarget &target,
 		    const Draw::Line &line) :
-		    OnDrawEvent(target),
+		    OnDrawEvent(&target),
 		    line(line)
 		{}
 
@@ -91,7 +86,7 @@ public:
 		OnTextDrawEvent(const Util::EventTarget &target,
 		    const Geom::TransformedRect &rect,
 		    const std::string_view &text) :
-		    OnDrawEvent(target),
+		    OnDrawEvent(&target),
 		    OnTextDrawDetail{rect, text}
 		{}
 
