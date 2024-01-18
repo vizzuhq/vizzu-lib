@@ -81,9 +81,8 @@ std::pair<Geom::Rect, double> DrawLabel::alignText(
 	Geom::Rect res{contentRect.pos, textSize};
 
 	auto align = style.textAlign->calculate<double>();
-	res.pos.x = std::lerp(contentRect.center().x - textSize.x / 2.0,
-	    contentRect.right() - textSize.x,
-	    align);
+	res.pos.x +=
+	    (contentRect.size.x - textSize.x) / 2.0 * (1 + align);
 
 	return {res, align};
 }
