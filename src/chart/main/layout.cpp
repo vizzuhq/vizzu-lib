@@ -75,14 +75,15 @@ void Layout::setBoundary(const Geom::Rect &boundary,
 
 void Layout::setLogoBoundary(const Styles::Logo &logoStyle)
 {
-	auto logoWidth = logoStyle.width->get(boundary.size.minSize(),
-	    Styles::Sheet::baseFontSize(boundary.size, false));
+	auto fontSize = Styles::Sheet::baseFontSize(boundary.size, false);
+	auto logoWidth =
+	    logoStyle.width->get(boundary.size.minSize(), fontSize);
 
 	auto logoHeight = Draw::Logo::height(logoWidth);
 
 	auto logoPad =
-	    logoStyle.toMargin(Geom::Size{logoWidth, logoHeight},
-	        Styles::Sheet::baseFontSize(boundary.size, false));
+	    logoStyle.toInvMargin(Geom::Size{logoWidth, logoHeight},
+	        fontSize);
 
 	logo = {boundary.topRight()
 	            - Geom::Point{logoPad.right + logoWidth,

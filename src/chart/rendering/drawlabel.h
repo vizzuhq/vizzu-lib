@@ -38,7 +38,7 @@ public:
 
 private:
 	[[nodiscard]] static std::pair<Geom::Rect, double> alignText(
-	    const Geom::Rect &contentRect,
+	    const Geom::Rect &paddedRect,
 	    const Styles::Label &style,
 	    const Geom::Size &textSize);
 };

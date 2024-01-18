@@ -208,7 +208,9 @@ void Sheet::setAfterStyles(Gen::Plot &plot, const Geom::Size &size)
 			auto textBoundary = Gfx::ICanvas::textBoundary(font,
 			    pair.second.label.get());
 			auto textXHalfMargin =
-			    xLabel.toMargin(textBoundary, font.size).getSpace().x
+			    xLabel.toInvMargin(textBoundary, font.size)
+			        .getSpace()
+			        .x
 			    / 2.0;
 			auto xHalfSize =
 			    (textBoundary.x + textXHalfMargin) / plotX / 2.0;

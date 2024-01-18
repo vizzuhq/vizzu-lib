@@ -50,6 +50,14 @@ public:
 		     + emphemeral * fontSize;
 	}
 
+	[[nodiscard]] double getInv(double solution,
+	    double fontSize) const
+	{
+		if (relative == 1.0)
+			throw std::logic_error("padding relative is 1.0");
+		return get(solution, fontSize) / (1 - relative);
+	}
+
 	[[nodiscard]] double get() const
 	{
 		if (isAbsolute()) return absolute;

@@ -175,7 +175,7 @@ void DrawAxes::drawTitle(Gen::ChannelId axisIndex) const
 			auto textBoundary =
 			    Gfx::ICanvas::textBoundary(font, title.value);
 			auto textMargin =
-			    titleStyle.toMargin(textBoundary, font.size);
+			    titleStyle.toInvMargin(textBoundary, font.size);
 			auto size = textBoundary + textMargin.getSpace();
 
 			auto relCenter = getTitleBasePos(axisIndex, index);

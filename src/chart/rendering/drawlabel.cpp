@@ -59,14 +59,14 @@ void DrawLabel::draw(Gfx::ICanvas &canvas,
 }
 
 std::pair<Geom::Rect, double> DrawLabel::alignText(
-    const Geom::Rect &contentRect,
+    const Geom::Rect &paddedRect,
     const Styles::Label &style,
     const Geom::Size &textSize)
 {
-	Geom::Rect res{contentRect.pos, textSize};
+	Geom::Rect res{paddedRect.pos, textSize};
 
 	auto align = style.textAlign->calculate<double>();
-	if (auto space = contentRect.size.x - textSize.x; space > 0)
+	if (auto space = paddedRect.size.x - textSize.x; space > 0)
 		res.pos.x += space / 2.0 * (1 + align);
 
 	return {res, align};

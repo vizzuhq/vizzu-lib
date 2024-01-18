@@ -15,13 +15,6 @@ void OrientedLabel::draw(Gfx::ICanvas &canvas,
     Util::EventDispatcher::Event &event,
     std::unique_ptr<Util::EventTarget> eventTarget) const
 {
-	const Gfx::Font font(labelStyle);
-	canvas.setFont(font);
-
-	auto neededSize = Gfx::ICanvas::textBoundary(font, text);
-	auto margin = labelStyle.toMargin(neededSize, font.size);
-	auto paddedSize = neededSize + margin.getSpace();
-
 	auto baseAngle = labelPos.getDirection().angle() + M_PI / 2.0;
 
 	auto absAngle =
@@ -47,6 +40,13 @@ void OrientedLabel::draw(Gfx::ICanvas &canvas,
 	auto xOffsetAngle = relAngle < M_PI / 4.0     ? 0
 	                  : relAngle < 3 * M_PI / 4.0 ? M_PI / 2.0
 	                                              : M_PI;
+
+	const Gfx::Font font(labelStyle);
+	canvas.setFont(font);
+
+	auto neededSize = Gfx::ICanvas::textBoundary(font, text);
+	auto margin = labelStyle.toInvMargin(neededSize, font.size);
+	auto paddedSize = neededSize + margin.getSpace();
 
 	auto offset = Geom::Point{-sin(relAngle + xOffsetAngle)
 	                              * paddedSize.x / 2.0,
@@ -85,8 +85,8 @@ void OrientedLabel::draw(Gfx::ICanvas &canvas,
 
 		if (event.invoke(Events::OnTextDrawEvent{*eventTarget,
 		        rect,
-		        Geom::Rect{},
-		        double{},
+		        contentRect,
+		        0.0,
 		        text})) {
 			canvas.transform(rect.transform);
 			canvas.text(contentRect, text);

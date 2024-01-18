@@ -42,6 +42,18 @@ struct Padding
 		    paddingRight->get(size.x, fontSize)};
 	}
 
+	[[nodiscard]] GUI::Margin toInvMargin(const Geom::Size &size,
+	    double fontSize) const
+	{
+		return toMargin({size.x
+		                        + (*paddingLeft + *paddingRight)
+		                              .getInv(size.x, fontSize),
+		                    size.y
+		                        + (*paddingTop + *paddingBottom)
+		                              .getInv(size.y, fontSize)},
+		    fontSize);
+	}
+
 	[[nodiscard]] Geom::Rect contentRect(const Geom::Rect &rect,
 	    double fontSize) const
 	{
