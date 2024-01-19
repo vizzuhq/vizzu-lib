@@ -32,15 +32,15 @@ function overlay(e, chart) {
 	if (!e.detail.relative) {
 		if (e.detail.outerRect) {
 			const t = e.detail.outerRect.transform
-			const in_pos = e.detail.innerRect.pos
+			const inPos = e.detail.innerRect.pos
 			const width = ctx.measureText(e.detail.text).width
 			const metrics = ctx.measureText('Op')
 			const height = metrics.actualBoundingBoxAscent + metrics.actualBoundingBoxDescent
 
 			ctx.transform(t[0][0], t[1][0], t[0][1], t[1][1], t[0][2], t[1][2])
-			ctx.translate(in_pos.x, in_pos.y)
+			ctx.translate(inPos.x, inPos.y)
 			if (e.detail.innerRect.size.x > width) {
-				ctx.translate((e.detail.innerRect.size.x - width) / 2 * (1 + e.detail.align), 0)
+				ctx.translate(((e.detail.innerRect.size.x - width) / 2) * (1 + e.detail.align), 0)
 			}
 
 			ctx.fillRect(0, 0, width, height)
@@ -95,7 +95,7 @@ function setupEvents(chart) {
 			if (e.type === 'title-draw' && e.detail.text === '') return
 			overlay(e, chart)
 			receivedEvents.push(e)
-			e.renderingContext.globalAlpha = 0.5;
+			e.renderingContext.globalAlpha = 0.5
 			//      e.preventDefault()
 		})
 	})
