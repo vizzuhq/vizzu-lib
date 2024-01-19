@@ -16,16 +16,9 @@ class DrawLabel : public DrawingContext
 public:
 	struct Options
 	{
-		explicit Options(bool setColor = true,
-		    double alpha = 1.0,
-		    bool flip = false) :
-		    setColor(setColor),
-		    alpha(alpha),
-		    flip(flip)
-		{}
-		bool setColor;
-		double alpha;
-		bool flip;
+		std::optional<double> alpha{1.0};
+		double bgAlpha{1.0};
+		bool flip{false};
 	};
 
 	void draw(Gfx::ICanvas &canvas,
@@ -34,7 +27,7 @@ public:
 	    const Styles::Label &style,
 	    Util::EventDispatcher::Event &onDraw,
 	    std::unique_ptr<Util::EventTarget> eventTarget,
-	    Options options = Options()) const;
+	    Options options) const;
 
 private:
 	[[nodiscard]] static std::pair<Geom::Rect, double> alignText(

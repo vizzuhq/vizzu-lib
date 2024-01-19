@@ -45,13 +45,7 @@ struct Padding
 	[[nodiscard]] GUI::Margin toInvMargin(const Geom::Size &size,
 	    double fontSize) const
 	{
-		return toMargin({size.x
-		                        + (*paddingLeft + *paddingRight)
-		                              .getInv(size.x, fontSize),
-		                    size.y
-		                        + (*paddingTop + *paddingBottom)
-		                              .getInv(size.y, fontSize)},
-		    fontSize);
+		return toMargin(extendSize(size, fontSize), fontSize);
 	}
 
 	[[nodiscard]] Geom::Rect contentRect(const Geom::Rect &rect,
@@ -60,6 +54,17 @@ struct Padding
 		auto margin = toMargin(rect.size, fontSize);
 		return {rect.pos + margin.topLeft(),
 		    Geom::Size(rect.size - margin.getSpace()).positive()};
+	}
+
+	[[nodiscard]] Geom::Size extendSize(const Geom::Size &size,
+	    double fontSize) const
+	{
+		return {size.x
+		            + (*paddingLeft + *paddingRight)
+		                  .getInv(size.x, fontSize),
+		    size.y
+		        + (*paddingTop + *paddingBottom)
+		              .getInv(size.y, fontSize)};
 	}
 };
 

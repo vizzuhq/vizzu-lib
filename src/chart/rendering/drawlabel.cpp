@@ -15,8 +15,9 @@ void DrawLabel::draw(Gfx::ICanvas &canvas,
 
 	if (!style.backgroundColor->isTransparent()) {
 		canvas.save();
-		canvas.setBrushColor(*style.backgroundColor);
-		canvas.setLineColor(*style.backgroundColor);
+		auto bgColor = *style.backgroundColor * options.bgAlpha;
+		canvas.setBrushColor(bgColor);
+		canvas.setLineColor(bgColor);
 		canvas.transform(fullRect.transform);
 		canvas.rectangle(relativeRect);
 		canvas.restore();
@@ -31,8 +32,8 @@ void DrawLabel::draw(Gfx::ICanvas &canvas,
 	canvas.save();
 
 	canvas.setFont(font);
-	if (options.setColor)
-		canvas.setTextColor(*style.color * options.alpha);
+	if (options.alpha)
+		canvas.setTextColor(*style.color * *options.alpha);
 
 	if (onDraw.invoke(Events::OnTextDrawEvent{*eventTarget,
 	        fullRect,

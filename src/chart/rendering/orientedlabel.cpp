@@ -10,8 +10,8 @@ void OrientedLabel::draw(Gfx::ICanvas &canvas,
     const Geom::Line &labelPos,
     const Styles::OrientedLabel &labelStyle,
     double centered,
-    const Gfx::Color &textColor,
-    const Gfx::Color &bgColor,
+    std::optional<double> textAlpha,
+    double bgAlpha,
     Util::EventDispatcher::Event &event,
     std::unique_ptr<Util::EventTarget> eventTarget) const
 {
@@ -44,9 +44,9 @@ void OrientedLabel::draw(Gfx::ICanvas &canvas,
 	const Gfx::Font font(labelStyle);
 	canvas.setFont(font);
 
-	auto neededSize = Gfx::ICanvas::textBoundary(font, text);
-	auto margin = labelStyle.toInvMargin(neededSize, font.size);
-	auto paddedSize = neededSize + margin.getSpace();
+	auto paddedSize =
+	    labelStyle.extendSize(Gfx::ICanvas::textBoundary(font, text),
+	        font.size);
 
 	auto offset = Geom::Point{-sin(relAngle + xOffsetAngle)
 	                              * paddedSize.x / 2.0,
@@ -63,12 +63,31 @@ void OrientedLabel::draw(Gfx::ICanvas &canvas,
 	auto upsideDown =
 	    realAngle > M_PI / 2.0 && realAngle < 3 * M_PI / 2.0;
 
+	//// REMOVE
 	if (upsideDown)
 		transform =
 		    transform * Geom::AffineTransform(paddedSize, 1.0, -M_PI);
+	auto neededSize = Gfx::ICanvas::textBoundary(font, text);
+	auto margin = labelStyle.toInvMargin(neededSize, font.size);
+	const Geom::Rect contentRect{margin.topLeft(), neededSize};
+	//// TIL HERE
 
 	const Geom::TransformedRect rect{transform, {paddedSize}};
-	const Geom::Rect contentRect{margin.topLeft(), neededSize};
+	/*
+DrawLabel::draw(canvas,
+	rect,
+	text,
+	labelStyle,
+	event,
+	std::move(eventTarget),
+	{
+	    .alpha=textAlpha,
+	    .bgAlpha=bgAlpha,
+	    .flip=upsideDown
+	});
+*/
+
+	auto bgColor = *labelStyle.backgroundColor * bgAlpha;
 
 	if (!bgColor.isTransparent()) {
 		canvas.save();
@@ -79,9 +98,11 @@ void OrientedLabel::draw(Gfx::ICanvas &canvas,
 		canvas.restore();
 	}
 
-	if (!textColor.isTransparent()) {
+	if (textAlpha)
+		canvas.setTextColor(*labelStyle.color * *textAlpha);
+
+	if (!textAlpha || *textAlpha > 0) {
 		canvas.save();
-		canvas.setTextColor(textColor);
 
 		if (event.invoke(Events::OnTextDrawEvent{*eventTarget,
 		        rect,

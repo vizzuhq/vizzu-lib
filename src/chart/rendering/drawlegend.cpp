@@ -66,8 +66,7 @@ void DrawLegend::drawTitle(const Info &info) const
 		        style.title,
 		        *events.title,
 		        Events::Targets::legendTitle(title.value, info.type),
-		        DrawLabel::Options(true,
-		            title.weight * info.weight * mul));
+		        {.alpha = title.weight * info.weight * mul});
 	    });
 }
 
@@ -105,8 +104,7 @@ void DrawLegend::drawDimension(const Info &info) const
 			            value.second.categoryValue,
 			            weighted.value,
 			            info.type),
-			        DrawLabel::Options(true,
-			            alpha * weighted.weight));
+			        {.alpha = alpha * weighted.weight});
 		    });
 	}
 }
@@ -216,7 +214,7 @@ void DrawLegend::extremaLabel(const Info &info,
 	    style.label,
 	    *events.label,
 	    Events::Targets::legendLabel({}, {}, text, info.type),
-	    DrawLabel::Options(true, info.measureWeight * plusWeight));
+	    {.alpha = info.measureWeight * plusWeight});
 }
 
 Geom::Rect DrawLegend::getBarRect(const Info &info)
