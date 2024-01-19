@@ -59,62 +59,18 @@ void OrientedLabel::draw(Gfx::ICanvas &canvas,
 	    * Geom::AffineTransform(offset, 1.0, -relAngle)
 	    * Geom::AffineTransform(paddedSize / -2, 1.0, 0);
 
-	auto realAngle = Geom::Angle(baseAngle + relAngle).rad();
-	auto upsideDown =
-	    realAngle > M_PI / 2.0 && realAngle < 3 * M_PI / 2.0;
-
-	//// REMOVE
-	if (upsideDown)
+	if (auto realAngle = Geom::Angle(baseAngle + relAngle).rad();
+	    realAngle > M_PI / 2.0 && realAngle < 3 * M_PI / 2.0)
 		transform =
 		    transform * Geom::AffineTransform(paddedSize, 1.0, -M_PI);
-	auto neededSize = Gfx::ICanvas::textBoundary(font, text);
-	auto margin = labelStyle.toInvMargin(neededSize, font.size);
-	const Geom::Rect contentRect{margin.topLeft(), neededSize};
-	//// TIL HERE
 
-	const Geom::TransformedRect rect{transform, {paddedSize}};
-	/*
-DrawLabel::draw(canvas,
-	rect,
-	text,
-	labelStyle,
-	event,
-	std::move(eventTarget),
-	{
-	    .alpha=textAlpha,
-	    .bgAlpha=bgAlpha,
-	    .flip=upsideDown
-	});
-*/
-
-	auto bgColor = *labelStyle.backgroundColor * bgAlpha;
-
-	if (!bgColor.isTransparent()) {
-		canvas.save();
-		canvas.setBrushColor(bgColor);
-		canvas.setLineColor(bgColor);
-		canvas.transform(rect.transform);
-		canvas.rectangle(Geom::Rect(Geom::Point(), rect.size));
-		canvas.restore();
-	}
-
-	if (textAlpha)
-		canvas.setTextColor(*labelStyle.color * *textAlpha);
-
-	if (!textAlpha || *textAlpha > 0) {
-		canvas.save();
-
-		if (event.invoke(Events::OnTextDrawEvent{*eventTarget,
-		        rect,
-		        contentRect,
-		        0.0,
-		        text})) {
-			canvas.transform(rect.transform);
-			canvas.text(contentRect, text);
-			renderedChart.emplace(rect, std::move(eventTarget));
-		}
-		canvas.restore();
-	}
+	DrawLabel::draw(canvas,
+	    {transform, paddedSize},
+	    text,
+	    labelStyle,
+	    event,
+	    std::move(eventTarget),
+	    {.alpha = textAlpha, .bgAlpha = bgAlpha});
 }
 
 }
