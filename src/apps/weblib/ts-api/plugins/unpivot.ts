@@ -1,10 +1,10 @@
 import * as Data from '../types/data.js'
 
-type CubeRow = Data.Values | CubeRow[]
+type CubeRow = Data.DimensionValue[] | Data.MeasureValue[] | CubeRow[]
 
 /** Defines a data series of the data cube, and contains a particular variable's
   values in the data cube and meta info about that variable. */
-interface CubeData extends Data.SeriesMetaInfo {
+interface CubeData extends Data.SeriesBase {
 	/** A nested array that contains the values of the data series. Nesting 
   level should match the number of data cube dimensions. */
 	values: CubeRow
@@ -99,9 +99,9 @@ export default class UnPivot {
 				values = values.concat(valuesItem)
 			}
 
-			const seriesItem = {
+			const seriesItem:Data.Dimension | Data.Measure = {
 				name: item.name,
-				type: item.type || 'dimension',
+				type: 'dimension',
 				values
 			}
 			convertedData.series.push(seriesItem)

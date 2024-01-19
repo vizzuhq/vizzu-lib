@@ -4,6 +4,7 @@ import { CRecord, CData } from './module/cdata.js'
 import { DataRecord } from './datarecord.js'
 import { Mirrored } from './tsutils.js'
 
+type DataTypes = D.DimensionValue | D.MeasureValue
 export class Data {
 	private _cData: CData
 
@@ -84,13 +85,13 @@ export class Data {
 			this._validateIndexedDimension(series)
 			this._addDimension(series.name, series.values ?? [], series.categories)
 		} else {
-			const values = series.values ? series.values : ([] as D.Values)
+			const values = series.values ? series.values : ([] as DataTypes[])
 			const seriesType = series.type ? series.type : this._detectType(values)
 
 			if (seriesType === 'dimension') {
 				const { indexes, categories } = this._convertDimension(values)
 				this._addDimension(series.name, indexes, categories)
-			} else if (seriesType === 'measure') {
+			} else if (this._isMeasure(series, seriesType)) {
 				if (!series.unit) series.unit = ''
 				this._addMeasure(series.name, series.unit, values)
 			} else {
@@ -104,6 +105,13 @@ export class Data {
 			return false
 		}
 		return true
+	}
+
+	private _isMeasure(series: D.Series, type: string | null): series is D.Measure {
+		if (type === 'measure' || ('unit' in series && typeof series.unit === 'string')) {
+			return true
+		}
+		return false
 	}
 
 	private _validateIndexedDimension(series: D.IndexDimension): void {
@@ -132,7 +140,7 @@ export class Data {
 		}
 	}
 
-	private _detectType(values: D.Values): D.SeriesType | null {
+	private _detectType(values: DataTypes[]): D.SeriesType | null {
 		if (Array.isArray(values) && values.length) {
 			if (typeof values[0] === 'number' || values[0] === null) {
 				return 'measure'
@@ -185,7 +193,7 @@ export class Data {
 		return true
 	}
 
-	private _convertDimension(values: D.Values): { categories: string[]; indexes: number[] } {
+	private _convertDimension(values: DataTypes[]): { categories: string[]; indexes: number[] } {
 		const uniques = new Map()
 		const categories: string[] = []
 		const indexes = new Array(values.length)
