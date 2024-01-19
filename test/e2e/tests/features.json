@@ -13,6 +13,9 @@
 		"data_input/object_records": {
 			"refs": ["9d5443f"]
 		},
+		"events/drawing_events": {
+			"refs": ["ed448a0"]
+		},
 		"subtitle_caption": {
 			"refs": ["5c04f20"]
 		},

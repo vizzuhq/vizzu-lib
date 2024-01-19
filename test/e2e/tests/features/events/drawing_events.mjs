@@ -31,12 +31,26 @@ function overlay(e, chart) {
 	ctx.strokeStyle = '#FF0000A0'
 	if (!e.detail.relative) {
 		if (e.detail.outerRect) {
-			const size = e.detail.outerRect.size
 			const t = e.detail.outerRect.transform
+			const in_pos = e.detail.innerRect.pos
+			const width = ctx.measureText(e.detail.text).width
+			const metrics = ctx.measureText('Op')
+			const height = metrics.actualBoundingBoxAscent + metrics.actualBoundingBoxDescent
+
 			ctx.transform(t[0][0], t[1][0], t[0][1], t[1][1], t[0][2], t[1][2])
-			ctx.fillRect(0, 0, size.x, size.y)
-			ctx.fillStyle = '#FF0000A0'
-			if (e.detail.text) ctx.fillText(e.detail.text, 0, size.y)
+			ctx.translate(in_pos.x, in_pos.y)
+			if (e.detail.innerRect.size.x > width) {
+				ctx.translate((e.detail.innerRect.size.x - width) / 2 * (1 + e.detail.align), 0)
+			}
+
+			ctx.fillRect(0, 0, width, height)
+			if (e.detail.text) {
+				ctx.fillStyle = '#FF0000A0'
+				ctx.textAlign = 'left'
+				ctx.textBaseline = 'top'
+				console.log(e)
+				ctx.fillText(e.detail.text, 0, 0)
+			}
 		} else if (e.detail.rect && e.detail.rect.pos && e.detail.rect.size) {
 			const r = e.detail.rect
 			ctx.fillRect(r.pos.x, r.pos.y, r.size.x, r.size.y)
@@ -81,8 +95,8 @@ function setupEvents(chart) {
 			if (e.type === 'title-draw' && e.detail.text === '') return
 			overlay(e, chart)
 			receivedEvents.push(e)
-			//      e.renderingContext.globalAlpha = 0.5;
-			e.preventDefault()
+			e.renderingContext.globalAlpha = 0.5;
+			//      e.preventDefault()
 		})
 	})
 	chart.on('draw-complete', (e) => {
