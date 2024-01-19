@@ -23,7 +23,7 @@ public:
 	struct OnUpdateDetail
 	{
 		::Anim::Duration position;
-		[[maybe_unused]] double progress;
+		[[maybe_unused]] double progress{};
 	};
 
 	struct OnUpdateEvent :
@@ -77,7 +77,7 @@ public:
 	{
 		Geom::TransformedRect outerRect;
 		[[maybe_unused]] Geom::Rect innerRect;
-		[[maybe_unused]] double align;
+		[[maybe_unused]] double align{};
 		std::string_view text;
 	};
 

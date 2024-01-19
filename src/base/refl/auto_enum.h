@@ -32,13 +32,13 @@ namespace Detail
 {
 template <class T> using real_t = std::underlying_type_t<T>;
 
-template <class E, real_t<E> From = 0, real_t<E> To = 0>
+template <class E, real_t<E> From, real_t<E> To>
 consteval std::pair<real_t<E>, real_t<E>> from_to()
 {
 	if constexpr (std::is_signed_v<real_t<E>>
 	              && !Name::name<E, static_cast<E>(From - 1)>()
 	                      .empty())
-		return from_to<E, From - 1>();
+		return from_to<E, From - 1, To>();
 	else if constexpr (!Name::name<E, static_cast<E>(To)>().empty())
 		return from_to<E, From, To + 1>();
 	else
@@ -47,7 +47,7 @@ consteval std::pair<real_t<E>, real_t<E>> from_to()
 
 template <class E> consteval real_t<E> count()
 {
-	auto [from, to] = from_to<E>();
+	auto [from, to] = from_to<E, 0, 0>();
 	return static_cast<real_t<E>>(to - from);
 }
 
@@ -56,9 +56,7 @@ concept UniqueNames = requires {
 	static_cast<std::string_view>(unique_enum_names(E{}));
 };
 
-template <class E,
-    real_t<E> first = from_to<E>().first,
-    real_t<E>... Ix>
+template <class E, real_t<E>... Ix>
 consteval auto whole_array(
     std::integer_sequence<real_t<E>, Ix...> = {})
 {
@@ -69,6 +67,7 @@ consteval auto whole_array(
 		return res;
 	}
 	else {
+		constexpr auto first = Detail::from_to<E, 0, 0>().first;
 		std::array<char,
 		    (Name::name<E, static_cast<E>(Ix + first)>().size() + ...
 		        + (sizeof...(Ix) - 1))>
@@ -116,10 +115,9 @@ consteval auto get_names(std::index_sequence<Ix...> = {})
 
 template <class E> constexpr std::array enum_names = get_names<E>();
 
-template <class E,
-    Detail::real_t<E> first = Detail::from_to<E>().first>
-std::string enum_name(E name)
+template <class E> std::string enum_name(E name)
 {
+	constexpr auto first = Detail::from_to<E, 0, 0>().first;
 	constexpr auto n = std::size(enum_names<E>);
 	if (static_cast<std::size_t>(
 	        static_cast<Detail::real_t<E>>(name) - first)
@@ -133,10 +131,9 @@ std::string enum_name(E name)
 	    static_cast<std::intptr_t>(n - first));
 }
 
-template <class E,
-    Detail::real_t<E> first = Detail::from_to<E>().first>
-constexpr E get_enum(const std::string_view &data)
+template <class E> constexpr E get_enum(const std::string_view &data)
 {
+	constexpr auto first = Detail::from_to<E, 0, 0>().first;
 	Detail::real_t<E> ix{};
 	for (auto v : enum_names<E>) {
 		if (v == data) break;
