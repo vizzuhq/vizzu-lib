@@ -30,6 +30,9 @@
 		},
 		"detach": {
 			"refs": ["e3b0c44"]
+		},
+		"data_input/category_indexed": {
+			"refs": ["f978aac"]
 		}
 	}
 }

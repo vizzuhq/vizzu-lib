@@ -108,7 +108,7 @@ export class Data {
 
 	private _validateIndexedDimension(series: D.IndexDimension): void {
 		if (series.values && Array.isArray(series.values)) {
-			let max = 0
+			const max = series.categories.length
 			for (const value of series.values) {
 				if (value === null) {
 					continue
@@ -116,19 +116,15 @@ export class Data {
 
 				const numberValue = Number(value)
 
-				if (Number.isInteger(numberValue)) {
-					throw new Error('invalid category values')
+				if (!Number.isInteger(numberValue)) {
+					throw new Error('invalid category value (not an int): ' + numberValue)
 				}
 				if (numberValue < 0) {
-					throw new Error('invalid category values')
+					throw new Error('invalid category value (negative): ' + numberValue)
 				}
-				if (numberValue > max) {
-					max = numberValue
+				if (numberValue >= max) {
+					throw new Error('invalid category value (out of range): ' + numberValue)
 				}
-			}
-
-			if (max && max >= series.categories.length) {
-				throw new Error('invalid category values')
 			}
 		}
 		if (new Set(series.categories).size !== series.categories.length) {
