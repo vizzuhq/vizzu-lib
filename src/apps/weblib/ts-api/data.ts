@@ -168,8 +168,8 @@ export class Data {
 			throw new Error('third parameter should be an array of strings')
 		}
 
-		if (!this._isMeasureArray(indexes)) {
-			throw new Error('the mesaure index array element should be number')
+		if (!this._isDimensionIndex(indexes)) {
+			throw new Error('the measure index array element should be number')
 		}
 
 		this._cData.addDimension(name, indexes, categories)
@@ -184,9 +184,11 @@ export class Data {
 		return true
 	}
 
-	private _isMeasureArray(values: unknown[]): values is string[] {
+	private _isDimensionIndex(values: unknown[]): values is string[] {
 		for (const value of values) {
-			if (value !== null && typeof value !== 'number') {
+			const numberValue = Number(value)
+
+			if (!numberValue || !Number.isInteger(numberValue) || numberValue < 0) {
 				return false
 			}
 		}
