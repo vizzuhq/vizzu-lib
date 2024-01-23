@@ -34,10 +34,10 @@ enum class adding_type {
 
 struct custom_aggregator
 {
+	std::string name;
 	using id_type = std::any;
-	std::function<std::pair<id_type, std::string>(std::string_view)>
-	    create;
-	std::function<double(const id_type &, double)> add;
+	std::function<id_type()> create;
+	std::function<double(id_type &, double)> add;
 };
 
 class dataframe_interface :
@@ -75,7 +75,7 @@ public:
 
 	virtual void add_dimension(
 	    std::span<const char *> dimension_categories,
-	    std::span<std::size_t> dimension_indices,
+	    std::span<std::size_t> dimension_values,
 	    const char *name,
 	    adding_type adding_strategy = adding_type::create_or_add,
 	    std::span<std::pair<const char *, const char *>> info =
@@ -131,6 +131,8 @@ public:
 
 	virtual cell_value get_data(record_identifier record_id,
 	    series_identifier column) const & = 0;
+
+	virtual std::size_t get_record_count() const & = 0;
 
 	virtual void visit(std::function<void(record_type)>) const & = 0;
 };
