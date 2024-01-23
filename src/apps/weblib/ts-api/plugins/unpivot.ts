@@ -99,7 +99,7 @@ export default class UnPivot {
 				values = values.concat(valuesItem)
 			}
 
-			const seriesItem:Data.Dimension | Data.Measure = {
+			const seriesItem: Data.Dimension | Data.Measure = {
 				name: item.name,
 				type: 'dimension',
 				values

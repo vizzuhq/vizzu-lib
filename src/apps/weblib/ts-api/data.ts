@@ -86,7 +86,7 @@ export class Data {
 			this._addDimension(series.name, series.values ?? [], series.categories)
 		} else {
 			const values = series.values ? series.values : ([] as DataTypes[])
-			const seriesType = series.type ? series.type : this._detectType(values)
+			const seriesType = series?.type ?? this._detectType(values)
 
 			if (seriesType === 'dimension') {
 				const { indexes, categories } = this._convertDimension(values)
@@ -208,7 +208,7 @@ export class Data {
 			if (uniqueIndex === undefined) {
 				uniqueIndex = categories.length
 				uniques.set(value, uniqueIndex)
-				categories.push(value).toString()
+				categories.push(value)
 			}
 
 			indexes[index] = uniqueIndex

@@ -47,7 +47,7 @@ definitions:
                 $ref: SeriesType
         required: [name]
 
-    BaseDimension: 
+    BaseDimension:
         $extends: SeriesBase
         description: Name of a dimension data series.
         type: object
@@ -180,7 +180,7 @@ definitions:
                     the type of the first value. Number type will result in measure, 
                     string type will result in dimension.
                 type: string
-                enum: [measure]            
+                enum: [measure]
         required: [type]
 
     ImplicitMeasure:
@@ -261,7 +261,7 @@ definitions:
             length:
                 description: Count of values in the series.
                 type: number
-        required: [type, range,unit, length]
+        required: [type, range, unit, length]
 
     SeriesInfo:
         description: MetaInfo for different series types.
@@ -350,7 +350,7 @@ definitions:
                     The information about the data series in the records of the data set. 
                     Note: not needed if it was previously specified.
                 type: array
-                items: 
+                items:
                     $ref: Series
             records:
                 description: The array of data records that make up the data set.
