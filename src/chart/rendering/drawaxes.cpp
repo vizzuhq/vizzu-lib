@@ -338,7 +338,7 @@ void DrawAxes::drawDimensionLabel(bool horizontal,
 			        *rootEvents.draw.plot.axis.label,
 			        Events::Targets::axisLabel(category,
 			            categoryVal,
-			            str.value,
+			            categoryVal,
 			            horizontal));
 		    };
 

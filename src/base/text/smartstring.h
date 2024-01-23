@@ -22,7 +22,7 @@ namespace SmartString
     bool ignoreEmpty = false,
     const char *parens = nullptr);
 
-void trim(std::string &string, int (*ignore)(int) = &isspace);
+void trim(std::string &string);
 
 [[nodiscard]] std::string fromPhysicalValue(double value,
     NumberFormat format = NumberFormat::none,

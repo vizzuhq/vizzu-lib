@@ -280,9 +280,13 @@ export interface LineDrawEvent<T> extends Event<T> {
 	detail: LineDrawDetail
 }
 
+/** Event of drawing a text. */
 export interface TextDrawDetail {
+	/** The transformed rectangle of the text with padding. */
 	outerRect: TransformedRect
+	/** The rectangle of the text without padding, relative to outerRect. */
 	innerRect: Rect
+	/** The horizontal alignment of the text which can take a value between -1 (left align) and 1 (right align). */
 	align: number
 	text: string
 }

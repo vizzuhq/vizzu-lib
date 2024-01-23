@@ -102,7 +102,7 @@ void DrawLegend::drawDimension(const Info &info) const
 			        Events::Targets::legendLabel(
 			            info.dimension.category,
 			            value.second.categoryValue,
-			            weighted.value,
+			            value.second.categoryValue,
 			            info.type),
 			        {.alpha = alpha * weighted.weight});
 		    });

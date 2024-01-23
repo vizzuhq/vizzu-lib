@@ -61,10 +61,10 @@ struct Padding
 	{
 		return {size.x
 		            + (*paddingLeft + *paddingRight)
-		                  .getInv(size.x, fontSize),
+		                  .fromNet(size.x, fontSize),
 		    size.y
 		        + (*paddingTop + *paddingBottom)
-		              .getInv(size.y, fontSize)};
+		              .fromNet(size.y, fontSize)};
 	}
 };
 

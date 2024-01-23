@@ -12,8 +12,12 @@
 
 namespace Text::SmartString
 {
-void trim(std::string &string, int (*ignore)(int))
+void trim(std::string &string)
 {
+	auto ignore = [](unsigned char c)
+	{
+		return std::isspace(c);
+	};
 	string.erase(string.begin(),
 	    std::find_if_not(string.begin(), string.end(), ignore));
 	string.erase(

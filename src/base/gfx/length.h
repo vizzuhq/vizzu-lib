@@ -50,12 +50,12 @@ public:
 		     + emphemeral * fontSize;
 	}
 
-	[[nodiscard]] double getInv(double solution,
+	[[nodiscard]] double fromNet(double netReference,
 	    double fontSize) const
 	{
 		if (relative == 1.0)
 			throw std::logic_error("padding relative is 1.0");
-		return get(solution, fontSize) / (1 - relative);
+		return get(netReference, fontSize) / (1 - relative);
 	}
 
 	[[nodiscard]] double get() const
