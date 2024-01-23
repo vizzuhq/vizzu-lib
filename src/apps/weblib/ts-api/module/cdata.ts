@@ -46,22 +46,17 @@ export class CData extends CObject {
 
 		const categoriesPtrArr = this._wasm._malloc(categoriesPointerArrayLen)
 
-		new Uint8Array(
-			this._wasm.HEAPU8.buffer,
-			categoriesPtrArr,
-			categoriesPointerArrayLen
-		).set(new Uint8Array(categoriesPointer.buffer))
+		new Uint8Array(this._wasm.HEAPU8.buffer, categoriesPtrArr, categoriesPointerArrayLen).set(
+			new Uint8Array(categoriesPointer.buffer)
+		)
 
 		const indexesPointerArrayLen = indexes.length * 4
 
 		const indexesArr = this._wasm._malloc(indexesPointerArrayLen)
-		
-		new Uint8Array(
-			this._wasm.HEAPU8.buffer,
-			indexesArr,
-			indexesPointerArrayLen
+
+		new Uint8Array(this._wasm.HEAPU8.buffer, indexesArr, indexesPointerArrayLen).set(
+			new Uint8Array(new Uint32Array(indexes).buffer)
 		)
-		.set(new Uint8Array(new Uint32Array(indexes).buffer))
 
 		const cname = this._toCString(name)
 
