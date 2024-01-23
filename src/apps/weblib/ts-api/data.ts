@@ -85,7 +85,7 @@ export class Data {
 			this._validateIndexedDimension(series)
 			this._addDimension(series.name, series.values ?? [], series.categories)
 		} else {
-			const values = series.values ? series.values : ([] as DataTypes[])
+			const values = series?.values ?? ([] as DataTypes[])
 			const seriesType = series?.type ?? this._detectType(values)
 
 			if (seriesType === 'dimension') {
