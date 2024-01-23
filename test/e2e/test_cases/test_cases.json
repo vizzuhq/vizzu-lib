@@ -14,7 +14,7 @@
 			"refs": ["6afdaee"]
 		},
 		"basic_animations/anim_order/rectangle_without_2_polar_bar": {
-			"refs": ["20adc0f"]
+			"refs": ["3c94ea2"]
 		},
 		"basic_animations/anim_order/rectangle_without_2_polar_column": {
 			"refs": ["a211aab"]
@@ -23,7 +23,7 @@
 			"refs": ["7b3d87d"]
 		},
 		"basic_animations/coordsystems/circle_without_2_carte": {
-			"refs": ["e06b6e8"]
+			"refs": ["a5fbab1"]
 		},
 		"basic_animations/coordsystems/rectangle_carte_2_polar": {
 			"refs": ["6109049"]
@@ -38,16 +38,16 @@
 			"refs": ["6d34d02"]
 		},
 		"basic_animations/labels/marker/area_2dis_3con": {
-			"refs": ["39a8de7"]
+			"refs": ["14205b5"]
 		},
 		"basic_animations/labels/marker/circle_negative_2dis_3con": {
 			"refs": ["db72798"]
 		},
 		"basic_animations/labels/marker/line_2dis_3con": {
-			"refs": ["a1c8ac0"]
+			"refs": ["0d4cd3d"]
 		},
 		"basic_animations/labels/marker/padding_test_rectangle_negative_2dis_3con": {
-			"refs": ["5df3408"]
+			"refs": ["dde0d76"]
 		},
 		"basic_animations/labels/marker/rectangle_negative_2dis_3con": {
 			"refs": ["1d1c034"]
@@ -56,7 +56,7 @@
 			"refs": ["6ee1ac0"]
 		},
 		"basic_animations/legend_transitions/color_2discrete_anim": {
-			"refs": ["955eea3"]
+			"refs": ["baab9d3"]
 		},
 		"basic_animations/legend_transitions/color_conti_anim": {
 			"refs": ["adbb6e4"]
@@ -767,7 +767,7 @@
 			"refs": ["41b15a6"]
 		},
 		"web_content/analytical_operations/sum/scatterplot": {
-			"refs": ["eda6d14"]
+			"refs": ["b77d3f6"]
 		},
 		"web_content/analytical_operations/sum/stream_stacked": {
 			"refs": ["28bf2a4"]

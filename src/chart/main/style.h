@@ -4,6 +4,7 @@
 #include "base/anim/interpolated.h"
 #include "base/geom/angle.h"
 #include "base/geom/rect.h"
+#include "base/gfx/canvas.h"
 #include "base/gfx/color.h"
 #include "base/gfx/colorgradient.h"
 #include "base/gfx/colorpalette.h"
@@ -41,12 +42,29 @@ struct Padding
 		    paddingRight->get(size.x, fontSize)};
 	}
 
+	[[nodiscard]] GUI::Margin toInvMargin(const Geom::Size &size,
+	    double fontSize) const
+	{
+		return toMargin(extendSize(size, fontSize), fontSize);
+	}
+
 	[[nodiscard]] Geom::Rect contentRect(const Geom::Rect &rect,
 	    double fontSize) const
 	{
 		auto margin = toMargin(rect.size, fontSize);
 		return {rect.pos + margin.topLeft(),
 		    Geom::Size(rect.size - margin.getSpace()).positive()};
+	}
+
+	[[nodiscard]] Geom::Size extendSize(const Geom::Size &size,
+	    double fontSize) const
+	{
+		return {size.x
+		            + (*paddingLeft + *paddingRight)
+		                  .fromNet(size.x, fontSize),
+		    size.y
+		        + (*paddingTop + *paddingBottom)
+		              .fromNet(size.y, fontSize)};
 	}
 };
 
@@ -103,7 +121,11 @@ struct Font
 
 struct Text
 {
-	enum class TextAlign { center, left, right };
+	enum class TextAlign : std::int8_t {
+		left = -1,
+		center = 0,
+		right = 1
+	};
 
 	Param<Gfx::Color> color;
 	Param<Anim::Interpolated<TextAlign>> textAlign;
@@ -121,7 +143,15 @@ struct Box
 };
 
 struct Label : Padding, Font, Text
-{};
+{
+	[[nodiscard]] double getHeight() const
+	{
+		auto font = Gfx::Font{*this};
+		auto textHeight = Gfx::ICanvas::textBoundary(font, "").y;
+		return paddingTop->get(textHeight, font.size)
+		     + paddingBottom->get(textHeight, font.size) + textHeight;
+	}
+};
 
 struct Tick
 {

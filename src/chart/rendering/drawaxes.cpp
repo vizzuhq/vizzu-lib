@@ -172,11 +172,9 @@ void DrawAxes::drawTitle(Gen::ChannelId axisIndex) const
 
 			const Gfx::Font font(titleStyle);
 			canvas.setFont(font);
-			auto textBoundary =
-			    Gfx::ICanvas::textBoundary(font, title.value);
-			auto textMargin =
-			    titleStyle.toMargin(textBoundary, font.size);
-			auto size = textBoundary + textMargin.getSpace();
+			auto size = titleStyle.extendSize(
+			    Gfx::ICanvas::textBoundary(font, title.value),
+			    font.size);
 
 			auto relCenter = getTitleBasePos(axisIndex, index);
 
@@ -225,8 +223,6 @@ void DrawAxes::drawTitle(Gen::ChannelId axisIndex) const
 			          * Geom::AffineTransform(center, 1.0, angle)
 			          * Geom::AffineTransform((orientedSize / -2.0));
 
-			canvas.setTextColor(*titleStyle.color * weight);
-
 			auto realAngle = Geom::Angle(-posAngle + angle).rad();
 			auto upsideDown =
 			    realAngle > M_PI / 2.0 && realAngle < 3 * M_PI / 2.0;
@@ -238,7 +234,7 @@ void DrawAxes::drawTitle(Gen::ChannelId axisIndex) const
 			    *rootEvents.draw.plot.axis.title,
 			    Events::Targets::axisTitle(title.value,
 			        axisIndex == Gen::ChannelId::x),
-			    DrawLabel::Options(false, 1.0, upsideDown));
+			    {.alpha = weight, .flip = upsideDown});
 
 			canvas.restore();
 		}
@@ -284,8 +280,10 @@ void DrawAxes::drawDimensionLabel(bool horizontal,
 	    horizontal ? Gen::ChannelId::x : Gen::ChannelId::y;
 	const auto &labelStyle = rootStyle.plot.getAxis(axisIndex).label;
 
+	auto drawLabel = OrientedLabel{{ctx()}};
 	labelStyle.position->visit(
 	    [this,
+	        &drawLabel,
 	        &labelStyle,
 	        &it,
 	        &horizontal,
@@ -294,7 +292,6 @@ void DrawAxes::drawDimensionLabel(bool horizontal,
 	        normal = Geom::Point::Ident(!horizontal),
 	        &text = it->second.label,
 	        &categoryVal = it->second.categoryValue,
-	        textColor = *labelStyle.color,
 	        &weight,
 	        &category](int index, const auto &position)
 	    {
@@ -331,20 +328,18 @@ void DrawAxes::drawDimensionLabel(bool horizontal,
 		    auto draw = [&](const ::Anim::Weighted<std::string> &str,
 		                    double plusWeight = 1.0)
 		    {
-			    OrientedLabel::create(canvas,
+			    drawLabel.draw(canvas,
 			        str.value,
 			        posDir,
 			        labelStyle,
-			        0)
-			        .draw(canvas,
-			            renderedChart,
-			            textColor * weight * str.weight * plusWeight,
-			            *labelStyle.backgroundColor,
-			            *rootEvents.draw.plot.axis.label,
-			            Events::Targets::axisLabel(category,
-			                categoryVal,
-			                str.value,
-			                horizontal));
+			        0,
+			        weight * str.weight * plusWeight,
+			        1.0,
+			        *rootEvents.draw.plot.axis.label,
+			        Events::Targets::axisLabel(category,
+			            categoryVal,
+			            categoryVal,
+			            horizontal));
 		    };
 
 		    if (labelStyle.position->interpolates()

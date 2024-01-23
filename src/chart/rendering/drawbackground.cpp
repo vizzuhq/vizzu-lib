@@ -1,7 +1,5 @@
 #include "drawbackground.h"
 
-#include "chart/main/events.h"
-
 namespace Vizzu::Draw
 {
 

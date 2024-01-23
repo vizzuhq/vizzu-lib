@@ -5,7 +5,7 @@
 ### Fixed
 
 - Json serializer control character escape fixed. Some unicode characters
-  were not escaped properly. 
+  were not escaped properly.
 - Fix dimension label transition on axis and legend.
 - Through event handler call, when a new event handler is registered, undefined behaviour happened.
 
@@ -14,9 +14,10 @@
 - Added optional `categories` member to the `legend-marker`, `legend-label` and `plot-axis-label` events.
 - Remove unused marker selection and selected marker coloring.
 - Remove cursor modification over logo.
-- Make `channel.step` option to work on dimensions. 
-- When X axis dimension labels are close to each other, they are rotated to avoid overlapping. 
+- Make `channel.step` option to work on dimensions.
+- When X axis dimension labels are close to each other, they are rotated to avoid overlapping.
 - The event handler registration order changed. Now the handlers are called in the opposite order of the registration.
+- Added the padded rectangle, the bounding rectangle and the align parameter to the draw text event object.
 
 ## [0.9.3] - 2023-12-20
 

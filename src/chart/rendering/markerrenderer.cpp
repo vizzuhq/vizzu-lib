@@ -296,23 +296,20 @@ void MarkerRenderer::drawLabel(Gfx::ICanvas &canvas,
 		    return abstractMarker.getLabelPos(position, coordSys);
 	    });
 
-	auto textColor = (*labelStyle.filter)(color)*weight;
-	auto bgColor = *labelStyle.backgroundColor * weight;
+	canvas.setTextColor((*labelStyle.filter)(color)*weight);
 
 	auto centered = labelStyle.position->factor<double>(
 	    Styles::MarkerLabel::Position::center);
 
-	OrientedLabel::create(canvas,
+	OrientedLabel{{ctx()}}.draw(canvas,
 	    text,
 	    labelPos,
 	    labelStyle,
-	    centered)
-	    .draw(canvas,
-	        renderedChart,
-	        textColor,
-	        bgColor,
-	        *rootEvents.draw.plot.marker.label,
-	        Events::Targets::markerLabel(text, marker));
+	    centered,
+	    {},
+	    weight,
+	    *rootEvents.draw.plot.marker.label,
+	    Events::Targets::markerLabel(text, marker));
 }
 
 std::string MarkerRenderer::getLabelText(

@@ -21,8 +21,8 @@ void DrawLegend::draw(Gfx::ICanvas &canvas,
 	    .contentRect = contentRect,
 	    .type = channelType,
 	    .weight = weight,
-	    .itemHeight = DrawLabel::getHeight(style.label),
-	    .titleHeight = DrawLabel::getHeight(style.title),
+	    .itemHeight = style.label.getHeight(),
+	    .titleHeight = style.title.getHeight(),
 	    .markerSize = style.marker.size->get(contentRect.size.y,
 	        style.label.calculatedSize()),
 	    .measure = plot->measureAxises.at(channelType),
@@ -66,8 +66,7 @@ void DrawLegend::drawTitle(const Info &info) const
 		        style.title,
 		        *events.title,
 		        Events::Targets::legendTitle(title.value, info.type),
-		        DrawLabel::Options(true,
-		            title.weight * info.weight * mul));
+		        {.alpha = title.weight * info.weight * mul});
 	    });
 }
 
@@ -103,10 +102,9 @@ void DrawLegend::drawDimension(const Info &info) const
 			        Events::Targets::legendLabel(
 			            info.dimension.category,
 			            value.second.categoryValue,
-			            weighted.value,
+			            value.second.categoryValue,
 			            info.type),
-			        DrawLabel::Options(true,
-			            alpha * weighted.weight));
+			        {.alpha = alpha * weighted.weight});
 		    });
 	}
 }
@@ -216,7 +214,7 @@ void DrawLegend::extremaLabel(const Info &info,
 	    style.label,
 	    *events.label,
 	    Events::Targets::legendLabel({}, {}, text, info.type),
-	    DrawLabel::Options(true, info.measureWeight * plusWeight));
+	    {.alpha = info.measureWeight * plusWeight});
 }
 
 Geom::Rect DrawLegend::getBarRect(const Info &info)

@@ -114,7 +114,6 @@ void DrawInterlacing::draw(
 		    weight * static_cast<double>(enabled.axisSticks);
 
 		auto textAlpha = weight * static_cast<double>(enabled.labels);
-		auto textColor = *axisStyle.label.color * textAlpha;
 
 		if (rangeSize <= 0) return;
 
@@ -150,7 +149,6 @@ void DrawInterlacing::draw(
 					    {rect.size.flip()}};
 
 				if (text) {
-					canvas.setTextColor(textColor);
 					canvas.setFont(Gfx::Font{axisStyle.label});
 
 					if (!clipBottom) {
@@ -159,13 +157,13 @@ void DrawInterlacing::draw(
 						    rect.bottomLeft().comp(!horizontal)
 						    + origo.comp(horizontal);
 
-						if (textColor.alpha > 0)
+						if (textAlpha > 0)
 							drawDataLabel(axisEnabled,
 							    horizontal,
 							    tickPos,
 							    value,
 							    axis.unit,
-							    textColor);
+							    textAlpha);
 
 						if (tickIntensity > 0)
 							drawSticks(tickIntensity,
@@ -178,13 +176,13 @@ void DrawInterlacing::draw(
 						    rect.topRight().comp(!horizontal)
 						    + origo.comp(horizontal);
 
-						if (textColor.alpha > 0)
+						if (textAlpha > 0)
 							drawDataLabel(axisEnabled,
 							    horizontal,
 							    tickPos,
 							    value,
 							    axis.unit,
-							    textColor);
+							    textAlpha);
 
 						if (tickIntensity > 0)
 							drawSticks(tickIntensity,
@@ -225,14 +223,16 @@ void DrawInterlacing::drawDataLabel(
     const Geom::Point &tickPos,
     double value,
     const ::Anim::Interpolated<std::string> &unit,
-    const Gfx::Color &textColor) const
+    double alpha) const
 {
 	auto axisIndex =
 	    horizontal ? Gen::ChannelId::y : Gen::ChannelId::x;
 	const auto &labelStyle = rootStyle.plot.getAxis(axisIndex).label;
 
+	auto drawLabel = OrientedLabel{{ctx()}};
 	labelStyle.position->visit(
 	    [this,
+	        &drawLabel,
 	        &labelStyle,
 	        &axisEnabled,
 	        &tickPos,
@@ -240,7 +240,7 @@ void DrawInterlacing::drawDataLabel(
 	        normal = Geom::Point::Ident(horizontal),
 	        &unit,
 	        &value,
-	        &textColor](int index, const auto &position)
+	        &alpha](int index, const auto &position)
 	    {
 		    if (labelStyle.position->interpolates()
 		        && !axisEnabled
@@ -273,6 +273,7 @@ void DrawInterlacing::drawDataLabel(
 		                       Styles::AxisLabel::Side::negative);
 		    unit.visit(
 		        [this,
+		            &drawLabel,
 		            &unit,
 		            &labelStyle,
 		            &index,
@@ -281,7 +282,7 @@ void DrawInterlacing::drawDataLabel(
 		                         .convertDirectionAt(
 		                             {refPos, refPos + normal})
 		                         .extend(1 - 2 * under),
-		            &textColor,
+		            &alpha,
 		            &position,
 		            &horizontal](int index2, const auto &wUnit)
 		        {
@@ -296,22 +297,18 @@ void DrawInterlacing::drawDataLabel(
 			                    *labelStyle.maxFractionDigits),
 			                *labelStyle.numberScale,
 			                unitStr);
-			        OrientedLabel::create(canvas,
+			        drawLabel.draw(canvas,
 			            str,
 			            posDir,
 			            labelStyle,
-			            0)
-			            .draw(canvas,
-			                renderedChart,
-			                textColor * position.weight
-			                    * wUnit.weight,
-			                *labelStyle.backgroundColor
-			                    * wUnit.weight,
-			                *rootEvents.draw.plot.axis.label,
-			                Events::Targets::axisLabel({},
-			                    {},
-			                    str,
-			                    !horizontal));
+			            0,
+			            alpha * position.weight * wUnit.weight,
+			            wUnit.weight,
+			            *rootEvents.draw.plot.axis.label,
+			            Events::Targets::axisLabel({},
+			                {},
+			                str,
+			                !horizontal));
 		        });
 	    });
 }

@@ -23,7 +23,7 @@ public:
 	struct OnUpdateDetail
 	{
 		::Anim::Duration position;
-		double progress{};
+		[[maybe_unused]] double progress{};
 	};
 
 	struct OnUpdateEvent :
@@ -75,7 +75,9 @@ public:
 
 	struct OnTextDrawDetail
 	{
-		Geom::TransformedRect rect;
+		Geom::TransformedRect outerRect;
+		[[maybe_unused]] Geom::Rect innerRect;
+		[[maybe_unused]] double align{};
 		std::string_view text;
 	};
 
@@ -83,11 +85,11 @@ public:
 	    public OnDrawEvent,
 	    public OnTextDrawDetail
 	{
-		OnTextDrawEvent(const Util::EventTarget &target,
-		    const Geom::TransformedRect &rect,
-		    const std::string_view &text) :
+		template <class... Ts>
+		explicit OnTextDrawEvent(const Util::EventTarget &target,
+		    Ts &&...ts) :
 		    OnDrawEvent(&target),
-		    OnTextDrawDetail{rect, text}
+		    OnTextDrawDetail{std::forward<Ts>(ts)...}
 		{}
 
 		void appendToJSON(Conv::JSON &json) const override

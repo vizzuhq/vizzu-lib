@@ -62,8 +62,8 @@ void DrawChart::drawHeading(Gfx::ICanvas &canvas,
 			            style,
 			            event,
 			            targetGetter(*weighted.value),
-			            DrawLabel::Options(true,
-			                std::max(weighted.weight * 2 - 1, 0.0)));
+			            {.alpha = std::max(weighted.weight * 2 - 1,
+			                 0.0)});
 		        }
 	        });
 }

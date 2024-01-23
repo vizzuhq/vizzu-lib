@@ -550,10 +550,10 @@ Chart Chart::def()
 			.logo = {
 				Padding
 				{
-					.paddingTop = Gfx::Length::Relative(0.475),
-					.paddingRight = Gfx::Length::Relative(0.4),
-					.paddingBottom = Gfx::Length::Relative(0.475),
-					.paddingLeft = Gfx::Length::Relative(0.4)
+					.paddingTop = Gfx::Length::Relative(19./78.),
+					.paddingRight = Gfx::Length::Relative(2./9.),
+					.paddingBottom = Gfx::Length::Relative(19./78.),
+					.paddingLeft = Gfx::Length::Relative(2./9.)
 				},
 				LogoParams
 				{
