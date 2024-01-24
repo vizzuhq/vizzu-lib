@@ -184,11 +184,11 @@ export class Data {
 		return true
 	}
 
-	private _isDimensionIndex(values: unknown[]): values is string[] {
-		for (const value of values) {
-			const numberValue = Number(value)
+	private _isDimensionIndex(indexes: unknown[]): indexes is number[] {
+		for (const index of indexes) {
+			const numberValue = Number(index)
 
-			if (!numberValue || !Number.isInteger(numberValue) || numberValue < 0) {
+			if (!Number.isInteger(numberValue) || numberValue < 0) {
 				return false
 			}
 		}
