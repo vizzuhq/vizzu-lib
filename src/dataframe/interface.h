@@ -41,11 +41,13 @@ struct custom_aggregator
 };
 
 class dataframe_interface :
-    std::enable_shared_from_this<dataframe_interface>
+    public std::enable_shared_from_this<dataframe_interface>
 {
 public:
-	using series_identifier = std::variant<const char *, std::size_t>;
-	using record_identifier = std::variant<const char *, std::size_t>;
+	using series_identifier =
+	    std::variant<std::string_view, std::size_t>;
+	using record_identifier =
+	    std::variant<std::string_view, std::size_t>;
 
 	struct record_type
 	{
@@ -56,7 +58,8 @@ public:
 
 	virtual ~dataframe_interface() = default;
 
-	virtual std::shared_ptr<dataframe_interface> copy() const & = 0;
+	[[nodiscard]] virtual std::shared_ptr<dataframe_interface>
+	copy() const & = 0;
 
 	virtual void set_aggregate(series_identifier series,
 	    std::variant<std::monostate,
@@ -75,7 +78,7 @@ public:
 
 	virtual void add_dimension(
 	    std::span<const char *> dimension_categories,
-	    std::span<std::size_t> dimension_values,
+	    std::span<std::uint32_t> dimension_values,
 	    const char *name,
 	    adding_type adding_strategy = adding_type::create_or_add,
 	    std::span<std::pair<const char *, const char *>> info =
@@ -110,31 +113,37 @@ public:
 	    cell_value value) & = 0;
 
 	virtual void fill_na(series_identifier column,
-	    double value) & = 0;
+	    cell_value value) & = 0;
 
-	virtual std::string as_string() const & = 0;
+	[[nodiscard]] virtual std::string as_string() const & = 0;
 
-	virtual std::span<std::string> get_dimensions() const & = 0;
-	virtual std::span<std::string> get_measures() const & = 0;
+	[[nodiscard]] virtual std::span<std::string>
+	get_dimensions() const & = 0;
+	[[nodiscard]] virtual std::span<std::string>
+	get_measures() const & = 0;
 
-	virtual std::span<std::string> get_categories(
+	[[nodiscard]] virtual std::span<std::string> get_categories(
 	    series_identifier dimension) const & = 0;
 
-	virtual std::pair<double, double> get_min_max(
+	[[nodiscard]] virtual std::pair<double, double> get_min_max(
 	    series_identifier measure) const & = 0;
 
-	virtual series_identifier change_series_identifier_type(
+	[[nodiscard]] virtual series_identifier
+	change_series_identifier_type(
 	    const series_identifier &id) const & = 0;
 
-	virtual record_identifier change_record_identifier_type(
+	[[nodiscard]] virtual record_identifier
+	change_record_identifier_type(
 	    const record_identifier &id) const & = 0;
 
-	virtual cell_value get_data(record_identifier record_id,
+	[[nodiscard]] virtual cell_value get_data(
+	    record_identifier record_id,
 	    series_identifier column) const & = 0;
 
-	virtual std::size_t get_record_count() const & = 0;
+	[[nodiscard]] virtual std::size_t get_record_count() const & = 0;
 
-	virtual void visit(std::function<void(record_type)>) const & = 0;
+	virtual void visit(std::function<void(record_type)> function,
+	    bool filtered = true) const & = 0;
 };
 }
 
