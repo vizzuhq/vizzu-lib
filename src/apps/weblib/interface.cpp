@@ -290,31 +290,33 @@ void Interface::setAnimValue(ObjectRegistry::Handle chart,
 void Interface::addDimension(ObjectRegistry::Handle chart,
     const char *name,
     const char **categories,
-    int count)
+    std::uint32_t categoriesCount,
+    const std::uint32_t *categoryIndices,
+    std::uint32_t categoryIndicesCount)
 {
 	if (categories) {
 		getChart(chart)->getTable().addColumn(name,
-		    {categories, static_cast<size_t>(count)});
+		    {categories, categoriesCount},
+		    {categoryIndices, categoryIndicesCount});
 	}
 }
 
 void Interface::addMeasure(ObjectRegistry::Handle chart,
     const char *name,
     const char *unit,
-    double *values,
-    int count)
+    const double *values,
+    std::uint32_t count)
 {
 	getChart(chart)->getTable().addColumn(name,
 	    unit,
-	    {values, static_cast<size_t>(count)});
+	    {values, count});
 }
 
 void Interface::addRecord(ObjectRegistry::Handle chart,
     const char **cells,
-    int count)
+    std::uint32_t count)
 {
-	getChart(chart)->getTable().pushRow(
-	    {cells, static_cast<size_t>(count)});
+	getChart(chart)->getTable().pushRow({cells, count});
 }
 
 const char *Interface::dataMetaInfo(ObjectRegistry::Handle chart)

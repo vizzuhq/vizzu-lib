@@ -4,6 +4,7 @@ import { CRecord, CData } from './module/cdata.js'
 import { DataRecord } from './datarecord.js'
 import { Mirrored } from './tsutils.js'
 
+type DataTypes = D.DimensionValue | D.MeasureValue
 export class Data {
 	private _cData: CData
 
@@ -80,21 +81,66 @@ export class Data {
 			throw new Error('missing series name')
 		}
 
-		const values = series.values ? series.values : ([] as D.Values)
-
-		const seriesType = series.type ? series.type : this._detectType(values)
-
-		if (seriesType === 'dimension') {
-			this._addDimension(series.name, values)
-		} else if (seriesType === 'measure') {
-			if (!series.unit) series.unit = ''
-			this._addMeasure(series.name, series.unit, values)
+		if (this._isIndexedDimension(series)) {
+			this._validateIndexedDimension(series)
+			this._addDimension(series.name, series.values ?? [], series.categories)
 		} else {
-			throw new Error('invalid series type: ' + series.type)
+			const values = series?.values ?? ([] as DataTypes[])
+			const seriesType = series?.type ?? this._detectType(values)
+
+			if (seriesType === 'dimension') {
+				const { indexes, categories } = this._convertDimension(values)
+				this._addDimension(series.name, indexes, categories)
+			} else if (this._isMeasure(series, seriesType)) {
+				if (!series.unit) series.unit = ''
+				this._addMeasure(series.name, series.unit, values)
+			} else {
+				throw new Error('invalid series type: ' + series.type)
+			}
 		}
 	}
 
-	private _detectType(values: (string | number | null)[]): D.SeriesType | null {
+	private _isIndexedDimension(series: D.Series): series is D.IndexDimension {
+		if (!('categories' in series && Array.isArray(series.categories))) {
+			return false
+		}
+		return true
+	}
+
+	private _isMeasure(series: D.Series, type: string | null): series is D.Measure {
+		if (type === 'measure' || ('unit' in series && typeof series.unit === 'string')) {
+			return true
+		}
+		return false
+	}
+
+	private _validateIndexedDimension(series: D.IndexDimension): void {
+		if (series.values && Array.isArray(series.values)) {
+			const max = series.categories.length
+			for (const value of series.values) {
+				if (value === null) {
+					continue
+				}
+
+				const numberValue = Number(value)
+
+				if (!Number.isInteger(numberValue)) {
+					throw new Error('invalid category value (not an int): ' + numberValue)
+				}
+				if (numberValue < 0) {
+					throw new Error('invalid category value (negative): ' + numberValue)
+				}
+				if (numberValue >= max) {
+					throw new Error('invalid category value (out of range): ' + numberValue)
+				}
+			}
+		}
+		if (new Set(series.categories).size !== series.categories.length) {
+			throw new Error('duplicate category values')
+		}
+	}
+
+	private _detectType(values: DataTypes[]): D.SeriesType | null {
 		if (Array.isArray(values) && values.length) {
 			if (typeof values[0] === 'number' || values[0] === null) {
 				return 'measure'
@@ -105,20 +151,28 @@ export class Data {
 		return null
 	}
 
-	private _addDimension(name: string, dimension: unknown[]): void {
+	private _addDimension(name: string, indexes: number[], categories: string[]): void {
 		if (typeof name !== 'string') {
 			throw new Error('first parameter should be string')
 		}
 
-		if (!(dimension instanceof Array)) {
+		if (!(indexes instanceof Array)) {
 			throw new Error('second parameter should be an array')
 		}
 
-		if (!this._isStringArray(dimension)) {
-			throw new Error('array element should be string')
+		if (!(categories instanceof Array)) {
+			throw new Error('third parameter should be an array')
 		}
 
-		this._cData.addDimension(name, dimension)
+		if (!this._isStringArray(categories)) {
+			throw new Error('third parameter should be an array of strings')
+		}
+
+		if (!this._isDimensionIndex(indexes)) {
+			throw new Error('the measure index array element should be number')
+		}
+
+		this._cData.addDimension(name, indexes, categories)
 	}
 
 	private _isStringArray(values: unknown[]): values is string[] {
@@ -128,6 +182,41 @@ export class Data {
 			}
 		}
 		return true
+	}
+
+	private _isDimensionIndex(indexes: unknown[]): indexes is number[] {
+		for (const index of indexes) {
+			const numberValue = Number(index)
+
+			if (!Number.isInteger(numberValue) || numberValue < 0) {
+				return false
+			}
+		}
+		return true
+	}
+
+	private _convertDimension(values: DataTypes[]): { categories: string[]; indexes: number[] } {
+		const uniques = new Map()
+		const categories: string[] = []
+		const indexes = new Array(values.length)
+
+		for (let index = 0; index < values.length; index++) {
+			const value = values[index]
+			if (typeof value !== 'string') {
+				continue
+			}
+			let uniqueIndex = uniques.get(value)
+
+			if (uniqueIndex === undefined) {
+				uniqueIndex = categories.length
+				uniques.set(value, uniqueIndex)
+				categories.push(value)
+			}
+
+			indexes[index] = uniqueIndex
+		}
+
+		return { categories, indexes }
 	}
 
 	private _addMeasure(name: string, unit: string, values: unknown[]): void {

@@ -92,7 +92,7 @@ protected:
 	{
 		if (row.size() != getColumnCount())
 			throw std::logic_error(
-			    "row size missmatch, line "
+			    "row size mismatch, line "
 			    + std::to_string(getRowCount() + 1) + ", expected "
 			    + std::to_string(getColumnCount()) + " cells, got "
 			    + std::to_string(row.size()));
