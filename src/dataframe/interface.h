@@ -23,7 +23,7 @@ enum class aggregator_type {
 	exists
 };
 
-enum class sort_type { no, less, greater };
+enum class sort_type { less, greater };
 
 enum class adding_type {
 	create_or_add,
@@ -58,8 +58,9 @@ public:
 
 	virtual ~dataframe_interface() = default;
 
-	[[nodiscard]] virtual std::shared_ptr<dataframe_interface>
-	copy() const & = 0;
+	[[nodiscard]] virtual std::shared_ptr<dataframe_interface> copy(
+	    bool remove_filtered = false,
+	    bool inherit_sorting = true) const & = 0;
 
 	virtual void set_aggregate(series_identifier series,
 	    std::variant<std::monostate,
@@ -67,7 +68,7 @@ public:
 	        custom_aggregator> aggregator = {}) & = 0;
 
 	virtual void set_filter(
-	    std::function<bool(record_type)> filter) & = 0;
+	    std::function<bool(record_type)> &&filter) & = 0;
 
 	virtual void set_sort(series_identifier series,
 	    sort_type sort) & = 0;
@@ -119,6 +120,7 @@ public:
 
 	[[nodiscard]] virtual std::span<std::string>
 	get_dimensions() const & = 0;
+
 	[[nodiscard]] virtual std::span<std::string>
 	get_measures() const & = 0;
 
