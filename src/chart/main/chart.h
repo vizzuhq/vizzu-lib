@@ -37,9 +37,10 @@ public:
 	Gen::OptionsSetter getSetter();
 	Styles::Sheet &getStylesheet() { return stylesheet; }
 	Styles::Chart &getStyles() { return actStyles; }
-
-	[[nodiscard]] const Styles::Chart &getComputedStyles() const;
-
+	[[nodiscard]] const Styles::Chart &getComputedStyles() const
+	{
+		return computedStyles;
+	}
 	void setStyles(const Styles::Chart &styles)
 	{
 		actStyles = styles;
@@ -90,6 +91,7 @@ private:
 	Styles::Sheet stylesheet;
 	Styles::Chart actStyles;
 	Styles::Chart prevStyles;
+	Styles::Chart computedStyles;
 	Util::EventDispatcher eventDispatcher;
 	Draw::RenderedChart renderedChart;
 	Events events;
