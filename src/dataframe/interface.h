@@ -65,8 +65,7 @@ public:
 	using any_aggregator_type = std::
 	    variant<std::monostate, aggregator_type, custom_aggregator>;
 
-	using any_sort_type = std::variant<std::monostate,
-	    sort_type,
+	using any_sort_type = std::variant<sort_type,
 	    std::function<std::weak_ordering(std::string_view,
 	        std::string_view)>>;
 
