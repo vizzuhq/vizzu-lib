@@ -62,16 +62,22 @@ public:
 	    bool remove_filtered = false,
 	    bool inherit_sorting = true) const & = 0;
 
+	using any_aggregator_type = std::
+	    variant<std::monostate, aggregator_type, custom_aggregator>;
+
+	using any_sort_type = std::variant<std::monostate,
+	    sort_type,
+	    std::function<std::weak_ordering(std::string_view,
+	        std::string_view)>>;
+
 	virtual void set_aggregate(series_identifier series,
-	    std::variant<std::monostate,
-	        aggregator_type,
-	        custom_aggregator> aggregator = {}) & = 0;
+	    any_aggregator_type aggregator = {}) & = 0;
 
 	virtual void set_filter(
 	    std::function<bool(record_type)> &&filter) & = 0;
 
 	virtual void set_sort(series_identifier series,
-	    sort_type sort) & = 0;
+	    any_sort_type sort) & = 0;
 
 	virtual void set_sort(
 	    std::function<std::weak_ordering(record_type, record_type)>
