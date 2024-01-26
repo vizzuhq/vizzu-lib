@@ -233,10 +233,13 @@ uint64_t Options::generateMarkerInfoId()
 
 void Options::setAutoParameters()
 {
-	if (legend.get().isAuto()) {
-		LegendType tmp = legend.get();
-		tmp.setAuto(getAutoLegend());
-		legend = tmp;
+	if (auto [leg, w] = legend.get(0); leg.isAuto()) {
+		leg.setAuto(getAutoLegend());
+		legend = leg;
+	}
+	else if (w > 0 && leg
+	         && getChannels().at(toChannel(*leg)).isEmpty()) {
+		legend = LegendType{};
 	}
 	if (orientation.get().isAuto()) {
 		auto tmp = orientation.get();
