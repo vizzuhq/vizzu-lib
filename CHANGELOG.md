@@ -8,6 +8,7 @@
   were not escaped properly.
 - Fix dimension label transition on axis and legend.
 - Through event handler call, when a new event handler is registered, undefined behaviour happened.
+- Fix invisible legend when there is no data on that channel.
 
 ### Added
 
