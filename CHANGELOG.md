@@ -8,6 +8,7 @@
   were not escaped properly.
 - Fix dimension label transition on axis and legend.
 - Through event handler call, when a new event handler is registered, undefined behaviour happened.
+- Removed marker's alpha color when tooltip is shown.  
 
 ### Added
 
