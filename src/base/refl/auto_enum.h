@@ -181,9 +181,9 @@ template <class E, class... Args>
 struct EnumVariant : std::variant<Args...>
 {
 	using base_variant = std::variant<Args...>;
+	using base_variant::base_variant;
 
-	[[nodiscard]] explicit(false) constexpr
-	operator E() const noexcept
+	[[nodiscard]] constexpr operator E() const noexcept // NOLINT
 	{
 		return static_cast<E>(base_variant::index());
 	}
