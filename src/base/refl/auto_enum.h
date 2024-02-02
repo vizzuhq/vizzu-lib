@@ -187,6 +187,16 @@ struct EnumVariant : std::variant<Args...>
 	{
 		return static_cast<E>(base_variant::index());
 	}
+
+	using base_variant::emplace;
+
+	template <E value, class... Constr>
+	decltype(auto) emplace(Constr &&...args)
+	{
+		return base_variant::template emplace<
+		    static_cast<std::size_t>(value)>(
+		    std::forward<Constr>(args)...);
+	}
 };
 
 template <auto E, class... Args>

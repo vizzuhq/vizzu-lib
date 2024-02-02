@@ -114,31 +114,39 @@ template <class exception> struct impl_throws_t
 
 struct check_t
 {
-	explicit check_t(src_location loc = src_location()) noexcept :
-	    location(loc)
-	{}
+	explicit check_t(src_location loc = src_location(),
+	    void (*err)(const std::string &,
+	        src_location) = nullptr) noexcept :
+	    location(loc),
+	    throw_error(err)
+	{
+		collection::instance().running_test()->set_latest_location(
+		    loc);
+	}
 
 	explicit(false) check_t(consts::impl_check_t,
 	    src_location loc = src_location()) noexcept :
-	    location(loc)
+	    check_t(loc)
 	{}
 
 	explicit(false) check_t(consts::assert_t,
 	    src_location loc = src_location()) noexcept :
-	    location(loc),
-	    throw_error{+[](const std::string &msg, src_location loc)
-	                {
-		                throw assertion_error(msg, loc);
-	                }}
+	    check_t(
+	        loc,
+	        +[](const std::string &msg, src_location loc)
+	        {
+		        throw assertion_error(msg, loc);
+	        })
 	{}
 
 	explicit(false) check_t(consts::skip_t,
 	    src_location loc = src_location()) noexcept :
-	    location(loc),
-	    throw_error{+[](const std::string &msg, src_location loc)
-	                {
-		                throw skip_error(msg, loc);
-	                }}
+	    check_t(
+	        loc,
+	        +[](const std::string &msg, src_location loc)
+	        {
+		        throw skip_error(msg, loc);
+	        })
 	{}
 
 	[[nodiscard]] auto operator<<(const auto &value) const
@@ -203,11 +211,14 @@ template <typename exception> struct throws_t
 {
 	explicit throws_t(src_location loc = src_location()) :
 	    location(loc)
-	{}
+	{
+		collection::instance().running_test()->set_latest_location(
+		    loc);
+	}
 
 	explicit(false) throws_t(consts::impl_throws_t<exception>,
 	    src_location loc = src_location()) :
-	    location(loc)
+	    throws_t(loc)
 	{}
 
 	auto &operator<<(const auto &f) const
