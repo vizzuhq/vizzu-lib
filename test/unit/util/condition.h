@@ -217,13 +217,13 @@ template <typename exception> struct throws_t
 			collection::instance().running_test()->fail(location,
 			    "Exception expected but not thrown");
 		}
-		catch (const exception &) {
-		}
 		catch (const assertion_error &) {
 			throw;
 		}
 		catch (const skip_error &) {
 			throw;
+		}
+		catch (const exception &) {
 		}
 		catch (...) {
 			collection::instance().running_test()->fail(location,
