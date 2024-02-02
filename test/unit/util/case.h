@@ -87,12 +87,18 @@ public:
 		return skip || error_messages.empty();
 	}
 
+	void set_latest_location(const src_location &loc)
+	{
+		latest_location = loc;
+	}
+
 private:
 	std::string_view suite_name;
 	std::string_view case_name;
 	runnable runner;
 	bool skip = false;
 	src_location location;
+	src_location latest_location = location;
 	std::map<src_location, std::string> error_messages;
 
 	void run_safely() noexcept
@@ -108,11 +114,11 @@ private:
 			fail(e.location, e.what());
 		}
 		catch (std::exception &e) {
-			fail(location,
+			fail(latest_location,
 			    "exception thrown: " + std::string(e.what()));
 		}
 		catch (...) {
-			fail(location, "unknown exception thrown");
+			fail(latest_location, "unknown exception thrown");
 		}
 	}
 
