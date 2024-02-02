@@ -137,12 +137,10 @@ public:
 	[[nodiscard]] virtual std::pair<double, double> get_min_max(
 	    series_identifier measure) const & = 0;
 
-	[[nodiscard]] virtual series_identifier
-	change_series_identifier_type(
+	[[nodiscard]] virtual std::string_view get_series_name(
 	    const series_identifier &id) const & = 0;
 
-	[[nodiscard]] virtual record_identifier
-	change_record_identifier_type(
+	[[nodiscard]] virtual std::string_view get_record_unique_id(
 	    const record_identifier &id) const & = 0;
 
 	[[nodiscard]] virtual cell_value get_data(
