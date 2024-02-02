@@ -29,7 +29,7 @@ DataTable::DataIndex DataTable::addTypedColumn(
     const std::span<T> &values)
 {
 	TextType type{};
-	if constexpr (std::is_same_v<T, double>)
+	if constexpr (std::is_same_v<std::remove_const_t<T>, double>)
 		type = TextType::Number;
 	else
 		type = TextType::String;
@@ -85,21 +85,20 @@ DataTable::DataIndex DataTable::addTypedColumn(
 
 DataTable::DataIndex DataTable::addColumn(const std::string &name,
     const std::string &unit,
-    const std::span<double> &values)
+    const std::span<const double> &values)
 {
 	return addTypedColumn(name, unit, values);
 }
 
 DataTable::DataIndex DataTable::addColumn(const std::string &name,
-    const std::span<const char *> &values)
+    const std::span<const char *> &categories,
+    const std::span<const std::uint32_t> &values)
 {
-	return addTypedColumn(name, std::string{}, values);
-}
+	std::vector<const char *> realValues(values.size());
+	for (auto i = 0U; i < values.size(); ++i)
+		realValues[i] = categories[values[i]];
 
-DataTable::DataIndex DataTable::addColumn(const std::string &name,
-    const std::span<std::string> &values)
-{
-	return addTypedColumn(name, std::string{}, values);
+	return addTypedColumn<const char *>(name, {}, realValues);
 }
 
 const ColumnInfo &DataTable::getInfo(ColumnIndex index) const

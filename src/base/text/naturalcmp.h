@@ -16,9 +16,9 @@ public:
 private:
 	bool ignoreCase;
 	bool ignoreSpace;
-	int cmp(const char *&, const char *&) const;
-	int cmpChar(const char *&, const char *&) const;
-	static int cmpNum(const char *&, const char *&);
+	std::weak_ordering cmp(const char *, const char *) const;
+	std::weak_ordering cmpChar(const char &, const char &) const;
+	static std::weak_ordering cmpNum(const char *&, const char *&);
 	static void skipSpaces(const char *&);
 };
 

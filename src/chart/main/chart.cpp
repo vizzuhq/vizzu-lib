@@ -9,6 +9,7 @@ namespace Vizzu
 Chart::Chart() :
     animator(std::make_shared<Anim::Animator>()),
     stylesheet(Styles::Chart::def()),
+    computedStyles(stylesheet.getDefaultParams()),
     events(getEventDispatcher())
 {
 	stylesheet.setActiveParams(actStyles);
@@ -63,6 +64,7 @@ void Chart::animate(const OnComplete &onComplete)
 		else {
 			*nextOptions = prevOptions;
 			actStyles = prevStyles;
+			computedStyles = plot->getStyle();
 		}
 		if (onComplete) onComplete(ok);
 	};
@@ -123,13 +125,9 @@ Gen::PlotPtr Chart::plot(const Gen::PlotOptionsPtr &options)
 
 	Styles::Sheet::setAfterStyles(*res, layout.boundary.size);
 
-	return res;
-}
+	computedStyles = res->getStyle();
 
-const Styles::Chart &Chart::getComputedStyles() const
-{
-	return actPlot ? actPlot->getStyle()
-	               : stylesheet.getDefaultParams();
+	return res;
 }
 
 }

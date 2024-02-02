@@ -13,15 +13,29 @@ definitions:
         type: string
         enum: [dimension, measure]
 
-    SeriesMetaInfo:
-        description: Additional info about a data series besides the contained data.
+    Value:
+        description: Represents a categorical or data value
+        oneOf:
+            - type: string
+            - type: number
+
+    DimensionValue:
+        description: Represents a categorical value
+        type: string
+
+    MeasureValue:
+        description: Represents a data value
+        type: number
+        nullable: true
+
+    SeriesBase:
+        description: Base type for data series.
         type: object
         properties:
             name:
-                description: |
-                    Name of the data series. It will be the unique id of the series to 
+                description: Name of the data series. It will be the unique id of the series to
                     reference it in various parts of the API, mainly in channel configuration and
-                    in data record filters. This name will also be used by default for Axis and 
+                    in data record filters. This name will also be used by default for Axis and
                     Legend title.
                 $ref: SeriesName
             type:
@@ -31,32 +45,165 @@ definitions:
                     the type of the first value. Number type will result in measure, 
                     string type will result in dimension.
                 $ref: SeriesType
-            unit:
-                description: Unit of the data series.
-                type: string
         required: [name]
 
-    AbstractSeriesInfo:
-        $extends: SeriesMetaInfo
+    BaseDimension:
+        $extends: SeriesBase
+        description: Name of a dimension data series.
         type: object
-        description: Generic meta data about any data series
         properties:
-            length:
-                description: Count of values in the series.
-                type: number
-        required: [length]
+            type:
+                description: |
+                    Type of the data series.
+                    If not set, the library will attempt to determine the type based on 
+                    the type of the first value. Number type will result in measure, 
+                    string type will result in dimension.
+                type: string
+                enum: [dimension]
+            values:
+                description: |
+                    The array that contains the values of the data series. The value types 
+                    should match the data series' `type` property. If the data series
+                    is shorter than the longest data series defined, it will be internally 
+                    extended with empty values.
+                type: array
+                items:
+                    $ref: DimensionValue
 
-    DimensionSeriesInfo:
-        $extends: AbstractSeriesInfo
-        description: Meta data about dimension data series
+    IndexDimension:
+        $extends: SeriesBase
+        description: Name of a dimension data series.
         type: object
         properties:
+            type:
+                description: |
+                    Type of the data series.
+                    If not set, the library will attempt to determine the type based on 
+                    the type of the first value. Number type will result in measure, 
+                    string type will result in dimension.
+                type: string
+                enum: [dimension]
             categories:
-                description: Distinct values in the series
+                description: Distinct unique values in the series
                 type: array
                 items:
                     type: string
+            values:
+                description: |
+                    The array that contains the values of the data series. The value types 
+                    should match the data series' `type` property. If the data series
+                    is shorter than the longest data series defined, it will be internally 
+                    extended with empty values.
+                type: array
+                items:
+                    type: number
         required: [categories]
+
+    ImplicitStringDimension:
+        $extends: BaseDimension
+        description: Name of a dimension data series.
+        type: object
+        properties:
+            values:
+                description: |
+                    The array that contains the values of the data series. The value types 
+                    should match the data series' `type` property. If the data series
+                    is shorter than the longest data series defined, it will be internally 
+                    extended with empty values.
+                type: array
+                items:
+                    $ref: DimensionValue
+        required: [values]
+
+    ExplicitStringDimension:
+        $extends: BaseDimension
+        description: Name of a dimension data series.
+        type: object
+        properties:
+            type:
+                description: |
+                    Type of the data series.
+                    If not set, the library will attempt to determine the type based on 
+                    the type of the first value. Number type will result in measure, 
+                    string type will result in dimension.
+                type: string
+                enum: [dimension]
+        required: [type]
+
+    StringDimension:
+        description: Name of a dimension data series.
+        oneOf:
+            - $ref: ImplicitStringDimension
+            - $ref: ExplicitStringDimension
+
+    Dimension:
+        description: Name of a dimension data series.
+        oneOf:
+            - $ref: IndexDimension
+            - $ref: StringDimension
+
+    BaseMeasure:
+        $extends: SeriesBase
+        description: Name of a measure data series.
+        type: object
+        properties:
+            type:
+                description: |
+                    Type of the data series.
+                    If not set, the library will attempt to determine the type based on 
+                    the type of the first value. Number type will result in measure, 
+                    string type will result in dimension.
+                type: string
+                enum: [measure]
+            values:
+                description: |
+                    The array that contains the values of the data series. The value types 
+                    should match the data series' `type` property. If the data series
+                    is shorter than the longest data series defined, it will be internally 
+                    extended with empty values.
+                type: array
+                items:
+                    $ref: MeasureValue
+            unit:
+                description: Unit of the data series.
+                type: string
+
+    ExplicitMeasure:
+        $extends: BaseMeasure
+        description: Name of a measure data series.
+        type: object
+        properties:
+            type:
+                description: |
+                    Type of the data series.
+                    If not set, the library will attempt to determine the type based on 
+                    the type of the first value. Number type will result in measure, 
+                    string type will result in dimension.
+                type: string
+                enum: [measure]
+        required: [type]
+
+    ImplicitMeasure:
+        $extends: BaseMeasure
+        description: Name of a measure data series.
+        type: object
+        properties:
+            values:
+                description: |
+                    The array that contains the values of the data series. The value types 
+                    should match the data series' `type` property. If the data series
+                    is shorter than the longest data series defined, it will be internally 
+                    extended with empty values.
+                type: array
+                items:
+                    $ref: MeasureValue
+        required: [values]
+
+    Measure:
+        description: Name of a measure data series.
+        oneOf:
+            - $ref: ImplicitMeasure
+            - $ref: ExplicitMeasure
 
     Range:
         type: object
@@ -70,61 +217,65 @@ definitions:
                 type: number
         required: [min, max]
 
-    MeasureSeriesInfo:
-        $extends: AbstractSeriesInfo
+    DimensionInfo:
+        $extends: SeriesBase
+        description: Meta data about dimension data series
+        type: object
+        properties:
+            type:
+                description: |
+                    Type of the data series.
+                    If not set, the library will attempt to determine the type based on 
+                    the type of the first value. Number type will result in measure, 
+                    string type will result in dimension.
+                type: string
+                enum: [dimension]
+            categories:
+                description: Distinct unique values in the series
+                type: array
+                items:
+                    type: string
+            length:
+                description: Count of values in the series.
+                type: number
+        required: [type, categories, length]
+
+    MeasureInfo:
+        $extends: SeriesBase
         description: Meta data about measure data series
         type: object
         properties:
+            type:
+                description: |
+                    Type of the data series.
+                    If not set, the library will attempt to determine the type based on 
+                    the type of the first value. Number type will result in measure, 
+                    string type will result in dimension.
+                type: string
+                enum: [measure]
             range:
                 $ref: Range
-        required: [range]
+            unit:
+                description: Unit of the data series.
+                type: string
+            length:
+                description: Count of values in the series.
+                type: number
+        required: [type, range, unit, length]
 
     SeriesInfo:
         description: MetaInfo for different series types.
         oneOf:
-            - $ref: DimensionSeriesInfo
-            - $ref: MeasureSeriesInfo
-
-    Metainfo:
-        description: Meta data about the data set
-        type: object
-        properties:
-            series:
-                type: array
-                items:
-                    $ref: SeriesInfo
-        required: [series]
-
-    Value:
-        description: Represents a categorical or data value
-        oneOf:
-            - type: string
-            - type: number
-
-    Values:
-        description: List of data values in a series.
-        oneOf:
-            - type: array
-              items: { type: string }
-            - type: array
-              items:
-                  type: number
-                  nullable: true
+            - $ref: DimensionInfo
+            - $ref: MeasureInfo
 
     Series:
-        $extends: SeriesMetaInfo
         description: |
             Defines a data series of the data set, and contains a particular variable's
             values in the data set and meta info about the variable.
-        type: object
-        properties:
-            values:
-                description: |
-                    The array that contains the values of the data series. The value types 
-                    should match the data series' `type` property. If the data series
-                    is shorter than the longest data series defined, it will be internally 
-                    extended with empty values.
-                $ref: Values
+        oneOf:
+            - $ref: Dimension
+            - $ref: Measure
 
     Record:
         description: |
@@ -150,6 +301,18 @@ definitions:
         required: [record]
         return: { type: boolean }
 
+    SeriesMetaInfo:
+        $ref: SeriesInfo
+
+    Metainfo:
+        description: Meta data about the data set
+        type: object
+        properties:
+            series:
+                type: array
+                items:
+                    $ref: SeriesMetaInfo
+        required: [series]
     Filter:
         type: object
         description: Filter object containing a filter function
@@ -187,14 +350,15 @@ definitions:
                     The information about the data series in the records of the data set. 
                     Note: not needed if it was previously specified.
                 type: array
-                items: { $ref: SeriesMetaInfo }
+                items:
+                    $ref: Series
             records:
                 description: The array of data records that make up the data set.
                 type: array
                 items:
                     oneOf:
-                        - { $ref: ValueArray }
-                        - { $ref: Record }
+                        - $ref: ValueArray
+                        - $ref: Record
         required: [records]
 
     Set:

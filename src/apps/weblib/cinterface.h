@@ -75,15 +75,17 @@ extern const char *vizzu_version();
 extern void data_addDimension(APIHandles::Chart chart,
     const char *name,
     const char **categories,
-    int count);
+    std::uint32_t categoriesCount,
+    const std::uint32_t *categoryIndices,
+    std::uint32_t categoryIndicesCount);
 extern void data_addMeasure(APIHandles::Chart chart,
     const char *name,
     const char *unit,
-    double *values,
-    int count);
+    const double *values,
+    std::uint32_t count);
 extern void data_addRecord(APIHandles::Chart chart,
     const char **cells,
-    int count);
+    std::uint32_t count);
 const char *data_metaInfo(APIHandles::Chart chart);
 
 extern const Value *record_getValue(

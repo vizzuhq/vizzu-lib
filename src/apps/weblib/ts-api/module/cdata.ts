@@ -35,29 +35,46 @@ export class CData extends CObject {
 		return { series: JSON.parse(info) }
 	}
 
-	addDimension(name: string, dimension: string[]): void {
-		const ptrs = new Uint32Array(dimension.length)
-		for (let i = 0; i < dimension.length; i++) {
-			const ptr = this._toCString(dimension[i]!)
-			ptrs[i] = ptr
+	addDimension(name: string, indexes: number[], categories: string[]): void {
+		const categoriesPointer = new Uint32Array(categories.length)
+		for (let i = 0; i < categories.length; i++) {
+			const categoryPointer = this._toCString(categories[i]!)
+			categoriesPointer[i] = categoryPointer
 		}
 
-		const ptrArrayLen = dimension.length * 4
+		const categoriesPointerArrayLen = categories.length * 4
 
-		const ptrArr = this._wasm._malloc(ptrArrayLen)
-		const ptrHeap = new Uint8Array(this._wasm.HEAPU8.buffer, ptrArr, ptrArrayLen)
-		ptrHeap.set(new Uint8Array(ptrs.buffer))
+		const categoriesPtrArr = this._wasm._malloc(categoriesPointerArrayLen)
+
+		new Uint8Array(this._wasm.HEAPU8.buffer, categoriesPtrArr, categoriesPointerArrayLen).set(
+			new Uint8Array(categoriesPointer.buffer)
+		)
+
+		const indexesPointerArrayLen = indexes.length * 4
+
+		const indexesArr = this._wasm._malloc(indexesPointerArrayLen)
+
+		new Uint8Array(this._wasm.HEAPU8.buffer, indexesArr, indexesPointerArrayLen).set(
+			new Uint8Array(new Uint32Array(indexes).buffer)
+		)
 
 		const cname = this._toCString(name)
 
 		try {
-			this._call(this._wasm._data_addDimension)(cname, ptrArr, dimension.length)
+			this._call(this._wasm._data_addDimension)(
+				cname,
+				categoriesPtrArr,
+				categories.length,
+				indexesArr,
+				indexes.length
+			)
 		} finally {
 			this._wasm._free(cname)
-			for (const ptr of ptrs) {
-				this._wasm._free(ptr)
+			for (const categoryPointer of categoriesPointer) {
+				this._wasm._free(categoryPointer)
 			}
-			this._wasm._free(ptrArr)
+			this._wasm._free(indexesArr)
+			this._wasm._free(categoriesPtrArr)
 		}
 	}
 
