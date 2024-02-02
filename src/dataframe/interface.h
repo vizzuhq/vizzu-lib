@@ -51,8 +51,12 @@ public:
 
 	struct record_type
 	{
-		std::function<cell_value(series_identifier)> getValueByColumn;
+		[[nodiscard]] cell_value getValue(series_identifier i) const
+		{
+			return parent->get_data(recordId, i);
+		}
 
+		const dataframe_interface *parent;
 		record_identifier recordId;
 	};
 
