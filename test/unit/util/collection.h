@@ -113,6 +113,12 @@ private:
 	}
 };
 
+inline suite_proxy operator""_suite(const char *s,
+    std::size_t n) noexcept
+{
+	return collection::add_suite(std::string_view{s, n});
+}
+
 }
 
 #endif

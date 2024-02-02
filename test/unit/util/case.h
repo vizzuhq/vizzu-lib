@@ -13,7 +13,29 @@
 namespace test
 {
 
-using runnable = void (*)();
+using runnable = std::function<void()>;
+
+struct assertion_error : std::runtime_error
+{
+	src_location location;
+
+	explicit assertion_error(const std::string &msg,
+	    src_location location = src_location()) noexcept :
+	    runtime_error("Assert " + msg),
+	    location(location)
+	{}
+};
+
+struct skip_error : std::runtime_error
+{
+	src_location location;
+
+	explicit skip_error(const std::string &msg,
+	    src_location location = src_location()) noexcept :
+	    runtime_error("Skip " + msg),
+	    location(location)
+	{}
+};
 
 class case_type
 {
@@ -51,7 +73,8 @@ public:
 	[[nodiscard]] std::string full_name() const
 	{
 		return "[" + std::string{suite_name} + "] "
-		     + std::string{case_name};
+		     + std::string{case_name} + " (" + file_name() + ":"
+		     + std::to_string(location.get_line()) + ")";
 	}
 
 	[[nodiscard]] std::string file_name() const
@@ -59,12 +82,16 @@ public:
 		return location.get_file_name();
 	}
 
-	explicit operator bool() const { return error_messages.empty(); }
+	explicit operator bool() const
+	{
+		return skip || error_messages.empty();
+	}
 
 private:
 	std::string_view suite_name;
 	std::string_view case_name;
 	runnable runner;
+	bool skip = false;
 	src_location location;
 	std::map<src_location, std::string> error_messages;
 
@@ -73,7 +100,13 @@ private:
 		try {
 			runner();
 		}
-
+		catch (const assertion_error &e) {
+			fail(e.location, e.what());
+		}
+		catch (const skip_error &e) {
+			if (error_messages.empty()) { skip = true; }
+			fail(e.location, e.what());
+		}
 		catch (std::exception &e) {
 			fail(location,
 			    "exception thrown: " + std::string(e.what()));
@@ -97,14 +130,17 @@ private:
 		std::cout << (error_messages.empty()
 		                  ? std::string(ansi::fg_green)
 		                        + "[     OK ] "
+		              : skip
+		                  ? std::string(ansi::fg_yellow)
+		                        + "[   SKIP ] "
 		                  : std::string(ansi::fg_red) + "[ FAILED ] ")
 		          << ansi::reset << full_name() << " ("
 		          << (duration_cast<milliseconds>(duration).count())
 		          << " ms)\n";
 
 		for (const auto &error : error_messages)
-			std::cerr << error.first.error_prefix()
-			          << "error: " << error.second << "\n";
+			std::cerr << error.first.error_prefix() << error.second
+			          << "\n";
 	}
 };
 
