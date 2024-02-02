@@ -23,7 +23,7 @@ enum class aggregator_type {
 	exists
 };
 
-enum class sort_type { less, greater };
+enum class sort_type { less, greater, natural_less, natural_greater };
 
 enum class adding_type {
 	create_or_add,
@@ -45,9 +45,9 @@ class dataframe_interface :
 {
 public:
 	using series_identifier =
-	    std::variant<std::string_view, std::size_t>;
+	    std::variant<std::size_t, std::string_view>;
 	using record_identifier =
-	    std::variant<std::string_view, std::size_t>;
+	    std::variant<std::size_t, std::string_view>;
 
 	struct record_type
 	{
@@ -83,33 +83,33 @@ public:
 	        custom_sort) & = 0;
 
 	virtual void add_dimension(
-	    std::span<const char *> dimension_categories,
-	    std::span<std::uint32_t> dimension_values,
+	    std::span<const char *const> dimension_categories,
+	    std::span<const std::uint32_t> dimension_values,
 	    const char *name,
 	    adding_type adding_strategy = adding_type::create_or_add,
-	    std::span<std::pair<const char *, const char *>> info =
+	    std::span<const std::pair<const char *, const char *>> info =
 	        {}) & = 0;
 
 	virtual void add_measure(std::span<const double> measure_values,
 	    const char *name,
 	    adding_type adding_strategy = adding_type::create_or_add,
-	    std::span<std::pair<const char *, const char *>> info =
+	    std::span<const std::pair<const char *, const char *>> info =
 	        {}) & = 0;
 
 	virtual void add_series_by_other(series_identifier curr_series,
 	    const char *name,
 	    std::function<cell_value(record_type, cell_value)>
 	        value_transform,
-	    std::span<std::pair<const char *, const char *>> info =
+	    std::span<const std::pair<const char *, const char *>> info =
 	        {}) & = 0;
 
 	virtual void remove_series(
-	    std::span<series_identifier> names) & = 0;
+	    std::span<const series_identifier> names) & = 0;
 
-	virtual void add_records(std::span<cell_value> values) & = 0;
+	virtual void add_record(std::span<const cell_value> values) & = 0;
 
 	virtual void remove_records(
-	    std::span<record_identifier> record_ids) & = 0;
+	    std::span<const record_identifier> record_ids) & = 0;
 
 	virtual void remove_records(
 	    std::function<bool(record_type)> filter) & = 0;
@@ -121,15 +121,17 @@ public:
 	virtual void fill_na(series_identifier column,
 	    cell_value value) & = 0;
 
+	virtual void finalize() & = 0;
+
 	[[nodiscard]] virtual std::string as_string() const & = 0;
 
-	[[nodiscard]] virtual std::span<std::string>
+	[[nodiscard]] virtual std::span<const std::string>
 	get_dimensions() const & = 0;
 
-	[[nodiscard]] virtual std::span<std::string>
+	[[nodiscard]] virtual std::span<const std::string>
 	get_measures() const & = 0;
 
-	[[nodiscard]] virtual std::span<std::string> get_categories(
+	[[nodiscard]] virtual std::span<const std::string> get_categories(
 	    series_identifier dimension) const & = 0;
 
 	[[nodiscard]] virtual std::pair<double, double> get_min_max(
