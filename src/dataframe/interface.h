@@ -62,9 +62,8 @@ public:
 
 	virtual ~dataframe_interface() = default;
 
-	[[nodiscard]] virtual std::shared_ptr<dataframe_interface> copy(
-	    bool remove_filtered = false,
-	    bool inherit_sorting = true) const & = 0;
+	[[nodiscard]] virtual std::shared_ptr<dataframe_interface>
+	copy(bool remove_filtered, bool inherit_sorting) const & = 0;
 
 	using any_aggregator_type = std::
 	    variant<std::monostate, aggregator_type, custom_aggregator>;
@@ -74,7 +73,7 @@ public:
 	        std::string_view)>>;
 
 	virtual void set_aggregate(series_identifier series,
-	    any_aggregator_type aggregator = {}) & = 0;
+	    any_aggregator_type aggregator) & = 0;
 
 	virtual void set_filter(
 	    std::function<bool(record_type)> &&filter) & = 0;
@@ -90,22 +89,22 @@ public:
 	    std::span<const char *const> dimension_categories,
 	    std::span<const std::uint32_t> dimension_values,
 	    const char *name,
-	    adding_type adding_strategy = adding_type::create_or_add,
-	    std::span<const std::pair<const char *, const char *>> info =
-	        {}) & = 0;
+	    adding_type adding_strategy,
+	    std::span<const std::pair<const char *, const char *>> info)
+	    & = 0;
 
 	virtual void add_measure(std::span<const double> measure_values,
 	    const char *name,
-	    adding_type adding_strategy = adding_type::create_or_add,
-	    std::span<const std::pair<const char *, const char *>> info =
-	        {}) & = 0;
+	    adding_type adding_strategy,
+	    std::span<const std::pair<const char *, const char *>> info)
+	    & = 0;
 
 	virtual void add_series_by_other(series_identifier curr_series,
 	    const char *name,
 	    std::function<cell_value(record_type, cell_value)>
 	        value_transform,
-	    std::span<const std::pair<const char *, const char *>> info =
-	        {}) & = 0;
+	    std::span<const std::pair<const char *, const char *>> info)
+	    & = 0;
 
 	virtual void remove_series(
 	    std::span<const series_identifier> names) & = 0;
@@ -154,7 +153,7 @@ public:
 	[[nodiscard]] virtual std::size_t get_record_count() const & = 0;
 
 	virtual void visit(std::function<void(record_type)> function,
-	    bool filtered = true) const & = 0;
+	    bool filtered) const & = 0;
 };
 }
 

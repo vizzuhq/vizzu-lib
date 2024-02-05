@@ -1,7 +1,7 @@
 
 #include "../util/test.h"
 #include "dataframe/impl/dataframe.h"
-// #include "dataframe/interface.h"
+#include "dataframe/interface.h"
 
 using test::assert;
 using test::check;
@@ -28,8 +28,7 @@ auto setup(std::initializer_list<const char *> dimensions = {},
 		std::shared_ptr<bool> first_check =
 		    std::make_shared<bool>(false);
 		std::shared_ptr<Vizzu::dataframe::dataframe_interface> df{
-		    // std::make_shared<Vizzu::dataframe::dataframe>()
-		};
+		    std::make_shared<Vizzu::dataframe::dataframe>()};
 
 		Vizzu::dataframe::dataframe_interface *operator->() const
 		{
@@ -38,8 +37,10 @@ auto setup(std::initializer_list<const char *> dimensions = {},
 					skip->*static_cast<bool>(df)
 					    == "dataframe exists"_is_true;
 
-					for (auto d : dims) df->add_dimension({}, {}, d);
-					for (auto m : meas) df->add_measure({}, m);
+					for (auto d : dims)
+						df->add_dimension({}, {}, d, {}, {});
+					for (auto m : meas)
+						df->add_measure({}, m, {}, {});
 
 					skip->*df->get_dimensions() == dims;
 					skip->*df->get_measures() == meas;
@@ -114,7 +115,7 @@ const static auto tests =
 		            [](auto, cell_value c) -> cell_value
 		            {
 			            return c;
-		            });
+		            }, {});
 	        };
 
 			check ->* df->get_dimensions().size() == std::size_t{};
@@ -127,11 +128,11 @@ const static auto tests =
 		{
 			constexpr auto nan = std::numeric_limits<double>::quiet_NaN();
 
-			df->add_dimension({{"t2", "t1", "tt3"}}, {{0, 0, 2}}, "d1");
-	        df->add_dimension({{"a"}}, {{0}}, "d0");
+			df->add_dimension({{"t2", "t1", "tt3"}}, {{0, 0, 2}}, "d1", {}, {});
+	        df->add_dimension({{"a"}}, {{0}}, "d0", {}, {});
 
-	        df->add_measure({{0.0, 22.5, nan, 6.0}}, "m1");
-	        df->add_measure({{1.0}}, "m2");
+	        df->add_measure({{0.0, 22.5, nan, 6.0}}, "m1", {}, {});
+	        df->add_measure({{1.0}}, "m2", {}, {});
 
 	        assert ->* df->get_dimensions() == std::array{"d0", "d1"};
 	        assert ->* df->get_measures() == std::array{"m1", "m2"};
@@ -249,7 +250,7 @@ const static auto tests =
 					    == "value is a double"_is_true;
 
 					return *v * 2;
-				});
+				}, {});
 
 			assert ->* df->get_measures() == std::array{"m0", "m1"};
 
@@ -277,7 +278,7 @@ const static auto tests =
 					val = std::string{*v} + "5" + std::string{*v2};
 
 					return val;
-				});
+				}, {});
 
 			assert ->* df->get_dimensions() == std::array{"d1", "d15", "d2"};
 
@@ -416,7 +417,7 @@ const static auto tests =
 				{{"dm2", NAN}},
 				{{std::string_view{nullptr, 0}, 0.0}},
 		})] {
-			df->set_aggregate("d1");
+			df->set_aggregate("d1", {});
 			df->set_aggregate("d1", Vizzu::dataframe::aggregator_type::count);
 			df->set_aggregate("d1", Vizzu::dataframe::aggregator_type::distinct);
 			df->set_aggregate("d1", Vizzu::dataframe::aggregator_type::exists);
