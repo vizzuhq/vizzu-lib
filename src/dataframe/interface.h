@@ -34,10 +34,10 @@ enum class adding_type {
 
 struct custom_aggregator
 {
-	std::string name;
+	std::variant<std::string_view, std::string> name;
 	using id_type = std::any;
-	std::function<id_type()> create;
-	std::function<double(id_type &, double)> add;
+	id_type (*create)();
+	double (*add)(id_type &, double);
 };
 
 class dataframe_interface :

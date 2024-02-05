@@ -44,15 +44,18 @@ auto setup(std::initializer_list<const char *> dimensions = {},
 					skip->*df->get_dimensions() == dims;
 					skip->*df->get_measures() == meas;
 
-					const auto ms = meas.size();
+					const auto ds = dims.size();
 					for (auto r = 0u; r < rec.size(); ++r) {
 						df->add_record(rec[r]);
 
-						for (auto m = 0u; m < ms; ++m) {
-							if (auto *d =
-							        std::get_if<double>(&rec[r][m]);
+						for (auto d = 0u; d < ds; ++d)
+							skip->*df->get_data(r, d) == rec[r][d];
+
+						for (auto m = 0u; m < meas.size(); ++m) {
+							if (auto *d = std::get_if<double>(
+							        &rec[r][m + ds]);
 							    d && std::isnan(*d)) {
-								auto z = df->get_data(r, m);
+								auto z = df->get_data(r, m + ds);
 								auto *st = std::get_if<double>(&z);
 								skip->*static_cast<bool>(st)
 								    == "value is a double"_is_true;
@@ -60,11 +63,8 @@ auto setup(std::initializer_list<const char *> dimensions = {},
 								    == "value is nan"_is_true;
 								continue;
 							}
-							skip->*df->get_data(r, m) == rec[r][m];
-						}
-						for (auto d = 0u; d < dims.size(); ++d) {
-							skip->*df->get_data(r, d + ms)
-							    == rec[r][d + ms];
+							skip->*df->get_data(r, m + ds)
+							    == rec[r][m + ds];
 						}
 					}
 				}
@@ -253,10 +253,10 @@ const static auto tests =
 
 			assert ->* df->get_measures() == std::array{"m0", "m1"};
 
-			check ->* df->get_data(std::size_t{0}, {}) == 0.0;
-			check ->* df->get_data(std::size_t{1}, {}) == 2.0;
-			check ->* df->get_data(std::size_t{2}, {}) == -2.0;
-			check ->* df->get_data(std::size_t{3}, {}) == 6.0;
+			check ->* df->get_data(std::size_t{0}, "m0") == 0.0;
+			check ->* df->get_data(std::size_t{1}, "m0") == 2.0;
+			check ->* df->get_data(std::size_t{2}, "m0") == -2.0;
+			check ->* df->get_data(std::size_t{3}, "m0") == 6.0;
 
 			df->add_series_by_other(
 				"d1",
@@ -281,10 +281,10 @@ const static auto tests =
 
 			assert ->* df->get_dimensions() == std::array{"d1", "d15", "d2"};
 
-			check ->* df->get_data(std::size_t{0}, std::size_t{3}) == "dm15dm2";
-			check ->* df->get_data(std::size_t{1}, std::size_t{3}) == "dm15dmX";
-			check ->* df->get_data(std::size_t{2}, std::size_t{3}) == "s15s2";
-			check ->* df->get_data(std::size_t{3}, std::size_t{3}) == "s15s3";
+			check ->* df->get_data(std::size_t{0}, "d15") == "dm15dm2";
+			check ->* df->get_data(std::size_t{1}, "d15") == "dm15dmX";
+			check ->* df->get_data(std::size_t{2}, "d15") == "s15s2";
+			check ->* df->get_data(std::size_t{3}, "d15") == "s15s3";
 		}
 
 	| "remove_series"_case |
@@ -297,11 +297,215 @@ const static auto tests =
 
 			assert ->* df->get_measures() == std::array{"m2"};
 			assert ->* df->get_dimensions() == std::array{"d1", "d3"};
+			assert ->* df->get_record_count() == std::size_t{3};
 
 			check ->* df->get_data(std::size_t{2}, "m2") == 1.5;
 			check ->* df->get_data(std::size_t{0}, "d3") == "dm3";
-
 		}
 
+	| "remove_records"_case |
+		[df = setup({"d1"}, {"m1"}, {
+				{{"dm0", NAN}},
+				{{"dm1", NAN}},
+				{{"dm2", NAN}},
+				{{"dm3", NAN}},
+				{{"dm4", NAN}},
+				{{"dm5", NAN}},
+				{{"dm6", NAN}},
+				{{"dm7", NAN}},
+				{{"dm8", 4.2}},
+				{{"dm9", NAN}},
+		})] {
+			df->remove_records({{0ul, 2ul, 4ul, 5ul, 8ul, 9ul}});
+
+			assert ->* df->get_measures() == std::array{"m1"};
+			assert ->* df->get_dimensions() == std::array{"d1"};
+			assert ->* df->get_record_count() == std::size_t{4};
+
+			check ->* std::isnan(std::get<double>(df->get_data(std::size_t{2}, "m1")))
+				== "is nan"_is_true;
+			check ->* df->get_data(std::size_t{0}, "d1") == "dm6";
+			check ->* df->get_data(std::size_t{1}, "d1") == "dm1";
+			check ->* df->get_data(std::size_t{2}, "d1") == "dm7";
+			check ->* df->get_data(std::size_t{3}, "d1") == "dm3";
+		}
+
+	| "remove_records_filter"_case |
+		[df = setup({"d1"}, {"m1"}, {
+				{{"dm0", 5.3}},
+				{{"dm1", 2.0}},
+				{{"dm2", 3.3}},
+				{{"dm3", 10.1}},
+				{{"dm4", 88.0}},
+				{{"dm5", 2.2}},
+				{{"dm6", 7.4}},
+				{{"dm7", 0.0}},
+				{{"dm8", 4.2}},
+				{{"dm9", NAN}},
+		})] {
+			df->remove_records(
+			[] (record_type r) -> bool
+			{
+				auto v = r.getValue("m1");
+				return *std::get_if<double>(&v) < 5.0;
+			});
+
+			assert ->* df->get_record_count() == std::size_t{5};
+
+			check ->* df->get_data(std::size_t{0}, "d1") == "dm0";
+			check ->* df->get_data(std::size_t{1}, "d1") == "dm9";
+			check ->* df->get_data(std::size_t{2}, "d1") == "dm6";
+			check ->* df->get_data(std::size_t{3}, "d1") == "dm3";
+			check ->* df->get_data(std::size_t{4}, "d1") == "dm4";
+		}
+
+	| "change_data"_case |
+		[df = setup({"d1"}, {"m1"}, {
+				{{"dm0", 5.3}},
+				{{"dm1", 2.0}},
+				{{"dm2", 3.3}}
+		})] {
+			df->change_data(std::size_t{1}, "m1", 3.0);
+			df->change_data(std::size_t{2}, "d1", "dmX");
+
+			throw_ ->* [&df]() { df->change_data(std::size_t{0}, "d1", NAN); };
+			throw_ ->* [&df]() { df->change_data(std::size_t{0}, "m1", ""); };
+
+			assert ->* df->get_record_count() == std::size_t{3};
+
+			check ->* df->get_data(std::size_t{0}, "m1") == 5.3;
+			check ->* df->get_data(std::size_t{1}, "m1") == 3.0;
+			check ->* df->get_data(std::size_t{2}, "m1") == 3.3;
+
+			check ->* df->get_data(std::size_t{0}, "d1") == "dm0";
+			check ->* df->get_data(std::size_t{1}, "d1") == "dm1";
+			check ->* df->get_data(std::size_t{2}, "d1") == "dmX";
+		}
+
+	| "fill_na"_case |
+		[df = setup({"d1"}, {"m1"}, {
+				{{"dm0", 5.3}},
+				{{std::string_view{nullptr, 0}, 2.0}},
+				{{"dm2", NAN}}
+		})] {
+			df->fill_na("m1", 3.0);
+			df->fill_na("d1", "dmX");
+
+			assert ->* df->get_record_count() == std::size_t{3};
+
+			check ->* df->get_data(std::size_t{0}, "m1") == 5.3;
+			check ->* df->get_data(std::size_t{1}, "m1") == 2.0;
+			check ->* df->get_data(std::size_t{2}, "m1") == 3.0;
+
+			check ->* df->get_data(std::size_t{0}, "d1") == "dm0";
+			check ->* df->get_data(std::size_t{1}, "d1") == "dmX";
+			check ->* df->get_data(std::size_t{2}, "d1") == "dm2";
+		}
+
+	| "aggregate types"_case |
+		[df = setup({"d1"}, {"m1"}, {
+				{{"dm0", 5.5}},
+				{{"dm0", 2.0}},
+				{{"dm0", 3.5}},
+				{{"dm0", 10.25}},
+				{{"dm0", 88.0}},
+				{{"dm1", 3.5}},
+				{{"dm1", 7.25}},
+				{{"dm1", NAN}},
+				{{"dm1", 4.25}},
+				{{"dm2", NAN}},
+				{{std::string_view{nullptr, 0}, 0.0}},
+		})] {
+			df->set_aggregate("d1");
+			df->set_aggregate("d1", Vizzu::dataframe::aggregator_type::count);
+			df->set_aggregate("d1", Vizzu::dataframe::aggregator_type::distinct);
+			df->set_aggregate("d1", Vizzu::dataframe::aggregator_type::exists);
+			df->set_aggregate("m1", Vizzu::dataframe::aggregator_type::sum);
+			df->set_aggregate("m1", Vizzu::dataframe::aggregator_type::min);
+			df->set_aggregate("m1", Vizzu::dataframe::aggregator_type::max);
+			df->set_aggregate("m1", Vizzu::dataframe::aggregator_type::mean);
+			df->set_aggregate("m1", Vizzu::dataframe::aggregator_type::count);
+			df->set_aggregate("m1", Vizzu::dataframe::aggregator_type::distinct);
+			df->set_aggregate("m1", Vizzu::dataframe::aggregator_type::exists);
+
+			df->set_aggregate("m1", Vizzu::dataframe::custom_aggregator{
+				std::string{"test"},
+				[]() -> Vizzu::dataframe::custom_aggregator::id_type
+				{
+					return std::pair<double, double>{
+						std::numeric_limits<double>::max(),
+						std::numeric_limits<double>::max()
+					};
+				},
+				[](Vizzu::dataframe::custom_aggregator::id_type &id, double v) -> double
+				{
+					auto &[min, min2] = std::any_cast<std::pair<double, double>&>(id);
+					if (v < min) {
+						min2 = min;
+						min = v;
+					} else if (v < min2) {
+						min2 = v;
+					}
+					return min2;
+				}
+			});
+
+			df->finalize();
+
+			assert ->* df->get_dimensions() == std::array{
+				"d1"
+			};
+
+			assert ->* df->get_measures() == std::array{
+				"count(d1)", "count(m1)", "distinct(d1)", "distinct(m1)",
+				"exists(d1)", "exists(m1)",
+				"max(m1)", "mean(m1)", "min(m1)", "sum(m1)", "test(m1)"
+			};
+
+			assert ->* df->get_record_count() == std::size_t{4};
+
+			check ->* df->get_data(std::size_t{0}, "count(d1)") == 5.0;
+			check ->* df->get_data(std::size_t{0}, "count(m1)") == 5.0;
+			check ->* df->get_data(std::size_t{0}, "distinct(d1)") == 1.0;
+			check ->* df->get_data(std::size_t{0}, "distinct(m1)") == 5.0;
+			check ->* df->get_data(std::size_t{0}, "exists(d1)") == 1.0;
+			check ->* df->get_data(std::size_t{0}, "exists(m1)") == 1.0;
+			check ->* df->get_data(std::size_t{0}, "max(m1)") == 88.0;
+			check ->* df->get_data(std::size_t{0}, "mean(m1)") == 21.85;
+			check ->* df->get_data(std::size_t{0}, "min(m1)") == 2.0;
+			check ->* df->get_data(std::size_t{0}, "sum(m1)") == 109.25;
+			check ->* df->get_data(std::size_t{0}, "test(m1)") == 3.5;
+
+			check ->* df->get_data(std::size_t{1}, "count(d1)") == 4.0;
+			check ->* df->get_data(std::size_t{1}, "count(m1)") == 3.0;
+			check ->* df->get_data(std::size_t{1}, "distinct(d1)") == 1.0;
+			check ->* df->get_data(std::size_t{1}, "distinct(m1)") == 3.0;
+			check ->* df->get_data(std::size_t{1}, "exists(d1)") == 1.0;
+			check ->* df->get_data(std::size_t{1}, "exists(m1)") == 1.0;
+			check ->* df->get_data(std::size_t{1}, "max(m1)") == 7.25;
+			check ->* df->get_data(std::size_t{1}, "mean(m1)") == 5.0;
+			check ->* df->get_data(std::size_t{1}, "min(m1)") == 3.5;
+			check ->* df->get_data(std::size_t{1}, "sum(m1)") == 15.0;
+			check ->* df->get_data(std::size_t{1}, "test(m1)") == 4.25;
+
+			check ->* df->get_data(std::size_t{2}, "count(d1)") == 1.0;
+			check ->* df->get_data(std::size_t{2}, "count(m1)") == 0.0;
+			check ->* df->get_data(std::size_t{2}, "distinct(d1)") == 1.0;
+			check ->* df->get_data(std::size_t{2}, "distinct(m1)") == 0.0;
+			check ->* df->get_data(std::size_t{2}, "exists(d1)") == 1.0;
+			check ->* df->get_data(std::size_t{2}, "exists(m1)") == 0.0;
+			check ->* std::isnan(std::get<double>(df->get_data(std::size_t{2}, "max(m1)"))) == "is nan"_is_true;
+			check ->* std::isnan(std::get<double>(df->get_data(std::size_t{2}, "mean(m1)"))) == "is nan"_is_true;
+			check ->* std::isnan(std::get<double>(df->get_data(std::size_t{2}, "min(m1)"))) == "is nan"_is_true;
+			check ->* df->get_data(std::size_t{2}, "sum(m1)") == 0.0;
+			check ->* df->get_data(std::size_t{2}, "test(m1)") == std::numeric_limits<double>::max();
+
+			check ->* df->get_data(std::size_t{3}, "count(d1)") == 0.0;
+			check ->* df->get_data(std::size_t{3}, "count(m1)") == 1.0;
+			check ->* df->get_data(std::size_t{3}, "distinct(d1)") == 0.0;
+			check ->* df->get_data(std::size_t{3}, "distinct(m1)") == 1.0;
+			check ->* df->get_data(std::size_t{3}, "exists(d1)") == 0.0;
+			check ->* df->get_data(std::size_t{3}, "exists(m1)") == 1.0;
+		}
 ;
 // clang-format on
