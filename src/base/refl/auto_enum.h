@@ -6,6 +6,7 @@
 #include <string>
 #include <string_view>
 #include <type_traits>
+#include <variant>
 
 #include "auto_name.h"
 
@@ -172,6 +173,70 @@ struct EnumArray : std::array<V, std::size(enum_names<E>)>
 		return base_array::at(static_cast<std::size_t>(value));
 	}
 };
+
+template <class E, class... Args>
+    requires(std::is_enum_v<E>
+             && sizeof...(Args) == Detail::count<E>()
+             && Detail::from_to<E, 0, 0>().first == 0)
+struct EnumVariant : std::variant<Args...>
+{
+	using base_variant = std::variant<Args...>;
+	using base_variant::base_variant;
+
+	[[nodiscard]] constexpr operator E() const noexcept // NOLINT
+	{
+		return static_cast<E>(base_variant::index());
+	}
+
+	using base_variant::emplace;
+
+	template <E value, class... Constr>
+	decltype(auto) emplace(Constr &&...args)
+	{
+		return base_variant::template emplace<
+		    static_cast<std::size_t>(value)>(
+		    std::forward<Constr>(args)...);
+	}
+};
+
+template <auto E, class... Args>
+constexpr decltype(auto) unsafe_get(
+    EnumVariant<decltype(E), Args...> const &e)
+{
+	return *std::get_if<static_cast<std::size_t>(E)>(&e);
+}
+
+template <auto E, class... Args>
+constexpr decltype(auto) unsafe_get(
+    EnumVariant<decltype(E), Args...> &e)
+{
+	return *std::get_if<static_cast<std::size_t>(E)>(&e);
+}
+
+template <class T, class E, class... Args>
+constexpr decltype(auto) unsafe_get(EnumVariant<E, Args...> const &e)
+{
+	return *std::get_if<T>(e);
+}
+
+template <class T, class E, class... Args>
+constexpr decltype(auto) unsafe_get(EnumVariant<E, Args...> &e)
+{
+	return *std::get_if<T>(e);
+}
+
+template <auto E, class... Args>
+constexpr decltype(auto) get_if(
+    EnumVariant<decltype(E), Args...> const *e)
+{
+	return std::get_if<static_cast<std::size_t>(E)>(e);
+}
+
+template <auto E, class... Args>
+constexpr decltype(auto) get_if(EnumVariant<decltype(E), Args...> *e)
+{
+	return std::get_if<static_cast<std::size_t>(E)>(e);
+}
 
 }
 

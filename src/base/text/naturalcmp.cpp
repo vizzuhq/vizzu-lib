@@ -17,57 +17,44 @@ NaturalCmp::NaturalCmp(bool ignoreCase, bool ignoreSpace) :
 bool NaturalCmp::operator()(const std::string &op0,
     const std::string &op1) const
 {
-	const auto *s0 = op0.c_str();
-	const auto *s1 = op1.c_str();
-	auto res = cmp(s0, s1);
-	return res == -1;
+	return std::is_lt(cmp(op0.c_str(), op1.c_str()));
 }
 
-int NaturalCmp::cmp(const char *&s0, const char *&s1) const
+std::weak_ordering NaturalCmp::cmp(const char *s0,
+    const char *s1) const
 {
-	int res = cmpChar(s0, s1);
-	for (; res != 0 && *s0 != '\0'; ++s0, ++s1) {
+	auto res{std::weak_ordering::equivalent};
+	while (std::is_eq(res) && (*s0 != '\0' || *s1 != '\0')) {
 		if (ignoreSpace) {
 			skipSpaces(s0);
 			skipSpaces(s1);
 		}
 
-		if (SC::isDigit(*s0) && SC::isDigit(*s1)) {
+		if (SC::isDigit(*s0) && SC::isDigit(*s1))
 			res = cmpNum(s0, s1);
-			if (res != 0) break;
-		}
-		res = cmpChar(s0, s1);
+		else
+			res = cmpChar(*s0++, *s1++);
 	}
 	return res;
 }
 
-int NaturalCmp::cmpChar(const char *&s0, const char *&s1) const
+std::weak_ordering NaturalCmp::cmpChar(const char &s0,
+    const char &s1) const
 {
-	auto c0 = *s0;
-	auto c1 = *s1;
-
-	if (ignoreCase) {
-		c0 = SC::toUpper(c0);
-		c1 = SC::toUpper(c1);
-	}
-
-	if (c0 < c1) return -1;
-	if (c0 > c1) return 1;
-	return 0;
+	return ignoreCase ? SC::toUpper(s0) <=> SC::toUpper(s1)
+	                  : s0 <=> s1;
 }
 
-int NaturalCmp::cmpNum(const char *&s0, const char *&s1)
+std::weak_ordering NaturalCmp::cmpNum(const char *&s0,
+    const char *&s1)
 {
-	double v0 = 0;
-	double v1 = 0;
+	double v0{};
+	double v1{};
 	while (SC::isDigit(*s0) || SC::isDigit(*s1)) {
-		if (SC::isDigit(*s0)) v0 = v0 * 10 + SC::toNumber(*s0);
-		if (SC::isDigit(*s1)) v1 = v1 * 10 + SC::toNumber(*s1);
-
-		if (SC::isDigit(*s0)) ++s0;
-		if (SC::isDigit(*s1)) ++s1;
+		if (SC::isDigit(*s0)) v0 = v0 * 10 + SC::toNumber(*s0++);
+		if (SC::isDigit(*s1)) v1 = v1 * 10 + SC::toNumber(*s1++);
 	}
-	return v0 < v1 ? -1 : v0 > v1 ? 1 : 0;
+	return std::weak_order(v0, v1);
 }
 
 void NaturalCmp::skipSpaces(const char *&s)
