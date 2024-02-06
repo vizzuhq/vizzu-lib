@@ -8,12 +8,13 @@
   were not escaped properly.
 - Fix dimension label transition on axis and legend.
 - Through event handler call, when a new event handler is registered, undefined behaviour happened.
-- Removed marker's alpha color when tooltip is shown.  
+- Fixed channel reset with empty array when shorthands plugin switched off.
 
 ### Added
 
 - Added optional `categories` member to the `legend-marker`, `legend-label` and `plot-axis-label` events.
 - Remove unused marker selection and selected marker coloring.
+- Removed marker's alpha color when tooltip is shown.  
 - Remove cursor modification over logo.
 - Make `channel.step` option to work on dimensions.
 - When X axis dimension labels are close to each other, they are rotated to avoid overlapping.

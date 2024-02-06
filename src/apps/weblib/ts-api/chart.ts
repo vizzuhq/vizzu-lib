@@ -105,11 +105,23 @@ export class Chart {
 			} else {
 				if (target.data) this._data.set(target.data)
 				if (target.style) this._cChart.style.set(target.style)
-				if (target.config) this._cChart.config.set(target.config)
+				if (target.config) {
+					this._nullEmptyChannels(target.config)
+					this._cChart.config.set(target.config)
+				}
 			}
 		}
 		if (options) this._cChart.animOptions.set(options)
 		this._cChart.setKeyframe()
+	}
+
+	private _nullEmptyChannels(config: Config.Chart): void {
+		if (!config.channels) return
+		Object.values(config.channels).forEach((channel: Config.Channel): void => {
+			if (Array.isArray(channel?.set) && channel?.set.length === 0) {
+				channel.set = null
+			}
+		})
 	}
 
 	destruct(): void {
