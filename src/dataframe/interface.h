@@ -25,6 +25,8 @@ enum class aggregator_type {
 
 enum class sort_type { less, greater, natural_less, natural_greater };
 
+enum class na_position { last, first };
+
 enum class adding_type {
 	create_or_add,
 	create_or_throw,
@@ -79,7 +81,8 @@ public:
 	    std::function<bool(record_type)> &&filter) & = 0;
 
 	virtual void set_sort(series_identifier series,
-	    any_sort_type sort) & = 0;
+	    any_sort_type sort,
+	    na_position na_pos) & = 0;
 
 	virtual void set_sort(
 	    std::function<std::weak_ordering(record_type, record_type)>
