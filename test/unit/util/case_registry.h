@@ -21,13 +21,13 @@ protected:
 
 	void add_record(std::string_view suite_name,
 	    std::string_view case_name,
-	    runnable &&runner,
+	    runnable runner,
 	    src_location location) noexcept
 	{
 		try {
 			cases.emplace_back(suite_name,
 			    case_name,
-			    std::move(runner),
+			    runner,
 			    location);
 		}
 		catch (...) {

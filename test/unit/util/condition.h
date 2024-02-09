@@ -18,7 +18,7 @@ template <typename T> struct decomposer
 public:
 	friend check_t;
 
-	template <class U> bool operator==(const U &ref) const
+	template <class U> void operator==(const U &ref) const
 	{
 		if constexpr (requires { ref == value; }) {
 			return evaluate(value == ref, "==", ref);
@@ -40,19 +40,19 @@ public:
 		}
 	}
 
-	bool operator<=(const auto &ref) const
+	void operator<=(const auto &ref) const
 	{
 		return evaluate(value <= ref, "<=", ref);
 	}
-	bool operator>=(const auto &ref) const
+	void operator>=(const auto &ref) const
 	{
 		return evaluate(value >= ref, ">=", ref);
 	}
-	bool operator<(const auto &ref) const
+	void operator<(const auto &ref) const
 	{
 		return evaluate(value < ref, "<", ref);
 	}
-	bool operator>(const auto &ref) const
+	void operator>(const auto &ref) const
 	{
 		return evaluate(value > ref, ">", ref);
 	}
@@ -71,7 +71,7 @@ private:
 	    throw_error(throw_error)
 	{}
 
-	[[nodiscard]] bool
+	void
 	evaluate(bool condition, const char *op, const auto &ref) const
 	{
 		using details::to_debug_string;
@@ -91,7 +91,6 @@ private:
 			        + op + " " + to_debug_string(ref)
 			        + " (expected)");
 		}
-		return condition;
 	}
 };
 
