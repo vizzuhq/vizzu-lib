@@ -132,7 +132,7 @@ Geom::TransformedRect DrawLegend::getLabelRect(const Info &info,
 {
 	Geom::Rect res = itemRect;
 	res.pos.x += info.markerSize;
-	res.size.x -= std::max(0.0, res.size.x - info.markerSize);
+	res.size.x -= std::max(0.0, info.markerSize);
 	return Geom::TransformedRect::fromRect(res);
 }
 
