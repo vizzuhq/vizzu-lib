@@ -60,8 +60,7 @@ function overlay(e, chart) {
 			}
 		} else if (e.detail.rect && e.detail.rect.pos && e.detail.rect.size) {
 			const r = e.detail.rect
-			if (e.type.includes('legend-background-draw'))
-				ctx.fillStyle = '#FFFF00A0'
+			if (e.type.includes('legend-background-draw')) ctx.fillStyle = '#FFFF00A0'
 			ctx.fillRect(r.pos.x, r.pos.y, r.size.x, r.size.y)
 			ctx.fillStyle = '#FF0000A0'
 			if (e.detail.text) ctx.fillText(e.detail.text, r.pos.x, r.pos.y, r.pos.y + r.size.y)
