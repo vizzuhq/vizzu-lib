@@ -13,7 +13,7 @@
 namespace test
 {
 
-using runnable = std::function<void()>;
+using runnable = void (*)();
 
 struct assertion_error : std::runtime_error
 {
@@ -66,8 +66,8 @@ public:
 	void fail(const src_location &location,
 	    const std::string &message)
 	{
-		if (!error_messages.contains(location))
-			error_messages.insert({location, message});
+		error_messages.try_emplace({location, suffix},
+		    message + suffix);
 	}
 
 	[[nodiscard]] std::string full_name() const
@@ -92,6 +92,10 @@ public:
 		latest_location = loc;
 	}
 
+	const src_location &get_test_location() const { return location; }
+
+	void set_suffix(const std::string &s) { suffix = s; }
+
 private:
 	std::string_view suite_name;
 	std::string_view case_name;
@@ -99,7 +103,9 @@ private:
 	bool skip = false;
 	src_location location;
 	src_location latest_location = location;
-	std::map<src_location, std::string> error_messages;
+	std::map<std::pair<src_location, std::string>, std::string>
+	    error_messages;
+	std::string suffix;
 
 	void run_safely() noexcept
 	{
@@ -145,8 +151,8 @@ private:
 		          << " ms)\n";
 
 		for (const auto &error : error_messages)
-			std::cerr << error.first.error_prefix() << error.second
-			          << "\n";
+			std::cerr << error.first.first.error_prefix()
+			          << error.second << "\n";
 	}
 };
 
