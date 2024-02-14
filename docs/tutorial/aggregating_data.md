@@ -39,7 +39,13 @@ chart.animate({
 
 Next to the default logic of sum, there are a handful of other aggregation
 logics that are available in `Vizzu`: `min`, `max`, `mean`, `count` and
-`distinct`. Let's go through them to see how they work.
+`distinct`. Aggregators can be set for data series using:
+
+- data series descriptor objects: `{ name: 'Popularity', aggregator: 'min' }`
+- or by encoding them into the name of the data series: `'min(Popularity)'`
+
+We will use the second method in the following examples. Let's go through them
+to see how they work.
 
 Minimum value: the height of the bars show the minimum value in the `Popularity`
 measure in each of the `Genres`.
