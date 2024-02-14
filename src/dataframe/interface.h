@@ -40,6 +40,11 @@ struct custom_aggregator
 	using id_type = std::any;
 	id_type (*create)();
 	double (*add)(id_type &, double);
+
+	[[nodiscard]] std::string_view get_name() const
+	{
+		return std::visit<std::string_view>(std::identity{}, name);
+	}
 };
 
 class dataframe_interface :
@@ -75,7 +80,7 @@ public:
 	        std::string_view)>>;
 
 	virtual void set_aggregate(series_identifier series,
-	    any_aggregator_type aggregator) & = 0;
+	    const any_aggregator_type &aggregator) & = 0;
 
 	virtual void set_filter(
 	    std::function<bool(record_type)> &&filter) & = 0;
