@@ -384,10 +384,12 @@ definitions:
 
     SeriesDescriptor:
         description: |
-            The name of a series either alone or combined with an aggregator function.
-        oneOf:
-            - { $ref: SeriesName }
-            - { type: string, mask: /:AggregatorType:\(:SeriesName:\)/ }
+            The name of a series with an aggregator function.
+        type: object
+        properties:
+            name: { $ref: SeriesName }
+            aggregator: { $ref: AggregatorType }
+        required: [name]
 
     SeriesList:
         description: Array or a single data series.

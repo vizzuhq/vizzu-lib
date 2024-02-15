@@ -13,6 +13,8 @@
 
 ### Added
 
+- In config channels, data series and their aggregators can be specified separately 
+  in a descriptor object, besides encoding them into one string (old way).
 - Added optional `categories` member to the `legend-marker`, `legend-label` and `plot-axis-label` events.
 - Remove unused marker selection and selected marker coloring.
 - Removed marker's alpha color when tooltip is shown.  

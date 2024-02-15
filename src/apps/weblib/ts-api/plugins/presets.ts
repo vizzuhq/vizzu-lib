@@ -78,7 +78,7 @@ export default class Presets {
 			} else if (Array.isArray(channel.set)) {
 				const newChannel = []
 				for (let i = 0; i < channel.set.length; i++) {
-					const key = channel.set[i]! as keyof Config.Chart
+					const key = channel.set[i]!.name as keyof Config.Chart
 					const channelConfig = this._getChannelCopy(config[key] as Data.SeriesList)
 					if (channelConfig !== null) {
 						newChannel.push(channelConfig)

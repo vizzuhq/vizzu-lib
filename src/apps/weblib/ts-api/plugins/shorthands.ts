@@ -9,7 +9,7 @@ import Vizzu from '../vizzu.js'
 import { Snapshot } from '../module/cchart.js'
 import { CAnimation } from '../module/canimctrl.js'
 
-export type AnySeriesList = Data.SeriesList | Data.SeriesDescriptor | null
+export type AnySeriesList = Data.SeriesList | Data.SeriesDescriptor | string | string[] | null
 
 export type LazyChannel = Config.Channel & {
 	set?: AnySeriesList
@@ -201,26 +201,78 @@ export class Shorthands implements Plugin {
 			channel = [channel]
 		}
 
-		if (channel === null || Array.isArray(channel)) {
-			channel = { set: channel }
+		if (this._isAnySeriesList(channel)) {
+			channel = { set: this._normalizeSeriesList(channel) }
+		} else if (channel.set !== undefined && this._isAnySeriesList(channel.set)) {
+			channel.set = this._normalizeSeriesList(channel.set)
 		}
 
-		if (typeof channel?.attach === 'string') {
-			channel.attach = [channel.attach]
+		if (channel.attach !== undefined && this._isAnySeriesList(channel.attach)) {
+			const attach = this._normalizeSeriesList(channel.attach)
+			if (attach !== null) {
+				channel.attach = attach
+			} else {
+				delete channel.attach
+			}
 		}
 
-		if (typeof channel?.detach === 'string') {
-			channel.detach = [channel.detach]
+		if (channel.detach !== undefined && this._isAnySeriesList(channel.detach)) {
+			const detach = this._normalizeSeriesList(channel.detach)
+			if (detach !== null) {
+				channel.detach = detach
+			} else {
+				delete channel.detach
+			}
 		}
 
-		if (typeof channel?.set === 'string') {
-			channel.set = [channel.set]
-		}
-
-		if (Array.isArray(channel?.set) && channel?.set.length === 0) {
-			channel.set = null
-		}
 		return channel
+	}
+
+	private _isAnySeriesList(value: unknown): value is AnySeriesList {
+		return (
+			value === null ||
+			typeof value === 'string' ||
+			Array.isArray(value) ||
+			(typeof value === 'object' && 'name' in value)
+		)
+	}
+
+	private _normalizeSeriesList(seriesList: AnySeriesList): Data.SeriesList | null {
+		if (seriesList === null) {
+			return null
+		}
+		if (Array.isArray(seriesList)) {
+			if (seriesList.length === 0) return null
+			else
+				return seriesList.map((seriesDescriptor) =>
+					this._normalizeSeriesDescriptor(seriesDescriptor)
+				)
+		}
+		if (typeof seriesList === 'string') {
+			return [this._normalizeSeriesDescriptor(seriesList)]
+		}
+		if (typeof seriesList === 'object' && 'name' in seriesList) {
+			return [seriesList]
+		}
+		return null
+	}
+
+	private _normalizeSeriesDescriptor(
+		seriesDescriptor: Data.SeriesDescriptor | string
+	): Data.SeriesDescriptor {
+		if (typeof seriesDescriptor === 'string') {
+			const pattern = /^(\w+)\((.*?)\)$/
+			const match = seriesDescriptor.match(pattern)
+			if (match) {
+				return {
+					name: match[2]!,
+					aggregator: match[1]! as Data.AggregatorType
+				}
+			} else {
+				return { name: seriesDescriptor }
+			}
+		}
+		return seriesDescriptor
 	}
 
 	private _normalizeOptions(options: AnyOptions | undefined): Anim.Options | undefined {
