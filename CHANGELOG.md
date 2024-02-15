@@ -10,6 +10,8 @@
 - Through event handler call, when a new event handler is registered, undefined behaviour happened.
 - Fixed channel reset with empty array when shorthands plugin switched off.
 - Legend label outerRect was not properly calculated.
+- Line chart connector circles color was not contained the alpha channel.
+- Line chart draws was overwrite the event's settings.
 
 ### Added
 
