@@ -11,25 +11,25 @@
 			"refs": ["a491c17"]
 		},
 		"geometry/static_line": {
-			"refs": ["758acea"]
+			"refs": ["b9bee48"]
 		},
 		"geometry/static_rectangle": {
 			"refs": ["a491c17"]
 		},
 		"geometry/animated_area-line": {
-			"refs": ["a6f2b5c"]
+			"refs": ["3622f0e"]
 		},
 		"geometry/animated_area-rectangle": {
 			"refs": ["82a57d0"]
 		},
 		"geometry/animated_line-area": {
-			"refs": ["049a517"]
+			"refs": ["69de3f9"]
 		},
 		"geometry/animated_line-circle": {
-			"refs": ["ad7cb9b"]
+			"refs": ["f67aea6"]
 		},
 		"geometry/animated_line-rectangle": {
-			"refs": ["a4e4f01"]
+			"refs": ["d2d80c6"]
 		},
 		"geometry/animated_rectangle-area": {
 			"refs": ["6577fd3"]
@@ -38,7 +38,7 @@
 			"refs": ["12d82f2"]
 		},
 		"geometry/animated_rectangle-line": {
-			"refs": ["3e1ffaf"]
+			"refs": ["5949df4"]
 		},
 		"dimension_axis_title": {
 			"refs": ["d9bab94"]
