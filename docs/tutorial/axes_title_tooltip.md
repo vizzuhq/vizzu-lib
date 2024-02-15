@@ -32,6 +32,31 @@ chart.animate({
 })
 ```
 
+We will reference the data series by names for clarity throughout the tutorial.
+However, you can also use data series descriptor objects as well. That way you
+can define aggregators to the series. For more information about aggregators,
+see the [Aggregating data](./aggregating_data.md) chapter. The previous example
+can be rewritten using data series descriptor objects as follows:
+
+```javascript
+chart.animate({
+    config: {
+        channels: {
+            y: {
+                set: [{
+                    name: 'Popularity'
+                }]
+            },
+            x: {
+                set: [{
+                    name: 'Genres'
+                }]
+            }
+        }
+    }
+})
+```
+
 In the next step, the chart is rearranged by putting both series on the y-axis
 using once again the set property, resulting in a single column chart. `Vizzu`
 automatically animates between the initial state and this one.
