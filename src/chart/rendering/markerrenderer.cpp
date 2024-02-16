@@ -233,6 +233,9 @@ void MarkerRenderer::draw(Gfx::ICanvas &canvas,
 		auto p0 = coordSys.convert(line.begin);
 		auto p1 = coordSys.convert(line.end);
 
+		canvas.setBrushColor(
+		    colors.second
+		    * static_cast<double>(abstractMarker.connected));
 		canvas.setLineColor(
 		    colors.second
 		    * static_cast<double>(abstractMarker.connected));
@@ -242,10 +245,7 @@ void MarkerRenderer::draw(Gfx::ICanvas &canvas,
 		            {Geom::Line(p0, p1), false}))) {
 			painter.drawStraightLine(line,
 			    abstractMarker.lineWidth,
-			    static_cast<double>(abstractMarker.linear),
-			    colors.second,
-			    colors.second
-			        * static_cast<double>(abstractMarker.connected));
+			    static_cast<double>(abstractMarker.linear));
 
 			renderedChart.emplace(
 			    Draw::Marker{abstractMarker.marker.enabled != false,

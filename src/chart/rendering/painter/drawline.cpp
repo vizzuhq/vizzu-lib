@@ -21,8 +21,6 @@ DrawLine::DrawLine(const Geom::Line &line,
 DrawLine::DrawLine(const Geom::Line &line,
     std::array<double, 2> widths,
     [[maybe_unused]] double straightFactor,
-    const Gfx::Color &endColor,
-    const Gfx::Color &lineColor,
     CoordinateSystem &coordSys,
     Gfx::ICanvas &canvas)
 {
@@ -36,16 +34,10 @@ DrawLine::DrawLine(const Geom::Line &line,
 	    Geom::ConvexQuad::Isosceles(pBeg, pEnd, wBeg * 2, wEnd * 2)
 	        .points;
 
-	canvas.setBrushColor(endColor);
-	canvas.setLineColor(endColor);
-
 	canvas.circle(Geom::Circle(pBeg, wBeg));
 
 	if (pBeg != pEnd) {
 		canvas.circle(Geom::Circle(pEnd, wEnd));
-
-		canvas.setBrushColor(lineColor);
-		canvas.setLineColor(lineColor);
 
 		canvas.beginPolygon();
 		canvas.addPoint(p0);
