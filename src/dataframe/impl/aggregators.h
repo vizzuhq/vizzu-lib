@@ -22,7 +22,7 @@ constinit const static inline Refl::EnumArray<aggregator_type,
                       [](custom_aggregator::id_type &id,
                           double value) -> double
                       {
-	                      auto &ref = std::any_cast<double &>(id);
+	                      auto &ref = *std::any_cast<double>(&id);
 	                      if (!std::isnan(value)
 	                          && !std::isinf(value))
 		                      ref += value;
@@ -36,7 +36,7 @@ constinit const static inline Refl::EnumArray<aggregator_type,
             },
             [](custom_aggregator::id_type &id, double value) -> double
             {
-	            auto &ref = std::any_cast<double &>(id);
+	            auto &ref = *std::any_cast<double>(&id);
 	            if (!std::isnan(value) && !std::isinf(value)
 	                && !(value >= ref))
 		            ref = value;
@@ -50,7 +50,7 @@ constinit const static inline Refl::EnumArray<aggregator_type,
             },
             [](custom_aggregator::id_type &id, double value) -> double
             {
-	            auto &ref = std::any_cast<double &>(id);
+	            auto &ref = *std::any_cast<double>(&id);
 	            if (!std::isnan(value) && !std::isinf(value)
 	                && !(value <= ref))
 		            ref = value;
@@ -65,8 +65,8 @@ constinit const static inline Refl::EnumArray<aggregator_type,
             [](custom_aggregator::id_type &id, double value) -> double
             {
 	            auto &[sum, count] =
-	                std::any_cast<std::pair<double, std::size_t> &>(
-	                    id);
+	                *std::any_cast<std::pair<double, std::size_t>>(
+	                    &id);
 	            if (!std::isnan(value) && !std::isinf(value)) {
 		            sum += value;
 		            ++count;
@@ -81,7 +81,7 @@ constinit const static inline Refl::EnumArray<aggregator_type,
             },
             [](custom_aggregator::id_type &id, double value) -> double
             {
-	            auto &s = std::any_cast<std::size_t &>(id);
+	            auto &s = *std::any_cast<std::size_t>(&id);
 	            if (!std::isnan(value) && !std::isinf(value)) s += 1;
 	            return static_cast<double>(s);
             }},
@@ -92,7 +92,7 @@ constinit const static inline Refl::EnumArray<aggregator_type,
             },
             [](custom_aggregator::id_type &id, double value) -> double
             {
-	            auto &set = std::any_cast<std::set<double> &>(id);
+	            auto &set = *std::any_cast<std::set<double>>(&id);
 	            if (!std::isnan(value) && !std::isinf(value))
 		            set.insert(value);
 	            return static_cast<double>(set.size());
@@ -104,7 +104,7 @@ constinit const static inline Refl::EnumArray<aggregator_type,
             },
             [](custom_aggregator::id_type &id, double value) -> double
             {
-	            auto &b = std::any_cast<bool &>(id);
+	            auto &b = *std::any_cast<bool>(&id);
 	            if (!std::isnan(value) && !std::isinf(value))
 		            b = true;
 	            return b;

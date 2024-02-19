@@ -56,6 +56,13 @@ public:
 	using record_identifier =
 	    std::variant<std::size_t, std::string_view>;
 
+	using any_aggregator_type = std::
+	    variant<std::monostate, aggregator_type, custom_aggregator>;
+
+	using any_sort_type = std::variant<sort_type,
+	    std::function<std::weak_ordering(std::string_view,
+	        std::string_view)>>;
+
 	struct record_type
 	{
 		[[nodiscard]] cell_value getValue(series_identifier i) const
@@ -72,15 +79,14 @@ public:
 	[[nodiscard]] virtual std::shared_ptr<dataframe_interface>
 	copy(bool remove_filtered, bool inherit_sorting) const & = 0;
 
-	using any_aggregator_type = std::
-	    variant<std::monostate, aggregator_type, custom_aggregator>;
-
-	using any_sort_type = std::variant<sort_type,
-	    std::function<std::weak_ordering(std::string_view,
-	        std::string_view)>>;
-
-	virtual void set_aggregate(series_identifier series,
+	[[nodiscard]] virtual std::string set_aggregate(
+	    series_identifier series,
 	    const any_aggregator_type &aggregator) & = 0;
+
+	void aggregate_by(series_identifier series)
+	{
+		[[maybe_unused]] auto &&_ = set_aggregate(series, {});
+	}
 
 	virtual void set_filter(
 	    std::function<bool(record_type)> &&filter) & = 0;

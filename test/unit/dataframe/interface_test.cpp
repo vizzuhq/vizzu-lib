@@ -445,19 +445,20 @@ const static auto tests =
 				{{"dm2", NAN}},
 				{{std::string_view{nullptr, 0}, 0.0}},
 		}}) {
-			df->set_aggregate("d1", {});
-			df->set_aggregate("d1", Vizzu::dataframe::aggregator_type::count);
-			df->set_aggregate("d1", Vizzu::dataframe::aggregator_type::distinct);
-			df->set_aggregate("d1", Vizzu::dataframe::aggregator_type::exists);
-			df->set_aggregate("m1", Vizzu::dataframe::aggregator_type::sum);
-			df->set_aggregate("m1", Vizzu::dataframe::aggregator_type::min);
-			df->set_aggregate("m1", Vizzu::dataframe::aggregator_type::max);
-			df->set_aggregate("m1", Vizzu::dataframe::aggregator_type::mean);
-			df->set_aggregate("m1", Vizzu::dataframe::aggregator_type::count);
-			df->set_aggregate("m1", Vizzu::dataframe::aggregator_type::distinct);
-			df->set_aggregate("m1", Vizzu::dataframe::aggregator_type::exists);
+			df->aggregate_by("d1");
+			using enum Vizzu::dataframe::aggregator_type;
+			auto &&d1c = df->set_aggregate("d1", count);
+			auto &&d1d = df->set_aggregate("d1", distinct);
+			auto &&d1e = df->set_aggregate("d1", exists);
+			auto &&m1s = df->set_aggregate("m1", sum);
+			auto &&m1mi = df->set_aggregate("m1", min);
+			auto &&m1ma = df->set_aggregate("m1", max);
+			auto &&m1me = df->set_aggregate("m1", mean);
+			auto &&m1c = df->set_aggregate("m1", count);
+			auto &&m1d = df->set_aggregate("m1", distinct);
+			auto &&m1e = df->set_aggregate("m1", exists);
 
-			df->set_aggregate("m1", Vizzu::dataframe::custom_aggregator{
+			auto &&m1t = df->set_aggregate("m1", Vizzu::dataframe::custom_aggregator{
 				std::string_view{"test"},
 				[] () -> Vizzu::dataframe::custom_aggregator::id_type
 				{
@@ -482,55 +483,53 @@ const static auto tests =
 			assert ->* df->get_dimensions() == std::array{"d1"};
 
 			assert ->* df->get_measures() == std::array{
-				"count(d1)", "count(m1)", "distinct(d1)", "distinct(m1)",
-				"exists(d1)", "exists(m1)",
-				"max(m1)", "mean(m1)", "min(m1)", "sum(m1)", "test(m1)"
+				d1c, m1c, d1d, m1d, d1e, m1e, m1ma, m1me, m1mi, m1s, m1t
 			};
 
 			assert ->* df->get_record_count() == std::size_t{4};
 
-			check ->* df->get_data(std::size_t{0}, "count(d1)") == 5.0;
-			check ->* df->get_data(std::size_t{0}, "count(m1)") == 5.0;
-			check ->* df->get_data(std::size_t{0}, "distinct(d1)") == 1.0;
-			check ->* df->get_data(std::size_t{0}, "distinct(m1)") == 5.0;
-			check ->* df->get_data(std::size_t{0}, "exists(d1)") == 1.0;
-			check ->* df->get_data(std::size_t{0}, "exists(m1)") == 1.0;
-			check ->* df->get_data(std::size_t{0}, "max(m1)") == 88.0;
-			check ->* df->get_data(std::size_t{0}, "mean(m1)") == 21.85;
-			check ->* df->get_data(std::size_t{0}, "min(m1)") == 2.0;
-			check ->* df->get_data(std::size_t{0}, "sum(m1)") == 109.25;
-			check ->* df->get_data(std::size_t{0}, "test(m1)") == 3.5;
+			check ->* df->get_data(std::size_t{0}, d1c) == 5.0;
+			check ->* df->get_data(std::size_t{0}, m1c) == 5.0;
+			check ->* df->get_data(std::size_t{0}, d1d) == 1.0;
+			check ->* df->get_data(std::size_t{0}, m1d) == 5.0;
+			check ->* df->get_data(std::size_t{0}, d1e) == 1.0;
+			check ->* df->get_data(std::size_t{0}, m1e) == 1.0;
+			check ->* df->get_data(std::size_t{0}, m1ma) == 88.0;
+			check ->* df->get_data(std::size_t{0}, m1me) == 21.85;
+			check ->* df->get_data(std::size_t{0}, m1mi) == 2.0;
+			check ->* df->get_data(std::size_t{0}, m1s) == 109.25;
+			check ->* df->get_data(std::size_t{0}, m1t) == 3.5;
 
-			check ->* df->get_data(std::size_t{1}, "count(d1)") == 4.0;
-			check ->* df->get_data(std::size_t{1}, "count(m1)") == 3.0;
-			check ->* df->get_data(std::size_t{1}, "distinct(d1)") == 1.0;
-			check ->* df->get_data(std::size_t{1}, "distinct(m1)") == 3.0;
-			check ->* df->get_data(std::size_t{1}, "exists(d1)") == 1.0;
-			check ->* df->get_data(std::size_t{1}, "exists(m1)") == 1.0;
-			check ->* df->get_data(std::size_t{1}, "max(m1)") == 7.25;
-			check ->* df->get_data(std::size_t{1}, "mean(m1)") == 5.0;
-			check ->* df->get_data(std::size_t{1}, "min(m1)") == 3.5;
-			check ->* df->get_data(std::size_t{1}, "sum(m1)") == 15.0;
-			check ->* df->get_data(std::size_t{1}, "test(m1)") == 4.25;
+			check ->* df->get_data(std::size_t{1}, d1c) == 4.0;
+			check ->* df->get_data(std::size_t{1}, m1c) == 3.0;
+			check ->* df->get_data(std::size_t{1}, d1d) == 1.0;
+			check ->* df->get_data(std::size_t{1}, m1d) == 3.0;
+			check ->* df->get_data(std::size_t{1}, d1e) == 1.0;
+			check ->* df->get_data(std::size_t{1}, m1e) == 1.0;
+			check ->* df->get_data(std::size_t{1}, m1ma) == 7.25;
+			check ->* df->get_data(std::size_t{1}, m1me) == 5.0;
+			check ->* df->get_data(std::size_t{1}, m1mi) == 3.5;
+			check ->* df->get_data(std::size_t{1}, m1s) == 15.0;
+			check ->* df->get_data(std::size_t{1}, m1t) == 4.25;
 
-			check ->* df->get_data(std::size_t{2}, "count(d1)") == 1.0;
-			check ->* df->get_data(std::size_t{2}, "count(m1)") == 0.0;
-			check ->* df->get_data(std::size_t{2}, "distinct(d1)") == 1.0;
-			check ->* df->get_data(std::size_t{2}, "distinct(m1)") == 0.0;
-			check ->* df->get_data(std::size_t{2}, "exists(d1)") == 1.0;
-			check ->* df->get_data(std::size_t{2}, "exists(m1)") == 0.0;
-			check ->* std::isnan(std::get<double>(df->get_data(std::size_t{2}, "max(m1)"))) == "is nan"_is_true;
-			check ->* std::isnan(std::get<double>(df->get_data(std::size_t{2}, "mean(m1)"))) == "is nan"_is_true;
-			check ->* std::isnan(std::get<double>(df->get_data(std::size_t{2}, "min(m1)"))) == "is nan"_is_true;
-			check ->* df->get_data(std::size_t{2}, "sum(m1)") == 0.0;
-			check ->* df->get_data(std::size_t{2}, "test(m1)") == std::numeric_limits<double>::max();
+			check ->* df->get_data(std::size_t{2}, d1c) == 1.0;
+			check ->* df->get_data(std::size_t{2}, m1c) == 0.0;
+			check ->* df->get_data(std::size_t{2}, d1d) == 1.0;
+			check ->* df->get_data(std::size_t{2}, m1d) == 0.0;
+			check ->* df->get_data(std::size_t{2}, d1e) == 1.0;
+			check ->* df->get_data(std::size_t{2}, m1e) == 0.0;
+			check ->* std::isnan(std::get<double>(df->get_data(std::size_t{2}, m1ma))) == "is nan"_is_true;
+			check ->* std::isnan(std::get<double>(df->get_data(std::size_t{2}, m1me))) == "is nan"_is_true;
+			check ->* std::isnan(std::get<double>(df->get_data(std::size_t{2}, m1mi))) == "is nan"_is_true;
+			check ->* df->get_data(std::size_t{2}, m1s) == 0.0;
+			check ->* df->get_data(std::size_t{2}, m1t) == std::numeric_limits<double>::max();
 
-			check ->* df->get_data(std::size_t{3}, "count(d1)") == 0.0;
-			check ->* df->get_data(std::size_t{3}, "count(m1)") == 1.0;
-			check ->* df->get_data(std::size_t{3}, "distinct(d1)") == 0.0;
-			check ->* df->get_data(std::size_t{3}, "distinct(m1)") == 1.0;
-			check ->* df->get_data(std::size_t{3}, "exists(d1)") == 0.0;
-			check ->* df->get_data(std::size_t{3}, "exists(m1)") == 1.0;
+			check ->* df->get_data(std::size_t{3}, d1c) == 0.0;
+			check ->* df->get_data(std::size_t{3}, m1c) == 1.0;
+			check ->* df->get_data(std::size_t{3}, d1d) == 0.0;
+			check ->* df->get_data(std::size_t{3}, m1d) == 1.0;
+			check ->* df->get_data(std::size_t{3}, d1e) == 0.0;
+			check ->* df->get_data(std::size_t{3}, m1e) == 1.0;
 		}
 
 	| "aggregate multiple dim" |
@@ -547,45 +546,46 @@ const static auto tests =
 				{{"dx2", "dm0", "dob", NAN}},
 				{{"dx2", "dm0", "doa", 0.5}},
 		}}) {
-			df->set_aggregate("d1", {});
-			df->set_aggregate("d2", {});
-			df->set_aggregate("d3", Vizzu::dataframe::aggregator_type::count);
-			df->set_aggregate("d3", Vizzu::dataframe::aggregator_type::distinct);
+			df->aggregate_by("d1");
+			df->aggregate_by("d2");
+			using enum Vizzu::dataframe::aggregator_type;
+			auto &&d3c = df->set_aggregate("d3", count);
+			auto &&d3d = df->set_aggregate("d3", distinct);
 
 			df->finalize();
 
 			assert ->* df->get_dimensions() == std::array{"d1", "d2"};
-			assert ->* df->get_measures() == std::array{"count(d3)", "distinct(d3)"};
+			assert ->* df->get_measures() == std::array{d3c, d3d};
 
 			assert ->* df->get_record_count() == std::size_t{6};
 
 			check ->* df->get_data(std::size_t{0}, "d1") == "dx0";
 			check ->* df->get_data(std::size_t{0}, "d2") == "dm0";
-			check ->* df->get_data(std::size_t{0}, "count(d3)") == 3.0;
-			check ->* df->get_data(std::size_t{0}, "distinct(d3)") == 2.0;
+			check ->* df->get_data(std::size_t{0}, d3c) == 3.0;
+			check ->* df->get_data(std::size_t{0}, d3d) == 2.0;
 
 			check ->* df->get_data(std::size_t{1}, "d1") == "dx0";
 			check ->* df->get_data(std::size_t{1}, "d2") == "dm1";
-			check ->* df->get_data(std::size_t{1}, "count(d3)") == 1.0;
-			check ->* df->get_data(std::size_t{1}, "distinct(d3)") == 1.0;
+			check ->* df->get_data(std::size_t{1}, d3c) == 1.0;
+			check ->* df->get_data(std::size_t{1}, d3d) == 1.0;
 
 			check ->* df->get_data(std::size_t{2}, "d1") == "dx1";
 			check ->* df->get_data(std::size_t{2}, "d2") == "dm0";
-			check ->* df->get_data(std::size_t{2}, "count(d3)") == 2.0;
-			check ->* df->get_data(std::size_t{2}, "distinct(d3)") == 1.0;
+			check ->* df->get_data(std::size_t{2}, d3c) == 2.0;
+			check ->* df->get_data(std::size_t{2}, d3d) == 1.0;
 
 			check ->* df->get_data(std::size_t{3}, "d1") == "dx1";
 			check ->* df->get_data(std::size_t{3}, "d2") == "dm1";
-			check ->* df->get_data(std::size_t{3}, "count(d3)") == 0.0;
-			check ->* df->get_data(std::size_t{3}, "distinct(d3)") == 0.0;
+			check ->* df->get_data(std::size_t{3}, d3c) == 0.0;
+			check ->* df->get_data(std::size_t{3}, d3d) == 0.0;
 
 			check ->* df->get_data(std::size_t{4}, "d1") == "dx1";
 			check ->* df->get_data(std::size_t{4}, "d2") == "dm2";
 
 			check ->* df->get_data(std::size_t{5}, "d1") == "dx2";
 			check ->* df->get_data(std::size_t{5}, "d2") == "dm0";
-			check ->* df->get_data(std::size_t{5}, "count(d3)") == 2.0;
-			check ->* df->get_data(std::size_t{5}, "distinct(d3)") == 2.0;
+			check ->* df->get_data(std::size_t{5}, d3c) == 2.0;
+			check ->* df->get_data(std::size_t{5}, d3d) == 2.0;
 		}
 
 	| "cannot finalize contains same dim" |
