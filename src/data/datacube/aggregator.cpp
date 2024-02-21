@@ -86,6 +86,7 @@ bool Aggregator::isEmpty() const { return count == 0; }
 Vizzu::Data::Aggregator::operator bool() const
 {
 	switch (type) {
+	default:
 	case Exists:
 	case Sum:
 	case Count:
