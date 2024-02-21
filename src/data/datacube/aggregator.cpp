@@ -83,6 +83,19 @@ Aggregator &Aggregator::add(const Aggregator &other)
 
 bool Aggregator::isEmpty() const { return count == 0; }
 
-Vizzu::Data::Aggregator::operator double() const { return value; }
+Vizzu::Data::Aggregator::operator bool() const
+{
+	switch (type) {
+	case Exists:
+	case Sum:
+	case Count:
+	case Distinct: return true;
+	case Min:
+	case Max:
+	case Mean: return !isEmpty();
+	}
+}
+
+double Aggregator::operator*() const { return value; }
 
 }

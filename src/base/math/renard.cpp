@@ -37,7 +37,9 @@ double Renard::ceil(double value)
 			return ScientificNumber(num.positive, Rnum, num.exponent)
 			    .value();
 
-	throw std::logic_error("Internal error in R-number rounding.");
+	throw std::logic_error(
+	    "Internal error in R-number ceil rounding: "
+	    + std::to_string(value) + ".");
 }
 
 double Renard::floor(double value)
@@ -51,7 +53,9 @@ double Renard::floor(double value)
 			return ScientificNumber(num.positive, Rnum, num.exponent)
 			    .value();
 
-	throw std::logic_error("Internal error in R-number rounding.");
+	throw std::logic_error(
+	    "Internal error in R-number floor rounding: "
+	    + std::to_string(value) + ".");
 }
 
 }

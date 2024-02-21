@@ -219,9 +219,11 @@ CellInfo::Values DataCube::values(
 
 		if (series.getType() == SeriesType::Exists) continue;
 
-		auto value = static_cast<double>(cell.subCells[i]);
-
-		res.emplace_back(series, value);
+		if (auto &&val = cell.subCells[i])
+			res.emplace_back(series, *val);
+		else
+			res.emplace_back(series,
+			    std::numeric_limits<double>::quiet_NaN());
 	}
 	return res;
 }
