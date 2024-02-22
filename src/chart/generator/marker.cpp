@@ -197,7 +197,7 @@ double Marker::getValueForChannel(const Channels &channels,
 
 	auto measure = channel.measureId;
 
-	double value = channel.defaultValue;
+	double value{};
 	auto id = Id(data, channel.dimensionIds, index);
 
 	auto &stat = stats.channels[type];
@@ -211,12 +211,10 @@ double Marker::getValueForChannel(const Channels &channels,
 		if (enabled) stat.track(id);
 	}
 	else {
-		if (channel.stackable) {
-			if (auto &&val = data.aggregateAt(index, sumBy, *measure))
-				value = *val;
-		}
-		else if (auto &&val = data.valueAt(index, *measure))
-			value = *val;
+		if (channel.stackable)
+			value = double{data.aggregateAt(index, sumBy, *measure)};
+		else
+			value = double{data.valueAt(index, *measure)};
 
 		if (enabled) { stat.track(value); }
 	}
