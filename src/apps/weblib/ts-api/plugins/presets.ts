@@ -95,12 +95,17 @@ export default class Presets {
 		return typeof channel === 'object' && channel !== null && 'set' in channel
 	}
 
+	private _assignProperty<T, K extends keyof T>(base: T, config: T, prop: K): void {
+		const value = config[prop];
+		if (value !== undefined) {
+			base[prop] = value;
+		}
+	}
+
 	private _setupUserParams(base: Config.Chart, config: Config.Chart): void {
 		;['legend', 'title', 'subtitle', 'caption', 'reverse', 'sort'].forEach((key) => {
 			const prop = key as keyof Config.Chart
-			if (config[prop] !== undefined) {
-				base[prop] = config[prop] as never
-			}
+			this._assignProperty(base, config, prop)
 		})
 	}
 
