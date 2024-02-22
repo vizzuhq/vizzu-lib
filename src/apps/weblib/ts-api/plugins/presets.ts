@@ -96,9 +96,9 @@ export default class Presets {
 	}
 
 	private _assignProperty<T, K extends keyof T>(base: T, config: T, prop: K): void {
-		const value = config[prop];
+		const value = config[prop]
 		if (value !== undefined) {
-			base[prop] = value;
+			base[prop] = value
 		}
 	}
 
