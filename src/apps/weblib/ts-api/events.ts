@@ -390,8 +390,8 @@ export class Events {
 					const eventParam = this._isJSEvent(eventName)
 						? this._makeJSEventParam(param, state)
 						: cEvent
-						  ? this._makeCEventParam(cEvent, param, state)
-						  : param
+							? this._makeCEventParam(cEvent, param, state)
+							: param
 					handler(eventParam)
 				}
 			}
