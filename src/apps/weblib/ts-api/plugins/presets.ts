@@ -99,7 +99,7 @@ export default class Presets {
 		;['legend', 'title', 'subtitle', 'caption', 'reverse', 'sort'].forEach((key) => {
 			const prop = key as keyof Config.Chart
 			if (config[prop] !== undefined) {
-				base[prop] = config[prop] as undefined
+				base[prop] = config[prop] as never
 			}
 		})
 	}
