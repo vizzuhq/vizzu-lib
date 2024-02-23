@@ -219,9 +219,7 @@ CellInfo::Values DataCube::values(
 
 		if (series.getType() == SeriesType::Exists) continue;
 
-		auto value = static_cast<double>(cell.subCells[i]);
-
-		res.emplace_back(series, value);
+		res.emplace_back(series, cell.subCells[i]);
 	}
 	return res;
 }

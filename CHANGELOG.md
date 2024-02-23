@@ -12,6 +12,8 @@
 - Legend label outerRect was not properly calculated.
 - Line chart connector circles color was not contained the alpha channel.
 - Line chart draws was overwrite the event's settings.
+- Legend title outerRect was not properly calculated.
+- Fixed stacked empty min/max aggregated values.
 
 ### Added
 

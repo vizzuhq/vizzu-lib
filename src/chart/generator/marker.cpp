@@ -211,14 +211,10 @@ double Marker::getValueForChannel(const Channels &channels,
 		if (enabled) stat.track(id);
 	}
 	else {
-		auto singlevalue =
-		    static_cast<double>(data.valueAt(index, *measure));
-
 		if (channel.stackable)
-			value = static_cast<double>(
-			    data.aggregateAt(index, sumBy, *measure));
+			value = double{data.aggregateAt(index, sumBy, *measure)};
 		else
-			value = singlevalue;
+			value = double{data.valueAt(index, *measure)};
 
 		if (enabled) { stat.track(value); }
 	}

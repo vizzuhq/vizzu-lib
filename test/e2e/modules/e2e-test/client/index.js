@@ -1,4 +1,5 @@
-function catchError(err) {
+function catchError(err, chart) {
+	detach(chart)
 	console.error(err)
 	let errMsg = err.toString()
 	if (err.stack !== undefined) {
@@ -37,10 +38,21 @@ function getTestSteps(testCasesModule, testType, testIndex) {
 	return testSteps
 }
 
+function detach(chart) {
+	try {
+		if (chart !== undefined) {
+			chart.detach()
+		}
+	} catch (err) {
+		console.error(err)
+	}
+}
+
 window.addEventListener('error', (event) => {
 	catchError(event.error)
 })
 
+let chart
 try {
 	const queryString = window.location.search
 	const urlParams = new URLSearchParams(queryString)
@@ -61,8 +73,9 @@ try {
 				for (let seek = parseFloat(animStep); seek <= 100; seek += parseFloat(animStep)) {
 					seeks.push(seek)
 				}
-				const chart = new Vizzu('vizzuCanvas')
-				return chart.initializing.then((chart) => {
+				chart = new Vizzu('vizzuCanvas')
+				const initializing = chart.initializing
+				return initializing.then((chart) => {
 					let promise = Promise.resolve(chart)
 					const promises = []
 					const testSteps = getTestSteps(testCasesModule.default, testType, testIndex)
@@ -108,6 +121,7 @@ try {
 						})
 					}
 					return promise.then(() => {
+						chart.detach()
 						return Promise.all(promises).then(() => {
 							testData.hashes.forEach((items) => {
 								testData.hash += items.join('')
@@ -153,8 +167,8 @@ try {
 			})
 		})
 		.catch((err) => {
-			catchError(err)
+			catchError(err, chart)
 		})
 } catch (err) {
-	catchError(err)
+	catchError(err, chart)
 }

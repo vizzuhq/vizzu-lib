@@ -24,7 +24,7 @@ public:
 	explicit Aggregator(Type type);
 	Aggregator &add(double);
 	Aggregator &add(const Aggregator &);
-	explicit operator double() const;
+	[[nodiscard]] explicit operator double() const;
 	[[nodiscard]] bool isEmpty() const;
 
 private:
