@@ -98,7 +98,7 @@ inline namespace consts
 {
 struct impl_check_t
 {
-	test::check_t operator()(src_location loc = src_location()) const;
+	check_t operator()(src_location loc = src_location()) const;
 };
 struct assert_t
 {};
@@ -106,8 +106,34 @@ struct skip_t
 {};
 template <class exception> struct impl_throws_t
 {
-	test::throws_t<exception> operator()(
+	throws_t<exception> operator()(
 	    src_location loc = src_location()) const;
+
+	template <class Res, class Member, class Obj, class... Args>
+	void operator()(Res (Member::*p)(Args...) &,
+	    Obj &&obj,
+	    Args &&...args) const
+	{
+		(*this)() << [&]
+		{
+			std::invoke(p,
+			    std::forward<Obj>(obj),
+			    std::forward<Args>(args)...);
+		};
+	}
+
+	template <class Res, class Member, class Obj, class... Args>
+	void operator()(Res (Member::*p)(Args...) const &,
+	    Obj &&obj,
+	    Args &&...args) const
+	{
+		(*this)() << [&]
+		{
+			std::invoke(p,
+			    std::forward<Obj>(obj),
+			    std::forward<Args>(args)...);
+		};
+	}
 };
 }
 
@@ -260,26 +286,20 @@ throws_t(consts::impl_throws_t<exception>,
 	return bool_check_t{check, value};
 }
 
-inline auto operator->*(throws_t<std::runtime_error> &&throws,
-    const auto &value)
-{
-	return throws << value;
-}
-
 inline namespace consts
 {
 
-[[nodiscard]] inline test::check_t impl_check_t::operator()(
+[[nodiscard]] inline check_t impl_check_t::operator()(
     src_location loc) const
 {
-	return test::check_t{loc};
+	return check_t{loc};
 }
 
 template <class exception>
-[[nodiscard]] inline test::throws_t<exception>
+[[nodiscard]] throws_t<exception>
 impl_throws_t<exception>::operator()(src_location loc) const
 {
-	return test::throws_t<exception>{loc};
+	return throws_t<exception>{loc};
 }
 
 static inline constexpr impl_check_t check{};

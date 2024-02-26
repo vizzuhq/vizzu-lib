@@ -95,7 +95,7 @@ public:
 	    any_sort_type sort,
 	    na_position na_pos) & = 0;
 
-	virtual void set_sort(
+	virtual void set_custom_sort(
 	    std::function<std::weak_ordering(record_type, record_type)>
 	        custom_sort) & = 0;
 
