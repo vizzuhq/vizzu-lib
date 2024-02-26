@@ -1,6 +1,6 @@
 
 #include "../util/test.h"
-// #include "dataframe/impl/dataframe.h"
+#include "dataframe/impl/dataframe.h"
 #include "dataframe/interface.h"
 
 using bool_msg = test::expected_bool_t;
@@ -25,8 +25,7 @@ struct setup
 	std::vector<std::vector<cell_value>> data{};
 	bool copied{};
 	std::shared_ptr<interface> _df{
-	    // std::make_shared<Vizzu::dataframe::dataframe>() // TODO
-	};
+	    std::make_shared<Vizzu::dataframe::dataframe>()};
 
 	explicit(false) operator interface *()
 	{

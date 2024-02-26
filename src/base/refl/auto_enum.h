@@ -216,13 +216,13 @@ constexpr decltype(auto) unsafe_get(
 template <class T, class E, class... Args>
 constexpr decltype(auto) unsafe_get(EnumVariant<E, Args...> const &e)
 {
-	return *std::get_if<T>(e);
+	return *std::get_if<T>(&e);
 }
 
 template <class T, class E, class... Args>
 constexpr decltype(auto) unsafe_get(EnumVariant<E, Args...> &e)
 {
-	return *std::get_if<T>(e);
+	return *std::get_if<T>(&e);
 }
 
 template <auto E, class... Args>
