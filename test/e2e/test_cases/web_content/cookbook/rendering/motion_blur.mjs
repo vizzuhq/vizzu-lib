@@ -37,12 +37,11 @@ const testSteps = [
 
 		chart.on('draw-complete', drawComplete)
 
-		return chart
-			.animate({
-				coordSystem: 'polar',
-				y: 'Joy factors',
-				x: 'Value 2 (+)'
-			})
+		return chart.animate({
+			coordSystem: 'polar',
+			y: 'Joy factors',
+			x: 'Value 2 (+)'
+		})
 	}
 ]
 
