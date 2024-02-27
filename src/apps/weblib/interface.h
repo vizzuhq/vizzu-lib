@@ -47,6 +47,7 @@ public:
 	    ObjectRegistry::Handle canvas,
 	    double width,
 	    double height,
+	    double timeInMSecs,
 	    RenderControl renderControl);
 
 	ObjectRegistry::Handle storeAnim(ObjectRegistry::Handle chart);

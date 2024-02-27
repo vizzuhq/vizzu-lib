@@ -94,6 +94,7 @@ export interface CVizzu {
 		canvas: CCanvasPtr,
 		width: number,
 		height: number,
+		time: number,
 		renderControl: number
 	): void
 	_vizzu_errorMessage(exceptionPtr: CException, typeinfo: CTypeInfo): CString
