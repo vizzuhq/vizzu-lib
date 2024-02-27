@@ -1,5 +1,6 @@
+import { Snapshot } from '../module/cchart.js'
 import { Element, Marker, PointerEvent } from '../events.js'
-import { Plugin } from '../plugins.js'
+import { Plugin, type PluginHooks, type PrepareAnimationContext } from '../plugins.js'
 
 import Vizzu from '../vizzu.js'
 
@@ -10,6 +11,24 @@ export class Tooltip implements Plugin {
 	private _lastMarkerId: number | null = null
 	private _overedMarkerId: number | null = null
 	private _lastMove = new Date().getTime()
+
+	get hooks(): PluginHooks {
+		return {
+			prepareAnimation: (ctx: PrepareAnimationContext, next: () => void): void => {
+				if (Array.isArray(ctx.target))
+					ctx.target.forEach(({ target }) => {
+						if (target instanceof Snapshot) return
+						if (!target.config) target.config = {}
+						if (!('tooltip' in target.config)) {
+							target.config.tooltip = null
+							this._id++
+							this._lastMarkerId = null
+						}
+					})
+				next()
+			}
+		}
+	}
 
 	meta = {
 		name: 'tooltip',

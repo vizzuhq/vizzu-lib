@@ -14,6 +14,7 @@
 - Line chart draws was overwrite the event's settings.
 - Legend title outerRect was not properly calculated.
 - Fixed stacked empty min/max aggregated values.
+- Fixed error when an animation triggered during tooptip activation which removed the corresopnding marker. 
 
 ### Added
 
