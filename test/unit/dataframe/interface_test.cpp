@@ -18,7 +18,7 @@ using Vizzu::dataframe::sort_type;
 using interface = Vizzu::dataframe::dataframe_interface;
 using record_type = interface::record_type;
 
-struct setup
+struct if_setup
 {
 	std::vector<const char *> dims{};
 	std::vector<const char *> meas{};
@@ -89,25 +89,25 @@ struct setup
 
 static inline const auto empty_input = input{[]
     {
-	    return setup{};
+	    return if_setup{};
     },
     "empty input"};
 
 static inline const auto empty_input_copied = input{[]
     {
-	    return setup{.copied = true};
+	    return if_setup{.copied = true};
     },
     "empty input copied"};
 
 static inline const auto one_one_empty = input{[]
     {
-	    return setup{.dims = {"test_dim"}, .meas = {"test_meas"}};
+	    return if_setup{.dims = {"test_dim"}, .meas = {"test_meas"}};
     },
     "one one empty"};
 
 static inline const auto one_one_empty_copied = input{[]
     {
-	    return setup{.dims = {"test_dim"},
+	    return if_setup{.dims = {"test_dim"},
 	        .meas = {"test_meas"},
 	        .copied = true};
     },
@@ -256,7 +256,7 @@ const static auto tests =
 }
 
     | "add_series_by_other" |
-    [](interface *df = setup{{"d1", "d2"},
+    [](interface *df = if_setup{{"d1", "d2"},
            {"m1"},
            {{{"dm1", "dm2", 0.0}},
                {{"dm1", "dmX", 1.0}},
@@ -310,7 +310,7 @@ const static auto tests =
 }
 
     | "remove_series" |
-    [](interface *df = setup{{"d1", "d2", "d3"},
+    [](interface *df = if_setup{{"d1", "d2", "d3"},
            {"m1", "m2", "m3"},
            {
                {{"dm1", "dx2", "dm3", 0.0, 0.1, 0.2}},
@@ -329,7 +329,7 @@ const static auto tests =
 }
 
     | "remove_records" |
-    [](interface *df = setup{{"d1"},
+    [](interface *df = if_setup{{"d1"},
            {"m1"},
            {
                {{"dm0", NAN}},
@@ -361,7 +361,7 @@ const static auto tests =
 }
 
     | "remove_records_filter" |
-    [](interface *df = setup{{"d1"},
+    [](interface *df = if_setup{{"d1"},
            {"m1"},
            {
                {{"dm0", 5.3}},
@@ -393,7 +393,7 @@ const static auto tests =
 }
 
     | "change_data" |
-    [](interface *df = setup{{"d1"},
+    [](interface *df = if_setup{{"d1"},
            {"m1"},
            {{{"dm0", 5.3}}, {{"dm1", 2.0}}, {{"dm2", 3.3}}}})
 {
@@ -423,7 +423,7 @@ const static auto tests =
 }
 
     | "fill_na" |
-    [](interface *df = setup{{"d1"},
+    [](interface *df = if_setup{{"d1"},
            {"m1"},
            {{{"dm0", 5.3}},
                {{std::string_view{nullptr, 0}, 2.0}},
@@ -444,7 +444,7 @@ const static auto tests =
 }
 
     | "aggregate types" |
-    [](interface *df = setup{{"d1"},
+    [](interface *df = if_setup{{"d1"},
            {"m1"},
            {
                {{"dm0", 5.5}},
@@ -567,7 +567,7 @@ const static auto tests =
 }
 
     | "aggregate multiple dim" |
-    [](interface *df = setup{{"d1", "d2", "d3"},
+    [](interface *df = if_setup{{"d1", "d2", "d3"},
            {"m1"},
            {
                {{"dx0", "dm0", "doa", 5.5}},
@@ -626,14 +626,14 @@ const static auto tests =
 }
 
     | "cannot finalize contains same dim" |
-    [](interface *df = setup{.dims = {"d1", "d2"},
+    [](interface *df = if_setup{.dims = {"d1", "d2"},
            .data = {{{"dx0", "dm0"}}, {{"dx0", "dm0"}}}})
 {
 	throw_(&interface::finalize, df);
 }
 
     | "sort dimension" |
-    [](interface *df = setup{{"d1", "d2"},
+    [](interface *df = if_setup{{"d1", "d2"},
            {"m1"},
            {
                {{"dx2", "dm2", 5.5}},
@@ -701,7 +701,7 @@ const static auto tests =
 }
 
     | "another sort example" |
-    [](interface *df = setup{{"d1", "d2"},
+    [](interface *df = if_setup{{"d1", "d2"},
            {"m1"},
            {
                {{"dx2", "dm2", 88.0}},
@@ -780,7 +780,7 @@ const static auto tests =
 }
 
     | "sort measure" |
-    [](interface *df = setup{{"d1"},
+    [](interface *df = if_setup{{"d1"},
            {"m1"},
            {
                {{"dm0", 5.5}},
