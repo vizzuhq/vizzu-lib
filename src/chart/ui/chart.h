@@ -14,7 +14,7 @@ namespace Vizzu::UI
 class ChartWidget : public GUI::Widget
 {
 public:
-	std::function<void(void)> doChange;
+	std::function<void()> doChange;
 	std::function<void(const std::string &)> openUrl;
 
 	explicit ChartWidget();

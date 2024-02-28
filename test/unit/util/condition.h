@@ -40,6 +40,27 @@ public:
 		}
 	}
 
+	template <class U> void operator!=(const U &ref) const
+	{
+		if constexpr (requires { ref != value; }) {
+			return evaluate(value != ref, "!=", ref);
+		}
+		else if constexpr (std::ranges::range<T>) {
+			if (std::ranges::size(value) != std::ranges::size(ref))
+				return;
+			auto &&[lhs, rhs] = std::ranges::mismatch(value, ref);
+			return evaluate(lhs != std::end(value), "!=", ref);
+		}
+		else if constexpr (std::is_convertible_v<U, T>) {
+			return *this != static_cast<T>(ref);
+		}
+		else {
+			static_assert(
+			    requires { ref != value; },
+			    "Cannot compare types");
+		}
+	}
+
 	void operator<=(const auto &ref) const
 	{
 		return evaluate(value <= ref, "<=", ref);

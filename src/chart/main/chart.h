@@ -30,6 +30,7 @@ public:
 	Event onChanged;
 
 	Chart();
+	Chart(Chart &&) noexcept = delete;
 	void draw(Gfx::ICanvas &canvas);
 	void setBoundRect(const Geom::Rect &rect);
 
@@ -46,7 +47,7 @@ public:
 		actStyles = styles;
 		actStyles.setup();
 	}
-	Gen::Options getOptions() { return *nextOptions; }
+	Gen::Options &getOptions() { return *nextOptions; }
 	void setOptions(const Gen::Options &options)
 	{
 		*nextOptions = options;

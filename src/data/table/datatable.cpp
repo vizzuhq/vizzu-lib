@@ -91,7 +91,7 @@ DataTable::DataIndex DataTable::addColumn(const std::string &name,
 }
 
 DataTable::DataIndex DataTable::addColumn(const std::string &name,
-    const std::span<const char *> &categories,
+    const std::span<const char *const> &categories,
     const std::span<const std::uint32_t> &values)
 {
 	std::vector<const char *> realValues(values.size());
