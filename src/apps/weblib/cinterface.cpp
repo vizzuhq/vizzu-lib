@@ -184,12 +184,14 @@ void vizzu_update(APIHandles::Chart chart,
     APIHandles::Canvas canvas,
     double width,
     double height,
+    double timeInMSecs,
     int renderControl)
 {
 	return Interface::getInstance().update(chart,
 	    canvas,
 	    width,
 	    height,
+	    timeInMSecs,
 	    static_cast<Interface::RenderControl>(renderControl));
 }
 
