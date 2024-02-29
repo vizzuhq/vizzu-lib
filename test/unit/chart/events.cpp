@@ -66,7 +66,7 @@ struct chart_setup
 	    {
 		    bool is_emscripten{
 #ifdef __EMSCRIPTEN__
-		        true
+		// true
 #endif
 		    };
 
