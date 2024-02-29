@@ -16,7 +16,7 @@ enum class SortType : uint8_t { AsSeen, Natural };
 
 class DataCube;
 
-class DataTable : public Table<double>
+class DataTableOld : public Table<double>
 {
 	using Infos = std::vector<ColumnInfo>;
 
@@ -39,7 +39,7 @@ public:
 		}
 	};
 
-	DataTable();
+	DataTableOld();
 	[[nodiscard]] const ColumnInfo &getInfo(ColumnIndex index) const;
 	[[nodiscard]] DataIndex getIndex(ColumnIndex index) const;
 	[[nodiscard]] ColumnIndex getColumn(
@@ -58,7 +58,7 @@ public:
 
 	[[nodiscard]] size_t columnCount() const;
 
-	[[nodiscard]] const Infos &getInfos() const { return infos; }
+	[[nodiscard]] std::string getInfos() const;
 
 private:
 	std::map<std::string, ColumnIndex> indexByName;
@@ -69,6 +69,8 @@ private:
 	    const std::string &unit,
 	    const std::span<T> &values);
 };
+
+using DataTable = DataTableOld;
 
 class CellWrapper
 {

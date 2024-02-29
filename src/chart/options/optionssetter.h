@@ -8,11 +8,6 @@
 namespace Vizzu
 {
 
-namespace Data
-{
-class DataTable;
-}
-
 namespace Gen
 {
 
