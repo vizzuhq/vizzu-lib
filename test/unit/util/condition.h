@@ -214,15 +214,15 @@ struct bool_check_t : check_t
 			if (throw_error) {
 				throw_error(std::string("expectation failed\n")
 				                + "\t\"" + std::string{exp.msg}
-				                + "\" is not "
-				                + (exp.value ? "true" : "false"),
+				                + "\" is "
+				                + (exp.value ? "false" : "true"),
 				    location);
 			}
 
 			collection::instance().running_test()->fail(location,
 			    std::string("Check expectation failed\n") + "\t\""
-			        + std::string{exp.msg} + "\" is not "
-			        + (exp.value ? "true" : "false"));
+			        + std::string{exp.msg} + "\" is "
+			        + (exp.value ? "false" : "true"));
 		}
 	}
 };

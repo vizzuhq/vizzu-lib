@@ -9,6 +9,7 @@ using test::assert;
 using test::check;
 using test::skip;
 using test::operator""_is_true;
+using test::operator""_is_false;
 
 Geom::Size Gfx::ICanvas::textBoundary(const Font &font,
     const std::string &text)
@@ -17,7 +18,7 @@ Geom::Size Gfx::ICanvas::textBoundary(const Font &font,
 	    font.size};
 }
 
-struct MyCanvas : Gfx::ICanvas, Vizzu::Draw::Painter
+struct MyCanvas final : Gfx::ICanvas, Vizzu::Draw::Painter
 {
 	MyCanvas() noexcept = default;
 	~MyCanvas() final = default;
@@ -61,6 +62,17 @@ struct chart_setup
 {
 	std::vector<std::pair<Vizzu::Gen::ChannelId, const char *>>
 	    series;
+	bool is_emscripten{[]
+	    {
+		    bool is_emscripten{
+#ifdef __EMSCRIPTEN__
+		        true
+#endif
+		    };
+
+		    skip->*is_emscripten == "Emscripten build"_is_false;
+		    return is_emscripten;
+	    }()};
 	Vizzu::Chart chart{};
 
 	explicit(false) operator Vizzu::Chart &()
@@ -92,17 +104,14 @@ struct event_as
 {
 	std::string json;
 	const Util::EventTarget *target;
-	std::variant<std::monostate,
-	    Vizzu::Draw::Rect,
-	    Vizzu::Draw::Line,
-	    Vizzu::Events::OnTextDrawDetail>
+	std::variant<std::monostate, Vizzu::Draw::Rect, Vizzu::Draw::Line>
 	    drawn;
 };
 
-std::multimap<std::string, event_as, std::less<>>
-get_events(Vizzu::Chart &chart, const double &position = 1.0)
+std::multimap<std::string, event_as, std::less<>> get_events(
+    Vizzu::Chart &chart)
 {
-	chart.getAnimOptions().control.position = position;
+	chart.getAnimOptions().control.position = 1.0;
 
 	bool ends{};
 	chart.setKeyframe();
@@ -113,43 +122,36 @@ get_events(Vizzu::Chart &chart, const double &position = 1.0)
 	    });
 
 	std::multimap<std::string, event_as, std::less<>> events;
+
+	auto line =
+	    chart.getOptions().geometry == Vizzu::Gen::ShapeType::line;
 	chart.getEventDispatcher().registerOnEachEvent(0,
-	    [&events](Util::EventDispatcher::Params &params)
+	    [&events, &line](Util::EventDispatcher::Params &params)
 	    {
-		    if (typeid(params)
-		            == typeid(Util::EventDispatcher::Params)
-		        || dynamic_cast<Vizzu::Events::OnUpdateDetail *>(
-		            &params)) {
+		    auto marker = params.eventName == "plot-marker-draw";
+		    if ((marker && line)
+		        || params.eventName == "plot-axis-draw") {
+			    events.emplace(std::piecewise_construct,
+			        std::tuple{params.eventName},
+			        std::tuple{params.toJSON(),
+			            params.target,
+			            static_cast<Vizzu::Events::OnLineDrawEvent &>(
+			                params)
+			                .line});
+		    }
+		    else if (marker) {
+			    events.emplace(std::piecewise_construct,
+			        std::tuple{params.eventName},
+			        std::tuple{params.toJSON(),
+			            params.target,
+			            static_cast<Vizzu::Events::OnRectDrawEvent &>(
+			                params)
+			                .rect});
+		    }
+		    else
 			    events.emplace(std::piecewise_construct,
 			        std::tuple{params.eventName},
 			        std::tuple{params.toJSON(), params.target});
-		    }
-		    else if (auto *p = dynamic_cast<
-		                 Vizzu::Events::OnTextDrawDetail *>(
-		                 &params)) {
-			    events.emplace(std::piecewise_construct,
-			        std::tuple{params.eventName},
-			        std::tuple{params.toJSON(), params.target, *p});
-		    }
-		    else if (auto *p = dynamic_cast<
-		                 Vizzu::Events::OnRectDrawEvent *>(&params)) {
-			    events.emplace(std::piecewise_construct,
-			        std::tuple{params.eventName},
-			        std::tuple{params.toJSON(),
-			            params.target,
-			            p->rect});
-		    }
-		    else if (auto *p = dynamic_cast<
-		                 Vizzu::Events::OnLineDrawEvent *>(&params)) {
-			    events.emplace(std::piecewise_construct,
-			        std::tuple{params.eventName},
-			        std::tuple{params.toJSON(),
-			            params.target,
-			            p->line});
-		    }
-		    else
-			    skip->*false
-			        == "Not all draw events type handled"_is_true;
 	    });
 
 	using clock_t = std::chrono::steady_clock;
@@ -204,7 +206,7 @@ const static auto tests =
 	using Axis = Vizzu::Events::Targets::Axis;
 	for (auto &&[beg, end] = events.equal_range("plot-axis-draw");
 	     const auto &[j, t, l] : values(subrange(beg, end)))
-		if (!dynamic_cast<Axis const &>(*t).horizontal)
+		if (!static_cast<Axis const &>(*t).horizontal)
 			xCenter = std::get<Vizzu::Draw::Line>(l).line.begin.x;
 
 	std::set<double> zero_count{};

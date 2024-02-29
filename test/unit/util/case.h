@@ -40,6 +40,8 @@ struct skip_error : std::runtime_error
 class case_type
 {
 public:
+	enum class result_t { OK, SKIP, FAIL };
+
 	case_type(std::string_view suite_name,
 	    std::string_view case_name,
 	    runnable runner,
@@ -50,7 +52,7 @@ public:
 	    location(location)
 	{}
 
-	void operator()()
+	result_t operator()()
 	{
 		using std::chrono::steady_clock;
 
@@ -61,6 +63,8 @@ public:
 
 		auto duration = steady_clock::now() - start;
 		print_summary(duration);
+
+		return static_cast<result_t>(*this);
 	}
 
 	void fail(const src_location &location,
@@ -82,9 +86,10 @@ public:
 		return location.get_file_name();
 	}
 
-	explicit operator bool() const
+	explicit operator result_t() const
 	{
-		return skip || error_messages.empty();
+		using enum result_t;
+		return skip ? SKIP : error_messages.empty() ? OK : FAIL;
 	}
 
 	void set_latest_location(const src_location &loc)
