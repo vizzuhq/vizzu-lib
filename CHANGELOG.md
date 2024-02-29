@@ -28,6 +28,7 @@
 - When X axis dimension labels are close to each other, they are rotated to avoid overlapping.
 - The event handler registration order changed. Now the handlers are called in the opposite order of the registration.
 - Added the padded rectangle, the bounding rectangle and the align parameter to the draw text event object.
+- Tooltip works on marker labels too.
 
 ## [0.9.3] - 2023-12-20
 
