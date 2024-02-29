@@ -917,4 +917,24 @@ std::string_view dataframe::get_record_unique_id(
 	         : std::string_view{};
 }
 
+std::string_view dataframe::get_series_info(
+    const series_identifier &id,
+    const char *key) const &
+{
+	switch (auto &&ser = get_data_source().get_series(id)) {
+		using enum series_type;
+	default: return {};
+	case measure: {
+		auto &info = unsafe_get<measure>(ser).second.info;
+		auto it = info.find(key);
+		return it == info.end() ? std::string_view{} : it->second;
+	}
+	case dimension: {
+		auto &info = unsafe_get<dimension>(ser).second.info;
+		auto it = info.find(key);
+		return it == info.end() ? std::string_view{} : it->second;
+	}
+	}
+}
+
 }

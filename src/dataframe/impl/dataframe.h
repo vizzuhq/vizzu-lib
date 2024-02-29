@@ -119,6 +119,10 @@ public:
 	[[nodiscard]] std::string_view get_record_unique_id(
 	    const record_identifier &id) const & final;
 
+	[[nodiscard]] std::string_view get_series_info(
+	    const series_identifier &id,
+	    const char *key) const & final;
+
 	cell_value get_data(record_identifier record_id,
 	    series_identifier column) const & final;
 

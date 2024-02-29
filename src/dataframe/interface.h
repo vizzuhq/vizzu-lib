@@ -166,6 +166,10 @@ public:
 
 	[[nodiscard]] virtual std::size_t get_record_count() const & = 0;
 
+	[[nodiscard]] virtual std::string_view get_series_info(
+	    const series_identifier &id,
+	    const char *key) const & = 0;
+
 	virtual void visit(std::function<void(record_type)> function,
 	    bool filtered) const & = 0;
 };
