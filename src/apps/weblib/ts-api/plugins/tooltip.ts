@@ -1,5 +1,5 @@
 import { Snapshot } from '../module/cchart.js'
-import { Element, Marker, PointerEvent } from '../events.js'
+import { Element, Marker, MarkerLabel, PointerEvent } from '../events.js'
 import { Plugin, type PluginHooks, type PrepareAnimationContext } from '../plugins.js'
 
 import Vizzu from '../vizzu.js'
@@ -71,8 +71,8 @@ export class Tooltip implements Plugin {
 	_mouseon(param: PointerEvent): void {
 		this._id++
 		const id = this._id
-		if (param.target && this._isMarker(param.target)) {
-			const markerId = param.target.index
+		const markerId = this._getMarkerId(param.target)
+		if (markerId !== null) {
 			setTimeout(() => {
 				this._in(id, markerId)
 			}, 0)
@@ -86,6 +86,8 @@ export class Tooltip implements Plugin {
 	_getMarkerId(target: Element | null): number | null {
 		if (target && this._isMarker(target)) {
 			return target.index
+		} else if (target && this._isMarkerLabel(target)) {
+			return target.parent.index
 		} else {
 			return null
 		}
@@ -93,6 +95,10 @@ export class Tooltip implements Plugin {
 
 	_isMarker(target: Element): target is Marker {
 		return target.tagName === 'plot-marker'
+	}
+
+	_isMarkerLabel(target: Element): target is MarkerLabel {
+		return target.tagName === 'plot-marker-label'
 	}
 
 	_in(id: number, markerId: number): void {
