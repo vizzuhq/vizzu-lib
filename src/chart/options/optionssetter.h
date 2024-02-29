@@ -5,10 +5,7 @@
 
 #include "options.h"
 
-namespace Vizzu
-{
-
-namespace Gen
+namespace Vizzu::Gen
 {
 
 class OptionsSetter
@@ -54,7 +51,6 @@ protected:
 	const Data::DataTable *table{};
 };
 
-}
 }
 
 #endif
