@@ -69,13 +69,6 @@ public:
 
 	bool destroyEvent(const event_ptr &event);
 
-	void registerOnEachEvent(const std::uint64_t &id,
-	    const handler_fn &handler) const
-	{
-		for (const auto &event : eventRegistry)
-			event->attach(id, handler);
-	}
-
 protected:
 	struct EventPtrComp
 	{

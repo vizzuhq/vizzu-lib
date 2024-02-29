@@ -123,36 +123,70 @@ std::multimap<std::string, event_as, std::less<>> get_events(
 
 	std::multimap<std::string, event_as, std::less<>> events;
 
+	static std::vector<std::string> eventNames = []
+	{
+		std::vector<std::string> names;
+		Refl::visit<Vizzu::Events::DrawEvents>(
+		    [&names]<class T>(
+		        Util::EventDispatcher::event_ptr &(*)(const T &),
+		        const std::initializer_list<std::string_view> &sv =
+		            {})
+		    {
+			    std::span s{sv};
+			    if (s.back() == "begin" || s.back() == "complete") {
+				    return names.emplace_back(
+				        "draw-" + std::string{s.back()});
+			    }
+
+			    if (s.back() == "base") s = {s.begin(), s.end() - 1};
+
+			    std::string name;
+			    for (auto name_part : s) {
+				    name += name_part;
+				    name += '-';
+			    }
+			    name += "draw";
+			    return names.emplace_back(name);
+		    });
+		return names;
+	}();
+
 	auto line =
 	    chart.getOptions().geometry == Vizzu::Gen::ShapeType::line;
-	chart.getEventDispatcher().registerOnEachEvent(0,
-	    [&events, &line](Util::EventDispatcher::Params &params)
-	    {
-		    auto marker = params.eventName == "plot-marker-draw";
-		    if ((marker && line)
-		        || params.eventName == "plot-axis-draw") {
-			    events.emplace(std::piecewise_construct,
-			        std::tuple{params.eventName},
-			        std::tuple{params.toJSON(),
-			            params.target,
-			            static_cast<Vizzu::Events::OnLineDrawEvent &>(
-			                params)
-			                .line});
-		    }
-		    else if (marker) {
-			    events.emplace(std::piecewise_construct,
-			        std::tuple{params.eventName},
-			        std::tuple{params.toJSON(),
-			            params.target,
-			            static_cast<Vizzu::Events::OnRectDrawEvent &>(
-			                params)
-			                .rect});
-		    }
-		    else
-			    events.emplace(std::piecewise_construct,
-			        std::tuple{params.eventName},
-			        std::tuple{params.toJSON(), params.target});
-	    });
+	auto event_handler = [&events, &line](
+	                         Util::EventDispatcher::Params &params)
+	{
+		auto marker = params.eventName == "plot-marker-draw";
+		if ((marker && line)
+		    || params.eventName == "plot-axis-draw") {
+			events.emplace(std::piecewise_construct,
+			    std::tuple{params.eventName},
+			    std::tuple{params.toJSON(),
+			        params.target,
+			        static_cast<Vizzu::Events::OnLineDrawEvent &>(
+			            params)
+			            .line});
+		}
+		else if (marker) {
+			events.emplace(std::piecewise_construct,
+			    std::tuple{params.eventName},
+			    std::tuple{params.toJSON(),
+			        params.target,
+			        static_cast<Vizzu::Events::OnRectDrawEvent &>(
+			            params)
+			            .rect});
+		}
+		else
+			events.emplace(std::piecewise_construct,
+			    std::tuple{params.eventName},
+			    std::tuple{params.toJSON(), params.target});
+	};
+
+	for (const auto &name : eventNames) {
+		auto n = chart.getEventDispatcher().getEvent(name);
+		skip->*n != nullptr;
+		n->attach(0, event_handler);
+	}
 
 	using clock_t = std::chrono::steady_clock;
 	chart.getAnimControl().update(clock_t::now());
