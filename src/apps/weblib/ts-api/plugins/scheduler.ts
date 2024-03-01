@@ -1,15 +1,15 @@
-import { Plugin, PluginHooks, StartSchedulerContext } from '../plugins.js'
+import { Plugin, PluginHooks, StartContext } from '../plugins.js'
 
 export class Scheduler implements Plugin {
 	private _updateInterval?: ReturnType<typeof setInterval>
-	private _update: (time: number) => void = () => {}
+	private _update: () => void = () => {}
 	private _enabled = false
 
 	meta = { name: 'scheduler' }
 
 	get hooks(): PluginHooks {
 		const hooks = {
-			startScheduler: (ctx: StartSchedulerContext, next: () => void): void => {
+			start: (ctx: StartContext, next: () => void): void => {
 				this._update = ctx.update
 				this._start()
 				next()
@@ -30,10 +30,10 @@ export class Scheduler implements Plugin {
 
 	private _start(): void {
 		if (!this._updateInterval) {
-			this._update(performance.now())
+			this._update()
 			this._updateInterval = setInterval(() => {
 				if (this._enabled) {
-					this._update(performance.now())
+					this._update()
 				}
 			}, 25)
 		}

@@ -30,7 +30,10 @@
 - Added the padded rectangle, the bounding rectangle and the align parameter to the draw text event object.
 - Tooltip works on marker labels too.
 - New plugins and plugin hooks introduced: 
-  - scheduler/startScheduler - plugin resposible for scheduling the rendering 
+  - plugin: scheduler - plugin resposible for scheduling the rendering
+  - plugin: clock - supplying the current time for the animation
+  - hook: start - hook for starting the rendering loop
+  - hook: render - hook for rendering the chart 
 
 ## [0.9.3] - 2023-12-20
 

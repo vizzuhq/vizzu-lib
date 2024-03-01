@@ -3,12 +3,16 @@ import * as Config from './types/config.js'
 import * as Styles from './types/styles.js'
 import * as D from './types/data.js'
 import { Module } from './module/module.js'
+import { type Canvas } from './module/canvas.js'
 import { CChart, Snapshot } from './module/cchart.js'
+import { CCanvas } from './module/ccanvas.js'
 import { CAnimControl, CAnimation } from './module/canimctrl.js'
 import { CData } from './module/cdata.js'
-import { Render } from './rendering.js'
 import { Data } from './data.js'
 import { Events, EventType, EventHandler, EventMap } from './events.js'
+import { Mirrored } from './tsutils.js'
+import { VizzuOptions } from './vizzu.js'
+import { AnimControl } from './animcontrol.js'
 import { PluginRegistry, Hooks } from './plugins.js'
 import { Logging } from './plugins/logging.js'
 import { Shorthands } from './plugins/shorthands.js'
@@ -16,18 +20,18 @@ import { PivotData } from './plugins/pivotdata.js'
 import { Tooltip } from './plugins/tooltip.js'
 import { PointerEvents } from './plugins/pointerevents.js'
 import { CSSProperties } from './plugins/cssproperties.js'
-import { Mirrored } from './tsutils.js'
+import { CanvasRenderer } from './plugins/canvasrenderer.js'
 import { HtmlCanvas } from './plugins/htmlcanvas.js'
-import { VizzuOptions } from './vizzu.js'
-import { AnimControl } from './animcontrol.js'
 import { CoordSystem } from './plugins/coordsys.js'
+import { Clock } from './plugins/clock.js'
 import { Scheduler } from './plugins/scheduler.js'
+import { RenderControl } from './plugins/rendercontrol.js'
 
 export class Chart {
 	private _cChart: CChart
-	private _render: Render
 	private _module: Module
 	private _canvas: HtmlCanvas
+	private _ccanvas: CCanvas & Canvas
 	private _cData: CData
 	private _data: Data
 	private _events: Events
@@ -37,13 +41,20 @@ export class Chart {
 		this._plugins = plugins
 		this._module = module
 
-		this._canvas = new HtmlCanvas(HtmlCanvas.extractOptions(options))
-
 		this._cChart = this._module.createChart()
 		this._cData = this._module.getData(this._cChart)
 		this._data = new Data(this._cData)
 
-		this._render = new Render(this._module, this._cChart, this._canvas)
+		this._canvas = new HtmlCanvas(HtmlCanvas.extractOptions(options))
+		this._canvas.onchange = (): void => {
+			this.updateFrame(true)
+		}
+		this._ccanvas = this._module.createCanvas<CanvasRenderer, HtmlCanvas>(
+			CanvasRenderer,
+			this._canvas
+		)
+		this._module.registerRenderer(this._ccanvas)
+
 		this._events = new Events(this._cChart, this._canvas)
 		this._plugins.init(this._events)
 	}
@@ -51,8 +62,9 @@ export class Chart {
 	registerBuiltins(): void {
 		this._plugins.register(new Logging(this._module.setLogging.bind(this._module)), false)
 		this._plugins.register(this._canvas, true)
+		this._plugins.register(new Clock(), true)
 		this._plugins.register(new Scheduler(), true)
-		this._plugins.register(this._render, true)
+		this._plugins.register(new RenderControl(), true)
 		this._plugins.register(new CoordSystem(this._module.getCoordSystem(this._cChart)), true)
 		this._plugins.register(new CSSProperties(), false)
 		this._plugins.register(new Shorthands(), true)
@@ -63,9 +75,34 @@ export class Chart {
 
 	start(): void {
 		const ctx = {
-			update: () => this._render.updateFrame()
+			update: () => this.updateFrame()
 		}
-		this._plugins.hook(Hooks.startScheduler, ctx).default(() => {})
+		this._plugins.hook(Hooks.start, ctx).default(() => {
+			this.updateFrame()
+		})
+	}
+
+	updateFrame(_force: boolean = false): void {
+		const size = this._canvas.calcSize()
+		if (size.x >= 1 && size.y >= 1) {
+			const ctx = {
+				timeInMSecs: null,
+				force: _force,
+				enable: true
+			}
+			this._plugins.hook(Hooks.render, ctx).default((ctx) => {
+				if (ctx.timeInMSecs !== null) {
+					const renderControl = !ctx.enable ? 2 : ctx.force ? 1 : 0
+					this._cChart.update(
+						this._ccanvas,
+						size.x,
+						size.y,
+						ctx.timeInMSecs,
+						renderControl
+					)
+				}
+			})
+		}
 	}
 
 	async prepareAnimation(
