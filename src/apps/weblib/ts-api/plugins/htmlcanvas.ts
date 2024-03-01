@@ -94,7 +94,7 @@ export class HtmlCanvas implements Plugin {
 		window.addEventListener('resize', this._resizeHandler)
 	}
 
-	destruct(): void {
+	unregister(): void {
 		window.removeEventListener('resize', this._resizeHandler)
 		this._resizeObserver.disconnect()
 		if (this._container) this._container.removeChild(this._mainCanvas)

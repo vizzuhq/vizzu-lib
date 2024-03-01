@@ -154,10 +154,6 @@ export class Chart {
 		})
 	}
 
-	destruct(): void {
-		this._canvas.destruct()
-	}
-
 	version(): string {
 		return this._module.version()
 	}
