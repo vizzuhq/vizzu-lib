@@ -15,7 +15,6 @@
 namespace Vizzu::Data
 {
 
-class DataTable;
 template <typename T> class TableRow;
 
 using SubCellIndex =
@@ -101,7 +100,7 @@ private:
 	std::map<SeriesIndex, SubCellIndex> subIndexBySeries;
 	std::vector<SeriesIndex> seriesBySubIndex;
 
-	static MultiDim::MultiIndex getIndex(const TableRow<double> &row,
+	static MultiDim::MultiIndex getIndex(const DataTable::Row &row,
 	    const std::vector<SeriesIndex> &indices,
 	    size_t rowIndex);
 
