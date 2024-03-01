@@ -10,7 +10,7 @@
 namespace Vizzu::Data
 {
 
-enum TextType : uint32_t { Number, String };
+enum class TextType : uint32_t { Number, String };
 
 class ColumnInfo
 {
@@ -34,10 +34,9 @@ public:
 	[[nodiscard]] ContiType getContiType() const;
 	[[nodiscard]] const ValueIndexes &dimensionValueIndexes() const;
 	[[nodiscard]] const Values &categories() const;
-	[[nodiscard]] size_t dimensionValueCnt() const;
 
 	[[nodiscard]] std::string getName() const;
-	[[nodiscard]] std::string getUnit() const;
+	[[nodiscard]] const std::string &getUnit() const;
 	[[nodiscard]] Math::Range<double> getRange() const;
 	[[nodiscard]] std::string toString() const;
 	[[nodiscard]] size_t minByteWidth() const;

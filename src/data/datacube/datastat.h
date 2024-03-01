@@ -9,8 +9,6 @@
 namespace Vizzu::Data
 {
 
-class DataTable;
-
 class DataStat
 {
 public:
@@ -21,7 +19,7 @@ public:
 	size_t usedValueCntOf(const SeriesIndex &index) const;
 
 private:
-	void trackIndex(const TableRow<double> &row,
+	void trackIndex(const DataTable::Row &row,
 	    const std::vector<SeriesIndex> &indices);
 
 	void countValues();
