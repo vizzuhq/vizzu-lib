@@ -1,8 +1,8 @@
-import { CColorGradient } from './module/ccolorgradient.js'
-import { CEnv } from './module/cenv.js'
-import { CPointerClosure } from './module/objregistry.js'
-import { Canvas } from './module/canvas.js'
-import { CCanvas } from './module/ccanvas.js'
+import { CColorGradient } from '../module/ccolorgradient.js'
+import { CEnv } from '../module/cenv.js'
+import { CPointerClosure } from '../module/objregistry.js'
+import { Canvas } from '../module/canvas.js'
+import { CCanvas } from '../module/ccanvas.js'
 import { HtmlCanvas } from './htmlcanvas.js'
 
 export class CanvasRenderer extends CCanvas implements Canvas {

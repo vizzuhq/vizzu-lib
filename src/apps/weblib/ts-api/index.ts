@@ -32,7 +32,7 @@ export * from './datarecord.js'
 export * from './errors.js'
 export * as Events from './events.js'
 export * as Geom from './geom.js'
-export * from './htmlcanvas.js'
+export * from './plugins/htmlcanvas.js'
 export * as Plugins from './plugins.js'
 export * from './rendering.js'
 

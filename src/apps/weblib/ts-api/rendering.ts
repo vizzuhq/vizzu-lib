@@ -3,8 +3,8 @@ import { Module } from './module/module.js'
 import { CCanvas } from './module/ccanvas.js'
 import { Canvas } from './module/canvas.js'
 import { CChart } from './module/cchart.js'
-import { HtmlCanvas } from './htmlcanvas.js'
-import { CanvasRenderer } from './canvasrenderer.js'
+import { HtmlCanvas } from './plugins/htmlcanvas.js'
+import { CanvasRenderer } from './plugins/canvasrenderer.js'
 
 export interface RenderingApi extends PluginApi {
 	/** Re-renders the chart. */

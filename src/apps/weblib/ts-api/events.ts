@@ -2,7 +2,7 @@ import { CFunction } from './cvizzu.types'
 import { PluginListeners } from './plugins.js'
 
 import { CChart, CEvent } from './module/cchart.js'
-import { HtmlCanvas, HtmlCanvasContext } from './htmlcanvas.js'
+import { HtmlCanvas, HtmlCanvasContext } from './plugins/htmlcanvas.js'
 
 import * as Data from './types/data.js'
 import * as Anim from './types/anim.js'

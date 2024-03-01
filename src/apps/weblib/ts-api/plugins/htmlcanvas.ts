@@ -1,5 +1,5 @@
-import * as Geom from './geom.js'
-import { Plugin, PluginApi } from './plugins.js'
+import * as Geom from '../geom.js'
+import { Plugin, PluginApi } from '../plugins.js'
 
 export interface CanvasOptions {
 	element: HTMLElement
