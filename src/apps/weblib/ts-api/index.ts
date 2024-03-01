@@ -34,7 +34,7 @@ export * as Events from './events.js'
 export * as Geom from './geom.js'
 export * from './htmlcanvas.js'
 export * as Plugins from './plugins.js'
-export * from './render.js'
+export * from './rendering.js'
 
 export * from './vizzu.js'
 export { default as Vizzu } from './vizzu.js'

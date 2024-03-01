@@ -1,61 +1,23 @@
-import { CString, CColorGradientPtr } from './cvizzu.types'
-import { Plugin, PluginApi } from './plugins.js'
+import { CColorGradient } from './module/ccolorgradient.js'
+import { CEnv } from './module/cenv.js'
+import { CPointerClosure } from './module/objregistry.js'
 import { Canvas } from './module/canvas.js'
-import { Module } from './module/module.js'
 import { CCanvas } from './module/ccanvas.js'
-import { CChart } from './module/cchart.js'
 import { HtmlCanvas } from './htmlcanvas.js'
 
-export interface RenderingApi extends PluginApi {
-	/** Re-renders the chart. */
-	update(): void
-}
-
-export class Render implements Plugin, Canvas {
+export class CanvasRenderer extends CCanvas implements Canvas {
 	private _canvas: HtmlCanvas
-	private _ccanvas: CCanvas
-	private _enabled: boolean
-	private _cchart: CChart
-	private _polygonInProgress: boolean
+	private _polygonInProgress: boolean = false
 	private _currentLineWidth: number = 1
 
-	meta = { name: 'rendering' }
-
-	get api(): RenderingApi {
-		return {
-			update: (): void => {
-				this.updateFrame(true)
-			}
-		}
-	}
-
-	enable(enabled: boolean): void {
-		this._enabled = enabled
-	}
-
-	constructor(module: Module, cchart: CChart, canvas: HtmlCanvas) {
+	constructor(env: CEnv, getId: CPointerClosure, canvas: HtmlCanvas) {
+		super(env, getId)
 		this._canvas = canvas
-		this._canvas.onchange = (): void => {
-			this.updateFrame(true)
-		}
-		this._enabled = true
-		this._polygonInProgress = false
-		this._cchart = cchart
-		this._ccanvas = module.createCanvas()
-		module.registerRenderer(this._ccanvas, this)
-	}
-
-	updateFrame(force: boolean = false): void {
-		const size = this._canvas.calcSize()
-		if (size.x >= 1 && size.y >= 1) {
-			const time = performance.now()
-			const renderControl = !this._enabled ? 2 : force ? 1 : 0
-			this._cchart.update(this._ccanvas, size.x, size.y, time, renderControl)
-		}
 	}
 
 	frameBegin(): void {
 		this._currentLineWidth = 1
+		this._polygonInProgress = false
 		this._canvas.frameBegin()
 	}
 
@@ -100,9 +62,9 @@ export class Render implements Plugin, Canvas {
 		this._currentLineWidth = width
 	}
 
-	setFont(font: CString): void {
+	setFontStyle(font: string): void {
 		const dc = this._canvas.context
-		dc.font = this._ccanvas.getString(font)
+		dc.font = font
 	}
 
 	beginDropShadow(): void {}
@@ -180,28 +142,19 @@ export class Render implements Plugin, Canvas {
 		if (this._currentLineWidth !== 0) dc.stroke()
 	}
 
-	text(x: number, y: number, sizex: number, sizey: number, text: CString): void {
+	drawText(x: number, y: number, sizex: number, sizey: number, text: string): void {
 		const dc = this._canvas.context
 		dc.textAlign = 'left'
 		dc.textBaseline = 'top'
 		x = x + (sizex < 0 ? -sizex : 0)
 		y = y + (sizey < 0 ? -sizey : 0)
-		dc.fillText(this._ccanvas.getString(text), x, y)
+		dc.fillText(text, x, y)
 	}
 
-	setBrushGradient(
-		x1: number,
-		y1: number,
-		x2: number,
-		y2: number,
-		stopCount: number,
-		stopsPtr: CColorGradientPtr
-	): void {
+	setGradient(x1: number, y1: number, x2: number, y2: number, gradient: CColorGradient): void {
 		const dc = this._canvas.context
 		const grd = dc.createLinearGradient(x1, y1, x2, y2)
-		this._ccanvas
-			.getColorGradient(stopsPtr, stopCount)
-			.stops.forEach((g) => grd.addColorStop(g.offset, g.color))
+		gradient.stops.forEach((g) => grd.addColorStop(g.offset, g.color))
 		dc.fillStyle = grd
 	}
 
