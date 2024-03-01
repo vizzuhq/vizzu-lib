@@ -66,6 +66,7 @@ extern void vizzu_update(APIHandles::Chart chart,
     APIHandles::Canvas canvas,
     double width,
     double height,
+    double timeInMSecs,
     int renderControl);
 extern const char *vizzu_errorMessage(
     APIHandles::Exception exceptionPtr,

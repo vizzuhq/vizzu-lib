@@ -83,6 +83,9 @@ Aggregator &Aggregator::add(const Aggregator &other)
 
 bool Aggregator::isEmpty() const { return count == 0; }
 
-Vizzu::Data::Aggregator::operator double() const { return value; }
+Vizzu::Data::Aggregator::operator double() const
+{
+	return isEmpty() ? 0.0 : value;
+}
 
 }

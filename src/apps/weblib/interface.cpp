@@ -322,7 +322,7 @@ void Interface::addRecord(ObjectRegistry::Handle chart,
 const char *Interface::dataMetaInfo(ObjectRegistry::Handle chart)
 {
 	thread_local std::string res;
-	res = Conv::toJSON(getChart(chart)->getTable().getInfos());
+	res = getChart(chart)->getTable().getInfos();
 	return res.c_str();
 }
 
@@ -353,11 +353,20 @@ void Interface::update(ObjectRegistry::Handle chart,
     ObjectRegistry::Handle canvas,
     double width,
     double height,
+    double timeInMSecs,
     RenderControl renderControl)
 {
 	auto &&widget = objects.get<UI::ChartWidget>(chart);
-	widget->getChart().getAnimControl().update(
-	    std::chrono::steady_clock::now());
+
+	std::chrono::duration<double, std::milli> milliSecs(timeInMSecs);
+
+	auto nanoSecs =
+	    std::chrono::duration_cast<std::chrono::nanoseconds>(
+	        milliSecs);
+
+	::Anim::TimePoint time(nanoSecs);
+
+	widget->getChart().getAnimControl().update(time);
 
 	if (const Geom::Size size{width, height};
 	    renderControl == force

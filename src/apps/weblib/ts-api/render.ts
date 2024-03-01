@@ -48,8 +48,9 @@ export class Render implements Plugin, Canvas {
 	updateFrame(force: boolean = false): void {
 		const size = this._canvas.calcSize()
 		if (size.x >= 1 && size.y >= 1) {
+			const time = performance.now()
 			const renderControl = !this._enabled ? 2 : force ? 1 : 0
-			this._cchart.update(this._ccanvas, size.x, size.y, renderControl)
+			this._cchart.update(this._ccanvas, size.x, size.y, time, renderControl)
 		}
 	}
 

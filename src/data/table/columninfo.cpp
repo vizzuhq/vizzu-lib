@@ -71,11 +71,9 @@ const ColumnInfo::Values &ColumnInfo::categories() const
 	return values;
 }
 
-size_t ColumnInfo::dimensionValueCnt() const { return values.size(); }
-
 std::string ColumnInfo::getName() const { return name; }
 
-std::string ColumnInfo::getUnit() const { return unit; }
+const std::string &ColumnInfo::getUnit() const { return unit; }
 
 Math::Range<double> ColumnInfo::getRange() const { return range; }
 

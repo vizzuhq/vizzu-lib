@@ -13,17 +13,9 @@ void Painter::drawLine(const Geom::Line &line)
 
 void Painter::drawStraightLine(const Geom::Line &line,
     std::array<double, 2> widths,
-    double straightFactor,
-    const Gfx::Color &endColor,
-    const Gfx::Color &lineColor)
+    double straightFactor)
 {
-	Draw::DrawLine(line,
-	    widths,
-	    straightFactor,
-	    endColor,
-	    lineColor,
-	    system,
-	    getCanvas());
+	Draw::DrawLine(line, widths, straightFactor, system, getCanvas());
 }
 
 void Painter::drawPolygon(const std::array<Geom::Point, 4> &ps,

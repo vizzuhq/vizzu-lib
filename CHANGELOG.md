@@ -10,9 +10,16 @@
 - Through event handler call, when a new event handler is registered, undefined behaviour happened.
 - Fixed channel reset with empty array when shorthands plugin switched off.
 - Legend label outerRect was not properly calculated.
+- Line chart connector circles color was not contained the alpha channel.
+- Line chart draws was overwrite the event's settings.
+- Legend title outerRect was not properly calculated.
+- Fixed stacked empty min/max aggregated values.
+- Fixed error when an animation triggered during tooptip activation which removed the corresopnding marker. 
 
 ### Added
 
+- In config channels, data series and their aggregators can be specified separately 
+  in a descriptor object, besides encoding them into one string (old way).
 - Added optional `categories` member to the `legend-marker`, `legend-label` and `plot-axis-label` events.
 - Remove unused marker selection and selected marker coloring.
 - Removed marker's alpha color when tooltip is shown.  
@@ -21,6 +28,7 @@
 - When X axis dimension labels are close to each other, they are rotated to avoid overlapping.
 - The event handler registration order changed. Now the handlers are called in the opposite order of the registration.
 - Added the padded rectangle, the bounding rectangle and the align parameter to the draw text event object.
+- Tooltip works on marker labels too.
 
 ## [0.9.3] - 2023-12-20
 

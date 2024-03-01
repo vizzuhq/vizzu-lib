@@ -1,8 +1,20 @@
 steps:
+    - name: 'gcr.io/cloud-builders/docker'
+      id: pull_wasm
+      waitFor:
+          - '-'
+      args: ['pull', 'vizzu/vizzu-dev-wasm:0.9']
+
+    - name: 'gcr.io/cloud-builders/docker'
+      id: pull_desktop
+      waitFor:
+          - '-'
+      args: ['pull', 'vizzu/vizzu-dev-desktop:0.9']
+
     - name: vizzu/vizzu-dev-wasm:0.9
       id: init
       waitFor:
-          - '-'
+          - pull_wasm
       entrypoint: bash
       args:
           - '-c'
@@ -68,6 +80,7 @@ steps:
     - name: vizzu/vizzu-dev-desktop:0.9
       id: build_desktop_clangformat
       waitFor:
+          - pull_desktop
           - check_src
           - check_docs
           - check_tools

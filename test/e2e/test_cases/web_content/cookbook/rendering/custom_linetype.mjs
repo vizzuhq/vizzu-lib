@@ -19,10 +19,11 @@ const testSteps = [
 			if (!tinycolor(color).isValid()) return
 
 			const series = tinycolor(color).getBrightness()
+			const alpha = Math.round(tinycolor(color).getAlpha() * 256).toString(16)
 
 			ctx.setLineDash(dashes[series])
 
-			ctx.strokeStyle = '#666666'
+			ctx.strokeStyle = '#666666' + alpha
 		}
 
 		chart.on('legend-marker-draw', (event) => {

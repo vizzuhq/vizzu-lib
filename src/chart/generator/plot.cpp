@@ -319,7 +319,11 @@ void Plot::calcMeasureAxis(ChannelId type,
 		}
 		else {
 			auto colIndex = scale.measureId->getColIndex();
-			axis = {stats.channels[type].range,
+			auto range = stats.channels[type].range;
+			if (!range.isReal())
+				range = Math::Range<double>::Raw(0.0, 0.0);
+
+			axis = {range,
 			    colIndex
 			        ? dataTable.getInfo(colIndex.value()).getUnit()
 			        : std::string{},

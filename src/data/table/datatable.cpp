@@ -1,17 +1,19 @@
 #include "datatable.h"
 
+#include "base/conv/auto_json.h"
+
 namespace Vizzu::Data
 {
 
-DataTable::DataTable() = default;
+DataTableOld::DataTableOld() = default;
 
-void DataTable::pushRow(const std::span<const char *> &cells)
+void DataTableOld::pushRow(const std::span<const char *> &cells)
 {
 	std::vector<std::string> strCells(cells.begin(), cells.end());
 	pushRow(TableRow<std::string>(std::move(strCells)));
 }
 
-void DataTable::pushRow(const TableRow<std::string> &textRow)
+void DataTableOld::pushRow(const TableRow<std::string> &textRow)
 {
 	Row row;
 	for (auto i = 0U; i < getColumnCount(); ++i) {
@@ -23,7 +25,7 @@ void DataTable::pushRow(const TableRow<std::string> &textRow)
 }
 
 template <typename T>
-DataTable::DataIndex DataTable::addTypedColumn(
+DataTableOld::DataIndex DataTableOld::addTypedColumn(
     const std::string &name,
     const std::string &unit,
     const std::span<T> &values)
@@ -83,15 +85,17 @@ DataTable::DataIndex DataTable::addTypedColumn(
 	return getIndex(ColumnIndex(colIndex));
 }
 
-DataTable::DataIndex DataTable::addColumn(const std::string &name,
+DataTableOld::DataIndex DataTableOld::addColumn(
+    const std::string &name,
     const std::string &unit,
     const std::span<const double> &values)
 {
 	return addTypedColumn(name, unit, values);
 }
 
-DataTable::DataIndex DataTable::addColumn(const std::string &name,
-    const std::span<const char *> &categories,
+DataTableOld::DataIndex DataTableOld::addColumn(
+    const std::string &name,
+    const std::span<const char *const> &categories,
     const std::span<const std::uint32_t> &values)
 {
 	std::vector<const char *> realValues(values.size());
@@ -101,29 +105,35 @@ DataTable::DataIndex DataTable::addColumn(const std::string &name,
 	return addTypedColumn<const char *>(name, {}, realValues);
 }
 
-const ColumnInfo &DataTable::getInfo(ColumnIndex index) const
+const ColumnInfo &DataTableOld::getInfo(ColumnIndex index) const
 {
 	return infos[index];
 }
 
-DataTable::DataIndex DataTable::getIndex(ColumnIndex index) const
+DataTableOld::DataIndex DataTableOld::getIndex(
+    ColumnIndex index) const
 {
 	return {index, infos[index].getType()};
 }
 
-ColumnIndex DataTable::getColumn(const std::string &name) const
+ColumnIndex DataTableOld::getColumn(const std::string &name) const
 {
 	auto it = indexByName.find(name);
 	if (it != indexByName.end()) return it->second;
 	throw std::logic_error("No column name exists: " + name);
 }
 
-DataTable::DataIndex DataTable::getIndex(
+DataTableOld::DataIndex DataTableOld::getIndex(
     const std::string &name) const
 {
 	return getIndex(getColumn(name));
 }
 
-size_t DataTable::columnCount() const { return infos.size(); }
+size_t DataTableOld::columnCount() const { return infos.size(); }
+
+std::string DataTableOld::getInfos() const
+{
+	return Conv::toJSON(infos);
+}
 
 }

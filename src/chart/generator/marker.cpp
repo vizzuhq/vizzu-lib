@@ -158,7 +158,8 @@ Conv::JSONObj &&Marker::appendToJSON(Conv::JSONObj &&jsonObj) const
 	    std::ranges::views::transform(cellInfo.categories,
 	        [this](const auto &pair)
 	        {
-		        return std::make_pair(pair.first.toString(table),
+		        return std::make_pair(
+		            pair.first.toString(table.get()),
 		            table.get()
 		                .getInfo(pair.first.getColIndex().value())
 		                .categories()[pair.second]);
@@ -166,7 +167,8 @@ Conv::JSONObj &&Marker::appendToJSON(Conv::JSONObj &&jsonObj) const
 	    std::ranges::views::transform(cellInfo.values,
 	        [this](const auto &pair)
 	        {
-		        return std::make_pair(pair.first.toString(table),
+		        return std::make_pair(
+		            pair.first.toString(table.get()),
 		            pair.second);
 	        }))("index", idx);
 }
@@ -211,14 +213,10 @@ double Marker::getValueForChannel(const Channels &channels,
 		if (enabled) stat.track(id);
 	}
 	else {
-		auto singlevalue =
-		    static_cast<double>(data.valueAt(index, *measure));
-
 		if (channel.stackable)
-			value = static_cast<double>(
-			    data.aggregateAt(index, sumBy, *measure));
+			value = double{data.aggregateAt(index, sumBy, *measure)};
 		else
-			value = singlevalue;
+			value = double{data.valueAt(index, *measure)};
 
 		if (enabled) { stat.track(value); }
 	}

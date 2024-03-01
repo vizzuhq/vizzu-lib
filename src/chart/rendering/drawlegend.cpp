@@ -50,7 +50,7 @@ void DrawLegend::draw(Gfx::ICanvas &canvas,
 void DrawLegend::drawTitle(const Info &info) const
 {
 	auto rect = info.contentRect;
-	rect.size.y += info.titleHeight;
+	rect.size.y = info.titleHeight;
 	plot->commonAxises.at(info.type).title.visit(
 	    [this,
 	        &info,

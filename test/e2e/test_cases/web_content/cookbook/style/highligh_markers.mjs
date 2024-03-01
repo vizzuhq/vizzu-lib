@@ -12,7 +12,7 @@ class Highlighter {
 
 		const colorchannels = this.chart.config.channels.color.set
 		if (colorchannels.length === 0) this.colorchannel = null
-		else if (colorchannels.length === 1) this.colorchannel = colorchannels[0]
+		else if (colorchannels.length === 1) this.colorchannel = colorchannels[0].name
 		else throw new Error('charts with multiple color series are not supported by highlighter')
 	}
 
