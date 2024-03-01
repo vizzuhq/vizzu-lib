@@ -29,6 +29,8 @@
 - The event handler registration order changed. Now the handlers are called in the opposite order of the registration.
 - Added the padded rectangle, the bounding rectangle and the align parameter to the draw text event object.
 - Tooltip works on marker labels too.
+- New plugins and plugin hooks introduced: 
+  - scheduler/startScheduler - plugin resposible for scheduling the rendering 
 
 ## [0.9.3] - 2023-12-20
 

@@ -21,6 +21,7 @@ import { HtmlCanvas } from './plugins/htmlcanvas.js'
 import { VizzuOptions } from './vizzu.js'
 import { AnimControl } from './animcontrol.js'
 import { CoordSystem } from './plugins/coordsys.js'
+import { Scheduler } from './plugins/scheduler.js'
 
 export class Chart {
 	private _cChart: CChart
@@ -31,7 +32,6 @@ export class Chart {
 	private _data: Data
 	private _events: Events
 	private _plugins: PluginRegistry
-	private _updateInterval?: ReturnType<typeof setTimeout>
 
 	constructor(module: Module, options: VizzuOptions, plugins: PluginRegistry) {
 		this._plugins = plugins
@@ -51,6 +51,7 @@ export class Chart {
 	registerBuiltins(): void {
 		this._plugins.register(new Logging(this._module.setLogging.bind(this._module)), false)
 		this._plugins.register(this._canvas, true)
+		this._plugins.register(new Scheduler(), true)
 		this._plugins.register(this._render, true)
 		this._plugins.register(new CoordSystem(this._module.getCoordSystem(this._cChart)), true)
 		this._plugins.register(new CSSProperties(), false)
@@ -61,12 +62,10 @@ export class Chart {
 	}
 
 	start(): void {
-		if (!this._updateInterval) {
-			this._render.updateFrame()
-			this._updateInterval = setInterval(() => {
-				this._render.updateFrame()
-			}, 25)
+		const ctx = {
+			update: () => this._render.updateFrame()
 		}
+		this._plugins.hook(Hooks.startScheduler, ctx).default(() => {})
 	}
 
 	async prepareAnimation(
@@ -126,8 +125,6 @@ export class Chart {
 
 	destruct(): void {
 		this._canvas.destruct()
-		if (this._updateInterval) clearInterval(this._updateInterval)
-		delete this._updateInterval
 	}
 
 	version(): string {

@@ -5,6 +5,8 @@ import { AnimCompleting } from './animcompleting.js'
 
 /** Available hooks for plugins in Vizzu. */
 export enum Hooks {
+	/** Called once on startup for start the scheduler for rendering. */
+	startScheduler = 'startScheduler',
 	/** Called when the animate() parameters gets set in the library to prepare 
       the animation. */
 	prepareAnimation = 'prepareAnimation',
@@ -27,6 +29,10 @@ export interface PluginMeta {
 	depends?: string[]
 }
 
+export interface StartSchedulerContext {
+	update: (time: number) => void
+}
+
 export interface PrepareAnimationContext {
 	target: Anim.AnimTarget
 	options?: Anim.ControlOptions
@@ -43,6 +49,7 @@ export interface RunAnimationContext {
 }
 
 export interface HookContexts {
+	[Hooks.startScheduler]: StartSchedulerContext
 	[Hooks.prepareAnimation]: PrepareAnimationContext
 	[Hooks.registerAnimation]: RegisterAnimationContext
 	[Hooks.runAnimation]: RunAnimationContext
