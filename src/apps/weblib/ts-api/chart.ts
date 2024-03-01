@@ -46,9 +46,6 @@ export class Chart {
 		this._data = new Data(this._cData)
 
 		this._canvas = new HtmlCanvas(HtmlCanvas.extractOptions(options))
-		this._canvas.onchange = (): void => {
-			this.updateFrame(true)
-		}
 		this._ccanvas = this._module.createCanvas<CanvasRenderer, HtmlCanvas>(
 			CanvasRenderer,
 			this._canvas
@@ -75,24 +72,23 @@ export class Chart {
 
 	start(): void {
 		const ctx = {
-			update: () => this.updateFrame()
+			update: (force: boolean): void => this.updateFrame(force)
 		}
 		this._plugins.hook(Hooks.start, ctx).default(() => {
 			this.updateFrame()
 		})
 	}
 
-	updateFrame(_force: boolean = false): void {
+	updateFrame(force: boolean = false): void {
 		const size = this._canvas.calcSize()
 		if (size.x >= 1 && size.y >= 1) {
 			const ctx = {
 				timeInMSecs: null,
-				force: _force,
 				enable: true
 			}
 			this._plugins.hook(Hooks.render, ctx).default((ctx) => {
 				if (ctx.timeInMSecs !== null) {
-					const renderControl = !ctx.enable ? 2 : ctx.force ? 1 : 0
+					const renderControl = !ctx.enable ? 2 : force ? 1 : 0
 					this._cChart.update(
 						this._ccanvas,
 						size.x,

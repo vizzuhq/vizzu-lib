@@ -1,5 +1,5 @@
 import * as Geom from '../geom.js'
-import { Plugin, PluginApi } from '../plugins.js'
+import { Plugin, PluginApi, PluginHooks, StartContext } from '../plugins.js'
 
 export interface CanvasOptions {
 	element: HTMLElement
@@ -17,7 +17,7 @@ export interface HtmlCanvasApi extends PluginApi {
 }
 
 export class HtmlCanvas implements Plugin {
-	onchange: () => void = () => {}
+	private _update: (force: boolean) => void = () => {}
 	private _container?: HTMLElement
 	private _offscreenCanvas: HTMLCanvasElement
 	private _offscreenContext: CanvasRenderingContext2D
@@ -38,6 +38,16 @@ export class HtmlCanvas implements Plugin {
 			clientToCanvas: this._clientToCanvas.bind(this),
 			canvasToClient: this._canvasToClient.bind(this)
 		}
+	}
+
+	get hooks(): PluginHooks {
+		const hooks = {
+			start: (ctx: StartContext, next: () => void): void => {
+				this._update = ctx.update
+				next()
+			}
+		}
+		return hooks
 	}
 
 	static extractOptions(options: unknown): CanvasOptions {
@@ -75,7 +85,7 @@ export class HtmlCanvas implements Plugin {
 		this.calcSize()
 		this._resizeObserver = this._createResizeObserverFor(this._mainCanvas)
 		this._resizeHandler = (): void => {
-			this.onchange()
+			this._update(true)
 		}
 		window.addEventListener('resize', this._resizeHandler)
 	}
@@ -165,7 +175,7 @@ export class HtmlCanvas implements Plugin {
 
 	private _createResizeObserverFor(canvas: HTMLCanvasElement): ResizeObserver {
 		const resizeObserver = new ResizeObserver(() => {
-			this.onchange()
+			this._update(true)
 		})
 		resizeObserver.observe(canvas)
 		return resizeObserver

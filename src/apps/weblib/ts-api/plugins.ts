@@ -32,12 +32,11 @@ export interface PluginMeta {
 }
 
 export interface StartContext {
-	update: () => void
+	update: (force: boolean) => void
 }
 
 export interface RenderContext {
 	timeInMSecs: number | null
-	force: boolean
 	enable: boolean
 }
 

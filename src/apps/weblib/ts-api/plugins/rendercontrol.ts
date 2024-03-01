@@ -6,7 +6,7 @@ export interface RenderControlApi extends PluginApi {
 }
 
 export class RenderControl implements Plugin {
-	private _update: () => void = () => {}
+	private _update: (force: boolean) => void = () => {}
 	private _timeInMSecs: number | null = null
 	private _enabled: boolean = true
 
@@ -16,7 +16,7 @@ export class RenderControl implements Plugin {
 		return {
 			update: (timeInMSecs: number | null = null): void => {
 				this._timeInMSecs = timeInMSecs
-				this._update()
+				this._update(true)
 			}
 		}
 	}
@@ -30,7 +30,6 @@ export class RenderControl implements Plugin {
 			render: (ctx: RenderContext, next: () => void): void => {
 				if (this._timeInMSecs !== null) {
 					ctx.timeInMSecs = this._timeInMSecs
-					ctx.force = true
 					this._timeInMSecs = null
 				}
 				ctx.enable = this._enabled

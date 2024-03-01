@@ -2,7 +2,7 @@ import { Plugin, PluginHooks, StartContext } from '../plugins.js'
 
 export class Scheduler implements Plugin {
 	private _updateInterval?: ReturnType<typeof setInterval>
-	private _update: () => void = () => {}
+	private _update: (force: boolean) => void = () => {}
 	private _enabled = false
 
 	meta = { name: 'scheduler' }
@@ -30,10 +30,10 @@ export class Scheduler implements Plugin {
 
 	private _start(): void {
 		if (!this._updateInterval) {
-			this._update()
+			this._update(false)
 			this._updateInterval = setInterval(() => {
 				if (this._enabled) {
-					this._update()
+					this._update(false)
 				}
 			}, 25)
 		}
