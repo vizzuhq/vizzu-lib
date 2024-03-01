@@ -80,25 +80,23 @@ export class Chart {
 	}
 
 	updateFrame(force: boolean = false): void {
-		const size = this._canvas.calcSize()
-		if (size.x >= 1 && size.y >= 1) {
-			const ctx = {
-				timeInMSecs: null,
-				enable: true
-			}
-			this._plugins.hook(Hooks.render, ctx).default((ctx) => {
-				if (ctx.timeInMSecs !== null) {
-					const renderControl = !ctx.enable ? 2 : force ? 1 : 0
-					this._cChart.update(
-						this._ccanvas,
-						size.x,
-						size.y,
-						ctx.timeInMSecs,
-						renderControl
-					)
-				}
-			})
+		const ctx = {
+			timeInMSecs: null,
+			enable: true,
+			size: { x: 0, y: 0 }
 		}
+		this._plugins.hook(Hooks.render, ctx).default((ctx) => {
+			if (ctx.size.x >= 1 && ctx.size.y >= 1 && ctx.timeInMSecs !== null) {
+				const renderControl = !ctx.enable ? 2 : force ? 1 : 0
+				this._cChart.update(
+					this._ccanvas,
+					ctx.size.x,
+					ctx.size.y,
+					ctx.timeInMSecs,
+					renderControl
+				)
+			}
+		})
 	}
 
 	async prepareAnimation(

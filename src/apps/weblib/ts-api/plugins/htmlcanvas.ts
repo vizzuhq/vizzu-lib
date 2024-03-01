@@ -1,5 +1,5 @@
 import * as Geom from '../geom.js'
-import { Plugin, PluginApi, PluginHooks, StartContext } from '../plugins.js'
+import { Plugin, PluginApi, PluginHooks, RenderContext, StartContext } from '../plugins.js'
 
 export interface CanvasOptions {
 	element: HTMLElement
@@ -45,6 +45,10 @@ export class HtmlCanvas implements Plugin {
 			start: (ctx: StartContext, next: () => void): void => {
 				this._update = ctx.update
 				next()
+			},
+			render: (ctx: RenderContext, next: () => void): void => {
+				ctx.size = this._calcSize()
+				next()
 			}
 		}
 		return hooks
@@ -82,7 +86,7 @@ export class HtmlCanvas implements Plugin {
 		const ctx = this._mainCanvas.getContext('2d')
 		if (!ctx) throw Error('Cannot get rendering context of canvas')
 		this._context = ctx
-		this.calcSize()
+		this._calcSize()
 		this._resizeObserver = this._createResizeObserverFor(this._mainCanvas)
 		this._resizeHandler = (): void => {
 			this._update(true)
@@ -104,7 +108,7 @@ export class HtmlCanvas implements Plugin {
 		return this._offscreenContext
 	}
 
-	calcSize(): Geom.Point {
+	private _calcSize(): Geom.Point {
 		this._scaleFactor = window.devicePixelRatio
 		this._cssWidth = +getComputedStyle(this._mainCanvas).width.slice(0, -2)
 		this._cssHeight = +getComputedStyle(this._mainCanvas).height.slice(0, -2)

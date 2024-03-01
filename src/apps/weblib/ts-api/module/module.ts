@@ -7,7 +7,7 @@ import { CChart } from './cchart.js'
 import { CCanvas } from './ccanvas.js'
 import { CAnimControl } from './canimctrl.js'
 import { CCoordSystem } from './ccoordsys.js'
-import { Canvas } from './canvas'
+import { Canvas } from './canvas.js'
 
 export class Module extends CEnv {
 	constructor(wasm: CVizzu) {
