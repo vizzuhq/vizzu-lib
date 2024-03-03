@@ -12,9 +12,6 @@ import { Canvas } from './canvas.js'
 export class Module extends CEnv {
 	constructor(wasm: CVizzu) {
 		super(wasm, new ObjectRegistry(wasm._object_free))
-		const context2D = (<HTMLCanvasElement>document.createElement('canvas')).getContext('2d')
-		if (!context2D) throw new Error('Failed to get 2D context')
-		this._wasm.measureCanvas = context2D
 		this._wasm.canvases = {}
 		this.setLogging(false)
 	}

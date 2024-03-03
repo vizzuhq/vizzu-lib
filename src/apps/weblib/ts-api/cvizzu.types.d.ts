@@ -43,10 +43,14 @@ export interface ModuleOptions {
 	locateFile?: (path: string) => string
 }
 
+export interface TextSize {
+	getSize(cfont: CString, ctext: CString, sizeX: CPointer, sizeY: CPointer): void
+}
+
 export interface CVizzu {
 	// decorations
 	canvases: { [key: CPointer]: Canvas }
-	measureCanvas: CanvasRenderingContext2D
+	textSize: TextSize
 
 	// members
 	HEAPU8: Uint8Array
