@@ -9,6 +9,7 @@ export * from './module/loader.js'
 export * from './module/module.js'
 export * from './module/objregistry.js'
 
+export * from './plugins/clock.js'
 export * from './plugins/coordsys.js'
 export * from './plugins/cssproperties.js'
 export * from './plugins/logging.js'

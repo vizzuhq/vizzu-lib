@@ -1,5 +1,13 @@
 import * as Geom from '../geom.js'
-import { Plugin, PluginApi, PluginHooks, RenderContext, StartContext } from '../plugins.js'
+import * as Events from '../events.js'
+import {
+	Plugin,
+	PluginApi,
+	PluginHooks,
+	PluginListeners,
+	RenderContext,
+	StartContext
+} from '../plugins.js'
 
 export interface CanvasOptions {
 	element: HTMLElement
@@ -7,11 +15,17 @@ export interface CanvasOptions {
 
 export type LazyCanvasOptions = string | HTMLElement | CanvasOptions
 
-export type HtmlCanvasContext = CanvasRenderingContext2D
+export type Event<T> = Events.Event<T> & {
+	/** For drawing events the rendering context of the underlying 
+	canvas set up for drawing the element. */
+	renderingContext?: CanvasRenderingContext2D
+}
 
 export interface HtmlCanvasApi extends PluginApi {
 	/** Returns the underlying canvas element. */
 	get element(): HTMLCanvasElement
+	/** Returns the actual canvas context */
+	get context(): CanvasRenderingContext2D
 	clientToCanvas(clientPos: Geom.Point): Geom.Point
 	canvasToClient(renderPos: Geom.Point): Geom.Point
 }
@@ -35,6 +49,7 @@ export class HtmlCanvas implements Plugin {
 	get api(): HtmlCanvasApi {
 		return {
 			element: this.element,
+			context: this.context,
 			clientToCanvas: this._clientToCanvas.bind(this),
 			canvasToClient: this._canvasToClient.bind(this)
 		}
@@ -52,6 +67,22 @@ export class HtmlCanvas implements Plugin {
 			}
 		}
 		return hooks
+	}
+
+	get listeners(): PluginListeners {
+		return Object.fromEntries(
+			Object.values(Events.EventType)
+				.filter(
+					(type: string): boolean => type.endsWith('-draw') || type.startsWith('draw-')
+				)
+				.map((type: string) => [type as Events.EventType, this._extendEvent.bind(this)])
+		)
+	}
+
+	private _extendEvent<T>(param: Event<T>): void {
+		if (param.type.endsWith('-draw') || param.type.startsWith('draw-')) {
+			param.renderingContext = this.context
+		}
 	}
 
 	static extractOptions(options: unknown): CanvasOptions {

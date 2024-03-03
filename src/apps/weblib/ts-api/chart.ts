@@ -52,7 +52,7 @@ export class Chart {
 		)
 		this._module.registerRenderer(this._ccanvas)
 
-		this._events = new Events(this._cChart, this._canvas)
+		this._events = new Events(this._cChart)
 		this._plugins.init(this._events)
 	}
 
