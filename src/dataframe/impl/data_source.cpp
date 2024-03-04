@@ -256,13 +256,12 @@ cell_value data_source::get_data(std::size_t record_id,
 	case dimension: {
 		const auto &dims = unsafe_get<dimension>(series).second;
 		if (record_id >= dims.values.size())
-			throw std::runtime_error("unknown record");
+			return std::string_view{};
 		return dims.get(record_id);
 	}
 	case measure: {
 		const auto &meas = unsafe_get<measure>(series).second;
-		if (record_id >= meas.values.size())
-			throw std::runtime_error("unknown record");
+		if (record_id >= meas.values.size()) return nan;
 
 		return meas.values[record_id];
 	}

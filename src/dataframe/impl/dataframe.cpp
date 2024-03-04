@@ -1,5 +1,6 @@
 #include "dataframe.h"
 
+#include <base/conv/auto_json.h>
 #include <cmath>
 #include <numeric>
 #include <optional>
@@ -40,8 +41,7 @@ dataframe::dataframe(std::shared_ptr<const data_source> other,
 	auto &cp = unsafe_get<source_type::copying>(source);
 	if (filtered) cp.pre_remove.emplace(*filtered);
 	if (sorted) cp.sorted_indices.emplace(*sorted);
-	if (!cp.other->finalized) { migrate_data(); }
-	else
+	if (cp.other->finalized)
 		state_data.emplace<state_type::finalized>(
 		    *cp.other->finalized);
 }
@@ -229,6 +229,9 @@ void dataframe::add_dimension(
 		change_state_to(state_type::modifying,
 		    state_modification_reason::needs_own_state);
 
+		unsafe_get<state_type::modifying>(state_data)
+		    .emplace_back(name);
+
 		unsafe_get<source_type::owning>(source)->add_new_dimension(
 		    dimension_categories,
 		    dimension_values,
@@ -254,6 +257,7 @@ void dataframe::add_dimension(
 			    dimension_values);
 			break;
 		}
+		case adding_type::create_or_override:
 		case adding_type::override_full: {
 			dims.categories.assign(dimension_categories.begin(),
 			    dimension_categories.end());
@@ -300,6 +304,9 @@ void dataframe::add_measure(std::span<const double> measure_values,
 		change_state_to(state_type::modifying,
 		    state_modification_reason::needs_own_state);
 
+		unsafe_get<state_type::modifying>(state_data)
+		    .emplace_back(name);
+
 		unsafe_get<source_type::owning>(source)->add_new_measure(
 		    measure_values,
 		    name,
@@ -325,6 +332,7 @@ void dataframe::add_measure(std::span<const double> measure_values,
 			    measure_values.end());
 			break;
 		}
+		case adding_type::create_or_override:
 		case adding_type::override_full: {
 			meas.values.assign(measure_values.begin(),
 			    measure_values.end());
@@ -443,6 +451,8 @@ void dataframe::add_series_by_other(series_identifier curr_series,
 	change_state_to(state_type::modifying,
 	    state_modification_reason::needs_own_state);
 
+	unsafe_get<state_type::modifying>(state_data).emplace_back(name);
+
 	auto &s = *unsafe_get<source_type::owning>(source);
 
 	switch (v) {
@@ -505,33 +515,74 @@ void dataframe::add_record(std::span<const cell_value> values) &
 	if (values.empty())
 		throw std::runtime_error("Empty record cannot be added.");
 
-	std::size_t dimensionIx{};
-	std::size_t measureIx{};
-
-	for (const auto &v : values)
-		if (std::holds_alternative<double>(v))
-			++measureIx;
-		else
-			++dimensionIx;
-
 	change_state_to(state_type::modifying,
 	    state_modification_reason::needs_series_type);
 
-	const auto &pre = get_data_source();
-	if (measureIx != pre.measures.size())
-		throw std::runtime_error("Measure count not match.");
-	if (dimensionIx != pre.dimensions.size())
-		throw std::runtime_error("Dimension count not match.");
+	std::vector<cell_value> reorder;
+	if (auto *vec = get_if<state_type::modifying>(&state_data);
+	    vec && !vec->empty()
+	    && std::ranges::all_of(values,
+	        [](const cell_value &c)
+	        {
+		        return std::holds_alternative<std::string_view>(c);
+	        })) {
+		if (vec->size() != values.size())
+			throw std::runtime_error("Record size not match.");
+		reorder.resize(vec->size());
+		const auto &s = get_data_source();
+		auto dims = s.dimensions.size();
+		for (auto it = values.data(); auto col : *vec) {
+			const auto &sv = *std::get_if<std::string_view>(it);
+			switch (auto &&ser = s.get_series(col)) {
+				using enum series_type;
+			default: throw std::runtime_error("FATAL_ERROR");
+			case dimension:
+				reorder[&unsafe_get<dimension>(ser).second
+				        - s.dimensions.data()] = sv;
+				break;
+			case measure:
+				char *eof{};
+				reorder[&unsafe_get<measure>(ser).second
+				        - s.measures.data() + dims] =
+				    std::strtod(sv.data(), &eof);
+				if (eof == sv.data())
+					throw std::runtime_error(
+					    "cell should be numeric: " + std::string{sv});
+				break;
+			}
+			++it;
+		}
 
-	change_state_to(state_type::modifying,
-	    state_modification_reason::needs_own_state);
+		values = reorder;
+	}
+	else {
+		std::size_t dimensionIx{};
+		std::size_t measureIx{};
+
+		for (const auto &v : values)
+			if (std::holds_alternative<double>(v))
+				++measureIx;
+			else
+				++dimensionIx;
+
+		change_state_to(state_type::modifying,
+		    state_modification_reason::needs_series_type);
+
+		const auto &pre = get_data_source();
+		if (measureIx != pre.measures.size())
+			throw std::runtime_error("Measure count not match.");
+		if (dimensionIx != pre.dimensions.size())
+			throw std::runtime_error("Dimension count not match.");
+
+		change_state_to(state_type::modifying,
+		    state_modification_reason::needs_own_state);
+	}
 
 	auto &s = *unsafe_get<source_type::owning>(source);
 	s.normalize_sizes();
 
-	measureIx = 0;
-	dimensionIx = 0;
-	for (const auto &v : values) {
+	for (std::size_t measureIx{}, dimensionIx{};
+	     const auto &v : values) {
 		if (const double *measure = std::get_if<double>(&v))
 			s.measures[measureIx++].values.emplace_back(*measure);
 		else {
@@ -690,7 +741,41 @@ void dataframe::finalize() &
 	    state_modification_reason::needs_own_state);
 }
 
-std::string dataframe::as_string() const & { return {}; }
+std::string dataframe::as_string() const &
+{
+	const auto *vec = get_if<state_type::modifying>(&state_data);
+	if (!vec || vec->empty())
+		throw std::runtime_error(
+		    "Only raw dataframe can get the state");
+
+	std::string res{'['};
+	bool first = true;
+	for (const auto s = get_data_source(); auto name : *vec) {
+		if (!std::exchange(first, false)) res += ',';
+		Conv::JSONObj obj{res};
+		switch (auto &&ser = s.get_series(name)) {
+			using enum series_type;
+		default: throw std::runtime_error("Series does not exists.");
+		case dimension: {
+			const auto &[name, dim] = unsafe_get<dimension>(ser);
+			obj("name", name)("type", "dimension")("unit",
+			    "")("length", dim.values.size())("categories",
+			    dim.categories);
+			break;
+		}
+		case measure: {
+			const auto &[name, mea] = unsafe_get<measure>(ser);
+			auto &&[min, max] = mea.get_min_max();
+			obj("name", name)("type", "measure")("unit",
+			    mea.info.at("unit"))("length", mea.values.size())
+			    .nested("range")("min", min)("max", max);
+			break;
+		}
+		}
+	}
+	res += ']';
+	return res;
+}
 
 std::span<const std::string> dataframe::get_dimensions() const &
 {

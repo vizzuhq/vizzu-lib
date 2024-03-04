@@ -30,6 +30,7 @@ enum class na_position { last, first };
 enum class adding_type {
 	create_or_add,
 	create_or_throw,
+	create_or_override,
 	override_full,
 	override_all_with_rotation
 };

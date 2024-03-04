@@ -151,7 +151,7 @@ private:
 	    source{std::make_shared<data_source>()};
 
 	Refl::EnumVariant<state_type,
-	    std::monostate,
+	    std::vector<std::string>,
 	    data_source::aggregating_type,
 	    data_source::sorting_type,
 	    std::reference_wrapper<const data_source::final_info>>

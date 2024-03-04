@@ -14,11 +14,11 @@ option(cppcheck "Run cppcheck analyzis" OFF)
 option(cpplint "Run cpplint analyzis" OFF)
 
 if(clangtidy)
-	set(CMAKE_CXX_CLANG_TIDY clang-tidy-16)
+	set(CMAKE_CXX_CLANG_TIDY clang-tidy)
 endif()
 
 if (clangformat)
-    set(CLANG_FORMAT_EXE clang-format-16)
+    set(CLANG_FORMAT_EXE clang-format)
 
     get_property(_allTargets GLOBAL PROPERTY GlobalTargetList)
     if (NOT _allTargets)
