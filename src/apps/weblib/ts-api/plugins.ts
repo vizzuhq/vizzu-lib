@@ -3,6 +3,8 @@ import * as Anim from './types/anim.js'
 import { Events, EventType, EventHandler, EventMap } from './events.js'
 import { AnimCompleting } from './animcompleting.js'
 import { Point } from './geom.js'
+import { CCanvas } from './module/ccanvas.js'
+import { Canvas } from './module/canvas.js'
 
 /** Available hooks for plugins in Vizzu. */
 export enum Hooks {
@@ -37,6 +39,7 @@ export interface StartContext {
 }
 
 export interface RenderContext {
+	renderer: (CCanvas & Canvas) | null
 	timeInMSecs: number | null
 	enable: boolean
 	size: Point

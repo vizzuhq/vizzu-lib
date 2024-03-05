@@ -1,13 +1,7 @@
 import * as Geom from '../geom.js'
 import * as Events from '../events.js'
-import {
-	Plugin,
-	PluginApi,
-	PluginHooks,
-	PluginListeners,
-	RenderContext,
-	StartContext
-} from '../plugins.js'
+import { Plugin, PluginApi, PluginHooks, PluginListeners, StartContext } from '../plugins.js'
+import type { HtmlCanvasAlternative, RenderContext } from './canvasrenderer.js'
 
 export interface CanvasOptions {
 	element: HTMLElement
@@ -30,7 +24,7 @@ export interface HtmlCanvasApi extends PluginApi {
 	canvasToClient(renderPos: Geom.Point): Geom.Point
 }
 
-export class HtmlCanvas implements Plugin {
+export class HtmlCanvas implements Plugin, HtmlCanvasAlternative {
 	private _update: (force: boolean) => void = () => {}
 	private _container?: HTMLElement
 	private _offscreenCanvas: HTMLCanvasElement
@@ -62,6 +56,7 @@ export class HtmlCanvas implements Plugin {
 				next()
 			},
 			render: (ctx: RenderContext, next: () => void): void => {
+				ctx.htmlCanvas = this
 				ctx.size = this._calcSize()
 				next()
 			}
@@ -80,9 +75,7 @@ export class HtmlCanvas implements Plugin {
 	}
 
 	private _extendEvent<T>(param: Event<T>): void {
-		if (param.type.endsWith('-draw') || param.type.startsWith('draw-')) {
-			param.renderingContext = this.context
-		}
+		param.renderingContext = this.context
 	}
 
 	static extractOptions(options: unknown): CanvasOptions {

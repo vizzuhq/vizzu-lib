@@ -23,6 +23,10 @@ export class Module extends CEnv {
 		this._wasm.canvases[cCanvas.getId()] = cCanvas
 	}
 
+	unregisterRenderer(cCanvas: CCanvas & Canvas): void {
+		delete this._wasm.canvases[cCanvas.getId()]
+	}
+
 	version(): string {
 		return this._wasm.UTF8ToString(this._wasm._vizzu_version())
 	}
@@ -47,10 +51,7 @@ export class Module extends CEnv {
 		return new CChart(this, this._getStatic(this._wasm._vizzu_createChart))
 	}
 
-	createCanvas<T extends CCanvas, Args>(
-		ctor: new (env: CEnv, getId: CPointerClosure, ...args: Args[]) => T,
-		...args: Args[]
-	): T {
-		return new ctor(this, this._getStatic(this._wasm._vizzu_createCanvas), ...args)
+	createCanvas<T extends CCanvas>(ctor: new (env: CEnv, getId: CPointerClosure) => T): T {
+		return new ctor(this, this._getStatic(this._wasm._vizzu_createCanvas))
 	}
 }

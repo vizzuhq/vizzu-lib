@@ -3,9 +3,7 @@ import * as Config from './types/config.js'
 import * as Styles from './types/styles.js'
 import * as D from './types/data.js'
 import { Module } from './module/module.js'
-import { type Canvas } from './module/canvas.js'
 import { CChart, Snapshot } from './module/cchart.js'
-import { CCanvas } from './module/ccanvas.js'
 import { CAnimControl, CAnimation } from './module/canimctrl.js'
 import { CData } from './module/cdata.js'
 import { Data } from './data.js'
@@ -28,16 +26,16 @@ import { Scheduler } from './plugins/scheduler.js'
 import { RenderControl } from './plugins/rendercontrol.js'
 
 export class Chart {
+	private _options: VizzuOptions
 	private _cChart: CChart
 	private _module: Module
-	private _canvas: HtmlCanvas
-	private _ccanvas: CCanvas & Canvas
 	private _cData: CData
 	private _data: Data
 	private _events: Events
 	private _plugins: PluginRegistry
 
 	constructor(module: Module, options: VizzuOptions, plugins: PluginRegistry) {
+		this._options = options
 		this._plugins = plugins
 		this._module = module
 
@@ -45,20 +43,14 @@ export class Chart {
 		this._cData = this._module.getData(this._cChart)
 		this._data = new Data(this._cData)
 
-		this._canvas = new HtmlCanvas(HtmlCanvas.extractOptions(options))
-		this._ccanvas = this._module.createCanvas<CanvasRenderer, HtmlCanvas>(
-			CanvasRenderer,
-			this._canvas
-		)
-		this._module.registerRenderer(this._ccanvas)
-
 		this._events = new Events(this._cChart)
 		this._plugins.init(this._events)
 	}
 
 	registerBuiltins(): void {
 		this._plugins.register(new Logging(this._module.setLogging.bind(this._module)), false)
-		this._plugins.register(this._canvas, true)
+		this._plugins.register(new HtmlCanvas(HtmlCanvas.extractOptions(this._options)), true)
+		this._plugins.register(this._module.createCanvas<CanvasRenderer>(CanvasRenderer), true)
 		this._plugins.register(new Clock(), true)
 		this._plugins.register(new Scheduler(), true)
 		this._plugins.register(new RenderControl(), true)
@@ -81,20 +73,23 @@ export class Chart {
 
 	updateFrame(force: boolean = false): void {
 		const ctx = {
+			renderer: null,
 			timeInMSecs: null,
 			enable: true,
 			size: { x: 0, y: 0 }
 		}
 		this._plugins.hook(Hooks.render, ctx).default((ctx) => {
-			if (ctx.size.x >= 1 && ctx.size.y >= 1 && ctx.timeInMSecs !== null) {
+			if (ctx.size.x >= 1 && ctx.size.y >= 1 && ctx.timeInMSecs !== null && ctx.renderer) {
 				const renderControl = !ctx.enable ? 2 : force ? 1 : 0
+				this._module.registerRenderer(ctx.renderer)
 				this._cChart.update(
-					this._ccanvas,
+					ctx.renderer,
 					ctx.size.x,
 					ctx.size.y,
 					ctx.timeInMSecs,
 					renderControl
 				)
+				this._module.unregisterRenderer(ctx.renderer)
 			}
 		})
 	}

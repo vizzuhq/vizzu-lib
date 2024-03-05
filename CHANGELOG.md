@@ -32,6 +32,7 @@
 - New plugins and plugin hooks introduced: 
   - plugin: scheduler - plugin resposible for scheduling the rendering
   - plugin: clock - supplying the current time for the animation
+  - plugin: canvasRenderer - plugin for rendering the chart on a htmlcanvas compatible canvas
   - hook: start - hook for starting the rendering loop
   - hook: render - hook for rendering the chart 
 
