@@ -10,12 +10,13 @@ namespace Vizzu
 
 template <class R, class... Ts> class JsFunctionWrapper
 {
-private:
 	using JsFun = R(std::remove_reference_t<Ts> *...);
 
 public:
+	constexpr JsFunctionWrapper() noexcept = default;
+
 	constexpr explicit JsFunctionWrapper(
-	    std::shared_ptr<JsFun> &&fun = {}) :
+	    std::shared_ptr<JsFun> &&fun) noexcept :
 	    wrapper{std::move(fun)}
 	{}
 

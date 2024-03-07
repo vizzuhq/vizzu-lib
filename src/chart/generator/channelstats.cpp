@@ -8,9 +8,9 @@ ChannelStats::ChannelStats(const Channel &channel,
     isDimension(channel.isDimension())
 {
 	if (isDimension)
-		usedIndices = std::vector<Data::MultiDim::SubSliceIndex>(
-		    cube.combinedSizeOf(channel.dimensionIds),
-		    Data::MultiDim::SubSliceIndex());
+		usedIndices =
+		    std::vector(cube.combinedSizeOf(channel.dimensionIds),
+		        Data::MultiDim::SubSliceIndex());
 }
 
 void ChannelStats::track(double value)

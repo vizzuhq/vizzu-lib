@@ -263,9 +263,7 @@ void chart_setFilter(APIHandles::Chart chart,
 		    Vizzu::JsFunctionWrapper<bool,
 		        const Vizzu::Data::RowWrapper &>{{filter, deleter}});
 
-	return Interface::getInstance().setChartFilter(chart,
-	    Vizzu::JsFunctionWrapper<bool,
-	        const Vizzu::Data::RowWrapper &>{});
+	return Interface::getInstance().setChartFilter(chart, {});
 }
 
 const Value *record_getValue(const Vizzu::Data::RowWrapper *record,

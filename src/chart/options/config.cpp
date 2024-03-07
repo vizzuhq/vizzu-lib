@@ -48,9 +48,9 @@ inline constexpr std::pair<std::string_view, Config::Accessor>
 	                ExtractType<Mptr>{}(std::invoke(Mptr, options)));
             },
             .set =
-                [](OptionsSetter &setter, const std::string &value)
+                [](Options &options, const std::string &value)
             {
-	            std::invoke(Mptr, setter.getOptions()) =
+	            std::invoke(Mptr, options) =
 	                Conv::parse<typename ExtractType<Mptr>::type>(
 	                    value);
             }}};
@@ -77,10 +77,9 @@ const Config::Accessors &Config::getAccessors()
 		            return Conv::toString(options.tooltip);
 	            },
 	            .set =
-	                [](OptionsSetter &setter,
-	                    const std::string &value)
+	                [](Options &options, const std::string &value)
 	            {
-		            setter.showTooltip(
+		            options.showTooltip(
 		                Conv::parse<std::optional<uint64_t>>(value));
 	            }}}};
 
@@ -99,12 +98,11 @@ const std::pair<std::string_view, Config::ChannelAccessor>
 	                ExtractType<Mptr>{}(std::invoke(Mptr, channel)));
             },
             .set =
-                [](OptionsSetter &setter,
+                [](Options &options,
                     const ChannelId &channel,
                     const std::string &value)
             {
-	            std::invoke(Mptr,
-	                setter.getOptions().getChannels().at(channel)) =
+	            std::invoke(Mptr, options.getChannels().at(channel)) =
 	                Conv::parse<typename ExtractType<Mptr>::type>(
 	                    value);
             }}};
@@ -122,14 +120,11 @@ const Config::ChannelAccessors &Config::getChannelAccessors()
 		            return Conv::toString(channel.range.min);
 	            },
 	            .set =
-	                [](OptionsSetter &setter,
+	                [](Options &options,
 	                    const ChannelId &id,
 	                    const std::string &value)
 	            {
-		            setter.getOptions()
-		                .getChannels()
-		                .at(id)
-		                .range.min =
+		            options.getChannels().at(id).range.min =
 		                Conv::parse<OptionalChannelExtrema>(value);
 	            }}},
 	    {"range.max",
@@ -139,14 +134,11 @@ const Config::ChannelAccessors &Config::getChannelAccessors()
 		            return Conv::toString(channel.range.max);
 	            },
 	            .set =
-	                [](OptionsSetter &setter,
+	                [](Options &options,
 	                    const ChannelId &id,
 	                    const std::string &value)
 	            {
-		            setter.getOptions()
-		                .getChannels()
-		                .at(id)
-		                .range.max =
+		            options.getChannels().at(id).range.max =
 		                Conv::parse<OptionalChannelExtrema>(value);
 	            }}},
 	    channel_accessor<&Channel::labelLevel>,
@@ -188,7 +180,7 @@ void Config::setParam(const std::string &path,
 		if (it == getAccessors().end())
 			throw std::logic_error(
 			    path + "/" + value + ": invalid config parameter");
-		it->second.set(setter, value);
+		it->second.set(options, value);
 	}
 }
 
@@ -198,14 +190,9 @@ std::string Config::getParam(const std::string &path) const
 
 	if (auto it = getAccessors().find(path);
 	    it != getAccessors().end())
-		return it->second.get(setter.getOptions());
+		return it->second.get(options);
 
 	throw std::logic_error(path + ": invalid config parameter");
-}
-
-void Config::setFilter(Data::Filter::Function &&func, uint64_t hash)
-{
-	setter.setFilter(Data::Filter(std::move(func), hash));
 }
 
 void Config::setChannelParam(const std::string &path,
@@ -214,21 +201,26 @@ void Config::setChannelParam(const std::string &path,
 	auto parts = Text::SmartString::split(path, '.');
 	auto id = Conv::parse<ChannelId>(parts.at(1));
 	auto property = parts.at(2);
+	Options &options = this->options;
 
 	if (property == "attach") {
-		setter.addSeries(id, value);
+		options.markersInfo.clear();
+		options.getChannels().addSeries(id, {value, table});
 		return;
 	}
 	if (property == "detach") {
-		setter.deleteSeries(id, value);
+		options.markersInfo.clear();
+		options.getChannels().removeSeries(id, {value, table});
 		return;
 	}
 	if (property == "set") {
+		options.markersInfo.clear();
 		if (parts.size() == 3 && value == "null")
-			setter.clearSeries(id);
+			options.getChannels().clearSeries(id);
 		else {
-			if (std::stoi(parts.at(3)) == 0) setter.clearSeries(id);
-			setter.addSeries(id, value);
+			if (std::stoi(parts.at(3)) == 0)
+				options.getChannels().clearSeries(id);
+			options.getChannels().addSeries(id, {value, table});
 		}
 		return;
 	}
@@ -237,7 +229,7 @@ void Config::setChannelParam(const std::string &path,
 
 	const auto &accessors = getChannelAccessors();
 	if (auto it = accessors.find(property); it != accessors.end()) {
-		return it->second.set(setter, id, value);
+		return it->second.set(options, id, value);
 	}
 
 	throw std::logic_error(
@@ -251,11 +243,11 @@ std::string Config::getChannelParam(const std::string &path) const
 	auto id = Conv::parse<ChannelId>(parts.at(1));
 	auto property = parts.at(2);
 
-	const auto &channel = setter.getOptions().getChannels().at(id);
+	const auto &channel = options.get().getChannels().at(id);
 
 	if (property == "set") {
-		auto list = channel.dimensionNames(*setter.getTable());
-		auto measure = channel.measureName(*setter.getTable());
+		auto list = channel.dimensionNames(table);
+		auto measure = channel.measureName(table);
 		if (!measure.empty()) list.push_front(measure);
 		return Conv::toJSON(list);
 	}
