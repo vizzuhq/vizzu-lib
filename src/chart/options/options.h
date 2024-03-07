@@ -173,6 +173,8 @@ public:
 	[[nodiscard]] bool labelsShownFor(
 	    const Data::SeriesIndex &series) const;
 
+	void showTooltip(std::optional<MarkerId> marker);
+
 private:
 	Channels channels;
 

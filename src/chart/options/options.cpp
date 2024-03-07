@@ -378,6 +378,26 @@ bool Options::labelsShownFor(const Data::SeriesIndex &series) const
 	               == series);
 }
 
+void Options::showTooltip(std::optional<MarkerId> marker)
+{
+	if (!marker && tooltip) {
+		if (auto miid = getMarkerInfoId(*tooltip))
+			markersInfo.erase(*miid);
+		tooltip.reset();
+	}
+	else if (marker && !tooltip) {
+		if (!getMarkerInfoId(*marker))
+			markersInfo.insert({generateMarkerInfoId(), *marker});
+		tooltip = marker;
+	}
+	else if (marker && tooltip && marker != tooltip) {
+		if (auto idFrom = getMarkerInfoId(*tooltip);
+		    idFrom && !getMarkerInfoId(*marker))
+			markersInfo.find(*idFrom)->second = *marker;
+		tooltip = marker;
+	}
+}
+
 [[nodiscard]] ChannelId Options::toChannel(const Options::LegendId &l)
 {
 	return static_cast<ChannelId>(l);
