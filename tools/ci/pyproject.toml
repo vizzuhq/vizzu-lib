@@ -22,7 +22,7 @@ docs = [
     "mdformat-configurable-black",
     "mdformat-config",
     "mdformat-web",
-    "mdformat-admon",
+    "mdformat-admon < 0.2.0",
     "mdformat-gfm",
     "mdformat-tables",
     "mdformat-footnote",

@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+## [0.10.0] - 2024-03-11
+
 ### Fixed
 
 - Json serializer control character escape fixed. Some unicode characters
