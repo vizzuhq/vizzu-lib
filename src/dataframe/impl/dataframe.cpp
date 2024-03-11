@@ -85,6 +85,10 @@ void valid_measure_aggregator(
 			        Refl::enum_name_holder<aggregator_type>.size()});
 		}
 	}
+	else if (*std::get_if<aggregator_type>(&agg)
+	         == aggregator_type::distinct)
+		throw std::runtime_error(
+		    "Measure series cannot be aggregated by distinct.");
 }
 
 std::string dataframe::set_aggregate(series_identifier series,

@@ -472,17 +472,13 @@ data_source::data_source(aggregating_type &&aggregating,
 
 		for (std::size_t ix{}; const auto &[name, mea] : meas) {
 			auto &[data, agg] = mea;
-			double val{};
-			if (data == series_type::measure) {
+			cell_value val{};
+			if (data == series_type::measure)
 				val = unsafe_get<series_type::measure>(data)
 				          .second.values[i];
-			}
-			else {
-				auto aval = unsafe_get<series_type::dimension>(data)
-				                .second.values[i];
-				val = aval == data_source::nav ? data_source::nan
-				                               : aval;
-			}
+			else
+				val = unsafe_get<series_type::dimension>(data)
+				          .second.get(i);
 			measures[ix].values[index] =
 			    agg.add(aggregators[ix], val);
 			++ix;

@@ -40,7 +40,7 @@ struct custom_aggregator
 	std::variant<std::string_view, std::string> name;
 	using id_type = std::any;
 	id_type (*create)();
-	double (*add)(id_type &, double);
+	double (*add)(id_type &, cell_value const &);
 
 	[[nodiscard]] std::string_view get_name() const
 	{

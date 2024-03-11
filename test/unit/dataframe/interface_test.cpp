@@ -470,7 +470,6 @@ const static auto tests =
 	auto &&m1ma = df->set_aggregate("m1", max);
 	auto &&m1me = df->set_aggregate("m1", mean);
 	auto &&m1c = df->set_aggregate("m1", count);
-	auto &&m1d = df->set_aggregate("m1", distinct);
 	auto &&m1e = df->set_aggregate("m1", exists);
 
 	auto &&m1t = df->set_aggregate("m1",
@@ -482,10 +481,11 @@ const static auto tests =
 		            std::numeric_limits<double>::max()};
 	        },
 	        [](Vizzu::dataframe::custom_aggregator::id_type &id,
-	            double v) -> double
+	            cell_value const &cell) -> double
 	        {
 		        auto &[min, min2] =
 		            std::any_cast<std::pair<double, double> &>(id);
+		        const double &v = *std::get_if<double>(&cell);
 		        if (v < min)
 			        min2 = std::exchange(min, v);
 		        else if (v < min2)
@@ -501,7 +501,6 @@ const static auto tests =
 	    == std::array{d1c,
 	        m1c,
 	        d1d,
-	        m1d,
 	        d1e,
 	        m1e,
 	        m1ma,
@@ -515,7 +514,6 @@ const static auto tests =
 	check->*df->get_data(std::size_t{0}, d1c) == 5.0;
 	check->*df->get_data(std::size_t{0}, m1c) == 5.0;
 	check->*df->get_data(std::size_t{0}, d1d) == 1.0;
-	check->*df->get_data(std::size_t{0}, m1d) == 5.0;
 	check->*df->get_data(std::size_t{0}, d1e) == 1.0;
 	check->*df->get_data(std::size_t{0}, m1e) == 1.0;
 	check->*df->get_data(std::size_t{0}, m1ma) == 88.0;
@@ -527,7 +525,6 @@ const static auto tests =
 	check->*df->get_data(std::size_t{1}, d1c) == 4.0;
 	check->*df->get_data(std::size_t{1}, m1c) == 3.0;
 	check->*df->get_data(std::size_t{1}, d1d) == 1.0;
-	check->*df->get_data(std::size_t{1}, m1d) == 3.0;
 	check->*df->get_data(std::size_t{1}, d1e) == 1.0;
 	check->*df->get_data(std::size_t{1}, m1e) == 1.0;
 	check->*df->get_data(std::size_t{1}, m1ma) == 7.25;
@@ -539,7 +536,6 @@ const static auto tests =
 	check->*df->get_data(std::size_t{2}, d1c) == 1.0;
 	check->*df->get_data(std::size_t{2}, m1c) == 0.0;
 	check->*df->get_data(std::size_t{2}, d1d) == 1.0;
-	check->*df->get_data(std::size_t{2}, m1d) == 0.0;
 	check->*df->get_data(std::size_t{2}, d1e) == 1.0;
 	check->*df->get_data(std::size_t{2}, m1e) == 0.0;
 	check
@@ -561,7 +557,6 @@ const static auto tests =
 	check->*df->get_data(std::size_t{3}, d1c) == 0.0;
 	check->*df->get_data(std::size_t{3}, m1c) == 1.0;
 	check->*df->get_data(std::size_t{3}, d1d) == 0.0;
-	check->*df->get_data(std::size_t{3}, m1d) == 1.0;
 	check->*df->get_data(std::size_t{3}, d1e) == 0.0;
 	check->*df->get_data(std::size_t{3}, m1e) == 1.0;
 }
