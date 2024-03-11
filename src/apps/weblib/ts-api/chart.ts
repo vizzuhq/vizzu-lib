@@ -24,10 +24,12 @@ import { CoordSystem } from './plugins/coordsys.js'
 import { Clock } from './plugins/clock.js'
 import { Scheduler } from './plugins/scheduler.js'
 import { RenderControl } from './plugins/rendercontrol.js'
+import { CCanvas } from './module/ccanvas.js'
 
 export class Chart {
 	private _options: VizzuOptions
 	private _cChart: CChart
+	private _cCanvas: CCanvas
 	private _module: Module
 	private _cData: CData
 	private _data: Data
@@ -40,6 +42,7 @@ export class Chart {
 		this._module = module
 
 		this._cChart = this._module.createChart()
+		this._cCanvas = this._module.createCanvas()
 		this._cData = this._module.getData(this._cChart)
 		this._data = new Data(this._cData)
 
@@ -50,7 +53,7 @@ export class Chart {
 	registerBuiltins(): void {
 		this._plugins.register(new Logging(this._module.setLogging.bind(this._module)), false)
 		this._plugins.register(new HtmlCanvas(HtmlCanvas.extractOptions(this._options)), true)
-		this._plugins.register(this._module.createCanvas<CanvasRenderer>(CanvasRenderer), true)
+		this._plugins.register(new CanvasRenderer(), true)
 		this._plugins.register(new Clock(), true)
 		this._plugins.register(new Scheduler(), true)
 		this._plugins.register(new RenderControl(), true)
@@ -81,15 +84,16 @@ export class Chart {
 		this._plugins.hook(Hooks.render, ctx).default((ctx) => {
 			if (ctx.size.x >= 1 && ctx.size.y >= 1 && ctx.timeInMSecs !== null && ctx.renderer) {
 				const renderControl = !ctx.enable ? 2 : force ? 1 : 0
-				this._module.registerRenderer(ctx.renderer)
+				ctx.renderer.canvas = this._cCanvas
+				this._module.registerRenderer(this._cCanvas, ctx.renderer)
 				this._cChart.update(
-					ctx.renderer,
+					this._cCanvas,
 					ctx.size.x,
 					ctx.size.y,
 					ctx.timeInMSecs,
 					renderControl
 				)
-				this._module.unregisterRenderer(ctx.renderer)
+				this._module.unregisterRenderer(this._cCanvas)
 			}
 		})
 	}

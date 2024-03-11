@@ -1,6 +1,6 @@
 import { CVizzu } from '../cvizzu.types'
 
-import { CPointerClosure, ObjectRegistry } from './objregistry.js'
+import { ObjectRegistry } from './objregistry.js'
 import { CEnv } from './cenv.js'
 import { CData } from './cdata.js'
 import { CChart } from './cchart.js'
@@ -19,11 +19,11 @@ export class Module extends CEnv {
 		this.setLogging(false)
 	}
 
-	registerRenderer(cCanvas: CCanvas & Canvas): void {
-		this._wasm.canvases[cCanvas.getId()] = cCanvas
+	registerRenderer(cCanvas: CCanvas, canvas: Canvas): void {
+		this._wasm.canvases[cCanvas.getId()] = canvas
 	}
 
-	unregisterRenderer(cCanvas: CCanvas & Canvas): void {
+	unregisterRenderer(cCanvas: CCanvas): void {
 		delete this._wasm.canvases[cCanvas.getId()]
 	}
 
@@ -51,7 +51,7 @@ export class Module extends CEnv {
 		return new CChart(this, this._getStatic(this._wasm._vizzu_createChart))
 	}
 
-	createCanvas<T extends CCanvas>(ctor: new (env: CEnv, getId: CPointerClosure) => T): T {
-		return new ctor(this, this._getStatic(this._wasm._vizzu_createCanvas))
+	createCanvas(): CCanvas {
+		return new CCanvas(this, this._getStatic(this._wasm._vizzu_createCanvas))
 	}
 }

@@ -1,8 +1,6 @@
 import { CColorGradient } from '../module/ccolorgradient.js'
-import { CEnv } from '../module/cenv.js'
-import { CPointerClosure } from '../module/objregistry.js'
 import { Canvas } from '../module/canvas.js'
-import { CCanvas } from '../module/ccanvas.js'
+import { CRenderer } from '../module/crenderer.js'
 import { Plugin, PluginHooks, RenderContext as Ctx } from '../plugins.js'
 
 export class CanvasError extends Error {
@@ -20,14 +18,10 @@ export interface HtmlCanvasAlternative {
 
 export type RenderContext = Ctx & { htmlCanvas?: HtmlCanvasAlternative }
 
-export class CanvasRenderer extends CCanvas implements Canvas, Plugin {
+export class CanvasRenderer extends CRenderer implements Canvas, Plugin {
 	private _htmlCanvas?: HtmlCanvasAlternative
 	private _polygonInProgress: boolean = false
 	private _currentLineWidth: number = 1
-
-	constructor(env: CEnv, getId: CPointerClosure) {
-		super(env, getId)
-	}
 
 	get hooks(): PluginHooks {
 		const hooks = {
