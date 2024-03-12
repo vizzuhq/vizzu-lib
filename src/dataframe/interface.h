@@ -53,9 +53,9 @@ class dataframe_interface :
 {
 public:
 	using series_identifier =
-	    std::variant<std::size_t, std::string_view>;
+	    std::variant<std::string_view, std::size_t>;
 	using record_identifier =
-	    std::variant<std::size_t, std::string_view>;
+	    std::variant<std::string_view, std::size_t>;
 
 	using any_aggregator_type = std::
 	    variant<std::monostate, aggregator_type, custom_aggregator>;

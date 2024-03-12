@@ -79,6 +79,8 @@ private:
 		    info(std::begin(info), std::end(info))
 		{}
 
+		const double &get(std::size_t index) const;
+
 		[[nodiscard]] std::pair<double, double> get_min_max() const;
 	};
 
@@ -132,7 +134,8 @@ public:
 		    std::less<>>
 		    meas;
 
-		std::string add_aggregated(const_series_data &&data,
+		std::pair<std::string, bool> add_aggregated(
+		    const_series_data &&data,
 		    const custom_aggregator &aggregator);
 	};
 

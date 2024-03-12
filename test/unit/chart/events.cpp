@@ -95,7 +95,7 @@ struct chart_setup
 		    {{0, -1, 5, 6, 6, 5, -1, 0, 5, 6, 0, -1, -1, 0, 6, -5}});
 		auto &channels = chart.getOptions().getChannels();
 		for (auto &&[ch, name] : series)
-			channels.addSeries(ch, {name, table});
+			channels.addSeries(ch, {name, std::ref(table)});
 		chart.setBoundRect(Geom::Rect(Geom::Point{}, {{640, 480}}));
 		return chart;
 	}

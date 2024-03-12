@@ -46,6 +46,14 @@ dataframe::dataframe(std::shared_ptr<const data_source> other,
 		    *cp.other->finalized);
 }
 
+void valid_unexistent_aggregator(
+    const dataframe::any_aggregator_type &agg)
+{
+	if (const auto *aggr = std::get_if<aggregator_type>(&agg);
+	    !aggr || *aggr != aggregator_type::count)
+		throw std::runtime_error("Series does not exists.");
+}
+
 void valid_dimension_aggregator(
     const dataframe::any_aggregator_type &agg)
 {
@@ -74,19 +82,8 @@ void valid_measure_aggregator(
 		throw std::runtime_error(
 		    "Measure series must be aggregated.");
 
-	if (!std::holds_alternative<aggregator_type>(agg)) {
-		if (Refl::enum_names<aggregator_type>.end()
-		    != std::ranges::find(Refl::enum_names<aggregator_type>,
-		        std::get_if<custom_aggregator>(&agg)->get_name())) {
-			throw std::runtime_error(
-			    "Custom aggregator name cannot be any of these: "
-			    + std::string{
-			        Refl::enum_name_holder<aggregator_type>.data(),
-			        Refl::enum_name_holder<aggregator_type>.size()});
-		}
-	}
-	else if (*std::get_if<aggregator_type>(&agg)
-	         == aggregator_type::distinct)
+	if (const auto *t = std::get_if<aggregator_type>(&agg);
+	    t && *t == aggregator_type::distinct)
 		throw std::runtime_error(
 		    "Measure series cannot be aggregated by distinct.");
 }
@@ -100,7 +97,7 @@ std::string dataframe::set_aggregate(series_identifier series,
 	auto &&ser = get_data_source().get_series(series);
 	switch (ser) {
 		using enum series_type;
-	default: throw std::runtime_error("Series does not exists.");
+	default: valid_unexistent_aggregator(aggregator); break;
 	case dimension: valid_dimension_aggregator(aggregator); break;
 	case measure: valid_measure_aggregator(aggregator); break;
 	}
@@ -111,13 +108,21 @@ std::string dataframe::set_aggregate(series_identifier series,
 
 	const auto *agg = std::get_if<aggregator_type>(&aggregator);
 	if (ser == series_type::dimension && !agg) {
-		aggs.dims.emplace(unsafe_get<series_type::dimension>(ser));
+		if (!aggs.dims
+		         .emplace(unsafe_get<series_type::dimension>(ser))
+		         .second)
+			throw std::runtime_error(
+			    "Duplicated dimension series name.");
 		return {};
 	}
 
-	return aggs.add_aggregated(std::move(ser),
+	auto &&[name, uniq] = aggs.add_aggregated(std::move(ser),
 	    agg ? aggregators[*agg]
 	        : std::get<custom_aggregator>(aggregator));
+	if (!uniq)
+		throw std::runtime_error(
+		    "Duplicated aggregated series name.");
+	return name;
 }
 
 void dataframe::set_filter(std::function<bool(record_type)> &&filt) &

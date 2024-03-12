@@ -308,12 +308,7 @@ data_source::const_series_data data_source::get_series(
 
 void data_source::normalize_sizes()
 {
-	std::size_t record_count{};
-	for (auto &&dim : dimensions)
-		record_count = std::max(record_count, dim.values.size());
-	for (auto &&mea : measures)
-		record_count = std::max(record_count, mea.values.size());
-
+	std::size_t record_count = get_record_count();
 	for (auto &&dim : dimensions)
 		dim.values.resize(record_count, nav);
 	for (auto &&mea : measures) mea.values.resize(record_count, nan);
@@ -422,11 +417,11 @@ data_source::data_source(aggregating_type &&aggregating,
 	measures.reserve(meas.size());
 	measure_names.reserve(meas.size());
 
-	for (const auto &[name, dim] : dims) {
-		dimension_t &new_dim = add_new_dimension({}, name);
-		new_dim.categories = dim.get().categories;
-		new_dim.info = dim.get().info;
-	}
+	for (const auto &[name, dim] : dims)
+		add_new_dimension({dim.get().categories,
+		                      std::initializer_list<std::uint32_t>{},
+		                      dim.get().info},
+		    name);
 
 	for (const auto &[name, mea] : meas) {
 		measure_t &new_mea = add_new_measure({}, name);
@@ -438,7 +433,6 @@ data_source::data_source(aggregating_type &&aggregating,
 		case measure:
 			new_mea.info = unsafe_get<measure>(ser).second.info;
 			break;
-		case unknown:
 		default: break;
 		}
 	}
@@ -451,18 +445,21 @@ data_source::data_source(aggregating_type &&aggregating,
 		if (filtered && (*filtered)[i]) continue;
 
 		for (std::size_t ix{}; const auto &[name, dim] : dims)
-			cat_indices[ix++] = dim.get().values[i];
+			cat_indices[ix++] = i < dim.get().values.size()
+			                      ? dim.get().values[i]
+			                      : nav;
 
 		auto [it, s] = rec_to_index.try_emplace(cat_indices,
 		    rec_to_index.size());
 
 		auto &[index, aggregators] = it->second;
 		if (s) {
-			for (auto &m : measures) m.values.emplace_back(NAN);
+			for (auto &m : measures) m.values.emplace_back(nan);
 
 			for (std::size_t ix{}; const auto &[name, dim] : dims)
 				dimensions[ix++].values.emplace_back(
-				    dim.get().values[i]);
+				    i < dim.get().values.size() ? dim.get().values[i]
+				                                : nav);
 
 			aggregators.reserve(meas.size());
 			for (const auto &[ser, agg] :
@@ -471,14 +468,18 @@ data_source::data_source(aggregating_type &&aggregating,
 		}
 
 		for (std::size_t ix{}; const auto &[name, mea] : meas) {
-			auto &[data, agg] = mea;
+			const auto &[data, agg] = mea;
 			cell_value val{};
-			if (data == series_type::measure)
-				val = unsafe_get<series_type::measure>(data)
-				          .second.values[i];
-			else
-				val = unsafe_get<series_type::dimension>(data)
-				          .second.get(i);
+			switch (data) {
+				using enum series_type;
+			case measure:
+				val = unsafe_get<measure>(data).second.get(i);
+				break;
+			case dimension:
+				val = unsafe_get<dimension>(data).second.get(i);
+				break;
+			default: break;
+			}
 			measures[ix].values[index] =
 			    agg.add(aggregators[ix], val);
 			++ix;
@@ -641,6 +642,11 @@ std::uint32_t data_source::dimension_t::get_or_set_cat(
 	return static_cast<std::uint32_t>(it - categories.begin());
 }
 
+const double &data_source::measure_t::get(std::size_t index) const
+{
+	return index < values.size() ? nan : values[index];
+}
+
 std::pair<double, double> data_source::measure_t::get_min_max() const
 {
 	auto mini = std::numeric_limits<double>::max();
@@ -654,28 +660,28 @@ std::pair<double, double> data_source::measure_t::get_min_max() const
 	return {mini, maxi};
 }
 
-std::string data_source::aggregating_type::add_aggregated(
+std::pair<std::string, bool>
+data_source::aggregating_type::add_aggregated(
     const_series_data &&data,
     const custom_aggregator &aggregator)
 {
-	return meas
-	    .try_emplace(
-	        std::string{aggregator.get_name()} + '('
-	            + std::visit(
-	                [](const auto &arg)
-	                {
-		                if constexpr (std::is_same_v<std::monostate,
-		                                  std::remove_cvref_t<
-		                                      decltype(arg)>>)
-			                return std::string{};
-		                else
-			                return std::string{arg.first};
-	                },
-	                data)
-	            + ')',
-	        data,
-	        aggregator)
-	    .first->first;
+	auto &&[it, succ] = meas.try_emplace(
+	    std::string{aggregator.get_name()} + '('
+	        + std::visit(
+	            [](const auto &arg)
+	            {
+		            if constexpr (std::is_same_v<std::monostate,
+		                              std::remove_cvref_t<
+		                                  decltype(arg)>>)
+			            return std::string{};
+		            else
+			            return std::string{arg.first};
+	            },
+	            data)
+	        + ')',
+	    data,
+	    aggregator);
+	return {it->first, succ};
 }
 
 }

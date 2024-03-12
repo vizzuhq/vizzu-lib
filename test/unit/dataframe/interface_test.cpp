@@ -247,8 +247,8 @@ const static auto tests =
 
 	check->*df->get_min_max("test_meas") == std::pair{-1.0, 2.0};
 
-	check->*df->get_data({}, "test_meas") == 2.0;
-	check->*df->get_data({}, "test_dim") == "test_dim_val";
+	check->*df->get_data(std::size_t{}, "test_meas") == 2.0;
+	check->*df->get_data(std::size_t{}, "test_dim") == "test_dim_val";
 
 	check->*df->get_data(std::size_t{1}, "test_meas") == -1.0;
 	check->*df->get_data(std::size_t{1}, "test_dim")
@@ -462,6 +462,7 @@ const static auto tests =
 {
 	df->aggregate_by("d1");
 	using enum Vizzu::dataframe::aggregator_type;
+	auto &&pure1c = df->set_aggregate({}, count);
 	auto &&d1c = df->set_aggregate("d1", count);
 	auto &&d1d = df->set_aggregate("d1", distinct);
 	auto &&d1e = df->set_aggregate("d1", exists);
@@ -498,7 +499,8 @@ const static auto tests =
 	assert->*df->get_dimensions() == std::array{"d1"};
 
 	assert->*df->get_measures()
-	    == std::array{d1c,
+	    == std::array{pure1c,
+	        d1c,
 	        m1c,
 	        d1d,
 	        d1e,
@@ -511,6 +513,7 @@ const static auto tests =
 
 	assert->*df->get_record_count() == std::size_t{4};
 
+	check->*df->get_data(std::size_t{0}, pure1c) == 5.0;
 	check->*df->get_data(std::size_t{0}, d1c) == 5.0;
 	check->*df->get_data(std::size_t{0}, m1c) == 5.0;
 	check->*df->get_data(std::size_t{0}, d1d) == 1.0;
@@ -522,6 +525,7 @@ const static auto tests =
 	check->*df->get_data(std::size_t{0}, m1s) == 109.25;
 	check->*df->get_data(std::size_t{0}, m1t) == 3.5;
 
+	check->*df->get_data(std::size_t{1}, pure1c) == 4.0;
 	check->*df->get_data(std::size_t{1}, d1c) == 4.0;
 	check->*df->get_data(std::size_t{1}, m1c) == 3.0;
 	check->*df->get_data(std::size_t{1}, d1d) == 1.0;
@@ -533,6 +537,7 @@ const static auto tests =
 	check->*df->get_data(std::size_t{1}, m1s) == 15.0;
 	check->*df->get_data(std::size_t{1}, m1t) == 4.25;
 
+	check->*df->get_data(std::size_t{2}, pure1c) == 1.0;
 	check->*df->get_data(std::size_t{2}, d1c) == 1.0;
 	check->*df->get_data(std::size_t{2}, m1c) == 0.0;
 	check->*df->get_data(std::size_t{2}, d1d) == 1.0;
@@ -554,6 +559,7 @@ const static auto tests =
 	check->*df->get_data(std::size_t{2}, m1t)
 	    == std::numeric_limits<double>::max();
 
+	check->*df->get_data(std::size_t{3}, pure1c) == 1.0;
 	check->*df->get_data(std::size_t{3}, d1c) == 0.0;
 	check->*df->get_data(std::size_t{3}, m1c) == 1.0;
 	check->*df->get_data(std::size_t{3}, d1d) == 0.0;
