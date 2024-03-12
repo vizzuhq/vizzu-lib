@@ -11,7 +11,7 @@ import { Events, EventType, EventHandler, EventMap } from './events.js'
 import { Mirrored } from './tsutils.js'
 import { VizzuOptions } from './vizzu.js'
 import { AnimControl } from './animcontrol.js'
-import { PluginRegistry, Hooks } from './plugins.js'
+import { PluginRegistry, Hooks, RenderContext } from './plugins.js'
 import { Logging } from './plugins/logging.js'
 import { Shorthands } from './plugins/shorthands.js'
 import { PivotData } from './plugins/pivotdata.js'
@@ -75,15 +75,16 @@ export class Chart {
 	}
 
 	updateFrame(force: boolean = false): void {
-		const ctx = {
+		const ctx: RenderContext = {
 			renderer: null,
 			timeInMSecs: null,
 			enable: true,
+			force,
 			size: { x: 0, y: 0 }
 		}
 		this._plugins.hook(Hooks.render, ctx).default((ctx) => {
 			if (ctx.size.x >= 1 && ctx.size.y >= 1 && ctx.timeInMSecs !== null && ctx.renderer) {
-				const renderControl = !ctx.enable ? 2 : force ? 1 : 0
+				const renderControl = !ctx.enable ? 2 : ctx.force ? 1 : 0
 				ctx.renderer.canvas = this._cCanvas
 				this._module.registerRenderer(this._cCanvas, ctx.renderer)
 				this._cChart.update(

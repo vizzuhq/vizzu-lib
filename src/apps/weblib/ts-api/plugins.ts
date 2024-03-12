@@ -42,6 +42,7 @@ export interface RenderContext {
 	renderer: (CRenderer & Canvas) | null
 	timeInMSecs: number | null
 	enable: boolean
+	force: boolean
 	size: Point
 }
 
