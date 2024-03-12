@@ -2,6 +2,12 @@
 
 ## [Unreleased]
 
+## [0.10.1] - 2024-03-12
+
+### Added
+
+- Updated `type-fest` dependency version to `4.12.0`
+
 ## [0.10.0] - 2024-03-11
 
 ### Fixed
