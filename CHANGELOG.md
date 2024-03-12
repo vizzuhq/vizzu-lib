@@ -15,6 +15,7 @@
 - Legend title outerRect was not properly calculated.
 - Fixed stacked empty min/max aggregated values.
 - Fixed error when an animation triggered during tooptip activation which removed the corresopnding marker. 
+- next() can be called multiple times from Plugin hooks
 
 ### Added
 
