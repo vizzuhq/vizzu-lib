@@ -72,10 +72,10 @@ private:
 
 using DataTable = DataTableOld;
 
-class CellWrapper
+class CellWrapperOld
 {
 public:
-	CellWrapper(const double &value, const ColumnInfo &info) :
+	CellWrapperOld(const double &value, const ColumnInfo &info) :
 	    value(value),
 	    info(info)
 	{}
@@ -110,6 +110,8 @@ private:
 	const ColumnInfo &info;
 };
 
+using CellWrapper = CellWrapperOld;
+
 class RowWrapper
 {
 public:
@@ -121,7 +123,7 @@ public:
 	CellWrapper operator[](const std::string &columnName) const
 	{
 		auto colIndex = table.getColumn(columnName);
-		return this->operator[](colIndex);
+		return {row[colIndex], table.getInfo(colIndex)};
 	}
 
 	CellWrapper operator[](ColumnIndex colIndex) const

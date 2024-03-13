@@ -167,9 +167,8 @@ void Interface::setChartFilter(ObjectRegistry::Handle chart,
     JsFunctionWrapper<bool, const Data::RowWrapper &> &&filter)
 {
 	const auto hash = filter.hash();
-	getChart(chart)->getConfig().setFilter(
-	    Data::Filter::Function{std::move(filter)},
-	    hash);
+	getChart(chart)->getOptions().dataFilter = {std::move(filter),
+	    hash};
 }
 
 std::variant<const char *, double> Interface::getRecordValue(

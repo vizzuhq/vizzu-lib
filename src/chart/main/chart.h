@@ -35,7 +35,6 @@ public:
 	void setBoundRect(const Geom::Rect &rect);
 
 	Data::DataTable &getTable() { return table; }
-	Gen::OptionsSetter getSetter();
 	Styles::Sheet &getStylesheet() { return stylesheet; }
 	Styles::Chart &getStyles() { return actStyles; }
 	[[nodiscard]] const Styles::Chart &getComputedStyles() const

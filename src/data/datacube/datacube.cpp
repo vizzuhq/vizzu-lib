@@ -59,7 +59,8 @@ DataCube::DataCube(const DataTable &table,
 			               : 0.0;
 
 			if (filter.match(RowWrapper(table, row)))
-				data.at(index).subCells[idx].add(value);
+				data.at(index).subCells[idx].add(
+				    static_cast<double>(value));
 		}
 	}
 }

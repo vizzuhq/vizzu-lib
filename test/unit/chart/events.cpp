@@ -93,8 +93,9 @@ struct chart_setup
 		table.addColumn("Meas2",
 		    "",
 		    {{0, -1, 5, 6, 6, 5, -1, 0, 5, 6, 0, -1, -1, 0, 6, -5}});
-		auto &&setter = chart.getSetter();
-		for (auto &&[ch, name] : series) setter.addSeries(ch, name);
+		auto &channels = chart.getOptions().getChannels();
+		for (auto &&[ch, name] : series)
+			channels.addSeries(ch, {name, table});
 		chart.setBoundRect(Geom::Rect(Geom::Point{}, {{640, 480}}));
 		return chart;
 	}

@@ -86,13 +86,9 @@ void Chart::setAnimation(const Anim::AnimationPtr &animation)
 	animator->setAnimation(animation);
 }
 
-Gen::Config Chart::getConfig() { return Gen::Config{getSetter()}; }
-
-Gen::OptionsSetter Chart::getSetter()
+Gen::Config Chart::getConfig()
 {
-	Gen::OptionsSetter setter(*nextOptions);
-	setter.setTable(&table);
-	return setter;
+	return Gen::Config{getOptions(), table};
 }
 
 void Chart::draw(Gfx::ICanvas &canvas)
