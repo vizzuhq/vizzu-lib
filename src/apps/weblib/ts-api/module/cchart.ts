@@ -42,15 +42,9 @@ export class CChart extends CObject {
 		this.animOptions = this._makeAnimOptions()
 	}
 
-	update(
-		cCanvas: CCanvas,
-		width: number,
-		height: number,
-		time: number,
-		renderControl: number
-	): void {
+	update(cCanvas: CCanvas, width: number, height: number, time: number, render: boolean): void {
 		this._cCanvas = cCanvas
-		this._call(this._wasm._vizzu_update)(cCanvas.getId(), width, height, time, renderControl)
+		this._call(this._wasm._vizzu_update)(cCanvas.getId(), width, height, time, render)
 	}
 
 	animate(callback: (ok: boolean) => void): void {
@@ -125,6 +119,10 @@ export class CChart extends CObject {
 	wheel(delta: number): void {
 		if (!this._cCanvas) return
 		this._call(this._wasm._vizzu_wheel)(this._cCanvas.getId(), delta)
+	}
+
+	getString(text: CString): string {
+		return this._wasm.UTF8ToString(text)
 	}
 
 	private _makeConfig(): CConfig {

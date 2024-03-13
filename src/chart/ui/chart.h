@@ -31,11 +31,6 @@ public:
 
 	[[nodiscard]] Chart &getChart() { return chart; }
 
-	[[nodiscard]] bool needsUpdate(Geom::Size size) const final
-	{
-		return needUpdate || chart.getLayout().boundary.size != size;
-	}
-
 private:
 	Chart chart;
 	Util::EventDispatcher::event_ptr onClick;
@@ -44,7 +39,6 @@ private:
 	Util::EventDispatcher::event_ptr onPointerDownEvent;
 	Util::EventDispatcher::event_ptr onPointerUpEvent;
 	Util::EventDispatcher::event_ptr onPointerLeaveEvent;
-	bool needUpdate{true};
 };
 
 }
