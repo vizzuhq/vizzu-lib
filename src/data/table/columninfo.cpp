@@ -60,10 +60,10 @@ ColumnInfo::ContiType ColumnInfo::getContiType() const
 	return contiType;
 }
 
-const ColumnInfo::ValueIndexes &
-ColumnInfo::dimensionValueIndexes() const
+std::uint64_t ColumnInfo::dimensionValueAt(
+    const std::string &name) const
 {
-	return valueIndexes;
+	return valueIndexes.at(name);
 }
 
 const ColumnInfo::Values &ColumnInfo::categories() const

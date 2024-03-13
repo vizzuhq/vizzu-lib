@@ -89,8 +89,7 @@ public:
 
 	double operator[](const std::string &val) const
 	{
-		return static_cast<double>(
-		    info.dimensionValueIndexes().at(val));
+		return static_cast<double>(info.dimensionValueAt(val));
 	}
 
 	[[nodiscard]] const char *dimensionValue() const
@@ -124,12 +123,6 @@ public:
 	{
 		auto colIndex = table.getColumn(columnName);
 		return {row[colIndex], table.getInfo(colIndex)};
-	}
-
-	CellWrapper operator[](ColumnIndex colIndex) const
-	{
-		const auto &info = table.getInfo(colIndex);
-		return {row[colIndex], info};
 	}
 
 	[[nodiscard]] size_t size() const { return row.size(); }

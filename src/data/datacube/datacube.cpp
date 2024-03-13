@@ -38,7 +38,7 @@ DataCube::DataCube(const DataTable &table,
 
 	auto series = options.getMeasures();
 
-	if (series.empty()) series.emplace_back(SeriesType::Exists);
+	if (series.empty()) series.emplace(SeriesType::Exists);
 
 	data = Data(sizes, DataCubeCell(series));
 
@@ -53,20 +53,19 @@ DataCube::DataCube(const DataTable &table,
 
 		auto index = getIndex(row, options.getDimensions(), rowIdx);
 
-		for (auto idx = 0U; idx < series.size(); ++idx) {
-			auto value = series[idx].getType().isReal()
-			               ? row[series[idx].getColIndex().value()]
-			               : 0.0;
-
+		for (std::size_t idx{}; auto &seriesIdx : series) {
 			if (filter.match(RowWrapper(table, row)))
 				data.at(index).subCells[idx].add(
-				    static_cast<double>(value));
+				    seriesIdx.getType().isReal()
+				        ? double{row[seriesIdx.getColIndex().value()]}
+				        : double{});
+			++idx;
 		}
 	}
 }
 
 MultiIndex DataCube::getIndex(const DataTable::Row &row,
-    const std::vector<SeriesIndex> &indices,
+    const std::set<SeriesIndex> &indices,
     size_t rowIndex)
 {
 	MultiIndex index;
@@ -241,8 +240,7 @@ MultiDim::SubSliceIndex DataCube::subSliceIndex(
 		auto colIdx = table->getColumn(pair.first);
 		auto seriesIdx = table->getIndex(colIdx);
 		auto valIdx =
-		    table->getInfo(colIdx).dimensionValueIndexes().at(
-		        pair.second);
+		    table->getInfo(colIdx).dimensionValueAt(pair.second);
 		auto dimIdx = getDimBySeries(SeriesIndex(seriesIdx));
 		index.push_back(
 		    MultiDim::SliceIndex{dimIdx, MultiDim::Index{valIdx}});

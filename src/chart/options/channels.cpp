@@ -79,10 +79,9 @@ Data::DataCubeOptions Channels::getDataCubeOptions() const
 
 std::pair<bool, Channel::OptionalIndex> Channels::addSeries(
     const ChannelId &id,
-    const Data::SeriesIndex &index,
-    std::optional<size_t> pos)
+    const Data::SeriesIndex &index)
 {
-	return channels[id].addSeries(index, pos);
+	return channels[id].addSeries(index);
 }
 
 bool Channels::removeSeries(const ChannelId &id,

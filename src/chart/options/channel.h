@@ -31,8 +31,7 @@ public:
 	static Channel makeChannel(Type id);
 
 	std::pair<bool, OptionalIndex> addSeries(
-	    const Data::SeriesIndex &index,
-	    std::optional<size_t> pos = std::nullopt);
+	    const Data::SeriesIndex &index);
 	bool removeSeries(const Data::SeriesIndex &index);
 	[[nodiscard]] bool isSeriesUsed(
 	    const Data::SeriesIndex &index) const;
