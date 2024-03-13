@@ -51,16 +51,14 @@ DataCube::DataCube(const DataTable &table,
 	for (auto rowIdx = 0U; rowIdx < table.getRowCount(); ++rowIdx) {
 		const auto &row = table[rowIdx];
 
-		auto index = getIndex(row, options.getDimensions(), rowIdx);
+		if (!filter.match(RowWrapper(table, row))) continue;
 
-		for (std::size_t idx{}; auto &seriesIdx : series) {
-			if (filter.match(RowWrapper(table, row)))
-				data.at(index).subCells[idx].add(
-				    seriesIdx.getType().isReal()
-				        ? double{row[seriesIdx.getColIndex().value()]}
-				        : double{});
-			++idx;
-		}
+		auto index = getIndex(row, options.getDimensions(), rowIdx);
+		for (std::size_t idx{}; const auto &seriesIdx : series)
+			data.at(index).subCells[idx++].add(
+			    seriesIdx.getType().isReal()
+			        ? double{row[seriesIdx.getColIndex().value()]}
+			        : double{});
 	}
 }
 
