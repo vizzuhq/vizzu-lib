@@ -6,52 +6,57 @@ import { Module } from './module/module.js'
 import { CChart, Snapshot } from './module/cchart.js'
 import { CAnimControl, CAnimation } from './module/canimctrl.js'
 import { CData } from './module/cdata.js'
-import { Render } from './render.js'
 import { Data } from './data.js'
 import { Events, EventType, EventHandler, EventMap } from './events.js'
-import { PluginRegistry, Hooks } from './plugins.js'
+import { Mirrored } from './tsutils.js'
+import { VizzuOptions } from './vizzu.js'
+import { AnimControl } from './animcontrol.js'
+import { PluginRegistry, Hooks, RenderContext } from './plugins.js'
 import { Logging } from './plugins/logging.js'
 import { Shorthands } from './plugins/shorthands.js'
 import { PivotData } from './plugins/pivotdata.js'
 import { Tooltip } from './plugins/tooltip.js'
 import { PointerEvents } from './plugins/pointerevents.js'
 import { CSSProperties } from './plugins/cssproperties.js'
-import { Mirrored } from './tsutils.js'
-import { HtmlCanvas } from './htmlcanvas.js'
-import { VizzuOptions } from './vizzu.js'
-import { AnimControl } from './animcontrol.js'
+import { CanvasRenderer } from './plugins/canvasrenderer.js'
+import { HtmlCanvas } from './plugins/htmlcanvas.js'
 import { CoordSystem } from './plugins/coordsys.js'
+import { Clock } from './plugins/clock.js'
+import { Scheduler } from './plugins/scheduler.js'
+import { RenderControl } from './plugins/rendercontrol.js'
+import { CCanvas } from './module/ccanvas.js'
 
 export class Chart {
+	private _options: VizzuOptions
 	private _cChart: CChart
-	private _render: Render
+	private _cCanvas: CCanvas
 	private _module: Module
-	private _canvas: HtmlCanvas
 	private _cData: CData
 	private _data: Data
 	private _events: Events
 	private _plugins: PluginRegistry
-	private _updateInterval?: ReturnType<typeof setTimeout>
 
 	constructor(module: Module, options: VizzuOptions, plugins: PluginRegistry) {
+		this._options = options
 		this._plugins = plugins
 		this._module = module
 
-		this._canvas = new HtmlCanvas(HtmlCanvas.extractOptions(options))
-
 		this._cChart = this._module.createChart()
+		this._cCanvas = this._module.createCanvas()
 		this._cData = this._module.getData(this._cChart)
 		this._data = new Data(this._cData)
 
-		this._render = new Render(this._module, this._cChart, this._canvas)
-		this._events = new Events(this._cChart, this._canvas)
+		this._events = new Events(this._cChart)
 		this._plugins.init(this._events)
 	}
 
 	registerBuiltins(): void {
 		this._plugins.register(new Logging(this._module.setLogging.bind(this._module)), false)
-		this._plugins.register(this._canvas, true)
-		this._plugins.register(this._render, true)
+		this._plugins.register(new HtmlCanvas(HtmlCanvas.extractOptions(this._options)), true)
+		this._plugins.register(new CanvasRenderer(), true)
+		this._plugins.register(new Clock(), true)
+		this._plugins.register(new Scheduler(), true)
+		this._plugins.register(new RenderControl(), true)
 		this._plugins.register(new CoordSystem(this._module.getCoordSystem(this._cChart)), true)
 		this._plugins.register(new CSSProperties(), false)
 		this._plugins.register(new Shorthands(), true)
@@ -61,12 +66,37 @@ export class Chart {
 	}
 
 	start(): void {
-		if (!this._updateInterval) {
-			this._render.updateFrame()
-			this._updateInterval = setInterval(() => {
-				this._render.updateFrame()
-			}, 25)
+		const ctx = {
+			update: (force: boolean): void => this.updateFrame(force)
 		}
+		this._plugins.hook(Hooks.start, ctx).default(() => {
+			this.updateFrame()
+		})
+	}
+
+	updateFrame(force: boolean = false): void {
+		const ctx: RenderContext = {
+			renderer: null,
+			timeInMSecs: null,
+			enable: true,
+			force,
+			size: { x: 0, y: 0 }
+		}
+		this._plugins.hook(Hooks.render, ctx).default((ctx) => {
+			if (ctx.size.x >= 1 && ctx.size.y >= 1 && ctx.timeInMSecs !== null && ctx.renderer) {
+				const renderControl = !ctx.enable ? 2 : ctx.force ? 1 : 0
+				ctx.renderer.canvas = this._cCanvas
+				this._module.registerRenderer(this._cCanvas, ctx.renderer)
+				this._cChart.update(
+					this._cCanvas,
+					ctx.size.x,
+					ctx.size.y,
+					ctx.timeInMSecs,
+					renderControl
+				)
+				this._module.unregisterRenderer(this._cCanvas)
+			}
+		})
 	}
 
 	async prepareAnimation(
@@ -122,12 +152,6 @@ export class Chart {
 				channel.set = null
 			}
 		})
-	}
-
-	destruct(): void {
-		this._canvas.destruct()
-		if (this._updateInterval) clearInterval(this._updateInterval)
-		delete this._updateInterval
 	}
 
 	version(): string {

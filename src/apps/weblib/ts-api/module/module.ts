@@ -7,7 +7,7 @@ import { CChart } from './cchart.js'
 import { CCanvas } from './ccanvas.js'
 import { CAnimControl } from './canimctrl.js'
 import { CCoordSystem } from './ccoordsys.js'
-import { Canvas } from './canvas'
+import { Canvas } from './canvas.js'
 
 export class Module extends CEnv {
 	constructor(wasm: CVizzu) {
@@ -21,6 +21,10 @@ export class Module extends CEnv {
 
 	registerRenderer(cCanvas: CCanvas, canvas: Canvas): void {
 		this._wasm.canvases[cCanvas.getId()] = canvas
+	}
+
+	unregisterRenderer(cCanvas: CCanvas): void {
+		delete this._wasm.canvases[cCanvas.getId()]
 	}
 
 	version(): string {
