@@ -2,6 +2,19 @@
 
 ## [Unreleased]
 
+### Fixed
+
+- next() can be called multiple times from Plugin hooks
+
+### Added
+
+- New plugins and plugin hooks introduced: 
+  - plugin: scheduler - plugin resposible for scheduling the rendering
+  - plugin: clock - supplying the current time for the animation
+  - plugin: canvasRenderer - plugin for rendering the chart on a htmlcanvas compatible canvas
+  - hook: start - hook for starting the rendering loop
+  - hook: render - hook for rendering the chart 
+
 ## [0.10.1] - 2024-03-12
 
 ### Added
@@ -23,7 +36,6 @@
 - Legend title outerRect was not properly calculated.
 - Fixed stacked empty min/max aggregated values.
 - Fixed error when an animation triggered during tooptip activation which removed the corresopnding marker. 
-- next() can be called multiple times from Plugin hooks
 
 ### Added
 
@@ -38,12 +50,6 @@
 - The event handler registration order changed. Now the handlers are called in the opposite order of the registration.
 - Added the padded rectangle, the bounding rectangle and the align parameter to the draw text event object.
 - Tooltip works on marker labels too.
-- New plugins and plugin hooks introduced: 
-  - plugin: scheduler - plugin resposible for scheduling the rendering
-  - plugin: clock - supplying the current time for the animation
-  - plugin: canvasRenderer - plugin for rendering the chart on a htmlcanvas compatible canvas
-  - hook: start - hook for starting the rendering loop
-  - hook: render - hook for rendering the chart 
 
 ## [0.9.3] - 2023-12-20
 
