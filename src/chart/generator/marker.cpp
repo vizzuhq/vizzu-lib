@@ -158,7 +158,8 @@ Conv::JSONObj &&Marker::appendToJSON(Conv::JSONObj &&jsonObj) const
 	    std::ranges::views::transform(cellInfo.categories,
 	        [this](const auto &pair)
 	        {
-		        return std::make_pair(pair.first.toString(table),
+		        return std::make_pair(
+		            pair.first.toString(table.get()),
 		            table.get()
 		                .getInfo(pair.first.getColIndex().value())
 		                .categories()[pair.second]);
@@ -166,7 +167,8 @@ Conv::JSONObj &&Marker::appendToJSON(Conv::JSONObj &&jsonObj) const
 	    std::ranges::views::transform(cellInfo.values,
 	        [this](const auto &pair)
 	        {
-		        return std::make_pair(pair.first.toString(table),
+		        return std::make_pair(
+		            pair.first.toString(table.get()),
 		            pair.second);
 	        }))("index", idx);
 }

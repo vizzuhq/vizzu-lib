@@ -322,7 +322,7 @@ void Interface::addRecord(ObjectRegistry::Handle chart,
 const char *Interface::dataMetaInfo(ObjectRegistry::Handle chart)
 {
 	thread_local std::string res;
-	res = Conv::toJSON(getChart(chart)->getTable().getInfos());
+	res = getChart(chart)->getTable().getInfos();
 	return res.c_str();
 }
 

@@ -11,7 +11,8 @@ DataStat::DataStat(const DataTable &table,
 	for (const auto &idx : indices) {
 		if (idx.getType().isReal()) {
 			auto valueCnt = table.getInfo(idx.getColIndex().value())
-			                    .dimensionValueCnt();
+			                    .categories()
+			                    .size();
 			usedColumnIDs.insert(
 			    {static_cast<size_t>(idx.getColIndex().value()),
 			        usedValues.size()});
@@ -37,7 +38,7 @@ size_t DataStat::usedValueCntOf(const SeriesIndex &index) const
 	return 0;
 }
 
-void DataStat::trackIndex(const TableRow<double> &row,
+void DataStat::trackIndex(const DataTable::Row &row,
     const std::vector<SeriesIndex> &indices)
 {
 	for (auto i = 0U; i < indices.size(); ++i) {

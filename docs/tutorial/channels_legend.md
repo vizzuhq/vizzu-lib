@@ -39,10 +39,10 @@ columns’ height and lightness represent the same values. The legend for the
 `lightness` channel is turned on using the `legend` property.
 
 !!! info
-    This is an example when we explicitly instruct `Vizzu` to show the legend. By
-    default `Vizzu` automatically shows/hides the legend when it's necessary. You
-    can also turn it off with the `legend`: `null` setting or set back to automatic
-    mode with `legend`: `'auto'`.
+    This is an example when we explicitly instruct `Vizzu` to show the legend.
+    By default `Vizzu` automatically shows/hides the legend when it's necessary.
+    You can also turn it off with the `legend`: `null` setting or set back to
+    automatic mode with `legend`: `'auto'`.
 
 <div id="tutorial_02"></div>
 
@@ -64,8 +64,8 @@ is put on it that is on the x-axis resulting in each bar having a different
 color. If a measure is put on the `color` channel, a color range will be used.
 
 !!! info
-    The value on the `lightness` channel is removed in this step as it doesn’t make
-    sense to use it together with the `color` channel in this case.
+    The value on the `lightness` channel is removed in this step as it doesn’t
+    make sense to use it together with the `color` channel in this case.
 
 <div id="tutorial_03"></div>
 

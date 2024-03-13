@@ -6,11 +6,6 @@
 namespace Vizzu::Main
 {
 
-Geom::Rect JScriptCanvas::getClipRect() const
-{
-	return clipRect ? *clipRect : Geom::Rect::CenteredMax();
-}
-
 void JScriptCanvas::setClipRect(const Geom::Rect &rect)
 {
 	if (!clipRect || *clipRect != rect) {
