@@ -32,7 +32,8 @@ DataStat::DataStat(const DataTable &table,
 
 size_t DataStat::usedValueCntOf(const SeriesIndex &index) const
 {
-	auto it = usedColumnIDs.find(index.getColIndex().value());
+	auto it = usedColumnIDs.find(
+	    static_cast<size_t>(index.getColIndex().value()));
 	if (it != usedColumnIDs.end()) return usedValueCnt[it->second];
 	return 0;
 }

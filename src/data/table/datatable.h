@@ -14,8 +14,6 @@ namespace Vizzu::Data
 
 enum class SortType : uint8_t { AsSeen, Natural };
 
-class DataCube;
-
 class DataTableOld : public Table<double>
 {
 	using Infos = std::vector<ColumnInfo>;
