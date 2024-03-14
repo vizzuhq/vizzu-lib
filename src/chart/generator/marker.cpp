@@ -64,6 +64,9 @@ Marker::Marker(const Options &options,
 	}
 
 	auto horizontal = options.isHorizontal();
+	bool lineOrCircle = options.geometry == ShapeType::line
+	                 || options.geometry == ShapeType::circle;
+
 	position.x = size.x = getValueForChannel(channels,
 	    ChannelId::x,
 	    data,
@@ -71,7 +74,8 @@ Marker::Marker(const Options &options,
 	    options.subAxisOf(ChannelId::x),
 	    !horizontal && stackInhibitingShape);
 
-	spacing.x = (horizontal && options.getChannels().anyAxisSet()
+	spacing.x = ((horizontal || lineOrCircle)
+	                && options.getChannels().anyAxisSet()
 	                && channels.at(ChannelId::x).isDimension())
 	              ? 1
 	              : 0;
@@ -83,7 +87,8 @@ Marker::Marker(const Options &options,
 	    options.subAxisOf(ChannelId::y),
 	    horizontal && stackInhibitingShape);
 
-	spacing.y = (!horizontal && options.getChannels().anyAxisSet()
+	spacing.y = ((!horizontal || lineOrCircle)
+	                && options.getChannels().anyAxisSet()
 	                && channels.at(ChannelId::y).isDimension())
 	              ? 1
 	              : 0;
