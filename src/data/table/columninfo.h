@@ -32,7 +32,8 @@ public:
 	void reset();
 	[[nodiscard]] Type getType() const;
 	[[nodiscard]] ContiType getContiType() const;
-	[[nodiscard]] const ValueIndexes &dimensionValueIndexes() const;
+	[[nodiscard]] std::uint64_t dimensionValueAt(
+	    const std::string &str) const;
 	[[nodiscard]] const Values &categories() const;
 
 	[[nodiscard]] std::string getName() const;

@@ -1,6 +1,7 @@
 #ifndef DATACUBECELL_H
 #define DATACUBECELL_H
 
+#include <set>
 #include <vector>
 
 #include "aggregator.h"
@@ -14,7 +15,7 @@ class DataCubeCell
 public:
 	DataCubeCell() = default;
 
-	explicit DataCubeCell(const std::vector<SeriesIndex> &indices)
+	explicit DataCubeCell(const std::set<SeriesIndex> &indices)
 	{
 		for (const auto &index : indices)
 			subCells.emplace_back(index.getType().aggregatorType());

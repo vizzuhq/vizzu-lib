@@ -51,7 +51,7 @@ public:
 
 		MarkerInfoContent();
 		explicit MarkerInfoContent(const Marker &marker,
-		    Data::DataCube *dataCube = nullptr);
+		    const Data::DataCube *dataCube = nullptr);
 		explicit operator bool() const;
 		bool operator==(const MarkerInfoContent &op) const;
 	};
@@ -92,7 +92,7 @@ public:
 	}
 	[[nodiscard]] const Data::DataCube &getDataCube() const
 	{
-		return dataCube;
+		return *dataCube;
 	}
 	[[nodiscard]] const ChannelsStats &getStats() const
 	{
@@ -114,7 +114,7 @@ private:
 	const Data::DataTable &dataTable;
 	PlotOptionsPtr options;
 	Styles::Chart style;
-	Data::DataCube dataCube;
+	std::optional<Data::DataCube> dataCube;
 	ChannelsStats stats;
 	Markers markers;
 	MarkersInfo markersInfo;
@@ -122,8 +122,7 @@ private:
 	Buckets mainBuckets;
 	Buckets subBuckets;
 
-	void generateMarkers(const Data::DataCube &dataCube,
-	    const Data::DataTable &table);
+	void generateMarkers(const Data::DataTable &table);
 	void generateMarkersInfo();
 	void linkMarkers(const Buckets &buckets, bool main);
 	void normalizeXY();

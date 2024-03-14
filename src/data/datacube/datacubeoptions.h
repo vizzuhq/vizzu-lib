@@ -13,27 +13,25 @@ class DataCubeOptions
 {
 public:
 	using IndexSet = std::set<SeriesIndex>;
-	using IndexVector = std::vector<SeriesIndex>;
 
-	DataCubeOptions(const IndexSet &dims, const IndexSet &msrs)
-	{
-		dimensions.insert(dimensions.end(), dims.begin(), dims.end());
-		measures.insert(measures.end(), msrs.begin(), msrs.end());
-	}
+	DataCubeOptions(IndexSet &&dims, IndexSet &&msrs) :
+	    dimensions(std::move(dims)),
+	    measures(std::move(msrs))
+	{}
 
-	[[nodiscard]] const IndexVector &getDimensions() const
+	[[nodiscard]] const IndexSet &getDimensions() const
 	{
 		return dimensions;
 	}
 
-	[[nodiscard]] const IndexVector &getMeasures() const
+	[[nodiscard]] const IndexSet &getMeasures() const
 	{
 		return measures;
 	}
 
 private:
-	IndexVector dimensions;
-	IndexVector measures;
+	IndexSet dimensions;
+	IndexSet measures;
 };
 
 }

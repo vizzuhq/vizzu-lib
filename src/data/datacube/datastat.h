@@ -20,7 +20,7 @@ public:
 
 private:
 	void trackIndex(const DataTable::Row &row,
-	    const std::vector<SeriesIndex> &indices);
+	    const std::set<SeriesIndex> &indices);
 
 	void countValues();
 

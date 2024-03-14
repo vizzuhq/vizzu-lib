@@ -14,6 +14,8 @@ namespace Vizzu::Data
 class SeriesIndex
 {
 public:
+	using OptColIndex = DataTable::DataIndex::OptColIndex;
+
 	SeriesIndex() = default;
 	explicit SeriesIndex(const SeriesType &type,
 	    const DataTable::DataIndex &dataIndex =
@@ -21,10 +23,7 @@ public:
 	explicit SeriesIndex(const DataTable::DataIndex &dataIndex);
 	SeriesIndex(const std::string &str, const DataTable &table);
 
-	[[nodiscard]] std::optional<ColumnIndex> getColIndex() const
-	{
-		return index;
-	}
+	[[nodiscard]] OptColIndex getColIndex() const { return index; }
 	[[nodiscard]] SeriesType getType() const { return type; }
 
 	bool operator<(const SeriesIndex &other) const
@@ -39,7 +38,7 @@ public:
 	[[nodiscard]] std::string toString() const;
 
 private:
-	std::optional<ColumnIndex> index;
+	OptColIndex index;
 	SeriesType type;
 	void set(const DataTable::DataIndex &dataIndex);
 };
