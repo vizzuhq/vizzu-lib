@@ -66,6 +66,7 @@ Marker::Marker(const Options &options,
 	auto horizontal = options.isHorizontal();
 	auto lineOrCircle = options.geometry == ShapeType::line
 	                 || options.geometry == ShapeType::circle;
+	auto polar = options.coordSystem.get() == CoordSystem::polar;
 
 	position.x = size.x = getValueForChannel(channels,
 	    ChannelId::x,
@@ -74,9 +75,9 @@ Marker::Marker(const Options &options,
 	    options.subAxisOf(ChannelId::x),
 	    !horizontal && stackInhibitingShape);
 
-	spacing.x = ((horizontal || lineOrCircle)
-	                && options.getChannels().anyAxisSet()
-	                && channels.at(ChannelId::x).isDimension())
+	spacing.x = (horizontal || (lineOrCircle && !polar))
+	                 && options.getChannels().anyAxisSet()
+	                 && channels.at(ChannelId::x).isDimension()
 	              ? 1
 	              : 0;
 
@@ -87,9 +88,9 @@ Marker::Marker(const Options &options,
 	    options.subAxisOf(ChannelId::y),
 	    horizontal && stackInhibitingShape);
 
-	spacing.y = ((!horizontal || lineOrCircle)
-	                && options.getChannels().anyAxisSet()
-	                && channels.at(ChannelId::y).isDimension())
+	spacing.y = (!horizontal || lineOrCircle)
+	                 && options.getChannels().anyAxisSet()
+	                 && channels.at(ChannelId::y).isDimension()
 	              ? 1
 	              : 0;
 
@@ -115,20 +116,18 @@ Marker::Marker(const Options &options,
 }
 
 void Marker::setNextMarker(uint64_t itemId,
-    Marker *marker,
+    Marker &marker,
     bool horizontal,
     bool main)
 {
-	if (marker) {
-		(main ? nextMainMarkerIdx : nextSubMarkerIdx) = marker->idx;
+	(main ? nextMainMarkerIdx : nextSubMarkerIdx) = marker.idx;
 
-		if (main) marker->prevMainMarkerIdx = idx;
+	if (main) marker.prevMainMarkerIdx = idx;
 
-		if (itemId != 0) {
-			double Geom::Point::*const coord =
-			    horizontal ? &Geom::Point::x : &Geom::Point::y;
-			marker->position.*coord += position.*coord;
-		}
+	if (itemId != 0) {
+		double Geom::Point::*const coord =
+		    horizontal ? &Geom::Point::x : &Geom::Point::y;
+		marker.position.*coord += position.*coord;
 	}
 }
 

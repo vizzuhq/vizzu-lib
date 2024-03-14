@@ -159,8 +159,15 @@ void Plot::generateMarkers(const Data::DataTable &table)
 	}
 	clearEmptyBuckets(mainBuckets, true);
 	clearEmptyBuckets(subBuckets, false);
-	linkMarkers(mainBuckets, true);
+	auto conn = linkMarkers(mainBuckets, true);
 	linkMarkers(subBuckets, false);
+
+	if (conn && options->geometry.get() == ShapeType::line
+	    && options->getChannels().at(ChannelId::x).isDimension()
+	    && options->getChannels().at(ChannelId::y).isDimension()) {
+		markerConnectionOrientation.emplace(
+		    *options->orientation.get());
+	}
 }
 
 void Plot::generateMarkersInfo()
@@ -232,10 +239,11 @@ void Plot::clearEmptyBuckets(const Buckets &buckets, bool main)
 	}
 }
 
-void Plot::linkMarkers(const Buckets &buckets, bool main)
+bool Plot::linkMarkers(const Buckets &buckets, bool main)
 {
 	auto sorted = sortedBuckets(buckets, main);
 
+	bool hasConnection{};
 	for (const auto &pair : buckets) {
 		const auto &bucket = pair.second;
 
@@ -246,12 +254,16 @@ void Plot::linkMarkers(const Buckets &buckets, bool main)
 			auto iNext = (i + 1) % sorted.size();
 			auto idNext = sorted[iNext].first;
 			auto indexNext = bucket.at(idNext);
+			auto &next = markers[indexNext];
 			act.setNextMarker(iNext,
-			    &markers[indexNext],
+			    next,
 			    options->isHorizontal() == main,
 			    main);
+			if (act.enabled && next.enabled && indexAct != indexNext)
+				hasConnection = true;
 		}
 	}
+	return hasConnection;
 }
 
 void Plot::normalizeXY()

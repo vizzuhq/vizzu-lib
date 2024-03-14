@@ -15,11 +15,45 @@ const testSteps = [
 			x: 'Foo',
 			y: 'Bar',
 			size: 'Baz',
-			geometry: 'circle'
+			geometry: 'line',
+			coordSystem: 'polar'
 		}),
 	(chart) =>
 		chart.animate({
-			geometry: 'line',
+			orientation: 'vertical'
+		}),
+	(chart) =>
+		chart.animate({
+			geometry: 'circle',
+			orientation: 'horizontal'
+		}),
+	(chart) =>
+		chart.animate(
+			{
+				orientation: 'vertical'
+			},
+			1
+		),
+	(chart) =>
+		chart.animate(
+			{
+				geometry: 'line',
+				orientation: 'horizontal',
+				coordSystem: 'cartesian'
+			},
+			1
+		),
+	(chart) =>
+		chart.animate({
+			orientation: 'vertical'
+		}),
+	(chart) =>
+		chart.animate({
+			geometry: 'circle',
+			orientation: 'horizontal'
+		}),
+	(chart) =>
+		chart.animate({
 			orientation: 'vertical'
 		})
 ]
