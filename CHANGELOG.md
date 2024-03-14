@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+### Fixed
+
+- Line and circle chats with only dimensions on x, and y axes the markers were off the axis labels.
+
 ## [0.10.1] - 2024-03-12
 
 ### Added

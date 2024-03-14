@@ -64,7 +64,7 @@ Marker::Marker(const Options &options,
 	}
 
 	auto horizontal = options.isHorizontal();
-	bool lineOrCircle = options.geometry == ShapeType::line
+	auto lineOrCircle = options.geometry == ShapeType::line
 	                 || options.geometry == ShapeType::circle;
 
 	position.x = size.x = getValueForChannel(channels,
