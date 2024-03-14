@@ -25,7 +25,9 @@ public:
 
 	struct DataIndex
 	{
-		std::optional<ColumnIndex> value;
+		using OptColIndex = std::optional<ColumnIndex>;
+
+		OptColIndex value;
 		ColumnInfo::Type type;
 
 		DataIndex(ColumnIndex value, ColumnInfo::Type type) :

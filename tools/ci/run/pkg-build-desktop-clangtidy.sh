@@ -11,7 +11,7 @@ if [ -z "$1" ]; then
 fi
 mkdir -p build/cmake-desktop
 pushd build/cmake-desktop
-cmake -Dclangtidy:BOOL="ON" ../../project/cmake/
+cmake -Dclangtidy:BOOL="ON" -Dcppcheck:BOOL="ON" ../../project/cmake/
 cmake --build . --target vizzutest -- --jobs=$JOBS
 popd
 

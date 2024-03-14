@@ -14,8 +14,7 @@ namespace Vizzu::Data
 class SeriesIndex
 {
 public:
-	using OptColIndex = std::remove_reference_t<
-	    decltype(DataTable::DataIndex::value)>;
+	using OptColIndex = DataTable::DataIndex::OptColIndex;
 
 	SeriesIndex() = default;
 	explicit SeriesIndex(const SeriesType &type,
