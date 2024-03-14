@@ -41,7 +41,7 @@ public:
 	struct Label
 	{
 		std::optional<double> value;
-		std::optional<Data::ColumnIndex> measureId;
+		Data::SeriesIndex::OptColIndex measureId;
 		std::string unit;
 		std::string indexStr;
 		Label() = default;

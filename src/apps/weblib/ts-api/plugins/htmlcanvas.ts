@@ -1,5 +1,7 @@
-import * as Geom from './geom.js'
-import { Plugin, PluginApi } from './plugins.js'
+import * as Geom from '../geom.js'
+import * as Events from '../events.js'
+import { Plugin, PluginApi, PluginHooks, PluginListeners, StartContext } from '../plugins.js'
+import type { HtmlCanvasAlternative, RenderContext } from './canvasrenderer.js'
 
 export interface CanvasOptions {
 	element: HTMLElement
@@ -7,17 +9,23 @@ export interface CanvasOptions {
 
 export type LazyCanvasOptions = string | HTMLElement | CanvasOptions
 
-export type HtmlCanvasContext = CanvasRenderingContext2D
+export type Event<T> = Events.Event<T> & {
+	/** For drawing events the rendering context of the underlying 
+	canvas set up for drawing the element. */
+	renderingContext?: CanvasRenderingContext2D
+}
 
 export interface HtmlCanvasApi extends PluginApi {
 	/** Returns the underlying canvas element. */
 	get element(): HTMLCanvasElement
+	/** Returns the actual canvas context */
+	get context(): CanvasRenderingContext2D
 	clientToCanvas(clientPos: Geom.Point): Geom.Point
 	canvasToClient(renderPos: Geom.Point): Geom.Point
 }
 
-export class HtmlCanvas implements Plugin {
-	onchange: () => void = () => {}
+export class HtmlCanvas implements Plugin, HtmlCanvasAlternative {
+	private _update: (force: boolean) => void = () => {}
 	private _container?: HTMLElement
 	private _offscreenCanvas: HTMLCanvasElement
 	private _offscreenContext: CanvasRenderingContext2D
@@ -35,9 +43,39 @@ export class HtmlCanvas implements Plugin {
 	get api(): HtmlCanvasApi {
 		return {
 			element: this.element,
+			context: this.context,
 			clientToCanvas: this._clientToCanvas.bind(this),
 			canvasToClient: this._canvasToClient.bind(this)
 		}
+	}
+
+	get hooks(): PluginHooks {
+		const hooks = {
+			start: (ctx: StartContext, next: () => void): void => {
+				this._update = ctx.update
+				next()
+			},
+			render: (ctx: RenderContext, next: () => void): void => {
+				ctx.htmlCanvas = this
+				ctx.size = this._calcSize()
+				next()
+			}
+		}
+		return hooks
+	}
+
+	get listeners(): PluginListeners {
+		return Object.fromEntries(
+			Object.values(Events.EventType)
+				.filter(
+					(type: string): boolean => type.endsWith('-draw') || type.startsWith('draw-')
+				)
+				.map((type: string) => [type as Events.EventType, this._extendEvent.bind(this)])
+		)
+	}
+
+	private _extendEvent<T>(param: Event<T>): void {
+		param.renderingContext = this.context
 	}
 
 	static extractOptions(options: unknown): CanvasOptions {
@@ -72,15 +110,15 @@ export class HtmlCanvas implements Plugin {
 		const ctx = this._mainCanvas.getContext('2d')
 		if (!ctx) throw Error('Cannot get rendering context of canvas')
 		this._context = ctx
-		this.calcSize()
+		this._calcSize()
 		this._resizeObserver = this._createResizeObserverFor(this._mainCanvas)
 		this._resizeHandler = (): void => {
-			this.onchange()
+			this._update(true)
 		}
 		window.addEventListener('resize', this._resizeHandler)
 	}
 
-	destruct(): void {
+	unregister(): void {
 		window.removeEventListener('resize', this._resizeHandler)
 		this._resizeObserver.disconnect()
 		if (this._container) this._container.removeChild(this._mainCanvas)
@@ -94,7 +132,7 @@ export class HtmlCanvas implements Plugin {
 		return this._offscreenContext
 	}
 
-	calcSize(): Geom.Point {
+	private _calcSize(): Geom.Point {
 		this._scaleFactor = window.devicePixelRatio
 		this._cssWidth = +getComputedStyle(this._mainCanvas).width.slice(0, -2)
 		this._cssHeight = +getComputedStyle(this._mainCanvas).height.slice(0, -2)
@@ -165,7 +203,7 @@ export class HtmlCanvas implements Plugin {
 
 	private _createResizeObserverFor(canvas: HTMLCanvasElement): ResizeObserver {
 		const resizeObserver = new ResizeObserver(() => {
-			this.onchange()
+			this._update(true)
 		})
 		resizeObserver.observe(canvas)
 		return resizeObserver

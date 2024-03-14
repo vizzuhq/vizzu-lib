@@ -29,18 +29,9 @@ Channel Channel::makeChannel(Type id)
 }
 
 std::pair<bool, Channel::OptionalIndex> Channel::addSeries(
-    const Data::SeriesIndex &index,
-    std::optional<size_t> pos)
+    const Data::SeriesIndex &index)
 {
 	if (index.getType().isDimension()) {
-		if (pos) {
-			auto actPos = dimensionIds.getIndex(index);
-			if (static_cast<int>(*pos) == actPos)
-				return {false, std::nullopt};
-			dimensionIds.remove(index);
-			return {dimensionIds.insertAt(*pos, index), std::nullopt};
-		}
-
 		return {dimensionIds.pushBack(index), std::nullopt};
 	}
 	if (!measureId) {

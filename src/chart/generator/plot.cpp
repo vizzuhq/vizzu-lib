@@ -34,7 +34,7 @@ Plot::MarkersInfo interpolate(const Plot::MarkersInfo &op1,
 Plot::MarkerInfoContent::MarkerInfoContent() { markerId.reset(); }
 
 Plot::MarkerInfoContent::MarkerInfoContent(const Marker &marker,
-    Data::DataCube *dataCube)
+    const Data::DataCube *dataCube)
 {
 	const auto &index = marker.index;
 	if (dataCube && dataCube->getTable() && !index.empty()) {
@@ -92,16 +92,17 @@ Plot::Plot(const Data::DataTable &dataTable,
     dataTable(dataTable),
     options(std::move(opts)),
     style(std::move(style)),
-    dataCube(dataTable,
+    dataCube(std::in_place,
+        dataTable,
         options->getChannels().getDataCubeOptions(),
         options->dataFilter),
-    stats(options->getChannels(), dataCube)
+    stats(options->getChannels(), getDataCube())
 {
 	if (setAutoParams) options->setAutoParameters();
 
 	anyAxisSet = options->getChannels().anyAxisSet();
 
-	generateMarkers(dataCube, dataTable);
+	generateMarkers(dataTable);
 	generateMarkersInfo();
 
 	SpecLayout specLayout(*this);
@@ -136,16 +137,14 @@ bool Plot::isEmpty() const
 	return options->getChannels().isEmpty();
 }
 
-void Plot::generateMarkers(const Data::DataCube &dataCube,
-    const Data::DataTable &table)
+void Plot::generateMarkers(const Data::DataTable &table)
 {
-	for (auto it = dataCube.getData().begin();
-	     it != dataCube.getData().end();
-	     ++it) {
+	auto &&data = getDataCube().getData();
+	for (auto it = data.begin(); it != data.end(); ++it) {
 		auto markerIndex = markers.size();
 
 		markers.emplace_back(*options,
-		    dataCube,
+		    getDataCube(),
 		    table,
 		    stats,
 		    it.getIndex(),
@@ -169,7 +168,7 @@ void Plot::generateMarkersInfo()
 	for (auto &mi : options->markersInfo) {
 		auto &marker = markers[mi.second];
 		markersInfo.insert(std::make_pair(mi.first,
-		    MarkerInfo{MarkerInfoContent{marker, &dataCube}}));
+		    MarkerInfo{MarkerInfoContent{marker, &getDataCube()}}));
 	}
 }
 
@@ -391,7 +390,7 @@ void Plot::calcDimensionAxis(ChannelId type,
 			}
 		}
 	}
-	axis.setLabels(dataCube,
+	axis.setLabels(getDataCube(),
 	    table,
 	    isTypeAxis ? scale.step.getValue(1.0) : 1.0);
 

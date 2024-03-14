@@ -2,9 +2,16 @@ import Vizzu from './vizzu.js'
 import * as Anim from './types/anim.js'
 import { Events, EventType, EventHandler, EventMap } from './events.js'
 import { AnimCompleting } from './animcompleting.js'
+import { Point } from './geom.js'
+import { CRenderer } from './module/crenderer.js'
+import { Canvas } from './module/canvas.js'
 
 /** Available hooks for plugins in Vizzu. */
 export enum Hooks {
+	/** Called once on startup for start the rendering loop. */
+	start = 'start',
+	/** Called on rendering. */
+	render = 'render',
 	/** Called when the animate() parameters gets set in the library to prepare 
       the animation. */
 	prepareAnimation = 'prepareAnimation',
@@ -27,6 +34,18 @@ export interface PluginMeta {
 	depends?: string[]
 }
 
+export interface StartContext {
+	update: (force: boolean) => void
+}
+
+export interface RenderContext {
+	renderer: (CRenderer & Canvas) | null
+	timeInMSecs: number | null
+	enable: boolean
+	force: boolean
+	size: Point
+}
+
 export interface PrepareAnimationContext {
 	target: Anim.AnimTarget
 	options?: Anim.ControlOptions
@@ -43,6 +62,8 @@ export interface RunAnimationContext {
 }
 
 export interface HookContexts {
+	[Hooks.start]: StartContext
+	[Hooks.render]: RenderContext
 	[Hooks.prepareAnimation]: PrepareAnimationContext
 	[Hooks.registerAnimation]: RegisterAnimationContext
 	[Hooks.runAnimation]: RunAnimationContext

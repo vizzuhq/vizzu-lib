@@ -40,10 +40,8 @@ public:
 	Channel &at(const ChannelId &id);
 	[[nodiscard]] ChannelId getEmptyAxisId() const;
 
-	std::pair<bool, Channel::OptionalIndex> addSeries(
-	    const ChannelId &id,
-	    const Data::SeriesIndex &index,
-	    std::optional<size_t> pos = std::nullopt);
+	std::pair<bool, Channel::OptionalIndex>
+	addSeries(const ChannelId &id, const Data::SeriesIndex &index);
 	bool removeSeries(const Data::SeriesIndex &index);
 	bool removeSeries(const ChannelId &id,
 	    const Data::SeriesIndex &index);

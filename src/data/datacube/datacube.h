@@ -37,8 +37,6 @@ class DataCube
 public:
 	using Data = MultiDim::Array<DataCubeCell>;
 
-	DataCube() = default;
-
 	DataCube(const DataTable &table,
 	    const DataCubeOptions &options,
 	    const Filter &filter = Filter());
@@ -101,7 +99,7 @@ private:
 	std::vector<SeriesIndex> seriesBySubIndex;
 
 	static MultiDim::MultiIndex getIndex(const DataTable::Row &row,
-	    const std::vector<SeriesIndex> &indices,
+	    const std::set<SeriesIndex> &indices,
 	    size_t rowIndex);
 
 	[[nodiscard]] MultiDim::SubSliceIndex inverseSubSliceIndex(

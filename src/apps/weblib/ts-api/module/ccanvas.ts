@@ -1,7 +1,7 @@
-import { CEnv, CObject } from './cenv.js'
-import { CPointerClosure } from './objregistry.js'
+import { type CEnv, CObject } from './cenv.js'
+import { type CPointerClosure } from './objregistry.js'
 import { CColorGradient } from './ccolorgradient.js'
-import { CString, CColorGradientPtr } from '../cvizzu.types'
+import type { CString, CColorGradientPtr } from '../cvizzu.types'
 
 export class CCanvas extends CObject {
 	constructor(env: CEnv, getId: CPointerClosure) {
