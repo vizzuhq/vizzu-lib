@@ -6,6 +6,8 @@ dist
 .coverage
 test_report
 test_report.tgz
+*.ppt
+*.pptx
 
 __pycache__
 
