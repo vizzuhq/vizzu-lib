@@ -24,7 +24,7 @@ DataStat::DataStat(const DataTable &table,
 		const auto &row = table[rowIdx];
 
 		if (filter.match(RowWrapper(table, row)))
-			trackIndex(row, options.getDimensions());
+			trackIndex(row, indices);
 	}
 
 	countValues();
@@ -40,12 +40,9 @@ size_t DataStat::usedValueCntOf(const SeriesIndex &index) const
 void DataStat::trackIndex(const DataTable::Row &row,
     const std::set<SeriesIndex> &indices)
 {
-	for (std::size_t i{}; const auto &idx : indices) {
-		if (idx.getType().isReal())
-			usedValues[i][static_cast<size_t>(
-			    row[idx.getColIndex().value()])] = true;
-		++i;
-	}
+	for (auto it = usedValues.begin(); const auto &idx : indices)
+		(*it++)[static_cast<size_t>(row[idx.getColIndex().value()])] =
+		    idx.getType().isReal();
 }
 
 void DataStat::countValues()

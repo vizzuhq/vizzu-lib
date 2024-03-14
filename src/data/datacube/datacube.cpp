@@ -53,9 +53,12 @@ DataCube::DataCube(const DataTable &table,
 
 		if (!filter.match(RowWrapper(table, row))) continue;
 
-		auto index = getIndex(row, options.getDimensions(), rowIdx);
-		for (std::size_t idx{}; const auto &seriesIdx : series)
-			data.at(index).subCells[idx++].add(
+		for (auto cellIt = data.at(getIndex(row,
+		                               options.getDimensions(),
+		                               rowIdx))
+		                       .subCells.begin();
+		     const auto &seriesIdx : series)
+			cellIt++->add(
 			    seriesIdx.getType().isReal()
 			        ? double{row[seriesIdx.getColIndex().value()]}
 			        : double{});
