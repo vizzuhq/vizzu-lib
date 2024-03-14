@@ -8,6 +8,7 @@ test_report
 test_report.tgz
 *.ppt
 *.pptx
+*.ipynb
 
 __pycache__
 
