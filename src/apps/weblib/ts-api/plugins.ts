@@ -293,13 +293,12 @@ export class PluginRegistry {
 	}
 
 	private _executeHooks<T>(hooks: PluginHook<T>[], ctx: T): void {
-		let next = (): void => {}
-		const iterator = hooks
-			.map((fn) => {
-				return fn ? (): void => fn(ctx, next) : (): void => next()
-			})
-			[Symbol.iterator]()
-		next = (): void => iterator.next().value()
-		next()
+		const executeHookAtIndex = (index: number): void => {
+			if (index >= hooks.length) return
+			const fn = hooks[index]
+			const next = (): void => executeHookAtIndex(index + 1)
+			fn ? fn(ctx, next) : next()
+		}
+		executeHookAtIndex(0)
 	}
 }
