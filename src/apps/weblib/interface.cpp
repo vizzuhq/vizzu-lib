@@ -329,12 +329,19 @@ ObjectRegistry::Handle Interface::createChart()
 {
 	auto &&widget = std::make_shared<UI::ChartWidget>();
 
-	widget->openUrl = [&](const std::string &url)
+	auto handle = objects.reg(std::move(widget));
+
+	widget->openUrl = [handle](const std::string &url)
 	{
-		::openUrl(url.c_str());
+		::chart_openUrl(handle, url.c_str());
 	};
 
-	return objects.reg(std::move(widget));
+	widget->doChange = [handle]()
+	{
+		::chart_doChange(handle);
+	};
+
+	return handle;
 }
 
 ObjectRegistry::Handle Interface::createCanvas()
@@ -353,7 +360,7 @@ void Interface::update(ObjectRegistry::Handle chart,
     double width,
     double height,
     double timeInMSecs,
-    RenderControl renderControl)
+    bool render)
 {
 	auto &&widget = objects.get<UI::ChartWidget>(chart);
 
@@ -367,9 +374,8 @@ void Interface::update(ObjectRegistry::Handle chart,
 
 	widget->getChart().getAnimControl().update(time);
 
-	if (const Geom::Size size{width, height};
-	    renderControl == force
-	    || (renderControl == allow && widget->needsUpdate(size))) {
+	if (render) {
+		const Geom::Size size{width, height};
 		auto ptr = objects.get<Vizzu::Main::JScriptCanvas>(canvas);
 		ptr->frameBegin();
 		widget->onUpdateSize(size);

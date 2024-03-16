@@ -1,6 +1,9 @@
 mergeInto(LibraryManager.library, {
-	openUrl: function (url) {
-		window.open(UTF8ToString(url), '_blank')
+	chart_openUrl: function (chart, url) {
+		Module.charts[chart].openUrl(url)
+	},
+	chart_doChange: function (chart) {
+		Module.charts[chart].doChange()
 	},
 	textBoundary: function (font, text, sizeX, sizeY) {
 		const dc = Module.measureCanvas

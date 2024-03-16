@@ -3,6 +3,7 @@ import * as Config from './types/config.js'
 import * as Styles from './types/styles.js'
 import * as D from './types/data.js'
 import { Module } from './module/module.js'
+import { Chart as ChartInterface } from './module/chart.js'
 import { CChart, Snapshot } from './module/cchart.js'
 import { CAnimControl, CAnimation } from './module/canimctrl.js'
 import { CData } from './module/cdata.js'
@@ -26,7 +27,7 @@ import { Scheduler } from './plugins/scheduler.js'
 import { RenderControl } from './plugins/rendercontrol.js'
 import { CCanvas } from './module/ccanvas.js'
 
-export class Chart {
+export class Chart implements ChartInterface {
 	private _options: VizzuOptions
 	private _cChart: CChart
 	private _cCanvas: CCanvas
@@ -35,6 +36,7 @@ export class Chart {
 	private _data: Data
 	private _events: Events
 	private _plugins: PluginRegistry
+	private _needsUpdate = true
 
 	constructor(module: Module, options: VizzuOptions, plugins: PluginRegistry) {
 		this._options = options
@@ -42,6 +44,8 @@ export class Chart {
 		this._module = module
 
 		this._cChart = this._module.createChart()
+		this._module.registerChart(this._cChart, this)
+
 		this._cCanvas = this._module.createCanvas()
 		this._cData = this._module.getData(this._cChart)
 		this._data = new Data(this._cData)
@@ -65,6 +69,10 @@ export class Chart {
 		this._plugins.register(new Tooltip(), false)
 	}
 
+	detach(): void {
+		this._module.unregisterChart(this._cChart)
+	}
+
 	start(): void {
 		const ctx = {
 			update: (force: boolean): void => this.updateFrame(force)
@@ -84,19 +92,22 @@ export class Chart {
 		}
 		this._plugins.hook(Hooks.render, ctx).default((ctx) => {
 			if (ctx.size.x >= 1 && ctx.size.y >= 1 && ctx.timeInMSecs !== null && ctx.renderer) {
-				const renderControl = !ctx.enable ? 2 : ctx.force ? 1 : 0
+				const render = ctx.force || (ctx.enable && this._needsUpdate)
 				ctx.renderer.canvas = this._cCanvas
 				this._module.registerRenderer(this._cCanvas, ctx.renderer)
-				this._cChart.update(
-					this._cCanvas,
-					ctx.size.x,
-					ctx.size.y,
-					ctx.timeInMSecs,
-					renderControl
-				)
+				this._cChart.update(this._cCanvas, ctx.size.x, ctx.size.y, ctx.timeInMSecs, render)
 				this._module.unregisterRenderer(this._cCanvas)
+				this._needsUpdate = false
 			}
 		})
+	}
+
+	doChange(): void {
+		this._needsUpdate = true
+	}
+
+	openUrl(url: number): void {
+		window.open(this._cChart.getString(url), '_blank')
 	}
 
 	async prepareAnimation(

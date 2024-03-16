@@ -286,6 +286,7 @@ export default class Vizzu {
 	detach(): void {
 		try {
 			this._plugins.destruct()
+			this._chart?.detach()
 		} catch (e) {
 			console.error(`Error during plugin destruct: ${e}`)
 		}

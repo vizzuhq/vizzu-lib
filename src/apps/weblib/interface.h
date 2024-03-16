@@ -15,8 +15,6 @@ class Interface
 public:
 	static Interface &getInstance();
 
-	enum RenderControl { allow = 0, force = 1, inhibit = 2 };
-
 	Interface();
 	static const char *version();
 	ObjectRegistry::Handle createChart();
@@ -48,7 +46,7 @@ public:
 	    double width,
 	    double height,
 	    double timeInMSecs,
-	    RenderControl renderControl);
+	    bool render);
 
 	ObjectRegistry::Handle storeAnim(ObjectRegistry::Handle chart);
 	void restoreAnim(ObjectRegistry::Handle chart,

@@ -8,6 +8,7 @@ import { CCanvas } from './ccanvas.js'
 import { CAnimControl } from './canimctrl.js'
 import { CCoordSystem } from './ccoordsys.js'
 import { Canvas } from './canvas.js'
+import { Chart } from './chart.js'
 
 export class Module extends CEnv {
 	constructor(wasm: CVizzu) {
@@ -16,7 +17,16 @@ export class Module extends CEnv {
 		if (!context2D) throw new Error('Failed to get 2D context')
 		this._wasm.measureCanvas = context2D
 		this._wasm.canvases = {}
+		this._wasm.charts = {}
 		this.setLogging(false)
+	}
+
+	registerChart(cChart: CChart, chart: Chart): void {
+		this._wasm.charts[cChart.getId()] = chart
+	}
+
+	unregisterChart(cChart: CChart): void {
+		delete this._wasm.charts[cChart.getId()]
 	}
 
 	registerRenderer(cCanvas: CCanvas, canvas: Canvas): void {
