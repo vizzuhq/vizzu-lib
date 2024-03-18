@@ -377,12 +377,11 @@ void Interface::render(ObjectRegistry::Handle chart,
     double height)
 {
 	auto &&widget = objects.get<UI::ChartWidget>(chart);
-	auto ptr = objects.get<Vizzu::Main::JScriptCanvas>(canvas);
+	auto &&ptr = objects.get<Vizzu::Main::JScriptCanvas>(canvas);
 
 	ptr->frameBegin();
 
-	const Geom::Size size{width, height};
-	widget->onUpdateSize(size);
+	widget->onUpdateSize({width, height});
 
 	widget->onDraw(ptr);
 

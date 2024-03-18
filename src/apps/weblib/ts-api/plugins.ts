@@ -10,7 +10,7 @@ import { Canvas } from './module/canvas.js'
 export enum Hooks {
 	/** Called once on startup for start the rendering loop. */
 	start = 'start',
-	/** Called when updateing the chart due to time change. */
+	/** Called when updating the chart due to time change. */
 	update = 'update',
 	/** Called on rendering. */
 	render = 'render',
