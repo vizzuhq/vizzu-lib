@@ -41,12 +41,11 @@ public:
 	void wheel(ObjectRegistry::Handle chart,
 	    ObjectRegistry::Handle canvas,
 	    double delta);
-	void update(ObjectRegistry::Handle chart,
+	void update(ObjectRegistry::Handle chart, double timeInMSecs);
+	void render(ObjectRegistry::Handle chart,
 	    ObjectRegistry::Handle canvas,
 	    double width,
-	    double height,
-	    double timeInMSecs,
-	    bool render);
+	    double height);
 
 	ObjectRegistry::Handle storeAnim(ObjectRegistry::Handle chart);
 	void restoreAnim(ObjectRegistry::Handle chart,

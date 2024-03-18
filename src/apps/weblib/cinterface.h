@@ -62,12 +62,11 @@ extern void vizzu_wheel(APIHandles::Chart chart,
     APIHandles::Canvas canvas,
     double delta);
 extern void vizzu_setLogging(bool enable);
-extern void vizzu_update(APIHandles::Chart chart,
+extern void vizzu_update(APIHandles::Chart chart, double timeInMSecs);
+extern void vizzu_render(APIHandles::Chart chart,
     APIHandles::Canvas canvas,
     double width,
-    double height,
-    double timeInMSecs,
-    bool render);
+    double height);
 extern const char *vizzu_errorMessage(
     APIHandles::Exception exceptionPtr,
     const std::type_info *typeinfo);

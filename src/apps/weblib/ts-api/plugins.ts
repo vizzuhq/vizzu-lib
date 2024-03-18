@@ -10,6 +10,8 @@ import { Canvas } from './module/canvas.js'
 export enum Hooks {
 	/** Called once on startup for start the rendering loop. */
 	start = 'start',
+	/** Called when updateing the chart due to time change. */
+	update = 'update',
 	/** Called on rendering. */
 	render = 'render',
 	/** Called when the animate() parameters gets set in the library to prepare 
@@ -38,11 +40,20 @@ export interface StartContext {
 	update: (force: boolean) => void
 }
 
+export interface UpdateContext {
+	timeInMSecs: number | null
+}
+
+export enum RenderControlMode {
+	forced = 'forced',
+	allowed = 'allowed',
+	disabled = 'disabled'
+}
+
 export interface RenderContext {
 	renderer: (CRenderer & Canvas) | null
-	timeInMSecs: number | null
-	enable: boolean
-	force: boolean
+	control: RenderControlMode
+	changed: boolean
 	size: Point
 }
 
@@ -63,6 +74,7 @@ export interface RunAnimationContext {
 
 export interface HookContexts {
 	[Hooks.start]: StartContext
+	[Hooks.update]: UpdateContext
 	[Hooks.render]: RenderContext
 	[Hooks.prepareAnimation]: PrepareAnimationContext
 	[Hooks.registerAnimation]: RegisterAnimationContext

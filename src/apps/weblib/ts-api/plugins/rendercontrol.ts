@@ -1,4 +1,12 @@
-import { Plugin, PluginApi, PluginHooks, RenderContext, StartContext } from '../plugins.js'
+import {
+	Plugin,
+	PluginApi,
+	PluginHooks,
+	RenderContext,
+	UpdateContext,
+	StartContext,
+	RenderControlMode
+} from '../plugins.js'
 
 export interface RenderControlApi extends PluginApi {
 	/** Re-renders the chart. */
@@ -27,12 +35,17 @@ export class RenderControl implements Plugin {
 				this._update = ctx.update
 				next()
 			},
-			render: (ctx: RenderContext, next: () => void): void => {
+			update: (ctx: UpdateContext, next: () => void): void => {
 				if (this._timeInMSecs !== null) {
 					ctx.timeInMSecs = this._timeInMSecs
 					this._timeInMSecs = null
 				}
-				ctx.enable = this._enabled
+				next()
+			},
+			render: (ctx: RenderContext, next: () => void): void => {
+				if (ctx.control === RenderControlMode.disabled && this._enabled) {
+					ctx.control = RenderControlMode.allowed
+				}
 				next()
 			}
 		}

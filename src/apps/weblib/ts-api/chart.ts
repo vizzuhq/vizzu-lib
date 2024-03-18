@@ -12,7 +12,13 @@ import { Events, EventType, EventHandler, EventMap } from './events.js'
 import { Mirrored } from './tsutils.js'
 import { VizzuOptions } from './vizzu.js'
 import { AnimControl } from './animcontrol.js'
-import { PluginRegistry, Hooks, RenderContext } from './plugins.js'
+import {
+	PluginRegistry,
+	Hooks,
+	RenderContext,
+	UpdateContext,
+	RenderControlMode
+} from './plugins.js'
 import { Logging } from './plugins/logging.js'
 import { Shorthands } from './plugins/shorthands.js'
 import { PivotData } from './plugins/pivotdata.js'
@@ -36,7 +42,7 @@ export class Chart implements ChartInterface {
 	private _data: Data
 	private _events: Events
 	private _plugins: PluginRegistry
-	private _needsUpdate = true
+	private _changed = true
 
 	constructor(module: Module, options: VizzuOptions, plugins: PluginRegistry) {
 		this._options = options
@@ -75,35 +81,55 @@ export class Chart implements ChartInterface {
 
 	start(): void {
 		const ctx = {
-			update: (force: boolean): void => this.updateFrame(force)
+			update: (force: boolean): void => this.updateAndRender(force)
 		}
 		this._plugins.hook(Hooks.start, ctx).default(() => {
-			this.updateFrame()
+			this.updateAndRender()
 		})
 	}
 
-	updateFrame(force: boolean = false): void {
+	private updateAndRender(force: boolean = false): void {
+		this._update()
+		this._render(force)
+	}
+
+	private _update(): void {
+		const ctx: UpdateContext = {
+			timeInMSecs: null
+		}
+		this._plugins.hook(Hooks.update, ctx).default((ctx) => {
+			if (ctx.timeInMSecs) {
+				this._cChart.update(ctx.timeInMSecs)
+			}
+		})
+	}
+
+	private _render(force: boolean): void {
+		const control = force ? RenderControlMode.forced : RenderControlMode.disabled
 		const ctx: RenderContext = {
 			renderer: null,
-			timeInMSecs: null,
-			enable: true,
-			force,
+			control: control,
+			changed: this._changed,
 			size: { x: 0, y: 0 }
 		}
 		this._plugins.hook(Hooks.render, ctx).default((ctx) => {
-			if (ctx.size.x >= 1 && ctx.size.y >= 1 && ctx.timeInMSecs !== null && ctx.renderer) {
-				const render = ctx.force || (ctx.enable && this._needsUpdate)
-				ctx.renderer.canvas = this._cCanvas
-				this._module.registerRenderer(this._cCanvas, ctx.renderer)
-				this._cChart.update(this._cCanvas, ctx.size.x, ctx.size.y, ctx.timeInMSecs, render)
-				this._module.unregisterRenderer(this._cCanvas)
-				this._needsUpdate = false
+			if (ctx.size.x >= 1 && ctx.size.y >= 1 && ctx.renderer) {
+				const shouldRender =
+					ctx.control === RenderControlMode.forced ||
+					(ctx.control === RenderControlMode.allowed && ctx.changed)
+				if (shouldRender) {
+					ctx.renderer.canvas = this._cCanvas
+					this._module.registerRenderer(this._cCanvas, ctx.renderer)
+					this._cChart.render(this._cCanvas, ctx.size.x, ctx.size.y)
+					this._module.unregisterRenderer(this._cCanvas)
+					this._changed = false
+				}
 			}
 		})
 	}
 
 	doChange(): void {
-		this._needsUpdate = true
+		this._changed = true
 	}
 
 	openUrl(url: number): void {
