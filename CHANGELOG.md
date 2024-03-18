@@ -5,6 +5,7 @@
 ### Fixed
 
 - next() can be called multiple times from Plugin hooks
+- Line and circle chats with only dimensions on x, and y axes the markers were off the axis labels.
 
 ### Added
 

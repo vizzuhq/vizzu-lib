@@ -89,7 +89,7 @@ public:
 	::Anim::Interpolated<uint64_t> nextSubMarkerIdx;
 
 	void setNextMarker(uint64_t itemId,
-	    Marker *marker,
+	    Marker &marker,
 	    bool horizontal,
 	    bool main);
 	void resetSize(bool horizontal);
