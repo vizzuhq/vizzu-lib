@@ -113,18 +113,19 @@ export class Chart implements ChartInterface {
 			size: { x: 0, y: 0 }
 		}
 		this._plugins.hook(Hooks.render, ctx).default((ctx) => {
-			if (ctx.size.x >= 1 && ctx.size.y >= 1 && ctx.renderer) {
-				const shouldRender =
-					ctx.control === RenderControlMode.forced ||
-					(ctx.control === RenderControlMode.allowed && ctx.changed)
-				if (shouldRender) {
-					ctx.renderer.canvas = this._cCanvas
-					this._module.registerRenderer(this._cCanvas, ctx.renderer)
-					this._cChart.render(this._cCanvas, ctx.size.x, ctx.size.y)
-					this._module.unregisterRenderer(this._cCanvas)
-					this._changed = false
-				}
-			}
+			if (ctx.size.x < 1 || ctx.size.y < 1 || !ctx.renderer) return
+
+			const shouldRender =
+				ctx.control === RenderControlMode.forced ||
+				(ctx.control === RenderControlMode.allowed && ctx.changed)
+
+			if (!shouldRender) return
+
+			ctx.renderer.canvas = this._cCanvas
+			this._module.registerRenderer(this._cCanvas, ctx.renderer)
+			this._cChart.render(this._cCanvas, ctx.size.x, ctx.size.y)
+			this._module.unregisterRenderer(this._cCanvas)
+			this._changed = false
 		})
 	}
 
