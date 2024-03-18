@@ -185,14 +185,10 @@ void vizzu_update(APIHandles::Chart chart,
     double width,
     double height,
     double timeInMSecs,
-    int renderControl)
+    bool render)
 {
-	return Interface::getInstance().update(chart,
-	    canvas,
-	    width,
-	    height,
-	    timeInMSecs,
-	    static_cast<Interface::RenderControl>(renderControl));
+	return Interface::getInstance()
+	    .update(chart, canvas, width, height, timeInMSecs, render);
 }
 
 const char *style_getList() { return Interface::getStyleList(); }

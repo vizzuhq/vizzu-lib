@@ -4,7 +4,17 @@
 
 ### Fixed
 
+- next() can be called multiple times from Plugin hooks
 - Line and circle chats with only dimensions on x, and y axes the markers were off the axis labels.
+
+### Added
+
+- New plugins and plugin hooks introduced: 
+  - plugin: scheduler - plugin resposible for scheduling the rendering
+  - plugin: clock - supplying the current time for the animation
+  - plugin: canvasRenderer - plugin for rendering the chart on a htmlcanvas compatible canvas
+  - hook: start - hook for starting the rendering loop
+  - hook: render - hook for rendering the chart 
 
 ## [0.10.1] - 2024-03-12
 
@@ -41,12 +51,6 @@
 - The event handler registration order changed. Now the handlers are called in the opposite order of the registration.
 - Added the padded rectangle, the bounding rectangle and the align parameter to the draw text event object.
 - Tooltip works on marker labels too.
-- New plugins and plugin hooks introduced: 
-  - plugin: scheduler - plugin resposible for scheduling the rendering
-  - plugin: clock - supplying the current time for the animation
-  - plugin: canvasRenderer - plugin for rendering the chart on a htmlcanvas compatible canvas
-  - hook: start - hook for starting the rendering loop
-  - hook: render - hook for rendering the chart 
 
 ## [0.9.3] - 2023-12-20
 

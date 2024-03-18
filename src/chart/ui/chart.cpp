@@ -37,7 +37,6 @@ ChartWidget::~ChartWidget()
 void ChartWidget::onChanged()
 {
 	if (doChange) doChange();
-	needUpdate = true;
 }
 
 void ChartWidget::onPointerDown(const GUI::PointerEvent &event)
@@ -81,7 +80,6 @@ void ChartWidget::onWheel(double delta)
 void ChartWidget::onDraw(const std::shared_ptr<Gfx::ICanvas> &canvas)
 {
 	chart.draw(*canvas);
-	needUpdate = false;
 }
 
 void ChartWidget::onUpdateSize(Geom::Size size)

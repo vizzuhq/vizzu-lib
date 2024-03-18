@@ -1,4 +1,5 @@
-import { Canvas } from './module/canvas'
+import { type Canvas } from './module/canvas'
+import { type Chart } from './module/chart'
 
 export type CPointer = number
 export type CString = CPointer
@@ -46,6 +47,7 @@ export interface ModuleOptions {
 export interface CVizzu {
 	// decorations
 	canvases: { [key: CPointer]: Canvas }
+	charts: { [key: CPointer]: Chart }
 	measureCanvas: CanvasRenderingContext2D
 
 	// members
@@ -95,7 +97,7 @@ export interface CVizzu {
 		width: number,
 		height: number,
 		time: number,
-		renderControl: number
+		render: boolean
 	): void
 	_vizzu_errorMessage(exceptionPtr: CException, typeinfo: CTypeInfo): CString
 	_vizzu_version(): CString
