@@ -42,9 +42,13 @@ export class CChart extends CObject {
 		this.animOptions = this._makeAnimOptions()
 	}
 
-	update(cCanvas: CCanvas, width: number, height: number, time: number, render: boolean): void {
+	update(time: number): void {
+		this._call(this._wasm._vizzu_update)(time)
+	}
+
+	render(cCanvas: CCanvas, width: number, height: number): void {
 		this._cCanvas = cCanvas
-		this._call(this._wasm._vizzu_update)(cCanvas.getId(), width, height, time, render)
+		this._call(this._wasm._vizzu_render)(cCanvas.getId(), width, height)
 	}
 
 	animate(callback: (ok: boolean) => void): void {

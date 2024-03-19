@@ -180,15 +180,20 @@ void vizzu_wheel(APIHandles::Chart chart,
 	return Interface::getInstance().wheel(chart, canvas, delta);
 }
 
-void vizzu_update(APIHandles::Chart chart,
+void vizzu_update(APIHandles::Chart chart, double timeInMSecs)
+{
+	return Interface::getInstance().update(chart, timeInMSecs);
+}
+
+void vizzu_render(APIHandles::Chart chart,
     APIHandles::Canvas canvas,
     double width,
-    double height,
-    double timeInMSecs,
-    bool render)
+    double height)
 {
-	return Interface::getInstance()
-	    .update(chart, canvas, width, height, timeInMSecs, render);
+	return Interface::getInstance().render(chart,
+	    canvas,
+	    width,
+	    height);
 }
 
 const char *style_getList() { return Interface::getStyleList(); }

@@ -1,4 +1,4 @@
-import { Plugin, PluginApi, PluginHooks, RenderContext } from '../plugins.js'
+import { Plugin, PluginApi, PluginHooks, UpdateContext } from '../plugins.js'
 
 export interface ClockApi extends PluginApi {
 	/** Returns the actual time in miliseconds. */
@@ -16,7 +16,7 @@ export class Clock implements Plugin {
 
 	get hooks(): PluginHooks {
 		const hooks = {
-			render: (ctx: RenderContext, next: () => void): void => {
+			update: (ctx: UpdateContext, next: () => void): void => {
 				if (ctx.timeInMSecs === null) ctx.timeInMSecs = this._now()
 				next()
 			}
