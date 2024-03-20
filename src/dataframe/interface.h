@@ -4,6 +4,7 @@
 #include <any>
 #include <functional>
 #include <memory>
+#include <ranges>
 #include <span>
 #include <string_view>
 #include <variant>
@@ -73,6 +74,21 @@ public:
 
 		const dataframe_interface *parent;
 		record_identifier recordId;
+
+		auto operator<=>(const record_type &other) const = default;
+
+		auto get_dimensions() const
+		{
+			return std::ranges::transform_view{
+			    parent->get_dimensions(),
+			    [this](std::string_view dim)
+			        -> std::pair<std::string_view, std::string_view>
+			    {
+				    auto &&cell = getValue(dim);
+				    return {dim,
+				        *std::get_if<std::string_view>(&cell)};
+			    }};
+		}
 	};
 
 	virtual ~dataframe_interface() = default;
