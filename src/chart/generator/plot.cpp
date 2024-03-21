@@ -159,10 +159,11 @@ void Plot::generateMarkers(const Data::DataTable &table)
 	}
 	clearEmptyBuckets(mainBuckets, true);
 	clearEmptyBuckets(subBuckets, false);
-	auto conn = linkMarkers(mainBuckets, true);
+	auto hasMarkerConnection = linkMarkers(mainBuckets, true);
 	linkMarkers(subBuckets, false);
 
-	if (conn && options->geometry.get() == ShapeType::line
+	if (hasMarkerConnection
+	    && options->geometry.get() == ShapeType::line
 	    && options->getChannels().at(ChannelId::x).isDimension()
 	    && options->getChannels().at(ChannelId::y).isDimension()) {
 		markerConnectionOrientation.emplace(
