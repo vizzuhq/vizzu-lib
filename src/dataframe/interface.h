@@ -96,16 +96,14 @@ public:
 		const dataframe_interface *parent;
 		record_identifier recordId;
 
-		auto operator<=>(const record_type &other) const = default;
-
 		auto get_dimensions() const
 		{
 			return std::ranges::transform_view{
 			    parent->get_dimensions(),
-			    [this](std::string_view dim)
+			    [rec = *this](std::string_view dim)
 			        -> std::pair<std::string_view, std::string_view>
 			    {
-				    auto &&cell = getValue(dim);
+				    auto &&cell = rec.getValue(dim);
 				    return {dim,
 				        *std::get_if<std::string_view>(&cell)};
 			    }};
