@@ -308,10 +308,18 @@ data_source::const_series_data data_source::get_series(
 
 void data_source::normalize_sizes()
 {
-	std::size_t record_count = get_record_count();
+	auto record_count = get_record_count();
 	for (auto &&dim : dimensions)
-		dim.values.resize(record_count, nav);
-	for (auto &&mea : measures) mea.values.resize(record_count, nan);
+		if (dim.values.size() < record_count) {
+			dim.values.resize(record_count, nav);
+			dim.contains_nav = true;
+		}
+
+	for (auto &&mea : measures)
+		if (mea.values.size() < record_count) {
+			mea.values.resize(record_count, nan);
+			mea.contains_nan = true;
+		}
 }
 
 void data_source::remove_series(std::span<const std::size_t> dims,
@@ -396,8 +404,16 @@ data_source::measure_t &data_source::add_new_measure(measure_t &&mea,
 void data_source::remove_records(std::span<const std::size_t> indices)
 {
 	const index_erase_if<false> indices_remover{indices};
-	for (auto &&dim : dimensions) indices_remover(dim.values);
-	for (auto &&mea : measures) indices_remover(mea.values);
+	for (auto &&dim : dimensions) {
+		indices_remover(dim.values);
+		dim.contains_nav = std::ranges::any_of(dim.values,
+		    std::bind_front(std::equal_to{}, nav));
+	}
+	for (auto &&mea : measures) {
+		indices_remover(mea.values);
+		mea.contains_nan = std::ranges::any_of(mea.values,
+		    static_cast<bool (&)(double)>(std::isnan));
+	}
 }
 
 struct aggregating_helper
@@ -485,6 +501,10 @@ data_source::data_source(aggregating_type &&aggregating,
 			++ix;
 		}
 	}
+
+	for (auto &mea : measures)
+		mea.contains_nan = std::ranges::any_of(mea.values,
+		    static_cast<bool (&)(double)>(std::isnan));
 }
 
 data_source::data_source(
@@ -597,7 +617,8 @@ void data_source::dimension_t::sort_by(
 void data_source::dimension_t::add_element(
     std::string_view const &cat)
 {
-	values.emplace_back(get_or_set_cat(cat));
+	if (values.emplace_back(get_or_set_cat(cat)) == nav)
+		contains_nav = true;
 }
 void data_source::dimension_t::add_more_data(
     std::span<const char *const> new_categories,
@@ -609,28 +630,34 @@ void data_source::dimension_t::add_more_data(
 	}
 
 	for (const auto val : new_values) values.emplace_back(remap[val]);
+
+	if (!contains_nav)
+		contains_nav = std::ranges::any_of(new_values,
+		    std::bind_front(std::equal_to{}, nav));
 }
 std::string_view data_source::dimension_t::get(
     std::size_t index) const
 {
-	return values[index] == data_source::nav
-	         ? std::string_view{}
-	         : categories[values[index]];
+	return values[index] == nav ? std::string_view{}
+	                            : categories[values[index]];
 }
 
 void data_source::dimension_t::set(std::size_t index,
     std::string_view value)
 {
 	values[index] =
-	    value.data() ? get_or_set_cat(value) : data_source::nav;
+	    value.data() != nullptr ? get_or_set_cat(value) : nav;
 }
 void data_source::dimension_t::set_nav(std::string_view value)
 {
+	if (!contains_nav) return;
 	if (value.data() == nullptr) value = "";
 
 	auto ix = get_or_set_cat(value);
 	for (auto &val : values)
-		if (val == data_source::nav) val = ix;
+		if (val == nav) val = ix;
+
+	contains_nav = false;
 }
 std::uint32_t data_source::dimension_t::get_or_set_cat(
     std::string_view cat)
@@ -644,7 +671,7 @@ std::uint32_t data_source::dimension_t::get_or_set_cat(
 
 const double &data_source::measure_t::get(std::size_t index) const
 {
-	return index < values.size() ? nan : values[index];
+	return index < values.size() ? values[index] : nan;
 }
 
 std::pair<double, double> data_source::measure_t::get_min_max() const

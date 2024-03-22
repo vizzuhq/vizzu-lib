@@ -1,6 +1,7 @@
 #ifndef VIZZU_DATAFRAME_DATA_SOURCE_H
 #define VIZZU_DATAFRAME_DATA_SOURCE_H
 
+#include <cmath>
 #include <limits>
 #include <map>
 #include <optional>
@@ -34,6 +35,7 @@ private:
 		na_position na_pos{na_position::last};
 		std::vector<std::uint32_t> values;
 		std::map<std::string, std::string> info;
+		bool contains_nav;
 
 		dimension_t() noexcept = default;
 
@@ -43,7 +45,9 @@ private:
 		    Range3 &&info) :
 		    categories(std::begin(categories), std::end(categories)),
 		    values(std::begin(values), std::end(values)),
-		    info(std::begin(info), std::end(info))
+		    info(std::begin(info), std::end(info)),
+		    contains_nav{std::ranges::any_of(this->values,
+		        std::bind_front(std::equal_to{}, nav))}
 		{}
 
 		void add_more_data(std::span<const char *const> categories,
@@ -70,13 +74,16 @@ private:
 	{
 		std::vector<double> values;
 		std::map<std::string, std::string> info;
+		bool contains_nan;
 
 		measure_t() noexcept = default;
 
 		template <class Range1, class Range2>
 		measure_t(Range1 &&values, Range2 &&info) :
 		    values(std::begin(values), std::end(values)),
-		    info(std::begin(info), std::end(info))
+		    info(std::begin(info), std::end(info)),
+		    contains_nan(std::ranges::any_of(this->values,
+		        static_cast<bool (&)(double)>(std::isnan)))
 		{}
 
 		const double &get(std::size_t index) const;

@@ -161,9 +161,7 @@ void dataframe::set_sort(series_identifier series,
 		if (const auto &dim = unsafe_get<dimension>(ser).second;
 		    std::ranges::is_sorted(
 		        indices.emplace(dim.get_indices(sort)))
-		    && (na_pos == dim.na_pos
-		        || std::ranges::find(dim.values, data_source::nav)
-		               == dim.values.end()))
+		    && (na_pos == dim.na_pos || !dim.contains_nav))
 			break;
 
 		if (source == source_type::copying) migrate_data();
@@ -592,8 +590,11 @@ void dataframe::add_record(std::span<const cell_value> values) &
 
 	for (std::size_t measureIx{}, dimensionIx{};
 	     const auto &v : values) {
-		if (const double *measure = std::get_if<double>(&v))
-			s.measures[measureIx++].values.emplace_back(*measure);
+		if (const double *measure = std::get_if<double>(&v)) {
+			auto &mea = s.measures[measureIx++];
+			mea.values.emplace_back(*measure);
+			if (std::isnan(*measure)) mea.contains_nan = true;
+		}
 		else {
 			s.dimensions[dimensionIx++].add_element(
 			    *std::get_if<std::string_view>(&v));
@@ -733,10 +734,13 @@ void dataframe::fill_na(series_identifier column, cell_value value) &
 	                column)) {
 		using enum series_type;
 	default: break;
-	case measure:
-		for (auto &v : unsafe_get<measure>(ser).second.values)
-			if (std::isnan(v)) v = *d;
+	case measure: {
+		auto &meas = unsafe_get<measure>(ser).second;
+		if (std::exchange(meas.contains_nan, false))
+			for (auto &v : meas.values)
+				if (std::isnan(v)) v = *d;
 		break;
+	}
 	case dimension:
 		unsafe_get<dimension>(ser).second.set_nav(
 		    *std::get_if<std::string_view>(&value));
