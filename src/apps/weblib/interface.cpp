@@ -329,12 +329,19 @@ ObjectRegistry::Handle Interface::createChart()
 {
 	auto &&widget = std::make_shared<UI::ChartWidget>();
 
-	widget->openUrl = [&](const std::string &url)
+	auto handle = objects.reg(widget);
+
+	widget->openUrl = [handle](const std::string &url)
 	{
-		::openUrl(url.c_str());
+		::chart_openUrl(handle, url.c_str());
 	};
 
-	return objects.reg(std::move(widget));
+	widget->doChange = [handle]()
+	{
+		::chart_doChange(handle);
+	};
+
+	return handle;
 }
 
 ObjectRegistry::Handle Interface::createCanvas()
@@ -349,11 +356,7 @@ void Interface::setLogging(bool enable)
 }
 
 void Interface::update(ObjectRegistry::Handle chart,
-    ObjectRegistry::Handle canvas,
-    double width,
-    double height,
-    double timeInMSecs,
-    RenderControl renderControl)
+    double timeInMSecs)
 {
 	auto &&widget = objects.get<UI::ChartWidget>(chart);
 
@@ -366,16 +369,23 @@ void Interface::update(ObjectRegistry::Handle chart,
 	::Anim::TimePoint time(nanoSecs);
 
 	widget->getChart().getAnimControl().update(time);
+}
 
-	if (const Geom::Size size{width, height};
-	    renderControl == force
-	    || (renderControl == allow && widget->needsUpdate(size))) {
-		auto ptr = objects.get<Vizzu::Main::JScriptCanvas>(canvas);
-		ptr->frameBegin();
-		widget->onUpdateSize(size);
-		widget->onDraw(ptr);
-		ptr->frameEnd();
-	}
+void Interface::render(ObjectRegistry::Handle chart,
+    ObjectRegistry::Handle canvas,
+    double width,
+    double height)
+{
+	auto &&widget = objects.get<UI::ChartWidget>(chart);
+	auto &&ptr = objects.get<Vizzu::Main::JScriptCanvas>(canvas);
+
+	ptr->frameBegin();
+
+	widget->onUpdateSize({width, height});
+
+	widget->onDraw(ptr);
+
+	ptr->frameEnd();
 }
 
 void Interface::pointerDown(ObjectRegistry::Handle chart,

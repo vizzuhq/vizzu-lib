@@ -15,8 +15,6 @@ class Interface
 public:
 	static Interface &getInstance();
 
-	enum RenderControl { allow = 0, force = 1, inhibit = 2 };
-
 	Interface();
 	static const char *version();
 	ObjectRegistry::Handle createChart();
@@ -43,12 +41,11 @@ public:
 	void wheel(ObjectRegistry::Handle chart,
 	    ObjectRegistry::Handle canvas,
 	    double delta);
-	void update(ObjectRegistry::Handle chart,
+	void update(ObjectRegistry::Handle chart, double timeInMSecs);
+	void render(ObjectRegistry::Handle chart,
 	    ObjectRegistry::Handle canvas,
 	    double width,
-	    double height,
-	    double timeInMSecs,
-	    RenderControl renderControl);
+	    double height);
 
 	ObjectRegistry::Handle storeAnim(ObjectRegistry::Handle chart);
 	void restoreAnim(ObjectRegistry::Handle chart,

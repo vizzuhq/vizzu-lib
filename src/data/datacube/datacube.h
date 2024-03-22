@@ -86,8 +86,6 @@ public:
 	    const MultiDim::MultiIndex &index) const;
 	[[nodiscard]] CellInfo cellInfo(
 	    const MultiDim::MultiIndex &index) const;
-	[[nodiscard]] MultiDim::SubSliceIndex subSliceIndex(
-	    const MarkerIdStrings &stringMarkerId) const;
 
 private:
 	Data data;

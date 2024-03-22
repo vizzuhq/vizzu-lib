@@ -70,13 +70,6 @@ std::string SeriesIndex::toString(const DataTable &table) const
 	return type.toString() + "()";
 }
 
-std::string SeriesIndex::toString() const
-{
-	return type.isReal()
-	         ? std::to_string(static_cast<size_t>(index.value()))
-	         : type.toString();
-}
-
 void SeriesIndex::set(const DataTable::DataIndex &dataIndex)
 {
 	index = dataIndex.value;

@@ -551,7 +551,7 @@
 			"refs": ["17b70ff"]
 		},
 		"web_content/analytical_operations/distribute/newmeasure_dotplot_1": {
-			"refs": ["477b699"]
+			"refs": ["f7f0e10"]
 		},
 		"web_content/analytical_operations/distribute/newmeasure_dotplot_2": {
 			"refs": ["7d277a4"]
@@ -1139,16 +1139,16 @@
 			"refs": ["d01b016"]
 		},
 		"ww_animTiming/descartes-polar_orient/05_d-p_o_r-c-r": {
-			"refs": ["bf1adce"]
+			"refs": ["b34204e"]
 		},
 		"ww_animTiming/descartes-polar_orient/06_d-p_o_c-c-c": {
-			"refs": ["9104d61"]
+			"refs": ["4886c8a"]
 		},
 		"ww_animTiming/descartes-polar_orient/07_d-p_o_a-c-a": {
-			"refs": ["234adf8"]
+			"refs": ["65dce6d"]
 		},
 		"ww_animTiming/descartes-polar_orient/08_d-p_o_l-c-l": {
-			"refs": ["8d4083d"]
+			"refs": ["f322c16"]
 		},
 		"ww_animTiming/descartes-polar_orient/09_d-p_o_r-a-r": {
 			"refs": ["490574c"]
@@ -1214,16 +1214,16 @@
 			"refs": ["0463407"]
 		},
 		"ww_animTiming/descartes_orientation/05_d-d_o_r-c-r": {
-			"refs": ["e54cc3c"]
+			"refs": ["f6b3bbf"]
 		},
 		"ww_animTiming/descartes_orientation/06_d-d_o_c-c-c": {
-			"refs": ["e61f19f"]
+			"refs": ["d999663"]
 		},
 		"ww_animTiming/descartes_orientation/07_d-d_o_a-c-a": {
-			"refs": ["dfce038"]
+			"refs": ["af2ce41"]
 		},
 		"ww_animTiming/descartes_orientation/08_d-d_o_l-c-l": {
-			"refs": ["34f8fd2"]
+			"refs": ["fff1d32"]
 		},
 		"ww_animTiming/descartes_orientation/09_d-d_o_r-a-r": {
 			"refs": ["1b7d7ea"]
@@ -1280,13 +1280,13 @@
 			"refs": ["cb78537"]
 		},
 		"ww_animTiming/polar_orientation/05_p-p_o_r-c-r": {
-			"refs": ["1046707"]
+			"refs": ["234fa7b"]
 		},
 		"ww_animTiming/polar_orientation/06_p-p_o_c-c-c": {
-			"refs": ["5c0fa3c"]
+			"refs": ["5b95921"]
 		},
 		"ww_animTiming/polar_orientation/07_p-p_o_a-c-a": {
-			"refs": ["e6265f9"]
+			"refs": ["9d4ecb8"]
 		},
 		"ww_animTiming/polar_orientation/08_p-p_o_l-c-l": {
 			"refs": ["8b1c6a0"]
@@ -1472,16 +1472,16 @@
 			"refs": ["69cbcbd"]
 		},
 		"ww_animTiming_TESTS/descartes-polar_orient/05_d-p_o_r-c-r": {
-			"refs": ["43f00a0"]
+			"refs": ["3c2d245"]
 		},
 		"ww_animTiming_TESTS/descartes-polar_orient/06_d-p_o_c-c-c": {
-			"refs": ["ce69c8a"]
+			"refs": ["ef3e63b"]
 		},
 		"ww_animTiming_TESTS/descartes-polar_orient/07_d-p_o_a-c-a": {
-			"refs": ["2f088e8"]
+			"refs": ["7301e31"]
 		},
 		"ww_animTiming_TESTS/descartes-polar_orient/08_d-p_o_l-c-l": {
-			"refs": ["fe6cdbd"]
+			"refs": ["75e8880"]
 		},
 		"ww_animTiming_TESTS/descartes-polar_orient/09_d-p_o_r-a-r": {
 			"refs": ["8c26a23"]
@@ -1547,16 +1547,16 @@
 			"refs": ["27a3d5e"]
 		},
 		"ww_animTiming_TESTS/descartes_orientation/05_d-d_o_r-c-r": {
-			"refs": ["aabbace"]
+			"refs": ["c76fb8e"]
 		},
 		"ww_animTiming_TESTS/descartes_orientation/06_d-d_o_c-c-c": {
-			"refs": ["157472c"]
+			"refs": ["56a9d06"]
 		},
 		"ww_animTiming_TESTS/descartes_orientation/07_d-d_o_a-c-a": {
-			"refs": ["24fc2d2"]
+			"refs": ["25ad999"]
 		},
 		"ww_animTiming_TESTS/descartes_orientation/08_d-d_o_l-c-l": {
-			"refs": ["487ae15"]
+			"refs": ["c7fa639"]
 		},
 		"ww_animTiming_TESTS/descartes_orientation/09_d-d_o_r-a-r": {
 			"refs": ["bbfa964"]
@@ -1613,13 +1613,13 @@
 			"refs": ["f1962c6"]
 		},
 		"ww_animTiming_TESTS/polar_orientation/05_p-p_o_r-c-r": {
-			"refs": ["1f73c7e"]
+			"refs": ["e8814e5"]
 		},
 		"ww_animTiming_TESTS/polar_orientation/06_p-p_o_c-c-c": {
-			"refs": ["cecccc8"]
+			"refs": ["1d781f5"]
 		},
 		"ww_animTiming_TESTS/polar_orientation/07_p-p_o_a-c-a": {
-			"refs": ["6bbffdd"]
+			"refs": ["f61ab11"]
 		},
 		"ww_animTiming_TESTS/polar_orientation/08_p-p_o_l-c-l": {
 			"refs": ["a207e59"]
@@ -1763,7 +1763,7 @@
 			"refs": ["705aa0e"]
 		},
 		"ww_next_steps/next_steps/21_C_C_dotplot": {
-			"refs": ["2904e90"]
+			"refs": ["92eeaaa"]
 		},
 		"ww_next_steps/next_steps/22_C_C": {
 			"refs": ["87af60f"]
@@ -1772,7 +1772,7 @@
 			"refs": ["4b54e54"]
 		},
 		"ww_next_steps/next_steps/35_C_A_violin": {
-			"refs": ["25d77e1"]
+			"refs": ["2352b28"]
 		},
 		"ww_next_steps/next_steps/38_C_L_line": {
 			"refs": ["578d265"]
@@ -1793,7 +1793,7 @@
 			"refs": ["80c5969"]
 		},
 		"ww_next_steps/next_steps_Tests/21_C_C_dotplot": {
-			"refs": ["54295f5"]
+			"refs": ["483c9ec"]
 		},
 		"ww_next_steps/next_steps_Tests/22_C_C": {
 			"refs": ["81fcf00"]
@@ -1871,7 +1871,7 @@
 			"refs": ["d5720b5"]
 		},
 		"ww_next_steps/next_steps_byOperations/distribute/distribution_06": {
-			"refs": ["4ef6a21"]
+			"refs": ["c38881d"]
 		},
 		"ww_next_steps/next_steps_byOperations/distribute/distribution_07": {
 			"refs": ["f677f00"]
@@ -2111,7 +2111,7 @@
 			"refs": ["8d48a66"]
 		},
 		"ww_next_steps/next_steps_byOperations/wREGIEKBOL/NoFade_Promobol/8_06b_d-w_cir_1c": {
-			"refs": ["7174bcb"]
+			"refs": ["ee2089c"]
 		},
 		"ww_next_steps/next_steps_byOperations/wREGIEKBOL/NoFade_Promobol/9_06b_d-w_rec_1c": {
 			"refs": ["d486211"]
@@ -2558,19 +2558,19 @@
 			"refs": ["f128aa0"]
 		},
 		"ww_noFade/wNoFade_cases/1_des_pol/line/04a_lin": {
-			"refs": ["1a5b410"]
+			"refs": ["3b15914"]
 		},
 		"ww_noFade/wNoFade_cases/1_des_pol/line/04b_lin": {
 			"refs": ["0a8514e"]
 		},
 		"ww_noFade/wNoFade_cases/1_des_pol/line/05a_lin": {
-			"refs": ["96903d3"]
+			"refs": ["44e1409"]
 		},
 		"ww_noFade/wNoFade_cases/1_des_pol/line/05b_lin": {
 			"refs": ["73c8dc9"]
 		},
 		"ww_noFade/wNoFade_cases/1_des_pol/line/06a_lin": {
-			"refs": ["c9ceca8"]
+			"refs": ["a80440a"]
 		},
 		"ww_noFade/wNoFade_cases/1_des_pol/line/06b_lin": {
 			"refs": ["665ca53"]
@@ -2777,19 +2777,19 @@
 			"refs": ["074f490"]
 		},
 		"ww_noFade/wNoFade_cases/2_des_pol-without/line-rectangle/04a_d-w_lin": {
-			"refs": ["e58f156"]
+			"refs": ["169f45a"]
 		},
 		"ww_noFade/wNoFade_cases/2_des_pol-without/line-rectangle/04b_d-w_lin": {
 			"refs": ["561fbb9"]
 		},
 		"ww_noFade/wNoFade_cases/2_des_pol-without/line-rectangle/05a_d-w_lin": {
-			"refs": ["a6429e4"]
+			"refs": ["a4f25b5"]
 		},
 		"ww_noFade/wNoFade_cases/2_des_pol-without/line-rectangle/05b_d-w_lin": {
 			"refs": ["9897763"]
 		},
 		"ww_noFade/wNoFade_cases/2_des_pol-without/line-rectangle/06a_d-w_lin": {
-			"refs": ["9c4e8ab"]
+			"refs": ["939c274"]
 		},
 		"ww_noFade/wNoFade_cases/2_des_pol-without/line-rectangle/06b_d-w_lin": {
 			"refs": ["16823b3"]
@@ -2801,19 +2801,19 @@
 			"refs": ["1b52593"]
 		},
 		"ww_noFade/wNoFade_cases/2_des_pol-without/line/04a_d-w_lin": {
-			"refs": ["46c8ce8"]
+			"refs": ["ada5177"]
 		},
 		"ww_noFade/wNoFade_cases/2_des_pol-without/line/04b_d-w_lin": {
 			"refs": ["7066fed"]
 		},
 		"ww_noFade/wNoFade_cases/2_des_pol-without/line/05a_d-w_lin": {
-			"refs": ["324aa85"]
+			"refs": ["bdf906f"]
 		},
 		"ww_noFade/wNoFade_cases/2_des_pol-without/line/05b_d-w_lin": {
 			"refs": ["56454e3"]
 		},
 		"ww_noFade/wNoFade_cases/2_des_pol-without/line/06a_d-w_lin": {
-			"refs": ["e196b36"]
+			"refs": ["c754597"]
 		},
 		"ww_noFade/wNoFade_cases/2_des_pol-without/line/06b_d-w_lin": {
 			"refs": ["672ba90"]
@@ -2825,13 +2825,13 @@
 			"refs": ["1124f4f"]
 		},
 		"ww_noFade/wNoFade_cases/2_des_pol-without/line_V1/04a_d-w_lin_V1": {
-			"refs": ["c3ad3a9"]
+			"refs": ["4a6b422"]
 		},
 		"ww_noFade/wNoFade_cases/2_des_pol-without/line_V1/04b_d-w_lin_V1": {
 			"refs": ["0d0d4eb"]
 		},
 		"ww_noFade/wNoFade_cases/2_des_pol-without/line_V1/05a_d-w_lin_V1": {
-			"refs": ["c8181ab"]
+			"refs": ["578100d"]
 		},
 		"ww_noFade/wNoFade_cases/2_des_pol-without/line_V1/05b_d-w_lin_V1": {
 			"refs": ["df70ce8"]
@@ -2840,7 +2840,7 @@
 			"refs": ["adf156e"]
 		},
 		"ww_noFade/wNoFade_cases/2_des_pol-without/line_V1/06b_d-w_lin_V1": {
-			"refs": ["aa1b99e"]
+			"refs": ["90cefce"]
 		},
 		"ww_noFade/wNoFade_cases/2_des_pol-without/rectangle/02_d-w_rec": {
 			"refs": ["291bf66"]
@@ -3038,7 +3038,7 @@
 			"refs": ["25c68b8"]
 		},
 		"ww_samples_for_presets/cartesian_coo_sys/21_C_C_dot_plot_chart": {
-			"refs": ["1466b36"]
+			"refs": ["16af4ef"]
 		},
 		"ww_samples_for_presets/cartesian_coo_sys/22_C_C_scatter_plot": {
 			"refs": ["7a79697"]
@@ -3047,7 +3047,7 @@
 			"refs": ["9d8d76c"]
 		},
 		"ww_samples_for_presets/cartesian_coo_sys/25_C_C_correlogram": {
-			"refs": ["95be630"]
+			"refs": ["24ede3c"]
 		},
 		"ww_samples_for_presets/cartesian_coo_sys/27_C_A_area_chart": {
 			"refs": ["edba15c"]

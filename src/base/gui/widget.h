@@ -22,7 +22,6 @@ public:
 	virtual void onChanged() = 0;
 	virtual void onDraw(const std::shared_ptr<Gfx::ICanvas> &) = 0;
 	virtual void onUpdateSize(Geom::Size) = 0;
-	[[nodiscard]] virtual bool needsUpdate(Geom::Size) const = 0;
 };
 
 }

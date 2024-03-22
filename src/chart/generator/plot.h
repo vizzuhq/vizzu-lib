@@ -67,6 +67,7 @@ public:
 	Guides guides;
 	DimensionAxises dimensionAxises;
 	Math::FuzzyBool keepAspectRatio;
+	std::optional<Orientation> markerConnectionOrientation;
 
 	Plot(const Plot &other) = default;
 	Plot(PlotOptionsPtr options, const Plot &other);
@@ -124,7 +125,7 @@ private:
 
 	void generateMarkers(const Data::DataTable &table);
 	void generateMarkersInfo();
-	void linkMarkers(const Buckets &buckets, bool main);
+	bool linkMarkers(const Buckets &buckets, bool main);
 	void normalizeXY();
 	void calcMeasureAxises(const Data::DataTable &dataTable);
 	void calcMeasureAxis(ChannelId type,

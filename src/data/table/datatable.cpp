@@ -25,8 +25,7 @@ void DataTableOld::pushRow(const TableRow<std::string> &textRow)
 }
 
 template <typename T>
-DataTableOld::DataIndex DataTableOld::addTypedColumn(
-    const std::string &name,
+void DataTableOld::addTypedColumn(const std::string &name,
     const std::string &unit,
     const std::span<T> &values)
 {
@@ -81,20 +80,16 @@ DataTableOld::DataIndex DataTableOld::addTypedColumn(
 
 		addRow(row);
 	}
-
-	return getIndex(ColumnIndex(colIndex));
 }
 
-DataTableOld::DataIndex DataTableOld::addColumn(
-    const std::string &name,
+void DataTableOld::addColumn(const std::string &name,
     const std::string &unit,
     const std::span<const double> &values)
 {
 	return addTypedColumn(name, unit, values);
 }
 
-DataTableOld::DataIndex DataTableOld::addColumn(
-    const std::string &name,
+void DataTableOld::addColumn(const std::string &name,
     const std::span<const char *const> &categories,
     const std::span<const std::uint32_t> &values)
 {
