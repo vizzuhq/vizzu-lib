@@ -552,7 +552,8 @@ data_source::final_info::final_info(const data_source &source) :
 		for (std::size_t d{}; d < dimensions; ++d) {
 			auto val = source.dimensions[d].values[r];
 			record +=
-			    source.dimension_names[d] + ':'
+			    source.dimension_names[d] + '['
+			    + std::to_string(static_cast<int32_t>(val)) + "]:"
 			    + (val == nav ? "null"
 			                  : source.dimensions[d].categories[val])
 			    + ";";

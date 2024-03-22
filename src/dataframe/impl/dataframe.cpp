@@ -159,8 +159,9 @@ void dataframe::set_sort(series_identifier series,
 	case dimension: {
 		std::optional<std::vector<std::uint32_t>> indices;
 		if (const auto &dim = unsafe_get<dimension>(ser).second;
-		    std::ranges::is_sorted(
-		        indices.emplace(dim.get_indices(sort)))
+		    ((sort_ptr && *sort_ptr == sort_type::by_categories)
+		        || std::ranges::is_sorted(
+		            indices.emplace(dim.get_indices(sort))))
 		    && (na_pos == dim.na_pos || !dim.contains_nav))
 			break;
 
@@ -180,12 +181,16 @@ void dataframe::set_sort(series_identifier series,
 			throw std::runtime_error(
 			    "Measure series cannot be sorted by categories.");
 		switch (*sort_ptr) {
+		default:
 		case sort_type::less:
 		case sort_type::greater: break;
 		case sort_type::natural_less:
 		case sort_type::natural_greater:
 			throw std::runtime_error(
 			    "Measure series cannot be sorted by natural order.");
+		case sort_type::by_categories:
+			throw std::runtime_error(
+			    "Measure series cannot be sorted by categories.");
 		}
 		break;
 	}

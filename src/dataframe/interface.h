@@ -24,7 +24,13 @@ enum class aggregator_type {
 	exists
 };
 
-enum class sort_type { less, greater, natural_less, natural_greater };
+enum class sort_type {
+	less,
+	greater,
+	natural_less,
+	natural_greater,
+	by_categories
+};
 
 enum class na_position { last, first };
 
@@ -46,6 +52,21 @@ struct custom_aggregator
 	[[nodiscard]] std::string_view get_name() const
 	{
 		return std::visit<std::string_view>(std::identity{}, name);
+	}
+
+	auto operator<=>(const custom_aggregator &oth) const
+	{
+		return get_name() <=> oth.get_name();
+	}
+
+	auto operator!=(const custom_aggregator &oth) const
+	{
+		return get_name() != oth.get_name();
+	}
+
+	auto operator==(const custom_aggregator &oth) const
+	{
+		return get_name() == oth.get_name();
 	}
 };
 
