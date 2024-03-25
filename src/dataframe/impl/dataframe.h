@@ -92,10 +92,14 @@ public:
 	void remove_records(std::function<bool(record_type)> filter)
 	    & final;
 
+	void remove_unused_categories(series_identifier column) & final;
+
 	void change_data(record_identifier record_id,
 	    series_identifier column,
 	    cell_value value)
 	    & final;
+
+	bool has_na(series_identifier column) const & final;
 
 	void fill_na(series_identifier column, cell_value value) & final;
 

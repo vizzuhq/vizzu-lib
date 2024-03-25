@@ -660,6 +660,34 @@ void dataframe::remove_records(
 	    remove_ix);
 }
 
+void dataframe::remove_unused_categories(series_identifier column) &
+{
+	change_state_to(state_type::modifying,
+	    state_modification_reason::needs_series_type);
+
+	std::vector<bool> usage;
+	switch (auto &&ser = get_data_source().get_series(column)) {
+		using enum series_type;
+	default: throw std::runtime_error("Series does not exists.");
+	case measure:
+		throw std::runtime_error("Measure series has no categories.");
+	case dimension:
+		usage =
+		    unsafe_get<dimension>(ser).second.get_categories_usage();
+		if (std::ranges::all_of(usage,
+		        std::bind_front(std::equal_to{}, true)))
+			return;
+		break;
+	}
+
+	change_state_to(state_type::modifying,
+	    state_modification_reason::needs_own_state);
+
+	unsafe_get<series_type::dimension>(
+	    unsafe_get<source_type::owning>(source)->get_series(column))
+	    .second.remove_unused_categories(std::move(usage));
+}
+
 void dataframe::change_data(record_identifier record_id,
     series_identifier column,
     cell_value value) &
@@ -707,6 +735,23 @@ void dataframe::change_data(record_identifier record_id,
 		    *std::get_if<std::size_t>(&record_id),
 		    *std::get_if<std::string_view>(&value));
 		break;
+	}
+}
+
+bool dataframe::has_na(series_identifier column) const &
+{
+	switch (auto &&ser = get_data_source().get_series(column)) {
+		using enum series_type;
+	default: throw std::runtime_error("Series does not exists.");
+	case measure: {
+		const auto &meas = unsafe_get<measure>(ser).second;
+		return meas.contains_nan
+		    || get_record_count() > meas.values.size();
+	}
+	case dimension:
+		const auto &dim = unsafe_get<dimension>(ser).second;
+		return dim.contains_nav
+		    || get_record_count() > dim.values.size();
 	}
 }
 

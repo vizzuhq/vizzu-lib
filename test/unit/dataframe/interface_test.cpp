@@ -164,6 +164,11 @@ const static auto tests =
 	assert->*df->get_dimensions() == std::array{"d0", "d1"};
 	assert->*df->get_measures() == std::array{"m1", "m2"};
 
+	check->*df->has_na("d0") == "d0 has nav"_is_true;
+	check->*df->has_na("d1") == "d1 has nav"_is_true;
+	check->*df->has_na("m1") == "m1 has nan"_is_true;
+	check->*df->has_na("m2") == "m2 has nan"_is_true;
+
 	check->*df->get_categories("d0") == std::array{"a"};
 
 	assert->*df->get_categories("d1")

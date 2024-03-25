@@ -68,6 +68,10 @@ private:
 		void set(std::size_t index, std::string_view value);
 
 		void set_nav(std::string_view value);
+
+		std::vector<bool> get_categories_usage() const;
+
+		void remove_unused_categories(std::vector<bool> &&used);
 	};
 
 	struct measure_t

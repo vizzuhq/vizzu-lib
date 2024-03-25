@@ -473,9 +473,13 @@ data_source::data_source(aggregating_type &&aggregating,
 			for (auto &m : measures) m.values.emplace_back(nan);
 
 			for (std::size_t ix{}; const auto &[name, dim] : dims)
-				dimensions[ix++].values.emplace_back(
-				    i < dim.get().values.size() ? dim.get().values[i]
-				                                : nav);
+				if (auto &newDim = dimensions[ix++];
+				    newDim.values.emplace_back(
+				        i < dim.get().values.size()
+				            ? dim.get().values[i]
+				            : nav)
+				    == nav)
+					newDim.contains_nav = true;
 
 			aggregators.reserve(meas.size());
 			for (const auto &[ser, agg] :
@@ -660,6 +664,32 @@ void data_source::dimension_t::set_nav(std::string_view value)
 
 	contains_nav = false;
 }
+
+std::vector<bool>
+data_source::dimension_t::get_categories_usage() const
+{
+	std::vector<bool> used(categories.size());
+	for (const auto &val : values)
+		if (val != nav) used[val] = true;
+
+	return used;
+}
+
+void data_source::dimension_t::remove_unused_categories(
+    std::vector<bool> &&used)
+{
+	std::vector<std::uint32_t> remap(categories.size());
+	std::size_t new_size{};
+	for (std::size_t i{}; i < categories.size(); ++i)
+		if (used[i])
+			categories[remap[i] = new_size++] =
+			    std::move(categories[i]);
+	categories.resize(new_size);
+
+	for (auto &val : values)
+		if (val != nav) val = remap[val];
+}
+
 std::uint32_t data_source::dimension_t::get_or_set_cat(
     std::string_view cat)
 {
