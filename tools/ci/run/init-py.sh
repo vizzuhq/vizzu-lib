@@ -7,6 +7,8 @@ if ! python3 -c 'import sys; assert sys.version_info >= (3,10)' > /dev/null; the
     exit 1
 fi
 
+test -f ~/.netrc && chmod u+rw,u-x,go-rwx ~/.netrc
+
 python3.10 -m venv --copies ".venv" || python3 -m venv --copies ".venv"
 source .venv/bin/activate
 pip install pdm==2.10.3
