@@ -16,11 +16,17 @@ TreeMap::TreeMap(const std::vector<double> &sizes,
 	for (auto j = 0U; j < sizes.size(); ++j)
 		markers.emplace_back(j, sizes[j]);
 
-	std::sort(markers.begin(), markers.end(), SpecMarker::sizeOrder);
+	std::ranges::sort(markers, SpecMarker::sizeOrder);
 
-	divide(markers.begin(), markers.end(), p0, p1);
+	auto it = std::ranges::upper_bound(markers,
+	    SpecMarker{0, 0.0},
+	    SpecMarker::sizeOrder);
 
-	std::sort(markers.begin(), markers.end(), SpecMarker::indexOrder);
+	divide(markers.begin(), it, p0, p1);
+
+	while (it != markers.end()) it++->emplaceRect({0, 0}, {0, 0});
+
+	std::ranges::sort(markers, SpecMarker::indexOrder);
 }
 
 void TreeMap::divide(It begin,
