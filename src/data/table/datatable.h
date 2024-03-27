@@ -46,10 +46,10 @@ public:
 	    const std::string &name) const;
 	[[nodiscard]] DataIndex getIndex(const std::string &name) const;
 
-	DataIndex addColumn(const std::string &name,
+	void addColumn(const std::string &name,
 	    const std::string &unit,
 	    const std::span<const double> &values);
-	DataIndex addColumn(const std::string &name,
+	void addColumn(const std::string &name,
 	    const std::span<const char *const> &categories,
 	    const std::span<const std::uint32_t> &values);
 
@@ -65,7 +65,7 @@ private:
 	Infos infos;
 
 	template <typename T>
-	DataIndex addTypedColumn(const std::string &name,
+	void addTypedColumn(const std::string &name,
 	    const std::string &unit,
 	    const std::span<T> &values);
 };
@@ -86,11 +86,6 @@ public:
 	}
 
 	const double &operator*() const { return value; }
-
-	double operator[](const std::string &val) const
-	{
-		return static_cast<double>(info.dimensionValueAt(val));
-	}
 
 	[[nodiscard]] const char *dimensionValue() const
 	{

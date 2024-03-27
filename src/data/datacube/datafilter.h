@@ -16,9 +16,9 @@ public:
 
 	Filter() = default;
 	template <class Fn>
-	Filter(Fn &&function, uint64_t hash) :
+	Filter(Fn &&function, uint64_t hashVal) :
 	    function(std::forward<Fn>(function)),
-	    hash(hash)
+	    hash(hashVal)
 	{}
 
 	[[nodiscard]] bool match(const RowWrapper &row) const

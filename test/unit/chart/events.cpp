@@ -58,10 +58,197 @@ struct MyCanvas final : Gfx::ICanvas, Vizzu::Draw::Painter
 	ICanvas &getCanvas() final { return *this; }
 };
 
+auto testcase_1 = [](Vizzu::Data::DataTable &table)
+{
+	table.addColumn("Dim5",
+	    {{"A", "B", "C", "D", "E"}},
+	    {{0, 0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 4}});
+	table.addColumn("Dim2",
+	    {{"a", "b"}},
+	    {{0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1}});
+	table.addColumn("Dim3",
+	    {{"a", "b", "c"}},
+	    {{0, 0, 1, 1, 0, 0, 1, 1, 2, 2, 1, 0, 2, 2, 1, 0}});
+	table.addColumn("Meas1",
+	    "",
+	    {{1, 2, 4, 3, 3, 4, 2, 1, 4, 3, 1, 2, 2, 1, 3, 4}});
+	table.addColumn("Meas2",
+	    "",
+	    {{0, -1, 5, 6, 6, 5, -1, 0, 5, 6, 0, -1, -1, 0, 6, -5}});
+};
+
+auto testcase_2 = [](Vizzu::Data::DataTable &table)
+{
+	table.addColumn("Channel title for long names",
+	    {{
+	        "Long name wich has no end",
+	        R"(Raw
+break)",
+	        R"(キャラクターセット)",
+	    }},
+	    {{0,
+	        0,
+	        0,
+	        0,
+	        1,
+	        1,
+	        1,
+	        1,
+	        2,
+	        2,
+	        2,
+	        2,
+	        0,
+	        0,
+	        0,
+	        0,
+	        1,
+	        1,
+	        1,
+	        1,
+	        2,
+	        2,
+	        2,
+	        2,
+	        0,
+	        0,
+	        0,
+	        0,
+	        1,
+	        1,
+	        1,
+	        1,
+	        2,
+	        2,
+	        2,
+	        2,
+	        0,
+	        0,
+	        0,
+	        0,
+	        1,
+	        1,
+	        1,
+	        1,
+	        2,
+	        2,
+	        2,
+	        2}});
+
+	table.addColumn("Childs of long names which have no end",
+	    {{"Very long label of this element",
+	        "",
+	        "It is also long enough",
+	        "Short one",
+	        "Jap",
+	        "キャラクターセット",
+	        R"(Raw
+break)",
+	        "h",
+	        "i",
+	        "j"}},
+	    {{
+	        0,
+	        1,
+	        2,
+	        3,
+	        4,
+	        5,
+	        6,
+	        7,
+	        8,
+	        9,
+	        0,
+	        1,
+	        2,
+	        3,
+	        4,
+	        5,
+	        6,
+	        7,
+	        8,
+	        9,
+	        0,
+	        1,
+	        2,
+	        3,
+	        4,
+	        5,
+	        6,
+	        7,
+	        8,
+	        9,
+	        0,
+	        1,
+	        2,
+	        3,
+	        4,
+	        5,
+	        6,
+	        7,
+	        8,
+	        9,
+
+	    }});
+
+	table.addColumn("値3",
+	    "",
+	    {{639,
+	        354,
+	        278,
+	        312,
+	        1241,
+	        1512,
+	        863,
+	        789,
+	        765,
+	        653,
+	        542,
+	        497,
+	        673,
+	        412,
+	        308,
+	        345,
+	        1329,
+	        1671,
+	        962,
+	        821,
+	        798,
+	        681,
+	        584,
+	        518,
+	        706,
+	        432,
+	        326,
+	        358,
+	        1382,
+	        1715,
+	        1073,
+	        912,
+	        821,
+	        721,
+	        618,
+	        542,
+	        721,
+	        462,
+	        372,
+	        367,
+	        1404,
+	        1729,
+	        1142,
+	        941,
+	        834,
+	        778,
+	        651,
+	        598}});
+};
+
 struct chart_setup
 {
 	std::vector<std::pair<Vizzu::Gen::ChannelId, const char *>>
 	    series;
+	std::function<void(Vizzu::Data::DataTable &)> testcase =
+	    testcase_1;
 	bool is_emscripten{[]
 	    {
 		    bool is_emscripten{
@@ -78,21 +265,7 @@ struct chart_setup
 	explicit(false) operator Vizzu::Chart &()
 	{
 		auto &table = chart.getTable();
-		table.addColumn("Dim5",
-		    {{"A", "B", "C", "D", "E"}},
-		    {{0, 0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 4}});
-		table.addColumn("Dim4",
-		    {{"a", "b", "c", "d"}},
-		    {{0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3}});
-		table.addColumn("Dim3",
-		    {{"a", "b", "c"}},
-		    {{0, 0, 1, 1, 0, 0, 1, 1, 2, 2, 1, 0, 2, 2, 1, 0}});
-		table.addColumn("Meas1",
-		    "",
-		    {{1, 2, 4, 3, 3, 4, 2, 1, 4, 3, 1, 2, 2, 1, 3, 4}});
-		table.addColumn("Meas2",
-		    "",
-		    {{0, -1, 5, 6, 6, 5, -1, 0, 5, 6, 0, -1, -1, 0, 6, -5}});
+		testcase(table);
 		auto &channels = chart.getOptions().getChannels();
 		for (auto &&[ch, name] : series)
 			channels.addSeries(ch, {name, table});
@@ -352,6 +525,77 @@ const static auto tests =
 
 	check->*events.count("plot-axis-draw") == 0u;
 	check->*events.count("plot-marker-draw") == 10u;
+
+	for (auto &&[beg, end] = events.equal_range("plot-marker-draw");
+	     const auto &[v, t, d] : values(subrange(beg, end)))
+		check->*std::get_if<Vizzu::Draw::Rect>(&d) != nullptr;
+}
+
+    | "icicle rectangle 2dis 1con" |
+    [](Vizzu::Chart &chart = chart_setup{{{x, "Dim5"},
+           {x, "Meas1"},
+           {y, "Dim2"},
+           {y, "Meas2"}}})
+{
+	auto &&events = get_events(chart);
+
+	check->*events.count("plot-axis-draw") == 2u;
+	check->*events.count("plot-marker-draw") == 5u;
+
+	for (auto &&[beg, end] = events.equal_range("plot-marker-draw");
+	     const auto &[v, t, d] : values(subrange(beg, end)))
+		check->*std::get_if<Vizzu::Draw::Rect>(&d) != nullptr;
+}
+
+    | "53978116" |
+    [](Vizzu::Chart &chart = chart_setup{{{color, "Dim3"},
+           {x, "Dim5"},
+           {y, "min(Meas1)"},
+           {y, "Dim3"}}})
+{
+	auto &&events = get_events(chart);
+
+	check->*events.count("plot-axis-draw") == 2u;
+	check->*events.count("plot-marker-draw") == 10u;
+
+	for (auto &&[beg, end] = events.equal_range("plot-marker-draw");
+	     const auto &[v, t, d] : values(subrange(beg, end)))
+		check->*std::get_if<Vizzu::Draw::Rect>(&d) != nullptr;
+}
+
+    | "aggregators step1" |
+    [](Vizzu::Chart &chart = chart_setup{{{x, "Dim3"},
+           {y, "min(Meas1)"},
+           {label, "min(Meas1)"}}})
+{
+	auto &&events = get_events(chart);
+
+	check->*events.count("plot-axis-draw") == 2u;
+	check->*events.count("plot-marker-draw") == 3u;
+
+	for (auto &&[beg, end] = events.equal_range("plot-marker-draw");
+	     const auto &[v, t, d] : values(subrange(beg, end)))
+		check->*std::get_if<Vizzu::Draw::Rect>(&d) != nullptr;
+}
+
+    | "column rectangle less disc" |
+    [](Vizzu::Chart &chart =
+            chart_setup{
+                {{y, "Channel title for long names"},
+                    {y, "値3"},
+                    {x, "Childs of long names which have no end"},
+                    {color, "Channel title for long names"},
+                    {label, "Channel title for long names"}},
+                testcase_2})
+{
+	chart.getOptions().getChannels().at(y).range.min =
+	    Vizzu::Base::AutoParam{Vizzu::Gen::ChannelExtrema("110%")};
+	chart.getOptions().getChannels().at(y).range.max =
+	    Vizzu::Base::AutoParam{Vizzu::Gen::ChannelExtrema("0%")};
+	auto &&events = get_events(chart);
+
+	check->*events.count("plot-axis-draw") == 2u;
+	check->*events.count("plot-marker-draw") == 26u;
 
 	for (auto &&[beg, end] = events.equal_range("plot-marker-draw");
 	     const auto &[v, t, d] : values(subrange(beg, end)))

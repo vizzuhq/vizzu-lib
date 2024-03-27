@@ -35,7 +35,6 @@ public:
 	bool operator==(const SeriesIndex &other) const = default;
 
 	[[nodiscard]] std::string toString(const DataTable &table) const;
-	[[nodiscard]] std::string toString() const;
 
 private:
 	OptColIndex index;

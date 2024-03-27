@@ -27,6 +27,8 @@ public:
 	[[nodiscard]] explicit operator double() const;
 	[[nodiscard]] bool isEmpty() const;
 
+	[[nodiscard]] Type getType() const { return type; }
+
 private:
 	Type type;
 	double value;

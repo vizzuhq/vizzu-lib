@@ -60,13 +60,7 @@ ColumnInfo::ContiType ColumnInfo::getContiType() const
 	return contiType;
 }
 
-std::uint64_t ColumnInfo::dimensionValueAt(
-    const std::string &str) const
-{
-	return valueIndexes.at(str);
-}
-
-const ColumnInfo::Values &ColumnInfo::categories() const
+std::span<const std::string> ColumnInfo::categories() const
 {
 	return values;
 }

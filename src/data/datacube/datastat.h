@@ -22,11 +22,9 @@ private:
 	void trackIndex(const DataTable::Row &row,
 	    const std::set<SeriesIndex> &indices);
 
-	void countValues();
-
-	std::unordered_map<size_t, size_t> usedColumnIDs;
-	std::vector<std::vector<bool>> usedValues;
-	std::vector<size_t> usedValueCnt;
+	std::unordered_map<SeriesIndex::OptColIndex::value_type, size_t>
+	    usedColumnIDs;
+	std::vector<std::unordered_set<std::string>> usedValues;
 };
 
 }

@@ -6,7 +6,6 @@ namespace Vizzu::Data
 {
 
 using MultiDim::DimIndex;
-using MultiDim::MultiIndex;
 using MultiDim::SubSliceIndex;
 
 DataCube::DataCube(const DataTable &table,
@@ -65,15 +64,15 @@ DataCube::DataCube(const DataTable &table,
 	}
 }
 
-MultiIndex DataCube::getIndex(const DataTable::Row &row,
+DataCube::MultiIndex DataCube::getIndex(const DataTable::Row &row,
     const std::set<SeriesIndex> &indices,
     size_t rowIndex)
 {
 	MultiIndex index;
 	for (auto idx : indices) {
 		auto indexValue =
-		    idx.getType().isReal()
-		        ? static_cast<size_t>(row[idx.getColIndex().value()])
+		    idx.getType().isReal() ? static_cast<std::size_t>(
+		        static_cast<double>(row[idx.getColIndex().value()]))
 		    : idx.getType() == SeriesType::Index
 		        ? rowIndex
 		        : throw std::logic_error("internal error: cannot "
@@ -198,7 +197,7 @@ size_t DataCube::flatSubSliceIndex(const SeriesList &colIndices,
 }
 
 CellInfo::Categories DataCube::categories(
-    const MultiDim::MultiIndex &index) const
+    const MultiIndex &index) const
 {
 	CellInfo::Categories res;
 
@@ -209,8 +208,7 @@ CellInfo::Categories DataCube::categories(
 	return res;
 }
 
-CellInfo::Values DataCube::values(
-    const MultiDim::MultiIndex &index) const
+CellInfo::Values DataCube::values(const MultiIndex &index) const
 {
 	CellInfo::Values res;
 
@@ -226,26 +224,11 @@ CellInfo::Values DataCube::values(
 	return res;
 }
 
-CellInfo DataCube::cellInfo(const MultiDim::MultiIndex &index) const
+CellInfo DataCube::cellInfo(const MultiIndex &index) const
 {
 	if (!table) return {};
 
 	return {categories(index), values(index)};
 }
 
-MultiDim::SubSliceIndex DataCube::subSliceIndex(
-    const MarkerIdStrings &stringMarkerId) const
-{
-	MultiDim::SubSliceIndex index;
-	for (const auto &pair : stringMarkerId) {
-		auto colIdx = table->getColumn(pair.first);
-		auto seriesIdx = table->getIndex(colIdx);
-		auto valIdx =
-		    table->getInfo(colIdx).dimensionValueAt(pair.second);
-		auto dimIdx = getDimBySeries(SeriesIndex(seriesIdx));
-		index.push_back(
-		    MultiDim::SliceIndex{dimIdx, MultiDim::Index{valIdx}});
-	}
-	return index;
-}
 }
