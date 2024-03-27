@@ -50,8 +50,10 @@ void valid_unexistent_aggregator(
     const dataframe::any_aggregator_type &agg)
 {
 	if (const auto *aggr = std::get_if<aggregator_type>(&agg);
-	    !aggr || *aggr != aggregator_type::count)
-		throw std::runtime_error("Series does not exists.");
+	    !aggr
+	    || (*aggr != aggregator_type::count
+	        && *aggr != aggregator_type::exists))
+		throw std::runtime_error("Series does not exists - aggr.");
 }
 
 void valid_dimension_aggregator(
@@ -118,7 +120,7 @@ std::string dataframe::set_aggregate(series_identifier series,
 
 	auto &&[name, uniq] = aggs.add_aggregated(std::move(ser),
 	    agg ? aggregators[*agg]
-	        : std::get<custom_aggregator>(aggregator));
+	        : *std::get_if<custom_aggregator>(&aggregator));
 	if (!uniq)
 		throw std::runtime_error(
 		    "Duplicated aggregated series name.");
@@ -131,12 +133,11 @@ void dataframe::set_filter(std::function<bool(record_type)> &&filt) &
 		bools->assign(get_record_count(), false);
 		if (filt) {
 			visit(
-			    [&filt, it = bools->begin()](
-			        record_type record) mutable
+			    [&filt, &b = *bools](record_type record) mutable
 			    {
-				    *it++ = filt(record);
-			    },
-			    false);
+				    b[std::get<std::size_t>(record.recordId)] =
+				        filt(record);
+			    });
 		}
 	}
 	else
@@ -155,7 +156,8 @@ void dataframe::set_sort(series_identifier series,
 
 	switch (ser) {
 		using enum series_type;
-	default: throw std::runtime_error("Series does not exists.");
+	default:
+		throw std::runtime_error("Series does not exists - sort.");
 	case dimension: {
 		std::optional<std::vector<std::uint32_t>> indices;
 		if (const auto &dim = unsafe_get<dimension>(ser).second;
@@ -440,8 +442,7 @@ void dataframe::add_series_by_other(series_identifier curr_series,
 		    {
 			    add_val(value_transform(record,
 			        dim.get(std::get<std::size_t>(record.recordId))));
-		    },
-		    false);
+		    });
 		break;
 	}
 	case measure: {
@@ -452,10 +453,8 @@ void dataframe::add_series_by_other(series_identifier curr_series,
 		        record_type record)
 		    {
 			    add_val(value_transform(record,
-			        mea.values[std::get<std::size_t>(
-			            record.recordId)]));
-		    },
-		    false);
+			        mea.get(std::get<std::size_t>(record.recordId))));
+		    });
 		break;
 	}
 	}
@@ -494,7 +493,9 @@ void dataframe::remove_series(
 	for (auto &&s = get_data_source(); const auto &name : names) {
 		switch (auto ser = s.get_series(name)) {
 			using enum series_type;
-		default: throw std::runtime_error("Series does not exists.");
+		default:
+			throw std::runtime_error(
+			    "Series does not exists - remove.");
 		case dimension: {
 			auto ix = &unsafe_get<dimension>(ser).second
 			        - s.dimensions.data();
@@ -638,7 +639,8 @@ void dataframe::remove_records(
 	change_state_to(state_type::modifying,
 	    state_modification_reason::needs_record_count);
 
-	if (get_record_count() == 0) return;
+	auto count = get_record_count();
+	if (count == 0) return;
 
 	change_state_to(state_type::modifying,
 	    state_modification_reason::needs_sorted_records);
@@ -650,11 +652,18 @@ void dataframe::remove_records(
 		    if (filter(r))
 			    remove_ix.push_back(
 			        std::get<std::size_t>(r.recordId));
-	    },
-	    false);
+	    });
 
 	change_state_to(state_type::modifying,
 	    state_modification_reason::needs_own_state);
+
+	if (auto *p = get_if<source_type::copying>(&source)) {
+		if (!p->pre_remove) p->pre_remove.emplace(count);
+
+		for (std::size_t i : remove_ix) (*p->pre_remove)[i] = true;
+
+		return;
+	}
 
 	unsafe_get<source_type::owning>(source)->remove_records(
 	    remove_ix);
@@ -668,7 +677,9 @@ void dataframe::remove_unused_categories(series_identifier column) &
 	std::vector<bool> usage;
 	switch (auto &&ser = get_data_source().get_series(column)) {
 		using enum series_type;
-	default: throw std::runtime_error("Series does not exists.");
+	default:
+		throw std::runtime_error(
+		    "Series does not exists - remove cats.");
 	case measure:
 		throw std::runtime_error("Measure series has no categories.");
 	case dimension:
@@ -707,7 +718,9 @@ void dataframe::change_data(record_identifier record_id,
 
 	switch (s.get_series(column)) {
 		using enum series_type;
-	default: throw std::runtime_error("Series does not exists.");
+	default:
+		throw std::runtime_error(
+		    "Series does not exists - change data.");
 	case measure:
 		if (!d) throw std::runtime_error("Measure must be a number.");
 		break;
@@ -742,7 +755,8 @@ bool dataframe::has_na(series_identifier column) const &
 {
 	switch (auto &&ser = get_data_source().get_series(column)) {
 		using enum series_type;
-	default: throw std::runtime_error("Series does not exists.");
+	default:
+		throw std::runtime_error("Series does not exists - has na.");
 	case measure: {
 		const auto &meas = unsafe_get<measure>(ser).second;
 		return meas.contains_nan
@@ -764,7 +778,8 @@ void dataframe::fill_na(series_identifier column, cell_value value) &
 
 	switch (get_data_source().get_series(column)) {
 		using enum series_type;
-	default: throw std::runtime_error("Series does not exists.");
+	default:
+		throw std::runtime_error("Series does not exists - fill na.");
 	case measure:
 		if (!d) throw std::runtime_error("Measure must be a number.");
 		if (std::isnan(*d))
@@ -779,6 +794,8 @@ void dataframe::fill_na(series_identifier column, cell_value value) &
 	change_state_to(state_type::modifying,
 	    state_modification_reason::needs_own_state);
 
+	auto count = get_record_count();
+
 	switch (auto &&ser =
 	            unsafe_get<source_type::owning>(source)->get_series(
 	                column)) {
@@ -789,11 +806,13 @@ void dataframe::fill_na(series_identifier column, cell_value value) &
 		if (std::exchange(meas.contains_nan, false))
 			for (auto &v : meas.values)
 				if (std::isnan(v)) v = *d;
+		if (meas.values.size() < count) meas.values.resize(count, *d);
 		break;
 	}
 	case dimension:
 		unsafe_get<dimension>(ser).second.set_nav(
-		    *std::get_if<std::string_view>(&value));
+		    *std::get_if<std::string_view>(&value),
+		    count);
 		break;
 	}
 }
@@ -818,7 +837,9 @@ std::string dataframe::as_string() const &
 		Conv::JSONObj obj{res};
 		switch (auto &&ser = s.get_series(name)) {
 			using enum series_type;
-		default: throw std::runtime_error("Series does not exists.");
+		default:
+			throw std::runtime_error(
+			    "Series does not exists - as string.");
 		case dimension: {
 			const auto &[name, dim] = unsafe_get<dimension>(ser);
 			obj("name", name)("type", "dimension")("unit",
@@ -855,7 +876,9 @@ std::span<const std::string> dataframe::get_categories(
 {
 	switch (auto &&ser = get_data_source().get_series(dimension)) {
 		using enum series_type;
-	default: throw std::runtime_error("Series does not exists.");
+	default:
+		throw std::runtime_error(
+		    "Series does not exists - get cats.");
 	case measure:
 		throw std::runtime_error("Measure series has no categories.");
 	case dimension:
@@ -869,7 +892,9 @@ std::pair<double, double> dataframe::get_min_max(
 	auto &&s = get_data_source();
 	switch (auto &&meas = s.get_series(measure)) {
 		using enum series_type;
-	default: throw std::runtime_error("Series does not exists.");
+	default:
+		throw std::runtime_error(
+		    "Series does not exists - get min max.");
 	case dimension:
 		throw std::runtime_error("Dimension series has no min/max.");
 	case measure:
@@ -884,25 +909,41 @@ cell_value dataframe::get_data(record_identifier record_id,
 
 	if (std::holds_alternative<std::string_view>(record_id))
 		s.change_record_identifier_type(record_id);
+	else if (const auto *cp = get_if<source_type::copying>(&source);
+	         cp && cp->sorted_indices)
+		std::get<std::size_t>(record_id) = {
+		    (*cp->sorted_indices)[std::get<std::size_t>(record_id)]};
 
 	return s.get_data(*std::get_if<std::size_t>(&record_id), column);
 }
 
-void dataframe::visit(std::function<void(record_type)> function,
-    bool filtered) const &
+bool dataframe::is_filtered(record_identifier record_id) const &
 {
-	if (const auto *fun = std::get_if<0>(&filter);
-	    fun && filtered && *fun)
+	if (std::holds_alternative<std::string_view>(record_id))
+		get_data_source().change_record_identifier_type(record_id);
+
+	if (const auto *cp = get_if<source_type::copying>(&source);
+	    cp && cp->pre_remove
+	    && (*cp->pre_remove)[std::get<std::size_t>(record_id)])
+		return true;
+
+	const auto *fun = std::get_if<0>(&filter);
+	if (fun && *fun)
 		throw std::runtime_error(
 		    "Filtered dataframe is not finalized.");
 
+	return !fun
+	    && (*std::get_if<std::vector<bool>>(
+	        &filter))[*std::get_if<std::size_t>(&record_id)];
+}
+
+void dataframe::visit(std::function<void(record_type)> function) const
+{
 	const auto *cp = get_if<source_type::copying>(&source);
 
-	const auto *filt = filtered ? std::get_if<1>(&filter) : nullptr;
-	if (!filt && cp && cp->pre_remove) filt = &*cp->pre_remove;
 	visit(function,
 	    cp && cp->sorted_indices ? &*cp->sorted_indices : nullptr,
-	    filt);
+	    cp && cp->pre_remove ? &*cp->pre_remove : nullptr);
 }
 
 void dataframe::visit(
@@ -998,7 +1039,7 @@ void dataframe::change_state_to(state_type new_state,
 	switch (new_state) {
 		using enum state_type;
 	case modifying:
-		migrate_data();
+		if (state_data != aggregating) migrate_data();
 		state_data.emplace<modifying>();
 		break;
 	case aggregating:
@@ -1049,7 +1090,7 @@ std::string_view dataframe::get_series_name(
 }
 
 std::string_view dataframe::get_record_unique_id(
-    const record_identifier &id) const &
+    record_identifier id) const &
 {
 	if (const auto *ptr = std::get_if<std::string_view>(&id))
 		return *ptr;
@@ -1057,6 +1098,11 @@ std::string_view dataframe::get_record_unique_id(
 	const auto *state = get_if<state_type::finalized>(&state_data);
 	if (!state)
 		throw std::runtime_error("Dataframe is not finalized.");
+
+	if (const auto *cp = get_if<source_type::copying>(&source);
+	    cp && cp->sorted_indices)
+		std::get<std::size_t>(id) = {
+		    (*cp->sorted_indices)[std::get<std::size_t>(id)]};
 
 	const data_source::final_info &info = state->get();
 	auto ix = *std::get_if<std::size_t>(&id);

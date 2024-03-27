@@ -88,7 +88,7 @@ public:
 
 	struct record_type
 	{
-		[[nodiscard]] cell_value getValue(series_identifier i) const
+		[[nodiscard]] cell_value get_value(series_identifier i) const
 		{
 			return parent->get_data(recordId, i);
 		}
@@ -103,10 +103,20 @@ public:
 			    [rec = *this](std::string_view dim)
 			        -> std::pair<std::string_view, std::string_view>
 			    {
-				    auto &&cell = rec.getValue(dim);
+				    auto &&cell = rec.get_value(dim);
 				    return {dim,
 				        *std::get_if<std::string_view>(&cell)};
 			    }};
+		}
+
+		bool has_measure() const
+		{
+			return !parent->get_measures().empty();
+		}
+
+		bool is_filtered() const
+		{
+			return parent->is_filtered(recordId);
 		}
 	};
 
@@ -199,7 +209,7 @@ public:
 	    const series_identifier &id) const & = 0;
 
 	[[nodiscard]] virtual std::string_view get_record_unique_id(
-	    const record_identifier &id) const & = 0;
+	    record_identifier id) const & = 0;
 
 	[[nodiscard]] virtual cell_value get_data(
 	    record_identifier record_id,
@@ -211,8 +221,8 @@ public:
 	    const series_identifier &id,
 	    const char *key) const & = 0;
 
-	virtual void visit(std::function<void(record_type)> function,
-	    bool filtered) const & = 0;
+	[[nodiscard]] virtual bool is_filtered(
+	    record_identifier record_id) const & = 0;
 };
 }
 

@@ -67,7 +67,7 @@ private:
 
 		void set(std::size_t index, std::string_view value);
 
-		void set_nav(std::string_view value);
+		void set_nav(std::string_view value, std::size_t to_size);
 
 		std::vector<bool> get_categories_usage() const;
 

@@ -121,7 +121,7 @@ public:
 	    const series_identifier &id) const & final;
 
 	[[nodiscard]] std::string_view get_record_unique_id(
-	    const record_identifier &id) const & final;
+	    record_identifier id) const & final;
 
 	[[nodiscard]] std::string_view get_series_info(
 	    const series_identifier &id,
@@ -135,8 +135,8 @@ public:
 		return get_data_source().get_record_count();
 	}
 
-	void visit(std::function<void(record_type)> function,
-	    bool filtered) const & final;
+	[[nodiscard]] bool is_filtered(
+	    record_identifier record_id) const & final;
 
 private:
 	void migrate_data();
@@ -144,6 +144,8 @@ private:
 	    state_modification_reason reason);
 
 	const data_source &get_data_source() const;
+
+	void visit(std::function<void(record_type)> function) const;
 
 	void visit(const std::function<void(record_type)> &function,
 	    const std::vector<std::size_t> *sort,

@@ -9,6 +9,7 @@
 
 #include "base/text/naturalcmp.h"
 
+#include "aggregators.h"
 #include "dataframe.h"
 
 namespace Vizzu::dataframe
@@ -653,14 +654,21 @@ void data_source::dimension_t::set(std::size_t index,
 	values[index] =
 	    value.data() != nullptr ? get_or_set_cat(value) : nav;
 }
-void data_source::dimension_t::set_nav(std::string_view value)
+void data_source::dimension_t::set_nav(std::string_view value,
+    std::size_t to_size)
 {
-	if (!contains_nav) return;
 	if (value.data() == nullptr) value = "";
 
-	auto ix = get_or_set_cat(value);
+	std::optional<std::uint32_t> cat_ix;
+	if (values.size() < to_size)
+		values.resize(to_size, *(cat_ix = get_or_set_cat(value)));
+
+	if (!contains_nav) return;
+
+	if (!cat_ix) cat_ix = get_or_set_cat(value);
+
 	for (auto &val : values)
-		if (val == nav) val = ix;
+		if (val == nav) val = *cat_ix;
 
 	contains_nav = false;
 }
@@ -723,21 +731,24 @@ data_source::aggregating_type::add_aggregated(
     const_series_data &&data,
     const custom_aggregator &aggregator)
 {
-	auto &&[it, succ] = meas.try_emplace(
-	    std::string{aggregator.get_name()} + '('
-	        + std::visit(
-	            [](const auto &arg)
-	            {
-		            if constexpr (std::is_same_v<std::monostate,
-		                              std::remove_cvref_t<
-		                                  decltype(arg)>>)
-			            return std::string{};
-		            else
-			            return std::string{arg.first};
-	            },
-	            data)
-	        + ')',
-	    data,
+	std::string name = std::visit(
+	    [](const auto &arg)
+	    {
+		    if constexpr (std::is_same_v<std::monostate,
+		                      std::remove_cvref_t<decltype(arg)>>)
+			    return std::string{};
+		    else
+			    return std::string{arg.first};
+	    },
+	    data);
+
+	name = &aggregator == &aggregators[aggregator_type::sum]
+	         ? std::move(name)
+	         : std::string{aggregator.get_name()} + '('
+	               + std::move(name) + ')';
+
+	auto &&[it, succ] = meas.try_emplace(std::move(name),
+	    std::move(data),
 	    aggregator);
 	return {it->first, succ};
 }

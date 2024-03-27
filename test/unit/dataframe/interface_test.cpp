@@ -294,7 +294,7 @@ const static auto tests =
 		    auto v = std::get_if<std::string_view>(&c);
 		    skip->*static_cast<bool>(v) == "value is string"_is_true;
 
-		    auto oth_v = r.getValue("d2");
+		    auto oth_v = r.get_value("d2");
 
 		    auto v2 = std::get_if<std::string_view>(&oth_v);
 		    skip->*static_cast<bool>(v2) == "value is string"_is_true;
@@ -384,7 +384,7 @@ const static auto tests =
 	df->remove_records(
 	    [](record_type r) -> bool
 	    {
-		    auto v = r.getValue("m1");
+		    auto v = r.get_value("m1");
 		    return *std::get_if<double>(&v) < 5.0;
 	    });
 
@@ -510,10 +510,10 @@ const static auto tests =
 	        d1d,
 	        d1e,
 	        m1e,
+	        m1s,
 	        m1ma,
 	        m1me,
 	        m1mi,
-	        m1s,
 	        m1t};
 
 	assert->*df->get_record_count() == std::size_t{4};
@@ -728,13 +728,13 @@ const static auto tests =
 	    [](const record_type &lhs, const record_type &rhs)
 	    {
 		    auto l =
-		        (std::get<std::string_view>(lhs.getValue("d2"))[2]
+		        (std::get<std::string_view>(lhs.get_value("d2"))[2]
 		            - '0')
-		        + std::get<double>(lhs.getValue("m1"));
+		        + std::get<double>(lhs.get_value("m1"));
 		    auto r =
-		        (std::get<std::string_view>(rhs.getValue("d2"))[2]
+		        (std::get<std::string_view>(rhs.get_value("d2"))[2]
 		            - '0')
-		        + std::get<double>(rhs.getValue("m1"));
+		        + std::get<double>(rhs.get_value("m1"));
 		    return std::weak_order(l, r);
 	    });
 
