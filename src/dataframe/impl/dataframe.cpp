@@ -937,6 +937,23 @@ bool dataframe::is_filtered(record_identifier record_id) const &
 	        &filter))[*std::get_if<std::size_t>(&record_id)];
 }
 
+std::string dataframe::get_record_id_by_dims(
+    record_identifier my_record,
+    std::span<const std::string> dimensions) const &
+{
+	const auto *state = get_if<state_type::finalized>(&state_data);
+	if (!state)
+		throw std::runtime_error("Dataframe is not finalized.");
+
+	const auto &s = get_data_source();
+	if (std::holds_alternative<std::string_view>(my_record))
+		s.change_record_identifier_type(my_record);
+
+	return state->get().get_id(s,
+	    std::get<std::size_t>(my_record),
+	    dimensions);
+}
+
 void dataframe::visit(std::function<void(record_type)> function) const
 {
 	const auto *cp = get_if<source_type::copying>(&source);

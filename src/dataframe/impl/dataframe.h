@@ -138,6 +138,10 @@ public:
 	[[nodiscard]] bool is_filtered(
 	    record_identifier record_id) const & final;
 
+	[[nodiscard]] std::string get_record_id_by_dims(
+	    record_identifier my_record,
+	    std::span<const std::string> dimensions) const & final;
+
 private:
 	void migrate_data();
 	void change_state_to(state_type new_state,

@@ -105,6 +105,10 @@ private:
 		    record_to_index;
 
 		explicit final_info(const data_source &source);
+
+		std::string get_id(const data_source &source,
+		    std::size_t record,
+		    std::span<const std::string> series) const;
 	};
 
 	using series_data = Refl::EnumVariant<series_type,

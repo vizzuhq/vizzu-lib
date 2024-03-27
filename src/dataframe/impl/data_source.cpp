@@ -551,21 +551,27 @@ data_source::final_info::final_info(const data_source &source) :
 		min_max[i] = source.measures[i].get_min_max();
 	}
 
-	for (std::size_t r{}; r < records; ++r) {
-		auto &record = record_unique_ids[r];
-
-		for (std::size_t d{}; d < dimensions; ++d) {
-			auto val = source.dimensions[d].values[r];
-			record +=
-			    source.dimension_names[d] + '['
-			    + std::to_string(static_cast<int32_t>(val)) + "]:"
-			    + (val == nav ? "null"
-			                  : source.dimensions[d].categories[val])
-			    + ";";
-		}
-		if (!record_to_index.try_emplace(record, r).second)
+	for (std::size_t r{}; r < records; ++r)
+		if (auto &id = record_unique_ids[r] =
+		        get_id(source, r, source.dimension_names);
+		    !record_to_index.try_emplace(id, r).second)
 			throw std::runtime_error("duplicated record");
+}
+
+std::string data_source::final_info::get_id(const data_source &source,
+    std::size_t record,
+    std::span<const std::string> series) const
+{
+	std::string res;
+	for (const auto &name : series) {
+		auto d = series_to_index.at(name);
+		auto val = source.dimensions[d].get(record);
+		res += source.dimension_names[d];
+		res += ':';
+		res += val.data() == nullptr ? "__null__" : val;
+		res += ';';
 	}
+	return res;
 }
 
 std::vector<std::uint32_t> data_source::dimension_t::get_indices(

@@ -223,6 +223,10 @@ public:
 
 	[[nodiscard]] virtual bool is_filtered(
 	    record_identifier record_id) const & = 0;
+
+	[[nodiscard]] virtual std::string get_record_id_by_dims(
+	    record_identifier my_record,
+	    std::span<const std::string> dimensions) const & = 0;
 };
 }
 
