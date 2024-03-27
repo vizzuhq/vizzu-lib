@@ -60,7 +60,7 @@ ColumnInfo::ContiType ColumnInfo::getContiType() const
 	return contiType;
 }
 
-const ColumnInfo::Values &ColumnInfo::categories() const
+std::span<const std::string> ColumnInfo::categories() const
 {
 	return values;
 }

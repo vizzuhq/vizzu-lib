@@ -22,6 +22,11 @@ public:
 			subCells.emplace_back(index.getType().aggregatorType());
 	}
 
+	[[nodiscard]] bool isEmpty() const
+	{
+		return subCells[0].isEmpty();
+	}
+
 	std::vector<Aggregator> subCells;
 };
 

@@ -26,10 +26,10 @@ public:
 	    const Data::DataCube &data,
 	    const Data::DataTable &table,
 	    ChannelsStats &stats,
-	    const Data::MultiDim::MultiIndex &index,
+	    const Data::DataCube::MultiIndex &index,
 	    size_t idx);
 
-	Data::MultiDim::MultiIndex index;
+	Data::DataCube::MultiIndex index;
 	::Anim::Interpolated<ColorBase> colorBase;
 	Geom::Point position;
 	Geom::Point size;
@@ -75,7 +75,7 @@ public:
 		bool operator==(const Id &other) const = default;
 		Id(const Data::DataCube &,
 		    const Channel::DimensionIndices &dimensionIds,
-		    const Data::MultiDim::MultiIndex &);
+		    const Data::DataCube::MultiIndex &);
 	};
 
 	::Anim::Interpolated<Id> mainId;

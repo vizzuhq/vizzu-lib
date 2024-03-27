@@ -36,6 +36,7 @@ class DataCube
 {
 public:
 	using Data = MultiDim::Array<DataCubeCell>;
+	using MultiIndex = MultiDim::MultiIndex;
 
 	DataCube(const DataTable &table,
 	    const DataCubeOptions &options,
@@ -51,41 +52,38 @@ public:
 	    SubCellIndex index) const;
 
 	[[nodiscard]] size_t combinedIndexOf(const SeriesList &colIndices,
-	    MultiDim::MultiIndex multiIndex) const;
+	    MultiIndex multiIndex) const;
 
 	[[nodiscard]] size_t combinedSizeOf(
 	    const SeriesList &colIndices) const;
 
-	[[nodiscard]] Aggregator aggregateAt(
-	    const MultiDim::MultiIndex &multiIndex,
+	[[nodiscard]] Aggregator aggregateAt(const MultiIndex &multiIndex,
 	    const SeriesList &sumCols,
 	    SeriesIndex seriesId) const;
 
-	[[nodiscard]] Aggregator valueAt(
-	    const MultiDim::MultiIndex &multiIndex,
+	[[nodiscard]] Aggregator valueAt(const MultiIndex &multiIndex,
 	    const SeriesIndex &seriesId) const;
 
 	[[nodiscard]] size_t subSliceID(const SeriesList &colIndices,
-	    const MultiDim::MultiIndex &multiIndex) const;
+	    const MultiIndex &multiIndex) const;
 
 	[[nodiscard]] size_t flatSubSliceIndex(
 	    const SeriesList &colIndices,
-	    const MultiDim::MultiIndex &multiIndex) const;
+	    const MultiIndex &multiIndex) const;
 
 	[[nodiscard]] MultiDim::SubSliceIndex subSliceIndex(
 	    const SeriesList &colIndices,
-	    MultiDim::MultiIndex multiIndex) const;
+	    MultiIndex multiIndex) const;
 
 	[[nodiscard]] size_t subCellSize() const;
 
 	[[nodiscard]] bool empty() const;
 
 	[[nodiscard]] CellInfo::Values values(
-	    const MultiDim::MultiIndex &index) const;
+	    const MultiIndex &index) const;
 	[[nodiscard]] CellInfo::Categories categories(
-	    const MultiDim::MultiIndex &index) const;
-	[[nodiscard]] CellInfo cellInfo(
-	    const MultiDim::MultiIndex &index) const;
+	    const MultiIndex &index) const;
+	[[nodiscard]] CellInfo cellInfo(const MultiIndex &index) const;
 
 private:
 	Data data;
@@ -96,13 +94,13 @@ private:
 	std::map<SeriesIndex, SubCellIndex> subIndexBySeries;
 	std::vector<SeriesIndex> seriesBySubIndex;
 
-	static MultiDim::MultiIndex getIndex(const DataTable::Row &row,
+	static MultiIndex getIndex(const DataTable::Row &row,
 	    const std::set<SeriesIndex> &indices,
 	    size_t rowIndex);
 
 	[[nodiscard]] MultiDim::SubSliceIndex inverseSubSliceIndex(
 	    const SeriesList &colIndices,
-	    MultiDim::MultiIndex multiIndex) const;
+	    MultiIndex multiIndex) const;
 };
 
 }
