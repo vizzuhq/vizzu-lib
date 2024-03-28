@@ -103,7 +103,7 @@ void DimensionAxis::setLabels(const Data::DataCube &data,
 	for (int curr{}; auto &[slice, item] : values) {
 		auto colIndex =
 		    data.getSeriesByDim(slice.dimIndex).getColIndex();
-		const auto &categories =
+		auto &&categories =
 		    table.getInfo(colIndex.value()).categories();
 
 		if (slice.index < categories.size())

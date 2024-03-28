@@ -7,7 +7,7 @@ namespace Vizzu::Gen
 
 Marker::Id::Id(const Data::DataCube &data,
     const Channel::DimensionIndices &dimensionIds,
-    const Data::MultiDim::MultiIndex &index) :
+    const Data::DataCube::MultiIndex &index) :
     seriesId(data.subSliceID(dimensionIds, index)),
     itemSliceIndex(data.subSliceIndex(dimensionIds, index)),
     itemId(data.getData().unfoldSubSliceIndex(itemSliceIndex))
@@ -17,11 +17,11 @@ Marker::Marker(const Options &options,
     const Data::DataCube &data,
     const Data::DataTable &table,
     ChannelsStats &stats,
-    const Data::MultiDim::MultiIndex &index,
+    const Data::DataCube::MultiIndex &index,
     size_t idx) :
     index(index),
     enabled(data.subCellSize() == 0
-            || !data.getData().at(index).subCells[0].isEmpty()),
+            || !data.getData().at(index).isEmpty()),
     cellInfo(data.cellInfo(index)),
     idx(idx),
     table(table)
