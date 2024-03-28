@@ -954,6 +954,29 @@ std::string dataframe::get_record_id_by_dims(
 	    dimensions);
 }
 
+std::size_t dataframe::get_series_orig_index(
+    std::string_view series) const
+{
+	using enum state_type;
+	const auto *state = get_if<modifying>(&state_data);
+	if (!state || state->empty())
+		throw std::runtime_error(
+		    "Dataframe is not created by columns.");
+
+	auto it = std::ranges::find(*state, series);
+
+	if (it == state->end())
+		throw std::runtime_error(
+		    "Cannot find series: " + std::string{series});
+
+	return it - state->begin();
+}
+
+series_type dataframe::get_series_type(series_identifier series) const
+{
+	return get_data_source().get_series(series);
+}
+
 void dataframe::visit(std::function<void(record_type)> function) const
 {
 	const auto *cp = get_if<source_type::copying>(&source);

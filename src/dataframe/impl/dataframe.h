@@ -142,6 +142,12 @@ public:
 	    record_identifier my_record,
 	    std::span<const std::string> dimensions) const & final;
 
+	[[nodiscard]] std::size_t get_series_orig_index(
+	    std::string_view series) const;
+
+	[[nodiscard]] series_type get_series_type(
+	    series_identifier series) const;
+
 private:
 	void migrate_data();
 	void change_state_to(state_type new_state,
