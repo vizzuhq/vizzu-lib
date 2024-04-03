@@ -18,8 +18,7 @@ public:
 
 	SeriesIndex() = default;
 	explicit SeriesIndex(const SeriesType &type,
-	    const DataTable::DataIndex &dataIndex =
-	        DataTable::DataIndex());
+	    const DataTable::DataIndex *dataIndex = nullptr);
 	explicit SeriesIndex(const DataTable::DataIndex &dataIndex);
 	SeriesIndex(const std::string &str, const DataTable &table);
 

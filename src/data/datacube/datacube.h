@@ -38,6 +38,17 @@ public:
 	using Data = MultiDim::Array<DataCubeCell>;
 	using MultiIndex = MultiDim::MultiIndex;
 
+	struct Id
+	{
+		using SubSliceIndex = MultiDim::SubSliceIndex;
+		using SliceIndex = MultiDim::SliceIndex;
+		SubSliceIndex itemSliceIndex;
+		uint64_t seriesId{};
+		uint64_t itemId{};
+
+		bool operator==(const Id &) const = default;
+	};
+
 	DataCube(const DataTable &table,
 	    const DataCubeOptions &options,
 	    const Filter &filter = Filter());
@@ -71,7 +82,7 @@ public:
 	    const SeriesList &colIndices,
 	    const MultiIndex &multiIndex) const;
 
-	[[nodiscard]] MultiDim::SubSliceIndex subSliceIndex(
+	[[nodiscard]] Id::SubSliceIndex subSliceIndex(
 	    const SeriesList &colIndices,
 	    MultiIndex multiIndex) const;
 
@@ -84,6 +95,12 @@ public:
 	[[nodiscard]] CellInfo::Categories categories(
 	    const MultiIndex &index) const;
 	[[nodiscard]] CellInfo cellInfo(const MultiIndex &index) const;
+
+	[[nodiscard]] Id getId(const SeriesList &dimensionIds,
+	    const MultiIndex &index) const;
+
+	[[nodiscard]] std::string getValue(Id::SliceIndex index,
+	    std::string def = "") const;
 
 private:
 	Data data;
@@ -98,7 +115,7 @@ private:
 	    const std::set<SeriesIndex> &indices,
 	    size_t rowIndex);
 
-	[[nodiscard]] MultiDim::SubSliceIndex inverseSubSliceIndex(
+	[[nodiscard]] Id::SubSliceIndex inverseSubSliceIndex(
 	    const SeriesList &colIndices,
 	    MultiIndex multiIndex) const;
 };

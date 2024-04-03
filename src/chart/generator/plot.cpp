@@ -102,7 +102,7 @@ Plot::Plot(const Data::DataTable &dataTable,
 
 	anyAxisSet = options->getChannels().anyAxisSet();
 
-	generateMarkers(dataTable);
+	generateMarkers();
 	generateMarkersInfo();
 
 	SpecLayout specLayout(*this);
@@ -137,20 +137,17 @@ bool Plot::isEmpty() const
 	return options->getChannels().isEmpty();
 }
 
-void Plot::generateMarkers(const Data::DataTable &table)
+void Plot::generateMarkers()
 {
 	auto &&data = getDataCube().getData();
 	for (auto it = data.begin(); it != data.end(); ++it) {
 		auto markerIndex = markers.size();
 
-		markers.emplace_back(*options,
+		auto &marker = markers.emplace_back(*options,
 		    getDataCube(),
-		    table,
 		    stats,
 		    it.getIndex(),
 		    markerIndex);
-
-		auto &marker = markers[markerIndex];
 
 		mainBuckets[marker.mainId.get().seriesId]
 		           [marker.mainId.get().itemId] = markerIndex;
@@ -374,37 +371,30 @@ void Plot::calcDimensionAxis(ChannelId type,
 			        ? marker.mainId.get()
 			        : marker.subId;
 
-			const auto &slice = id.itemSliceIndex;
-
-			if (!slice.empty() && dim < slice.size()) {
-				auto index = slice[dim];
-				auto range = marker.getSizeBy(type == ChannelId::x);
-				axis.add(index,
-				    static_cast<double>(id.itemId),
-				    range,
+			if (const auto &slice = id.itemSliceIndex;
+			    dim < slice.size())
+				axis.add(slice[dim],
+				    id.itemId,
+				    marker.getSizeBy(type == ChannelId::x),
 				    static_cast<double>(marker.enabled),
 				    dim == 0);
-			}
 		}
 	}
 	else {
 		const auto &indices = stats.channels[type].usedIndices;
 
-		auto count = 0;
-		for (auto i = 0U; i < indices.size(); ++i) {
-			const auto &sliceIndex = indices[i];
-
-			if (!sliceIndex.empty() && dim < sliceIndex.size()) {
-				auto index = sliceIndex[dim];
-				auto range = Math::Range<double>(count, count);
-				auto inserted =
-				    axis.add(index, i, range, true, dim == 0);
-				if (inserted) ++count;
-			}
-		}
+		double count = 0;
+		for (auto i = 0U; i < indices.size(); ++i)
+			if (const auto &sliceIndex = indices[i];
+			    dim < sliceIndex.size()
+			    && axis.add(sliceIndex[dim],
+			        i,
+			        {count, count},
+			        true,
+			        dim == 0))
+				count += 1;
 	}
 	axis.setLabels(getDataCube(),
-	    table,
 	    isTypeAxis ? scale.step.getValue(1.0) : 1.0);
 
 	if (auto &&series = scale.labelSeries())

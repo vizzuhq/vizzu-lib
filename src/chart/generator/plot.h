@@ -123,7 +123,7 @@ private:
 	Buckets mainBuckets;
 	Buckets subBuckets;
 
-	void generateMarkers(const Data::DataTable &table);
+	void generateMarkers();
 	void generateMarkersInfo();
 	bool linkMarkers(const Buckets &buckets, bool main);
 	void normalizeXY();

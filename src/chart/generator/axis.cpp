@@ -64,9 +64,9 @@ MeasureAxis interpolate(const MeasureAxis &op0,
 
 	return res;
 }
-bool DimensionAxis::add(const Data::MultiDim::SliceIndex &index,
+bool DimensionAxis::add(const Data::DataCube::Id::SliceIndex &index,
     double value,
-    Math::Range<double> &range,
+    const Math::Range<double> &range,
     double enabled,
     bool merge)
 {
@@ -93,23 +93,13 @@ bool DimensionAxis::operator==(const DimensionAxis &other) const
 	return enabled == other.enabled && values == other.values;
 }
 
-void DimensionAxis::setLabels(const Data::DataCube &data,
-    const Data::DataTable &table,
-    double step)
+void DimensionAxis::setLabels(const Data::DataCube &data, double step)
 {
 	step = std::max(step, 1.0);
 	double currStep = 0.0;
 
 	for (int curr{}; auto &[slice, item] : values) {
-		auto colIndex =
-		    data.getSeriesByDim(slice.dimIndex).getColIndex();
-		auto &&categories =
-		    table.getInfo(colIndex.value()).categories();
-
-		if (slice.index < categories.size())
-			item.categoryValue = categories[slice.index];
-		else
-			item.categoryValue = "NA";
+		item.categoryValue = data.getValue(slice, "NA");
 
 		if (++curr <= currStep) continue;
 		currStep += step;

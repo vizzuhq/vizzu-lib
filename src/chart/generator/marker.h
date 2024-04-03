@@ -24,7 +24,6 @@ class Marker
 public:
 	Marker(const Options &options,
 	    const Data::DataCube &data,
-	    const Data::DataTable &table,
 	    ChannelsStats &stats,
 	    const Data::DataCube::MultiIndex &index,
 	    size_t idx);
@@ -45,38 +44,24 @@ public:
 		std::string unit;
 		std::string indexStr;
 		Label() = default;
-		Label(const Data::MultiDim::SubSliceIndex &index,
-		    const Data::DataCube &data,
-		    const Data::DataTable &table);
+		explicit Label(std::string &&indexStr);
 		Label(double value,
 		    const Data::SeriesIndex &measure,
-		    const Data::MultiDim::SubSliceIndex &index,
 		    const Data::DataCube &data,
-		    const Data::DataTable &table);
+		    std::string &&indexStr);
 		bool operator==(const Label &other) const;
 		[[nodiscard]] bool hasValue() const
 		{
 			return value.has_value();
 		}
-		static std::string getIndexString(
-		    const Data::MultiDim::SubSliceIndex &index,
-		    const Data::DataCube &data,
-		    const Data::DataTable &table);
+		static std::string getIndexString(const Data::DataCube &data,
+		    const Data::SeriesList &series,
+		    const Data::DataCube::MultiIndex &index);
 	};
 
 	::Anim::Interpolated<Label> label;
 
-	struct Id
-	{
-		uint64_t seriesId{};
-		Data::MultiDim::SubSliceIndex itemSliceIndex;
-		uint64_t itemId{};
-		Id() = default;
-		bool operator==(const Id &other) const = default;
-		Id(const Data::DataCube &,
-		    const Channel::DimensionIndices &dimensionIds,
-		    const Data::DataCube::MultiIndex &);
-	};
+	using Id = Data::DataCube::Id;
 
 	::Anim::Interpolated<Id> mainId;
 	Id subId;
