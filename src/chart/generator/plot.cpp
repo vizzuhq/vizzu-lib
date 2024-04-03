@@ -374,7 +374,7 @@ void Plot::calcDimensionAxis(ChannelId type,
 			if (const auto &slice = id.itemSliceIndex;
 			    dim < slice.size())
 				axis.add(slice[dim],
-				    id.itemId,
+				    static_cast<double>(id.itemId),
 				    marker.getSizeBy(type == ChannelId::x),
 				    static_cast<double>(marker.enabled),
 				    dim == 0);

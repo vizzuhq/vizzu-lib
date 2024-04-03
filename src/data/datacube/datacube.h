@@ -99,7 +99,7 @@ public:
 	[[nodiscard]] Id getId(const SeriesList &dimensionIds,
 	    const MultiIndex &index) const;
 
-	[[nodiscard]] std::string getValue(Id::SliceIndex index,
+	[[nodiscard]] std::string getValue(Id::SliceIndex slice,
 	    std::string def = "") const;
 
 private:
