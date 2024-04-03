@@ -23,8 +23,8 @@ using SubCellIndex =
 struct CellInfo
 {
 	using Categories =
-	    std::vector<std::pair<Data::SeriesIndex, uint64_t>>;
-	using Values = std::vector<std::pair<Data::SeriesIndex, double>>;
+	    std::vector<std::pair<std::string, std::string>>;
+	using Values = std::vector<std::pair<std::string, double>>;
 	Categories categories;
 	Values values;
 };
@@ -37,6 +37,7 @@ class DataCube
 public:
 	using Data = MultiDim::Array<DataCubeCell>;
 	using MultiIndex = MultiDim::MultiIndex;
+	using CellInfo = Vizzu::Data::CellInfo;
 
 	struct Id
 	{

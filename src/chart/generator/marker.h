@@ -35,7 +35,7 @@ public:
 	Geom::Point spacing;
 	double sizeFactor;
 	Math::FuzzyBool enabled;
-	Data::CellInfo cellInfo;
+	Data::DataCube::CellInfo cellInfo;
 
 	struct Label
 	{
@@ -91,8 +91,6 @@ public:
 	[[nodiscard]] std::string toJSON() const;
 
 private:
-	std::reference_wrapper<const Data::DataTable> table;
-
 	double getValueForChannel(const Channels &channels,
 	    ChannelId type,
 	    const Data::DataCube &data,

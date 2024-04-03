@@ -39,23 +39,12 @@ Plot::MarkerInfoContent::MarkerInfoContent(const Marker &marker,
 	const auto &index = marker.index;
 	if (dataCube && dataCube->getTable() && !index.empty()) {
 		markerId = marker.idx;
-		const auto &dataCellInfo = dataCube->cellInfo(index);
-		const auto &table = *dataCube->getTable();
-		for (const auto &cat : dataCellInfo.categories) {
-			auto series = cat.first;
-			auto category = cat.second;
-			auto colIndex = series.getColIndex();
-			auto value = table.getInfo(colIndex.value())
-			                 .categories()[category];
-			content.emplace_back(series.toString(table), value);
-		}
-		for (const auto &val : dataCellInfo.values) {
-			auto series = val.first;
-			auto value = val.second;
-			Conv::NumberToString conv;
-			conv.fractionDigitCount = 3;
-			content.emplace_back(series.toString(table), conv(value));
-		}
+		auto &&dataCellInfo = dataCube->cellInfo(index);
+		content = std::move(dataCellInfo.categories);
+
+		auto conv = Conv::NumberToString{.fractionDigitCount = 3};
+		for (auto &&[ser, val] : dataCellInfo.values)
+			content.emplace_back(ser, conv(val));
 	}
 	else
 		markerId.reset();

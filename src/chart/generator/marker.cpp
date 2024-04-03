@@ -17,8 +17,7 @@ Marker::Marker(const Options &options,
     sizeId(data.getId(
         options.getChannels().at(ChannelId::size).dimensionIds,
         index)),
-    idx(idx),
-    table(*data.getTable())
+    idx(idx)
 {
 	const auto &channels = options.getChannels();
 	auto color =
@@ -152,22 +151,7 @@ std::string Marker::toJSON() const
 Conv::JSONObj &&Marker::appendToJSON(Conv::JSONObj &&jsonObj) const
 {
 	return std::move(jsonObj)("categories",
-	    std::ranges::views::transform(cellInfo.categories,
-	        [this](const auto &pair)
-	        {
-		        return std::make_pair(
-		            pair.first.toString(table.get()),
-		            table.get()
-		                .getInfo(pair.first.getColIndex().value())
-		                .categories()[pair.second]);
-	        }))("values",
-	    std::ranges::views::transform(cellInfo.values,
-	        [this](const auto &pair)
-	        {
-		        return std::make_pair(
-		            pair.first.toString(table.get()),
-		            pair.second);
-	        }))("index", idx);
+	    cellInfo.categories)("values", cellInfo.values)("index", idx);
 }
 
 double Marker::getValueForChannel(const Channels &channels,

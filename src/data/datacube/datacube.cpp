@@ -201,10 +201,11 @@ CellInfo::Categories DataCube::categories(
 {
 	CellInfo::Categories res;
 
-	for (auto i = 0U; i < index.size(); ++i) {
-		auto series = getSeriesByDim(DimIndex{i});
-		res.emplace_back(series, index[i]);
-	}
+	for (auto i = 0U; i < index.size(); ++i)
+		res.emplace_back(
+		    getSeriesByDim(DimIndex{i}).toString(*getTable()),
+		    getValue({DimIndex{i}, index[i]}));
+
 	return res;
 }
 
@@ -219,7 +220,8 @@ CellInfo::Values DataCube::values(const MultiIndex &index) const
 
 		if (series.getType() == SeriesType::Exists) continue;
 
-		res.emplace_back(series, cell.subCells[i]);
+		res.emplace_back(series.toString(*getTable()),
+		    cell.subCells[i]);
 	}
 	return res;
 }
