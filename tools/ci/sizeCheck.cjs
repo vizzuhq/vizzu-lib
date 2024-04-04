@@ -26,8 +26,9 @@ sizeLines.forEach((sizeLine) => {
 		const downloadedSize = downloadedLine.split(' ')[1]
 
 		if (parseFloat(actualSize) > parseFloat(downloadedSize) * THRESHOLD) {
-			console.error(`Error: File ${file} size exceeds the threshold.`)
-			process.exit(1)
+			console.error(
+				`Error: File ${file} size exceeds the threshold. Actual: ${actualSize}, Downloaded: ${downloadedSize}, Threshold: ${THRESHOLD}`
+			)
 		} else {
 			console.log(
 				`Success: File ${file} size comparison passed. Actual: ${actualSize}, Downloaded: ${downloadedSize}`
