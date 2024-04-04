@@ -2,6 +2,7 @@
 #define DATASTAT_H
 
 #include <unordered_map>
+#include <unordered_set>
 
 #include "datacubeoptions.h"
 #include "datafilter.h"

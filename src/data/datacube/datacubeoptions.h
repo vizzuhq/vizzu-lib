@@ -2,7 +2,6 @@
 #define DATACUBEOPTIONS_H
 
 #include <set>
-#include <vector>
 
 #include "seriesindex.h"
 

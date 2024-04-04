@@ -11,7 +11,6 @@
 #include "base/math/range.h"
 #include "chart/options/channel.h"
 #include "data/datacube/datacube.h"
-#include "data/multidim/multidimindex.h"
 #include "data/table/datatable.h"
 
 #include "colorbase.h"
