@@ -40,7 +40,8 @@ Plot::MarkerInfoContent::MarkerInfoContent(const Marker &marker,
 	if (dataCube && dataCube->getTable() && !index.empty()) {
 		markerId = marker.idx;
 		auto &&dataCellInfo = dataCube->cellInfo(index);
-		content = std::move(dataCellInfo.categories);
+		content.assign(std::begin(dataCellInfo.categories),
+		    std::end(dataCellInfo.categories));
 
 		auto conv = Conv::NumberToString{.fractionDigitCount = 3};
 		for (auto &&[ser, val] : dataCellInfo.values)
