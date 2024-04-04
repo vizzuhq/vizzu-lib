@@ -5,17 +5,8 @@
 namespace Vizzu::Gen
 {
 
-Marker::Id::Id(const Data::DataCube &data,
-    const Channel::DimensionIndices &dimensionIds,
-    const Data::DataCube::MultiIndex &index) :
-    seriesId(data.subSliceID(dimensionIds, index)),
-    itemSliceIndex(data.subSliceIndex(dimensionIds, index)),
-    itemId(data.getData().unfoldSubSliceIndex(itemSliceIndex))
-{}
-
 Marker::Marker(const Options &options,
     const Data::DataCube &data,
-    const Data::DataTable &table,
     ChannelsStats &stats,
     const Data::DataCube::MultiIndex &index,
     size_t idx) :
@@ -23,8 +14,10 @@ Marker::Marker(const Options &options,
     enabled(data.subCellSize() == 0
             || !data.getData().at(index).isEmpty()),
     cellInfo(data.cellInfo(index)),
-    idx(idx),
-    table(table)
+    sizeId(data.getId(
+        options.getChannels().at(ChannelId::size).dimensionIds,
+        index)),
+    idx(idx)
 {
 	const auto &channels = options.getChannels();
 	auto color =
@@ -44,23 +37,21 @@ Marker::Marker(const Options &options,
 	    data,
 	    stats,
 	    options.subAxisOf(ChannelId::size));
-	sizeId =
-	    Id(data, channels.at(ChannelId::size).dimensionIds, index);
 
-	mainId = Id(data, options.mainAxis().dimensionIds, index);
+	mainId = data.getId(options.mainAxis().dimensionIds, index);
 
 	auto stackInhibitingShape = options.geometry == ShapeType::area;
 	if (stackInhibitingShape) {
 		Data::SeriesList subIds(options.subAxis().dimensionIds);
 		subIds.remove(options.mainAxis().dimensionIds);
-		subId = Id(data, subIds, index);
+		subId = data.getId(subIds, index);
 		Data::SeriesList stackIds(options.subAxis().dimensionIds);
 		stackIds.section(options.mainAxis().dimensionIds);
-		stackId = Id(data, stackIds, index);
+		stackId = data.getId(stackIds, index);
 	}
 	else {
 		stackId = subId =
-		    Id(data, options.subAxis().dimensionIds, index);
+		    data.getId(options.subAxis().dimensionIds, index);
 	}
 
 	auto horizontal = options.isHorizontal();
@@ -101,17 +92,18 @@ Marker::Marker(const Options &options,
 		    ChannelId::label,
 		    data,
 		    stats);
-		auto sliceIndex = data.subSliceIndex(
+
+		auto &&labelStr = Label::getIndexString(data,
 		    channels.at(ChannelId::label).dimensionIds,
 		    index);
+
 		if (channels.at(ChannelId::label).isDimension())
-			label = Label(sliceIndex, data, table);
+			label = Label(std::move(labelStr));
 		else
 			label = Label(value,
 			    *channels.at(ChannelId::label).measureId,
-			    sliceIndex,
 			    data,
-			    table);
+			    std::move(labelStr));
 	}
 }
 
@@ -159,22 +151,7 @@ std::string Marker::toJSON() const
 Conv::JSONObj &&Marker::appendToJSON(Conv::JSONObj &&jsonObj) const
 {
 	return std::move(jsonObj)("categories",
-	    std::ranges::views::transform(cellInfo.categories,
-	        [this](const auto &pair)
-	        {
-		        return std::make_pair(
-		            pair.first.toString(table.get()),
-		            table.get()
-		                .getInfo(pair.first.getColIndex().value())
-		                .categories()[pair.second]);
-	        }))("values",
-	    std::ranges::views::transform(cellInfo.values,
-	        [this](const auto &pair)
-	        {
-		        return std::make_pair(
-		            pair.first.toString(table.get()),
-		            pair.second);
-	        }))("index", idx);
+	    cellInfo.categories)("values", cellInfo.values)("index", idx);
 }
 
 double Marker::getValueForChannel(const Channels &channels,
@@ -204,7 +181,7 @@ double Marker::getValueForChannel(const Channels &channels,
 	auto measure = channel.measureId;
 
 	double value{};
-	auto id = Id(data, channel.dimensionIds, index);
+	auto id = data.getId(channel.dimensionIds, index);
 
 	auto &stat = stats.channels[type];
 
@@ -254,23 +231,21 @@ void Marker::setSizeBy(bool horizontal,
 	fromRectangle(rect);
 }
 
-Marker::Label::Label(const Data::MultiDim::SubSliceIndex &index,
-    const Data::DataCube &data,
-    const Data::DataTable &table) :
-    indexStr{getIndexString(index, data, table)}
+Marker::Label::Label(std::string &&indexStr) :
+    indexStr{std::move(indexStr)}
 {}
 
 Marker::Label::Label(double value,
     const Data::SeriesIndex &measure,
-    const Data::MultiDim::SubSliceIndex &index,
     const Data::DataCube &data,
-    const Data::DataTable &table) :
+    std::string &&indexStr) :
     value(value),
-    measureId(measure.getColIndex())
-{
-	if (measureId) unit = table.getInfo(measureId.value()).getUnit();
-	indexStr = getIndexString(index, data, table);
-}
+    measureId(measure.getColIndex()),
+    unit(measureId
+             ? data.getTable()->getInfo(measureId.value()).getUnit()
+             : ""),
+    indexStr(std::move(indexStr))
+{}
 
 bool Marker::Label::operator==(const Marker::Label &other) const
 {
@@ -278,18 +253,16 @@ bool Marker::Label::operator==(const Marker::Label &other) const
 	    && unit == other.unit && indexStr == other.indexStr;
 }
 
-std::string Marker::Label::getIndexString(
-    const Data::MultiDim::SubSliceIndex &index,
-    const Data::DataCube &data,
-    const Data::DataTable &table)
+std::string Marker::Label::getIndexString(const Data::DataCube &data,
+    const Data::SeriesList &series,
+    const Data::DataCube::MultiIndex &index)
 {
 	std::string res;
 
-	for (const auto &[dimIx, ix] : index) {
+	for (const auto &sliceIndex :
+	    data.getId(series, index).itemSliceIndex) {
 		if (!res.empty()) res += ", ";
-		auto colIndex = data.getSeriesByDim(dimIx).getColIndex();
-		auto value = table.getInfo(colIndex.value()).categories()[ix];
-		res += value;
+		res += data.getValue(sliceIndex);
 	}
 	return res;
 }

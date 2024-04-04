@@ -134,15 +134,16 @@ public:
 			return index == 0 ? start : index == 1 && end;
 		}
 	};
-	using Values = std::multimap<Data::MultiDim::SliceIndex, Item>;
+	using Values =
+	    std::multimap<Data::DataCube::Id::SliceIndex, Item>;
 
 	bool enabled{false};
 	std::string category{};
 
 	DimensionAxis() = default;
-	bool add(const Data::MultiDim::SliceIndex &index,
+	bool add(const Data::DataCube::Id::SliceIndex &index,
 	    double value,
-	    Math::Range<double> &range,
+	    const Math::Range<double> &range,
 	    double enabled,
 	    bool merge);
 	bool operator==(const DimensionAxis &other) const;
@@ -157,9 +158,7 @@ public:
 	{
 		return values.cend();
 	}
-	void setLabels(const Data::DataCube &data,
-	    const Data::DataTable &table,
-	    double step);
+	void setLabels(const Data::DataCube &data, double step);
 
 private:
 	Values values;

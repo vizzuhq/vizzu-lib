@@ -24,15 +24,16 @@ public:
 	struct DataIndex
 	{
 		using OptColIndex = std::optional<ColumnIndex>;
+		using Type = ColumnInfo::Type;
 
 		OptColIndex value;
-		ColumnInfo::Type type;
+		Type type;
 
-		DataIndex(ColumnIndex value, ColumnInfo::Type type) :
+		DataIndex(ColumnIndex value, Type type) :
 		    value(value),
 		    type(type)
 		{}
-		DataIndex() : type(ColumnInfo::Type::measure) {}
+		DataIndex() : type(Type::measure) {}
 		[[nodiscard]] bool isInvalid() const
 		{
 			return !value.has_value();
