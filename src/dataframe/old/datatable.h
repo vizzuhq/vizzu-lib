@@ -68,11 +68,7 @@ public:
 		const dataframe::dataframe *dfif;
 		dataframe::dataframe_interface::series_identifier sid;
 
-		auto categories() const -> std::span<const std::string>;
-
 		std::string getUnit() const;
-
-		std::string getName() const;
 	};
 
 	struct cell_wrapper
@@ -101,11 +97,6 @@ public:
 	Row operator[](std::size_t row) const
 	{
 		return {{&df, row}, this};
-	}
-
-	auto getIndex(std::string const &name) const
-	{
-		return getIndex(getColumn(name));
 	}
 
 	DataIndex getIndex(column_index_wrapper const &col) const;
@@ -169,10 +160,6 @@ public:
 	template <class DI>
 	    requires(requires(DI const &di) { di.type; })
 	explicit series_index_t(DI const &dataIndex);
-
-	template <class ST>
-	    requires(requires(ST const &st) { st.isNestedDimension(); })
-	explicit series_index_t(ST const &st);
 
 	const std::optional<dataframe::aggregator_type> &getAggr() const
 	{
@@ -240,26 +227,6 @@ class data_cube_t
 {
 public:
 	using MultiIndex = multi_index_t;
-
-	struct SeriesType
-	{
-		// constexpr const auto Index =
-		// dataframe::aggregator_type::ind; static const  Dimension;
-		constexpr static auto Index = static_cast<
-		    dataframe::aggregator_type>(
-		    ~std::underlying_type_t<dataframe::aggregator_type>{});
-		constexpr static auto Exists =
-		    dataframe::aggregator_type::exists;
-		constexpr static auto Sum = dataframe::aggregator_type::sum;
-		constexpr static auto Count =
-		    dataframe::aggregator_type::count;
-		constexpr static auto Distinct =
-		    dataframe::aggregator_type::distinct;
-		constexpr static auto Min = dataframe::aggregator_type::min;
-		constexpr static auto Max = dataframe::aggregator_type::max;
-		constexpr static auto Mean = dataframe::aggregator_type::mean;
-	};
-
 	struct Id
 	{
 		using SubSliceIndex = subslice_index_t;
@@ -279,25 +246,27 @@ public:
 		std::map<std::string_view, double> values;
 	};
 
-	class Data
+	class data_t
 	{
-		struct Iterator
+		struct iterator_t
 		{
 			dataframe::dataframe_interface::record_type rid;
-			const Data *parent;
+			const data_t *parent;
 			std::size_t old;
 			bool found{};
 			std::size_t found_count{};
 
-			Iterator(dataframe::dataframe_interface::record_type rid,
-			    const Data *parent,
+			iterator_t(
+			    dataframe::dataframe_interface::record_type rid,
+			    const data_t *parent,
 			    std::size_t old);
 
 			void incr();
 
-			[[nodiscard]] bool operator!=(const Iterator &oth) const;
+			[[nodiscard]] bool operator!=(
+			    const iterator_t &oth) const;
 
-			Iterator &operator++();
+			iterator_t &operator++();
 
 			MultiIndex getIndex() const;
 		};
@@ -309,7 +278,7 @@ public:
 		std::size_t full_size{};
 
 		template <class Options>
-		explicit Data(dataframe::dataframe_interface *df,
+		explicit data_t(dataframe::dataframe_interface *df,
 		    const Options &options) :
 		    df(df),
 		    dim_reindex(options.getDimensions().size()),
@@ -321,8 +290,8 @@ public:
 
 		std::vector<std::size_t> get_indices(std::size_t ix) const;
 
-		auto begin() const -> Iterator;
-		auto end() const -> Iterator;
+		auto begin() const -> iterator_t;
+		auto end() const -> iterator_t;
 	};
 
 	const data_table *table;
@@ -333,7 +302,7 @@ public:
 	        std::string>,
 	    std::string>
 	    measure_names;
-	Data data;
+	data_t data;
 
 	std::shared_ptr<std::map<
 	    std::set<dataframe::dataframe_interface::series_identifier>,
@@ -351,7 +320,7 @@ public:
 
 	[[nodiscard]] size_t subCellSize() const;
 
-	[[nodiscard]] const Data &getData() const { return data; }
+	[[nodiscard]] const data_t &getData() const { return data; }
 
 	template <class MI>
 	[[nodiscard]] auto cellInfo(const MI &index) const -> CellInfo;

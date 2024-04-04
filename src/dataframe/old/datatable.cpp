@@ -71,30 +71,10 @@ auto data_table::getColumn(const std::string &name) const
 
 	return column_index_wrapper{{sid, orig_index}};
 }
-/*
-auto data_table::column_info::categories() const
-    -> std::span<const std::string>
-{
-    auto cats2 = dfif->get_categories(sid);
 
-    if (dfif->has_na(sid)
-        && std::ranges::find(cats2, "") == end(cats2)) {
-        thread_local std::vector<std::string> th;
-        th = {begin(cats2), end(cats2)};
-        th.emplace_back("");
-        cats2 = th;
-    }
-    return cats2;
-}
-*/
 std::string data_table::column_info::getUnit() const
 {
 	return std::string{dfif->get_series_info(sid, "unit")};
-}
-
-std::string data_table::column_info::getName() const
-{
-	return std::string{dfif->get_series_name(sid)};
 }
 
 bool data_table::cell_wrapper::isDimension() const
@@ -239,9 +219,9 @@ bool data_cube_t::Id::operator==(const Id &id) const
 	    == std::tuple{id.itemSliceIndex, id.seriesId, id.itemId};
 }
 
-data_cube_t::Data::Iterator::Iterator(
+data_cube_t::data_t::iterator_t::iterator_t(
     dataframe::dataframe_interface::record_type rid,
-    const Data *parent,
+    const data_t *parent,
     std::size_t old) :
     rid(rid),
     parent(parent),
@@ -250,7 +230,7 @@ data_cube_t::Data::Iterator::Iterator(
 	if (!old) incr();
 }
 
-void data_cube_t::Data::Iterator::incr()
+void data_cube_t::data_t::iterator_t::incr()
 {
 	if (found) {
 		++*std::get_if<std::size_t>(&rid.recordId);
@@ -280,13 +260,14 @@ void data_cube_t::Data::Iterator::incr()
 	    });
 }
 
-bool data_cube_t::Data::Iterator::operator!=(
-    const Iterator &oth) const
+bool data_cube_t::data_t::iterator_t::operator!=(
+    const iterator_t &oth) const
 {
 	return old != oth.old;
 }
 
-data_cube_t::Data::Iterator &data_cube_t::Data::Iterator::operator++()
+data_cube_t::data_t::iterator_t &
+data_cube_t::data_t::iterator_t::operator++()
 {
 	++old;
 
@@ -295,7 +276,8 @@ data_cube_t::Data::Iterator &data_cube_t::Data::Iterator::operator++()
 	return *this;
 }
 
-data_cube_t::MultiIndex data_cube_t::Data::Iterator::getIndex() const
+data_cube_t::MultiIndex
+data_cube_t::data_t::iterator_t::getIndex() const
 {
 	return {rid.parent,
 	    found ? std::make_optional(rid.recordId) : std::nullopt,
@@ -323,18 +305,6 @@ std::string series_index_t::toString(const DataTable &table) const
 	return my_res;
 }
 
-/*
-template <>
-series_index_t::series_index_t(
-    SeriesType const &st)
-{
-    auto &&s = Refl::enum_name(st.aggregatorType());
-    using CT = std::char_traits<char>;
-    s[0] = CT::to_char_type(std::tolower(CT::to_int_type(s[0])));
-    aggr = Refl::get_enum<dataframe::aggregator_type>(s);
-    cix.sid = std::string_view{};
-}
-*/
 template <>
 series_index_t::series_index_t(
     DataTable::DataIndex const &dataIndex) :
@@ -360,13 +330,15 @@ series_index_t::series_index_t(std::string const &str,
 		}
 		else {
 			cix = table.get()
-			          .getIndex(func.getParams().at(0))
+			          .getIndex(table.get().getColumn(
+			              func.getParams().at(0)))
 			          .value.value()
 			          .ncix;
 		}
 	}
 	else {
-		auto &&index = table.get().getIndex(str);
+		auto &&index =
+		    table.get().getIndex(table.get().getColumn(str));
 		cix = index.value.value().ncix;
 		if (index.type == DataTable::DataIndex::Type::measure)
 			aggr = dataframe::aggregator_type::sum;
@@ -374,13 +346,13 @@ series_index_t::series_index_t(std::string const &str,
 }
 
 template <>
-auto data_cube_t::Data::at(const MultiIndex &index) const
+auto data_cube_t::data_t::at(const MultiIndex &index) const
     -> data_cube_cell_t
 {
 	return {index.parent, index.rid};
 }
 
-std::vector<std::size_t> data_cube_t::Data::get_indices(
+std::vector<std::size_t> data_cube_t::data_t::get_indices(
     std::size_t ix) const
 {
 	auto res = sizes;
@@ -394,12 +366,12 @@ std::vector<std::size_t> data_cube_t::Data::get_indices(
 	return res;
 }
 
-auto data_cube_t::Data::begin() const -> Iterator
+auto data_cube_t::data_t::begin() const -> iterator_t
 {
 	return {{df, {std::size_t{}}}, this, std::size_t{}};
 }
 
-auto data_cube_t::Data::end() const -> Iterator
+auto data_cube_t::data_t::end() const -> iterator_t
 {
 	return {{df, {df->get_record_count()}}, this, full_size};
 }
