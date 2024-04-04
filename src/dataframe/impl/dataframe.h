@@ -155,7 +155,8 @@ private:
 
 	const data_source &get_data_source() const;
 
-	void visit(std::function<void(record_type)> function) const;
+	void visit(
+	    const std::function<void(record_type)> &function) const;
 
 	void visit(const std::function<void(record_type)> &function,
 	    const std::vector<std::size_t> *sort,

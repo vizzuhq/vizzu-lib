@@ -96,8 +96,7 @@ std::string dataframe::set_aggregate(series_identifier series,
 	change_state_to(state_type::aggregating,
 	    state_modification_reason::needs_series_type);
 
-	auto &&ser = get_data_source().get_series(series);
-	switch (ser) {
+	switch (get_data_source().get_series(series)) {
 		using enum series_type;
 	default: valid_unexistent_aggregator(aggregator); break;
 	case dimension: valid_dimension_aggregator(aggregator); break;
@@ -106,7 +105,10 @@ std::string dataframe::set_aggregate(series_identifier series,
 
 	change_state_to(state_type::aggregating,
 	    state_modification_reason::needs_own_state);
-	auto &aggs = unsafe_get<state_type::aggregating>(state_data);
+
+	auto &&ser = get_data_source().get_series(series);
+	data_source::aggregating_type &aggs =
+	    unsafe_get<state_type::aggregating>(state_data);
 
 	const auto *agg = std::get_if<aggregator_type>(&aggregator);
 	if (ser == series_type::dimension && !agg) {
@@ -118,9 +120,12 @@ std::string dataframe::set_aggregate(series_identifier series,
 		return {};
 	}
 
-	auto &&[name, uniq] = aggs.add_aggregated(std::move(ser),
+	const custom_aggregator &cust_aggr =
 	    agg ? aggregators[*agg]
-	        : *std::get_if<custom_aggregator>(&aggregator));
+	        : std::get<custom_aggregator>(aggregator);
+
+	auto &&[name, uniq] =
+	    aggs.add_aggregated(std::move(ser), cust_aggr);
 	if (!uniq)
 		throw std::runtime_error(
 		    "Duplicated aggregated series name.");
@@ -544,7 +549,7 @@ void dataframe::add_record(std::span<const cell_value> values) &
 		reorder.resize(vec->size());
 		const auto &s = get_data_source();
 		auto dims = s.dimensions.size();
-		for (auto it = values.data(); auto col : *vec) {
+		for (const auto *it = values.data(); auto col : *vec) {
 			const auto &sv = *std::get_if<std::string_view>(it);
 			switch (auto &&ser = s.get_series(col)) {
 				using enum series_type;
@@ -660,7 +665,8 @@ void dataframe::remove_records(
 	if (auto *p = get_if<source_type::copying>(&source)) {
 		if (!p->pre_remove) p->pre_remove.emplace(count);
 
-		for (std::size_t i : remove_ix) (*p->pre_remove)[i] = true;
+		for (const std::size_t i : remove_ix)
+			(*p->pre_remove)[i] = true;
 
 		return;
 	}
@@ -977,7 +983,8 @@ series_type dataframe::get_series_type(series_identifier series) const
 	return get_data_source().get_series(series);
 }
 
-void dataframe::visit(std::function<void(record_type)> function) const
+void dataframe::visit(
+    const std::function<void(record_type)> &function) const
 {
 	const auto *cp = get_if<source_type::copying>(&source);
 
@@ -1159,12 +1166,12 @@ std::string_view dataframe::get_series_info(
 		using enum series_type;
 	default: return {};
 	case measure: {
-		auto &info = unsafe_get<measure>(ser).second.info;
+		const auto &info = unsafe_get<measure>(ser).second.info;
 		auto it = info.find(key);
 		return it == info.end() ? std::string_view{} : it->second;
 	}
 	case dimension: {
-		auto &info = unsafe_get<dimension>(ser).second.info;
+		const auto &info = unsafe_get<dimension>(ser).second.info;
 		auto it = info.find(key);
 		return it == info.end() ? std::string_view{} : it->second;
 	}

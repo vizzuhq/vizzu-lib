@@ -35,7 +35,7 @@ private:
 		na_position na_pos{na_position::last};
 		std::vector<std::uint32_t> values;
 		std::map<std::string, std::string> info;
-		bool contains_nav;
+		bool contains_nav{};
 
 		dimension_t() noexcept = default;
 
@@ -69,7 +69,7 @@ private:
 
 		void set_nav(std::string_view value, std::size_t to_size);
 
-		std::vector<bool> get_categories_usage() const;
+		[[nodiscard]] std::vector<bool> get_categories_usage() const;
 
 		void remove_unused_categories(std::vector<bool> &&used);
 	};
@@ -78,7 +78,7 @@ private:
 	{
 		std::vector<double> values;
 		std::map<std::string, std::string> info;
-		bool contains_nan;
+		bool contains_nan{};
 
 		measure_t() noexcept = default;
 
@@ -90,7 +90,7 @@ private:
 		        static_cast<bool (&)(double)>(std::isnan)))
 		{}
 
-		const double &get(std::size_t index) const;
+		[[nodiscard]] const double &get(std::size_t index) const;
 
 		[[nodiscard]] std::pair<double, double> get_min_max() const;
 	};

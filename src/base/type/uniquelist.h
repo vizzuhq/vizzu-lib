@@ -4,6 +4,7 @@
 #include <algorithm>
 #include <list>
 #include <optional>
+#include <stdexcept>
 
 namespace Type
 {

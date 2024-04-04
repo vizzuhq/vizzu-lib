@@ -39,8 +39,8 @@ data_table::cell_t::operator double() const
 	return std::get<double>(cell);
 }
 
-auto data_table::Row::operator[](column_index_wrapper colIx) const
-    -> cell_t
+data_table::cell_t data_table::Row::operator[](
+    column_index_wrapper colIx) const
 {
 	auto &&cell = rid.get_value(colIx.ncix.sid);
 
@@ -63,8 +63,8 @@ bool data_table::DataIndex::isInvalid() const
 	           == nullptr;
 }
 
-auto data_table::getColumn(const std::string &name) const
-    -> column_index_wrapper
+column_index_wrapper data_table::getColumn(
+    const std::string &name) const
 {
 	auto sid = df.get_series_name(name);
 	auto orig_index = df.get_series_orig_index(sid);
@@ -92,7 +92,7 @@ double data_table::cell_wrapper::operator*() const
 	return std::get<double>(cell);
 }
 
-auto data_table::getRowCount() const -> std::size_t
+std::size_t data_table::getRowCount() const
 {
 	return df.get_record_count();
 }
@@ -149,8 +149,7 @@ aggregator_t::operator double() const
 	return my_res.value_or(double{});
 }
 
-auto series_type_t::aggregatorType() const
-    -> dataframe::aggregator_type
+dataframe::aggregator_type series_type_t::aggregatorType() const
 {
 	return aggr.value_or(dataframe::aggregator_type::exists);
 }
@@ -169,12 +168,12 @@ bool series_type_t::operator==(
 	return aggregatorType() == aggr;
 }
 
-auto series_index_t::getType() const -> series_type_t
+series_type_t series_index_t::getType() const
 {
 	return {cix.sid, aggr};
 }
 
-auto series_index_t::getColIndex() const -> OptColIndex
+series_index_t::OptColIndex series_index_t::getColIndex() const
 {
 	return OptColIndex{std::in_place, cix};
 }
@@ -346,8 +345,8 @@ series_index_t::series_index_t(std::string const &str,
 }
 
 template <>
-auto data_cube_t::data_t::at(const MultiIndex &index) const
-    -> data_cube_cell_t
+data_cube_cell_t data_cube_t::data_t::at(
+    const MultiIndex &index) const
 {
 	return {index.parent, index.rid};
 }
@@ -359,19 +358,20 @@ std::vector<std::size_t> data_cube_t::data_t::get_indices(
 	// reverse iterate, fill with the modulo, return with div
 	for (auto &cur : std::ranges::views::reverse(res)) {
 		if (!cur) continue;
-		auto &&divres = std::lldiv(ix, cur);
+		auto &&divres = std::lldiv(static_cast<std::int64_t>(ix),
+		    static_cast<std::int64_t>(cur));
 		cur = static_cast<std::size_t>(divres.rem);
 		ix = static_cast<std::size_t>(divres.quot);
 	}
 	return res;
 }
 
-auto data_cube_t::data_t::begin() const -> iterator_t
+data_cube_t::data_t::iterator_t data_cube_t::data_t::begin() const
 {
 	return {{df, {std::size_t{}}}, this, std::size_t{}};
 }
 
-auto data_cube_t::data_t::end() const -> iterator_t
+data_cube_t::data_t::iterator_t data_cube_t::data_t::end() const
 {
 	return {{df, {df->get_record_count()}}, this, full_size};
 }
@@ -473,7 +473,7 @@ size_t data_cube_t::subCellSize() const
 
 template <>
 std::string data_cube_t::getValue(const Id::SliceIndex &index,
-    std::string def) const
+    std::string &&def) const
 {
 	auto my_res = index.new_.value;
 	if (my_res.data() == nullptr) {
@@ -537,7 +537,8 @@ data_cube_t::Id data_cube_t::getId(const SeriesList &sl,
 }
 
 template <>
-auto data_cube_t::cellInfo(const MultiIndex &index) const -> CellInfo
+data_cube_t::CellInfo data_cube_t::cellInfo(
+    const MultiIndex &index) const
 {
 	CellInfo my_res;
 
@@ -566,8 +567,8 @@ auto data_cube_t::cellInfo(const MultiIndex &index) const -> CellInfo
 }
 
 template <>
-auto data_cube_t::valueAt(const MultiIndex &multiIndex,
-    const SeriesIndex &seriesId) const -> aggregator_t
+aggregator_t data_cube_t::valueAt(const MultiIndex &multiIndex,
+    const SeriesIndex &seriesId) const
 {
 	if (multiIndex.rid) {
 		auto colIx = seriesId.getColIndex();
@@ -587,9 +588,9 @@ auto data_cube_t::valueAt(const MultiIndex &multiIndex,
 }
 
 template <>
-auto data_cube_t::aggregateAt(const MultiIndex &multiIndex,
+aggregator_t data_cube_t::aggregateAt(const MultiIndex &multiIndex,
     const SeriesList &sumCols,
-    SeriesIndex seriesId) const -> aggregator_t
+    SeriesIndex seriesId) const
 {
 	if (sumCols.empty()) return valueAt(multiIndex, seriesId);
 
@@ -602,7 +603,7 @@ auto data_cube_t::aggregateAt(const MultiIndex &multiIndex,
 	             : std::string_view{};
 	const auto agg = seriesId.getAggr().value();
 
-	auto &name = measure_names.at({sid, Refl::enum_name(agg)});
+	const auto &name = measure_names.at({sid, Refl::enum_name(agg)});
 
 	ids.insert(name);
 
@@ -673,7 +674,8 @@ auto data_cube_t::aggregateAt(const MultiIndex &multiIndex,
 					continue;
 				}
 				if (cat == cats[refIx]) continue;
-				auto until = cats.begin() + refIx;
+				auto until =
+				    cats.begin() + static_cast<std::intptr_t>(refIx);
 				return std::find(cats.begin(), until, cat) != until;
 			}
 			return false;
@@ -693,23 +695,23 @@ auto data_cube_t::aggregateAt(const MultiIndex &multiIndex,
 					continue;
 				}
 				if (cat == cats[refIx]) continue;
-				auto until = cats.begin() + refIx;
+				auto until =
+				    cats.begin() + static_cast<std::intptr_t>(refIx);
 				return std::find(cats.begin(), until, cat) == until;
 			}
 			return false;
 		}
 	};
 
-	std::ranges::iota_view rix{std::size_t{},
+	auto rix = std::ranges::iota_view{std::size_t{},
 	    sub_df->get_record_count()};
 
 	auto [beg, end] =
 	    std::equal_range(rix.begin(), rix.end(), index, comp{sub_df});
 
-	std::optional<double> my_res =
-	    beg == end ? std::nullopt
-	               : std::make_optional(std::get<double>(
-	                   sub_df->get_data(*beg, name)));
+	auto my_res = beg == end ? std::nullopt
+	                         : std::make_optional(std::get<double>(
+	                             sub_df->get_data(*beg, name)));
 
 	return aggregator_t{my_res};
 }

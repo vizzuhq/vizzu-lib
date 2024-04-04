@@ -96,7 +96,7 @@ public:
 		const dataframe_interface *parent;
 		record_identifier recordId;
 
-		auto get_dimensions() const
+		[[nodiscard]] auto get_dimensions() const
 		{
 			return std::ranges::transform_view{
 			    parent->get_dimensions(),
@@ -109,12 +109,12 @@ public:
 			    }};
 		}
 
-		bool has_measure() const
+		[[nodiscard]] bool has_measure() const
 		{
 			return !parent->get_measures().empty();
 		}
 
-		bool is_filtered() const
+		[[nodiscard]] bool is_filtered() const
 		{
 			return parent->is_filtered(recordId);
 		}

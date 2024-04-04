@@ -442,7 +442,7 @@ data_source::data_source(aggregating_type &&aggregating,
 
 	for (const auto &[name, mea] : meas) {
 		measure_t &new_mea = add_new_measure({}, name);
-		switch (auto &ser = std::get<0>(mea)) {
+		switch (const auto &ser = std::get<0>(mea)) {
 			using enum series_type;
 		case dimension:
 			new_mea.info = unsafe_get<dimension>(ser).second.info;
@@ -749,9 +749,8 @@ data_source::aggregating_type::add_aggregated(
 	    data);
 
 	name = &aggregator == &aggregators[aggregator_type::sum]
-	         ? std::move(name)
-	         : std::string{aggregator.get_name()} + '('
-	               + std::move(name) + ')';
+	         ? name
+	         : std::string{aggregator.get_name()} + '(' + name + ')';
 
 	auto &&[it, succ] = meas.try_emplace(std::move(name),
 	    std::move(data),
