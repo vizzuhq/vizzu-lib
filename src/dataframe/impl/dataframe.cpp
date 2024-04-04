@@ -174,9 +174,10 @@ void dataframe::set_sort(series_identifier series,
 
 		if (source == source_type::copying) migrate_data();
 
-		auto &s = *unsafe_get<source_type::owning>(source);
-		const auto &[name, dim] =
-		    unsafe_get<dimension>(s.get_series(series));
+		auto &&s =
+		    unsafe_get<source_type::owning>(source)->get_series(
+		        series);
+		const auto &[name, dim] = unsafe_get<dimension>(s);
 		dim.sort_by(std::move(*indices), na_pos);
 
 		sort_ptr = nullptr;
