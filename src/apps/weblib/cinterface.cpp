@@ -271,16 +271,12 @@ const Value *record_getValue(const Vizzu::Data::RowWrapper *record,
     const char *column)
 {
 	thread_local Value val{{}, {}};
-	std::visit(
-	    []<class T>(T to)
-	    {
-		    if constexpr (std::is_same_v<T, double>)
-			    val = Value{false, {.measureValue = to}};
-		    else
-			    val = Value{true, {.dimensionValue = to}};
-	    },
-	    Interface::getRecordValue(*record, column));
-
+	if (auto &&cval = Interface::getRecordValue(*record, column);
+	    (val.dimension = cval.index()))
+		new (&val.dimensionValue) const char *{
+		    std::get_if<std::string_view>(&cval)->data()};
+	else
+		new (&val.measureValue) double{*std::get_if<double>(&cval)};
 	return &val;
 }
 

@@ -171,14 +171,11 @@ void Interface::setChartFilter(ObjectRegistry::Handle chart,
 	    hash};
 }
 
-std::variant<const char *, double> Interface::getRecordValue(
+std::variant<double, std::string_view> Interface::getRecordValue(
     const Data::RowWrapper &record,
     const char *column)
 {
-	auto cell = record[column];
-	if (cell.isDimension()) return cell.dimensionValue();
-
-	return *cell;
+	return record[column];
 }
 
 void Interface::addEventListener(ObjectRegistry::Handle chart,

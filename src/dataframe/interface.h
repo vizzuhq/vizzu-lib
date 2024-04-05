@@ -44,34 +44,28 @@ enum class adding_type {
 
 struct custom_aggregator
 {
-	std::variant<std::string_view, std::string> name;
+	std::string name;
 	using id_type = std::any;
 	id_type (*create)();
 	double (*add)(id_type &, cell_value const &);
 
-	[[nodiscard]] std::string_view get_name() const
-	{
-		return std::visit<std::string_view>(std::identity{}, name);
-	}
-
 	auto operator<=>(const custom_aggregator &oth) const
 	{
-		return get_name() <=> oth.get_name();
+		return name <=> oth.name;
 	}
 
 	auto operator!=(const custom_aggregator &oth) const
 	{
-		return get_name() != oth.get_name();
+		return name != oth.name;
 	}
 
 	auto operator==(const custom_aggregator &oth) const
 	{
-		return get_name() == oth.get_name();
+		return name == oth.name;
 	}
 };
 
-class dataframe_interface :
-    public std::enable_shared_from_this<dataframe_interface>
+class dataframe_interface
 {
 public:
 	using series_identifier =

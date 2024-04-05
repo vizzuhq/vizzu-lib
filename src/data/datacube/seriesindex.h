@@ -9,7 +9,7 @@ namespace Vizzu::Data
 
 using SeriesIndex = series_index_t;
 
-using SeriesList = Type::UniqueList<SeriesIndex>;
+using SeriesList = series_index_list_t;
 
 }
 

@@ -68,7 +68,7 @@ struct MeasureAxis
 	::Anim::Interpolated<double> step{1.0};
 	MeasureAxis() = default;
 	MeasureAxis(Math::Range<double> interval,
-	    std::string unit,
+	    std::string &&unit,
 	    std::optional<double> step);
 	bool operator==(const MeasureAxis &other) const;
 	[[nodiscard]] double origo() const;

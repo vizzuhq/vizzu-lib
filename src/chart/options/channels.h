@@ -42,8 +42,8 @@ public:
 
 	std::pair<bool, Channel::OptionalIndex>
 	addSeries(const ChannelId &id, const Data::SeriesIndex &index);
-	bool removeSeries(const Data::SeriesIndex &index);
-	bool removeSeries(const ChannelId &id,
+	void removeSeries(const Data::SeriesIndex &index);
+	void removeSeries(const ChannelId &id,
 	    const Data::SeriesIndex &index);
 	bool clearSeries(const ChannelId &id);
 

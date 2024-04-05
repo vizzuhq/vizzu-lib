@@ -289,14 +289,13 @@ void DrawInterlacing::drawDataLabel(
 			        if (labelStyle.position->interpolates()
 			            && unit.interpolates() && index != index2)
 				        return;
-			        auto unitStr = wUnit.value;
 			        auto str =
 			            Text::SmartString::fromPhysicalValue(value,
 			                *labelStyle.numberFormat,
 			                static_cast<size_t>(
 			                    *labelStyle.maxFractionDigits),
 			                *labelStyle.numberScale,
-			                unitStr);
+			                std::string{wUnit.value});
 			        drawLabel.draw(canvas,
 			            str,
 			            posDir,

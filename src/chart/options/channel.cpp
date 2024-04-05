@@ -31,7 +31,7 @@ Channel Channel::makeChannel(Type id)
 std::pair<bool, Channel::OptionalIndex> Channel::addSeries(
     const Data::SeriesIndex &index)
 {
-	if (index.getType().isDimension()) {
+	if (index.isDimension()) {
 		return {dimensionIds.pushBack(index), std::nullopt};
 	}
 	if (!measureId) {
@@ -46,17 +46,11 @@ std::pair<bool, Channel::OptionalIndex> Channel::addSeries(
 	return {false, std::nullopt};
 }
 
-bool Channel::removeSeries(const Data::SeriesIndex &index)
+void Channel::removeSeries(const Data::SeriesIndex &index)
 {
-	if (index.getType().isDimension()) {
-		return dimensionIds.remove(index);
-	}
-	if (measureId) {
-		measureId = std::nullopt;
-		return true;
-	}
+	if (index.isDimension()) return dimensionIds.remove(index);
 
-	return false;
+	if (measureId) measureId = std::nullopt;
 }
 
 bool Channel::isSeriesUsed(const Data::SeriesIndex &index) const
@@ -120,20 +114,21 @@ bool Channel::operator==(const Channel &other) const
 	    && markerGuides == other.markerGuides;
 }
 
-std::string Channel::measureName(const Data::DataTable &table) const
+std::string Channel::measureName(
+    const std::optional<Data::DataCube> &cube) const
 {
-	if (!isEmpty() && measureId && !isDimension()) {
-		return measureId->toString(table);
+	if (measureId) {
+		return cube ? cube->getName(*measureId)
+		            : measureId->getOrigName();
 	}
 	return {};
 }
 
-std::list<std::string> Channel::dimensionNames(
-    const Data::DataTable &table) const
+std::list<std::string_view> Channel::dimensionNames() const
 {
-	std::list<std::string> res;
+	std::list<std::string_view> res;
 	for (const auto &dimensionId : dimensionIds)
-		res.push_back(dimensionId.toString(table));
+		res.push_back(dimensionId.getColIndex());
 	return res;
 }
 
@@ -154,7 +149,7 @@ Channel::OptionalIndex Channel::labelSeries() const
 {
 	if (isDimension()) {
 		if (labelLevel < dimensionIds.size())
-			return dimensionIds.at(labelLevel);
+			return *std::next(dimensionIds.begin(), labelLevel);
 		return std::nullopt;
 	}
 	return measureId;

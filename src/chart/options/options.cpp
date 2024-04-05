@@ -124,9 +124,8 @@ void Options::intersection(const Options &other)
 	auto dimensions = getChannels().getDimensions();
 
 	for (const auto &dim : dimensions)
-		if (!other.getChannels().isSeriesUsed(dim)) {
+		if (!other.getChannels().isSeriesUsed(dim))
 			getChannels().removeSeries(dim);
-		}
 }
 
 bool Options::looksTheSame(const Options &other) const

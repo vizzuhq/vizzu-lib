@@ -16,33 +16,9 @@ public:
 
 	bool pushBack(const T &value)
 	{
-		auto it = std::find(items.begin(), items.end(), value);
-		if (it == items.end()) {
-			items.push_back(value);
-			return true;
-		}
-		return false;
-	}
-
-	bool insertAt(size_t index, const T &value)
-	{
-		auto it = std::find(items.begin(), items.end(), value);
-		if (it == items.end()) {
-			index = std::min(index, items.size());
-			auto posIt = items.begin();
-			std::advance(posIt, index);
-			items.insert(posIt, value);
-			return true;
-		}
-		return false;
-	}
-
-	[[nodiscard]] const T &at(size_t index) const
-	{
-		auto posIt = items.begin();
-		std::advance(posIt, std::min(index, items.size()));
-		if (posIt != items.end()) return *posIt;
-		throw std::out_of_range("");
+		auto nonexists = !includes(value);
+		if (nonexists) items.push_back(value);
+		return nonexists;
 	}
 
 	[[nodiscard]] auto begin() const { return items.begin(); }
@@ -55,31 +31,26 @@ public:
 	void clear() { items.clear(); }
 	[[nodiscard]] size_t size() const { return items.size(); }
 
-	bool remove(const T &value)
+	void remove(const T &value)
 	{
-		auto it = std::find(items.begin(), items.end(), value);
-		if (it == items.end()) return false;
-
-		items.erase(it);
-		return true;
+		if (auto it = std::find(items.begin(), items.end(), value);
+		    it != items.end())
+			items.erase(it);
 	}
 
-	bool operator==(const UniqueList<T> &other) const
-	{
-		return items == other.items;
-	}
+	bool operator==(const UniqueList<T> &other) const = default;
 
 	[[nodiscard]] bool includes(const T &item) const
 	{
-		auto it = std::find(items.begin(), items.end(), item);
-		return it != items.end();
+		return getIndex(item).has_value();
 	}
 
 	[[nodiscard]] std::optional<int> getIndex(const T &item) const
 	{
-		auto it = std::find(items.begin(), items.end(), item);
-		return it != items.end() ? std::distance(items.begin(), it)
-		                         : std::optional<int>{};
+		int ix{};
+		for (auto it = items.begin(); it != items.end(); ++it, ++ix)
+			if (*it == item) return ix;
+		return std::nullopt;
 	}
 
 	void remove(const UniqueList<T> &other)
@@ -89,13 +60,11 @@ public:
 
 	void section(const UniqueList<T> &other)
 	{
-		auto it = items.begin();
-		while (it != items.end()) {
-			auto next = it;
-			++next;
-			if (!other.includes(*it)) items.erase(it);
-			it = next;
-		}
+		for (auto it = items.begin(); it != items.end();)
+			if (!other.includes(*it))
+				it = items.erase(it);
+			else
+				++it;
 	}
 
 private:

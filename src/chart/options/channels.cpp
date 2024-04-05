@@ -84,17 +84,15 @@ std::pair<bool, Channel::OptionalIndex> Channels::addSeries(
 	return channels[id].addSeries(index);
 }
 
-bool Channels::removeSeries(const ChannelId &id,
+void Channels::removeSeries(const ChannelId &id,
     const Data::SeriesIndex &index)
 {
-	return channels[id].removeSeries(index);
+	channels[id].removeSeries(index);
 }
 
-bool Channels::removeSeries(const Data::SeriesIndex &index)
+void Channels::removeSeries(const Data::SeriesIndex &index)
 {
-	bool res = false;
-	for (auto &channel : channels) res |= channel.removeSeries(index);
-	return res;
+	for (auto &channel : channels) channel.removeSeries(index);
 }
 
 bool Channels::clearSeries(const ChannelId &id)

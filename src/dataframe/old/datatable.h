@@ -5,104 +5,39 @@
 #ifndef DATAFRAME_OLD2_DATATABLE_H
 #define DATAFRAME_OLD2_DATATABLE_H
 
+#include <base/type/uniquelist.h>
+
 #include "../impl/dataframe.h"
 
 namespace Vizzu::Data
 {
 
-struct column_index
+class RowWrapper
 {
-	dataframe::dataframe_interface::series_identifier sid;
-	std::optional<std::size_t> orig_index;
+public:
+	dataframe::dataframe_interface::record_type rid;
+	[[nodiscard]] dataframe::cell_value operator[](
+	    std::string_view col) const;
 };
-
-struct column_index_wrapper
-{
-	column_index ncix;
-};
-
-bool operator<(const column_index_wrapper &lhs,
-    const column_index_wrapper &rhs);
-
-bool operator==(const column_index_wrapper &lhs,
-    const column_index_wrapper &rhs);
 
 class data_table
 {
 public:
-	struct cell_t
-	{
-		dataframe::cell_value cell;
-
-		explicit operator std::string() const;
-
-		explicit operator double() const;
-	};
-
-	struct Row
-	{
-		dataframe::dataframe_interface::record_type rid;
-		const data_table *parent{};
-
-		[[nodiscard]] cell_t operator[](
-		    column_index_wrapper colIx) const;
-
-		[[nodiscard]] std::size_t size() const;
-	};
-
-	struct DataIndex
-	{
-		using OptColIndex = std::optional<column_index_wrapper>;
-		using Type = dataframe::series_type;
-
-		OptColIndex value;
-		Type type{};
-
-		[[nodiscard]] bool isInvalid() const;
-	};
-
-	[[nodiscard]] column_index_wrapper getColumn(
+	using Type = dataframe::series_type;
+	[[nodiscard]] std::string_view getColumn(
 	    const std::string &name) const;
 
-	struct column_info
+	std::string_view getUnit(std::string_view const &colIx) const
 	{
-		const dataframe::dataframe *dfif;
-		dataframe::dataframe_interface::series_identifier sid;
+		return df.get_series_info(colIx, "unit");
+	}
 
-		[[nodiscard]] std::string getUnit() const;
-	};
-
-	struct cell_wrapper
+	Type getType(const std::string_view &cix) const
 	{
-		dataframe::cell_value cell;
-
-		cell_wrapper(cell_t const &o,
-		    [[maybe_unused]] column_info const &info) :
-		    cell(o.cell)
-		{}
-
-		[[nodiscard]] bool isDimension() const;
-
-		[[nodiscard]] const char *dimensionValue() const;
-
-		[[nodiscard]] double operator*() const;
-	};
-
-	[[nodiscard]] auto getInfo(
-	    column_index_wrapper const &colIx) const
-	{
-		return column_info{&df, colIx.ncix.sid};
+		return df.get_series_type(cix);
 	}
 
 	[[nodiscard]] std::size_t getRowCount() const;
-
-	[[nodiscard]] Row operator[](std::size_t row) const
-	{
-		return {{&df, row}, this};
-	}
-
-	[[nodiscard]] DataIndex getIndex(
-	    column_index_wrapper const &col) const;
 
 	void addColumn(const std::string &name,
 	    const std::string &unit,
@@ -125,86 +60,50 @@ private:
 	dataframe::dataframe df;
 };
 
-class aggregator_t
-{
-public:
-	using Type = dataframe::aggregator_type;
-
-	explicit aggregator_t(std::optional<double> my_res) :
-	    my_res(my_res)
-	{}
-
-	explicit operator double() const;
-
-private:
-	std::optional<double> my_res;
-};
-
-struct series_type_t
-{
-	dataframe::dataframe_interface::series_identifier sid;
-	std::optional<dataframe::aggregator_type> aggr;
-
-	[[nodiscard]] dataframe::aggregator_type aggregatorType() const;
-
-	[[nodiscard]] bool isDimension() const;
-
-	[[nodiscard]] bool isReal() const;
-
-	[[nodiscard]] bool operator==(
-	    const dataframe::aggregator_type &) const;
-};
-
 class series_index_t
 {
-	column_index cix;
+	std::string orig_name;
+	std::string_view sid;
+	std::optional<std::size_t> orig_index;
 	std::optional<dataframe::aggregator_type> aggr;
 
 public:
-	using OptColIndex = std::optional<column_index_wrapper>;
+	using OptColIndex = std::string_view;
 
-	template <class Table>
-	series_index_t(std::string const &str, const Table &table);
+	series_index_t(std::string const &str, const data_table &table);
 
-	template <class DI>
-	    requires(requires(DI const &di) { di.type; })
-	explicit series_index_t(DI const &dataIndex);
-
-	[[nodiscard]] const std::optional<dataframe::aggregator_type> &
-	getAggr() const
+	[[nodiscard]] const dataframe::aggregator_type &getAggr() const
 	{
-		return aggr;
+		return *aggr;
 	}
 
-	[[nodiscard]] series_type_t getType() const;
-
-	[[nodiscard]] OptColIndex getColIndex() const;
-
-	template <class Table>
-	    requires(requires(Table const &table) { table.getDf(); })
-	[[nodiscard]] std::string toString(const Table &table) const;
+	[[nodiscard]] const OptColIndex &getColIndex() const;
 
 	friend bool operator==(const series_index_t &lhs,
 	    const series_index_t &rhs);
 	friend bool operator<(const series_index_t &lhs,
 	    const series_index_t &rhs);
+
+	[[nodiscard]] bool isDimension() const;
+
+	[[nodiscard]] const std::string &getOrigName() const
+	{
+		return orig_name;
+	}
 };
 
 bool operator==(const series_index_t &lhs, const series_index_t &rhs);
 
 bool operator<(const series_index_t &lhs, const series_index_t &rhs);
 
-struct slice_index
+using series_index_list_t = Type::UniqueList<series_index_t>;
+
+struct slice_index_t
 {
 	std::string_view column;
 	std::string_view value;
 	std::size_t orig_index;
 	std::size_t orig_value;
-};
-
-struct slice_index_t
-{
-	slice_index new_;
 
 	[[nodiscard]] bool operator<(slice_index_t const &) const;
 
@@ -264,7 +163,6 @@ public:
 			const data_t *parent;
 			std::size_t old;
 			bool found{};
-			std::size_t found_count{};
 
 			iterator_t(
 			    dataframe::dataframe_interface::record_type rid,
@@ -295,8 +193,8 @@ public:
 		    sizes(options.getDimensions().size())
 		{}
 
-		template <class MI>
-		[[nodiscard]] data_cube_cell_t at(const MI &index) const;
+		[[nodiscard]] data_cube_cell_t at(
+		    const MultiIndex &index) const;
 
 		[[nodiscard]] std::vector<std::size_t> get_indices(
 		    std::size_t ix) const;
@@ -308,64 +206,48 @@ public:
 	const data_table *table;
 	std::shared_ptr<dataframe::dataframe_interface> df;
 	std::shared_ptr<dataframe::dataframe_interface> removed;
-	std::map<
-	    std::pair<dataframe::dataframe_interface::series_identifier,
-	        std::string>,
-	    std::string>
+	std::map<std::pair<std::string_view, std::string>, std::string>
 	    measure_names;
 	data_t data;
 
-	std::shared_ptr<std::map<
-	    std::set<dataframe::dataframe_interface::series_identifier>,
+	std::shared_ptr<std::map<std::set<std::string_view>,
 	    std::shared_ptr<dataframe::dataframe_interface>>>
 	    cacheImpl = std::make_shared<
 	        typename decltype(cacheImpl)::element_type>();
 
-	template <class Table, class Options, class Filter>
-	data_cube_t(const Table &table,
+	template <class Options, class Filter>
+	data_cube_t(const data_table &table,
 	    const Options &options,
 	    const Filter &filter);
 
-	template <class SL>
-	[[nodiscard]] size_t combinedSizeOf(const SL &colIndices) const;
+	[[nodiscard]] size_t combinedSizeOf(
+	    const series_index_list_t &colIndices) const;
 
 	[[nodiscard]] size_t subCellSize() const;
 
 	[[nodiscard]] const data_t &getData() const { return data; }
 
-	template <class MI>
-	[[nodiscard]] CellInfo cellInfo(const MI &index) const;
+	[[nodiscard]] CellInfo cellInfo(const multi_index_t &index) const;
 
-	template <class MI, class SL, class SI>
-	[[nodiscard]] aggregator_t aggregateAt(const MI &multiIndex,
-	    const SL &sumCols,
-	    SI seriesId) const;
+	[[nodiscard]] double aggregateAt(const multi_index_t &multiIndex,
+	    const series_index_list_t &sumCols,
+	    series_index_t seriesId) const;
 
-	template <class MI, class SI>
-	[[nodiscard]] aggregator_t valueAt(const MI &multiIndex,
-	    const SI &seriesId) const;
+	[[nodiscard]] double valueAt(const multi_index_t &multiIndex,
+	    const series_index_t &seriesId) const;
 
 	[[nodiscard]] const data_table *getTable() const { return table; }
 
-	template <class SL, class MI>
-	[[nodiscard]] Id getId(const SL &, const MI &) const;
+	[[nodiscard]] Id getId(const series_index_list_t &,
+	    const multi_index_t &) const;
 
-	template <class SI>
-	    requires(requires(SI const &si) { si.new_; })
-	[[nodiscard]] std::string getValue(const SI &index,
+	[[nodiscard]] std::string getValue(const slice_index_t &index,
 	    std::string &&def = "") const;
+
+	[[nodiscard]] const std::string &getName(
+	    const series_index_t &seriesId) const;
 };
 
 }
-
-template <> struct std::hash<Vizzu::Data::column_index_wrapper>
-{
-	auto operator()(
-	    const Vizzu::Data::column_index_wrapper &o) const noexcept
-	{
-		return std::hash<Vizzu::dataframe::dataframe_interface::
-		        series_identifier>{}(o.ncix.sid);
-	}
-};
 
 #endif // DATAFRAME_OLD2_DATATABLE_H

@@ -750,7 +750,7 @@ data_source::aggregating_type::add_aggregated(
 
 	name = &aggregator == &aggregators[aggregator_type::sum]
 	         ? name
-	         : std::string{aggregator.get_name()} + '(' + name + ')';
+	         : aggregator.name + '(' + name + ')';
 
 	auto &&[it, succ] = meas.try_emplace(std::move(name),
 	    std::move(data),

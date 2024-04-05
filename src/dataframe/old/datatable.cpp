@@ -17,91 +17,25 @@
 namespace Vizzu::Data
 {
 
-bool operator<(const column_index_wrapper &lhs,
-    const column_index_wrapper &rhs)
+dataframe::cell_value RowWrapper::operator[](
+    std::string_view col) const
 {
-	return lhs.ncix.orig_index < rhs.ncix.orig_index;
-}
-
-bool operator==(const column_index_wrapper &lhs,
-    const column_index_wrapper &rhs)
-{
-	return lhs.ncix.orig_index == rhs.ncix.orig_index;
-}
-
-data_table::cell_t::operator std::string() const
-{
-	return std::string{std::get<std::string_view>(cell)};
-}
-
-data_table::cell_t::operator double() const
-{
-	return std::get<double>(cell);
-}
-
-data_table::cell_t data_table::Row::operator[](
-    column_index_wrapper colIx) const
-{
-	auto &&cell = rid.get_value(colIx.ncix.sid);
+	auto &&cell = rid.get_value(col);
 
 	if (double *d = std::get_if<double>(&cell); d && std::isnan(*d))
 		*d = 0.0;
 
-	return cell_t{cell};
+	return cell;
 }
 
-std::size_t data_table::Row::size() const
+std::string_view data_table::getColumn(const std::string &name) const
 {
-	return rid.parent->get_dimensions().size()
-	     + rid.parent->get_measures().size();
-}
-
-bool data_table::DataIndex::isInvalid() const
-{
-	return !value
-	    || std::get<std::string_view>(value->ncix.sid).data()
-	           == nullptr;
-}
-
-column_index_wrapper data_table::getColumn(
-    const std::string &name) const
-{
-	auto sid = df.get_series_name(name);
-	auto orig_index = df.get_series_orig_index(sid);
-
-	return column_index_wrapper{{sid, orig_index}};
-}
-
-std::string data_table::column_info::getUnit() const
-{
-	return std::string{dfif->get_series_info(sid, "unit")};
-}
-
-bool data_table::cell_wrapper::isDimension() const
-{
-	return std::holds_alternative<std::string_view>(cell);
-}
-
-const char *data_table::cell_wrapper::dimensionValue() const
-{
-	return std::get<std::string_view>(cell).data();
-}
-
-double data_table::cell_wrapper::operator*() const
-{
-	return std::get<double>(cell);
+	return df.get_series_name(name);
 }
 
 std::size_t data_table::getRowCount() const
 {
 	return df.get_record_count();
-}
-
-data_table::DataIndex data_table::getIndex(
-    column_index_wrapper const &col) const
-{
-	return {DataIndex::OptColIndex{std::in_place, col.ncix},
-	    df.get_series_type(col.ncix.sid)};
 }
 
 void data_table::addColumn(const std::string &name,
@@ -144,61 +78,35 @@ void data_table::pushRow(const std::span<const char *> &cells)
 
 std::string data_table::getInfos() const { return df.as_string(); }
 
-aggregator_t::operator double() const
-{
-	return my_res.value_or(double{});
-}
+bool series_index_t::isDimension() const { return !aggr; }
 
-dataframe::aggregator_type series_type_t::aggregatorType() const
+const series_index_t::OptColIndex &series_index_t::getColIndex() const
 {
-	return aggr.value_or(dataframe::aggregator_type::exists);
-}
-
-bool series_type_t::isDimension() const { return !aggr; }
-
-bool series_type_t::isReal() const
-{
-	const auto *sidp = std::get_if<std::string_view>(&sid);
-	return sidp && sidp->data() != nullptr;
-}
-
-bool series_type_t::operator==(
-    const dataframe::aggregator_type &aggr) const
-{
-	return aggregatorType() == aggr;
-}
-
-series_type_t series_index_t::getType() const
-{
-	return {cix.sid, aggr};
-}
-
-series_index_t::OptColIndex series_index_t::getColIndex() const
-{
-	return OptColIndex{std::in_place, cix};
+	return sid;
 }
 
 bool operator==(const series_index_t &lhs, const series_index_t &rhs)
 {
-	return lhs.cix.sid == rhs.cix.sid && lhs.aggr == rhs.aggr;
+	return lhs.sid == rhs.sid && lhs.aggr == rhs.aggr;
 }
 
 bool operator<(const series_index_t &lhs, const series_index_t &rhs)
 {
-	return std::tuple{lhs.cix.orig_index, lhs.aggr}
-	     < std::tuple{rhs.cix.orig_index, rhs.aggr};
+	return lhs.orig_index < rhs.orig_index
+	    || (lhs.orig_index == rhs.orig_index && lhs.aggr < rhs.aggr);
 }
 
 bool slice_index_t::operator<(slice_index_t const &rhs) const
 {
-	return std::tuple{new_.orig_index, new_.orig_value}
-	     < std::tuple{rhs.new_.orig_index, rhs.new_.orig_value};
+	return orig_index < rhs.orig_index
+	    || (orig_index == rhs.orig_index
+	        && orig_value < rhs.orig_value);
 }
 
 bool slice_index_t::operator==(const slice_index_t &rhs) const
 {
-	return std::tuple{new_.orig_index, new_.orig_value}
-	    == std::tuple{rhs.new_.orig_index, rhs.new_.orig_value};
+	return orig_index == rhs.orig_index
+	    && orig_value == rhs.orig_value;
 }
 
 bool multi_index_t::empty() const
@@ -214,8 +122,8 @@ bool data_cube_cell_t::isEmpty() const
 
 bool data_cube_t::Id::operator==(const Id &id) const
 {
-	return std::tuple{itemSliceIndex, seriesId, itemId}
-	    == std::tuple{id.itemSliceIndex, id.seriesId, id.itemId};
+	return itemSliceIndex == id.itemSliceIndex
+	    && seriesId == id.seriesId && itemId == id.itemId;
 }
 
 data_cube_t::data_t::iterator_t::iterator_t(
@@ -231,10 +139,7 @@ data_cube_t::data_t::iterator_t::iterator_t(
 
 void data_cube_t::data_t::iterator_t::incr()
 {
-	if (found) {
-		++*std::get_if<std::size_t>(&rid.recordId);
-		++found_count;
-	}
+	if (found) { ++*std::get_if<std::size_t>(&rid.recordId); }
 
 	auto indices = parent->get_indices(old);
 
@@ -244,9 +149,6 @@ void data_cube_t::data_t::iterator_t::incr()
 	    {
 		    auto ixx = parent->dim_reindex[ix];
 		    auto cats = rid.parent->get_categories({ixx});
-		    if (cats.size() < indices[ix])
-			    throw std::runtime_error("Wroong index?");
-
 		    if (cats.size() == indices[ix]) {
 			    return std::get<std::string_view>(
 			               rid.get_value({ixx}))
@@ -284,38 +186,9 @@ data_cube_t::data_t::iterator_t::getIndex() const
 	    parent->get_indices(old)};
 }
 
-template <>
-std::string series_index_t::toString(const DataTable &table) const
-{
-	std::string my_res;
-
-	if (const auto *id = std::get_if<std::string_view>(&cix.sid);
-	    !id || id->data() != nullptr) {
-		my_res = table.getDf().get_series_name(cix.sid);
-		if (aggr && *aggr != dataframe::aggregator_type::sum) {
-			my_res = Refl::enum_name(*aggr) + "(" + std::move(my_res)
-			       + ")";
-		}
-	}
-	else {
-		if (!aggr) throw std::runtime_error("Inconsistency...");
-		my_res = Refl::enum_name(*aggr) + "()";
-	}
-	return my_res;
-}
-
-template <>
-series_index_t::series_index_t(
-    DataTable::DataIndex const &dataIndex) :
-    cix(dataIndex.value.value().ncix)
-{
-	if (dataIndex.type == DataTable::DataIndex::Type::measure)
-		aggr = dataframe::aggregator_type::sum;
-}
-
-template <>
 series_index_t::series_index_t(std::string const &str,
-    const std::reference_wrapper<DataTable> &table)
+    const data_table &table) :
+    orig_name(str)
 {
 	if (const Text::FuncString func(str, false);
 	    !func.isEmpty()
@@ -324,29 +197,21 @@ series_index_t::series_index_t(std::string const &str,
 	        func.getName())) {
 		aggr = Refl::get_enum<dataframe::aggregator_type>(
 		    func.getName());
-		if (func.getParams().empty()) {
-			cix.sid = std::string_view{};
-		}
-		else {
-			cix = table.get()
-			          .getIndex(table.get().getColumn(
-			              func.getParams().at(0)))
-			          .value.value()
-			          .ncix;
+		if (!func.getParams().empty()) {
+			sid = table.getColumn(func.getParams().at(0));
+			orig_index = table.getDf().get_series_orig_index(sid);
 		}
 	}
 	else {
-		auto &&index =
-		    table.get().getIndex(table.get().getColumn(str));
-		cix = index.value.value().ncix;
-		if (index.type == DataTable::DataIndex::Type::measure)
+		sid = table.getColumn(str);
+		orig_index = table.getDf().get_series_orig_index(sid);
+		if (table.getType(sid) == DataTable::Type::measure)
 			aggr = dataframe::aggregator_type::sum;
 	}
 }
 
-template <>
 data_cube_cell_t data_cube_t::data_t::at(
-    const MultiIndex &index) const
+    const multi_index_t &index) const
 {
 	return {index.parent, index.rid};
 }
@@ -377,7 +242,7 @@ data_cube_t::data_t::iterator_t data_cube_t::data_t::end() const
 }
 
 template <>
-data_cube_t::data_cube_t(const DataTable &table,
+data_cube_t::data_cube_t(const data_table &table,
     const DataCubeOptions &options,
     const Filter &filter) :
     table(&table),
@@ -388,22 +253,19 @@ data_cube_t::data_cube_t(const DataTable &table,
     data{df.get(), options}
 {
 	df->remove_records(
-	    [filter, &table](
-	        dataframe::dataframe_interface::record_type rec)
+	    [filter](dataframe::dataframe_interface::record_type rec)
 	    {
-		    return !filter.match(
-		        {table, table[std::get<std::size_t>(rec.recordId)]});
+		    return !filter.match({rec});
 	    });
 
 	removed = df->copy(false, false);
 
 	for (const auto &dim : options.getDimensions())
-		df->aggregate_by(dim.getColIndex().value().ncix.sid);
+		df->aggregate_by(dim.getColIndex());
 
 	for (const auto &meas : options.getMeasures()) {
-		auto colIx = meas.getColIndex();
-		auto sid = colIx ? colIx->ncix.sid : std::string_view{};
-		auto aggr = meas.getAggr().value();
+		auto sid = meas.getColIndex();
+		auto aggr = meas.getAggr();
 
 		measure_names.try_emplace(
 		    std::pair{sid, Refl::enum_name(aggr)},
@@ -412,15 +274,14 @@ data_cube_t::data_cube_t(const DataTable &table,
 
 	if (options.getMeasures().empty()
 	    && !options.getDimensions().empty()) {
-		auto unkn =
-		    dataframe::dataframe_interface::series_identifier{};
+		auto unkn = std::string_view{};
 		measure_names.try_emplace(std::pair{unkn, "exists"},
 		    df->set_aggregate(unkn,
 		        dataframe::aggregator_type::exists));
 	}
 
 	for (const auto &dim : options.getDimensions()) {
-		df->set_sort(dim.toString(table),
+		df->set_sort(dim.getColIndex(),
 		    dataframe::sort_type::by_categories,
 		    dataframe::na_position::last);
 	}
@@ -439,12 +300,12 @@ data_cube_t::data_cube_t(const DataTable &table,
 	for (auto it = data.dim_reindex.begin(),
 	          sizIt = data.sizes.begin();
 	     const auto &dim : options.getDimensions()) {
-		auto &&name = dim.toString(table);
-		*it++ =
-		    (*std::ranges::lower_bound(tr,
-		         std::pair<std::string_view, std::size_t>{name, {}}))
-		        .second;
-		*sizIt++ = df->get_categories(name).size() + df->has_na(name);
+		auto &&dimName = dim.getColIndex();
+		*it++ = (*std::ranges::lower_bound(tr,
+		             std::pair{dimName, std::size_t{}}))
+		            .second;
+		*sizIt++ =
+		    df->get_categories(dimName).size() + df->has_na(dimName);
 	}
 
 	if (!options.getMeasures().empty()
@@ -455,12 +316,12 @@ data_cube_t::data_cube_t(const DataTable &table,
 		    std::multiplies{});
 }
 
-template <>
-size_t data_cube_t::combinedSizeOf(const SeriesList &colIndices) const
+size_t data_cube_t::combinedSizeOf(
+    const series_index_list_t &colIndices) const
 {
 	std::size_t my_res{1};
 	for (const auto &si : colIndices) {
-		auto sid = si.getColIndex()->ncix.sid;
+		auto sid = si.getColIndex();
 		my_res *= df->get_categories(sid).size() + df->has_na(sid);
 	}
 	return my_res;
@@ -471,13 +332,12 @@ size_t data_cube_t::subCellSize() const
 	return df->get_measures().size();
 }
 
-template <>
-std::string data_cube_t::getValue(const Id::SliceIndex &index,
+std::string data_cube_t::getValue(const slice_index_t &index,
     std::string &&def) const
 {
-	auto my_res = index.new_.value;
+	auto my_res = index.value;
 	if (my_res.data() == nullptr) {
-		if (df->has_na(index.new_.column)) { my_res = ""; }
+		if (df->has_na(index.column)) { my_res = ""; }
 		else {
 			my_res = def;
 		}
@@ -485,9 +345,15 @@ std::string data_cube_t::getValue(const Id::SliceIndex &index,
 	return std::string{my_res};
 }
 
-template <>
-data_cube_t::Id data_cube_t::getId(const SeriesList &sl,
-    const MultiIndex &mi) const
+const std::string &data_cube_t::getName(
+    const series_index_t &seriesId) const
+{
+	return measure_names.at({seriesId.getColIndex(),
+	    Refl::enum_name(seriesId.getAggr())});
+}
+
+data_cube_t::Id data_cube_t::getId(const series_index_list_t &sl,
+    const multi_index_t &mi) const
 {
 	std::map<std::string_view, std::size_t> reindex;
 	struct DimProp
@@ -499,10 +365,8 @@ data_cube_t::Id data_cube_t::getId(const SeriesList &sl,
 	};
 	std::vector<std::pair<std::string_view, DimProp>> v;
 	for (std::size_t ix{}; const auto &s : sl)
-		reindex[v.emplace_back(std::get<std::string_view>(
-		                           s.getColIndex().value().ncix.sid),
-		             DimProp{})
-		            .first] = ix++;
+		reindex[v.emplace_back(s.getColIndex(), DimProp{}).first] =
+		    ix++;
 
 	std::size_t seriesId{};
 	for (std::size_t ix{}; ix < mi.dim_reindex->size(); ++ix) {
@@ -528,7 +392,7 @@ data_cube_t::Id data_cube_t::getId(const SeriesList &sl,
 	for (std::size_t i{}; i < v.size(); ++i) {
 		auto &[cat, cix, size, orig_ix] = v[i].second;
 
-		ssi.push_back({{v[i].first, cat, orig_ix, cix}});
+		ssi.emplace_back(v[i].first, cat, orig_ix, cix);
 		itemId *= size;
 		itemId += cix;
 	}
@@ -536,9 +400,8 @@ data_cube_t::Id data_cube_t::getId(const SeriesList &sl,
 	return {mi, ssi, seriesId, itemId};
 }
 
-template <>
 data_cube_t::CellInfo data_cube_t::cellInfo(
-    const MultiIndex &index) const
+    const multi_index_t &index) const
 {
 	CellInfo my_res;
 
@@ -566,44 +429,29 @@ data_cube_t::CellInfo data_cube_t::cellInfo(
 	return my_res;
 }
 
-template <>
-aggregator_t data_cube_t::valueAt(const MultiIndex &multiIndex,
-    const SeriesIndex &seriesId) const
+double data_cube_t::valueAt(const multi_index_t &multiIndex,
+    const series_index_t &seriesId) const
 {
 	if (multiIndex.rid) {
-		auto colIx = seriesId.getColIndex();
-		auto sid = colIx ? colIx->ncix.sid : std::string_view{};
-		auto aggr = seriesId.getAggr().value();
-
-		auto name = measure_names.at({sid, Refl::enum_name(aggr)});
+		const auto &name = getName(seriesId);
 		auto &&data = df->get_data(*multiIndex.rid, name);
 
-		const auto *d = std::get_if<double>(&data);
-		if (!d) throw std::runtime_error("valueAt not a double");
-
-		return aggregator_t{*d};
+		return std::get<double>(data);
 	}
 
-	return aggregator_t{std::nullopt};
+	return {};
 }
 
-template <>
-aggregator_t data_cube_t::aggregateAt(const MultiIndex &multiIndex,
-    const SeriesList &sumCols,
-    SeriesIndex seriesId) const
+double data_cube_t::aggregateAt(const multi_index_t &multiIndex,
+    const series_index_list_t &sumCols,
+    series_index_t seriesId) const
 {
 	if (sumCols.empty()) return valueAt(multiIndex, seriesId);
 
-	std::set<dataframe::dataframe_interface::series_identifier> ids;
-	for (const auto &s : sumCols)
-		ids.insert(s.getColIndex().value().ncix.sid);
+	std::set<std::string_view> ids;
+	for (const auto &s : sumCols) ids.insert(s.getColIndex());
 
-	auto sid = seriesId.getColIndex()
-	             ? seriesId.getColIndex()->ncix.sid
-	             : std::string_view{};
-	const auto agg = seriesId.getAggr().value();
-
-	const auto &name = measure_names.at({sid, Refl::enum_name(agg)});
+	const auto &name = getName(seriesId);
 
 	ids.insert(name);
 
@@ -618,17 +466,13 @@ aggregator_t data_cube_t::aggregateAt(const MultiIndex &multiIndex,
 		    std::set<std::string_view>(df->get_dimensions().begin(),
 		        df->get_dimensions().end());
 		for (const auto &dim : sumCols)
-			if (keep_this.erase(df->get_series_name(
-			        dim.getColIndex().value().ncix.sid))
-			    != 1)
-				throw std::runtime_error("Dimension was not here");
+			keep_this.erase(df->get_series_name(dim.getColIndex()));
 
 		for (const auto &dim : keep_this) cp->aggregate_by(dim);
 
 		[[maybe_unused]] auto &&new_name =
-		    cp->set_aggregate(sid, agg);
-		if (new_name != name)
-			throw std::runtime_error("Not matching names");
+		    cp->set_aggregate(seriesId.getColIndex(),
+		        seriesId.getAggr());
 
 		for (auto &&dim : keep_this) {
 			cp->set_sort(dim,
@@ -645,9 +489,7 @@ aggregator_t data_cube_t::aggregateAt(const MultiIndex &multiIndex,
 		auto rrid = df->get_record_id_by_dims(*multiIndex.rid,
 		    sub_df->get_dimensions());
 
-		auto my_res = std::get<double>(sub_df->get_data(rrid, name));
-
-		return aggregator_t{my_res};
+		return std::get<double>(sub_df->get_data(rrid, name));
 	}
 
 	std::map<std::string_view, std::size_t> index;
@@ -709,11 +551,9 @@ aggregator_t data_cube_t::aggregateAt(const MultiIndex &multiIndex,
 	auto [beg, end] =
 	    std::equal_range(rix.begin(), rix.end(), index, comp{sub_df});
 
-	auto my_res = beg == end ? std::nullopt
-	                         : std::make_optional(std::get<double>(
-	                             sub_df->get_data(*beg, name)));
-
-	return aggregator_t{my_res};
+	return beg == end
+	         ? double{}
+	         : std::get<double>(sub_df->get_data(*beg, name));
 }
 
 } // namespace Vizzu::Data

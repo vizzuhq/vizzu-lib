@@ -19,7 +19,7 @@ Geom::Point MeasureAxises::origo() const
 }
 
 MeasureAxis::MeasureAxis(Math::Range<double> interval,
-    std::string unit,
+    std::string &&unit,
     std::optional<double> step) :
     enabled(true),
     range(interval),

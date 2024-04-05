@@ -4,10 +4,9 @@
 #include <cstdint>
 #include <functional>
 
-#include "data/table/datatable.h"
-
 namespace Vizzu::Data
 {
+class RowWrapper;
 
 class Filter
 {
@@ -33,26 +32,18 @@ public:
 
 	[[nodiscard]] Filter operator&&(const Filter &other) const
 	{
-		return get_hash() == other.get_hash() || !has() ? other
-		     : !other.has()
+		return hash == other.hash || !function ? other
+		     : !other.function
 		         ? *this
-		         : Data::Filter(
-		             [this_ = *this, other](
-		                 const Data::RowWrapper &row)
+		         : Filter(
+		             [this_ = *this, other](const RowWrapper &row)
 		             {
 			             return this_.match(row) && other.match(row);
 		             },
-		             get_hash() ^ other.get_hash());
+		             hash ^ other.hash);
 	}
 
 private:
-	[[nodiscard]] bool has() const
-	{
-		return static_cast<bool>(function);
-	}
-
-	[[nodiscard]] uint64_t get_hash() const { return hash; }
-
 	Function function;
 	uint64_t hash{};
 };

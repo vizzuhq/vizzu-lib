@@ -479,11 +479,10 @@ const static auto tests =
 	auto &&m1e = df->set_aggregate("m1", exists);
 
 	auto &&m1t = df->set_aggregate("m1",
-	    Vizzu::dataframe::custom_aggregator{std::string_view{"test"},
+	    Vizzu::dataframe::custom_aggregator{{"test"},
 	        []() -> Vizzu::dataframe::custom_aggregator::id_type
 	        {
-		        return std::pair<double, double>{
-		            std::numeric_limits<double>::max(),
+		        return std::pair{std::numeric_limits<double>::max(),
 		            std::numeric_limits<double>::max()};
 	        },
 	        [](Vizzu::dataframe::custom_aggregator::id_type &id,

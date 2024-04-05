@@ -85,7 +85,8 @@ std::string fromPhysicalValue(double value,
 	default: break;
 	}
 	return converter(value)
-	     + (unit.empty() || unit == "%" ? unit : " " + unit);
+	     + (unit.empty() || unit == "%" ? std::string{unit}
+	                                    : " " + std::string{unit});
 }
 
 }

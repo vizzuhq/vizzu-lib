@@ -99,18 +99,18 @@ Plot::Plot(const Data::DataTable &dataTable,
 	auto gotSpecLayout = specLayout.addIfNeeded();
 
 	if (gotSpecLayout) {
-		calcDimensionAxises(dataTable);
+		calcDimensionAxises();
 		normalizeColors();
 		if (options->geometry != ShapeType::circle) normalizeSizes();
-		calcMeasureAxises(dataTable);
+		calcMeasureAxises();
 	}
 	else {
 		addSeparation();
 		normalizeXY();
-		calcDimensionAxises(dataTable);
+		calcDimensionAxises();
 		normalizeSizes();
 		normalizeColors();
-		calcMeasureAxises(dataTable);
+		calcMeasureAxises();
 		addAlignment();
 	}
 
@@ -293,20 +293,19 @@ void Plot::normalizeXY()
 	stats.channels[ChannelId::y].range = boundRect.vSize();
 }
 
-void Plot::calcMeasureAxises(const Data::DataTable &dataTable)
+void Plot::calcMeasureAxises()
 {
 	for (auto i = 0U; i < std::size(measureAxises.axises); ++i)
-		calcMeasureAxis(static_cast<ChannelId>(i), dataTable);
+		calcMeasureAxis(static_cast<ChannelId>(i));
 }
 
-void Plot::calcMeasureAxis(ChannelId type,
-    const Data::DataTable &dataTable)
+void Plot::calcMeasureAxis(ChannelId type)
 {
 	auto &axis = measureAxises.at(type);
 	const auto &scale = options->getChannels().at(type);
 	if (!scale.isEmpty() && scale.measureId) {
 		commonAxises.at(type).title =
-		    scale.title == "auto"   ? scale.measureName(dataTable)
+		    scale.title == "auto"   ? scale.measureName(dataCube)
 		    : scale.title == "null" ? std::string()
 		                            : scale.title;
 
@@ -323,9 +322,7 @@ void Plot::calcMeasureAxis(ChannelId type,
 				range = Math::Range<double>::Raw(0.0, 0.0);
 
 			axis = {range,
-			    colIndex
-			        ? dataTable.getInfo(colIndex.value()).getUnit()
-			        : std::string{},
+			    std::string{dataTable.getUnit(colIndex)},
 			    scale.step.getValue()};
 		}
 	}
@@ -333,14 +330,13 @@ void Plot::calcMeasureAxis(ChannelId type,
 		axis = {};
 }
 
-void Plot::calcDimensionAxises(const Data::DataTable &table)
+void Plot::calcDimensionAxises()
 {
 	for (auto i = 0U; i < std::size(dimensionAxises.axises); ++i)
-		calcDimensionAxis(static_cast<ChannelId>(i), table);
+		calcDimensionAxis(static_cast<ChannelId>(i));
 }
 
-void Plot::calcDimensionAxis(ChannelId type,
-    const Data::DataTable &table)
+void Plot::calcDimensionAxis(ChannelId type)
 {
 	auto &axis = dimensionAxises.at(type);
 	auto &scale = options->getChannels().at(type);
@@ -388,7 +384,7 @@ void Plot::calcDimensionAxis(ChannelId type,
 	    isTypeAxis ? scale.step.getValue(1.0) : 1.0);
 
 	if (auto &&series = scale.labelSeries())
-		axis.category = series.value().toString(table);
+		axis.category = series.value().getColIndex();
 }
 
 void Plot::addAlignment()

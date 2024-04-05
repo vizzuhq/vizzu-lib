@@ -195,9 +195,9 @@ double Marker::getValueForChannel(const Channels &channels,
 	}
 	else {
 		if (channel.stackable)
-			value = double{data.aggregateAt(index, sumBy, *measure)};
+			value = data.aggregateAt(index, sumBy, *measure);
 		else
-			value = double{data.valueAt(index, *measure)};
+			value = data.valueAt(index, *measure);
 
 		if (enabled) { stat.track(value); }
 	}
@@ -241,9 +241,7 @@ Marker::Label::Label(double value,
     std::string &&indexStr) :
     value(value),
     measureId(measure.getColIndex()),
-    unit(measureId
-             ? data.getTable()->getInfo(measureId.value()).getUnit()
-             : ""),
+    unit(data.getTable()->getUnit(measureId)),
     indexStr(std::move(indexStr))
 {}
 

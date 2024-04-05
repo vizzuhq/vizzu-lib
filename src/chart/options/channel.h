@@ -8,9 +8,9 @@
 #include <string>
 
 #include "base/anim/interpolated.h"
+#include "data/datacube/datacube.h"
 #include "data/datacube/datacubeoptions.h"
 #include "data/datacube/seriesindex.h"
-#include "data/table/datatable.h"
 
 #include "autoparam.h"
 #include "channelrange.h"
@@ -32,7 +32,7 @@ public:
 
 	std::pair<bool, OptionalIndex> addSeries(
 	    const Data::SeriesIndex &index);
-	bool removeSeries(const Data::SeriesIndex &index);
+	void removeSeries(const Data::SeriesIndex &index);
 	[[nodiscard]] bool isSeriesUsed(
 	    const Data::SeriesIndex &index) const;
 	void reset();
@@ -46,9 +46,8 @@ public:
 	void collectRealSeries(
 	    Data::DataCubeOptions::IndexSet &series) const;
 	[[nodiscard]] std::string measureName(
-	    const Data::DataTable &table) const;
-	[[nodiscard]] std::list<std::string> dimensionNames(
-	    const Data::DataTable &table) const;
+	    const std::optional<Data::DataCube> &cube = {}) const;
+	[[nodiscard]] std::list<std::string_view> dimensionNames() const;
 	[[nodiscard]] OptionalIndex labelSeries() const;
 	bool operator==(const Channel &other) const;
 
