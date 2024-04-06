@@ -149,7 +149,8 @@ Channel::OptionalIndex Channel::labelSeries() const
 {
 	if (isDimension()) {
 		if (labelLevel < dimensionIds.size())
-			return *std::next(dimensionIds.begin(), labelLevel);
+			return *std::next(dimensionIds.begin(),
+			    static_cast<std::intptr_t>(labelLevel));
 		return std::nullopt;
 	}
 	return measureId;

@@ -16,21 +16,65 @@ using Refl::unsafe_get;
 std::shared_ptr<dataframe_interface>
 dataframe::copy(bool remove_filtered, bool inherit_sorting) const &
 {
+	auto &&uptr = std::make_unique<dataframe_interface>();
+	auto my_deleter = [p = uptr.get()](dataframe *df)
+	{
+		df->~dataframe();
+		::operator delete(p, df);
+	};
+	std::optional<std::unique_ptr<dataframe, decltype(my_deleter)>>
+	    newly{};
 	if (source == source_type::copying) {
 		const auto &cp = unsafe_get<source_type::copying>(source);
-		return std::make_shared<dataframe>(cp.other,
-		    remove_filtered ? std::get_if<std::vector<bool>>(&filter)
-		    : cp.pre_remove ? &*cp.pre_remove
-		                    : nullptr,
-		    inherit_sorting && cp.sorted_indices ? &*cp.sorted_indices
-		                                         : nullptr);
-	}
 
-	return std::make_shared<dataframe>(
-	    unsafe_get<source_type::owning>(source),
-	    remove_filtered ? std::get_if<std::vector<bool>>(&filter)
-	                    : nullptr,
-	    nullptr);
+		newly.emplace(
+		    std::unique_ptr<dataframe, decltype(my_deleter)>{
+		        new (uptr->data.data()) dataframe(cp.other,
+		            remove_filtered
+		                ? std::get_if<std::vector<bool>>(&filter)
+		            : cp.pre_remove ? &*cp.pre_remove
+		                            : nullptr,
+		            inherit_sorting && cp.sorted_indices
+		                ? &*cp.sorted_indices
+		                : nullptr),
+		        std::move(my_deleter)});
+	}
+	else {
+		newly.emplace(
+		    std::unique_ptr<dataframe, decltype(my_deleter)>{
+		        new (uptr->data.data())
+		            dataframe(unsafe_get<source_type::owning>(source),
+		                remove_filtered
+		                    ? std::get_if<std::vector<bool>>(&filter)
+		                    : nullptr,
+		                nullptr),
+		        std::move(my_deleter)});
+	}
+	return {uptr.release(),
+	    [newly = std::move(*newly)](dataframe_interface *df) mutable
+	    {
+		    newly.reset();
+		    std::default_delete<dataframe_interface>{}(df);
+	    }};
+}
+
+std::shared_ptr<dataframe_interface> dataframe::create_new()
+{
+	auto &&uptr = std::make_unique<dataframe_interface>();
+	auto my_deleter = [p = uptr.get()](dataframe *df)
+	{
+		df->~dataframe();
+		::operator delete(p, df);
+	};
+	auto &&uptr2 = std::unique_ptr<dataframe, decltype(my_deleter)>{
+	    new (uptr->data.data()) dataframe(),
+	    std::move(my_deleter)};
+	return {uptr.release(),
+	    [rm = std::move(uptr2)](dataframe_interface *df) mutable
+	    {
+		    rm.reset();
+		    std::default_delete<dataframe_interface>{}(df);
+	    }};
 }
 
 dataframe::dataframe(std::shared_ptr<const data_source> other,
@@ -1001,7 +1045,7 @@ void dataframe::visit(
 {
 	for (std::size_t i{}, max = get_record_count(); i < max; ++i)
 		if (auto ix = sort ? (*sort)[i] : i; !filt || !(*filt)[ix])
-			function({this, ix});
+			function({as_if(), ix});
 }
 
 void dataframe::migrate_data()
@@ -1020,7 +1064,7 @@ void dataframe::migrate_data()
 	}
 	case sorting: {
 		if (s) {
-			if (auto &&indices = s->other->get_sorted_indices(this,
+			if (auto &&indices = s->other->get_sorted_indices(as_if(),
 			        std::exchange(unsafe_get<sorting>(state_data),
 			            {}));
 			    !std::ranges::is_sorted(indices))
@@ -1063,15 +1107,16 @@ void dataframe::change_state_to(state_type new_state,
 		    || reason == reason_t::needs_series_type)
 			return;
 		if (auto *ptr = std::get_if<copy_source>(&source)) {
-			if (auto &&indices = ptr->other->get_sorted_indices(this,
-			        std::exchange(unsafe_get<sorting>(state_data),
-			            {}));
+			if (auto &&indices =
+			        ptr->other->get_sorted_indices(as_if(),
+			            std::exchange(unsafe_get<sorting>(state_data),
+			                {}));
 			    !std::ranges::is_sorted(indices))
 				ptr->sorted_indices = std::move(indices);
 		}
 		else {
 			auto &owning = *unsafe_get<source_type::owning>(source);
-			if (auto &&indices = owning.get_sorted_indices(this,
+			if (auto &&indices = owning.get_sorted_indices(as_if(),
 			        std::exchange(unsafe_get<sorting>(state_data),
 			            {}));
 			    !std::ranges::is_sorted(indices))

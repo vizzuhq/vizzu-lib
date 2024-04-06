@@ -17,7 +17,7 @@ class RowWrapper
 public:
 	dataframe::dataframe_interface::record_type rid;
 	[[nodiscard]] dataframe::cell_value operator[](
-	    std::string_view col) const;
+	    std::string_view const &col) const;
 };
 
 class data_table
@@ -27,12 +27,13 @@ public:
 	[[nodiscard]] std::string_view getColumn(
 	    const std::string &name) const;
 
-	std::string_view getUnit(std::string_view const &colIx) const
+	[[nodiscard]] std::string_view getUnit(
+	    std::string_view const &colIx) const
 	{
 		return df.get_series_info(colIx, "unit");
 	}
 
-	Type getType(const std::string_view &cix) const
+	[[nodiscard]] Type getType(const std::string_view &cix) const
 	{
 		return df.get_series_type(cix);
 	}
@@ -121,13 +122,6 @@ struct multi_index_t
 	std::vector<std::size_t> old;
 
 	[[nodiscard]] bool empty() const;
-};
-
-struct data_cube_cell_t
-{
-	const dataframe::dataframe_interface *parent{};
-	std::optional<dataframe::dataframe_interface::record_identifier>
-	    rid;
 
 	[[nodiscard]] bool isEmpty() const;
 };
@@ -193,9 +187,6 @@ public:
 		    sizes(options.getDimensions().size())
 		{}
 
-		[[nodiscard]] data_cube_cell_t at(
-		    const MultiIndex &index) const;
-
 		[[nodiscard]] std::vector<std::size_t> get_indices(
 		    std::size_t ix) const;
 
@@ -231,7 +222,7 @@ public:
 
 	[[nodiscard]] double aggregateAt(const multi_index_t &multiIndex,
 	    const series_index_list_t &sumCols,
-	    series_index_t seriesId) const;
+	    const series_index_t &seriesId) const;
 
 	[[nodiscard]] double valueAt(const multi_index_t &multiIndex,
 	    const series_index_t &seriesId) const;

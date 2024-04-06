@@ -10,7 +10,7 @@
 namespace Vizzu::dataframe
 {
 
-class dataframe final : public dataframe_interface
+class dataframe
 {
 	enum class state_type {
 		modifying,
@@ -36,29 +36,36 @@ class dataframe final : public dataframe_interface
 	};
 
 public:
+	using series_identifier = dataframe_interface::series_identifier;
+	using record_identifier = dataframe_interface::record_identifier;
+	using record_type = dataframe_interface::record_type;
+	using any_aggregator_type =
+	    dataframe_interface::any_aggregator_type;
+	using any_sort_type = dataframe_interface::any_sort_type;
+
 	dataframe() noexcept = default;
 	dataframe(std::shared_ptr<const data_source> other,
 	    std::vector<bool> const *filtered,
 	    std::vector<std::size_t> const *sorted);
 
-	std::shared_ptr<dataframe_interface> copy(bool remove_filtered,
-	    bool inherit_sorting) const & final;
+	[[nodiscard]] std::shared_ptr<dataframe_interface>
+	copy(bool remove_filtered, bool inherit_sorting) const &;
 
-	std::string set_aggregate(series_identifier series,
-	    const any_aggregator_type &aggregator)
-	    & final;
+	[[nodiscard]] static std::shared_ptr<dataframe_interface>
+	create_new();
 
-	void set_filter(std::function<bool(record_type)> &&filt) & final;
+	[[nodiscard]] std::string set_aggregate(series_identifier series,
+	    const any_aggregator_type &aggregator) &;
+
+	void set_filter(std::function<bool(record_type)> &&filt) &;
 
 	void set_sort(series_identifier series,
 	    any_sort_type sort,
-	    na_position na_pos)
-	    & final;
+	    na_position na_pos) &;
 
 	void set_custom_sort(
 	    std::function<std::weak_ordering(record_type, record_type)>
-	        custom_sort)
-	    & final;
+	        custom_sort) &;
 
 	void add_dimension(
 	    std::span<const char *const> dimension_categories,
@@ -66,81 +73,79 @@ public:
 	    const char *name,
 	    adding_type adding_strategy,
 	    std::span<const std::pair<const char *, const char *>> info)
-	    & final;
+	    &;
 
 	void add_measure(std::span<const double> measure_values,
 	    const char *name,
 	    adding_type adding_strategy,
 	    std::span<const std::pair<const char *, const char *>> info)
-	    & final;
+	    &;
 
 	void add_series_by_other(series_identifier curr_series,
 	    const char *name,
 	    std::function<cell_value(record_type, cell_value)>
 	        value_transform,
 	    std::span<const std::pair<const char *, const char *>> info)
-	    & final;
+	    &;
 
-	void remove_series(std::span<const series_identifier> names)
-	    & final;
+	void remove_series(std::span<const series_identifier> names) &;
 
-	void add_record(std::span<const cell_value> values) & final;
+	void add_record(std::span<const cell_value> values) &;
 
-	void remove_records(std::span<const record_identifier> record_ids)
-	    & final;
+	void remove_records(
+	    std::span<const record_identifier> record_ids) &;
 
-	void remove_records(std::function<bool(record_type)> filter)
-	    & final;
+	void remove_records(std::function<bool(record_type)> filter) &;
 
-	void remove_unused_categories(series_identifier column) & final;
+	void remove_unused_categories(series_identifier column) &;
 
 	void change_data(record_identifier record_id,
 	    series_identifier column,
-	    cell_value value)
-	    & final;
+	    cell_value value) &;
 
-	bool has_na(series_identifier column) const & final;
+	[[nodiscard]] bool has_na(series_identifier column) const &;
 
-	void fill_na(series_identifier column, cell_value value) & final;
+	void fill_na(series_identifier column, cell_value value) &;
 
-	void finalize() & final;
+	void finalize() &;
 
-	std::string as_string() const & final;
+	[[nodiscard]] std::string as_string() const &;
 
-	std::span<const std::string> get_dimensions() const & final;
+	[[nodiscard]] std::span<const std::string>
+	get_dimensions() const &;
 
-	std::span<const std::string> get_measures() const & final;
+	[[nodiscard]] std::span<const std::string> get_measures() const &;
 
-	std::span<const std::string> get_categories(
-	    series_identifier dimension) const & final;
+	[[nodiscard]] std::span<const std::string> get_categories(
+	    series_identifier dimension) const &;
 
-	std::pair<double, double> get_min_max(
-	    series_identifier measure) const & final;
+	[[nodiscard]] std::pair<double, double> get_min_max(
+	    series_identifier measure) const &;
 
 	[[nodiscard]] std::string_view get_series_name(
-	    const series_identifier &id) const & final;
+	    const series_identifier &id) const &;
 
 	[[nodiscard]] std::string_view get_record_unique_id(
-	    record_identifier id) const & final;
+	    record_identifier id) const &;
 
 	[[nodiscard]] std::string_view get_series_info(
 	    const series_identifier &id,
-	    const char *key) const & final;
+	    const char *key) const &;
 
-	cell_value get_data(record_identifier record_id,
-	    series_identifier column) const & final;
+	[[nodiscard]] cell_value get_data(record_identifier record_id,
+	    series_identifier column) const &;
 
-	std::size_t get_record_count() const & final
+	[[nodiscard]] std::size_t get_record_count() const &
 	{
 		return get_data_source().get_record_count();
 	}
 
 	[[nodiscard]] bool is_filtered(
-	    record_identifier record_id) const & final;
+	    record_identifier record_id) const &;
 
 	[[nodiscard]] std::string get_record_id_by_dims(
 	    record_identifier my_record,
-	    std::span<const std::string> dimensions) const & final;
+	    std::span<const std::string> dimensions) const &;
 
 	[[nodiscard]] std::size_t get_series_orig_index(
 	    std::string_view series) const;
@@ -153,7 +158,7 @@ private:
 	void change_state_to(state_type new_state,
 	    state_modification_reason reason);
 
-	const data_source &get_data_source() const;
+	[[nodiscard]] const data_source &get_data_source() const;
 
 	void visit(
 	    const std::function<void(record_type)> &function) const;
@@ -161,6 +166,12 @@ private:
 	void visit(const std::function<void(record_type)> &function,
 	    const std::vector<std::size_t> *sort,
 	    const std::vector<bool> *filt) const;
+
+	[[nodiscard]] const dataframe_interface *as_if() const
+	{
+		return std::launder(static_cast<const dataframe_interface *>(
+		    static_cast<const void *>(this)));
+	}
 
 	Refl::EnumVariant<source_type,
 	    std::shared_ptr<data_source>,

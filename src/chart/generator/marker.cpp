@@ -11,8 +11,7 @@ Marker::Marker(const Options &options,
     const Data::DataCube::MultiIndex &index,
     size_t idx) :
     index(index),
-    enabled(data.subCellSize() == 0
-            || !data.getData().at(index).isEmpty()),
+    enabled(data.subCellSize() == 0 || !index.isEmpty()),
     cellInfo(data.cellInfo(index)),
     sizeId(data.getId(
         options.getChannels().at(ChannelId::size).dimensionIds,
@@ -169,12 +168,13 @@ double Marker::getValueForChannel(const Channels &channels,
 
 	if (subChannel) {
 		if (inhibitStack) {
-			for (auto id : subChannel->dimensionIds)
+			for (const auto &id : subChannel->dimensionIds)
 				if (channel.isSeriesUsed(id)) sumBy.pushBack(id);
 		}
 		else {
 			sumBy = subChannel->dimensionIds;
-			for (auto id : channel.dimensionIds) sumBy.remove(id);
+			for (const auto &id : channel.dimensionIds)
+				sumBy.remove(id);
 		}
 	}
 

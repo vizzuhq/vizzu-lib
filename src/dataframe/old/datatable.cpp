@@ -18,7 +18,7 @@ namespace Vizzu::Data
 {
 
 dataframe::cell_value RowWrapper::operator[](
-    std::string_view col) const
+    std::string_view const &col) const
 {
 	auto &&cell = rid.get_value(col);
 
@@ -114,7 +114,7 @@ bool multi_index_t::empty() const
 	return parent->get_dimensions().empty();
 }
 
-bool data_cube_cell_t::isEmpty() const
+bool multi_index_t::isEmpty() const
 {
 	return !rid || parent->get_record_count() == 0
 	    || parent->is_filtered(*rid);
@@ -210,12 +210,6 @@ series_index_t::series_index_t(std::string const &str,
 	}
 }
 
-data_cube_cell_t data_cube_t::data_t::at(
-    const multi_index_t &index) const
-{
-	return {index.parent, index.rid};
-}
-
 std::vector<std::size_t> data_cube_t::data_t::get_indices(
     std::size_t ix) const
 {
@@ -248,7 +242,7 @@ data_cube_t::data_cube_t(const data_table &table,
     table(&table),
     df(options.getDimensions().empty()
                 && options.getMeasures().empty()
-            ? std::make_shared<dataframe::dataframe>()
+            ? dataframe::dataframe::create_new()
             : table.getDf().copy(false, false)),
     data{df.get(), options}
 {
@@ -444,7 +438,7 @@ double data_cube_t::valueAt(const multi_index_t &multiIndex,
 
 double data_cube_t::aggregateAt(const multi_index_t &multiIndex,
     const series_index_list_t &sumCols,
-    series_index_t seriesId) const
+    const series_index_t &seriesId) const
 {
 	if (sumCols.empty()) return valueAt(multiIndex, seriesId);
 

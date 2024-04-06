@@ -25,7 +25,7 @@ struct if_setup
 	std::vector<std::vector<cell_value>> data{};
 	bool copied{};
 	std::shared_ptr<interface> _df{
-	    std::make_shared<Vizzu::dataframe::dataframe>()};
+	    Vizzu::dataframe::dataframe::create_new()};
 
 	explicit(false) operator interface *()
 	{

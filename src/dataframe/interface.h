@@ -65,7 +65,10 @@ struct custom_aggregator
 	}
 };
 
-class dataframe_interface
+constexpr std::size_t align_impl = alignof(double);
+constexpr std::size_t max_size_impl = 34 * sizeof(std::intptr_t);
+
+class alignas(align_impl) dataframe_interface
 {
 public:
 	using series_identifier =
@@ -114,114 +117,111 @@ public:
 		}
 	};
 
-	virtual ~dataframe_interface() = default;
+	[[nodiscard]] std::shared_ptr<dataframe_interface>
+	copy(bool remove_filtered, bool inherit_sorting) const &;
 
-	[[nodiscard]] virtual std::shared_ptr<dataframe_interface>
-	copy(bool remove_filtered, bool inherit_sorting) const & = 0;
-
-	[[nodiscard]] virtual std::string set_aggregate(
-	    series_identifier series,
-	    const any_aggregator_type &aggregator) & = 0;
+	[[nodiscard]] std::string set_aggregate(series_identifier series,
+	    const any_aggregator_type &aggregator) &;
 
 	void aggregate_by(series_identifier series)
 	{
 		[[maybe_unused]] auto &&_ = set_aggregate(series, {});
 	}
 
-	virtual void set_filter(
-	    std::function<bool(record_type)> &&filter) & = 0;
+	void set_filter(std::function<bool(record_type)> &&filter) &;
 
-	virtual void set_sort(series_identifier series,
+	void set_sort(series_identifier series,
 	    any_sort_type sort,
-	    na_position na_pos) & = 0;
+	    na_position na_pos) &;
 
-	virtual void set_custom_sort(
+	void set_custom_sort(
 	    std::function<std::weak_ordering(record_type, record_type)>
-	        custom_sort) & = 0;
+	        custom_sort) &;
 
-	virtual void add_dimension(
+	void add_dimension(
 	    std::span<const char *const> dimension_categories,
 	    std::span<const std::uint32_t> dimension_values,
 	    const char *name,
 	    adding_type adding_strategy,
 	    std::span<const std::pair<const char *, const char *>> info)
-	    & = 0;
+	    &;
 
-	virtual void add_measure(std::span<const double> measure_values,
+	void add_measure(std::span<const double> measure_values,
 	    const char *name,
 	    adding_type adding_strategy,
 	    std::span<const std::pair<const char *, const char *>> info)
-	    & = 0;
+	    &;
 
-	virtual void add_series_by_other(series_identifier curr_series,
+	void add_series_by_other(series_identifier curr_series,
 	    const char *name,
 	    std::function<cell_value(record_type, cell_value)>
 	        value_transform,
 	    std::span<const std::pair<const char *, const char *>> info)
-	    & = 0;
+	    &;
 
-	virtual void remove_series(
-	    std::span<const series_identifier> names) & = 0;
+	void remove_series(std::span<const series_identifier> names) &;
 
-	virtual void add_record(std::span<const cell_value> values) & = 0;
+	void add_record(std::span<const cell_value> values) &;
 
-	virtual void remove_records(
-	    std::span<const record_identifier> record_ids) & = 0;
+	void remove_records(
+	    std::span<const record_identifier> record_ids) &;
 
-	virtual void remove_records(
-	    std::function<bool(record_type)> filter) & = 0;
+	void remove_records(std::function<bool(record_type)> filter) &;
 
-	virtual void remove_unused_categories(
-	    series_identifier column) & = 0;
+	void remove_unused_categories(series_identifier column) &;
 
-	virtual void change_data(record_identifier record_id,
+	void change_data(record_identifier record_id,
 	    series_identifier column,
-	    cell_value value) & = 0;
+	    cell_value value) &;
 
-	virtual bool has_na(series_identifier column) const & = 0;
+	[[nodiscard]] bool has_na(series_identifier column) const &;
 
-	virtual void fill_na(series_identifier column,
-	    cell_value value) & = 0;
+	void fill_na(series_identifier column, cell_value value) &;
 
-	virtual void finalize() & = 0;
+	void finalize() &;
 
-	[[nodiscard]] virtual std::string as_string() const & = 0;
+	[[nodiscard]] std::string as_string() const &;
 
-	[[nodiscard]] virtual std::span<const std::string>
-	get_dimensions() const & = 0;
+	[[nodiscard]] std::span<const std::string>
+	get_dimensions() const &;
 
-	[[nodiscard]] virtual std::span<const std::string>
-	get_measures() const & = 0;
+	[[nodiscard]] std::span<const std::string> get_measures() const &;
 
-	[[nodiscard]] virtual std::span<const std::string> get_categories(
-	    series_identifier dimension) const & = 0;
+	[[nodiscard]] std::span<const std::string> get_categories(
+	    series_identifier dimension) const &;
 
-	[[nodiscard]] virtual std::pair<double, double> get_min_max(
-	    series_identifier measure) const & = 0;
+	[[nodiscard]] std::pair<double, double> get_min_max(
+	    series_identifier measure) const &;
 
-	[[nodiscard]] virtual std::string_view get_series_name(
-	    const series_identifier &id) const & = 0;
+	[[nodiscard]] std::string_view get_series_name(
+	    const series_identifier &id) const &;
 
-	[[nodiscard]] virtual std::string_view get_record_unique_id(
-	    record_identifier id) const & = 0;
+	[[nodiscard]] std::string_view get_record_unique_id(
+	    record_identifier id) const &;
 
-	[[nodiscard]] virtual cell_value get_data(
-	    record_identifier record_id,
-	    series_identifier column) const & = 0;
+	[[nodiscard]] cell_value get_data(record_identifier record_id,
+	    series_identifier column) const &;
 
-	[[nodiscard]] virtual std::size_t get_record_count() const & = 0;
+	[[nodiscard]] std::size_t get_record_count() const &;
 
-	[[nodiscard]] virtual std::string_view get_series_info(
+	[[nodiscard]] std::string_view get_series_info(
 	    const series_identifier &id,
-	    const char *key) const & = 0;
+	    const char *key) const &;
 
-	[[nodiscard]] virtual bool is_filtered(
-	    record_identifier record_id) const & = 0;
+	[[nodiscard]] bool is_filtered(
+	    record_identifier record_id) const &;
 
-	[[nodiscard]] virtual std::string get_record_id_by_dims(
+	[[nodiscard]] std::string get_record_id_by_dims(
 	    record_identifier my_record,
-	    std::span<const std::string> dimensions) const & = 0;
+	    std::span<const std::string> dimensions) const &;
+
+	std::array<char, max_size_impl> data;
 };
+
+#ifdef __cpp_lib_is_pointer_interconvertible
+static_assert(std::is_pointer_interconvertible_with_class(
+    &dataframe_interface::data));
+#endif
 }
 
 #endif // VIZZU_DATAFRAME_INTERFACE_H
