@@ -22,7 +22,6 @@ class data_source : public std::enable_shared_from_this<data_source>
 public:
 	using record_type = dataframe_interface::record_type;
 	using record_identifier = dataframe_interface::record_identifier;
-	using series_identifier = dataframe_interface::series_identifier;
 
 private:
 	constexpr static std::uint32_t nav = ~std::uint32_t{};
@@ -172,7 +171,8 @@ public:
 
 	void sort(std::vector<std::size_t> &&indices);
 
-	void change_series_identifier_type(series_identifier &id) const;
+	std::size_t change_series_identifier_type(
+	    const std::string_view &name) const;
 
 	void change_record_identifier_type(record_identifier &id) const;
 
@@ -184,11 +184,11 @@ public:
 	void remove_records(std::span<const std::size_t> indices);
 
 	[[nodiscard]] cell_value get_data(std::size_t record_id,
-	    const series_identifier &column) const;
+	    const std::string_view &column) const;
 
-	[[nodiscard]] series_data get_series(series_identifier id);
+	[[nodiscard]] series_data get_series(const std::string_view &id);
 	[[nodiscard]] const_series_data get_series(
-	    series_identifier id) const;
+	    const std::string_view &id) const;
 
 	[[nodiscard]] std::pair<double, double> get_min_max(
 	    const measure_t &measure) const;

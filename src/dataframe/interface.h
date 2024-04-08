@@ -71,8 +71,6 @@ constexpr std::size_t max_size_impl = 34 * sizeof(std::intptr_t);
 class alignas(align_impl) dataframe_interface
 {
 public:
-	using series_identifier =
-	    std::variant<std::string_view, std::size_t>;
 	using record_identifier =
 	    std::variant<std::string_view, std::size_t>;
 
@@ -85,7 +83,7 @@ public:
 
 	struct record_type
 	{
-		[[nodiscard]] cell_value get_value(series_identifier i) const
+		[[nodiscard]] cell_value get_value(std::string_view i) const
 		{
 			return parent->get_data(recordId, i);
 		}
@@ -120,17 +118,17 @@ public:
 	[[nodiscard]] std::shared_ptr<dataframe_interface>
 	copy(bool remove_filtered, bool inherit_sorting) const &;
 
-	[[nodiscard]] std::string set_aggregate(series_identifier series,
+	[[nodiscard]] std::string set_aggregate(std::string_view series,
 	    const any_aggregator_type &aggregator) &;
 
-	void aggregate_by(series_identifier series)
+	void aggregate_by(std::string_view series)
 	{
 		[[maybe_unused]] auto &&_ = set_aggregate(series, {});
 	}
 
 	void set_filter(std::function<bool(record_type)> &&filter) &;
 
-	void set_sort(series_identifier series,
+	void set_sort(std::string_view series,
 	    any_sort_type sort,
 	    na_position na_pos) &;
 
@@ -152,14 +150,14 @@ public:
 	    std::span<const std::pair<const char *, const char *>> info)
 	    &;
 
-	void add_series_by_other(series_identifier curr_series,
+	void add_series_by_other(std::string_view curr_series,
 	    const char *name,
 	    std::function<cell_value(record_type, cell_value)>
 	        value_transform,
 	    std::span<const std::pair<const char *, const char *>> info)
 	    &;
 
-	void remove_series(std::span<const series_identifier> names) &;
+	void remove_series(std::span<const std::string_view> names) &;
 
 	void add_record(std::span<const cell_value> values) &;
 
@@ -168,15 +166,15 @@ public:
 
 	void remove_records(std::function<bool(record_type)> filter) &;
 
-	void remove_unused_categories(series_identifier column) &;
+	void remove_unused_categories(std::string_view column) &;
 
 	void change_data(record_identifier record_id,
-	    series_identifier column,
+	    std::string_view column,
 	    cell_value value) &;
 
-	[[nodiscard]] bool has_na(series_identifier column) const &;
+	[[nodiscard]] bool has_na(std::string_view column) const &;
 
-	void fill_na(series_identifier column, cell_value value) &;
+	void fill_na(std::string_view column, cell_value value) &;
 
 	void finalize() &;
 
@@ -188,24 +186,24 @@ public:
 	[[nodiscard]] std::span<const std::string> get_measures() const &;
 
 	[[nodiscard]] std::span<const std::string> get_categories(
-	    series_identifier dimension) const &;
+	    std::string_view dimension) const &;
 
 	[[nodiscard]] std::pair<double, double> get_min_max(
-	    series_identifier measure) const &;
+	    std::string_view measure) const &;
 
 	[[nodiscard]] std::string_view get_series_name(
-	    const series_identifier &id) const &;
+	    const std::string_view &id) const &;
 
 	[[nodiscard]] std::string_view get_record_unique_id(
 	    record_identifier id) const &;
 
 	[[nodiscard]] cell_value get_data(record_identifier record_id,
-	    series_identifier column) const &;
+	    std::string_view column) const &;
 
 	[[nodiscard]] std::size_t get_record_count() const &;
 
 	[[nodiscard]] std::string_view get_series_info(
-	    const series_identifier &id,
+	    const std::string_view &id,
 	    const char *key) const &;
 
 	[[nodiscard]] bool is_filtered(

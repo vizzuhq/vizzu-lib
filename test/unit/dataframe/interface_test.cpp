@@ -51,13 +51,13 @@ struct if_setup
 
 			for (auto r = 0u; r < data.size(); ++r) {
 				for (auto d = 0u; d < ds; ++d)
-					skip->*df->get_data(r, d) == data[r][d];
+					skip->*df->get_data(r, dims[d]) == data[r][d];
 
 				for (auto m = 0u; m < meas.size(); ++m) {
 					if (auto *d =
 					        std::get_if<double>(&data[r][m + ds]);
 					    d && std::isnan(*d)) {
-						auto z = df->get_data(r, m + ds);
+						auto z = df->get_data(r, meas[m]);
 						auto *st = std::get_if<double>(&z);
 						skip->*static_cast<bool>(st)
 						    == "value is a double"_is_true;
@@ -65,7 +65,8 @@ struct if_setup
 						    == "value is nan"_is_true;
 						continue;
 					}
-					skip->*df->get_data(r, m + ds) == data[r][m + ds];
+					skip->*df->get_data(r, meas[m])
+					    == data[r][m + ds];
 				}
 			}
 		}
@@ -124,12 +125,10 @@ const static auto tests =
 	check->*df->get_measures().size() == std::size_t{};
 	check->*df->get_record_count() == std::size_t{};
 
-	throw_(&interface::add_record, df, {});
-	throw_(&interface::get_data, df, {}, {});
-	throw_(&interface::get_categories, df, {});
-	throw_(&interface::get_min_max, df, {});
-	throw_(&interface::add_series_by_other,
-	    df,
+	throw_<&interface::get_data>(df, {}, {});
+	throw_<&interface::get_categories>(df, {});
+	throw_<&interface::get_min_max>(df, {});
+	throw_<&interface::add_series_by_other>(df,
 	    {},
 	    {""},
 	    {[](record_type, cell_value c) -> cell_value
@@ -137,8 +136,8 @@ const static auto tests =
 		        return c;
 	        }},
 	    {});
-	throw_(&interface::set_aggregate, df, {}, {});
-	throw_(&interface::set_sort, df, {}, {}, {});
+	throw_<&interface::set_aggregate>(df, {}, {});
+	throw_<&interface::set_sort>(df, {}, {}, {});
 
 	check->*df->get_dimensions().size() == std::size_t{};
 	check->*df->get_measures().size() == std::size_t{};
@@ -236,12 +235,12 @@ const static auto tests =
 	df->add_record({{"test_dim_val", 2.0}});
 	df->add_record({{-1.0, "test_dim_val2"}});
 
-	throw_(&interface::add_record, df, {});
-	throw_(&interface::add_record, df, {{0.0}});
-	throw_(&interface::add_record, df, {{0.0, 0.0}});
-	throw_(&interface::add_record, df, {{"test", "t"}});
-	throw_(&interface::add_record, df, {{0.0, "test", 0.0}});
-	throw_(&interface::add_record, df, {{0.0, "test", "t"}});
+	throw_<&interface::add_record>(df, {});
+	throw_<&interface::add_record>(df, {{0.0}});
+	throw_<&interface::add_record>(df, {{0.0, 0.0}});
+	throw_<&interface::add_record>(df, {{"test", "t"}});
+	throw_<&interface::add_record>(df, {{0.0, "test", 0.0}});
+	throw_<&interface::add_record>(df, {{0.0, "test", "t"}});
 
 	df->finalize();
 
@@ -405,13 +404,11 @@ const static auto tests =
 	df->change_data(std::size_t{1}, "m1", 3.0);
 	df->change_data(std::size_t{2}, "d1", "dmX");
 
-	throw_(&interface::change_data,
-	    df,
+	throw_<&interface::change_data>(df,
 	    {std::size_t{0}},
 	    {"d1"},
 	    {NAN});
-	throw_(&interface::change_data,
-	    df,
+	throw_<&interface::change_data>(df,
 	    {std::size_t{0}},
 	    {"m1"},
 	    {""});
@@ -634,7 +631,7 @@ const static auto tests =
     [](interface *df = if_setup{.dims = {"d1", "d2"},
            .data = {{{"dx0", "dm0"}}, {{"dx0", "dm0"}}}})
 {
-	throw_(&interface::finalize, df);
+	throw_<&interface::finalize>(df);
 }
 
     | "sort dimension" |

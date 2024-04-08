@@ -148,16 +148,16 @@ void data_cube_t::data_t::iterator_t::incr()
 	    [&](std::size_t ix)
 	    {
 		    auto ixx = parent->dim_reindex[ix];
-		    auto cats = rid.parent->get_categories({ixx});
+		    auto &&dim = rid.parent->get_dimensions()[ixx];
+		    auto cats = rid.parent->get_categories(dim);
 		    if (cats.size() == indices[ix]) {
-			    return std::get<std::string_view>(
-			               rid.get_value({ixx}))
+			    return std::get<std::string_view>(rid.get_value(dim))
 			               .data()
 			        == nullptr;
 		    }
 
 		    return cats[indices[ix]]
-		        == std::get<std::string_view>(rid.get_value({ixx}));
+		        == std::get<std::string_view>(rid.get_value(dim));
 	    });
 }
 
@@ -364,8 +364,8 @@ data_cube_t::Id data_cube_t::getId(const series_index_list_t &sl,
 
 	std::size_t seriesId{};
 	for (std::size_t ix{}; ix < mi.dim_reindex->size(); ++ix) {
-		auto name =
-		    mi.parent->get_series_name({(*mi.dim_reindex)[ix]});
+		auto &&name =
+		    mi.parent->get_dimensions()[(*mi.dim_reindex)[ix]];
 		if (auto it = reindex.find(name); it != reindex.end()) {
 			auto &&cats = mi.parent->get_categories(name);
 			auto &[cat, cix, size, orig_ix] = v[it->second].second;
@@ -400,8 +400,8 @@ data_cube_t::CellInfo data_cube_t::cellInfo(
 	CellInfo my_res;
 
 	for (std::size_t ix{}; ix < index.dim_reindex->size(); ++ix) {
-		auto name =
-		    index.parent->get_series_name({(*index.dim_reindex)[ix]});
+		auto &&name =
+		    index.parent->get_dimensions()[(*index.dim_reindex)[ix]];
 		auto cats = index.parent->get_categories(name);
 		auto cix = index.old[ix];
 		my_res.categories[name] =
@@ -490,7 +490,7 @@ double data_cube_t::aggregateAt(const multi_index_t &multiIndex,
 
 	for (std::size_t ix{}; ix < multiIndex.dim_reindex->size(); ++ix)
 		index.emplace(
-		    df->get_series_name((*multiIndex.dim_reindex)[ix]),
+		    df->get_dimensions()[(*multiIndex.dim_reindex)[ix]],
 		    multiIndex.old[ix]);
 
 	struct comp

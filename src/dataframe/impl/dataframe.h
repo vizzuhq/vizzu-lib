@@ -36,7 +36,6 @@ class dataframe
 	};
 
 public:
-	using series_identifier = dataframe_interface::series_identifier;
 	using record_identifier = dataframe_interface::record_identifier;
 	using record_type = dataframe_interface::record_type;
 	using any_aggregator_type =
@@ -54,12 +53,12 @@ public:
 	[[nodiscard]] static std::shared_ptr<dataframe_interface>
 	create_new();
 
-	[[nodiscard]] std::string set_aggregate(series_identifier series,
+	[[nodiscard]] std::string set_aggregate(std::string_view series,
 	    const any_aggregator_type &aggregator) &;
 
 	void set_filter(std::function<bool(record_type)> &&filt) &;
 
-	void set_sort(series_identifier series,
+	void set_sort(std::string_view series,
 	    any_sort_type sort,
 	    na_position na_pos) &;
 
@@ -81,14 +80,14 @@ public:
 	    std::span<const std::pair<const char *, const char *>> info)
 	    &;
 
-	void add_series_by_other(series_identifier curr_series,
+	void add_series_by_other(std::string_view curr_series,
 	    const char *name,
 	    std::function<cell_value(record_type, cell_value)>
 	        value_transform,
 	    std::span<const std::pair<const char *, const char *>> info)
 	    &;
 
-	void remove_series(std::span<const series_identifier> names) &;
+	void remove_series(std::span<const std::string_view> names) &;
 
 	void add_record(std::span<const cell_value> values) &;
 
@@ -97,15 +96,15 @@ public:
 
 	void remove_records(std::function<bool(record_type)> filter) &;
 
-	void remove_unused_categories(series_identifier column) &;
+	void remove_unused_categories(std::string_view column) &;
 
 	void change_data(record_identifier record_id,
-	    series_identifier column,
+	    std::string_view column,
 	    cell_value value) &;
 
-	[[nodiscard]] bool has_na(series_identifier column) const &;
+	[[nodiscard]] bool has_na(std::string_view column) const &;
 
-	void fill_na(series_identifier column, cell_value value) &;
+	void fill_na(std::string_view column, cell_value value) &;
 
 	void finalize() &;
 
@@ -117,23 +116,23 @@ public:
 	[[nodiscard]] std::span<const std::string> get_measures() const &;
 
 	[[nodiscard]] std::span<const std::string> get_categories(
-	    series_identifier dimension) const &;
+	    std::string_view dimension) const &;
 
 	[[nodiscard]] std::pair<double, double> get_min_max(
-	    series_identifier measure) const &;
+	    std::string_view measure) const &;
 
 	[[nodiscard]] std::string_view get_series_name(
-	    const series_identifier &id) const &;
+	    const std::string_view &id) const &;
 
 	[[nodiscard]] std::string_view get_record_unique_id(
 	    record_identifier id) const &;
 
 	[[nodiscard]] std::string_view get_series_info(
-	    const series_identifier &id,
+	    const std::string_view &id,
 	    const char *key) const &;
 
 	[[nodiscard]] cell_value get_data(record_identifier record_id,
-	    series_identifier column) const &;
+	    std::string_view column) const &;
 
 	[[nodiscard]] std::size_t get_record_count() const &
 	{
@@ -151,7 +150,7 @@ public:
 	    std::string_view series) const;
 
 	[[nodiscard]] series_type get_series_type(
-	    series_identifier series) const;
+	    std::string_view series) const;
 
 private:
 	void migrate_data();

@@ -192,47 +192,35 @@ void data_source::sort(std::vector<std::size_t> &&indices)
 	}
 }
 
-void data_source::change_series_identifier_type(
-    series_identifier &id) const
+std::size_t data_source::change_series_identifier_type(
+    const std::string_view &name) const
 {
-	if (const auto *size = std::get_if<std::size_t>(&id)) {
-		if (*size < dimension_names.size())
-			id = dimension_names[*size];
-		else if (*size
-		         < dimension_names.size() + measure_names.size())
-			id = measure_names[*size - dimension_names.size()];
-		else
-			id = std::string_view{};
+	if (finalized) {
+		if (auto it = finalized->series_to_index.find(name);
+		    it != finalized->series_to_index.end())
+			return it->second;
+		return ~std::size_t{};
 	}
-	else {
-		auto name = *std::get_if<std::string_view>(&id);
-		if (finalized)
-			if (auto it = finalized->series_to_index.find(name);
-			    it != finalized->series_to_index.end())
-				id = it->second;
 
-		if (auto it = std::lower_bound(dimension_names.begin(),
-		        dimension_names.end(),
-		        name);
-		    it != dimension_names.end() && *it == name)
-			id = static_cast<std::size_t>(
-			    it - dimension_names.begin());
-		else if (it = std::lower_bound(measure_names.begin(),
-		             measure_names.end(),
-		             name);
-		         it != measure_names.end() && *it == name)
-			id = static_cast<std::size_t>(
-			         std::distance(measure_names.begin(), it))
-			   + dimension_names.size();
-		else
-			id = ~std::size_t{};
-	}
+	if (auto it = std::lower_bound(dimension_names.begin(),
+	        dimension_names.end(),
+	        name);
+	    it != dimension_names.end() && *it == name)
+		return static_cast<std::size_t>(it - dimension_names.begin());
+	if (auto it = std::lower_bound(measure_names.begin(),
+	        measure_names.end(),
+	        name);
+	    it != measure_names.end() && *it == name)
+		return static_cast<std::size_t>(
+		           std::distance(measure_names.begin(), it))
+		     + dimension_names.size();
+	return ~std::size_t{};
 }
 
 void data_source::change_record_identifier_type(
     record_identifier &id) const
 {
-	if (!finalized) throw std::runtime_error("not finalized yet");
+	if (!finalized) throw std::runtime_error("Unsupported.");
 
 	if (const auto *size = std::get_if<std::size_t>(&id)) {
 		if (*size < finalized->record_unique_ids.size())
@@ -251,7 +239,7 @@ void data_source::change_record_identifier_type(
 }
 
 cell_value data_source::get_data(std::size_t record_id,
-    const series_identifier &column) const
+    const std::string_view &column) const
 {
 	switch (auto &&series = get_series(column)) {
 		using enum series_type;
@@ -268,21 +256,19 @@ cell_value data_source::get_data(std::size_t record_id,
 		return meas.values[record_id];
 	}
 	case unknown:
-	default: throw std::runtime_error("unknown column");
+	default: throw std::runtime_error("Wrong series.");
 	}
 }
 
-data_source::series_data data_source::get_series(series_identifier id)
+data_source::series_data data_source::get_series(
+    const std::string_view &id)
 {
-	if (std::holds_alternative<std::string_view>(id))
-		change_series_identifier_type(id);
-	auto size = *get_if<std::size_t>(&id);
-
-	if (size < dimensions.size())
+	if (auto size = change_series_identifier_type(id);
+	    size < dimensions.size())
 		return series_data{std::in_place_index<1>,
 		    dimension_names[size],
 		    dimensions[size]};
-	if (size < dimensions.size() + measures.size())
+	else if (size < dimensions.size() + measures.size())
 		return series_data{std::in_place_index<2>,
 		    measure_names[size - dimensions.size()],
 		    measures[size - dimensions.size()]};
@@ -290,17 +276,14 @@ data_source::series_data data_source::get_series(series_identifier id)
 }
 
 data_source::const_series_data data_source::get_series(
-    series_identifier id) const
+    const std::string_view &id) const
 {
-	if (std::holds_alternative<std::string_view>(id))
-		change_series_identifier_type(id);
-	auto size = *std::get_if<std::size_t>(&id);
-
-	if (size < dimensions.size())
+	if (auto size = change_series_identifier_type(id);
+	    size < dimensions.size())
 		return const_series_data{std::in_place_index<1>,
 		    dimension_names[size],
 		    dimensions[size]};
-	if (size < dimensions.size() + measures.size())
+	else if (size < dimensions.size() + measures.size())
 		return const_series_data{std::in_place_index<2>,
 		    measure_names[size - dimensions.size()],
 		    measures[size - dimensions.size()]};
@@ -566,7 +549,7 @@ data_source::final_info::final_info(const data_source &source) :
 		if (auto &id = record_unique_ids[r] =
 		        get_id(source, r, source.dimension_names);
 		    !record_to_index.try_emplace(id, r).second)
-			throw std::runtime_error("duplicated record");
+			throw std::runtime_error("Duplicated record.");
 }
 
 std::string data_source::final_info::get_id(const data_source &source,

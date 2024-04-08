@@ -125,37 +125,61 @@ struct assert_t
 {};
 struct skip_t
 {};
-template <class exception> struct impl_throws_t
+template <class exception, auto fptr = nullptr, class... Args>
+struct impl_throws_t
 {
 	throws_t<exception> operator()(
 	    src_location loc = src_location()) const;
 
-	template <class Res, class Member, class Obj, class... Args>
-	void operator()(Res (Member::*p)(Args...) &,
-	    Obj &&obj,
-	    Args &&...args) const
+	template <class Member>
+	void operator()(Member *obj,
+	    Args &&...args,
+	    src_location loc = src_location()) const
 	{
-		(*this)() << [&]
+		(*this)(loc) << [&]
 		{
-			std::invoke(p,
-			    std::forward<Obj>(obj),
-			    std::forward<Args>(args)...);
+			std::invoke(fptr, obj, std::forward<Args>(args)...);
 		};
 	}
 
-	template <class Res, class Member, class Obj, class... Args>
-	void operator()(Res (Member::*p)(Args...) const &,
-	    Obj &&obj,
-	    Args &&...args) const
+	template <class Member>
+	void operator()(const Member *obj,
+	    Args &&...args,
+	    src_location loc = src_location{}) const
 	{
-		(*this)() << [&]
+		(*this)(loc) << [&]
 		{
-			std::invoke(p,
-			    std::forward<Obj>(obj),
-			    std::forward<Args>(args)...);
+			std::invoke(fptr, obj, std::forward<Args>(args)...);
 		};
 	}
 };
+
+template <class exception, auto fptr> struct impl_fptr_throws;
+
+template <class exception,
+    class Member,
+    class Res,
+    class... Args,
+    Res (Member::*fptr)(Args...) &>
+struct impl_fptr_throws<exception, fptr>
+{
+	using type = impl_throws_t<exception, fptr, Args...>;
+};
+
+template <class exception,
+    class Member,
+    class Res,
+    class... Args,
+    Res (Member::*fptr)(Args...) const &>
+struct impl_fptr_throws<exception, fptr>
+{
+	using type = impl_throws_t<exception, fptr, Args...>;
+};
+
+template <class exception, auto fptr>
+using impl_fptr_throws_t =
+    typename impl_fptr_throws<exception, fptr>::type;
+
 }
 
 struct check_t
@@ -316,9 +340,10 @@ inline namespace consts
 	return check_t{loc};
 }
 
-template <class exception>
+template <class exception, auto any, class... Args>
 [[nodiscard]] throws_t<exception>
-impl_throws_t<exception>::operator()(src_location loc) const
+impl_throws_t<exception, any, Args...>::operator()(
+    src_location loc) const
 {
 	return throws_t<exception>{loc};
 }
@@ -327,7 +352,10 @@ static inline constexpr impl_check_t check{};
 static inline constexpr assert_t assert{};
 static inline constexpr skip_t skip{};
 
-static inline constexpr impl_throws_t<std::runtime_error> throw_{};
+template <auto fptr>
+static inline constexpr impl_fptr_throws_t<std::runtime_error, fptr>
+    throw_{};
+
 template <class exception = std::exception>
 static inline constexpr impl_throws_t<exception> throws{};
 }

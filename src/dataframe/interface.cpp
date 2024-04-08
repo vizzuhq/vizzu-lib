@@ -31,7 +31,7 @@ std::shared_ptr<dataframe_interface> dataframe_interface::copy(
 }
 
 std::string dataframe_interface::set_aggregate(
-    series_identifier series,
+    std::string_view series,
     const any_aggregator_type &aggregator) &
 {
 	return as_impl(this).set_aggregate(series, aggregator);
@@ -43,7 +43,7 @@ void dataframe_interface::set_filter(
 	as_impl(this).set_filter(std::move(filt));
 }
 
-void dataframe_interface::set_sort(series_identifier series,
+void dataframe_interface::set_sort(std::string_view series,
     any_sort_type sort,
     na_position na_pos) &
 {
@@ -84,7 +84,7 @@ void dataframe_interface::add_measure(
 }
 
 void dataframe_interface::add_series_by_other(
-    series_identifier curr_series,
+    std::string_view curr_series,
     const char *name,
     std::function<cell_value(record_type, cell_value)>
         value_transform,
@@ -97,7 +97,7 @@ void dataframe_interface::add_series_by_other(
 }
 
 void dataframe_interface::remove_series(
-    std::span<const series_identifier> names) &
+    std::span<const std::string_view> names) &
 {
 	as_impl(this).remove_series(names);
 }
@@ -121,24 +121,24 @@ void dataframe_interface::remove_records(
 }
 
 void dataframe_interface::remove_unused_categories(
-    series_identifier column) &
+    std::string_view column) &
 {
 	as_impl(this).remove_unused_categories(column);
 }
 
 void dataframe_interface::change_data(record_identifier record_id,
-    series_identifier column,
+    std::string_view column,
     cell_value value) &
 {
 	as_impl(this).change_data(record_id, column, value);
 }
 
-bool dataframe_interface::has_na(series_identifier column) const &
+bool dataframe_interface::has_na(std::string_view column) const &
 {
 	return as_impl(this).has_na(column);
 }
 
-void dataframe_interface::fill_na(series_identifier column,
+void dataframe_interface::fill_na(std::string_view column,
     cell_value value) &
 {
 	as_impl(this).fill_na(column, value);
@@ -164,19 +164,19 @@ dataframe_interface::get_measures() const &
 }
 
 std::span<const std::string> dataframe_interface::get_categories(
-    series_identifier dimension) const &
+    std::string_view dimension) const &
 {
 	return as_impl(this).get_categories(dimension);
 }
 
 std::pair<double, double> dataframe_interface::get_min_max(
-    series_identifier measure) const &
+    std::string_view measure) const &
 {
 	return as_impl(this).get_min_max(measure);
 }
 
 std::string_view dataframe_interface::get_series_name(
-    const series_identifier &id) const &
+    const std::string_view &id) const &
 {
 	return as_impl(this).get_series_name(id);
 }
@@ -188,7 +188,7 @@ std::string_view dataframe_interface::get_record_unique_id(
 }
 
 cell_value dataframe_interface::get_data(record_identifier record_id,
-    series_identifier column) const &
+    std::string_view column) const &
 {
 	return as_impl(this).get_data(record_id, column);
 }
@@ -199,7 +199,7 @@ std::size_t dataframe_interface::get_record_count() const &
 }
 
 std::string_view dataframe_interface::get_series_info(
-    const series_identifier &id,
+    const std::string_view &id,
     const char *key) const &
 {
 	return as_impl(this).get_series_info(id, key);

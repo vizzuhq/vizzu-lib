@@ -97,7 +97,7 @@ void valid_unexistent_aggregator(
 	    !aggr
 	    || (*aggr != aggregator_type::count
 	        && *aggr != aggregator_type::exists))
-		throw std::runtime_error("Series does not exists - aggr.");
+		throw std::runtime_error("Wrong aggregation.");
 }
 
 void valid_dimension_aggregator(
@@ -109,32 +109,26 @@ void valid_dimension_aggregator(
 		case sum:
 		case min:
 		case max:
-		case mean:
-			throw std::runtime_error(
-			    "Dimension series cannot be aggregated by sum, min, "
-			    "max or mean.");
+		case mean: throw std::runtime_error("Wrong aggregation.");
 		default: return;
 		}
 	}
 	if (!std::holds_alternative<std::monostate>(agg))
-		throw std::runtime_error("Dimension series cannot be "
-		                         "aggregated by custom aggregator.");
+		throw std::runtime_error("Wrong aggregation.");
 }
 
 void valid_measure_aggregator(
     const dataframe::any_aggregator_type &agg)
 {
 	if (std::holds_alternative<std::monostate>(agg))
-		throw std::runtime_error(
-		    "Measure series must be aggregated.");
+		throw std::runtime_error("Wrong aggregation.");
 
 	if (const auto *t = std::get_if<aggregator_type>(&agg);
 	    t && *t == aggregator_type::distinct)
-		throw std::runtime_error(
-		    "Measure series cannot be aggregated by distinct.");
+		throw std::runtime_error("Wrong aggregation.");
 }
 
-std::string dataframe::set_aggregate(series_identifier series,
+std::string dataframe::set_aggregate(std::string_view series,
     const any_aggregator_type &aggregator) &
 {
 	change_state_to(state_type::aggregating,
@@ -159,8 +153,7 @@ std::string dataframe::set_aggregate(series_identifier series,
 		if (!aggs.dims
 		         .emplace(unsafe_get<series_type::dimension>(ser))
 		         .second)
-			throw std::runtime_error(
-			    "Duplicated dimension series name.");
+			throw std::runtime_error("Duplicated series.");
 		return {};
 	}
 
@@ -170,9 +163,7 @@ std::string dataframe::set_aggregate(series_identifier series,
 
 	auto &&[name, uniq] =
 	    aggs.add_aggregated(std::move(ser), cust_aggr);
-	if (!uniq)
-		throw std::runtime_error(
-		    "Duplicated aggregated series name.");
+	if (!uniq) throw std::runtime_error("Duplicated series.");
 	return name;
 }
 
@@ -193,7 +184,7 @@ void dataframe::set_filter(std::function<bool(record_type)> &&filt) &
 		filter = std::move(filt);
 }
 
-void dataframe::set_sort(series_identifier series,
+void dataframe::set_sort(std::string_view series,
     any_sort_type sort,
     na_position na_pos) &
 {
@@ -205,8 +196,7 @@ void dataframe::set_sort(series_identifier series,
 
 	switch (ser) {
 		using enum series_type;
-	default:
-		throw std::runtime_error("Series does not exists - sort.");
+	default: throw std::runtime_error("Wrong series.");
 	case dimension: {
 		std::optional<std::vector<std::size_t>> indices;
 		if (const auto &dim = unsafe_get<dimension>(ser).second;
@@ -229,20 +219,15 @@ void dataframe::set_sort(series_identifier series,
 		break;
 	}
 	case measure:
-		if (!sort_ptr)
-			throw std::runtime_error(
-			    "Measure series cannot be sorted by categories.");
+		if (!sort_ptr) throw std::runtime_error("Wrong sort.");
 		switch (*sort_ptr) {
 		default:
 		case sort_type::less:
 		case sort_type::greater: break;
 		case sort_type::natural_less:
 		case sort_type::natural_greater:
-			throw std::runtime_error(
-			    "Measure series cannot be sorted by natural order.");
 		case sort_type::by_categories:
-			throw std::runtime_error(
-			    "Measure series cannot be sorted by categories.");
+			throw std::runtime_error("Wrong sort.");
 		}
 		break;
 	}
@@ -277,9 +262,6 @@ void dataframe::add_dimension(
     adding_type adding_strategy,
     std::span<const std::pair<const char *, const char *>> info) &
 {
-	if (!name)
-		throw std::runtime_error("Series name cannot be null.");
-
 	change_state_to(state_type::modifying,
 	    state_modification_reason::needs_series_type);
 
@@ -288,7 +270,7 @@ void dataframe::add_dimension(
 		if (adding_strategy == adding_type::override_full
 		    || adding_strategy
 		           == adding_type::override_all_with_rotation)
-			throw std::runtime_error("override unknown dimension");
+			throw std::runtime_error("Wrong series.");
 
 		change_state_to(state_type::modifying,
 		    state_modification_reason::needs_own_state);
@@ -305,7 +287,7 @@ void dataframe::add_dimension(
 	}
 	case series_type::dimension: {
 		if (adding_strategy == adding_type::create_or_throw)
-			throw std::runtime_error("create existing dimension");
+			throw std::runtime_error("Wrong series.");
 
 		change_state_to(state_type::modifying,
 		    state_modification_reason::needs_own_state);
@@ -343,7 +325,7 @@ void dataframe::add_dimension(
 		break;
 	}
 	case series_type::measure:
-		throw std::runtime_error("add dimension -> measure");
+		throw std::runtime_error("Wrong series.");
 	}
 }
 
@@ -352,9 +334,6 @@ void dataframe::add_measure(std::span<const double> measure_values,
     adding_type adding_strategy,
     std::span<const std::pair<const char *, const char *>> info) &
 {
-	if (!name)
-		throw std::runtime_error("Series name cannot be null.");
-
 	change_state_to(state_type::modifying,
 	    state_modification_reason::needs_series_type);
 
@@ -363,7 +342,7 @@ void dataframe::add_measure(std::span<const double> measure_values,
 		if (adding_strategy == adding_type::override_full
 		    || adding_strategy
 		           == adding_type::override_all_with_rotation)
-			throw std::runtime_error("override unknown measure");
+			throw std::runtime_error("Wrong series.");
 
 		change_state_to(state_type::modifying,
 		    state_modification_reason::needs_own_state);
@@ -379,7 +358,7 @@ void dataframe::add_measure(std::span<const double> measure_values,
 	}
 	case series_type::measure: {
 		if (adding_strategy == adding_type::create_or_throw)
-			throw std::runtime_error("create existing measure");
+			throw std::runtime_error("Wrong series.");
 
 		change_state_to(state_type::modifying,
 		    state_modification_reason::needs_own_state);
@@ -414,34 +393,30 @@ void dataframe::add_measure(std::span<const double> measure_values,
 		break;
 	}
 	case series_type::dimension:
-		throw std::runtime_error("add measure -> dimension");
+		throw std::runtime_error("Wrong series.");
 	}
 }
 
-void dataframe::add_series_by_other(series_identifier curr_series,
+void dataframe::add_series_by_other(std::string_view curr_series,
     const char *name,
     std::function<cell_value(record_type, cell_value)>
         value_transform,
     std::span<const std::pair<const char *, const char *>> info) &
 {
-	if (!name)
-		throw std::runtime_error("Series name cannot be null.");
-
 	change_state_to(state_type::modifying,
 	    state_modification_reason::needs_series_type);
 
 	const auto &pre = get_data_source();
 	auto &&type = pre.get_series(curr_series);
 	if (type == series_type::unknown)
-		throw std::runtime_error("Reference series does not exists.");
+		throw std::runtime_error("Wrong series.");
 	if (pre.get_series(name) != series_type::unknown)
-		throw std::runtime_error("Series name already exists.");
+		throw std::runtime_error("Wrong series.");
 
 	change_state_to(state_type::modifying,
 	    state_modification_reason::needs_record_count);
 
-	if (get_record_count() == 0)
-		throw std::runtime_error("Dataframe contains no records.");
+	if (get_record_count() == 0) return;
 
 	Refl::EnumVariant<series_type,
 	    std::monostate,
@@ -530,7 +505,7 @@ void dataframe::add_series_by_other(series_identifier curr_series,
 }
 
 void dataframe::remove_series(
-    std::span<const series_identifier> names) &
+    std::span<const std::string_view> names) &
 {
 	if (names.empty()) return;
 
@@ -543,9 +518,7 @@ void dataframe::remove_series(
 	for (auto &&s = get_data_source(); const auto &name : names) {
 		switch (auto ser = s.get_series(name)) {
 			using enum series_type;
-		default:
-			throw std::runtime_error(
-			    "Series does not exists - remove.");
+		default: throw std::runtime_error("Wrong series.");
 		case dimension: {
 			auto ix = &unsafe_get<dimension>(ser).second
 			        - s.dimensions.data();
@@ -575,9 +548,6 @@ void dataframe::remove_series(
 
 void dataframe::add_record(std::span<const cell_value> values) &
 {
-	if (values.empty())
-		throw std::runtime_error("Empty record cannot be added.");
-
 	change_state_to(state_type::modifying,
 	    state_modification_reason::needs_series_type);
 
@@ -590,7 +560,7 @@ void dataframe::add_record(std::span<const cell_value> values) &
 		        return std::holds_alternative<std::string_view>(c);
 	        })) {
 		if (vec->size() != values.size())
-			throw std::runtime_error("Record size not match.");
+			throw std::runtime_error("Wrong record.");
 		reorder.resize(vec->size());
 		const auto &s = get_data_source();
 		auto dims = s.dimensions.size();
@@ -598,7 +568,7 @@ void dataframe::add_record(std::span<const cell_value> values) &
 			const auto &sv = *std::get_if<std::string_view>(it);
 			switch (auto &&ser = s.get_series(col)) {
 				using enum series_type;
-			default: throw std::runtime_error("FATAL_ERROR");
+			default:
 			case dimension:
 				reorder[&unsafe_get<dimension>(ser).second
 				        - s.dimensions.data()] = sv;
@@ -609,8 +579,7 @@ void dataframe::add_record(std::span<const cell_value> values) &
 				        - s.measures.data() + dims] =
 				    std::strtod(sv.data(), &eof);
 				if (eof == sv.data())
-					throw std::runtime_error(
-					    "cell should be numeric: " + std::string{sv});
+					throw std::runtime_error("Wrong record.");
 				break;
 			}
 			++it;
@@ -632,10 +601,9 @@ void dataframe::add_record(std::span<const cell_value> values) &
 		    state_modification_reason::needs_series_type);
 
 		const auto &pre = get_data_source();
-		if (measureIx != pre.measures.size())
-			throw std::runtime_error("Measure count not match.");
-		if (dimensionIx != pre.dimensions.size())
-			throw std::runtime_error("Dimension count not match.");
+		if (measureIx != pre.measures.size()
+		    || dimensionIx != pre.dimensions.size())
+			throw std::runtime_error("Wrong record.");
 
 		change_state_to(state_type::modifying,
 		    state_modification_reason::needs_own_state);
@@ -720,7 +688,7 @@ void dataframe::remove_records(
 	    remove_ix);
 }
 
-void dataframe::remove_unused_categories(series_identifier column) &
+void dataframe::remove_unused_categories(std::string_view column) &
 {
 	change_state_to(state_type::modifying,
 	    state_modification_reason::needs_series_type);
@@ -729,10 +697,7 @@ void dataframe::remove_unused_categories(series_identifier column) &
 	switch (auto &&ser = get_data_source().get_series(column)) {
 		using enum series_type;
 	default:
-		throw std::runtime_error(
-		    "Series does not exists - remove cats.");
-	case measure:
-		throw std::runtime_error("Measure series has no categories.");
+	case measure: throw std::runtime_error("Wrong series.");
 	case dimension:
 		usage =
 		    unsafe_get<dimension>(ser).second.get_categories_usage();
@@ -751,7 +716,7 @@ void dataframe::remove_unused_categories(series_identifier column) &
 }
 
 void dataframe::change_data(record_identifier record_id,
-    series_identifier column,
+    std::string_view column,
     cell_value value) &
 {
 	const double *d = std::get_if<double>(&value);
@@ -765,19 +730,16 @@ void dataframe::change_data(record_identifier record_id,
 		s.change_record_identifier_type(record_id);
 
 	if (s.get_record_count() <= *std::get_if<std::size_t>(&record_id))
-		throw std::runtime_error("Record does not exists.");
+		throw std::runtime_error("Wrong record.");
 
 	switch (s.get_series(column)) {
 		using enum series_type;
-	default:
-		throw std::runtime_error(
-		    "Series does not exists - change data.");
+	default: throw std::runtime_error("Wrong series.");
 	case measure:
-		if (!d) throw std::runtime_error("Measure must be a number.");
+		if (!d) throw std::runtime_error("Wrong data.");
 		break;
 	case dimension:
-		if (d)
-			throw std::runtime_error("Dimension must be a string.");
+		if (d) throw std::runtime_error("Wrong data.");
 		break;
 	}
 
@@ -802,12 +764,11 @@ void dataframe::change_data(record_identifier record_id,
 	}
 }
 
-bool dataframe::has_na(series_identifier column) const &
+bool dataframe::has_na(std::string_view column) const &
 {
 	switch (auto &&ser = get_data_source().get_series(column)) {
 		using enum series_type;
-	default:
-		throw std::runtime_error("Series does not exists - has na.");
+	default: throw std::runtime_error("Wrong series.");
 	case measure: {
 		const auto &meas = unsafe_get<measure>(ser).second;
 		return meas.contains_nan
@@ -820,7 +781,7 @@ bool dataframe::has_na(series_identifier column) const &
 	}
 }
 
-void dataframe::fill_na(series_identifier column, cell_value value) &
+void dataframe::fill_na(std::string_view column, cell_value value) &
 {
 	const double *d = std::get_if<double>(&value);
 
@@ -829,16 +790,13 @@ void dataframe::fill_na(series_identifier column, cell_value value) &
 
 	switch (get_data_source().get_series(column)) {
 		using enum series_type;
-	default:
-		throw std::runtime_error("Series does not exists - fill na.");
+	default: throw std::runtime_error("Wrong series.");
 	case measure:
-		if (!d) throw std::runtime_error("Measure must be a number.");
-		if (std::isnan(*d))
-			throw std::runtime_error("Value must not be NaN.");
+		if (!d) throw std::runtime_error("Wrong data.");
+		if (std::isnan(*d)) throw std::runtime_error("Wrong data.");
 		break;
 	case dimension:
-		if (d)
-			throw std::runtime_error("Dimension must be a string.");
+		if (d) throw std::runtime_error("Wrong data.");
 		break;
 	}
 
@@ -878,8 +836,7 @@ std::string dataframe::as_string() const &
 {
 	const auto *vec = get_if<state_type::modifying>(&state_data);
 	if (!vec || vec->empty())
-		throw std::runtime_error(
-		    "Only raw dataframe can get the state");
+		throw std::runtime_error("Unsupported.");
 
 	std::string res{'['};
 	bool first = true;
@@ -888,9 +845,7 @@ std::string dataframe::as_string() const &
 		Conv::JSONObj obj{res};
 		switch (auto &&ser = s.get_series(name)) {
 			using enum series_type;
-		default:
-			throw std::runtime_error(
-			    "Series does not exists - as string.");
+		default: throw std::runtime_error("Wrong series.");
 		case dimension: {
 			const auto &[name, dim] = unsafe_get<dimension>(ser);
 			obj("name", name)("type", "dimension")("unit",
@@ -923,38 +878,32 @@ std::span<const std::string> dataframe::get_measures() const &
 }
 
 std::span<const std::string> dataframe::get_categories(
-    series_identifier dimension) const &
+    std::string_view dimension) const &
 {
 	switch (auto &&ser = get_data_source().get_series(dimension)) {
 		using enum series_type;
-	default:
-		throw std::runtime_error(
-		    "Series does not exists - get cats.");
-	case measure:
-		throw std::runtime_error("Measure series has no categories.");
+	default: throw std::runtime_error("Wrong series.");
+	case measure: throw std::runtime_error("Wrong series.");
 	case dimension:
 		return unsafe_get<dimension>(ser).second.categories;
 	}
 }
 
 std::pair<double, double> dataframe::get_min_max(
-    series_identifier measure) const &
+    std::string_view measure) const &
 {
 	auto &&s = get_data_source();
 	switch (auto &&meas = s.get_series(measure)) {
 		using enum series_type;
-	default:
-		throw std::runtime_error(
-		    "Series does not exists - get min max.");
-	case dimension:
-		throw std::runtime_error("Dimension series has no min/max.");
+	default: throw std::runtime_error("Wrong series.");
+	case dimension: throw std::runtime_error("Wrong series.");
 	case measure:
 		return s.get_min_max(unsafe_get<measure>(meas).second);
 	}
 }
 
 cell_value dataframe::get_data(record_identifier record_id,
-    series_identifier column) const &
+    std::string_view column) const &
 {
 	const auto &s = get_data_source();
 
@@ -979,9 +928,7 @@ bool dataframe::is_filtered(record_identifier record_id) const &
 		return true;
 
 	const auto *fun = std::get_if<0>(&filter);
-	if (fun && *fun)
-		throw std::runtime_error(
-		    "Filtered dataframe is not finalized.");
+	if (fun && *fun) throw std::runtime_error("Unsupported.");
 
 	return !fun
 	    && (*std::get_if<std::vector<bool>>(
@@ -993,8 +940,7 @@ std::string dataframe::get_record_id_by_dims(
     std::span<const std::string> dimensions) const &
 {
 	const auto *state = get_if<state_type::finalized>(&state_data);
-	if (!state)
-		throw std::runtime_error("Dataframe is not finalized.");
+	if (!state) throw std::runtime_error("Unsupported.");
 
 	const auto &s = get_data_source();
 	if (std::holds_alternative<std::string_view>(my_record))
@@ -1011,19 +957,16 @@ std::size_t dataframe::get_series_orig_index(
 	using enum state_type;
 	const auto *state = get_if<modifying>(&state_data);
 	if (!state || state->empty())
-		throw std::runtime_error(
-		    "Dataframe is not created by columns.");
+		throw std::runtime_error("Unsupported.");
 
 	auto it = std::ranges::find(*state, series);
 
-	if (it == state->end())
-		throw std::runtime_error(
-		    "Cannot find series: " + std::string{series});
+	if (it == state->end()) throw std::runtime_error("Wrong series.");
 
 	return it - state->begin();
 }
 
-series_type dataframe::get_series_type(series_identifier series) const
+series_type dataframe::get_series_type(std::string_view series) const
 {
 	return get_data_source().get_series(series);
 }
@@ -1138,15 +1081,13 @@ void dataframe::change_state_to(state_type new_state,
 	case aggregating:
 		if (auto *ptr = std::get_if<copy_source>(&source);
 		    ptr && ptr->sorted_indices)
-			throw std::runtime_error(
-			    "Dataframe cannot aggregate sorted data.");
+			throw std::runtime_error("Unsupported.");
 		state_data.emplace<aggregating>();
 		break;
 	case sorting:
 		if (auto *ptr = std::get_if<copy_source>(&source);
 		    ptr && ptr->sorted_indices)
-			throw std::runtime_error(
-			    "Dataframe cannot sort already sorted data.");
+			throw std::runtime_error("Unsupported.");
 
 		state_data.emplace<sorting>();
 		break;
@@ -1172,7 +1113,7 @@ const data_source &dataframe::get_data_source() const
 	                        : *unsafe_get<copying>(source).other;
 }
 std::string_view dataframe::get_series_name(
-    const series_identifier &id) const &
+    const std::string_view &id) const &
 {
 	switch (auto &&ser = get_data_source().get_series(id)) {
 		using enum series_type;
@@ -1189,8 +1130,7 @@ std::string_view dataframe::get_record_unique_id(
 		return *ptr;
 
 	const auto *state = get_if<state_type::finalized>(&state_data);
-	if (!state)
-		throw std::runtime_error("Dataframe is not finalized.");
+	if (!state) throw std::runtime_error("Unsupported.");
 
 	if (const auto *cp = get_if<source_type::copying>(&source);
 	    cp && cp->sorted_indices)
@@ -1205,7 +1145,7 @@ std::string_view dataframe::get_record_unique_id(
 }
 
 std::string_view dataframe::get_series_info(
-    const series_identifier &id,
+    const std::string_view &id,
     const char *key) const &
 {
 	switch (auto &&ser = get_data_source().get_series(id)) {

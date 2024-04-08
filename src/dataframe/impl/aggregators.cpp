@@ -19,7 +19,7 @@ inline bool is_valid(cell_value const &value)
 Refl::EnumArray<aggregator_type, custom_aggregator>
 get_aggregators() noexcept
 {
-	return {{{{{"sum"},
+	return {{{{{Refl::enum_name(aggregator_type::sum)},
 	              []() -> custom_aggregator::id_type
 	              {
 		              return 0.0;
@@ -35,7 +35,7 @@ get_aggregators() noexcept
 
 		              return ref;
 	              }},
-	    {{"min"},
+	    {{Refl::enum_name(aggregator_type::min)},
 	        []() -> custom_aggregator::id_type
 	        {
 		        return std::numeric_limits<double>::quiet_NaN();
@@ -51,7 +51,7 @@ get_aggregators() noexcept
 
 		        return ref;
 	        }},
-	    {{"max"},
+	    {{Refl::enum_name(aggregator_type::max)},
 	        []() -> custom_aggregator::id_type
 	        {
 		        return std::numeric_limits<double>::quiet_NaN();
@@ -67,7 +67,7 @@ get_aggregators() noexcept
 
 		        return ref;
 	        }},
-	    {{"mean"},
+	    {{Refl::enum_name(aggregator_type::mean)},
 	        []() -> custom_aggregator::id_type
 	        {
 		        return std::pair<double, std::size_t>(0.0, 0);
@@ -86,7 +86,7 @@ get_aggregators() noexcept
 		        return count == 0 ? NAN
 		                          : sum / static_cast<double>(count);
 	        }},
-	    {{"count"},
+	    {{Refl::enum_name(aggregator_type::count)},
 	        []() -> custom_aggregator::id_type
 	        {
 		        return std::size_t{};
@@ -98,7 +98,7 @@ get_aggregators() noexcept
 		        if (is_valid(cell)) s += 1;
 		        return static_cast<double>(s);
 	        }},
-	    {{"distinct"},
+	    {{Refl::enum_name(aggregator_type::distinct)},
 	        []() -> custom_aggregator::id_type
 	        {
 		        return std::set<const char *>{};
@@ -113,7 +113,7 @@ get_aggregators() noexcept
 			        set.insert(v);
 		        return static_cast<double>(set.size());
 	        }},
-	    {{"exists"},
+	    {{Refl::enum_name(aggregator_type::exists)},
 	        []() -> custom_aggregator::id_type
 	        {
 		        return bool{};
