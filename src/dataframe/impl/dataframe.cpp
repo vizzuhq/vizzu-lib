@@ -29,7 +29,7 @@ dataframe::copy(bool remove_filtered, bool inherit_sorting) const &
 
 		newly.emplace(
 		    std::unique_ptr<dataframe, decltype(my_deleter)>{
-		        new (uptr->data.data()) dataframe(cp.other,
+		        new (uptr->data) dataframe(cp.other,
 		            remove_filtered
 		                ? std::get_if<std::vector<bool>>(&filter)
 		            : cp.pre_remove ? &*cp.pre_remove
@@ -42,7 +42,7 @@ dataframe::copy(bool remove_filtered, bool inherit_sorting) const &
 	else {
 		newly.emplace(
 		    std::unique_ptr<dataframe, decltype(my_deleter)>{
-		        new (uptr->data.data())
+		        new (uptr->data)
 		            dataframe(unsafe_get<source_type::owning>(source),
 		                remove_filtered
 		                    ? std::get_if<std::vector<bool>>(&filter)
@@ -67,7 +67,7 @@ std::shared_ptr<dataframe_interface> dataframe::create_new()
 		::operator delete(p, df);
 	};
 	auto &&uptr2 = std::unique_ptr<dataframe, decltype(my_deleter)>{
-	    new (uptr->data.data()) dataframe(),
+	    new (uptr->data) dataframe(),
 	    std::move(my_deleter)};
 	return {uptr.release(),
 	    [rm = std::move(uptr2)](dataframe_interface *df) mutable
@@ -208,7 +208,7 @@ void dataframe::set_sort(series_identifier series,
 	default:
 		throw std::runtime_error("Series does not exists - sort.");
 	case dimension: {
-		std::optional<std::vector<std::uint32_t>> indices;
+		std::optional<std::vector<std::size_t>> indices;
 		if (const auto &dim = unsafe_get<dimension>(ser).second;
 		    ((sort_ptr && *sort_ptr == sort_type::by_categories)
 		        || std::ranges::is_sorted(

@@ -215,7 +215,8 @@ public:
 	    record_identifier my_record,
 	    std::span<const std::string> dimensions) const &;
 
-	std::array<char, max_size_impl> data;
+	// NOLINTNEXTLINE(cppcoreguidelines-avoid-c-arrays,modernize-avoid-c-arrays)
+	alignas(align_impl) std::byte data[max_size_impl];
 };
 
 #ifdef __cpp_lib_is_pointer_interconvertible

@@ -1,6 +1,7 @@
 #include "interface.h"
 
 #include <memory>
+#include <new>
 
 #include "impl/dataframe.h"
 
@@ -12,14 +13,14 @@ static_assert(alignof(dataframe) <= align_impl);
 
 dataframe &as_impl(dataframe_interface *df)
 {
-	return *std::launder(static_cast<dataframe *>(
-	    static_cast<void *>(df->data.data())));
+	return *std::launder(
+	    static_cast<dataframe *>(static_cast<void *>(df->data)));
 }
 
 const dataframe &as_impl(const dataframe_interface *df)
 {
 	return *std::launder(static_cast<const dataframe *>(
-	    static_cast<const void *>(df->data.data())));
+	    static_cast<const void *>(df->data)));
 }
 
 std::shared_ptr<dataframe_interface> dataframe_interface::copy(

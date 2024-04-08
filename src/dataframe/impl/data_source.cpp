@@ -139,16 +139,18 @@ std::vector<std::size_t> data_source::get_sorted_indices(
     const dataframe_interface *parent,
     const sorting_type &sorters) const
 {
-	std::vector<std::size_t> result(get_record_count());
-	std::iota(result.begin(), result.end(), 0);
-	std::sort(result.begin(),
-	    result.end(),
-	    [parent, &sorters](std::size_t a, std::size_t b)
+	thread_local const dataframe_interface *parent_ptr{};
+	thread_local const sorting_type *sorters_ptr{};
+	parent_ptr = parent;
+	sorters_ptr = &sorters;
+
+	return data_source::get_sorted_indices(get_record_count(),
+	    [](std::size_t a, std::size_t b)
 	    {
-		    for (const auto &sorter : sorters) {
+		    for (const auto &sorter : *sorters_ptr) {
 			    if (const auto *custom = std::get_if<1>(&sorter)) {
-				    if (auto res =
-				            (*custom)({parent, a}, {parent, b});
+				    if (auto res = (*custom)({parent_ptr, a},
+				            {parent_ptr, b});
 				        is_neq(res))
 					    return is_lt(res);
 			    }
@@ -161,7 +163,6 @@ std::vector<std::size_t> data_source::get_sorted_indices(
 		    }
 		    return false;
 	    });
-	return result;
 }
 
 void data_source::sort(std::vector<std::size_t> &&indices)
@@ -402,6 +403,16 @@ data_source::measure_t &data_source::add_new_measure(measure_t &&mea,
 	    std::move(mea));
 }
 
+std::vector<std::size_t> data_source::get_sorted_indices(
+    std::size_t max,
+    bool (*sort)(std::size_t, std::size_t))
+{
+	std::vector<std::size_t> indices(max);
+	std::iota(indices.begin(), indices.end(), std::size_t{});
+	std::sort(indices.begin(), indices.end(), sort);
+	return indices;
+}
+
 void data_source::remove_records(std::span<const std::size_t> indices)
 {
 	const index_erase_if<false> indices_remover{indices};
@@ -574,39 +585,34 @@ std::string data_source::final_info::get_id(const data_source &source,
 	return res;
 }
 
-std::vector<std::uint32_t> data_source::dimension_t::get_indices(
+std::vector<std::size_t> data_source::dimension_t::get_indices(
     const dataframe_interface::any_sort_type &sorter) const
 {
-	std::vector<std::uint32_t> indices(categories.size());
-	std::iota(indices.begin(), indices.end(), 0);
-	std::sort(indices.begin(),
-	    indices.end(),
-	    [this, &sorter, s = std::get_if<sort_type>(&sorter)](
-	        std::size_t a,
-	        std::size_t b)
+	thread_local const dataframe_interface::any_sort_type *sorts{};
+	thread_local const std::vector<std::string> *cats{};
+	sorts = &sorter;
+	cats = &categories;
+	return data_source::get_sorted_indices(categories.size(),
+	    [](std::size_t a, std::size_t b)
 	    {
 		    static const Text::NaturalCmp cmp{};
-		    if (s) switch (*s) {
+		    if (auto s = std::get_if<sort_type>(sorts)) switch (*s) {
 			    default:
-			    case sort_type::less:
-				    return categories[a] < categories[b];
+			    case sort_type::less: return (*cats)[a] < (*cats)[b];
 			    case sort_type::greater:
-				    return categories[b] < categories[a];
+				    return (*cats)[b] < (*cats)[a];
 			    case sort_type::natural_less:
-				    return cmp(categories[a], categories[b]);
+				    return cmp((*cats)[a], (*cats)[b]);
 			    case sort_type::natural_greater:
-				    return cmp(categories[b], categories[a]);
+				    return cmp((*cats)[b], (*cats)[a]);
 			    }
-		    else
-			    return std::is_lt((*std::get_if<1>(
-			        &sorter))(categories[a], categories[b]));
+		    return std::is_lt(
+		        (*std::get_if<1>(sorts))((*cats)[a], (*cats)[b]));
 	    });
-
-	return indices;
 }
 
 void data_source::dimension_t::sort_by(
-    std::vector<std::uint32_t> &&indices,
+    std::vector<std::size_t> &&indices,
     na_position na)
 {
 	for (auto &val : values)

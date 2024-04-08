@@ -53,10 +53,10 @@ private:
 		void add_more_data(std::span<const char *const> categories,
 		    std::span<const std::uint32_t> values);
 
-		[[nodiscard]] std::vector<std::uint32_t> get_indices(
+		[[nodiscard]] std::vector<std::size_t> get_indices(
 		    const dataframe_interface::any_sort_type &sorter) const;
 
-		void sort_by(std::vector<std::uint32_t> &&indices,
+		void sort_by(std::vector<std::size_t> &&indices,
 		    na_position na_pos);
 
 		std::uint32_t get_or_set_cat(std::string_view cat);
@@ -214,6 +214,10 @@ public:
 
 	measure_t &add_new_measure(measure_t &&measure,
 	    std::string_view name);
+
+	static std::vector<std::size_t> get_sorted_indices(
+	    std::size_t max,
+	    bool (*sort)(std::size_t, std::size_t));
 
 	friend class dataframe;
 };
