@@ -655,7 +655,7 @@ const static auto tests =
 	df->set_sort("m1", sort_type::greater, na_position::first);
 
 	// cannot finalize because of duplicated dimensions
-	df->remove_records(std::span<interface::record_identifier>{});
+	df->remove_records(std::span<std::size_t>{});
 
 	assert->*df->get_record_count() == std::size_t{11};
 

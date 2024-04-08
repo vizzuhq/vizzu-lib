@@ -196,10 +196,10 @@ std::size_t data_source::change_series_identifier_type(
     const std::string_view &name) const
 {
 	if (finalized) {
-		if (auto it = finalized->series_to_index.find(name);
-		    it != finalized->series_to_index.end())
-			return it->second;
-		return ~std::size_t{};
+		auto it = finalized->series_to_index.find(name);
+		return it != finalized->series_to_index.end()
+		         ? it->second
+		         : ~std::size_t{};
 	}
 
 	if (auto it = std::lower_bound(dimension_names.begin(),
@@ -217,25 +217,13 @@ std::size_t data_source::change_series_identifier_type(
 	return ~std::size_t{};
 }
 
-void data_source::change_record_identifier_type(
-    record_identifier &id) const
+std::size_t data_source::change_record_identifier_type(
+    const std::string_view &id) const
 {
 	if (!finalized) throw std::runtime_error("Unsupported.");
-
-	if (const auto *size = std::get_if<std::size_t>(&id)) {
-		if (*size < finalized->record_unique_ids.size())
-			id = finalized->record_unique_ids[*size];
-		else
-			id = std::string_view{};
-	}
-	else {
-		auto name = *std::get_if<std::string_view>(&id);
-		if (auto it = finalized->record_to_index.find(name);
-		    it != finalized->record_to_index.end())
-			id = it->second;
-		else
-			id = ~std::size_t{};
-	}
+	auto it = finalized->record_to_index.find(id);
+	return it != finalized->record_to_index.end() ? it->second
+	                                              : ~std::size_t{};
 }
 
 cell_value data_source::get_data(std::size_t record_id,

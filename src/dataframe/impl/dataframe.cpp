@@ -627,26 +627,20 @@ void dataframe::add_record(std::span<const cell_value> values) &
 }
 
 void dataframe::remove_records(
-    std::span<const record_identifier> record_ids) &
+    std::span<const std::size_t> record_ids) &
 {
 
 	change_state_to(state_type::modifying,
 	    state_modification_reason::needs_sorted_records);
 
-	std::vector<std::size_t> remove_ix;
-	for (auto &&s = get_data_source(); auto id : record_ids) {
-		if (std::holds_alternative<std::string_view>(id))
-			s.change_record_identifier_type(id);
-
-		remove_ix.emplace_back(*std::get_if<std::size_t>(&id));
-	}
-	std::sort(remove_ix.begin(), remove_ix.end());
+	if (!std::ranges::is_sorted(record_ids))
+		throw std::runtime_error("Unsupported.");
 
 	change_state_to(state_type::modifying,
 	    state_modification_reason::needs_own_state);
 
 	unsafe_get<source_type::owning>(source)->remove_records(
-	    remove_ix);
+	    record_ids);
 }
 
 void dataframe::remove_records(
@@ -715,7 +709,7 @@ void dataframe::remove_unused_categories(std::string_view column) &
 	    .second.remove_unused_categories(std::move(usage));
 }
 
-void dataframe::change_data(record_identifier record_id,
+void dataframe::change_data(std::size_t record_id,
     std::string_view column,
     cell_value value) &
 {
@@ -726,13 +720,11 @@ void dataframe::change_data(record_identifier record_id,
 
 	const auto &s = get_data_source();
 
-	if (std::holds_alternative<std::string_view>(record_id))
-		s.change_record_identifier_type(record_id);
-
-	if (s.get_record_count() <= *std::get_if<std::size_t>(&record_id))
+	if (s.get_record_count() <= record_id)
 		throw std::runtime_error("Wrong record.");
 
-	switch (s.get_series(column)) {
+	series_type st = s.get_series(column);
+	switch (st) {
 		using enum series_type;
 	default: throw std::runtime_error("Wrong series.");
 	case measure:
@@ -748,17 +740,15 @@ void dataframe::change_data(record_identifier record_id,
 
 	switch (auto &&ser =
 	            unsafe_get<source_type::owning>(source)->get_series(
-	                column)) {
+	                column);
+	        st) {
 		using enum series_type;
-	default: break;
+	default:
 	case measure:
-		unsafe_get<measure>(ser)
-		    .second.values[*std::get_if<std::size_t>(&record_id)] =
-		    *d;
+		unsafe_get<measure>(ser).second.values[record_id] = *d;
 		break;
 	case dimension:
-		unsafe_get<dimension>(ser).second.set(
-		    *std::get_if<std::size_t>(&record_id),
+		unsafe_get<dimension>(ser).second.set(record_id,
 		    *std::get_if<std::string_view>(&value));
 		break;
 	}
@@ -906,49 +896,47 @@ cell_value dataframe::get_data(record_identifier record_id,
     std::string_view column) const &
 {
 	const auto &s = get_data_source();
+	std::size_t ix;
 
-	if (std::holds_alternative<std::string_view>(record_id))
-		s.change_record_identifier_type(record_id);
+	if (const std::size_t *ixp = std::get_if<std::size_t>(&record_id);
+	    !ixp)
+		ix = s.change_record_identifier_type(
+		    *std::get_if<std::string_view>(&record_id));
 	else if (const auto *cp = get_if<source_type::copying>(&source);
 	         cp && cp->sorted_indices)
-		std::get<std::size_t>(record_id) = {
-		    (*cp->sorted_indices)[std::get<std::size_t>(record_id)]};
+		ix = (*cp->sorted_indices)[*ixp];
+	else
+		ix = *ixp;
 
-	return s.get_data(*std::get_if<std::size_t>(&record_id), column);
+	return s.get_data(ix, column);
 }
 
 bool dataframe::is_filtered(record_identifier record_id) const &
 {
-	if (std::holds_alternative<std::string_view>(record_id))
-		get_data_source().change_record_identifier_type(record_id);
+	auto ixp = std::get_if<std::size_t>(&record_id);
+	std::size_t ix =
+	    ixp ? *ixp
+	        : get_data_source().change_record_identifier_type(
+	            *std::get_if<std::string_view>(&record_id));
 
 	if (const auto *cp = get_if<source_type::copying>(&source);
-	    cp && cp->pre_remove
-	    && (*cp->pre_remove)[std::get<std::size_t>(record_id)])
+	    cp && cp->pre_remove && (*cp->pre_remove)[ix])
 		return true;
 
 	const auto *fun = std::get_if<0>(&filter);
 	if (fun && *fun) throw std::runtime_error("Unsupported.");
 
-	return !fun
-	    && (*std::get_if<std::vector<bool>>(
-	        &filter))[*std::get_if<std::size_t>(&record_id)];
+	return !fun && (*std::get_if<std::vector<bool>>(&filter))[ix];
 }
 
-std::string dataframe::get_record_id_by_dims(
-    record_identifier my_record,
+std::string dataframe::get_record_id_by_dims(std::size_t my_record,
     std::span<const std::string> dimensions) const &
 {
 	const auto *state = get_if<state_type::finalized>(&state_data);
 	if (!state) throw std::runtime_error("Unsupported.");
 
 	const auto &s = get_data_source();
-	if (std::holds_alternative<std::string_view>(my_record))
-		s.change_record_identifier_type(my_record);
-
-	return state->get().get_id(s,
-	    std::get<std::size_t>(my_record),
-	    dimensions);
+	return state->get().get_id(s, my_record, dimensions);
 }
 
 std::size_t dataframe::get_series_orig_index(
@@ -1121,27 +1109,6 @@ std::string_view dataframe::get_series_name(
 	case measure: return unsafe_get<measure>(ser).first;
 	case dimension: return unsafe_get<dimension>(ser).first;
 	}
-}
-
-std::string_view dataframe::get_record_unique_id(
-    record_identifier id) const &
-{
-	if (const auto *ptr = std::get_if<std::string_view>(&id))
-		return *ptr;
-
-	const auto *state = get_if<state_type::finalized>(&state_data);
-	if (!state) throw std::runtime_error("Unsupported.");
-
-	if (const auto *cp = get_if<source_type::copying>(&source);
-	    cp && cp->sorted_indices)
-		std::get<std::size_t>(id) = {
-		    (*cp->sorted_indices)[std::get<std::size_t>(id)]};
-
-	const data_source::final_info &info = state->get();
-	auto ix = *std::get_if<std::size_t>(&id);
-	return ix < info.record_unique_ids.size()
-	         ? info.record_unique_ids[ix]
-	         : std::string_view{};
 }
 
 std::string_view dataframe::get_series_info(

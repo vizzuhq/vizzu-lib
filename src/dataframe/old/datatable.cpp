@@ -480,7 +480,8 @@ double data_cube_t::aggregateAt(const multi_index_t &multiIndex,
 	auto &sub_df = it->second;
 
 	if (multiIndex.rid) {
-		auto rrid = df->get_record_id_by_dims(*multiIndex.rid,
+		auto rrid = df->get_record_id_by_dims(
+		    std::get<std::size_t>(*multiIndex.rid),
 		    sub_df->get_dimensions());
 
 		return std::get<double>(sub_df->get_data(rrid, name));

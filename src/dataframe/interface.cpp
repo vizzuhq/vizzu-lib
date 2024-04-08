@@ -109,7 +109,7 @@ void dataframe_interface::add_record(
 }
 
 void dataframe_interface::remove_records(
-    std::span<const record_identifier> record_ids) &
+    std::span<const std::size_t> record_ids) &
 {
 	as_impl(this).remove_records(record_ids);
 }
@@ -126,7 +126,7 @@ void dataframe_interface::remove_unused_categories(
 	as_impl(this).remove_unused_categories(column);
 }
 
-void dataframe_interface::change_data(record_identifier record_id,
+void dataframe_interface::change_data(std::size_t record_id,
     std::string_view column,
     cell_value value) &
 {
@@ -181,12 +181,6 @@ std::string_view dataframe_interface::get_series_name(
 	return as_impl(this).get_series_name(id);
 }
 
-std::string_view dataframe_interface::get_record_unique_id(
-    record_identifier record_id) const &
-{
-	return as_impl(this).get_record_unique_id(record_id);
-}
-
 cell_value dataframe_interface::get_data(record_identifier record_id,
     std::string_view column) const &
 {
@@ -212,7 +206,7 @@ bool dataframe_interface::is_filtered(
 }
 
 std::string dataframe_interface::get_record_id_by_dims(
-    record_identifier my_record,
+    std::size_t my_record,
     std::span<const std::string> dimensions) const &
 {
 	return as_impl(this).get_record_id_by_dims(my_record, dimensions);

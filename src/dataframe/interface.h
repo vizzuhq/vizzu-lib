@@ -161,14 +161,13 @@ public:
 
 	void add_record(std::span<const cell_value> values) &;
 
-	void remove_records(
-	    std::span<const record_identifier> record_ids) &;
+	void remove_records(std::span<const size_t> record_ids) &;
 
 	void remove_records(std::function<bool(record_type)> filter) &;
 
 	void remove_unused_categories(std::string_view column) &;
 
-	void change_data(record_identifier record_id,
+	void change_data(std::size_t record_id,
 	    std::string_view column,
 	    cell_value value) &;
 
@@ -194,9 +193,6 @@ public:
 	[[nodiscard]] std::string_view get_series_name(
 	    const std::string_view &id) const &;
 
-	[[nodiscard]] std::string_view get_record_unique_id(
-	    record_identifier id) const &;
-
 	[[nodiscard]] cell_value get_data(record_identifier record_id,
 	    std::string_view column) const &;
 
@@ -210,7 +206,7 @@ public:
 	    record_identifier record_id) const &;
 
 	[[nodiscard]] std::string get_record_id_by_dims(
-	    record_identifier my_record,
+	    std::size_t my_record,
 	    std::span<const std::string> dimensions) const &;
 
 	// NOLINTNEXTLINE(cppcoreguidelines-avoid-c-arrays,modernize-avoid-c-arrays)

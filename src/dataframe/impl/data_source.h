@@ -174,7 +174,8 @@ public:
 	std::size_t change_series_identifier_type(
 	    const std::string_view &name) const;
 
-	void change_record_identifier_type(record_identifier &id) const;
+	std::size_t change_record_identifier_type(
+	    const std::string_view &id) const;
 
 	void normalize_sizes();
 
