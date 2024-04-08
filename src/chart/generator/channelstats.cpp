@@ -5,13 +5,10 @@ namespace Vizzu::Gen
 
 ChannelStats::ChannelStats(const Channel &channel,
     const Data::DataCube &cube) :
-    isDimension(channel.isDimension())
-{
-	if (isDimension)
-		usedIndices =
-		    std::vector(cube.combinedSizeOf(channel.dimensionIds),
-		        Data::MultiDim::SubSliceIndex());
-}
+    isDimension(channel.isDimension()),
+    usedIndices(
+        isDimension ? cube.combinedSizeOf(channel.dimensionIds) : 0)
+{}
 
 void ChannelStats::track(double value)
 {

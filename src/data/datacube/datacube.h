@@ -23,8 +23,8 @@ using SubCellIndex =
 struct CellInfo
 {
 	using Categories =
-	    std::vector<std::pair<Data::SeriesIndex, uint64_t>>;
-	using Values = std::vector<std::pair<Data::SeriesIndex, double>>;
+	    std::vector<std::pair<std::string, std::string>>;
+	using Values = std::vector<std::pair<std::string, double>>;
 	Categories categories;
 	Values values;
 };
@@ -36,6 +36,19 @@ class DataCube
 {
 public:
 	using Data = MultiDim::Array<DataCubeCell>;
+	using MultiIndex = MultiDim::MultiIndex;
+	using CellInfo = Vizzu::Data::CellInfo;
+
+	struct Id
+	{
+		using SubSliceIndex = MultiDim::SubSliceIndex;
+		using SliceIndex = MultiDim::SliceIndex;
+		SubSliceIndex itemSliceIndex;
+		uint64_t seriesId{};
+		uint64_t itemId{};
+
+		bool operator==(const Id &) const = default;
+	};
 
 	DataCube(const DataTable &table,
 	    const DataCubeOptions &options,
@@ -51,43 +64,44 @@ public:
 	    SubCellIndex index) const;
 
 	[[nodiscard]] size_t combinedIndexOf(const SeriesList &colIndices,
-	    MultiDim::MultiIndex multiIndex) const;
+	    MultiIndex multiIndex) const;
 
 	[[nodiscard]] size_t combinedSizeOf(
 	    const SeriesList &colIndices) const;
 
-	[[nodiscard]] Aggregator aggregateAt(
-	    const MultiDim::MultiIndex &multiIndex,
+	[[nodiscard]] Aggregator aggregateAt(const MultiIndex &multiIndex,
 	    const SeriesList &sumCols,
 	    SeriesIndex seriesId) const;
 
-	[[nodiscard]] Aggregator valueAt(
-	    const MultiDim::MultiIndex &multiIndex,
+	[[nodiscard]] Aggregator valueAt(const MultiIndex &multiIndex,
 	    const SeriesIndex &seriesId) const;
 
 	[[nodiscard]] size_t subSliceID(const SeriesList &colIndices,
-	    const MultiDim::MultiIndex &multiIndex) const;
+	    const MultiIndex &multiIndex) const;
 
 	[[nodiscard]] size_t flatSubSliceIndex(
 	    const SeriesList &colIndices,
-	    const MultiDim::MultiIndex &multiIndex) const;
+	    const MultiIndex &multiIndex) const;
 
-	[[nodiscard]] MultiDim::SubSliceIndex subSliceIndex(
+	[[nodiscard]] Id::SubSliceIndex subSliceIndex(
 	    const SeriesList &colIndices,
-	    MultiDim::MultiIndex multiIndex) const;
+	    MultiIndex multiIndex) const;
 
 	[[nodiscard]] size_t subCellSize() const;
 
 	[[nodiscard]] bool empty() const;
 
 	[[nodiscard]] CellInfo::Values values(
-	    const MultiDim::MultiIndex &index) const;
+	    const MultiIndex &index) const;
 	[[nodiscard]] CellInfo::Categories categories(
-	    const MultiDim::MultiIndex &index) const;
-	[[nodiscard]] CellInfo cellInfo(
-	    const MultiDim::MultiIndex &index) const;
-	[[nodiscard]] MultiDim::SubSliceIndex subSliceIndex(
-	    const MarkerIdStrings &stringMarkerId) const;
+	    const MultiIndex &index) const;
+	[[nodiscard]] CellInfo cellInfo(const MultiIndex &index) const;
+
+	[[nodiscard]] Id getId(const SeriesList &dimensionIds,
+	    const MultiIndex &index) const;
+
+	[[nodiscard]] std::string getValue(Id::SliceIndex slice,
+	    std::string def = "") const;
 
 private:
 	Data data;
@@ -98,13 +112,13 @@ private:
 	std::map<SeriesIndex, SubCellIndex> subIndexBySeries;
 	std::vector<SeriesIndex> seriesBySubIndex;
 
-	static MultiDim::MultiIndex getIndex(const DataTable::Row &row,
+	static MultiIndex getIndex(const DataTable::Row &row,
 	    const std::set<SeriesIndex> &indices,
 	    size_t rowIndex);
 
-	[[nodiscard]] MultiDim::SubSliceIndex inverseSubSliceIndex(
+	[[nodiscard]] Id::SubSliceIndex inverseSubSliceIndex(
 	    const SeriesList &colIndices,
-	    MultiDim::MultiIndex multiIndex) const;
+	    MultiIndex multiIndex) const;
 };
 
 }

@@ -17,7 +17,7 @@ class ChannelStats
 public:
 	bool isDimension;
 	Math::Range<double> range;
-	std::vector<Data::MultiDim::SubSliceIndex> usedIndices;
+	std::vector<Data::DataCube::Id::SubSliceIndex> usedIndices;
 
 	ChannelStats() : isDimension(true) {}
 	ChannelStats(const Channel &channel, const Data::DataCube &cube);

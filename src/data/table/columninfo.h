@@ -2,6 +2,7 @@
 #define SERIESINFO_H
 
 #include <map>
+#include <span>
 #include <string>
 #include <vector>
 
@@ -32,9 +33,7 @@ public:
 	void reset();
 	[[nodiscard]] Type getType() const;
 	[[nodiscard]] ContiType getContiType() const;
-	[[nodiscard]] std::uint64_t dimensionValueAt(
-	    const std::string &str) const;
-	[[nodiscard]] const Values &categories() const;
+	[[nodiscard]] std::span<const std::string> categories() const;
 
 	[[nodiscard]] std::string getName() const;
 	[[nodiscard]] const std::string &getUnit() const;

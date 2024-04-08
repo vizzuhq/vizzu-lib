@@ -6,8 +6,6 @@ namespace Vizzu::Data
 {
 
 using MultiDim::DimIndex;
-using MultiDim::MultiIndex;
-using MultiDim::SubSliceIndex;
 
 DataCube::DataCube(const DataTable &table,
     const DataCubeOptions &options,
@@ -65,15 +63,15 @@ DataCube::DataCube(const DataTable &table,
 	}
 }
 
-MultiIndex DataCube::getIndex(const DataTable::Row &row,
+DataCube::MultiIndex DataCube::getIndex(const DataTable::Row &row,
     const std::set<SeriesIndex> &indices,
     size_t rowIndex)
 {
 	MultiIndex index;
 	for (auto idx : indices) {
 		auto indexValue =
-		    idx.getType().isReal()
-		        ? static_cast<size_t>(row[idx.getColIndex().value()])
+		    idx.getType().isReal() ? static_cast<std::size_t>(
+		        static_cast<double>(row[idx.getColIndex().value()]))
 		    : idx.getType() == SeriesType::Index
 		        ? rowIndex
 		        : throw std::logic_error("internal error: cannot "
@@ -112,10 +110,11 @@ SeriesIndex DataCube::getSeriesBySubIndex(SubCellIndex index) const
 	    "internal error, sub-cell index out of range");
 }
 
-SubSliceIndex DataCube::subSliceIndex(const SeriesList &colIndices,
+DataCube::Id::SubSliceIndex DataCube::subSliceIndex(
+    const SeriesList &colIndices,
     MultiIndex multiIndex) const
 {
-	SubSliceIndex subSliceIndex;
+	Id::SubSliceIndex subSliceIndex;
 	for (auto colIndex : colIndices) {
 		auto dimIndex = getDimBySeries(colIndex);
 		subSliceIndex.push_back({dimIndex, multiIndex[dimIndex]});
@@ -130,11 +129,11 @@ size_t DataCube::subCellSize() const
 
 bool DataCube::empty() const { return data.empty(); }
 
-SubSliceIndex DataCube::inverseSubSliceIndex(
+DataCube::Id::SubSliceIndex DataCube::inverseSubSliceIndex(
     const SeriesList &colIndices,
     MultiIndex multiIndex) const
 {
-	SubSliceIndex subSliceIndex;
+	Id::SubSliceIndex subSliceIndex;
 	subSliceIndex.reserve(multiIndex.size());
 
 	std::set<DimIndex> dimIndices;
@@ -198,19 +197,19 @@ size_t DataCube::flatSubSliceIndex(const SeriesList &colIndices,
 }
 
 CellInfo::Categories DataCube::categories(
-    const MultiDim::MultiIndex &index) const
+    const MultiIndex &index) const
 {
 	CellInfo::Categories res;
 
-	for (auto i = 0U; i < index.size(); ++i) {
-		auto series = getSeriesByDim(MultiDim::DimIndex{i});
-		res.emplace_back(series, index[i]);
-	}
+	for (auto i = 0U; i < index.size(); ++i)
+		res.emplace_back(
+		    getSeriesByDim(DimIndex{i}).toString(*getTable()),
+		    getValue({DimIndex{i}, index[i]}));
+
 	return res;
 }
 
-CellInfo::Values DataCube::values(
-    const MultiDim::MultiIndex &index) const
+CellInfo::Values DataCube::values(const MultiIndex &index) const
 {
 	CellInfo::Values res;
 
@@ -221,31 +220,39 @@ CellInfo::Values DataCube::values(
 
 		if (series.getType() == SeriesType::Exists) continue;
 
-		res.emplace_back(series, cell.subCells[i]);
+		res.emplace_back(series.toString(*getTable()),
+		    cell.subCells[i]);
 	}
 	return res;
 }
 
-CellInfo DataCube::cellInfo(const MultiDim::MultiIndex &index) const
+CellInfo DataCube::cellInfo(const MultiIndex &index) const
 {
 	if (!table) return {};
 
 	return {categories(index), values(index)};
 }
 
-MultiDim::SubSliceIndex DataCube::subSliceIndex(
-    const MarkerIdStrings &stringMarkerId) const
+DataCube::Id DataCube::getId(const SeriesList &dimensionIds,
+    const MultiIndex &index) const
 {
-	MultiDim::SubSliceIndex index;
-	for (const auto &pair : stringMarkerId) {
-		auto colIdx = table->getColumn(pair.first);
-		auto seriesIdx = table->getIndex(colIdx);
-		auto valIdx =
-		    table->getInfo(colIdx).dimensionValueAt(pair.second);
-		auto dimIdx = getDimBySeries(SeriesIndex(seriesIdx));
-		index.push_back(
-		    MultiDim::SliceIndex{dimIdx, MultiDim::Index{valIdx}});
-	}
-	return index;
+	auto &&slice = subSliceIndex(dimensionIds, index);
+	return {slice,
+	    subSliceID(dimensionIds, index),
+	    getData().unfoldSubSliceIndex(slice)};
+}
+
+std::string DataCube::getValue(Id::SliceIndex slice,
+    std::string def) const
+{
+	if (auto &&categories =
+	        getTable()
+	            ->getInfo(getSeriesByDim(slice.dimIndex)
+	                          .getColIndex()
+	                          .value())
+	            .categories();
+	    slice.index < categories.size())
+		return categories[slice.index];
+	return def;
 }
 }

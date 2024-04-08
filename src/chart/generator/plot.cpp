@@ -39,23 +39,13 @@ Plot::MarkerInfoContent::MarkerInfoContent(const Marker &marker,
 	const auto &index = marker.index;
 	if (dataCube && dataCube->getTable() && !index.empty()) {
 		markerId = marker.idx;
-		const auto &dataCellInfo = dataCube->cellInfo(index);
-		const auto &table = *dataCube->getTable();
-		for (const auto &cat : dataCellInfo.categories) {
-			auto series = cat.first;
-			auto category = cat.second;
-			auto colIndex = series.getColIndex();
-			auto value = table.getInfo(colIndex.value())
-			                 .categories()[category];
-			content.emplace_back(series.toString(table), value);
-		}
-		for (const auto &val : dataCellInfo.values) {
-			auto series = val.first;
-			auto value = val.second;
-			Conv::NumberToString conv;
-			conv.fractionDigitCount = 3;
-			content.emplace_back(series.toString(table), conv(value));
-		}
+		auto &&dataCellInfo = dataCube->cellInfo(index);
+		content.assign(std::begin(dataCellInfo.categories),
+		    std::end(dataCellInfo.categories));
+
+		auto conv = Conv::NumberToString{.fractionDigitCount = 3};
+		for (auto &&[ser, val] : dataCellInfo.values)
+			content.emplace_back(ser, conv(val));
 	}
 	else
 		markerId.reset();
@@ -102,7 +92,7 @@ Plot::Plot(const Data::DataTable &dataTable,
 
 	anyAxisSet = options->getChannels().anyAxisSet();
 
-	generateMarkers(dataTable);
+	generateMarkers();
 	generateMarkersInfo();
 
 	SpecLayout specLayout(*this);
@@ -137,20 +127,17 @@ bool Plot::isEmpty() const
 	return options->getChannels().isEmpty();
 }
 
-void Plot::generateMarkers(const Data::DataTable &table)
+void Plot::generateMarkers()
 {
 	auto &&data = getDataCube().getData();
 	for (auto it = data.begin(); it != data.end(); ++it) {
 		auto markerIndex = markers.size();
 
-		markers.emplace_back(*options,
+		auto &marker = markers.emplace_back(*options,
 		    getDataCube(),
-		    table,
 		    stats,
 		    it.getIndex(),
 		    markerIndex);
-
-		auto &marker = markers[markerIndex];
 
 		mainBuckets[marker.mainId.get().seriesId]
 		           [marker.mainId.get().itemId] = markerIndex;
@@ -374,37 +361,30 @@ void Plot::calcDimensionAxis(ChannelId type,
 			        ? marker.mainId.get()
 			        : marker.subId;
 
-			const auto &slice = id.itemSliceIndex;
-
-			if (!slice.empty() && dim < slice.size()) {
-				auto index = slice[dim];
-				auto range = marker.getSizeBy(type == ChannelId::x);
-				axis.add(index,
+			if (const auto &slice = id.itemSliceIndex;
+			    dim < slice.size())
+				axis.add(slice[dim],
 				    static_cast<double>(id.itemId),
-				    range,
+				    marker.getSizeBy(type == ChannelId::x),
 				    static_cast<double>(marker.enabled),
 				    dim == 0);
-			}
 		}
 	}
 	else {
 		const auto &indices = stats.channels[type].usedIndices;
 
-		auto count = 0;
-		for (auto i = 0U; i < indices.size(); ++i) {
-			const auto &sliceIndex = indices[i];
-
-			if (!sliceIndex.empty() && dim < sliceIndex.size()) {
-				auto index = sliceIndex[dim];
-				auto range = Math::Range<double>(count, count);
-				auto inserted =
-				    axis.add(index, i, range, true, dim == 0);
-				if (inserted) ++count;
-			}
-		}
+		double count = 0;
+		for (auto i = 0U; i < indices.size(); ++i)
+			if (const auto &sliceIndex = indices[i];
+			    dim < sliceIndex.size()
+			    && axis.add(sliceIndex[dim],
+			        i,
+			        {count, count},
+			        true,
+			        dim == 0))
+				count += 1;
 	}
 	axis.setLabels(getDataCube(),
-	    table,
 	    isTypeAxis ? scale.step.getValue(1.0) : 1.0);
 
 	if (auto &&series = scale.labelSeries())

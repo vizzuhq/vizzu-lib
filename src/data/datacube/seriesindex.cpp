@@ -7,18 +7,20 @@ namespace Vizzu::Data
 {
 
 SeriesIndex::SeriesIndex(const SeriesType &type,
-    const DataTable::DataIndex &dataIndex) :
-    index(dataIndex.value),
+    const DataTable::DataIndex *dataIndex) :
+    index(dataIndex ? dataIndex->value : std::nullopt),
     type(type)
 {
 	if (type.isReal()) {
-		if (dataIndex.isInvalid())
+		if (!dataIndex || dataIndex->isInvalid())
 			throw std::logic_error(
 			    "series type needs valid column index");
 
-		if (((dataIndex.type == ColumnInfo::Type::dimension)
+		if (((dataIndex->type
+		         == DataTable::DataIndex::Type::dimension)
 		        && !type.isNestedDimension())
-		    || ((dataIndex.type == ColumnInfo::Type::measure)
+		    || ((dataIndex->type
+		            == DataTable::DataIndex::Type::measure)
 		        && type.isNestedDimension()))
 			throw std::logic_error(
 			    "invalid series type for dimension column");
@@ -26,10 +28,11 @@ SeriesIndex::SeriesIndex(const SeriesType &type,
 }
 
 SeriesIndex::SeriesIndex(const DataTable::DataIndex &dataIndex) :
-    SeriesIndex(dataIndex.type == ColumnInfo::Type::dimension
+    SeriesIndex(dataIndex.type
+                        == DataTable::DataIndex::Type::dimension
                     ? SeriesType::Dimension
                     : SeriesType::Sum,
-        dataIndex)
+        &dataIndex)
 {}
 
 SeriesIndex::SeriesIndex(const std::string &str,
@@ -49,7 +52,7 @@ SeriesIndex::SeriesIndex(const std::string &str,
 		}
 		if (params.size() == 1) {
 			auto index = table.getIndex(params[0]);
-			*this = SeriesIndex(type, index);
+			*this = SeriesIndex(type, &index);
 			return;
 		}
 		throw std::logic_error("invalid data series type function");
@@ -70,17 +73,10 @@ std::string SeriesIndex::toString(const DataTable &table) const
 	return type.toString() + "()";
 }
 
-std::string SeriesIndex::toString() const
-{
-	return type.isReal()
-	         ? std::to_string(static_cast<size_t>(index.value()))
-	         : type.toString();
-}
-
 void SeriesIndex::set(const DataTable::DataIndex &dataIndex)
 {
 	index = dataIndex.value;
-	type = dataIndex.type == ColumnInfo::Type::dimension
+	type = dataIndex.type == DataTable::DataIndex::Type::dimension
 	         ? SeriesType::Dimension
 	         : SeriesType::Sum;
 }
