@@ -7,6 +7,7 @@
 #include <utility>
 #include <vector>
 
+#include "../old/datatable.h"
 #include "base/text/naturalcmp.h"
 
 #include "aggregators.h"

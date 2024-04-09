@@ -130,13 +130,13 @@ bool Plot::isEmpty() const
 void Plot::generateMarkers()
 {
 	auto &&data = getDataCube().getData();
-	for (auto it = data.begin(); it != data.end(); ++it) {
+	for (auto &&index : data) {
 		auto markerIndex = markers.size();
 
 		auto &marker = markers.emplace_back(*options,
 		    getDataCube(),
 		    stats,
-		    it.getIndex(),
+		    index,
 		    markerIndex);
 
 		mainBuckets[marker.mainId.get().seriesId]

@@ -175,7 +175,7 @@ std::variant<double, std::string_view> Interface::getRecordValue(
     const Data::RowWrapper &record,
     const char *column)
 {
-	return record[column];
+	return record.get_value(column);
 }
 
 void Interface::addEventListener(ObjectRegistry::Handle chart,

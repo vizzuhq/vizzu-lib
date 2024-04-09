@@ -12,12 +12,37 @@
 namespace Vizzu::Data
 {
 
-class RowWrapper
+struct RowWrapper
 {
-public:
-	dataframe::dataframe_interface::record_type rid;
-	[[nodiscard]] dataframe::cell_value operator[](
-	    std::string_view const &col) const;
+	[[nodiscard]] dataframe::cell_value get_value(
+	    std::string_view i) const
+	{
+		return parent->get_data(recordId, i);
+	}
+
+	const dataframe::dataframe_interface *parent;
+	dataframe::dataframe_interface::record_identifier recordId;
+
+	[[nodiscard]] auto get_dimensions() const
+	{
+		return std::ranges::transform_view{parent->get_dimensions(),
+		    [rec = *this](std::string_view dim)
+		        -> std::pair<std::string_view, std::string_view>
+		    {
+			    auto &&cell = rec.get_value(dim);
+			    return {dim, *std::get_if<std::string_view>(&cell)};
+		    }};
+	}
+
+	[[nodiscard]] bool has_measure() const
+	{
+		return !parent->get_measures().empty();
+	}
+
+	[[nodiscard]] bool is_filtered() const
+	{
+		return parent->is_filtered(recordId);
+	}
 };
 
 class data_table
@@ -69,8 +94,6 @@ class series_index_t
 	std::optional<dataframe::aggregator_type> aggr;
 
 public:
-	using OptColIndex = std::string_view;
-
 	series_index_t(std::string const &str, const data_table &table);
 
 	[[nodiscard]] const dataframe::aggregator_type &getAggr() const
@@ -78,7 +101,7 @@ public:
 		return *aggr;
 	}
 
-	[[nodiscard]] const OptColIndex &getColIndex() const;
+	[[nodiscard]] const std::string_view &getColIndex() const;
 
 	friend bool operator==(const series_index_t &lhs,
 	    const series_index_t &rhs);
@@ -170,7 +193,7 @@ public:
 
 			iterator_t &operator++();
 
-			[[nodiscard]] MultiIndex getIndex() const;
+			[[nodiscard]] MultiIndex operator*() const;
 		};
 		dataframe::dataframe_interface *df;
 

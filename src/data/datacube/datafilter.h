@@ -6,7 +6,7 @@
 
 namespace Vizzu::Data
 {
-class RowWrapper;
+struct RowWrapper;
 
 class Filter
 {
@@ -20,9 +20,9 @@ public:
 	    hash(hashVal)
 	{}
 
-	[[nodiscard]] bool match(const RowWrapper &row) const
+	[[nodiscard]] bool operator()(const RowWrapper &row) const
 	{
-		return !function || function(row);
+		return function && !function(row);
 	}
 
 	[[nodiscard]] bool operator==(const Filter &other) const
@@ -38,7 +38,7 @@ public:
 		         : Filter(
 		             [this_ = *this, other](const RowWrapper &row)
 		             {
-			             return this_.match(row) && other.match(row);
+			             return this_(row) || other(row);
 		             },
 		             hash ^ other.hash);
 	}

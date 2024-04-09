@@ -17,17 +17,6 @@
 namespace Vizzu::Data
 {
 
-dataframe::cell_value RowWrapper::operator[](
-    std::string_view const &col) const
-{
-	auto &&cell = rid.get_value(col);
-
-	if (double *d = std::get_if<double>(&cell); d && std::isnan(*d))
-		*d = 0.0;
-
-	return cell;
-}
-
 std::string_view data_table::getColumn(const std::string &name) const
 {
 	return df.get_series_name(name);
@@ -80,7 +69,7 @@ std::string data_table::getInfos() const { return df.as_string(); }
 
 bool series_index_t::isDimension() const { return !aggr; }
 
-const series_index_t::OptColIndex &series_index_t::getColIndex() const
+const std::string_view &series_index_t::getColIndex() const
 {
 	return sid;
 }
@@ -178,7 +167,7 @@ data_cube_t::data_t::iterator_t::operator++()
 }
 
 data_cube_t::MultiIndex
-data_cube_t::data_t::iterator_t::getIndex() const
+data_cube_t::data_t::iterator_t::operator*() const
 {
 	return {rid.parent,
 	    found ? std::make_optional(rid.recordId) : std::nullopt,
@@ -246,11 +235,7 @@ data_cube_t::data_cube_t(const data_table &table,
             : table.getDf().copy(false, false)),
     data{df.get(), options}
 {
-	df->remove_records(
-	    [filter](dataframe::dataframe_interface::record_type rec)
-	    {
-		    return !filter.match({rec});
-	    });
+	df->remove_records(filter);
 
 	removed = df->copy(false, false);
 

@@ -181,11 +181,11 @@ double Marker::getValueForChannel(const Channels &channels,
 	auto measure = channel.measureId;
 
 	double value{};
-	auto id = data.getId(channel.dimensionIds, index);
 
 	auto &stat = stats.channels[type];
 
 	if (channel.isDimension()) {
+		auto id = data.getId(channel.dimensionIds, index);
 		if (channel.stackable)
 			value = 1.0;
 		else

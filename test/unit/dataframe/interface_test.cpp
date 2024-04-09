@@ -2,6 +2,7 @@
 #include "../util/test.h"
 #include "dataframe/impl/dataframe.h"
 #include "dataframe/interface.h"
+#include "dataframe/old/datatable.h"
 
 using bool_msg = test::expected_bool_t;
 using test::assert;
@@ -131,7 +132,7 @@ const static auto tests =
 	throw_<&interface::add_series_by_other>(df,
 	    {},
 	    {""},
-	    {[](record_type, cell_value c) -> cell_value
+	    {[](Vizzu::Data::RowWrapper, cell_value c) -> cell_value
 	        {
 		        return c;
 	        }},

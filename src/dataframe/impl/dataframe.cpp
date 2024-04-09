@@ -7,6 +7,8 @@
 #include <ranges>
 #include <utility>
 
+#include "../old/datatable.h"
+
 #include "aggregators.h"
 
 namespace Vizzu::dataframe

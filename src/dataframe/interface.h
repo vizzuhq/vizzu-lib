@@ -9,6 +9,8 @@
 #include <string_view>
 #include <variant>
 
+#include "../data/datacube/datafilter.h"
+
 namespace Vizzu::dataframe
 {
 
@@ -81,39 +83,7 @@ public:
 	    std::function<std::weak_ordering(std::string_view,
 	        std::string_view)>>;
 
-	struct record_type
-	{
-		[[nodiscard]] cell_value get_value(std::string_view i) const
-		{
-			return parent->get_data(recordId, i);
-		}
-
-		const dataframe_interface *parent;
-		record_identifier recordId;
-
-		[[nodiscard]] auto get_dimensions() const
-		{
-			return std::ranges::transform_view{
-			    parent->get_dimensions(),
-			    [rec = *this](std::string_view dim)
-			        -> std::pair<std::string_view, std::string_view>
-			    {
-				    auto &&cell = rec.get_value(dim);
-				    return {dim,
-				        *std::get_if<std::string_view>(&cell)};
-			    }};
-		}
-
-		[[nodiscard]] bool has_measure() const
-		{
-			return !parent->get_measures().empty();
-		}
-
-		[[nodiscard]] bool is_filtered() const
-		{
-			return parent->is_filtered(recordId);
-		}
-	};
+	using record_type = Data::RowWrapper;
 
 	[[nodiscard]] std::shared_ptr<dataframe_interface>
 	copy(bool remove_filtered, bool inherit_sorting) const &;
