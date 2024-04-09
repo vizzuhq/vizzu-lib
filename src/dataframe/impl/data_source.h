@@ -21,7 +21,6 @@ class data_source : public std::enable_shared_from_this<data_source>
 {
 public:
 	using record_type = dataframe_interface::record_type;
-	using record_identifier = dataframe_interface::record_identifier;
 
 private:
 	constexpr static std::uint32_t nav = ~std::uint32_t{};

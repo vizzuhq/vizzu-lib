@@ -68,7 +68,7 @@ struct custom_aggregator
 };
 
 constexpr std::size_t align_impl = alignof(double);
-constexpr std::size_t max_size_impl = 34 * sizeof(std::intptr_t);
+constexpr std::size_t max_size_impl = 26 * sizeof(std::intptr_t);
 
 class alignas(align_impl) dataframe_interface
 {
@@ -85,8 +85,8 @@ public:
 
 	using record_type = Data::RowWrapper;
 
-	[[nodiscard]] std::shared_ptr<dataframe_interface>
-	copy(bool remove_filtered, bool inherit_sorting) const &;
+	[[nodiscard]] std::shared_ptr<dataframe_interface> copy(
+	    bool inherit_sorting) const &;
 
 	[[nodiscard]] std::string set_aggregate(std::string_view series,
 	    const any_aggregator_type &aggregator) &;
@@ -95,8 +95,6 @@ public:
 	{
 		[[maybe_unused]] auto &&_ = set_aggregate(series, {});
 	}
-
-	void set_filter(std::function<bool(record_type)> &&filter) &;
 
 	void set_sort(std::string_view series,
 	    any_sort_type sort,
@@ -172,8 +170,7 @@ public:
 	    const std::string_view &id,
 	    const char *key) const &;
 
-	[[nodiscard]] bool is_filtered(
-	    record_identifier record_id) const &;
+	[[nodiscard]] bool is_filtered(std::size_t record_id) const &;
 
 	[[nodiscard]] std::string get_record_id_by_dims(
 	    std::size_t my_record,

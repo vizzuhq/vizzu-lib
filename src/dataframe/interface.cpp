@@ -24,10 +24,9 @@ const dataframe &as_impl(const dataframe_interface *df)
 }
 
 std::shared_ptr<dataframe_interface> dataframe_interface::copy(
-    bool remove_filtered,
     bool inherit_sorting) const &
 {
-	return as_impl(this).copy(remove_filtered, inherit_sorting);
+	return as_impl(this).copy(inherit_sorting);
 }
 
 std::string dataframe_interface::set_aggregate(
@@ -35,12 +34,6 @@ std::string dataframe_interface::set_aggregate(
     const any_aggregator_type &aggregator) &
 {
 	return as_impl(this).set_aggregate(series, aggregator);
-}
-
-void dataframe_interface::set_filter(
-    std::function<bool(record_type)> &&filt) &
-{
-	as_impl(this).set_filter(std::move(filt));
 }
 
 void dataframe_interface::set_sort(std::string_view series,
@@ -199,8 +192,7 @@ std::string_view dataframe_interface::get_series_info(
 	return as_impl(this).get_series_info(id, key);
 }
 
-bool dataframe_interface::is_filtered(
-    record_identifier record_id) const &
+bool dataframe_interface::is_filtered(std::size_t record_id) const &
 {
 	return as_impl(this).is_filtered(record_id);
 }

@@ -128,7 +128,7 @@ data_cube_t::data_t::iterator_t::iterator_t(
 
 void data_cube_t::data_t::iterator_t::incr()
 {
-	if (found) { ++*std::get_if<std::size_t>(&rid.recordId); }
+	if (found) { ++rid.recordId; }
 
 	auto indices = parent->get_indices(old);
 
@@ -216,12 +216,12 @@ std::vector<std::size_t> data_cube_t::data_t::get_indices(
 
 data_cube_t::data_t::iterator_t data_cube_t::data_t::begin() const
 {
-	return {{df, {std::size_t{}}}, this, std::size_t{}};
+	return {{df, std::size_t{}}, this, std::size_t{}};
 }
 
 data_cube_t::data_t::iterator_t data_cube_t::data_t::end() const
 {
-	return {{df, {df->get_record_count()}}, this, full_size};
+	return {{df, df->get_record_count()}, this, full_size};
 }
 
 template <>
@@ -232,12 +232,12 @@ data_cube_t::data_cube_t(const data_table &table,
     df(options.getDimensions().empty()
                 && options.getMeasures().empty()
             ? dataframe::dataframe::create_new()
-            : table.getDf().copy(false, false)),
+            : table.getDf().copy(false)),
     data{df.get(), options}
 {
 	df->remove_records(filter);
 
-	removed = df->copy(false, false);
+	removed = df->copy(false);
 
 	for (const auto &dim : options.getDimensions())
 		df->aggregate_by(dim.getColIndex());
@@ -436,8 +436,7 @@ double data_cube_t::aggregateAt(const multi_index_t &multiIndex,
 
 	auto it = cacheImpl->find(ids);
 	if (it == cacheImpl->end()) {
-		it = cacheImpl->emplace(ids, removed->copy(false, false))
-		         .first;
+		it = cacheImpl->emplace(ids, removed->copy(false)).first;
 
 		auto &cp = it->second;
 
@@ -465,8 +464,7 @@ double data_cube_t::aggregateAt(const multi_index_t &multiIndex,
 	auto &sub_df = it->second;
 
 	if (multiIndex.rid) {
-		auto rrid = df->get_record_id_by_dims(
-		    std::get<std::size_t>(*multiIndex.rid),
+		auto rrid = df->get_record_id_by_dims(*multiIndex.rid,
 		    sub_df->get_dimensions());
 
 		return std::get<double>(sub_df->get_data(rrid, name));

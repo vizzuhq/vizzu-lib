@@ -21,28 +21,7 @@ struct RowWrapper
 	}
 
 	const dataframe::dataframe_interface *parent;
-	dataframe::dataframe_interface::record_identifier recordId;
-
-	[[nodiscard]] auto get_dimensions() const
-	{
-		return std::ranges::transform_view{parent->get_dimensions(),
-		    [rec = *this](std::string_view dim)
-		        -> std::pair<std::string_view, std::string_view>
-		    {
-			    auto &&cell = rec.get_value(dim);
-			    return {dim, *std::get_if<std::string_view>(&cell)};
-		    }};
-	}
-
-	[[nodiscard]] bool has_measure() const
-	{
-		return !parent->get_measures().empty();
-	}
-
-	[[nodiscard]] bool is_filtered() const
-	{
-		return parent->is_filtered(recordId);
-	}
+	std::size_t recordId;
 };
 
 class data_table
@@ -139,8 +118,7 @@ using subslice_index_t = std::vector<slice_index_t>;
 struct multi_index_t
 {
 	const dataframe::dataframe_interface *parent{};
-	std::optional<dataframe::dataframe_interface::record_identifier>
-	    rid;
+	std::optional<std::size_t> rid;
 	const std::vector<std::size_t> *dim_reindex{};
 	std::vector<std::size_t> old;
 

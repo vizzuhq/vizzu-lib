@@ -47,16 +47,14 @@ public:
 	    std::vector<bool> const *filtered,
 	    std::vector<std::size_t> const *sorted);
 
-	[[nodiscard]] std::shared_ptr<dataframe_interface>
-	copy(bool remove_filtered, bool inherit_sorting) const &;
+	[[nodiscard]] std::shared_ptr<dataframe_interface> copy(
+	    bool inherit_sorting) const &;
 
 	[[nodiscard]] static std::shared_ptr<dataframe_interface>
 	create_new();
 
 	[[nodiscard]] std::string set_aggregate(std::string_view series,
 	    const any_aggregator_type &aggregator) &;
-
-	void set_filter(std::function<bool(record_type)> &&filt) &;
 
 	void set_sort(std::string_view series,
 	    any_sort_type sort,
@@ -135,8 +133,7 @@ public:
 		return get_data_source().get_record_count();
 	}
 
-	[[nodiscard]] bool is_filtered(
-	    record_identifier record_id) const &;
+	[[nodiscard]] bool is_filtered(std::size_t record_id) const &;
 
 	[[nodiscard]] std::string get_record_id_by_dims(
 	    std::size_t my_record,
@@ -155,13 +152,6 @@ private:
 
 	[[nodiscard]] const data_source &get_data_source() const;
 
-	void visit(
-	    const std::function<void(record_type)> &function) const;
-
-	void visit(const std::function<void(record_type)> &function,
-	    const std::vector<std::size_t> *sort,
-	    const std::vector<bool> *filt) const;
-
 	[[nodiscard]] const dataframe_interface *as_if() const
 	{
 		return std::launder(static_cast<const dataframe_interface *>(
@@ -179,9 +169,6 @@ private:
 	    data_source::sorting_type,
 	    std::reference_wrapper<const data_source::final_info>>
 	    state_data;
-
-	std::variant<std::function<bool(record_type)>, std::vector<bool>>
-	    filter;
 };
 
 }

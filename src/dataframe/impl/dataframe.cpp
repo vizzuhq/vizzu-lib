@@ -15,8 +15,8 @@ namespace Vizzu::dataframe
 {
 using Refl::unsafe_get;
 
-std::shared_ptr<dataframe_interface>
-dataframe::copy(bool remove_filtered, bool inherit_sorting) const &
+std::shared_ptr<dataframe_interface> dataframe::copy(
+    bool inherit_sorting) const &
 {
 	auto &&uptr = std::make_unique<dataframe_interface>();
 	auto my_deleter = [p = uptr.get()](dataframe *df)
@@ -32,10 +32,7 @@ dataframe::copy(bool remove_filtered, bool inherit_sorting) const &
 		newly.emplace(
 		    std::unique_ptr<dataframe, decltype(my_deleter)>{
 		        new (uptr->data) dataframe(cp.other,
-		            remove_filtered
-		                ? std::get_if<std::vector<bool>>(&filter)
-		            : cp.pre_remove ? &*cp.pre_remove
-		                            : nullptr,
+		            cp.pre_remove ? &*cp.pre_remove : nullptr,
 		            inherit_sorting && cp.sorted_indices
 		                ? &*cp.sorted_indices
 		                : nullptr),
@@ -46,9 +43,7 @@ dataframe::copy(bool remove_filtered, bool inherit_sorting) const &
 		    std::unique_ptr<dataframe, decltype(my_deleter)>{
 		        new (uptr->data)
 		            dataframe(unsafe_get<source_type::owning>(source),
-		                remove_filtered
-		                    ? std::get_if<std::vector<bool>>(&filter)
-		                    : nullptr,
+		                nullptr,
 		                nullptr),
 		        std::move(my_deleter)});
 	}
@@ -167,23 +162,6 @@ std::string dataframe::set_aggregate(std::string_view series,
 	    aggs.add_aggregated(std::move(ser), cust_aggr);
 	if (!uniq) throw std::runtime_error("Duplicated series.");
 	return name;
-}
-
-void dataframe::set_filter(std::function<bool(record_type)> &&filt) &
-{
-	if (auto *bools = std::get_if<std::vector<bool>>(&filter)) {
-		bools->assign(get_record_count(), false);
-		if (filt) {
-			visit(
-			    [&filt, &b = *bools](record_type record) mutable
-			    {
-				    b[std::get<std::size_t>(record.recordId)] =
-				        filt(record);
-			    });
-		}
-	}
-	else
-		filter = std::move(filt);
 }
 
 void dataframe::set_sort(std::string_view series,
@@ -399,111 +377,12 @@ void dataframe::add_measure(std::span<const double> measure_values,
 	}
 }
 
-void dataframe::add_series_by_other(std::string_view curr_series,
-    const char *name,
-    std::function<cell_value(record_type, cell_value)>
-        value_transform,
-    std::span<const std::pair<const char *, const char *>> info) &
+void dataframe::add_series_by_other(std::string_view,
+    const char *,
+    std::function<cell_value(record_type, cell_value)>,
+    std::span<const std::pair<const char *, const char *>>) &
 {
-	change_state_to(state_type::modifying,
-	    state_modification_reason::needs_series_type);
-
-	const auto &pre = get_data_source();
-	auto &&type = pre.get_series(curr_series);
-	if (type == series_type::unknown)
-		throw std::runtime_error("Wrong series.");
-	if (pre.get_series(name) != series_type::unknown)
-		throw std::runtime_error("Wrong series.");
-
-	change_state_to(state_type::modifying,
-	    state_modification_reason::needs_record_count);
-
-	if (get_record_count() == 0) return;
-
-	Refl::EnumVariant<series_type,
-	    std::monostate,
-	    data_source::dimension_t,
-	    data_source::measure_t>
-	    v;
-
-	auto add_val = [&v, &info](cell_value &&add_val)
-	{
-		using enum series_type;
-		const auto *d = std::get_if<double>(&add_val);
-		switch (v) {
-		default:
-			if (d)
-				v.emplace<measure>(std::ranges::single_view(*d),
-				    info);
-			else
-				v.emplace<dimension>(
-				    std::ranges::single_view(
-				        *std::get_if<std::string_view>(&add_val)),
-				    std::ranges::single_view(0),
-				    info);
-			break;
-		case measure:
-			if (!d) throw std::runtime_error("Mixed return types.");
-			unsafe_get<measure>(v).values.emplace_back(*d);
-			break;
-		case dimension:
-			if (d) throw std::runtime_error("Mixed return types.");
-			unsafe_get<dimension>(v).add_element(
-			    *std::get_if<std::string_view>(&add_val));
-			break;
-		}
-	};
-
-	change_state_to(state_type::modifying,
-	    state_modification_reason::needs_sorted_records);
-
-	switch (type) {
-		using enum series_type;
-	default: break;
-	case dimension: {
-		visit(
-		    [&value_transform,
-		        &add_val,
-		        &dim = unsafe_get<dimension>(type).second](
-		        record_type record)
-		    {
-			    add_val(value_transform(record,
-			        dim.get(std::get<std::size_t>(record.recordId))));
-		    });
-		break;
-	}
-	case measure: {
-		visit(
-		    [&value_transform,
-		        &add_val,
-		        &mea = unsafe_get<measure>(type).second](
-		        record_type record)
-		    {
-			    add_val(value_transform(record,
-			        mea.get(std::get<std::size_t>(record.recordId))));
-		    });
-		break;
-	}
-	}
-
-	change_state_to(state_type::modifying,
-	    state_modification_reason::needs_own_state);
-
-	unsafe_get<state_type::modifying>(state_data).emplace_back(name);
-
-	auto &s = *unsafe_get<source_type::owning>(source);
-
-	switch (v) {
-		using enum series_type;
-	default: break;
-	case measure:
-		s.add_new_measure(std::move(unsafe_get<measure>(v)), name);
-		break;
-	case dimension:
-		s.add_new_dimension(std::move(unsafe_get<dimension>(v)),
-		    name);
-		break;
-	}
+	if (as_if()) throw std::runtime_error("Unsupported. ");
 }
 
 void dataframe::remove_series(
@@ -660,13 +539,10 @@ void dataframe::remove_records(
 	    state_modification_reason::needs_sorted_records);
 
 	std::vector<std::size_t> remove_ix;
-	visit(
-	    [&remove_ix, &filter](const record_type &r)
-	    {
-		    if (filter(r))
-			    remove_ix.push_back(
-			        std::get<std::size_t>(r.recordId));
-	    });
+
+	for (std::size_t i{}, max = get_record_count(); i < max; ++i)
+		if (!is_filtered(i) && filter({as_if(), i}))
+			remove_ix.push_back(i);
 
 	change_state_to(state_type::modifying,
 	    state_modification_reason::needs_own_state);
@@ -913,22 +789,10 @@ cell_value dataframe::get_data(record_identifier record_id,
 	return s.get_data(ix, column);
 }
 
-bool dataframe::is_filtered(record_identifier record_id) const &
+bool dataframe::is_filtered(std::size_t record_id) const &
 {
-	auto ixp = std::get_if<std::size_t>(&record_id);
-	std::size_t ix =
-	    ixp ? *ixp
-	        : get_data_source().change_record_identifier_type(
-	            *std::get_if<std::string_view>(&record_id));
-
-	if (const auto *cp = get_if<source_type::copying>(&source);
-	    cp && cp->pre_remove && (*cp->pre_remove)[ix])
-		return true;
-
-	const auto *fun = std::get_if<0>(&filter);
-	if (fun && *fun) throw std::runtime_error("Unsupported.");
-
-	return !fun && (*std::get_if<std::vector<bool>>(&filter))[ix];
+	const auto *cp = get_if<source_type::copying>(&source);
+	return cp && cp->pre_remove && (*cp->pre_remove)[record_id];
 }
 
 std::string dataframe::get_record_id_by_dims(std::size_t my_record,
@@ -959,26 +823,6 @@ std::size_t dataframe::get_series_orig_index(
 series_type dataframe::get_series_type(std::string_view series) const
 {
 	return get_data_source().get_series(series);
-}
-
-void dataframe::visit(
-    const std::function<void(record_type)> &function) const
-{
-	const auto *cp = get_if<source_type::copying>(&source);
-
-	visit(function,
-	    cp && cp->sorted_indices ? &*cp->sorted_indices : nullptr,
-	    cp && cp->pre_remove ? &*cp->pre_remove : nullptr);
-}
-
-void dataframe::visit(
-    const std::function<void(record_type)> &function,
-    const std::vector<std::size_t> *sort,
-    const std::vector<bool> *filt) const
-{
-	for (std::size_t i{}, max = get_record_count(); i < max; ++i)
-		if (auto ix = sort ? (*sort)[i] : i; !filt || !(*filt)[ix])
-			function({as_if(), ix});
 }
 
 void dataframe::migrate_data()
@@ -1087,10 +931,6 @@ void dataframe::change_state_to(state_type new_state,
 		else
 			state_data.emplace<finalized>(
 			    *unsafe_get<copy_source>(source).other->finalized);
-
-		auto the_filter = std::move(*std::get_if<0>(&this->filter));
-		this->filter.emplace<1>(get_record_count());
-		if (the_filter) set_filter(std::move(the_filter));
 		break;
 	}
 	}
