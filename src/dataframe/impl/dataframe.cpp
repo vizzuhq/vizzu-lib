@@ -238,7 +238,7 @@ void dataframe::set_custom_sort(
 void dataframe::add_dimension(
     std::span<const char *const> dimension_categories,
     std::span<const std::uint32_t> dimension_values,
-    const char *name,
+    std::string_view name,
     adding_type adding_strategy,
     std::span<const std::pair<const char *, const char *>> info) &
 {
@@ -310,7 +310,7 @@ void dataframe::add_dimension(
 }
 
 void dataframe::add_measure(std::span<const double> measure_values,
-    const char *name,
+    std::string_view name,
     adding_type adding_strategy,
     std::span<const std::pair<const char *, const char *>> info) &
 {
@@ -378,7 +378,7 @@ void dataframe::add_measure(std::span<const double> measure_values,
 }
 
 void dataframe::add_series_by_other(std::string_view,
-    const char *,
+    std::string_view,
     std::function<cell_value(record_type, cell_value)>,
     std::span<const std::pair<const char *, const char *>>) &
 {
@@ -541,7 +541,7 @@ void dataframe::remove_records(
 	std::vector<std::size_t> remove_ix;
 
 	for (std::size_t i{}, max = get_record_count(); i < max; ++i)
-		if (!is_filtered(i) && filter({as_if(), i}))
+		if (!is_filtered(i) && !filter({as_if(), i}))
 			remove_ix.push_back(i);
 
 	change_state_to(state_type::modifying,
@@ -805,8 +805,8 @@ std::string dataframe::get_record_id_by_dims(std::size_t my_record,
 	return state->get().get_id(s, my_record, dimensions);
 }
 
-std::size_t dataframe::get_series_orig_index(
-    std::string_view series) const
+dataframe::series_meta_t dataframe::get_series_meta(
+    const std::string &series) const
 {
 	using enum state_type;
 	const auto *state = get_if<modifying>(&state_data);
@@ -817,12 +817,16 @@ std::size_t dataframe::get_series_orig_index(
 
 	if (it == state->end()) throw std::runtime_error("Wrong series.");
 
-	return it - state->begin();
-}
+	std::size_t ix = it - state->begin();
 
-series_type dataframe::get_series_type(std::string_view series) const
-{
-	return get_data_source().get_series(series);
+	switch (auto &&ser = get_data_source().get_series(series)) {
+		using enum series_type;
+	default: return {{}, ix, ser};
+	case measure:
+		return {unsafe_get<measure>(ser).first, ix, measure};
+	case dimension:
+		return {unsafe_get<dimension>(ser).first, ix, dimension};
+	}
 }
 
 void dataframe::migrate_data()
@@ -941,16 +945,6 @@ const data_source &dataframe::get_data_source() const
 	using enum source_type;
 	return source == owning ? *unsafe_get<owning>(source)
 	                        : *unsafe_get<copying>(source).other;
-}
-std::string_view dataframe::get_series_name(
-    const std::string_view &id) const &
-{
-	switch (auto &&ser = get_data_source().get_series(id)) {
-		using enum series_type;
-	default: return {};
-	case measure: return unsafe_get<measure>(ser).first;
-	case dimension: return unsafe_get<dimension>(ser).first;
-	}
 }
 
 std::string_view dataframe::get_series_info(

@@ -22,7 +22,7 @@ public:
 
 	[[nodiscard]] bool operator()(const RowWrapper &row) const
 	{
-		return function && !function(row);
+		return !function || function(row);
 	}
 
 	[[nodiscard]] bool operator==(const Filter &other) const
@@ -38,7 +38,7 @@ public:
 		         : Filter(
 		             [this_ = *this, other](const RowWrapper &row)
 		             {
-			             return this_(row) || other(row);
+			             return this_(row) && other(row);
 		             },
 		             hash ^ other.hash);
 	}

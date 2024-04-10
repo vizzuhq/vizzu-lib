@@ -17,33 +17,23 @@
 namespace Vizzu::Data
 {
 
-std::string_view data_table::getColumn(const std::string &name) const
-{
-	return df.get_series_name(name);
-}
-
-std::size_t data_table::getRowCount() const
-{
-	return df.get_record_count();
-}
-
-void data_table::addColumn(const std::string &name,
-    const std::string &unit,
+void data_table::addColumn(std::string_view name,
+    std::string_view unit,
     const std::span<const double> &values)
 {
 	df.add_measure(values,
-	    name.c_str(),
+	    name.data(),
 	    dataframe::adding_type::create_or_override,
-	    {{std::pair{"unit", unit.c_str()}}});
+	    {{std::pair{"unit", unit.data()}}});
 }
 
-void data_table::addColumn(const std::string &name,
+void data_table::addColumn(std::string_view name,
     const std::span<const char *const> &categories,
     const std::span<const std::uint32_t> &values)
 {
 	df.add_dimension(categories,
 	    values,
-	    name.c_str(),
+	    name.data(),
 	    dataframe::adding_type::create_or_override,
 	    {});
 
@@ -187,14 +177,17 @@ series_index_t::series_index_t(std::string const &str,
 		aggr = Refl::get_enum<dataframe::aggregator_type>(
 		    func.getName());
 		if (!func.getParams().empty()) {
-			sid = table.getColumn(func.getParams().at(0));
-			orig_index = table.getDf().get_series_orig_index(sid);
+			auto &&[s, i, type] =
+			    table.getDf().get_series_meta(func.getParams().at(0));
+			sid = s;
+			orig_index = i;
 		}
 	}
 	else {
-		sid = table.getColumn(str);
-		orig_index = table.getDf().get_series_orig_index(sid);
-		if (table.getType(sid) == DataTable::Type::measure)
+		auto &&[s, i, type] = table.getDf().get_series_meta(str);
+		sid = s;
+		orig_index = i;
+		if (type == DataTable::Type::measure)
 			aggr = dataframe::aggregator_type::sum;
 	}
 }
@@ -444,7 +437,7 @@ double data_cube_t::aggregateAt(const multi_index_t &multiIndex,
 		    std::set<std::string_view>(df->get_dimensions().begin(),
 		        df->get_dimensions().end());
 		for (const auto &dim : sumCols)
-			keep_this.erase(df->get_series_name(dim.getColIndex()));
+			keep_this.erase(dim.getColIndex());
 
 		for (const auto &dim : keep_this) cp->aggregate_by(dim);
 

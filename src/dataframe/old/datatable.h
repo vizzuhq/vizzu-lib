@@ -28,27 +28,17 @@ class data_table
 {
 public:
 	using Type = dataframe::series_type;
-	[[nodiscard]] std::string_view getColumn(
-	    const std::string &name) const;
-
 	[[nodiscard]] std::string_view getUnit(
 	    std::string_view const &colIx) const
 	{
 		return df.get_series_info(colIx, "unit");
 	}
 
-	[[nodiscard]] Type getType(const std::string_view &cix) const
-	{
-		return df.get_series_type(cix);
-	}
-
-	[[nodiscard]] std::size_t getRowCount() const;
-
-	void addColumn(const std::string &name,
-	    const std::string &unit,
+	void addColumn(std::string_view name,
+	    std::string_view unit,
 	    const std::span<const double> &values);
 
-	void addColumn(const std::string &name,
+	void addColumn(std::string_view name,
 	    const std::span<const char *const> &categories,
 	    const std::span<const std::uint32_t> &values);
 

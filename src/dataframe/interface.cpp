@@ -53,7 +53,7 @@ void dataframe_interface::set_custom_sort(
 void dataframe_interface::add_dimension(
     std::span<const char *const> dimension_categories,
     std::span<const std::uint32_t> dimension_values,
-    const char *name,
+    std::string_view name,
     adding_type adding_strategy,
     std::span<const std::pair<const char *, const char *>> info) &
 {
@@ -66,7 +66,7 @@ void dataframe_interface::add_dimension(
 
 void dataframe_interface::add_measure(
     std::span<const double> measure_values,
-    const char *name,
+    std::string_view name,
     adding_type adding_strategy,
     std::span<const std::pair<const char *, const char *>> info) &
 {
@@ -78,7 +78,7 @@ void dataframe_interface::add_measure(
 
 void dataframe_interface::add_series_by_other(
     std::string_view curr_series,
-    const char *name,
+    std::string_view name,
     std::function<cell_value(record_type, cell_value)>
         value_transform,
     std::span<const std::pair<const char *, const char *>> info) &
@@ -166,12 +166,6 @@ std::pair<double, double> dataframe_interface::get_min_max(
     std::string_view measure) const &
 {
 	return as_impl(this).get_min_max(measure);
-}
-
-std::string_view dataframe_interface::get_series_name(
-    const std::string_view &id) const &
-{
-	return as_impl(this).get_series_name(id);
 }
 
 cell_value dataframe_interface::get_data(record_identifier record_id,
