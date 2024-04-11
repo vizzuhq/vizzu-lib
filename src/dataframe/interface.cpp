@@ -139,11 +139,6 @@ void dataframe_interface::fill_na(std::string_view column,
 
 void dataframe_interface::finalize() & { as_impl(this).finalize(); }
 
-std::string dataframe_interface::as_string() const &
-{
-	return as_impl(this).as_string();
-}
-
 std::span<const std::string>
 dataframe_interface::get_dimensions() const &
 {

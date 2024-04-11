@@ -145,8 +145,6 @@ public:
 
 	void finalize() &;
 
-	[[nodiscard]] std::string as_string() const &;
-
 	[[nodiscard]] std::span<const std::string>
 	get_dimensions() const &;
 

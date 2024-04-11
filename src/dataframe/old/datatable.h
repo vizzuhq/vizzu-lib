@@ -109,7 +109,7 @@ struct multi_index_t
 {
 	const dataframe::dataframe_interface *parent{};
 	std::optional<std::size_t> rid;
-	const std::vector<std::size_t> *dim_reindex{};
+	const std::vector<std::string_view> *dim_reindex{};
 	std::vector<std::size_t> old;
 
 	[[nodiscard]] bool empty() const;
@@ -166,7 +166,7 @@ public:
 		dataframe::dataframe_interface *df;
 
 	public:
-		std::vector<std::size_t> dim_reindex;
+		std::vector<std::string_view> dim_reindex;
 		std::vector<std::size_t> sizes;
 		std::size_t full_size{};
 
