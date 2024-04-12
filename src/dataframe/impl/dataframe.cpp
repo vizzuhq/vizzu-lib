@@ -82,9 +82,8 @@ dataframe::dataframe(std::shared_ptr<const data_source> other,
 	auto &cp = unsafe_get<source_type::copying>(source);
 	if (filtered) cp.pre_remove.emplace(*filtered);
 	if (sorted) cp.sorted_indices.emplace(*sorted);
-	if (cp.other->finalized)
-		state_data.emplace<state_type::finalized>(
-		    *cp.other->finalized);
+	if (!cp.other->finalized.empty())
+		state_data.emplace<state_type::finalized>();
 }
 
 void valid_unexistent_aggregator(
@@ -757,19 +756,6 @@ std::span<const std::string> dataframe::get_categories(
 	}
 }
 
-std::pair<double, double> dataframe::get_min_max(
-    std::string_view measure) const &
-{
-	auto &&s = get_data_source();
-	switch (auto &&meas = s.get_series(measure)) {
-		using enum series_type;
-	default: throw std::runtime_error("Wrong series.");
-	case dimension: throw std::runtime_error("Wrong series.");
-	case measure:
-		return s.get_min_max(unsafe_get<measure>(meas).second);
-	}
-}
-
 cell_value dataframe::get_data(record_identifier record_id,
     std::string_view column) const &
 {
@@ -779,7 +765,7 @@ cell_value dataframe::get_data(record_identifier record_id,
 	if (const std::size_t *ixp = std::get_if<std::size_t>(&record_id);
 	    !ixp)
 		ix = s.change_record_identifier_type(
-		    *std::get_if<std::string_view>(&record_id));
+		    *std::get_if<0>(&record_id));
 	else if (const auto *cp = get_if<source_type::copying>(&source);
 	         cp && cp->sorted_indices)
 		ix = (*cp->sorted_indices)[*ixp];
@@ -798,11 +784,7 @@ bool dataframe::is_filtered(std::size_t record_id) const &
 std::string dataframe::get_record_id_by_dims(std::size_t my_record,
     std::span<const std::string> dimensions) const &
 {
-	const auto *state = get_if<state_type::finalized>(&state_data);
-	if (!state) throw std::runtime_error("Unsupported.");
-
-	const auto &s = get_data_source();
-	return state->get().get_id(s, my_record, dimensions);
+	return get_data_source().get_id(my_record, dimensions);
 }
 
 dataframe::series_meta_t dataframe::get_series_meta(
@@ -931,10 +913,8 @@ void dataframe::change_state_to(state_type new_state,
 		break;
 	case finalized: {
 		if (auto *ptr = get_if<source_type::owning>(&source))
-			state_data.emplace<finalized>((*ptr)->finalize());
-		else
-			state_data.emplace<finalized>(
-			    *unsafe_get<copy_source>(source).other->finalized);
+			(*ptr)->finalize();
+		state_data.emplace<finalized>();
 		break;
 	}
 	}

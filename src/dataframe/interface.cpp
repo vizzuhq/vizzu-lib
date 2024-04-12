@@ -157,12 +157,6 @@ std::span<const std::string> dataframe_interface::get_categories(
 	return as_impl(this).get_categories(dimension);
 }
 
-std::pair<double, double> dataframe_interface::get_min_max(
-    std::string_view measure) const &
-{
-	return as_impl(this).get_min_max(measure);
-}
-
 cell_value dataframe_interface::get_data(record_identifier record_id,
     std::string_view column) const &
 {

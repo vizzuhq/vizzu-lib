@@ -93,21 +93,10 @@ private:
 		[[nodiscard]] std::pair<double, double> get_min_max() const;
 	};
 
-	struct final_info
-	{
-		std::unordered_map<std::string_view, std::size_t>
-		    series_to_index;
-		std::vector<std::pair<double, double>> min_max;
-		std::vector<std::string> record_unique_ids;
-		std::unordered_map<std::string_view, std::size_t>
-		    record_to_index;
+	using final_info = std::unordered_map<std::string, std::size_t>;
 
-		explicit final_info(const data_source &source);
-
-		std::string get_id(const data_source &source,
-		    std::size_t record,
-		    std::span<const std::string> series) const;
-	};
+	std::string get_id(std::size_t record,
+	    std::span<const std::string> series) const;
 
 	using series_data = Refl::EnumVariant<series_type,
 	    std::monostate,
@@ -126,7 +115,7 @@ private:
 	std::vector<std::string> dimension_names; // sorted by name
 	std::vector<dimension_t> dimensions;
 
-	std::optional<final_info> finalized;
+	final_info finalized;
 
 	struct sorter;
 
@@ -174,7 +163,7 @@ public:
 	    const std::string_view &name) const;
 
 	std::size_t change_record_identifier_type(
-	    const std::string_view &id) const;
+	    const std::string &id) const;
 
 	void normalize_sizes();
 
@@ -193,11 +182,7 @@ public:
 	[[nodiscard]] std::pair<double, double> get_min_max(
 	    const measure_t &measure) const;
 
-	[[nodiscard]] const final_info &finalize()
-	{
-		normalize_sizes();
-		return finalized ? *finalized : finalized.emplace(*this);
-	}
+	void finalize();
 
 	dimension_t &add_new_dimension(
 	    std::span<const char *const> dimension_categories,

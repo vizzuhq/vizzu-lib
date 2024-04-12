@@ -74,7 +74,8 @@ class alignas(align_impl) dataframe_interface
 {
 public:
 	using record_identifier =
-	    std::variant<std::string_view, std::size_t>;
+	    std::variant<std::reference_wrapper<const std::string>,
+	        std::size_t>;
 
 	using any_aggregator_type = std::
 	    variant<std::monostate, aggregator_type, custom_aggregator>;
@@ -152,9 +153,6 @@ public:
 
 	[[nodiscard]] std::span<const std::string> get_categories(
 	    std::string_view dimension) const &;
-
-	[[nodiscard]] std::pair<double, double> get_min_max(
-	    std::string_view measure) const &;
 
 	[[nodiscard]] cell_value get_data(record_identifier record_id,
 	    std::string_view column) const &;

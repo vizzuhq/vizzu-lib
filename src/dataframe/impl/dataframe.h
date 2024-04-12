@@ -115,9 +115,6 @@ public:
 	[[nodiscard]] std::span<const std::string> get_categories(
 	    std::string_view dimension) const &;
 
-	[[nodiscard]] std::pair<double, double> get_min_max(
-	    std::string_view measure) const &;
-
 	struct series_meta_t
 	{
 		std::string_view name;
@@ -168,7 +165,7 @@ private:
 	    std::vector<std::string>,
 	    data_source::aggregating_type,
 	    data_source::sorting_type,
-	    std::reference_wrapper<const data_source::final_info>>
+	    std::monostate>
 	    state_data;
 };
 

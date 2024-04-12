@@ -82,7 +82,7 @@ constexpr void index_erase_if<false, false>::operator()(
 
 std::size_t data_source::get_record_count() const
 {
-	if (finalized) return finalized->record_unique_ids.size();
+	if (!finalized.empty()) return finalized.size();
 
 	std::size_t record_count{};
 	for (const auto &dim : dimensions)
@@ -196,21 +196,10 @@ void data_source::sort(std::vector<std::size_t> &&indices)
 std::size_t data_source::change_series_identifier_type(
     const std::string_view &name) const
 {
-	if (finalized) {
-		auto it = finalized->series_to_index.find(name);
-		return it != finalized->series_to_index.end()
-		         ? it->second
-		         : ~std::size_t{};
-	}
-
-	if (auto it = std::lower_bound(dimension_names.begin(),
-	        dimension_names.end(),
-	        name);
+	if (auto it = std::ranges::lower_bound(dimension_names, name);
 	    it != dimension_names.end() && *it == name)
 		return static_cast<std::size_t>(it - dimension_names.begin());
-	if (auto it = std::lower_bound(measure_names.begin(),
-	        measure_names.end(),
-	        name);
+	if (auto it = std::ranges::lower_bound(measure_names, name);
 	    it != measure_names.end() && *it == name)
 		return static_cast<std::size_t>(
 		           std::distance(measure_names.begin(), it))
@@ -219,12 +208,10 @@ std::size_t data_source::change_series_identifier_type(
 }
 
 std::size_t data_source::change_record_identifier_type(
-    const std::string_view &id) const
+    const std::string &id) const
 {
-	if (!finalized) throw std::runtime_error("Unsupported.");
-	auto it = finalized->record_to_index.find(id);
-	return it != finalized->record_to_index.end() ? it->second
-	                                              : ~std::size_t{};
+	auto it = finalized.find(id);
+	return it != finalized.end() ? it->second : ~std::size_t{};
 }
 
 cell_value data_source::get_data(std::size_t record_id,
@@ -306,14 +293,19 @@ void data_source::remove_series(std::span<const std::size_t> dims,
 	mea_remover(measures);
 	mea_remover(measure_names);
 }
-
-std::pair<double, double> data_source::get_min_max(
-    const measure_t &measure) const
+void data_source::finalize()
 {
-	return finalized ? finalized->min_max[&measure - measures.data()]
-	                 : measure.get_min_max();
-}
+	if (finalized.empty()) {
+		normalize_sizes();
+		const auto records = get_record_count();
+		finalized.reserve(records);
 
+		for (std::size_t r{}; r < records; ++r)
+			if (!finalized.try_emplace(get_id(r, dimension_names), r)
+			         .second)
+				throw std::runtime_error("Duplicated record.");
+	}
+}
 data_source::dimension_t &data_source::add_new_dimension(
     std::span<const char *const> dimension_categories,
     std::span<const std::uint32_t> dimension_values,
@@ -515,41 +507,14 @@ data_source::data_source(
 	}
 }
 
-data_source::final_info::final_info(const data_source &source) :
-    min_max(source.measure_names.size()),
-    record_unique_ids(source.get_record_count())
-{
-	const auto measures = source.measure_names.size();
-	const auto dimensions = source.dimension_names.size();
-	const auto records = record_unique_ids.size();
-
-	series_to_index.reserve(measures + dimensions);
-	record_to_index.reserve(records);
-
-	for (std::size_t i{}; i < dimensions; ++i)
-		series_to_index[source.dimension_names[i]] = i;
-
-	for (std::size_t i{}; i < measures; ++i) {
-		series_to_index[source.measure_names[i]] = i + dimensions;
-		min_max[i] = source.measures[i].get_min_max();
-	}
-
-	for (std::size_t r{}; r < records; ++r)
-		if (auto &id = record_unique_ids[r] =
-		        get_id(source, r, source.dimension_names);
-		    !record_to_index.try_emplace(id, r).second)
-			throw std::runtime_error("Duplicated record.");
-}
-
-std::string data_source::final_info::get_id(const data_source &source,
-    std::size_t record,
+std::string data_source::get_id(std::size_t record,
     std::span<const std::string> series) const
 {
 	std::string res;
-	for (const auto &name : series) {
-		auto d = series_to_index.at(name);
-		auto val = source.dimensions[d].get(record);
-		res += source.dimension_names[d];
+	for (std::size_t ix{}; const auto &name : series) {
+		while (dimension_names[ix] != name) ++ix;
+		auto val = dimensions[ix].get(record);
+		res += name;
 		res += ':';
 		res += val.data() == nullptr ? "__null__" : val;
 		res += ';';

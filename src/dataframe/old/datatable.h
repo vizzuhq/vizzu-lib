@@ -121,6 +121,7 @@ class data_cube_t
 {
 public:
 	using MultiIndex = multi_index_t;
+
 	struct Id
 	{
 		using SubSliceIndex = subslice_index_t;
