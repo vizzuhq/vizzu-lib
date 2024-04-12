@@ -90,15 +90,15 @@ bool slice_index_t::operator==(const slice_index_t &rhs) const
 	    && orig_value == rhs.orig_value;
 }
 
-bool multi_index_t::empty() const
+bool data_cube_t::multi_index_t::empty() const
 {
-	return parent->get_dimensions().empty();
+	return parent->df->get_dimensions().empty();
 }
 
-bool multi_index_t::isEmpty() const
+bool data_cube_t::multi_index_t::isEmpty() const
 {
-	return !rid || parent->get_record_count() == 0
-	    || parent->is_filtered(*rid);
+	return !rid || parent->df->get_record_count() == 0
+	    || parent->df->is_filtered(*rid);
 }
 
 bool data_cube_t::Id::operator==(const Id &id) const
@@ -107,8 +107,7 @@ bool data_cube_t::Id::operator==(const Id &id) const
 	    && seriesId == id.seriesId && itemId == id.itemId;
 }
 
-data_cube_t::data_t::iterator_t::iterator_t(
-    dataframe::dataframe_interface::record_type rid,
+data_cube_t::data_t::iterator_t::iterator_t(std::size_t rid,
     const data_t *parent,
     std::size_t old) :
     rid(rid),
@@ -120,27 +119,23 @@ data_cube_t::data_t::iterator_t::iterator_t(
 
 void data_cube_t::data_t::iterator_t::incr()
 {
-	if (found) { ++rid.recordId; }
+	if (found) { ++rid; }
 
 	auto indices = parent->get_indices(old);
 
-	auto &&range =
-	    std::ranges::iota_view{std::size_t{}, indices.size()};
-	found = std::all_of(range.begin(),
-	    range.end(),
-	    [&](std::size_t ix)
-	    {
-		    auto &&dim = parent->dim_reindex[ix];
-		    auto cats = rid.parent->get_categories(dim);
-		    if (cats.size() == indices[ix]) {
-			    return std::get<std::string_view>(rid.get_value(dim))
-			               .data()
-			        == nullptr;
-		    }
-
-		    return cats[indices[ix]]
-		        == std::get<std::string_view>(rid.get_value(dim));
-	    });
+	found = false;
+	for (std::size_t ix{}; ix < indices.size(); ++ix) {
+		auto &&dim = parent->dim_reindex[ix];
+		auto &&cats = parent->df->get_categories(dim);
+		auto val = std::get<std::string_view>(
+		    parent->df->get_data(rid, dim));
+		if (cats.size() == indices[ix]) {
+			if (val.data() != nullptr) return;
+		}
+		else if (cats[indices[ix]] != val)
+			return;
+	}
+	found = true;
 }
 
 bool data_cube_t::data_t::iterator_t::operator!=(
@@ -159,12 +154,11 @@ data_cube_t::data_t::iterator_t::operator++()
 	return *this;
 }
 
-data_cube_t::MultiIndex
+data_cube_t::multi_index_t
 data_cube_t::data_t::iterator_t::operator*() const
 {
-	return {rid.parent,
-	    found ? std::make_optional(rid.recordId) : std::nullopt,
-	    &parent->dim_reindex,
+	return {parent,
+	    found ? std::make_optional(rid) : std::nullopt,
 	    parent->get_indices(old)};
 }
 
@@ -213,12 +207,12 @@ std::vector<std::size_t> data_cube_t::data_t::get_indices(
 
 data_cube_t::data_t::iterator_t data_cube_t::data_t::begin() const
 {
-	return {{df, std::size_t{}}, this, std::size_t{}};
+	return {std::size_t{}, this, std::size_t{}};
 }
 
 data_cube_t::data_t::iterator_t data_cube_t::data_t::end() const
 {
-	return {{df, df->get_record_count()}, this, full_size};
+	return {df->get_record_count(), this, full_size};
 }
 
 template <>
@@ -240,8 +234,8 @@ data_cube_t::data_cube_t(const data_table &table,
 		df->aggregate_by(dim.getColIndex());
 
 	for (const auto &meas : options.getMeasures()) {
-		auto sid = meas.getColIndex();
-		auto aggr = meas.getAggr();
+		auto &&sid = meas.getColIndex();
+		auto &&aggr = meas.getAggr();
 
 		measure_names.try_emplace(std::pair{sid, aggr},
 		    df->set_aggregate(sid, aggr));
@@ -249,7 +243,7 @@ data_cube_t::data_cube_t(const data_table &table,
 
 	if (options.getMeasures().empty()
 	    && !options.getDimensions().empty()) {
-		auto unkn = std::string_view{};
+		auto &&unkn = std::string_view{};
 		auto &&aggr = dataframe::aggregator_type::exists;
 		measure_names.try_emplace(std::pair{unkn, aggr},
 		    df->set_aggregate(unkn, aggr));
@@ -335,14 +329,14 @@ data_cube_t::Id data_cube_t::getId(const series_index_list_t &sl,
 		    ix++;
 
 	std::size_t seriesId{};
-	for (std::size_t ix{}; ix < mi.dim_reindex->size(); ++ix) {
-		auto &&name = (*mi.dim_reindex)[ix];
+	for (std::size_t ix{}; ix < mi.parent->dim_reindex.size(); ++ix) {
+		auto &&name = mi.parent->dim_reindex[ix];
 		if (auto it = reindex.find(name); it != reindex.end()) {
-			auto &&cats = mi.parent->get_categories(name);
+			auto &&cats = mi.parent->df->get_categories(name);
 			auto &[cat, cix, size, orig_ix] = v[it->second].second;
 			orig_ix = ix;
 			cix = mi.old[ix];
-			size = cats.size() + mi.parent->has_na(name);
+			size = cats.size() + mi.parent->df->has_na(name);
 			if (cix < cats.size()) cat = cats[cix];
 		}
 		else {
@@ -370,9 +364,10 @@ data_cube_t::CellInfo data_cube_t::cellInfo(
 {
 	CellInfo my_res;
 
-	for (std::size_t ix{}; ix < index.dim_reindex->size(); ++ix) {
-		auto &&name = (*index.dim_reindex)[ix];
-		auto cats = index.parent->get_categories(name);
+	for (std::size_t ix{}; ix < index.parent->dim_reindex.size();
+	     ++ix) {
+		auto &&name = index.parent->dim_reindex[ix];
+		auto cats = index.parent->df->get_categories(name);
 		auto cix = index.old[ix];
 		my_res.categories[name] =
 		    cix < cats.size() ? cats[cix] : std::string_view{};
@@ -382,7 +377,7 @@ data_cube_t::CellInfo data_cube_t::cellInfo(
 		for (auto &&meas : df->get_measures()) {
 			if (meas == "exists()") continue;
 			my_res.values[meas] = std::get<double>(
-			    index.parent->get_data(*index.rid, meas));
+			    index.parent->df->get_data(*index.rid, meas));
 		}
 	else
 		for (auto &&meas : df->get_measures()) {
@@ -459,8 +454,9 @@ double data_cube_t::aggregateAt(const multi_index_t &multiIndex,
 	// hack for sunburst.
 	std::map<std::string_view, std::size_t> index;
 
-	for (std::size_t ix{}; ix < multiIndex.dim_reindex->size(); ++ix)
-		index.emplace((*multiIndex.dim_reindex)[ix],
+	for (std::size_t ix{}; ix < multiIndex.parent->dim_reindex.size();
+	     ++ix)
+		index.emplace(multiIndex.parent->dim_reindex[ix],
 		    multiIndex.old[ix]);
 
 	std::string res;
@@ -468,7 +464,7 @@ double data_cube_t::aggregateAt(const multi_index_t &multiIndex,
 	     auto &&dim : sub_df->get_dimensions()) {
 		if (iit->first != dim) ++iit;
 
-		auto &&cats = multiIndex.parent->get_categories(dim);
+		auto &&cats = multiIndex.parent->df->get_categories(dim);
 		res += dim;
 		res += ':';
 		res += iit->second == cats.size() ? "__null__"

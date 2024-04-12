@@ -105,36 +105,9 @@ struct slice_index_t
 
 using subslice_index_t = std::vector<slice_index_t>;
 
-struct multi_index_t
-{
-	const dataframe::dataframe_interface *parent{};
-	std::optional<std::size_t> rid;
-	const std::vector<std::string_view> *dim_reindex{};
-	std::vector<std::size_t> old;
-
-	[[nodiscard]] bool empty() const;
-
-	[[nodiscard]] bool isEmpty() const;
-};
-
 class data_cube_t
 {
 public:
-	using MultiIndex = multi_index_t;
-
-	struct Id
-	{
-		using SubSliceIndex = subslice_index_t;
-		using SliceIndex = std::ranges::range_value_t<SubSliceIndex>;
-
-		MultiIndex mi;
-		SubSliceIndex itemSliceIndex;
-		std::size_t seriesId{};
-		std::size_t itemId{};
-
-		[[nodiscard]] bool operator==(const Id &) const;
-	};
-
 	struct CellInfo
 	{
 		std::map<std::string_view, std::string_view> categories;
@@ -143,15 +116,18 @@ public:
 
 	class data_t
 	{
+	public:
+		struct multi_index_t;
+
+	private:
 		struct iterator_t
 		{
-			dataframe::dataframe_interface::record_type rid;
+			std::size_t rid;
 			const data_t *parent;
 			std::size_t old;
 			bool found{};
 
-			iterator_t(
-			    dataframe::dataframe_interface::record_type rid,
+			iterator_t(std::size_t rid,
 			    const data_t *parent,
 			    std::size_t old);
 
@@ -162,11 +138,22 @@ public:
 
 			iterator_t &operator++();
 
-			[[nodiscard]] MultiIndex operator*() const;
+			[[nodiscard]] multi_index_t operator*() const;
 		};
-		dataframe::dataframe_interface *df;
 
 	public:
+		struct multi_index_t
+		{
+			const data_t *parent{};
+			std::optional<std::size_t> rid;
+			std::vector<std::size_t> old;
+
+			[[nodiscard]] bool empty() const;
+
+			[[nodiscard]] bool isEmpty() const;
+		};
+
+		dataframe::dataframe_interface *df;
 		std::vector<std::string_view> dim_reindex;
 		std::vector<std::size_t> sizes;
 		std::size_t full_size{};
@@ -184,6 +171,21 @@ public:
 
 		[[nodiscard]] iterator_t begin() const;
 		[[nodiscard]] iterator_t end() const;
+	};
+	using multi_index_t = data_t::multi_index_t;
+	using MultiIndex = multi_index_t;
+
+	struct Id
+	{
+		using SubSliceIndex = subslice_index_t;
+		using SliceIndex = std::ranges::range_value_t<SubSliceIndex>;
+
+		multi_index_t mi;
+		SubSliceIndex itemSliceIndex;
+		std::size_t seriesId{};
+		std::size_t itemId{};
+
+		[[nodiscard]] bool operator==(const Id &) const;
 	};
 
 	const data_table *table;
