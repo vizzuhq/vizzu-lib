@@ -44,7 +44,8 @@ private:
 		    categories(std::begin(categories), std::end(categories)),
 		    values(std::begin(values), std::end(values)),
 		    info(std::begin(info), std::end(info)),
-		    contains_nav{std::ranges::any_of(this->values,
+		    contains_nav{std::any_of(this->values.begin(),
+		        this->values.end(),
 		        std::bind_front(std::equal_to{}, nav))}
 		{}
 
@@ -84,7 +85,8 @@ private:
 		measure_t(Range1 &&values, Range2 &&info) :
 		    values(std::begin(values), std::end(values)),
 		    info(std::begin(info), std::end(info)),
-		    contains_nan(std::ranges::any_of(this->values,
+		    contains_nan(std::any_of(this->values.begin(),
+		        this->values.end(),
 		        static_cast<bool (&)(double)>(std::isnan)))
 		{}
 

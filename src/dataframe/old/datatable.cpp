@@ -39,7 +39,8 @@ void data_table::addColumn(std::string_view name,
 
 	df.remove_unused_categories(name);
 
-	if (std::ranges::any_of(df.get_categories(name),
+	if (std::any_of(df.get_categories(name).begin(),
+	        df.get_categories(name).end(),
 	        std::bind_front(std::equal_to{}, "")))
 		df.fill_na(name, "");
 }
@@ -50,7 +51,8 @@ void data_table::pushRow(const std::span<const char *> &cells)
 	    std::vector<dataframe::cell_value>{begin(cells), end(cells)});
 
 	for (const auto &dim : df.get_dimensions())
-		if (std::ranges::any_of(df.get_categories(dim),
+		if (std::any_of(df.get_categories(dim).begin(),
+		        df.get_categories(dim).end(),
 		        std::bind_front(std::equal_to{}, "")))
 			df.fill_na(dim, "");
 }
@@ -122,8 +124,10 @@ void data_cube_t::data_t::iterator_t::incr()
 
 	auto indices = parent->get_indices(old);
 
-	found = std::ranges::all_of(
-	    std::ranges::iota_view{std::size_t{}, indices.size()},
+	auto &&range =
+	    std::ranges::iota_view{std::size_t{}, indices.size()};
+	found = std::all_of(range.begin(),
+	    range.end(),
 	    [&](std::size_t ix)
 	    {
 		    auto &&dim = parent->dim_reindex[ix];
@@ -168,11 +172,12 @@ series_index_t::series_index_t(std::string const &str,
     const data_table &table) :
     orig_name(str)
 {
+	constinit static auto names =
+	    Refl::get_names<dataframe::aggregator_type>();
 	if (const Text::FuncString func(str, false);
 	    !func.isEmpty()
-	    && std::ranges::count(
-	        Refl::get_names<dataframe::aggregator_type>(),
-	        func.getName())) {
+	    && std::find(names.begin(), names.end(), func.getName())
+	           != names.end()) {
 		aggr = Refl::get_enum<dataframe::aggregator_type>(
 		    func.getName());
 		if (!func.getParams().empty()) {
@@ -262,8 +267,9 @@ data_cube_t::data_cube_t(const data_table &table,
 	for (auto sizIt = data.sizes.begin();
 	     const auto &dim : options.getDimensions()) {
 		auto &&dimName = dim.getColIndex();
-		*it++ =
-		    *std::ranges::lower_bound(df->get_dimensions(), dimName);
+		*it++ = *std::lower_bound(df->get_dimensions().begin(),
+		    df->get_dimensions().end(),
+		    dimName);
 		*sizIt++ =
 		    df->get_categories(dimName).size() + df->has_na(dimName);
 	}

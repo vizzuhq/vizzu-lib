@@ -71,8 +71,9 @@ constexpr void index_erase_if<false, false>::operator()(
     Cont &&cont) const noexcept
 {
 	auto from_ix = cont.size();
-	for (auto first = begin(indices),
-	          last = std::ranges::lower_bound(indices,
+	for (auto first = indices.begin(),
+	          last = std::lower_bound(first,
+	              indices.end(),
 	              from_ix - indices.size()),
 	          from = indices.end();
 	     first != last;
@@ -196,10 +197,14 @@ void data_source::sort(std::vector<std::size_t> &&indices)
 std::size_t data_source::change_series_identifier_type(
     const std::string_view &name) const
 {
-	if (auto it = std::ranges::lower_bound(dimension_names, name);
+	if (auto it = std::lower_bound(dimension_names.begin(),
+	        dimension_names.end(),
+	        name);
 	    it != dimension_names.end() && *it == name)
 		return static_cast<std::size_t>(it - dimension_names.begin());
-	if (auto it = std::ranges::lower_bound(measure_names, name);
+	if (auto it = std::lower_bound(measure_names.begin(),
+	        measure_names.end(),
+	        name);
 	    it != measure_names.end() && *it == name)
 		return static_cast<std::size_t>(
 		           std::distance(measure_names.begin(), it))
@@ -380,12 +385,14 @@ void data_source::remove_records(std::span<const std::size_t> indices)
 	const index_erase_if<false> indices_remover{indices};
 	for (auto &&dim : dimensions) {
 		indices_remover(dim.values);
-		dim.contains_nav = std::ranges::any_of(dim.values,
+		dim.contains_nav = std::any_of(dim.values.begin(),
+		    dim.values.end(),
 		    std::bind_front(std::equal_to{}, nav));
 	}
 	for (auto &&mea : measures) {
 		indices_remover(mea.values);
-		mea.contains_nan = std::ranges::any_of(mea.values,
+		mea.contains_nan = std::any_of(mea.values.begin(),
+		    mea.values.end(),
 		    static_cast<bool (&)(double)>(std::isnan));
 	}
 }
@@ -456,9 +463,8 @@ data_source::data_source(aggregating_type &&aggregating,
 					newDim.contains_nav = true;
 
 			aggregators.reserve(meas.size());
-			for (const auto &[ser, agg] :
-			    std::ranges::views::values(meas))
-				aggregators.emplace_back(agg.create());
+			for (const auto &[key, val] : meas)
+				aggregators.emplace_back(val.second.create());
 		}
 
 		for (std::size_t ix{}; const auto &[name, mea] : meas) {
@@ -481,7 +487,8 @@ data_source::data_source(aggregating_type &&aggregating,
 	}
 
 	for (auto &mea : measures)
-		mea.contains_nan = std::ranges::any_of(mea.values,
+		mea.contains_nan = std::any_of(mea.values.begin(),
+		    mea.values.end(),
 		    static_cast<bool (&)(double)>(std::isnan));
 }
 
@@ -585,7 +592,8 @@ void data_source::dimension_t::add_more_data(
 	for (const auto val : new_values) values.emplace_back(remap[val]);
 
 	if (!contains_nav)
-		contains_nav = std::ranges::any_of(new_values,
+		contains_nav = std::any_of(new_values.begin(),
+		    new_values.end(),
 		    std::bind_front(std::equal_to{}, nav));
 }
 std::string_view data_source::dimension_t::get(

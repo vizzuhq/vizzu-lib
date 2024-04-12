@@ -4,7 +4,6 @@
 #include <cmath>
 #include <numeric>
 #include <optional>
-#include <ranges>
 #include <utility>
 
 #include "../old/datatable.h"
@@ -396,7 +395,9 @@ void dataframe::remove_series(
 			auto ix = &unsafe_get<dimension>(ser).second
 			        - s.dimensions.data();
 			remove_dimensions.insert(
-			    std::ranges::lower_bound(remove_dimensions, ix),
+			    std::lower_bound(remove_dimensions.begin(),
+			        remove_dimensions.end(),
+			        ix),
 			    ix);
 			break;
 		}
@@ -404,7 +405,9 @@ void dataframe::remove_series(
 			auto ix =
 			    &unsafe_get<measure>(ser).second - s.measures.data();
 			remove_measures.insert(
-			    std::ranges::lower_bound(remove_measures, ix),
+			    std::lower_bound(remove_measures.begin(),
+			        remove_measures.end(),
+			        ix),
 			    ix);
 			break;
 		}
@@ -427,7 +430,8 @@ void dataframe::add_record(std::span<const cell_value> values) &
 	std::vector<cell_value> reorder;
 	if (auto *vec = get_if<state_type::modifying>(&state_data);
 	    vec && !vec->empty()
-	    && std::ranges::all_of(values,
+	    && std::all_of(values.begin(),
+	        values.end(),
 	        [](const cell_value &c)
 	        {
 		        return std::holds_alternative<std::string_view>(c);
@@ -562,7 +566,8 @@ void dataframe::remove_unused_categories(std::string_view column) &
 	case dimension:
 		usage =
 		    unsafe_get<dimension>(ser).second.get_categories_usage();
-		if (std::ranges::all_of(usage,
+		if (std::all_of(usage.begin(),
+		        usage.end(),
 		        std::bind_front(std::equal_to{}, true)))
 			return;
 		break;
@@ -782,7 +787,7 @@ dataframe::series_meta_t dataframe::get_series_meta(
 	const auto *state = get_if<modifying>(&state_data);
 	if (!state || state->empty()) throw;
 
-	auto it = std::ranges::find(*state, series);
+	auto it = std::find(state->begin(), state->end(), series);
 
 	if (it == state->end()) throw;
 
