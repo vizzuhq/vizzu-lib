@@ -232,7 +232,7 @@ cell_value data_source::get_data(std::size_t record_id,
 		return meas.values[record_id];
 	}
 	case unknown:
-	default: throw std::runtime_error("Wrong series.");
+	default: throw;
 	}
 }
 
@@ -298,12 +298,10 @@ void data_source::finalize()
 	if (finalized.empty()) {
 		normalize_sizes();
 		const auto records = get_record_count();
-		finalized.reserve(records);
-
 		for (std::size_t r{}; r < records; ++r)
 			if (!finalized.try_emplace(get_id(r, dimension_names), r)
 			         .second)
-				throw std::runtime_error("Duplicated record.");
+				throw;
 	}
 }
 data_source::dimension_t &data_source::add_new_dimension(

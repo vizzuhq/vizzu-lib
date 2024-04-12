@@ -238,17 +238,16 @@ data_cube_t::data_cube_t(const data_table &table,
 		auto sid = meas.getColIndex();
 		auto aggr = meas.getAggr();
 
-		measure_names.try_emplace(
-		    std::pair{sid, Refl::enum_name(aggr)},
+		measure_names.try_emplace(std::pair{sid, aggr},
 		    df->set_aggregate(sid, aggr));
 	}
 
 	if (options.getMeasures().empty()
 	    && !options.getDimensions().empty()) {
 		auto unkn = std::string_view{};
-		measure_names.try_emplace(std::pair{unkn, "exists"},
-		    df->set_aggregate(unkn,
-		        dataframe::aggregator_type::exists));
+		auto &&aggr = dataframe::aggregator_type::exists;
+		measure_names.try_emplace(std::pair{unkn, aggr},
+		    df->set_aggregate(unkn, aggr));
 	}
 
 	for (const auto &dim : options.getDimensions()) {
@@ -309,8 +308,8 @@ std::string data_cube_t::getValue(const slice_index_t &index,
 const std::string &data_cube_t::getName(
     const series_index_t &seriesId) const
 {
-	return measure_names.at({seriesId.getColIndex(),
-	    Refl::enum_name(seriesId.getAggr())});
+	return measure_names.at(
+	    {seriesId.getColIndex(), seriesId.getAggr()});
 }
 
 data_cube_t::Id data_cube_t::getId(const series_index_list_t &sl,
@@ -407,16 +406,19 @@ double data_cube_t::aggregateAt(const multi_index_t &multiIndex,
 {
 	if (sumCols.empty()) return valueAt(multiIndex, seriesId);
 
-	std::set<std::string_view> ids;
-	for (const auto &s : sumCols) ids.insert(s.getColIndex());
+	std::string id{};
+	for (const auto &s : sumCols) {
+		id += s.getColIndex();
+		id += ';';
+	}
 
 	const auto &name = getName(seriesId);
 
-	ids.insert(name);
+	id += name;
 
-	auto it = cacheImpl->find(ids);
+	auto it = cacheImpl->find(id);
 	if (it == cacheImpl->end()) {
-		it = cacheImpl->emplace(ids, removed->copy(false)).first;
+		it = cacheImpl->emplace(id, removed->copy(false)).first;
 
 		auto &cp = it->second;
 
@@ -432,11 +434,10 @@ double data_cube_t::aggregateAt(const multi_index_t &multiIndex,
 		    cp->set_aggregate(seriesId.getColIndex(),
 		        seriesId.getAggr());
 
-		for (auto &&dim : keep_this) {
+		for (auto &&dim : keep_this)
 			cp->set_sort(dim,
 			    dataframe::sort_type::by_categories,
 			    dataframe::na_position::last);
-		}
 
 		cp->finalize();
 	}
@@ -444,73 +445,32 @@ double data_cube_t::aggregateAt(const multi_index_t &multiIndex,
 	auto &sub_df = it->second;
 
 	if (multiIndex.rid) {
-		auto rrid = df->get_record_id_by_dims(*multiIndex.rid,
+		auto &&rrid = df->get_record_id_by_dims(*multiIndex.rid,
 		    sub_df->get_dimensions());
-
 		return std::get<double>(sub_df->get_data(rrid, name));
 	}
 
+	// hack for sunburst.
 	std::map<std::string_view, std::size_t> index;
 
 	for (std::size_t ix{}; ix < multiIndex.dim_reindex->size(); ++ix)
 		index.emplace((*multiIndex.dim_reindex)[ix],
 		    multiIndex.old[ix]);
 
-	struct comp
-	{
-		std::shared_ptr<dataframe::dataframe_interface> &sub_df;
-		bool operator()(std::size_t iTh,
-		    const std::map<std::string_view, std::size_t> &index)
-		    const
-		{
-			for (const auto &dim : sub_df->get_dimensions()) {
-				auto cat = std::get<std::string_view>(
-				    sub_df->get_data(iTh, dim));
-				auto &&cats = sub_df->get_categories(dim);
-				auto &&refIx = index.at(dim);
-				if (refIx == cats.size()) {
-					if (cat.data() != nullptr) return true;
-					continue;
-				}
-				if (cat == cats[refIx]) continue;
-				auto until =
-				    cats.begin() + static_cast<std::intptr_t>(refIx);
-				return std::find(cats.begin(), until, cat) != until;
-			}
-			return false;
-		}
+	std::string res;
+	for (auto iit = index.begin();
+	     auto &&dim : sub_df->get_dimensions()) {
+		if (iit->first != dim) ++iit;
 
-		bool operator()(
-		    const std::map<std::string_view, std::size_t> &index,
-		    std::size_t iTh) const
-		{
-			for (const auto &dim : sub_df->get_dimensions()) {
-				auto cat = std::get<std::string_view>(
-				    sub_df->get_data(iTh, dim));
-				auto &&cats = sub_df->get_categories(dim);
-				auto &&refIx = index.at(dim);
-				if (refIx == cats.size()) {
-					if (cat.data() != nullptr) return false;
-					continue;
-				}
-				if (cat == cats[refIx]) continue;
-				auto until =
-				    cats.begin() + static_cast<std::intptr_t>(refIx);
-				return std::find(cats.begin(), until, cat) == until;
-			}
-			return false;
-		}
-	};
-
-	auto rix = std::ranges::iota_view{std::size_t{},
-	    sub_df->get_record_count()};
-
-	auto [beg, end] =
-	    std::equal_range(rix.begin(), rix.end(), index, comp{sub_df});
-
-	return beg == end
-	         ? double{}
-	         : std::get<double>(sub_df->get_data(*beg, name));
+		auto &&cats = multiIndex.parent->get_categories(dim);
+		res += dim;
+		res += ':';
+		res += iit->second == cats.size() ? "__null__"
+		                                  : cats[iit->second];
+		res += ';';
+	}
+	auto nanres = std::get<double>(sub_df->get_data(res, name));
+	return std::isnan(nanres) ? double{} : nanres;
 }
 
 } // namespace Vizzu::Data

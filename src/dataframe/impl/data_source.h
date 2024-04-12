@@ -93,7 +93,7 @@ private:
 		[[nodiscard]] std::pair<double, double> get_min_max() const;
 	};
 
-	using final_info = std::unordered_map<std::string, std::size_t>;
+	using final_info = std::map<std::string, std::size_t>;
 
 	std::string get_id(std::size_t record,
 	    std::span<const std::string> series) const;

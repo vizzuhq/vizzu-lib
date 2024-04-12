@@ -189,11 +189,12 @@ public:
 	const data_table *table;
 	std::shared_ptr<dataframe::dataframe_interface> df;
 	std::shared_ptr<dataframe::dataframe_interface> removed;
-	std::map<std::pair<std::string_view, std::string>, std::string>
+	std::map<std::pair<std::string_view, dataframe::aggregator_type>,
+	    std::string>
 	    measure_names;
 	data_t data;
 
-	std::shared_ptr<std::map<std::set<std::string_view>,
+	std::shared_ptr<std::map<std::string,
 	    std::shared_ptr<dataframe::dataframe_interface>>>
 	    cacheImpl = std::make_shared<
 	        typename decltype(cacheImpl)::element_type>();

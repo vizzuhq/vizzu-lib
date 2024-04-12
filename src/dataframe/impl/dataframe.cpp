@@ -93,7 +93,7 @@ void valid_unexistent_aggregator(
 	    !aggr
 	    || (*aggr != aggregator_type::count
 	        && *aggr != aggregator_type::exists))
-		throw std::runtime_error("Wrong aggregation.");
+		throw;
 }
 
 void valid_dimension_aggregator(
@@ -105,23 +105,21 @@ void valid_dimension_aggregator(
 		case sum:
 		case min:
 		case max:
-		case mean: throw std::runtime_error("Wrong aggregation.");
+		case mean: throw;
 		default: return;
 		}
 	}
-	if (!std::holds_alternative<std::monostate>(agg))
-		throw std::runtime_error("Wrong aggregation.");
+	if (!std::holds_alternative<std::monostate>(agg)) throw;
 }
 
 void valid_measure_aggregator(
     const dataframe::any_aggregator_type &agg)
 {
-	if (std::holds_alternative<std::monostate>(agg))
-		throw std::runtime_error("Wrong aggregation.");
+	if (std::holds_alternative<std::monostate>(agg)) throw;
 
 	if (const auto *t = std::get_if<aggregator_type>(&agg);
 	    t && *t == aggregator_type::distinct)
-		throw std::runtime_error("Wrong aggregation.");
+		throw;
 }
 
 std::string dataframe::set_aggregate(std::string_view series,
@@ -149,7 +147,7 @@ std::string dataframe::set_aggregate(std::string_view series,
 		if (!aggs.dims
 		         .emplace(unsafe_get<series_type::dimension>(ser))
 		         .second)
-			throw std::runtime_error("Duplicated series.");
+			throw;
 		return {};
 	}
 
@@ -159,7 +157,7 @@ std::string dataframe::set_aggregate(std::string_view series,
 
 	auto &&[name, uniq] =
 	    aggs.add_aggregated(std::move(ser), cust_aggr);
-	if (!uniq) throw std::runtime_error("Duplicated series.");
+	if (!uniq) throw;
 	return name;
 }
 
@@ -175,7 +173,7 @@ void dataframe::set_sort(std::string_view series,
 
 	switch (ser) {
 		using enum series_type;
-	default: throw std::runtime_error("Wrong series.");
+	default: throw;
 	case dimension: {
 		std::optional<std::vector<std::size_t>> indices;
 		if (const auto &dim = unsafe_get<dimension>(ser).second;
@@ -198,15 +196,14 @@ void dataframe::set_sort(std::string_view series,
 		break;
 	}
 	case measure:
-		if (!sort_ptr) throw std::runtime_error("Wrong sort.");
+		if (!sort_ptr) throw;
 		switch (*sort_ptr) {
 		default:
 		case sort_type::less:
 		case sort_type::greater: break;
 		case sort_type::natural_less:
 		case sort_type::natural_greater:
-		case sort_type::by_categories:
-			throw std::runtime_error("Wrong sort.");
+		case sort_type::by_categories: throw;
 		}
 		break;
 	}
@@ -249,7 +246,7 @@ void dataframe::add_dimension(
 		if (adding_strategy == adding_type::override_full
 		    || adding_strategy
 		           == adding_type::override_all_with_rotation)
-			throw std::runtime_error("Wrong series.");
+			throw;
 
 		change_state_to(state_type::modifying,
 		    state_modification_reason::needs_own_state);
@@ -265,8 +262,7 @@ void dataframe::add_dimension(
 		break;
 	}
 	case series_type::dimension: {
-		if (adding_strategy == adding_type::create_or_throw)
-			throw std::runtime_error("Wrong series.");
+		if (adding_strategy == adding_type::create_or_throw) throw;
 
 		change_state_to(state_type::modifying,
 		    state_modification_reason::needs_own_state);
@@ -303,8 +299,7 @@ void dataframe::add_dimension(
 		}
 		break;
 	}
-	case series_type::measure:
-		throw std::runtime_error("Wrong series.");
+	case series_type::measure: throw;
 	}
 }
 
@@ -321,7 +316,7 @@ void dataframe::add_measure(std::span<const double> measure_values,
 		if (adding_strategy == adding_type::override_full
 		    || adding_strategy
 		           == adding_type::override_all_with_rotation)
-			throw std::runtime_error("Wrong series.");
+			throw;
 
 		change_state_to(state_type::modifying,
 		    state_modification_reason::needs_own_state);
@@ -336,8 +331,7 @@ void dataframe::add_measure(std::span<const double> measure_values,
 		break;
 	}
 	case series_type::measure: {
-		if (adding_strategy == adding_type::create_or_throw)
-			throw std::runtime_error("Wrong series.");
+		if (adding_strategy == adding_type::create_or_throw) throw;
 
 		change_state_to(state_type::modifying,
 		    state_modification_reason::needs_own_state);
@@ -371,8 +365,7 @@ void dataframe::add_measure(std::span<const double> measure_values,
 		}
 		break;
 	}
-	case series_type::dimension:
-		throw std::runtime_error("Wrong series.");
+	case series_type::dimension: throw;
 	}
 }
 
@@ -381,7 +374,7 @@ void dataframe::add_series_by_other(std::string_view,
     std::function<cell_value(record_type, cell_value)>,
     std::span<const std::pair<const char *, const char *>>) &
 {
-	if (as_if()) throw std::runtime_error("Unsupported. ");
+	if (as_if()) throw;
 }
 
 void dataframe::remove_series(
@@ -398,7 +391,7 @@ void dataframe::remove_series(
 	for (auto &&s = get_data_source(); const auto &name : names) {
 		switch (auto ser = s.get_series(name)) {
 			using enum series_type;
-		default: throw std::runtime_error("Wrong series.");
+		default: throw;
 		case dimension: {
 			auto ix = &unsafe_get<dimension>(ser).second
 			        - s.dimensions.data();
@@ -439,8 +432,7 @@ void dataframe::add_record(std::span<const cell_value> values) &
 	        {
 		        return std::holds_alternative<std::string_view>(c);
 	        })) {
-		if (vec->size() != values.size())
-			throw std::runtime_error("Wrong record.");
+		if (vec->size() != values.size()) throw;
 		reorder.resize(vec->size());
 		const auto &s = get_data_source();
 		auto dims = s.dimensions.size();
@@ -458,8 +450,7 @@ void dataframe::add_record(std::span<const cell_value> values) &
 				reorder[&unsafe_get<measure>(ser).second
 				        - s.measures.data() + dims] =
 				    std::strtod(sv.data(), &eof);
-				if (eof == sv.data())
-					throw std::runtime_error("Wrong record.");
+				if (eof == sv.data()) throw;
 				break;
 			}
 			++it;
@@ -483,7 +474,7 @@ void dataframe::add_record(std::span<const cell_value> values) &
 		const auto &pre = get_data_source();
 		if (measureIx != pre.measures.size()
 		    || dimensionIx != pre.dimensions.size())
-			throw std::runtime_error("Wrong record.");
+			throw;
 
 		change_state_to(state_type::modifying,
 		    state_modification_reason::needs_own_state);
@@ -513,8 +504,7 @@ void dataframe::remove_records(
 	change_state_to(state_type::modifying,
 	    state_modification_reason::needs_sorted_records);
 
-	if (!std::ranges::is_sorted(record_ids))
-		throw std::runtime_error("Unsupported.");
+	if (!std::ranges::is_sorted(record_ids)) throw;
 
 	change_state_to(state_type::modifying,
 	    state_modification_reason::needs_own_state);
@@ -568,7 +558,7 @@ void dataframe::remove_unused_categories(std::string_view column) &
 	switch (auto &&ser = get_data_source().get_series(column)) {
 		using enum series_type;
 	default:
-	case measure: throw std::runtime_error("Wrong series.");
+	case measure: throw;
 	case dimension:
 		usage =
 		    unsafe_get<dimension>(ser).second.get_categories_usage();
@@ -597,18 +587,17 @@ void dataframe::change_data(std::size_t record_id,
 
 	const auto &s = get_data_source();
 
-	if (s.get_record_count() <= record_id)
-		throw std::runtime_error("Wrong record.");
+	if (s.get_record_count() <= record_id) throw;
 
 	series_type st = s.get_series(column);
 	switch (st) {
 		using enum series_type;
-	default: throw std::runtime_error("Wrong series.");
+	default: throw;
 	case measure:
-		if (!d) throw std::runtime_error("Wrong data.");
+		if (!d) throw;
 		break;
 	case dimension:
-		if (d) throw std::runtime_error("Wrong data.");
+		if (d) throw;
 		break;
 	}
 
@@ -635,7 +624,7 @@ bool dataframe::has_na(std::string_view column) const &
 {
 	switch (auto &&ser = get_data_source().get_series(column)) {
 		using enum series_type;
-	default: throw std::runtime_error("Wrong series.");
+	default: throw;
 	case measure: {
 		const auto &meas = unsafe_get<measure>(ser).second;
 		return meas.contains_nan
@@ -657,13 +646,13 @@ void dataframe::fill_na(std::string_view column, cell_value value) &
 
 	switch (get_data_source().get_series(column)) {
 		using enum series_type;
-	default: throw std::runtime_error("Wrong series.");
+	default: throw;
 	case measure:
-		if (!d) throw std::runtime_error("Wrong data.");
-		if (std::isnan(*d)) throw std::runtime_error("Wrong data.");
+		if (!d) throw;
+		if (std::isnan(*d)) throw;
 		break;
 	case dimension:
-		if (d) throw std::runtime_error("Wrong data.");
+		if (d) throw;
 		break;
 	}
 
@@ -702,8 +691,7 @@ void dataframe::finalize() &
 std::string dataframe::as_string() const &
 {
 	const auto *vec = get_if<state_type::modifying>(&state_data);
-	if (!vec || vec->empty())
-		throw std::runtime_error("Unsupported.");
+	if (!vec || vec->empty()) throw;
 
 	std::string res{'['};
 	bool first = true;
@@ -712,7 +700,7 @@ std::string dataframe::as_string() const &
 		Conv::JSONObj obj{res};
 		switch (auto &&ser = s.get_series(name)) {
 			using enum series_type;
-		default: throw std::runtime_error("Wrong series.");
+		default: throw;
 		case dimension: {
 			const auto &[name, dim] = unsafe_get<dimension>(ser);
 			obj("name", name)("type", "dimension")("unit",
@@ -749,8 +737,8 @@ std::span<const std::string> dataframe::get_categories(
 {
 	switch (auto &&ser = get_data_source().get_series(dimension)) {
 		using enum series_type;
-	default: throw std::runtime_error("Wrong series.");
-	case measure: throw std::runtime_error("Wrong series.");
+	default: throw;
+	case measure: throw;
 	case dimension:
 		return unsafe_get<dimension>(ser).second.categories;
 	}
@@ -792,12 +780,11 @@ dataframe::series_meta_t dataframe::get_series_meta(
 {
 	using enum state_type;
 	const auto *state = get_if<modifying>(&state_data);
-	if (!state || state->empty())
-		throw std::runtime_error("Unsupported.");
+	if (!state || state->empty()) throw;
 
 	auto it = std::ranges::find(*state, series);
 
-	if (it == state->end()) throw std::runtime_error("Wrong series.");
+	if (it == state->end()) throw;
 
 	std::size_t ix = it - state->begin();
 
@@ -901,13 +888,13 @@ void dataframe::change_state_to(state_type new_state,
 	case aggregating:
 		if (auto *ptr = std::get_if<copy_source>(&source);
 		    ptr && ptr->sorted_indices)
-			throw std::runtime_error("Unsupported.");
+			throw;
 		state_data.emplace<aggregating>();
 		break;
 	case sorting:
 		if (auto *ptr = std::get_if<copy_source>(&source);
 		    ptr && ptr->sorted_indices)
-			throw std::runtime_error("Unsupported.");
+			throw;
 
 		state_data.emplace<sorting>();
 		break;
