@@ -224,7 +224,7 @@ data_cube_t::data_cube_t(const data_table &table,
             : table.getDf().copy(false)),
     data{df.get(), options}
 {
-	df->remove_records(filter);
+	df->remove_records(filter.getFunction());
 
 	removed = df->copy(false);
 
@@ -391,9 +391,7 @@ double data_cube_t::valueAt(const multi_index_t &multiIndex,
 {
 	if (multiIndex.rid) {
 		const auto &name = getName(seriesId);
-		auto &&data = df->get_data(*multiIndex.rid, name);
-
-		return std::get<double>(data);
+		return std::get<double>(df->get_data(*multiIndex.rid, name));
 	}
 
 	return {};

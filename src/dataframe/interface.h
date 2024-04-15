@@ -128,7 +128,7 @@ public:
 	void add_record(std::span<const cell_value> values) &;
 
 	void remove_records(
-	    const std::function<bool(record_type)> &filter) &;
+	    const std::function<bool(const record_type &)> &filter) &;
 
 	void remove_unused_categories(std::string_view column) &;
 

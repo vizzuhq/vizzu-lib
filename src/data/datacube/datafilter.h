@@ -32,11 +32,6 @@ public:
 	    function(std::forward<Fun>(function))
 	{}
 
-	[[nodiscard]] bool operator()(const RowWrapper &row) const
-	{
-		return !function || function(row);
-	}
-
 	[[nodiscard]] bool operator==(const Filter &other) const
 	{
 		return hash == other.hash;
@@ -51,6 +46,8 @@ public:
 			    return (!fun1 || fun1(row)) && (!fun2 || fun2(row));
 		    }};
 	}
+
+	const Function &getFunction() const { return function; }
 
 private:
 	std::size_t hash{};

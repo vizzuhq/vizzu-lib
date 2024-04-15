@@ -398,77 +398,42 @@ void dataframe::add_record(std::span<const cell_value> values) &
 	change_state_to(state_type::modifying,
 	    state_modification_reason::needs_series_type);
 
-	std::vector<cell_value> reorder;
-	if (auto *vec = get_if<state_type::modifying>(&state_data);
-	    vec && !vec->empty()
-	    && std::all_of(values.begin(),
-	        values.end(),
-	        [](const cell_value &c)
-	        {
-		        return std::holds_alternative<std::string_view>(c);
-	        })) {
-		if (vec->size() != values.size()) throw;
-		reorder.resize(vec->size());
-		const auto &s = get_data_source();
-		auto dims = s.dimensions.size();
-		for (const auto *it = values.data(); auto col : *vec) {
-			const auto &sv = *std::get_if<std::string_view>(it);
-			switch (auto &&ser = s.get_series(col)) {
-				using enum series_type;
-			default:
-			case dimension:
-				reorder[&unsafe_get<dimension>(ser).second
-				        - s.dimensions.data()] = sv;
-				break;
-			case measure:
-				char *eof{};
-				reorder[&unsafe_get<measure>(ser).second
-				        - s.measures.data() + dims] =
-				    std::strtod(sv.data(), &eof);
-				if (eof == sv.data()) throw;
-				break;
-			}
-			++it;
-		}
-
-		values = reorder;
-	}
-	else {
-		std::size_t dimensionIx{};
-		std::size_t measureIx{};
-
-		for (const auto &v : values)
-			if (std::holds_alternative<double>(v))
-				++measureIx;
-			else
-				++dimensionIx;
-
-		change_state_to(state_type::modifying,
-		    state_modification_reason::needs_series_type);
-
-		const auto &pre = get_data_source();
-		if (measureIx != pre.measures.size()
-		    || dimensionIx != pre.dimensions.size())
-			throw;
-
-		change_state_to(state_type::modifying,
-		    state_modification_reason::needs_own_state);
-	}
+	const auto *vec = get_if<state_type::modifying>(&state_data);
+	if (!vec || vec->empty() || vec->size() != values.size()) throw;
 
 	auto &s = *unsafe_get<source_type::owning>(source);
 	s.normalize_sizes();
 
-	for (std::size_t measureIx{}, dimensionIx{};
-	     const auto &v : values) {
-		if (const double *measure = std::get_if<double>(&v)) {
-			auto &mea = s.measures[measureIx++];
-			mea.values.emplace_back(*measure);
-			if (std::isnan(*measure)) mea.contains_nan = true;
+	std::vector<double> measures(s.measure_names.size());
+	std::vector<std::string_view> dimensions(
+	    s.dimension_names.size());
+	for (const auto *it = values.data(); auto col : *vec) {
+		const auto &sv = *std::get_if<std::string_view>(it);
+		switch (auto &&ser = s.get_series(col)) {
+			using enum series_type;
+		default:
+		case dimension:
+			dimensions[&unsafe_get<dimension>(ser).second
+			           - s.dimensions.data()] = sv;
+			break;
+		case measure:
+			char *eof{};
+			measures[&unsafe_get<measure>(ser).second
+			         - s.measures.data()] =
+			    std::strtod(sv.data(), &eof);
+			if (eof == sv.data()) throw;
+			break;
 		}
-		else {
-			s.dimensions[dimensionIx++].add_element(
-			    *std::get_if<std::string_view>(&v));
-		}
+		++it;
+	}
+	for (std::size_t measureIx{}; const double &measure : measures) {
+		auto &mea = s.measures[measureIx++];
+		mea.values.emplace_back(measure);
+		if (std::isnan(measure)) mea.contains_nan = true;
+	}
+	for (std::size_t dimensionIx{};
+	     const std::string_view &dimension : dimensions) {
+		s.dimensions[dimensionIx++].add_element(dimension);
 	}
 }
 
@@ -489,7 +454,7 @@ void dataframe::remove_records(
 }
 
 void dataframe::remove_records(
-    const std::function<bool(record_type)> &filter) &
+    const std::function<bool(const record_type &)> &filter) &
 {
 	if (!filter) return;
 

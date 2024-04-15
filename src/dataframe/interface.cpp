@@ -102,9 +102,9 @@ void dataframe_interface::add_record(
 }
 
 void dataframe_interface::remove_records(
-    const std::function<bool(record_type)> &filter) &
+    const std::function<bool(const record_type &)> &filter) &
 {
-	as_impl(this).remove_records(std::move(filter));
+	as_impl(this).remove_records(filter);
 }
 
 void dataframe_interface::remove_unused_categories(
