@@ -4,6 +4,7 @@
 #include <any>
 #include <functional>
 #include <memory>
+#include <optional>
 #include <span>
 #include <string_view>
 #include <variant>
@@ -45,7 +46,7 @@ enum class adding_type {
 
 struct custom_aggregator
 {
-	std::string name;
+	std::string_view name;
 	using id_type = std::any;
 	id_type (*create)();
 	double (*add)(id_type &, cell_value const &);
@@ -76,12 +77,9 @@ public:
 	    std::variant<std::reference_wrapper<const std::string>,
 	        std::size_t>;
 
-	using any_aggregator_type = std::
-	    variant<std::monostate, aggregator_type, custom_aggregator>;
+	using any_aggregator_type = std::optional<aggregator_type>;
 
-	using any_sort_type = std::variant<sort_type,
-	    std::function<std::weak_ordering(std::string_view,
-	        std::string_view)>>;
+	using any_sort_type = sort_type;
 
 	using record_type = Data::RowWrapper;
 
@@ -129,9 +127,8 @@ public:
 
 	void add_record(std::span<const cell_value> values) &;
 
-	void remove_records(std::span<const size_t> record_ids) &;
-
-	void remove_records(std::function<bool(record_type)> filter) &;
+	void remove_records(
+	    const std::function<bool(record_type)> &filter) &;
 
 	void remove_unused_categories(std::string_view column) &;
 

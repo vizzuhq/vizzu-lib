@@ -138,29 +138,16 @@ struct data_source::sorter
 };
 
 std::vector<std::size_t> data_source::get_sorted_indices(
-    const dataframe_interface *parent,
     const sorting_type &sorters) const
 {
-	thread_local const dataframe_interface *parent_ptr{};
 	thread_local const sorting_type *sorters_ptr{};
-	parent_ptr = parent;
 	sorters_ptr = &sorters;
 
 	return data_source::get_sorted_indices(get_record_count(),
 	    [](std::size_t a, std::size_t b)
 	    {
 		    for (const auto &sorter : *sorters_ptr) {
-			    if (const auto *custom = std::get_if<1>(&sorter)) {
-				    if (auto res = (*custom)({parent_ptr, a},
-				            {parent_ptr, b});
-				        is_neq(res))
-					    return is_lt(res);
-			    }
-			    else if (auto res =
-			                 sorter::cmp(*std::get_if<0>(&sorter),
-			                     a,
-			                     b);
-			             is_neq(res))
+			    if (auto res = sorter::cmp(sorter, a, b); is_neq(res))
 				    return is_lt(res);
 		    }
 		    return false;
@@ -538,18 +525,15 @@ std::vector<std::size_t> data_source::dimension_t::get_indices(
 	    [](std::size_t a, std::size_t b)
 	    {
 		    static const Text::NaturalCmp cmp{};
-		    if (auto s = std::get_if<sort_type>(sorts)) switch (*s) {
-			    default:
-			    case sort_type::less: return (*cats)[a] < (*cats)[b];
-			    case sort_type::greater:
-				    return (*cats)[b] < (*cats)[a];
-			    case sort_type::natural_less:
-				    return cmp((*cats)[a], (*cats)[b]);
-			    case sort_type::natural_greater:
-				    return cmp((*cats)[b], (*cats)[a]);
-			    }
-		    return std::is_lt(
-		        (*std::get_if<1>(sorts))((*cats)[a], (*cats)[b]));
+		    switch (*sorts) {
+		    default:
+		    case sort_type::less: return (*cats)[a] < (*cats)[b];
+		    case sort_type::greater: return (*cats)[b] < (*cats)[a];
+		    case sort_type::natural_less:
+			    return cmp((*cats)[a], (*cats)[b]);
+		    case sort_type::natural_greater:
+			    return cmp((*cats)[b], (*cats)[a]);
+		    }
 	    });
 }
 
@@ -684,26 +668,23 @@ std::pair<double, double> data_source::measure_t::get_min_max() const
 std::pair<std::string, bool>
 data_source::aggregating_type::add_aggregated(
     const_series_data &&data,
-    const custom_aggregator &aggregator)
+    const aggregator_type &aggregator)
 {
-	std::string name = std::visit(
-	    [](const auto &arg)
-	    {
-		    if constexpr (std::is_same_v<std::monostate,
-		                      std::remove_cvref_t<decltype(arg)>>)
-			    return std::string{};
-		    else
-			    return std::string{arg.first};
-	    },
-	    data);
+	std::string name;
+	switch (data) {
+		using enum series_type;
+	case dimension: name = unsafe_get<dimension>(data).first; break;
+	case measure: name = unsafe_get<measure>(data).first; break;
+	default: break;
+	}
 
-	name = &aggregator == &aggregators[aggregator_type::sum]
-	         ? name
-	         : aggregator.name + '(' + name + ')';
+	if (aggregator != aggregator_type::sum)
+		name = std::string{Refl::enum_name(aggregator)} + '(' + name
+		     + ')';
 
 	auto &&[it, succ] = meas.try_emplace(std::move(name),
 	    std::move(data),
-	    aggregator);
+	    aggregators[aggregator]);
 	return {it->first, succ};
 }
 

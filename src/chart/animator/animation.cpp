@@ -65,27 +65,26 @@ void Animation::addKeyframe(const Gen::PlotPtr &next,
 		    });
 	}
 	else if (strategy == RegroupStrategy::aggregate) {
-		auto &&andFilter = target->getOptions()->dataFilter
-		                && next->getOptions()->dataFilter;
-
-		auto loosingCoordsys =
+		auto &&loosingCoordsys =
 		    target->getOptions()->getChannels().anyAxisSet()
 		    && !next->getOptions()->getChannels().anyAxisSet();
 
-		auto gainingCoordsys =
+		auto &&gainingCoordsys =
 		    !target->getOptions()->getChannels().anyAxisSet()
 		    && next->getOptions()->getChannels().anyAxisSet();
 
-		auto geometryChanges = target->getOptions()->geometry
-		                    != next->getOptions()->geometry;
+		auto &&geometryChanges = target->getOptions()->geometry
+		                      != next->getOptions()->geometry;
 
-		auto basedOnSource =
+		auto &&basedOnSource =
 		    loosingCoordsys || (!gainingCoordsys && geometryChanges);
 
-		auto getModifier = [andFilter = std::move(andFilter)](
-		                       bool drilldownToBase)
+		auto &&getModifier =
+		    [andFilter = target->getOptions()->dataFilter
+		              && next->getOptions()->dataFilter](
+		        bool drilldownToBase)
 		{
-			return [andFilter, drilldownToBase](auto &base,
+			return [&andFilter, drilldownToBase](auto &base,
 			           const auto &target)
 			{
 				auto baseCopy = base;
@@ -109,27 +108,25 @@ void Animation::addKeyframe(const Gen::PlotPtr &next,
 		}
 	}
 
-	auto begin = target;
+	auto &&intermediate0Instant = intermediate0
+	                           && strategy != RegroupStrategy::fade
+	                           && target->getOptions()->looksTheSame(
+	                               *intermediate0->getOptions());
+	auto begin = intermediate0 ? intermediate0 : target;
 
-	auto intermediate0Instant = intermediate0
-	                         && strategy != RegroupStrategy::fade
-	                         && begin->getOptions()->looksTheSame(
-	                             *intermediate0->getOptions());
-	begin = intermediate0 ? intermediate0 : begin;
-
-	auto intermediate1Instant = intermediate1
-	                         && strategy == RegroupStrategy::aggregate
-	                         && begin->getOptions()->looksTheSame(
-	                             *intermediate1->getOptions());
+	auto &&intermediate1Instant =
+	    intermediate1 && strategy == RegroupStrategy::aggregate
+	    && begin->getOptions()->looksTheSame(
+	        *intermediate1->getOptions());
 	begin = intermediate1 ? intermediate1 : begin;
 
-	auto nextInstant =
+	auto &&nextInstant =
 	    strategy != RegroupStrategy::fade
 	    && begin->getOptions()->looksTheSame(*next->getOptions());
 
-	auto duration_fix = (intermediate0 && !intermediate0Instant)
-	                  + (intermediate1 && !intermediate1Instant)
-	                  + !nextInstant;
+	auto &&duration_fix = (intermediate0 && !intermediate0Instant)
+	                    + (intermediate1 && !intermediate1Instant)
+	                    + !nextInstant;
 
 	auto real_options = options;
 	if (auto &duration = real_options.all.duration;

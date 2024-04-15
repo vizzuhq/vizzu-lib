@@ -102,13 +102,7 @@ void dataframe_interface::add_record(
 }
 
 void dataframe_interface::remove_records(
-    std::span<const std::size_t> record_ids) &
-{
-	as_impl(this).remove_records(record_ids);
-}
-
-void dataframe_interface::remove_records(
-    std::function<bool(record_type)> filter) &
+    const std::function<bool(record_type)> &filter) &
 {
 	as_impl(this).remove_records(std::move(filter));
 }

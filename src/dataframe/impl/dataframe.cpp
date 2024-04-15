@@ -88,10 +88,9 @@ dataframe::dataframe(std::shared_ptr<const data_source> other,
 void valid_unexistent_aggregator(
     const dataframe::any_aggregator_type &agg)
 {
-	if (const auto *aggr = std::get_if<aggregator_type>(&agg);
-	    !aggr
-	    || (*aggr != aggregator_type::count
-	        && *aggr != aggregator_type::exists))
+	if (!agg
+	    || (*agg != aggregator_type::count
+	        && *agg != aggregator_type::exists))
 		throw;
 }
 
@@ -99,26 +98,19 @@ void valid_dimension_aggregator(
     const dataframe::any_aggregator_type &agg)
 {
 	using enum aggregator_type;
-	if (std::holds_alternative<aggregator_type>(agg)) {
-		switch (*std::get_if<aggregator_type>(&agg)) {
+	if (agg) switch (*agg) {
 		case sum:
 		case min:
 		case max:
 		case mean: throw;
-		default: return;
+		default: break;
 		}
-	}
-	if (!std::holds_alternative<std::monostate>(agg)) throw;
 }
 
 void valid_measure_aggregator(
     const dataframe::any_aggregator_type &agg)
 {
-	if (std::holds_alternative<std::monostate>(agg)) throw;
-
-	if (const auto *t = std::get_if<aggregator_type>(&agg);
-	    t && *t == aggregator_type::distinct)
-		throw;
+	if (!agg || *agg == aggregator_type::distinct) throw;
 }
 
 std::string dataframe::set_aggregate(std::string_view series,
@@ -141,8 +133,7 @@ std::string dataframe::set_aggregate(std::string_view series,
 	data_source::aggregating_type &aggs =
 	    unsafe_get<state_type::aggregating>(state_data);
 
-	const auto *agg = std::get_if<aggregator_type>(&aggregator);
-	if (ser == series_type::dimension && !agg) {
+	if (ser == series_type::dimension && !aggregator) {
 		if (!aggs.dims
 		         .emplace(unsafe_get<series_type::dimension>(ser))
 		         .second)
@@ -150,12 +141,8 @@ std::string dataframe::set_aggregate(std::string_view series,
 		return {};
 	}
 
-	const custom_aggregator &cust_aggr =
-	    agg ? aggregators[*agg]
-	        : std::get<custom_aggregator>(aggregator);
-
 	auto &&[name, uniq] =
-	    aggs.add_aggregated(std::move(ser), cust_aggr);
+	    aggs.add_aggregated(std::move(ser), aggregator.value());
 	if (!uniq) throw;
 	return name;
 }
@@ -167,7 +154,6 @@ void dataframe::set_sort(std::string_view series,
 	change_state_to(state_type::sorting,
 	    state_modification_reason::needs_series_type);
 
-	const sort_type *sort_ptr = std::get_if<sort_type>(&sort);
 	auto ser = get_data_source().get_series(series);
 
 	switch (ser) {
@@ -176,27 +162,16 @@ void dataframe::set_sort(std::string_view series,
 	case dimension: {
 		std::optional<std::vector<std::size_t>> indices;
 		if (const auto &dim = unsafe_get<dimension>(ser).second;
-		    ((sort_ptr && *sort_ptr == sort_type::by_categories)
+		    (sort == sort_type::by_categories
 		        || std::ranges::is_sorted(
 		            indices.emplace(dim.get_indices(sort))))
 		    && (na_pos == dim.na_pos || !dim.contains_nav))
 			break;
 
-		if (source == source_type::copying) migrate_data();
-
-		auto &&s =
-		    unsafe_get<source_type::owning>(source)->get_series(
-		        series);
-		const auto &[name, dim] = unsafe_get<dimension>(s);
-		dim.sort_by(std::move(*indices), na_pos);
-
-		sort_ptr = nullptr;
-		ser.emplace<dimension>(name, dim);
-		break;
+		throw;
 	}
 	case measure:
-		if (!sort_ptr) throw;
-		switch (*sort_ptr) {
+		switch (sort) {
 		default:
 		case sort_type::less:
 		case sort_type::greater: break;
@@ -211,10 +186,7 @@ void dataframe::set_sort(std::string_view series,
 	    state_modification_reason::needs_own_state);
 
 	std::get_if<data_source::sorting_type>(&state_data)
-	    ->emplace_back(std::in_place_index<0>,
-	        ser,
-	        sort_ptr ? *sort_ptr : sort_type::less,
-	        na_pos);
+	    ->emplace_back(std::move(ser), sort, na_pos);
 }
 
 void dataframe::set_custom_sort(
@@ -226,8 +198,7 @@ void dataframe::set_custom_sort(
 	change_state_to(state_type::sorting,
 	    state_modification_reason::needs_own_state);
 
-	std::get_if<data_source::sorting_type>(&state_data)
-	    ->emplace_back(std::move(custom_sort));
+	throw;
 }
 
 void dataframe::add_dimension(
@@ -518,7 +489,7 @@ void dataframe::remove_records(
 }
 
 void dataframe::remove_records(
-    std::function<bool(record_type)> filter) &
+    const std::function<bool(record_type)> &filter) &
 {
 	if (!filter) return;
 
@@ -819,7 +790,7 @@ void dataframe::migrate_data()
 	}
 	case sorting: {
 		if (s) {
-			if (auto &&indices = s->other->get_sorted_indices(as_if(),
+			if (auto &&indices = s->other->get_sorted_indices(
 			        std::exchange(unsafe_get<sorting>(state_data),
 			            {}));
 			    !std::ranges::is_sorted(indices))
@@ -862,16 +833,15 @@ void dataframe::change_state_to(state_type new_state,
 		    || reason == reason_t::needs_series_type)
 			return;
 		if (auto *ptr = std::get_if<copy_source>(&source)) {
-			if (auto &&indices =
-			        ptr->other->get_sorted_indices(as_if(),
-			            std::exchange(unsafe_get<sorting>(state_data),
-			                {}));
+			if (auto &&indices = ptr->other->get_sorted_indices(
+			        std::exchange(unsafe_get<sorting>(state_data),
+			            {}));
 			    !std::ranges::is_sorted(indices))
 				ptr->sorted_indices = std::move(indices);
 		}
 		else {
 			auto &owning = *unsafe_get<source_type::owning>(source);
-			if (auto &&indices = owning.get_sorted_indices(as_if(),
+			if (auto &&indices = owning.get_sorted_indices(
 			        std::exchange(unsafe_get<sorting>(state_data),
 			            {}));
 			    !std::ranges::is_sorted(indices))

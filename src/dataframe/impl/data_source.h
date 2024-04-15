@@ -122,11 +122,14 @@ private:
 	struct sorter;
 
 public:
-	using sort_one_series =
-	    std::tuple<const_series_data, sort_type, na_position>;
+	struct sort_one_series
+	{
+		const_series_data data;
+		sort_type sort_type;
+		na_position na_pos;
+	};
 
-	using sorting_type = std::vector<std::variant<sort_one_series,
-	    std::function<std::weak_ordering(record_type, record_type)>>>;
+	using sorting_type = std::vector<sort_one_series>;
 
 	struct aggregating_type
 	{
@@ -140,7 +143,7 @@ public:
 
 		std::pair<std::string, bool> add_aggregated(
 		    const_series_data &&data,
-		    const custom_aggregator &aggregator);
+		    const aggregator_type &aggregator);
 	};
 
 	data_source() = default;
@@ -156,7 +159,6 @@ public:
 	[[nodiscard]] std::size_t get_record_count() const;
 
 	[[nodiscard]] std::vector<std::size_t> get_sorted_indices(
-	    const dataframe_interface *parent,
 	    const sorting_type &sorters) const;
 
 	void sort(std::vector<std::size_t> &&indices);

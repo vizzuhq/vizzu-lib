@@ -166,9 +166,11 @@ void Interface::canvasToRelCoords(ObjectRegistry::Handle chart,
 void Interface::setChartFilter(ObjectRegistry::Handle chart,
     JsFunctionWrapper<bool, const Data::RowWrapper &> &&filter)
 {
-	const auto hash = filter.hash();
-	getChart(chart)->getOptions().dataFilter = {std::move(filter),
-	    hash};
+	if (filter)
+		getChart(chart)->getOptions().dataFilter =
+		    Data::Filter{std::move(filter)};
+	else
+		getChart(chart)->getOptions().dataFilter = {};
 }
 
 std::variant<double, std::string_view> Interface::getRecordValue(

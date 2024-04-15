@@ -121,7 +121,7 @@ void data_cube_t::data_t::iterator_t::incr()
 {
 	if (found) { ++rid; }
 
-	auto indices = parent->get_indices(old);
+	auto &&indices = parent->get_indices(old);
 
 	found = false;
 	for (std::size_t ix{}; ix < indices.size(); ++ix) {
@@ -194,13 +194,11 @@ std::vector<std::size_t> data_cube_t::data_t::get_indices(
     std::size_t ix) const
 {
 	auto res = sizes;
-	// reverse iterate, fill with the modulo, return with div
 	for (auto &cur : std::ranges::views::reverse(res)) {
 		if (!cur) continue;
-		auto &&divres = std::lldiv(static_cast<std::int64_t>(ix),
-		    static_cast<std::int64_t>(cur));
-		cur = static_cast<std::size_t>(divres.rem);
-		ix = static_cast<std::size_t>(divres.quot);
+		auto &&newCur = ix % cur;
+		ix /= cur;
+		cur = newCur;
 	}
 	return res;
 }
