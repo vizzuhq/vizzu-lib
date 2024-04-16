@@ -138,7 +138,7 @@ public:
 	struct sort_one_series
 	{
 		const_series_data data;
-		sort_type sort_type{};
+		sort_type sort{};
 		na_position na_pos{};
 	};
 
