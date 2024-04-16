@@ -19,12 +19,12 @@ inline bool is_valid(cell_value const &value)
 Refl::EnumArray<aggregator_type, custom_aggregator>
 get_aggregators() noexcept
 {
-	constinit static auto &&empty_double =
+	constinit static const auto &&empty_double =
 	    []() -> custom_aggregator::id_type
 	{
 		return double{};
 	};
-	constinit static auto &&init_nan =
+	constinit static const auto &&init_nan =
 	    []() -> custom_aggregator::id_type
 	{
 		return std::numeric_limits<double>::quiet_NaN();
