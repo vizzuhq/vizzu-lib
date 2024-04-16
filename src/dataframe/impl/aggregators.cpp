@@ -39,8 +39,7 @@ get_aggregators() noexcept
 		              auto &ref = *std::any_cast<double>(&id);
 		              const double &value =
 		                  *std::get_if<double>(&cell);
-		              if (!std::isnan(value) && !std::isinf(value))
-			              ref += value;
+		              if (std::isfinite(value)) ref += value;
 
 		              return ref;
 	              }},
@@ -51,8 +50,7 @@ get_aggregators() noexcept
 	        {
 		        auto &ref = *std::any_cast<double>(&id);
 		        const auto &value = *std::get_if<double>(&cell);
-		        if (!std::isnan(value) && !std::isinf(value)
-		            && !(value >= ref))
+		        if (std::isfinite(value) && !(value >= ref))
 			        ref = value;
 
 		        return ref;
@@ -64,8 +62,7 @@ get_aggregators() noexcept
 	        {
 		        auto &ref = *std::any_cast<double>(&id);
 		        const auto &value = *std::get_if<double>(&cell);
-		        if (!std::isnan(value) && !std::isinf(value)
-		            && !(value <= ref))
+		        if (std::isfinite(value) && !(value <= ref))
 			        ref = value;
 
 		        return ref;
@@ -82,7 +79,7 @@ get_aggregators() noexcept
 		            *std::any_cast<std::pair<double, std::size_t>>(
 		                &id);
 		        const auto &value = *std::get_if<double>(&cell);
-		        if (!std::isnan(value) && !std::isinf(value)) {
+		        if (std::isfinite(value)) {
 			        sum += value;
 			        ++count;
 		        }

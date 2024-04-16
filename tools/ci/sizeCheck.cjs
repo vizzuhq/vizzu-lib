@@ -1,7 +1,7 @@
 const fs = require('fs')
 const path = require('path')
 
-const THRESHOLD = 1.05
+const THRESHOLD = 1.06
 const workspacePath = path.dirname(__filename)
 const weblibPath = path.join(workspacePath, '../..', 'build/cmake-wasm/weblib')
 const sizeFilePath = path.join(weblibPath, 'size.txt')
@@ -29,6 +29,7 @@ sizeLines.forEach((sizeLine) => {
 			console.error(
 				`Error: File ${file} size exceeds the threshold. Actual: ${actualSize}, Downloaded: ${downloadedSize}, Threshold: ${THRESHOLD}`
 			)
+			process.exit(1)
 		} else {
 			console.log(
 				`Success: File ${file} size comparison passed. Actual: ${actualSize}, Downloaded: ${downloadedSize}`
