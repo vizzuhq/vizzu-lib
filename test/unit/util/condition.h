@@ -34,8 +34,7 @@ public:
 			return *this == static_cast<T>(ref);
 		}
 		else {
-			static_assert(
-			    requires { ref == value; },
+			static_assert(std::is_invocable_v<std::equal_to<>, T, U>,
 			    "Cannot compare types");
 		}
 	}
@@ -171,6 +170,16 @@ template <class exception,
     class Res,
     class... Args,
     Res (Member::*fptr)(Args...) const &>
+struct impl_fptr_throws<exception, fptr>
+{
+	using type = impl_throws_t<exception, fptr, Args...>;
+};
+
+template <class exception,
+    class Member,
+    class Res,
+    class... Args,
+    Res (Member::*fptr)(Args...) const>
 struct impl_fptr_throws<exception, fptr>
 {
 	using type = impl_throws_t<exception, fptr, Args...>;

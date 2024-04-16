@@ -224,19 +224,19 @@ cell_value data_source::get_data(std::size_t record_id,
 		return meas.values[record_id];
 	}
 	case unknown:
-	default: throw;
+	default: error();
 	}
 }
 
 data_source::series_data data_source::get_series(
     const std::string_view &id)
 {
-	if (auto size = change_series_identifier_type(id);
-	    size < dimensions.size())
+	auto size = change_series_identifier_type(id);
+	if (size < dimensions.size())
 		return series_data{std::in_place_index<1>,
 		    dimension_names[size],
 		    dimensions[size]};
-	else if (size < dimensions.size() + measures.size())
+	if (size < dimensions.size() + measures.size())
 		return series_data{std::in_place_index<2>,
 		    measure_names[size - dimensions.size()],
 		    measures[size - dimensions.size()]};
@@ -246,12 +246,12 @@ data_source::series_data data_source::get_series(
 data_source::const_series_data data_source::get_series(
     const std::string_view &id) const
 {
-	if (auto size = change_series_identifier_type(id);
-	    size < dimensions.size())
+	auto size = change_series_identifier_type(id);
+	if (size < dimensions.size())
 		return const_series_data{std::in_place_index<1>,
 		    dimension_names[size],
 		    dimensions[size]};
-	else if (size < dimensions.size() + measures.size())
+	if (size < dimensions.size() + measures.size())
 		return const_series_data{std::in_place_index<2>,
 		    measure_names[size - dimensions.size()],
 		    measures[size - dimensions.size()]};
@@ -293,7 +293,7 @@ void data_source::finalize()
 		for (std::size_t r{}; r < records; ++r)
 			if (!finalized.try_emplace(get_id(r, dimension_names), r)
 			         .second)
-				throw;
+				error();
 	}
 }
 data_source::dimension_t &data_source::add_new_dimension(
@@ -369,7 +369,7 @@ std::vector<std::size_t> data_source::get_sorted_indices(
 
 void data_source::remove_records(std::span<const std::size_t> indices)
 {
-	auto indices_remover = index_erase_if{indices};
+	auto indices_remover = index_erase_if<>{indices};
 	for (auto &&dim : dimensions) {
 		indices_remover(dim.values);
 		dim.contains_nav =
@@ -561,6 +561,8 @@ void data_source::dimension_t::add_element(
 	if (values.emplace_back(get_or_set_cat(cat)) == nav)
 		contains_nav = true;
 }
+void error() { throw std::runtime_error("dataframe"); }
+
 void data_source::dimension_t::add_more_data(
     std::span<const char *const> new_categories,
     std::span<const std::uint32_t> new_values)

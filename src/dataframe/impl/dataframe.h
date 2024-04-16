@@ -53,16 +53,17 @@ public:
 	[[nodiscard]] static std::shared_ptr<dataframe_interface>
 	create_new();
 
-	[[nodiscard]] std::string set_aggregate(std::string_view series,
+	[[nodiscard]] std::string set_aggregate(
+	    const std::string_view &series,
 	    const any_aggregator_type &aggregator) &;
 
-	void set_sort(std::string_view series,
+	void set_sort(const std::string_view &series,
 	    any_sort_type sort,
 	    na_position na_pos) &;
 
 	void set_custom_sort(
-	    std::function<std::weak_ordering(record_type, record_type)>
-	        custom_sort) &;
+	    const std::function<std::weak_ordering(record_type,
+	        record_type)> &custom_sort) &;
 
 	void add_dimension(
 	    std::span<const char *const> dimension_categories,
@@ -80,14 +81,14 @@ public:
 
 	void add_series_by_other(std::string_view curr_series,
 	    std::string_view name,
-	    std::function<cell_value(record_type, cell_value)>
-	        value_transform,
+	    const std::function<cell_value(record_type, cell_value)>
+	        &value_transform,
 	    std::span<const std::pair<const char *, const char *>> info)
 	    &;
 
 	void remove_series(std::span<const std::string_view> names) &;
 
-	void add_record(std::span<const cell_value> values) &;
+	void add_record(std::span<const char *const> values) &;
 
 	void remove_records(std::span<const std::size_t> record_ids) &;
 
@@ -100,7 +101,7 @@ public:
 	    std::string_view column,
 	    cell_value value) &;
 
-	[[nodiscard]] bool has_na(std::string_view column) const &;
+	[[nodiscard]] bool has_na(const std::string_view &column) const &;
 
 	void fill_na(std::string_view column, cell_value value) &;
 
@@ -131,7 +132,7 @@ public:
 	    const char *key) const &;
 
 	[[nodiscard]] cell_value get_data(record_identifier record_id,
-	    std::string_view column) const &;
+	    const std::string_view &column) const &;
 
 	[[nodiscard]] std::size_t get_record_count() const &
 	{

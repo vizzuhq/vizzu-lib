@@ -48,8 +48,7 @@ void data_table::addColumn(std::string_view name,
 
 void data_table::pushRow(const std::span<const char *> &cells)
 {
-	df.add_record(
-	    std::vector<dataframe::cell_value>{begin(cells), end(cells)});
+	df.add_record(cells);
 
 	for (const auto &dim : df.get_dimensions())
 		for (const auto &cat : df.get_categories(dim))

@@ -19,7 +19,8 @@ inline bool is_valid(cell_value const &value)
 Refl::EnumArray<aggregator_type, custom_aggregator>
 get_aggregators() noexcept
 {
-	return {{{{Refl::enum_name(aggregator_type::sum),
+	auto &&aggrs = Refl::enum_names<aggregator_type>;
+	return {{{{aggrs[static_cast<std::size_t>(aggregator_type::sum)],
 	              []() -> custom_aggregator::id_type
 	              {
 		              return 0.0;
@@ -35,7 +36,7 @@ get_aggregators() noexcept
 
 		              return ref;
 	              }},
-	    {Refl::enum_name(aggregator_type::min),
+	    {aggrs[static_cast<std::size_t>(aggregator_type::min)],
 	        []() -> custom_aggregator::id_type
 	        {
 		        return std::numeric_limits<double>::quiet_NaN();
@@ -51,7 +52,7 @@ get_aggregators() noexcept
 
 		        return ref;
 	        }},
-	    {Refl::enum_name(aggregator_type::max),
+	    {aggrs[static_cast<std::size_t>(aggregator_type::max)],
 	        []() -> custom_aggregator::id_type
 	        {
 		        return std::numeric_limits<double>::quiet_NaN();
@@ -67,7 +68,7 @@ get_aggregators() noexcept
 
 		        return ref;
 	        }},
-	    {Refl::enum_name(aggregator_type::mean),
+	    {aggrs[static_cast<std::size_t>(aggregator_type::mean)],
 	        []() -> custom_aggregator::id_type
 	        {
 		        return std::pair<double, std::size_t>(0.0, 0);
@@ -86,7 +87,7 @@ get_aggregators() noexcept
 		        return count == 0 ? NAN
 		                          : sum / static_cast<double>(count);
 	        }},
-	    {Refl::enum_name(aggregator_type::count),
+	    {aggrs[static_cast<std::size_t>(aggregator_type::count)],
 	        []() -> custom_aggregator::id_type
 	        {
 		        return std::size_t{};
@@ -98,7 +99,7 @@ get_aggregators() noexcept
 		        if (is_valid(cell)) s += 1;
 		        return static_cast<double>(s);
 	        }},
-	    {Refl::enum_name(aggregator_type::distinct),
+	    {aggrs[static_cast<std::size_t>(aggregator_type::distinct)],
 	        []() -> custom_aggregator::id_type
 	        {
 		        return std::set<const char *>{};
@@ -113,7 +114,7 @@ get_aggregators() noexcept
 			        set.insert(v);
 		        return static_cast<double>(set.size());
 	        }},
-	    {Refl::enum_name(aggregator_type::exists),
+	    {aggrs[static_cast<std::size_t>(aggregator_type::exists)],
 	        []() -> custom_aggregator::id_type
 	        {
 		        return bool{};

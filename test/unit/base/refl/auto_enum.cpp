@@ -36,7 +36,7 @@ namespace Bar
 {
 template <typename T> std::string toString(T v)
 {
-	return Refl::enum_name(v);
+	return Refl::enum_name<std::string>(v);
 }
 template <typename T> T parse(std::string s)
 {

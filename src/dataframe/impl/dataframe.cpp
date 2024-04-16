@@ -82,7 +82,7 @@ void valid_unexistent_aggregator(
 	if (!agg
 	    || (*agg != aggregator_type::count
 	        && *agg != aggregator_type::exists))
-		throw;
+		error();
 }
 
 void valid_dimension_aggregator(
@@ -93,7 +93,7 @@ void valid_dimension_aggregator(
 		case sum:
 		case min:
 		case max:
-		case mean: throw;
+		case mean: error();
 		default: break;
 		}
 }
@@ -101,10 +101,10 @@ void valid_dimension_aggregator(
 void valid_measure_aggregator(
     const dataframe::any_aggregator_type &agg)
 {
-	if (!agg || *agg == aggregator_type::distinct) throw;
+	if (!agg || *agg == aggregator_type::distinct) error();
 }
 
-std::string dataframe::set_aggregate(std::string_view series,
+std::string dataframe::set_aggregate(const std::string_view &series,
     const any_aggregator_type &aggregator) &
 {
 	change_state_to(state_type::aggregating,
@@ -128,17 +128,17 @@ std::string dataframe::set_aggregate(std::string_view series,
 		if (!aggs.dims
 		         .emplace(unsafe_get<series_type::dimension>(ser))
 		         .second)
-			throw;
+			error();
 		return {};
 	}
 
 	auto &&[name, uniq] =
 	    aggs.add_aggregated(std::move(ser), aggregator.value());
-	if (!uniq) throw;
+	if (!uniq) error();
 	return name;
 }
 
-void dataframe::set_sort(std::string_view series,
+void dataframe::set_sort(const std::string_view &series,
     any_sort_type sort,
     na_position na_pos) &
 {
@@ -149,7 +149,7 @@ void dataframe::set_sort(std::string_view series,
 
 	switch (ser) {
 		using enum series_type;
-	default: throw;
+	default: error();
 	case dimension: {
 		std::optional<std::vector<std::size_t>> indices;
 		if (const auto &dim = unsafe_get<dimension>(ser).second;
@@ -159,7 +159,7 @@ void dataframe::set_sort(std::string_view series,
 		    && (na_pos == dim.na_pos || !dim.contains_nav))
 			break;
 
-		throw;
+		error();
 	}
 	case measure:
 		switch (sort) {
@@ -168,7 +168,7 @@ void dataframe::set_sort(std::string_view series,
 		case sort_type::greater: break;
 		case sort_type::natural_less:
 		case sort_type::natural_greater:
-		case sort_type::by_categories: throw;
+		case sort_type::by_categories: error();
 		}
 		break;
 	}
@@ -181,15 +181,15 @@ void dataframe::set_sort(std::string_view series,
 }
 
 void dataframe::set_custom_sort(
-    std::function<std::weak_ordering(record_type, record_type)>
-        custom_sort) &
+    const std::function<std::weak_ordering(record_type, record_type)>
+        &custom_sort) &
 {
 	if (!custom_sort) return;
 
 	change_state_to(state_type::sorting,
 	    state_modification_reason::needs_own_state);
 
-	throw;
+	error();
 }
 
 void dataframe::add_dimension(
@@ -207,7 +207,7 @@ void dataframe::add_dimension(
 		if (adding_strategy == adding_type::override_full
 		    || adding_strategy
 		           == adding_type::override_all_with_rotation)
-			throw;
+			error();
 
 		change_state_to(state_type::modifying,
 		    state_modification_reason::needs_own_state);
@@ -223,7 +223,7 @@ void dataframe::add_dimension(
 		break;
 	}
 	case series_type::dimension: {
-		if (adding_strategy == adding_type::create_or_throw) throw;
+		if (adding_strategy == adding_type::create_or_throw) error();
 
 		change_state_to(state_type::modifying,
 		    state_modification_reason::needs_own_state);
@@ -260,7 +260,7 @@ void dataframe::add_dimension(
 		}
 		break;
 	}
-	case series_type::measure: throw;
+	case series_type::measure: error();
 	}
 }
 
@@ -277,7 +277,7 @@ void dataframe::add_measure(std::span<const double> measure_values,
 		if (adding_strategy == adding_type::override_full
 		    || adding_strategy
 		           == adding_type::override_all_with_rotation)
-			throw;
+			error();
 
 		change_state_to(state_type::modifying,
 		    state_modification_reason::needs_own_state);
@@ -292,7 +292,7 @@ void dataframe::add_measure(std::span<const double> measure_values,
 		break;
 	}
 	case series_type::measure: {
-		if (adding_strategy == adding_type::create_or_throw) throw;
+		if (adding_strategy == adding_type::create_or_throw) error();
 
 		change_state_to(state_type::modifying,
 		    state_modification_reason::needs_own_state);
@@ -326,16 +326,16 @@ void dataframe::add_measure(std::span<const double> measure_values,
 		}
 		break;
 	}
-	case series_type::dimension: throw;
+	case series_type::dimension: error();
 	}
 }
 
 void dataframe::add_series_by_other(std::string_view,
     std::string_view,
-    std::function<cell_value(record_type, cell_value)>,
+    const std::function<cell_value(record_type, cell_value)> &,
     std::span<const std::pair<const char *, const char *>>) &
 {
-	if (as_if()) throw;
+	if (as_if()) error();
 }
 
 void dataframe::remove_series(
@@ -352,7 +352,7 @@ void dataframe::remove_series(
 	for (auto &&s = get_data_source(); const auto &name : names) {
 		switch (auto ser = s.get_series(name)) {
 			using enum series_type;
-		default: throw;
+		default: error();
 		case dimension: {
 			auto ix = &unsafe_get<dimension>(ser).second
 			        - s.dimensions.data();
@@ -384,13 +384,16 @@ void dataframe::remove_series(
 	    remove_measures);
 }
 
-void dataframe::add_record(std::span<const cell_value> values) &
+void dataframe::add_record(std::span<const char *const> values) &
 {
 	change_state_to(state_type::modifying,
 	    state_modification_reason::needs_series_type);
 
 	const auto *vec = get_if<state_type::modifying>(&state_data);
-	if (!vec || vec->empty() || vec->size() != values.size()) throw;
+	if (!vec || vec->empty() || vec->size() != values.size()) error();
+
+	change_state_to(state_type::modifying,
+	    state_modification_reason::needs_own_state);
 
 	auto &s = *unsafe_get<source_type::owning>(source);
 	s.normalize_sizes();
@@ -398,21 +401,20 @@ void dataframe::add_record(std::span<const cell_value> values) &
 	std::vector<double> measures(s.measure_names.size());
 	std::vector<std::string_view> dimensions(
 	    s.dimension_names.size());
-	for (const auto *it = values.data(); auto col : *vec) {
-		const auto &sv = *std::get_if<std::string_view>(it);
+	for (const auto *it = values.data(); const auto &col : *vec) {
 		switch (auto &&ser = s.get_series(col)) {
 			using enum series_type;
 		default:
 		case dimension:
 			dimensions[&unsafe_get<dimension>(ser).second
-			           - s.dimensions.data()] = sv;
+			           - s.dimensions.data()] =
+			    *it ? *it : std::string_view{nullptr, 0};
 			break;
 		case measure:
 			char *eof{};
 			measures[&unsafe_get<measure>(ser).second
-			         - s.measures.data()] =
-			    std::strtod(sv.data(), &eof);
-			if (eof == sv.data()) throw;
+			         - s.measures.data()] = std::strtod(*it, &eof);
+			if (eof == *it) error();
 			break;
 		}
 		++it;
@@ -435,7 +437,7 @@ void dataframe::remove_records(
 	change_state_to(state_type::modifying,
 	    state_modification_reason::needs_sorted_records);
 
-	if (!std::ranges::is_sorted(record_ids)) throw;
+	if (!std::ranges::is_sorted(record_ids)) error();
 
 	change_state_to(state_type::modifying,
 	    state_modification_reason::needs_own_state);
@@ -489,7 +491,7 @@ void dataframe::remove_unused_categories(std::string_view column) &
 	switch (auto &&ser = get_data_source().get_series(column)) {
 		using enum series_type;
 	default:
-	case measure: throw;
+	case measure: error();
 	case dimension:
 		usage =
 		    unsafe_get<dimension>(ser).second.get_categories_usage();
@@ -517,17 +519,17 @@ void dataframe::change_data(std::size_t record_id,
 
 	const auto &s = get_data_source();
 
-	if (s.get_record_count() <= record_id) throw;
+	if (s.get_record_count() <= record_id) error();
 
-	series_type st = s.get_series(column);
+	const series_type st = s.get_series(column);
 	switch (st) {
 		using enum series_type;
-	default: throw;
+	default: error();
 	case measure:
-		if (!d) throw;
+		if (!d) error();
 		break;
 	case dimension:
-		if (d) throw;
+		if (d) error();
 		break;
 	}
 
@@ -550,11 +552,11 @@ void dataframe::change_data(std::size_t record_id,
 	}
 }
 
-bool dataframe::has_na(std::string_view column) const &
+bool dataframe::has_na(const std::string_view &column) const &
 {
 	switch (auto &&ser = get_data_source().get_series(column)) {
 		using enum series_type;
-	default: throw;
+	default: error();
 	case measure: {
 		const auto &meas = unsafe_get<measure>(ser).second;
 		return meas.contains_nan
@@ -576,13 +578,13 @@ void dataframe::fill_na(std::string_view column, cell_value value) &
 
 	switch (get_data_source().get_series(column)) {
 		using enum series_type;
-	default: throw;
+	default: error();
 	case measure:
-		if (!d) throw;
-		if (std::isnan(*d)) throw;
+		if (!d) error();
+		if (std::isnan(*d)) error();
 		break;
 	case dimension:
-		if (d) throw;
+		if (d) error();
 		break;
 	}
 
@@ -621,16 +623,16 @@ void dataframe::finalize() &
 std::string dataframe::as_string() const &
 {
 	const auto *vec = get_if<state_type::modifying>(&state_data);
-	if (!vec || vec->empty()) throw;
+	if (!vec || vec->empty()) error();
 
 	std::string res{'['};
 	bool first = true;
-	for (const auto s = get_data_source(); auto name : *vec) {
+	for (const auto s = get_data_source(); const auto &name : *vec) {
 		if (!std::exchange(first, false)) res += ',';
 		Conv::JSONObj obj{res};
 		switch (auto &&ser = s.get_series(name)) {
 			using enum series_type;
-		default: throw;
+		default: error();
 		case dimension: {
 			const auto &[name, dim] = unsafe_get<dimension>(ser);
 			obj("name", name)("type", "dimension")("unit",
@@ -667,18 +669,18 @@ std::span<const std::string> dataframe::get_categories(
 {
 	switch (auto &&ser = get_data_source().get_series(dimension)) {
 		using enum series_type;
-	default: throw;
-	case measure: throw;
+	default:
+	case measure: error();
 	case dimension:
 		return unsafe_get<dimension>(ser).second.categories;
 	}
 }
 
 cell_value dataframe::get_data(record_identifier record_id,
-    std::string_view column) const &
+    const std::string_view &column) const &
 {
 	const auto &s = get_data_source();
-	std::size_t ix;
+	std::size_t ix{};
 
 	if (const std::size_t *ixp = std::get_if<std::size_t>(&record_id);
 	    !ixp)
@@ -706,19 +708,19 @@ std::string dataframe::get_record_id_by_dims(std::size_t my_record,
 }
 
 dataframe::series_meta_t dataframe::get_series_meta(
-    const std::string &series) const
+    const std::string &id) const
 {
 	using enum state_type;
 	const auto *state = get_if<modifying>(&state_data);
-	if (!state || state->empty()) throw;
+	if (!state || state->empty()) error();
 
-	auto it = std::find(state->begin(), state->end(), series);
+	auto it = std::find(state->begin(), state->end(), id);
 
-	if (it == state->end()) throw;
+	if (it == state->end()) error();
 
-	std::size_t ix = it - state->begin();
+	auto ix = static_cast<std::size_t>(it - state->begin());
 
-	switch (auto &&ser = get_data_source().get_series(series)) {
+	switch (auto &&ser = get_data_source().get_series(id)) {
 		using enum series_type;
 	default: return {{}, ix, ser};
 	case measure:
@@ -817,13 +819,13 @@ void dataframe::change_state_to(state_type new_state,
 	case aggregating:
 		if (auto *ptr = std::get_if<copy_source>(&source);
 		    ptr && ptr->sorted_indices)
-			throw;
+			error();
 		state_data.emplace<aggregating>();
 		break;
 	case sorting:
 		if (auto *ptr = std::get_if<copy_source>(&source);
 		    ptr && ptr->sorted_indices)
-			throw;
+			error();
 
 		state_data.emplace<sorting>();
 		break;

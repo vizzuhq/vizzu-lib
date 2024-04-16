@@ -17,6 +17,8 @@ namespace Vizzu::dataframe
 
 enum class series_type { unknown, dimension, measure };
 
+[[maybe_unused]] [[noreturn]] void error();
+
 class data_source : public std::enable_shared_from_this<data_source>
 {
 public:
@@ -136,8 +138,8 @@ public:
 	struct sort_one_series
 	{
 		const_series_data data;
-		sort_type sort_type;
-		na_position na_pos;
+		sort_type sort_type{};
+		na_position na_pos{};
 	};
 
 	using sorting_type = std::vector<sort_one_series>;

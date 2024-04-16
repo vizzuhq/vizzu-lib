@@ -15,8 +15,8 @@ public:
 
 	Filter() noexcept = default;
 
-	template <class Ptr>
-	explicit Filter(Ptr &&wr) :
+	template <class Ptr, class Deleter>
+	explicit Filter(std::unique_ptr<Ptr, Deleter> &&wr) :
 	    hash(std::hash<bool (*)(const RowWrapper *)>{}(wr.get())),
 	    function(
 	        [wr = std::shared_ptr{std::move(wr)}](
@@ -47,7 +47,10 @@ public:
 		    }};
 	}
 
-	const Function &getFunction() const { return function; }
+	[[nodiscard]] const Function &getFunction() const
+	{
+		return function;
+	}
 
 private:
 	std::size_t hash{};

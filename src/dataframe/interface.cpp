@@ -30,24 +30,24 @@ std::shared_ptr<dataframe_interface> dataframe_interface::copy(
 }
 
 std::string dataframe_interface::set_aggregate(
-    std::string_view series,
+    const std::string_view &series,
     const any_aggregator_type &aggregator) &
 {
 	return as_impl(this).set_aggregate(series, aggregator);
 }
 
-void dataframe_interface::set_sort(std::string_view series,
+void dataframe_interface::set_sort(const std::string_view &series,
     any_sort_type sort,
     na_position na_pos) &
 {
-	as_impl(this).set_sort(series, std::move(sort), na_pos);
+	as_impl(this).set_sort(series, sort, na_pos);
 }
 
 void dataframe_interface::set_custom_sort(
-    std::function<std::weak_ordering(record_type, record_type)>
-        custom_sort) &
+    const std::function<std::weak_ordering(record_type, record_type)>
+        &custom_sort) &
 {
-	as_impl(this).set_custom_sort(std::move(custom_sort));
+	as_impl(this).set_custom_sort(custom_sort);
 }
 
 void dataframe_interface::add_dimension(
@@ -79,13 +79,13 @@ void dataframe_interface::add_measure(
 void dataframe_interface::add_series_by_other(
     std::string_view curr_series,
     std::string_view name,
-    std::function<cell_value(record_type, cell_value)>
-        value_transform,
+    const std::function<cell_value(record_type, cell_value)>
+        &value_transform,
     std::span<const std::pair<const char *, const char *>> info) &
 {
 	as_impl(this).add_series_by_other(curr_series,
 	    name,
-	    std::move(value_transform),
+	    value_transform,
 	    info);
 }
 
@@ -96,7 +96,7 @@ void dataframe_interface::remove_series(
 }
 
 void dataframe_interface::add_record(
-    std::span<const cell_value> values) &
+    std::span<const char *const> values) &
 {
 	as_impl(this).add_record(values);
 }
@@ -120,7 +120,8 @@ void dataframe_interface::change_data(std::size_t record_id,
 	as_impl(this).change_data(record_id, column, value);
 }
 
-bool dataframe_interface::has_na(std::string_view column) const &
+bool dataframe_interface::has_na(
+    const std::string_view &column) const &
 {
 	return as_impl(this).has_na(column);
 }
@@ -152,7 +153,7 @@ std::span<const std::string> dataframe_interface::get_categories(
 }
 
 cell_value dataframe_interface::get_data(record_identifier record_id,
-    std::string_view column) const &
+    const std::string_view &column) const &
 {
 	return as_impl(this).get_data(record_id, column);
 }

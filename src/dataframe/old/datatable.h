@@ -15,7 +15,7 @@ namespace Vizzu::Data
 struct RowWrapper
 {
 	[[nodiscard]] dataframe::cell_value get_value(
-	    std::string_view i) const
+	    const std::string_view &i) const
 	{
 		return parent->get_data(recordId, i);
 	}
