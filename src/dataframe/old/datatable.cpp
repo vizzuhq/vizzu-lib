@@ -39,10 +39,11 @@ void data_table::addColumn(std::string_view name,
 
 	df.remove_unused_categories(name);
 
-	if (std::any_of(df.get_categories(name).begin(),
-	        df.get_categories(name).end(),
-	        std::bind_front(std::equal_to{}, "")))
-		df.fill_na(name, "");
+	for (const auto &cat : df.get_categories(name))
+		if (cat.empty()) {
+			df.fill_na(name, "");
+			break;
+		}
 }
 
 void data_table::pushRow(const std::span<const char *> &cells)
@@ -51,10 +52,11 @@ void data_table::pushRow(const std::span<const char *> &cells)
 	    std::vector<dataframe::cell_value>{begin(cells), end(cells)});
 
 	for (const auto &dim : df.get_dimensions())
-		if (std::any_of(df.get_categories(dim).begin(),
-		        df.get_categories(dim).end(),
-		        std::bind_front(std::equal_to{}, "")))
-			df.fill_na(dim, "");
+		for (const auto &cat : df.get_categories(dim))
+			if (cat.empty()) {
+				df.fill_na(dim, "");
+				break;
+			}
 }
 
 std::string data_table::getInfos() const { return df.as_string(); }

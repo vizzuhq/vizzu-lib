@@ -369,18 +369,16 @@ std::vector<std::size_t> data_source::get_sorted_indices(
 
 void data_source::remove_records(std::span<const std::size_t> indices)
 {
-	const index_erase_if<false> indices_remover{indices};
+	auto indices_remover = index_erase_if{indices};
 	for (auto &&dim : dimensions) {
 		indices_remover(dim.values);
-		dim.contains_nav = std::any_of(dim.values.begin(),
-		    dim.values.end(),
-		    std::bind_front(std::equal_to{}, nav));
+		dim.contains_nav =
+		    std::any_of(dim.values.begin(), dim.values.end(), is_nav);
 	}
 	for (auto &&mea : measures) {
 		indices_remover(mea.values);
-		mea.contains_nan = std::any_of(mea.values.begin(),
-		    mea.values.end(),
-		    static_cast<bool (&)(double)>(std::isnan));
+		mea.contains_nan =
+		    std::any_of(mea.values.begin(), mea.values.end(), is_nan);
 	}
 }
 
@@ -474,9 +472,8 @@ data_source::data_source(aggregating_type &&aggregating,
 	}
 
 	for (auto &mea : measures)
-		mea.contains_nan = std::any_of(mea.values.begin(),
-		    mea.values.end(),
-		    static_cast<bool (&)(double)>(std::isnan));
+		mea.contains_nan =
+		    std::any_of(mea.values.begin(), mea.values.end(), is_nan);
 }
 
 data_source::data_source(
@@ -576,9 +573,8 @@ void data_source::dimension_t::add_more_data(
 	for (const auto val : new_values) values.emplace_back(remap[val]);
 
 	if (!contains_nav)
-		contains_nav = std::any_of(new_values.begin(),
-		    new_values.end(),
-		    std::bind_front(std::equal_to{}, nav));
+		contains_nav =
+		    std::any_of(new_values.begin(), new_values.end(), is_nav);
 }
 std::string_view data_source::dimension_t::get(
     std::size_t index) const

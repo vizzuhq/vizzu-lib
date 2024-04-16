@@ -18,36 +18,27 @@ std::shared_ptr<dataframe_interface> dataframe::copy(
     bool inherit_sorting) const &
 {
 	auto &&uptr = std::make_unique<dataframe_interface>();
-	auto my_deleter = [p = uptr.get()](dataframe *df)
+	void *&&data = uptr->data;
+	auto &&my_deleter = [data](dataframe *df)
 	{
 		df->~dataframe();
-		::operator delete(p, df);
+		::operator delete(data, df);
 	};
-	std::optional<std::unique_ptr<dataframe, decltype(my_deleter)>>
-	    newly{};
-	if (source == source_type::copying) {
-		const auto &cp = unsafe_get<source_type::copying>(source);
+	using ptr_t = std::unique_ptr<dataframe,
+	    std::remove_reference_t<decltype(my_deleter)>>;
 
-		newly.emplace(
-		    std::unique_ptr<dataframe, decltype(my_deleter)>{
-		        new (uptr->data) dataframe(cp.other,
-		            cp.pre_remove ? &*cp.pre_remove : nullptr,
-		            inherit_sorting && cp.sorted_indices
-		                ? &*cp.sorted_indices
-		                : nullptr),
-		        std::move(my_deleter)});
-	}
-	else {
-		newly.emplace(
-		    std::unique_ptr<dataframe, decltype(my_deleter)>{
-		        new (uptr->data)
-		            dataframe(unsafe_get<source_type::owning>(source),
-		                nullptr,
-		                nullptr),
-		        std::move(my_deleter)});
-	}
+	const auto *&&cp = get_if<source_type::copying>(&source);
 	return {uptr.release(),
-	    [newly = std::move(*newly)](dataframe_interface *df) mutable
+	    [newly = ptr_t{new (data) dataframe(
+	                       cp ? cp->other
+	                          : unsafe_get<source_type::owning>(
+	                              source),
+	                       cp && cp->pre_remove ? &*cp->pre_remove
+	                                            : nullptr,
+	                       cp && inherit_sorting && cp->sorted_indices
+	                           ? &*cp->sorted_indices
+	                           : nullptr),
+	         std::move(my_deleter)}](dataframe_interface *df) mutable
 	    {
 		    newly.reset();
 		    std::default_delete<dataframe_interface>{}(df);
@@ -502,9 +493,7 @@ void dataframe::remove_unused_categories(std::string_view column) &
 	case dimension:
 		usage =
 		    unsafe_get<dimension>(ser).second.get_categories_usage();
-		if (std::all_of(usage.begin(),
-		        usage.end(),
-		        std::bind_front(std::equal_to{}, true)))
+		if (std::all_of(usage.begin(), usage.end(), std::identity{}))
 			return;
 		break;
 	}

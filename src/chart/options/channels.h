@@ -5,7 +5,6 @@
 #include <functional>
 #include <vector>
 
-#include "base/type/uniquetype.h"
 #include "data/datacube/datacubeoptions.h"
 
 #include "channel.h"

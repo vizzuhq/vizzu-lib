@@ -53,7 +53,8 @@ public:
 
 			if (std::empty(range))
 				throw std::logic_error(
-				    path + ".*: non-existent style parameter(s)");
+				    path + ".*" + ": non-existent style parameter"
+				    + "(s)");
 
 			for (auto &e : range) e.second.fromString(params, value);
 		}

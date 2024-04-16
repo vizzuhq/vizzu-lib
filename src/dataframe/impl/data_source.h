@@ -27,6 +27,17 @@ private:
 	constexpr static double nan =
 	    std::numeric_limits<double>::quiet_NaN();
 
+	constexpr static auto is_nav = [](const std::uint32_t &v)
+	{
+		return v == nav;
+	};
+
+	constexpr static auto is_nan =
+	    [](const double &d) noexcept -> bool
+	{
+		return std::isnan(d);
+	};
+
 	struct dimension_t
 	{
 		std::vector<std::string> categories;
@@ -46,7 +57,7 @@ private:
 		    info(std::begin(info), std::end(info)),
 		    contains_nav{std::any_of(this->values.begin(),
 		        this->values.end(),
-		        std::bind_front(std::equal_to{}, nav))}
+		        is_nav)}
 		{}
 
 		void add_more_data(std::span<const char *const> categories,
@@ -87,7 +98,7 @@ private:
 		    info(std::begin(info), std::end(info)),
 		    contains_nan(std::any_of(this->values.begin(),
 		        this->values.end(),
-		        static_cast<bool (&)(double)>(std::isnan)))
+		        is_nan))
 		{}
 
 		[[nodiscard]] const double &get(std::size_t index) const;
