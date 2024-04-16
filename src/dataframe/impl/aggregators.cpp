@@ -19,12 +19,20 @@ inline bool is_valid(cell_value const &value)
 Refl::EnumArray<aggregator_type, custom_aggregator>
 get_aggregators() noexcept
 {
+	constinit static auto &&empty_double =
+	    []() -> custom_aggregator::id_type
+	{
+		return double{};
+	};
+	constinit static auto &&init_nan =
+	    []() -> custom_aggregator::id_type
+	{
+		return std::numeric_limits<double>::quiet_NaN();
+	};
+
 	auto &&aggrs = Refl::enum_names<aggregator_type>;
 	return {{{{aggrs[static_cast<std::size_t>(aggregator_type::sum)],
-	              []() -> custom_aggregator::id_type
-	              {
-		              return 0.0;
-	              },
+	              empty_double,
 	              [](custom_aggregator::id_type &id,
 	                  cell_value const &cell) -> double
 	              {
@@ -37,10 +45,7 @@ get_aggregators() noexcept
 		              return ref;
 	              }},
 	    {aggrs[static_cast<std::size_t>(aggregator_type::min)],
-	        []() -> custom_aggregator::id_type
-	        {
-		        return std::numeric_limits<double>::quiet_NaN();
-	        },
+	        init_nan,
 	        [](custom_aggregator::id_type &id,
 	            cell_value const &cell) -> double
 	        {
@@ -53,10 +58,7 @@ get_aggregators() noexcept
 		        return ref;
 	        }},
 	    {aggrs[static_cast<std::size_t>(aggregator_type::max)],
-	        []() -> custom_aggregator::id_type
-	        {
-		        return std::numeric_limits<double>::quiet_NaN();
-	        },
+	        init_nan,
 	        [](custom_aggregator::id_type &id,
 	            cell_value const &cell) -> double
 	        {
@@ -71,7 +73,7 @@ get_aggregators() noexcept
 	    {aggrs[static_cast<std::size_t>(aggregator_type::mean)],
 	        []() -> custom_aggregator::id_type
 	        {
-		        return std::pair<double, std::size_t>(0.0, 0);
+		        return std::pair<double, std::size_t>{};
 	        },
 	        [](custom_aggregator::id_type &id,
 	            cell_value const &cell) -> double
@@ -88,16 +90,13 @@ get_aggregators() noexcept
 		                          : sum / static_cast<double>(count);
 	        }},
 	    {aggrs[static_cast<std::size_t>(aggregator_type::count)],
-	        []() -> custom_aggregator::id_type
-	        {
-		        return std::size_t{};
-	        },
+	        empty_double,
 	        [](custom_aggregator::id_type &id,
 	            cell_value const &cell) -> double
 	        {
-		        auto &s = *std::any_cast<std::size_t>(&id);
+		        auto &s = *std::any_cast<double>(&id);
 		        if (is_valid(cell)) s += 1;
-		        return static_cast<double>(s);
+		        return s;
 	        }},
 	    {aggrs[static_cast<std::size_t>(aggregator_type::distinct)],
 	        []() -> custom_aggregator::id_type
@@ -115,16 +114,13 @@ get_aggregators() noexcept
 		        return static_cast<double>(set.size());
 	        }},
 	    {aggrs[static_cast<std::size_t>(aggregator_type::exists)],
-	        []() -> custom_aggregator::id_type
-	        {
-		        return bool{};
-	        },
+	        empty_double,
 	        [](custom_aggregator::id_type &id,
 	            cell_value const &cell) -> double
 	        {
-		        auto &b = *std::any_cast<bool>(&id);
-		        if (is_valid(cell)) b = true;
-		        return static_cast<double>(b);
+		        auto &b = *std::any_cast<double>(&id);
+		        if (is_valid(cell)) b = 1.0;
+		        return b;
 	        }}}}};
 }
 
