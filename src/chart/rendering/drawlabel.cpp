@@ -35,8 +35,14 @@ void DrawLabel::draw(Gfx::ICanvas &canvas,
 	if (options.alpha)
 		canvas.setTextColor(*style.color * *options.alpha);
 
+	auto copyRect = fullRect;
+
+	if (options.flip)
+		copyRect.transform *=
+		    Geom::AffineTransform(fullRect.size, 1.0, -M_PI);
+
 	if (onDraw.invoke(Events::OnTextDrawEvent{*eventTarget,
-	        fullRect,
+	        copyRect,
 	        paddedRect,
 	        alignConstant,
 	        text})) {
@@ -53,7 +59,7 @@ void DrawLabel::draw(Gfx::ICanvas &canvas,
 
 		canvas.text({{}, alignRect.size}, text);
 
-		renderedChart.emplace(fullRect, std::move(eventTarget));
+		renderedChart.emplace(copyRect, std::move(eventTarget));
 	}
 
 	canvas.restore();
