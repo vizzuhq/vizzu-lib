@@ -139,7 +139,7 @@ public:
 		return get_data_source().get_record_count();
 	}
 
-	[[nodiscard]] bool is_filtered(std::size_t record_id) const &;
+	[[nodiscard]] bool is_removed(std::size_t record_id) const &;
 
 	[[nodiscard]] std::string get_record_id_by_dims(
 	    std::size_t my_record,

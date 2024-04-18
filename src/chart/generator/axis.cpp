@@ -99,7 +99,7 @@ void DimensionAxis::setLabels(const Data::DataCube &data, double step)
 	double currStep = 0.0;
 
 	for (int curr{}; auto &[slice, item] : values) {
-		item.categoryValue = data.getValue(slice, "NA");
+		item.categoryValue = data.getValue(slice);
 
 		if (++curr <= currStep) continue;
 		currStep += step;

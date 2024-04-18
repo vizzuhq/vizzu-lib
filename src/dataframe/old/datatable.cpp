@@ -87,20 +87,15 @@ bool slice_index_t::operator<(slice_index_t const &rhs) const
 
 bool slice_index_t::operator==(const slice_index_t &rhs) const
 {
-	return orig_index == rhs.orig_index
-	    && orig_value == rhs.orig_value;
+	return orig_index == rhs.orig_index;
 }
 
-bool data_cube_t::multi_index_t::empty() const
+bool data_cube_t::multi_index_t::has_dimension() const
 {
-	return parent->df->get_dimensions().empty();
+	return !parent->df->get_dimensions().empty();
 }
 
-bool data_cube_t::multi_index_t::isEmpty() const
-{
-	return !rid || parent->df->get_record_count() == 0
-	    || parent->df->is_filtered(*rid);
-}
+bool data_cube_t::multi_index_t::isEmpty() const { return !rid; }
 
 bool data_cube_t::Id::operator==(const Id &id) const
 {
@@ -159,7 +154,9 @@ data_cube_t::multi_index_t
 data_cube_t::data_t::iterator_t::operator*() const
 {
 	return {parent,
-	    found ? std::make_optional(rid) : std::nullopt,
+	    found && !parent->df->is_removed(rid)
+	        ? std::make_optional(rid)
+	        : std::nullopt,
 	    parent->get_indices(old)};
 }
 
@@ -240,14 +237,6 @@ data_cube_t::data_cube_t(const data_table &table,
 		    df->set_aggregate(sid, aggr));
 	}
 
-	if (options.getMeasures().empty()
-	    && !options.getDimensions().empty()) {
-		auto &&unkn = std::string_view{};
-		auto &&aggr = dataframe::aggregator_type::exists;
-		measure_names.try_emplace(std::pair{unkn, aggr},
-		    df->set_aggregate(unkn, aggr));
-	}
-
 	for (const auto &dim : options.getDimensions()) {
 		df->set_sort(dim.getColIndex(),
 		    dataframe::sort_type::by_categories,
@@ -256,6 +245,11 @@ data_cube_t::data_cube_t(const data_table &table,
 
 	df->finalize();
 
+	if (options.getDimensions().empty()
+	    && options.getMeasures().empty())
+		return;
+
+	data.full_size = 1;
 	auto it = data.dim_reindex.begin();
 	for (auto sizIt = data.sizes.begin();
 	     const auto &dim : options.getDimensions()) {
@@ -263,16 +257,9 @@ data_cube_t::data_cube_t(const data_table &table,
 		*it++ = *std::lower_bound(df->get_dimensions().begin(),
 		    df->get_dimensions().end(),
 		    dimName);
-		*sizIt++ =
+		data.full_size *= *sizIt++ =
 		    df->get_categories(dimName).size() + df->has_na(dimName);
 	}
-
-	if (!options.getMeasures().empty()
-	    || !options.getDimensions().empty())
-		data.full_size = std::reduce(data.sizes.begin(),
-		    data.sizes.end(),
-		    std::size_t{1},
-		    std::multiplies{});
 }
 
 size_t data_cube_t::combinedSizeOf(
@@ -286,22 +273,14 @@ size_t data_cube_t::combinedSizeOf(
 	return my_res;
 }
 
-size_t data_cube_t::subCellSize() const
+bool data_cube_t::empty() const
 {
-	return df->get_measures().size();
+	return df->get_measures().empty() && df->get_dimensions().empty();
 }
 
-std::string data_cube_t::getValue(const slice_index_t &index,
-    std::string &&def) const
+std::string data_cube_t::getValue(const slice_index_t &index) const
 {
-	auto my_res = index.value;
-	if (my_res.data() == nullptr) {
-		if (df->has_na(index.column)) { my_res = ""; }
-		else {
-			my_res = def;
-		}
-	}
-	return std::string{my_res};
+	return std::string{index.value};
 }
 
 const std::string &data_cube_t::getName(
@@ -374,13 +353,11 @@ data_cube_t::CellInfo data_cube_t::cellInfo(
 
 	if (index.rid)
 		for (auto &&meas : df->get_measures()) {
-			if (meas == "exists()") continue;
 			my_res.values[meas] = std::get<double>(
 			    index.parent->df->get_data(*index.rid, meas));
 		}
 	else
 		for (auto &&meas : df->get_measures()) {
-			if (meas == "exists()") continue;
 			my_res.values[meas] = 0.0;
 		}
 

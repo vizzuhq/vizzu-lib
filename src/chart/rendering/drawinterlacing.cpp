@@ -295,7 +295,7 @@ void DrawInterlacing::drawDataLabel(
 			                static_cast<size_t>(
 			                    *labelStyle.maxFractionDigits),
 			                *labelStyle.numberScale,
-			                std::string{wUnit.value});
+			                wUnit.value);
 			        drawLabel.draw(canvas,
 			            str,
 			            posDir,

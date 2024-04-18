@@ -11,7 +11,7 @@ Marker::Marker(const Options &options,
     const Data::DataCube::MultiIndex &index,
     size_t idx) :
     index(index),
-    enabled(data.subCellSize() == 0 || !index.isEmpty()),
+    enabled(data.empty() || !index.isEmpty()),
     cellInfo(data.cellInfo(index)),
     sizeId(data.getId(
         options.getChannels().at(ChannelId::size).dimensionIds,

@@ -463,7 +463,7 @@ void dataframe::remove_records(
 	std::vector<std::size_t> remove_ix;
 
 	for (std::size_t i{}, max = get_record_count(); i < max; ++i)
-		if (!is_filtered(i) && !filter({as_if(), i}))
+		if (!is_removed(i) && !filter({as_if(), i}))
 			remove_ix.push_back(i);
 
 	change_state_to(state_type::modifying,
@@ -695,7 +695,7 @@ cell_value dataframe::get_data(record_identifier record_id,
 	return s.get_data(ix, column);
 }
 
-bool dataframe::is_filtered(std::size_t record_id) const &
+bool dataframe::is_removed(std::size_t record_id) const &
 {
 	const auto *cp = get_if<source_type::copying>(&source);
 	return cp && cp->pre_remove && (*cp->pre_remove)[record_id];

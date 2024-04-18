@@ -37,7 +37,7 @@ Plot::MarkerInfoContent::MarkerInfoContent(const Marker &marker,
     const Data::DataCube *dataCube)
 {
 	const auto &index = marker.index;
-	if (dataCube && dataCube->getTable() && !index.empty()) {
+	if (dataCube && dataCube->getTable() && index.has_dimension()) {
 		markerId = marker.idx;
 		auto &&dataCellInfo = dataCube->cellInfo(index);
 		content.assign(std::begin(dataCellInfo.categories),

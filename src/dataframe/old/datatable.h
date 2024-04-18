@@ -148,7 +148,7 @@ public:
 			std::optional<std::size_t> rid;
 			std::vector<std::size_t> old;
 
-			[[nodiscard]] bool empty() const;
+			[[nodiscard]] bool has_dimension() const;
 
 			[[nodiscard]] bool isEmpty() const;
 		};
@@ -209,7 +209,7 @@ public:
 	[[nodiscard]] size_t combinedSizeOf(
 	    const series_index_list_t &colIndices) const;
 
-	[[nodiscard]] size_t subCellSize() const;
+	[[nodiscard]] bool empty() const;
 
 	[[nodiscard]] const data_t &getData() const { return data; }
 
@@ -227,8 +227,8 @@ public:
 	[[nodiscard]] Id getId(const series_index_list_t &,
 	    const multi_index_t &) const;
 
-	[[nodiscard]] std::string getValue(const slice_index_t &index,
-	    std::string &&def = "") const;
+	[[nodiscard]] std::string getValue(
+	    const slice_index_t &index) const;
 
 	[[nodiscard]] const std::string &getName(
 	    const series_index_t &seriesId) const;

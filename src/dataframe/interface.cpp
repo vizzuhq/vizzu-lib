@@ -170,9 +170,9 @@ std::string_view dataframe_interface::get_series_info(
 	return as_impl(this).get_series_info(id, key);
 }
 
-bool dataframe_interface::is_filtered(std::size_t record_id) const &
+bool dataframe_interface::is_removed(std::size_t record_id) const &
 {
-	return as_impl(this).is_filtered(record_id);
+	return as_impl(this).is_removed(record_id);
 }
 
 std::string dataframe_interface::get_record_id_by_dims(
