@@ -24,7 +24,8 @@ void DrawLabel::draw(Gfx::ICanvas &canvas,
 	}
 
 	auto font = Gfx::Font{style};
-	auto paddedRect = style.contentRect(relativeRect, font.size);
+	auto paddedRect =
+	    style.contentRect(relativeRect, font.size, options.flip);
 	auto [alignRect, alignConstant] = alignText(paddedRect,
 	    style,
 	    Gfx::ICanvas::textBoundary(font, text));
@@ -35,25 +36,27 @@ void DrawLabel::draw(Gfx::ICanvas &canvas,
 	if (options.alpha)
 		canvas.setTextColor(*style.color * *options.alpha);
 
+	auto copyRect = fullRect;
+
+	if (options.flip)
+		copyRect.transform *=
+		    Geom::AffineTransform(fullRect.size, 1.0, -M_PI);
+
 	if (onDraw.invoke(Events::OnTextDrawEvent{*eventTarget,
-	        fullRect,
+	        copyRect,
 	        paddedRect,
 	        alignConstant,
 	        text})) {
 
 		auto textTransform =
-		    fullRect.transform
+		    copyRect.transform
 		    * Geom::AffineTransform(alignRect.bottomLeft());
-
-		if (options.flip)
-			textTransform *=
-			    Geom::AffineTransform(alignRect.size, 1.0, -M_PI);
 
 		canvas.transform(textTransform);
 
 		canvas.text({{}, alignRect.size}, text);
 
-		renderedChart.emplace(fullRect, std::move(eventTarget));
+		renderedChart.emplace(copyRect, std::move(eventTarget));
 	}
 
 	canvas.restore();
