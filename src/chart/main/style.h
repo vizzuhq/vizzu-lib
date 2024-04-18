@@ -49,10 +49,13 @@ struct Padding
 	}
 
 	[[nodiscard]] Geom::Rect contentRect(const Geom::Rect &rect,
-	    double fontSize) const
+	    double fontSize,
+	    bool flip = false) const
 	{
 		auto margin = toMargin(rect.size, fontSize);
-		return {rect.pos + margin.topLeft(),
+		return {
+		    rect.pos
+		        + (flip ? margin.bottomRight() : margin.topLeft()),
 		    Geom::Size(rect.size - margin.getSpace()).positive()};
 	}
 

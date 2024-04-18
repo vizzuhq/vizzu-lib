@@ -24,7 +24,8 @@ void DrawLabel::draw(Gfx::ICanvas &canvas,
 	}
 
 	auto font = Gfx::Font{style};
-	auto paddedRect = style.contentRect(relativeRect, font.size);
+	auto paddedRect =
+	    style.contentRect(relativeRect, font.size, options.flip);
 	auto [alignRect, alignConstant] = alignText(paddedRect,
 	    style,
 	    Gfx::ICanvas::textBoundary(font, text));
@@ -48,12 +49,8 @@ void DrawLabel::draw(Gfx::ICanvas &canvas,
 	        text})) {
 
 		auto textTransform =
-		    fullRect.transform
+		    copyRect.transform
 		    * Geom::AffineTransform(alignRect.bottomLeft());
-
-		if (options.flip)
-			textTransform *=
-			    Geom::AffineTransform(alignRect.size, 1.0, -M_PI);
 
 		canvas.transform(textTransform);
 
