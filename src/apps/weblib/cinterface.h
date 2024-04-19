@@ -6,7 +6,7 @@
 
 namespace Vizzu::Data
 {
-class RowWrapper;
+struct RowWrapper;
 }
 
 namespace APIHandles

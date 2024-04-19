@@ -4,7 +4,8 @@ file(GLOB_RECURSE sources CONFIGURE_DEPENDS
 	${root}/plugin/*.cpp
 	${root}/src/base/*.cpp
 	${root}/src/data/*.cpp
-	${root}/src/chart/*.cpp)
+	${root}/src/chart/*.cpp
+	${root}/src/dataframe/*.cpp)
 
 include(../version.txt)
 
@@ -14,7 +15,8 @@ file(GLOB_RECURSE headers CONFIGURE_DEPENDS
 	${root}/src/data/*.h
 	${root}/src/data/*.inc
 	${root}/src/chart/*.h
-	${root}/src/chart/*.inc)
+	${root}/src/chart/*.inc
+	${root}/src/dataframe/*.h)
 
 add_library(vizzulib ${sources})
 

@@ -124,9 +124,8 @@ void Options::intersection(const Options &other)
 	auto dimensions = getChannels().getDimensions();
 
 	for (const auto &dim : dimensions)
-		if (!other.getChannels().isSeriesUsed(dim)) {
+		if (!other.getChannels().isSeriesUsed(dim))
 			getChannels().removeSeries(dim);
-		}
 }
 
 bool Options::looksTheSame(const Options &other) const
@@ -278,7 +277,7 @@ std::optional<Options::LegendId> Options::getAutoLegend() const
 	auto series = channels.getDimensions();
 	series.merge(channels.getMeasures());
 
-	for (auto id : channels.at(ChannelId::label).dimensionIds)
+	for (const auto &id : channels.at(ChannelId::label).dimensionIds)
 		series.erase(id);
 
 	if (channels.at(ChannelId::label).measureId)
@@ -290,7 +289,8 @@ std::optional<Options::LegendId> Options::getAutoLegend() const
 	}
 
 	for (auto channelId : {LegendId::color, LegendId::lightness})
-		for (auto id : channels.at(toChannel(channelId)).dimensionIds)
+		for (const auto &id :
+		    channels.at(toChannel(channelId)).dimensionIds)
 			if (series.contains(id)) return channelId;
 
 	for (auto channelId :

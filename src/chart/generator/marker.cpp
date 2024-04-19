@@ -11,8 +11,7 @@ Marker::Marker(const Options &options,
     const Data::DataCube::MultiIndex &index,
     size_t idx) :
     index(index),
-    enabled(data.subCellSize() == 0
-            || !data.getData().at(index).isEmpty()),
+    enabled(data.empty() || !index.isEmpty()),
     cellInfo(data.cellInfo(index)),
     sizeId(data.getId(
         options.getChannels().at(ChannelId::size).dimensionIds,
@@ -169,23 +168,24 @@ double Marker::getValueForChannel(const Channels &channels,
 
 	if (subChannel) {
 		if (inhibitStack) {
-			for (auto id : subChannel->dimensionIds)
+			for (const auto &id : subChannel->dimensionIds)
 				if (channel.isSeriesUsed(id)) sumBy.pushBack(id);
 		}
 		else {
 			sumBy = subChannel->dimensionIds;
-			for (auto id : channel.dimensionIds) sumBy.remove(id);
+			for (const auto &id : channel.dimensionIds)
+				sumBy.remove(id);
 		}
 	}
 
 	auto measure = channel.measureId;
 
 	double value{};
-	auto id = data.getId(channel.dimensionIds, index);
 
 	auto &stat = stats.channels[type];
 
 	if (channel.isDimension()) {
+		auto id = data.getId(channel.dimensionIds, index);
 		if (channel.stackable)
 			value = 1.0;
 		else
@@ -195,9 +195,9 @@ double Marker::getValueForChannel(const Channels &channels,
 	}
 	else {
 		if (channel.stackable)
-			value = double{data.aggregateAt(index, sumBy, *measure)};
+			value = data.aggregateAt(index, sumBy, *measure);
 		else
-			value = double{data.valueAt(index, *measure)};
+			value = data.valueAt(index, *measure);
 
 		if (enabled) { stat.track(value); }
 	}
@@ -241,9 +241,7 @@ Marker::Label::Label(double value,
     std::string &&indexStr) :
     value(value),
     measureId(measure.getColIndex()),
-    unit(measureId
-             ? data.getTable()->getInfo(measureId.value()).getUnit()
-             : ""),
+    unit(data.getTable()->getUnit(measureId)),
     indexStr(std::move(indexStr))
 {}
 
@@ -262,7 +260,7 @@ std::string Marker::Label::getIndexString(const Data::DataCube &data,
 	for (const auto &sliceIndex :
 	    data.getId(series, index).itemSliceIndex) {
 		if (!res.empty()) res += ", ";
-		res += data.getValue(sliceIndex);
+		res += Data::DataCube::getValue(sliceIndex);
 	}
 	return res;
 }

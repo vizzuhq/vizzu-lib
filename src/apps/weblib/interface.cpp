@@ -166,19 +166,18 @@ void Interface::canvasToRelCoords(ObjectRegistry::Handle chart,
 void Interface::setChartFilter(ObjectRegistry::Handle chart,
     JsFunctionWrapper<bool, const Data::RowWrapper &> &&filter)
 {
-	const auto hash = filter.hash();
-	getChart(chart)->getOptions().dataFilter = {std::move(filter),
-	    hash};
+	if (filter)
+		getChart(chart)->getOptions().dataFilter =
+		    Data::Filter{std::move(filter)};
+	else
+		getChart(chart)->getOptions().dataFilter = {};
 }
 
-std::variant<const char *, double> Interface::getRecordValue(
+std::variant<double, std::string_view> Interface::getRecordValue(
     const Data::RowWrapper &record,
     const char *column)
 {
-	auto cell = record[column];
-	if (cell.isDimension()) return cell.dimensionValue();
-
-	return *cell;
+	return record.get_value(column);
 }
 
 void Interface::addEventListener(ObjectRegistry::Handle chart,

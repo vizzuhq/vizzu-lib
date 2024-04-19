@@ -246,8 +246,8 @@ std::string Config::getChannelParam(const std::string &path) const
 	const auto &channel = options.get().getChannels().at(id);
 
 	if (property == "set") {
-		auto list = channel.dimensionNames(table);
-		auto measure = channel.measureName(table);
+		auto list = channel.dimensionNames();
+		auto measure = channel.measureName();
 		if (!measure.empty()) list.push_front(measure);
 		return Conv::toJSON(list);
 	}

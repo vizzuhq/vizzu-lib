@@ -116,15 +116,16 @@ consteval auto get_names(std::index_sequence<Ix...> = {})
 
 template <class E> constexpr std::array enum_names = get_names<E>();
 
-template <class E> std::string enum_name(E name)
+template <class Type = std::string_view, class E>
+Type enum_name(E name)
 {
 	constexpr auto first = Detail::from_to<E, 0, 0>().first;
 	constexpr auto n = std::size(enum_names<E>);
 	if (static_cast<std::size_t>(
 	        static_cast<Detail::real_t<E>>(name) - first)
 	    < n) {
-		auto sv = enum_names<E>[static_cast<Detail::real_t<E>>(name)
-		                        - first];
+		auto &&sv = enum_names<E>[static_cast<Detail::real_t<E>>(name)
+		                          - first];
 		return {sv.data(), sv.size()};
 	}
 	error_str(static_cast<std::intptr_t>(name),
@@ -216,13 +217,13 @@ constexpr decltype(auto) unsafe_get(
 template <class T, class E, class... Args>
 constexpr decltype(auto) unsafe_get(EnumVariant<E, Args...> const &e)
 {
-	return *std::get_if<T>(e);
+	return *std::get_if<T>(&e);
 }
 
 template <class T, class E, class... Args>
 constexpr decltype(auto) unsafe_get(EnumVariant<E, Args...> &e)
 {
-	return *std::get_if<T>(e);
+	return *std::get_if<T>(&e);
 }
 
 template <auto E, class... Args>

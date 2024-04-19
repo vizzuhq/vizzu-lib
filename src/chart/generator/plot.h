@@ -127,12 +127,10 @@ private:
 	void generateMarkersInfo();
 	bool linkMarkers(const Buckets &buckets, bool main);
 	void normalizeXY();
-	void calcMeasureAxises(const Data::DataTable &dataTable);
-	void calcMeasureAxis(ChannelId type,
-	    const Data::DataTable &dataTable);
-	void calcDimensionAxises(const Data::DataTable &table);
-	void calcDimensionAxis(ChannelId type,
-	    const Data::DataTable &table);
+	void calcMeasureAxises();
+	void calcMeasureAxis(ChannelId type);
+	void calcDimensionAxises();
+	void calcDimensionAxis(ChannelId type);
 	void addAlignment();
 	void addSeparation();
 	void normalizeSizes();

@@ -12,7 +12,6 @@
 #include "base/math/fuzzybool.h"
 #include "base/math/range.h"
 #include "data/datacube/datafilter.h"
-#include "data/multidim/multidimindex.h"
 #include "data/table/datatable.h"
 
 #include "align.h"

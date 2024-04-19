@@ -11,7 +11,6 @@
 #include "base/math/range.h"
 #include "chart/options/channel.h"
 #include "data/datacube/datacube.h"
-#include "data/multidim/multidimindex.h"
 #include "data/table/datatable.h"
 
 #include "colorbase.h"
@@ -69,7 +68,7 @@ struct MeasureAxis
 	::Anim::Interpolated<double> step{1.0};
 	MeasureAxis() = default;
 	MeasureAxis(Math::Range<double> interval,
-	    std::string unit,
+	    std::string &&unit,
 	    std::optional<double> step);
 	bool operator==(const MeasureAxis &other) const;
 	[[nodiscard]] double origo() const;
@@ -158,7 +157,7 @@ public:
 	{
 		return values.cend();
 	}
-	void setLabels(const Data::DataCube &data, double step);
+	void setLabels(double step);
 
 private:
 	Values values;
