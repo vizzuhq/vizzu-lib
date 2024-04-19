@@ -227,8 +227,8 @@ public:
 	[[nodiscard]] Id getId(const series_index_list_t &,
 	    const multi_index_t &) const;
 
-	[[nodiscard]] std::string getValue(
-	    const slice_index_t &index) const;
+	[[nodiscard]] static std::string getValue(
+	    const slice_index_t &index);
 
 	[[nodiscard]] const std::string &getName(
 	    const series_index_t &seriesId) const;

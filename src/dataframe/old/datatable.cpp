@@ -278,7 +278,7 @@ bool data_cube_t::empty() const
 	return df->get_measures().empty() && df->get_dimensions().empty();
 }
 
-std::string data_cube_t::getValue(const slice_index_t &index) const
+std::string data_cube_t::getValue(const slice_index_t &index)
 {
 	return std::string{index.value};
 }

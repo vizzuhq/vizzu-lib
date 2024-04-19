@@ -93,13 +93,13 @@ bool DimensionAxis::operator==(const DimensionAxis &other) const
 	return enabled == other.enabled && values == other.values;
 }
 
-void DimensionAxis::setLabels(const Data::DataCube &data, double step)
+void DimensionAxis::setLabels(double step)
 {
 	step = std::max(step, 1.0);
 	double currStep = 0.0;
 
 	for (int curr{}; auto &[slice, item] : values) {
-		item.categoryValue = data.getValue(slice);
+		item.categoryValue = Data::DataCube::getValue(slice);
 
 		if (++curr <= currStep) continue;
 		currStep += step;

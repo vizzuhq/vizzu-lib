@@ -260,7 +260,7 @@ std::string Marker::Label::getIndexString(const Data::DataCube &data,
 	for (const auto &sliceIndex :
 	    data.getId(series, index).itemSliceIndex) {
 		if (!res.empty()) res += ", ";
-		res += data.getValue(sliceIndex);
+		res += Data::DataCube::getValue(sliceIndex);
 	}
 	return res;
 }

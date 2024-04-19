@@ -157,7 +157,7 @@ public:
 	{
 		return values.cend();
 	}
-	void setLabels(const Data::DataCube &data, double step);
+	void setLabels(double step);
 
 private:
 	Values values;

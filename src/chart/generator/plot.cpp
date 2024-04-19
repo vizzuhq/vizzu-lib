@@ -380,8 +380,7 @@ void Plot::calcDimensionAxis(ChannelId type)
 			        dim == 0))
 				count += 1;
 	}
-	axis.setLabels(getDataCube(),
-	    isTypeAxis ? scale.step.getValue(1.0) : 1.0);
+	axis.setLabels(isTypeAxis ? scale.step.getValue(1.0) : 1.0);
 
 	if (auto &&series = scale.labelSeries())
 		axis.category = series.value().getColIndex();
