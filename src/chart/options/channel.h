@@ -52,9 +52,9 @@ public:
 	[[nodiscard]] OptionalIndex labelSeries() const;
 	bool operator==(const Channel &other) const;
 
-	Type type;
-	double defaultValue;
-	bool stackable;
+	Type type{};
+	double defaultValue{};
+	bool stackable{};
 	OptionalIndex measureId{};
 	DimensionIndices dimensionIds{};
 	ChannelRange range{};
