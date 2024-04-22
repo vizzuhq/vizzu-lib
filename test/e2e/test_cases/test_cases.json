@@ -113,7 +113,7 @@
 			"refs": ["00f7b3e"]
 		},
 		"basic_animations/someOtherTests/merge_split_area_stream_2dis_1con": {
-			"refs": ["940d210"]
+			"refs": ["b73c7d8"]
 		},
 		"basic_animations/someOtherTests/total_time_area_bar": {
 			"refs": ["4503ca5"]
@@ -128,16 +128,16 @@
 			"refs": ["a28a3b8"]
 		},
 		"chart_precision/area_negative_x": {
-			"refs": ["7b8bffc"]
+			"refs": ["2289d82"]
 		},
 		"chart_precision/area_negative_y": {
-			"refs": ["3d11d78"]
+			"refs": ["9733d31"]
 		},
 		"chart_precision/area_x": {
-			"refs": ["39d462f"]
+			"refs": ["68d7031"]
 		},
 		"chart_precision/area_y": {
-			"refs": ["66772c7"]
+			"refs": ["e15af08"]
 		},
 		"chart_precision/bubble": {
 			"refs": ["17230b5"]
@@ -179,7 +179,7 @@
 			"refs": ["eef87c9"]
 		},
 		"chart_precision/treemap": {
-			"refs": ["0061505"]
+			"refs": ["1276129"]
 		},
 		"color_palettes/color_conti_gradient": {
 			"refs": ["42fb179"]
@@ -221,46 +221,46 @@
 			"refs": ["df703f1"]
 		},
 		"operations/all_operations": {
-			"refs": ["4263129"]
+			"refs": ["44c1ca2"]
 		},
 		"operations/all_operations_sizeing": {
-			"refs": ["cc900b8"]
+			"refs": ["f528eaa"]
 		},
 		"operations/drilldown_aggregate_tutorial_data/area_drilldown_aggregate": {
-			"refs": ["8f3c3b6"]
+			"refs": ["352c18c"]
 		},
 		"operations/drilldown_aggregate_tutorial_data/circle_drilldown_aggregate": {
 			"refs": ["a423365"]
 		},
 		"operations/drilldown_aggregate_tutorial_data/circle_drilldown_aggregate_bubble": {
-			"refs": ["d5dacd9"]
+			"refs": ["c5d84b3"]
 		},
 		"operations/drilldown_aggregate_tutorial_data/line_drilldown_aggregate_x": {
-			"refs": ["38e0f94"]
+			"refs": ["4e36487"]
 		},
 		"operations/drilldown_aggregate_tutorial_data/line_drilldown_aggregate_y": {
-			"refs": ["5e49f4e"]
+			"refs": ["b5aba4d"]
 		},
 		"operations/drilldown_aggregate_tutorial_data/rectangle_drilldown_aggregate_X": {
-			"refs": ["3265d36"]
+			"refs": ["de9c16d"]
 		},
 		"operations/drilldown_aggregate_tutorial_data/rectangle_drilldown_aggregate_Y": {
-			"refs": ["b14dc97"]
+			"refs": ["8f7ba74"]
 		},
 		"operations/drilldown_aggregate_tutorial_data/rectangle_drilldown_aggregate_treemap": {
-			"refs": ["5bfecc2"]
+			"refs": ["cf7fb10"]
 		},
 		"operations/filter_tutorial_data/area_filter_x": {
-			"refs": ["25cc4ed"]
+			"refs": ["2fa2325"]
 		},
 		"operations/filter_tutorial_data/area_filter_y": {
-			"refs": ["501cb83"]
+			"refs": ["a1b740e"]
 		},
 		"operations/filter_tutorial_data/circle_filter": {
-			"refs": ["92a7475"]
+			"refs": ["21a3429"]
 		},
 		"operations/filter_tutorial_data/circle_filter_bubble": {
-			"refs": ["8620cfc"]
+			"refs": ["603bce9"]
 		},
 		"operations/filter_tutorial_data/filter_off_anim": {
 			"refs": ["c48435b"]
@@ -272,7 +272,7 @@
 			"refs": ["f78e156"]
 		},
 		"operations/filter_tutorial_data/rectangle_filter_treemap": {
-			"refs": ["7f5a115"]
+			"refs": ["4688ea6"]
 		},
 		"operations/filter_tutorial_data/rectangle_filter_x": {
 			"refs": ["95625ae"]
@@ -281,22 +281,22 @@
 			"refs": ["574aec3"]
 		},
 		"operations/group_stack_tutorial_data/area_group_stack": {
-			"refs": ["fbd3063"]
+			"refs": ["0979011"]
 		},
 		"operations/group_stack_tutorial_data/bubble_group_stack": {
-			"refs": ["36813ef"]
+			"refs": ["f1620f5"]
 		},
 		"operations/group_stack_tutorial_data/line_group_stack": {
 			"refs": ["a8ed21b"]
 		},
 		"operations/group_stack_tutorial_data/treemap_group_stack": {
-			"refs": ["fc6a0ae"]
+			"refs": ["e5bfc8f"]
 		},
 		"operations/histogram_2_drilldown_negative_1dis_1con": {
 			"refs": ["8b3e947"]
 		},
 		"operations/orientation_tutorial_data/area_orientation": {
-			"refs": ["b61766f"]
+			"refs": ["0e38488"]
 		},
 		"operations/orientation_tutorial_data/line_orientation": {
 			"refs": ["50dcc9e"]
@@ -305,13 +305,13 @@
 			"refs": ["5af7144"]
 		},
 		"operations/split_merge_tutorial_data/area_split_merge": {
-			"refs": ["6684e0d"]
+			"refs": ["747bd7d"]
 		},
 		"operations/split_merge_tutorial_data/circle_split_merge": {
 			"refs": ["bb1ddf8"]
 		},
 		"operations/split_merge_tutorial_data/line_split_merge": {
-			"refs": ["a2de32c"]
+			"refs": ["ca88403"]
 		},
 		"operations/split_merge_tutorial_data/rectangle_split_merge": {
 			"refs": ["ab5615c"]
@@ -506,7 +506,7 @@
 			"refs": ["4d04d20"]
 		},
 		"web_content/analytical_operations/compare/stream_stacked": {
-			"refs": ["13a4f7f"]
+			"refs": ["dc6c569"]
 		},
 		"web_content/analytical_operations/compare/waterfall": {
 			"refs": ["16a3b23"]
@@ -620,10 +620,10 @@
 			"refs": ["6c85e42"]
 		},
 		"web_content/analytical_operations/filter/stream_1": {
-			"refs": ["9d5e039"]
+			"refs": ["f9c6765"]
 		},
 		"web_content/analytical_operations/filter/stream_2": {
-			"refs": ["42eb797"]
+			"refs": ["168ed06"]
 		},
 		"web_content/analytical_operations/misc/donut_to_coxcomb": {
 			"refs": ["0c8aacf"]
@@ -770,13 +770,13 @@
 			"refs": ["b77d3f6"]
 		},
 		"web_content/analytical_operations/sum/stream_stacked": {
-			"refs": ["28bf2a4"]
+			"refs": ["5653a31"]
 		},
 		"web_content/analytical_operations/sum/treemap": {
 			"refs": ["8e26c09"]
 		},
 		"web_content_removed/animated/composition_comparison_pie_coxcomb_column_2dis_2con": {
-			"refs": ["bccd4e0"]
+			"refs": ["c4b0808"]
 		},
 		"web_content_removed/animated/composition_comparison_waterfall_column_2dis_1con": {
 			"refs": ["3a1a33b"]
@@ -818,7 +818,7 @@
 			"refs": ["176fbdc"]
 		},
 		"web_content_removed/animated/orientation_rectangle": {
-			"refs": ["24c160b"]
+			"refs": ["ec0a978"]
 		},
 		"web_content_removed/animated/pie_donut2_rectangle_1dis_1con": {
 			"refs": ["0554a81"]
@@ -830,7 +830,7 @@
 			"refs": ["ae768b7"]
 		},
 		"web_content_removed/animated/stack_group_area_line": {
-			"refs": ["1e70ec5"]
+			"refs": ["9e37179"]
 		},
 		"web_content_removed/animated/stack_group_circle": {
 			"refs": ["0ef1d45"]
@@ -860,7 +860,7 @@
 			"refs": ["d4c57f3"]
 		},
 		"web_content/infinite": {
-			"refs": ["dba7ea0"]
+			"refs": ["139f24d"]
 		},
 		"web_content/presets/chart/column": {
 			"refs": ["6ba52a1"]
@@ -923,10 +923,10 @@
 			"refs": ["379b15d"]
 		},
 		"web_content/presets/graph/stream": {
-			"refs": ["615796b"]
+			"refs": ["bced6d6"]
 		},
 		"web_content/presets/graph/stream_vertical": {
-			"refs": ["61c1430"]
+			"refs": ["f4db690"]
 		},
 		"web_content/presets/graph/violin": {
 			"refs": ["2931418"]
@@ -2456,7 +2456,7 @@
 			"refs": ["6843bbc"]
 		},
 		"ww_noFade/wNoFade_Tests/Marker_transition_problem/area_orientation": {
-			"refs": ["e7bfa6b"]
+			"refs": ["d50f18c"]
 		},
 		"ww_noFade/wNoFade_Tests/Marker_transition_problem/line_bar_time_sum": {
 			"refs": ["5b41e4d"]
@@ -2465,16 +2465,16 @@
 			"refs": ["891a725"]
 		},
 		"ww_noFade/wNoFade_Tests/Marker_transition_problem/line_drilldown_aggregate_x": {
-			"refs": ["2b10dd6"]
+			"refs": ["4690e8a"]
 		},
 		"ww_noFade/wNoFade_Tests/Marker_transition_problem/line_orientation": {
-			"refs": ["9ca8a56"]
+			"refs": ["93a960d"]
 		},
 		"ww_noFade/wNoFade_Tests/Marker_transition_problem/line_tooltip_test": {
 			"refs": ["74c6b0e"]
 		},
 		"ww_noFade/wNoFade_Tests/noFade_AND_Marker_transition_problem/pie_coxcomb_drilldown": {
-			"refs": ["591692c"]
+			"refs": ["70ea3f0"]
 		},
 		"ww_noFade/wNoFade_Tests/1_des_pol/area/03_are": {
 			"refs": ["dc4b216"]
@@ -3065,10 +3065,10 @@
 			"refs": ["048bcc1"]
 		},
 		"ww_samples_for_presets/cartesian_coo_sys/32_C_A_stream_graph": {
-			"refs": ["3495268"]
+			"refs": ["faaafd9"]
 		},
 		"ww_samples_for_presets/cartesian_coo_sys/33_C_A_stream_graph_vert": {
-			"refs": ["0146778"]
+			"refs": ["a90ae69"]
 		},
 		"ww_samples_for_presets/cartesian_coo_sys/34_C_A_violin_graph": {
 			"refs": ["5549c4b"]
@@ -3077,7 +3077,7 @@
 			"refs": ["266a0d4"]
 		},
 		"ww_samples_for_presets/cartesian_coo_sys/36_C_A_range_area_chart": {
-			"refs": ["afdce6c"]
+			"refs": ["b66408d"]
 		},
 		"ww_samples_for_presets/cartesian_coo_sys/371_C_L_line_chart_nega": {
 			"refs": ["fac2855"]
@@ -3131,7 +3131,7 @@
 			"refs": ["72b6aab"]
 		},
 		"ww_samples_for_presets/polar_coo_sys/551_P_A_polar_stream_graph": {
-			"refs": ["1eb4d01"]
+			"refs": ["e154140"]
 		},
 		"ww_samples_for_presets/polar_coo_sys/55_P_A_polar_overlay_area_chart": {
 			"refs": ["e2c10b8"]
@@ -3206,7 +3206,7 @@
 			"refs": ["18079a9"]
 		},
 		"web_content/cookbook/chart_types/network_graph": {
-			"refs": ["ae6af16"]
+			"refs": ["4c1f6f2"]
 		},
 		"web_content/cookbook/chart_types/step_line_chart": {
 			"refs": ["42f7276"]

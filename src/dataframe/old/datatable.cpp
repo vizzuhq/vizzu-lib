@@ -52,15 +52,14 @@ const std::string_view &series_index_t::getColIndex() const
 	return sid;
 }
 
-bool operator==(const series_index_t &lhs, const series_index_t &rhs)
+bool series_index_t::operator==(const series_index_t &rhs) const
 {
-	return lhs.sid == rhs.sid && lhs.aggr == rhs.aggr;
+	return sid == rhs.sid && aggr == rhs.aggr;
 }
 
-bool operator<(const series_index_t &lhs, const series_index_t &rhs)
+bool series_index_t::operator<(const series_index_t &rhs) const
 {
-	return lhs.orig_index < rhs.orig_index
-	    || (lhs.orig_index == rhs.orig_index && lhs.aggr < rhs.aggr);
+	return sid < rhs.sid || (sid == rhs.sid && aggr < rhs.aggr);
 }
 
 bool slice_index_t::operator<(slice_index_t const &rhs) const
@@ -117,17 +116,14 @@ series_index_t::series_index_t(std::string const &str,
 	           != names.end()) {
 		aggr = Refl::get_enum<dataframe::aggregator_type>(
 		    func.getName());
-		if (!func.getParams().empty()) {
-			auto &&[s, i, type] =
-			    table.getDf().get_series_meta(func.getParams().at(0));
-			sid = s;
-			orig_index = i;
-		}
+		if (!func.getParams().empty())
+			sid = table.getDf()
+			          .get_series_meta(func.getParams().at(0))
+			          .name;
 	}
 	else {
-		auto &&[s, i, type] = table.getDf().get_series_meta(str);
+		auto &&[s, type] = table.getDf().get_series_meta(str);
 		sid = s;
-		orig_index = i;
 		if (type == DataTable::Type::measure)
 			aggr = dataframe::aggregator_type::sum;
 	}

@@ -710,23 +710,12 @@ std::string dataframe::get_record_id_by_dims(std::size_t my_record,
 dataframe::series_meta_t dataframe::get_series_meta(
     const std::string &id) const
 {
-	using enum state_type;
-	const auto *state = get_if<modifying>(&state_data);
-	if (!state || state->empty()) error();
-
-	auto it = std::find(state->begin(), state->end(), id);
-
-	if (it == state->end()) error();
-
-	auto ix = static_cast<std::size_t>(it - state->begin());
-
 	switch (auto &&ser = get_data_source().get_series(id)) {
 		using enum series_type;
-	default: return {{}, ix, ser};
-	case measure:
-		return {unsafe_get<measure>(ser).first, ix, measure};
+	default: return {{}, ser};
+	case measure: return {unsafe_get<measure>(ser).first, measure};
 	case dimension:
-		return {unsafe_get<dimension>(ser).first, ix, dimension};
+		return {unsafe_get<dimension>(ser).first, dimension};
 	}
 }
 

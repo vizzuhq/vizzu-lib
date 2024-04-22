@@ -59,7 +59,6 @@ class series_index_t
 {
 	std::string orig_name;
 	std::string_view sid;
-	std::optional<std::size_t> orig_index;
 	std::optional<dataframe::aggregator_type> aggr;
 
 public:
@@ -72,10 +71,8 @@ public:
 
 	[[nodiscard]] const std::string_view &getColIndex() const;
 
-	friend bool operator==(const series_index_t &lhs,
-	    const series_index_t &rhs);
-	friend bool operator<(const series_index_t &lhs,
-	    const series_index_t &rhs);
+	bool operator==(const series_index_t &rhs) const;
+	bool operator<(const series_index_t &rhs) const;
 
 	[[nodiscard]] bool isDimension() const;
 
@@ -84,10 +81,6 @@ public:
 		return orig_name;
 	}
 };
-
-bool operator==(const series_index_t &lhs, const series_index_t &rhs);
-
-bool operator<(const series_index_t &lhs, const series_index_t &rhs);
 
 using series_index_list_t = Type::UniqueList<series_index_t>;
 
