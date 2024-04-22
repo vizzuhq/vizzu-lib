@@ -221,7 +221,7 @@
 			"refs": ["df703f1"]
 		},
 		"operations/all_operations": {
-			"refs": ["44c1ca2"]
+			"refs": ["4263129"]
 		},
 		"operations/all_operations_sizeing": {
 			"refs": ["4f02cf0"]
@@ -233,7 +233,7 @@
 			"refs": ["a423365"]
 		},
 		"operations/drilldown_aggregate_tutorial_data/circle_drilldown_aggregate_bubble": {
-			"refs": ["c5d84b3"]
+			"refs": ["d5dacd9"]
 		},
 		"operations/drilldown_aggregate_tutorial_data/line_drilldown_aggregate_x": {
 			"refs": ["b5560cb"]
@@ -248,7 +248,7 @@
 			"refs": ["3ea3bbd"]
 		},
 		"operations/drilldown_aggregate_tutorial_data/rectangle_drilldown_aggregate_treemap": {
-			"refs": ["cf7fb10"]
+			"refs": ["5bfecc2"]
 		},
 		"operations/filter_tutorial_data/area_filter_x": {
 			"refs": ["2fa2325"]
