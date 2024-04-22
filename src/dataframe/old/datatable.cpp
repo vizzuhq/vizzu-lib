@@ -36,26 +36,11 @@ void data_table::addColumn(std::string_view name,
 	    name.data(),
 	    dataframe::adding_type::create_or_override,
 	    {});
-
-	df.remove_unused_categories(name);
-
-	for (const auto &cat : df.get_categories(name))
-		if (cat.empty()) {
-			df.fill_na(name, "");
-			break;
-		}
 }
 
 void data_table::pushRow(const std::span<const char *> &cells)
 {
 	df.add_record(cells);
-
-	for (const auto &dim : df.get_dimensions())
-		for (const auto &cat : df.get_categories(dim))
-			if (cat.empty()) {
-				df.fill_na(dim, "");
-				break;
-			}
 }
 
 std::string data_table::getInfos() const { return df.as_string(); }
@@ -100,64 +85,24 @@ bool data_cube_t::multi_index_t::isEmpty() const { return !rid; }
 bool data_cube_t::Id::operator==(const Id &id) const
 {
 	return itemSliceIndex == id.itemSliceIndex
-	    && seriesId == id.seriesId && itemId == id.itemId;
-}
-
-data_cube_t::data_t::iterator_t::iterator_t(std::size_t rid,
-    const data_t *parent,
-    std::size_t old) :
-    rid(rid),
-    parent(parent),
-    old(old)
-{
-	if (!old) incr();
-}
-
-void data_cube_t::data_t::iterator_t::incr()
-{
-	if (found) { ++rid; }
-
-	auto &&indices = parent->get_indices(old);
-
-	found = false;
-	for (std::size_t ix{}; ix < indices.size(); ++ix) {
-		auto &&dim = parent->dim_reindex[ix];
-		auto &&cats = parent->df->get_categories(dim);
-		auto val = std::get<std::string_view>(
-		    parent->df->get_data(rid, dim));
-		if (cats.size() == indices[ix]) {
-			if (val.data() != nullptr) return;
-		}
-		else if (cats[indices[ix]] != val)
-			return;
-	}
-	found = true;
+	    && seriesId == id.seriesId;
 }
 
 bool data_cube_t::data_t::iterator_t::operator!=(
     const iterator_t &oth) const
 {
-	return old != oth.old;
+	return index.parent != oth.index.parent;
 }
 
-data_cube_t::data_t::iterator_t &
-data_cube_t::data_t::iterator_t::operator++()
+void data_cube_t::data_t::iterator_t::operator++()
 {
-	++old;
-
-	incr();
-
-	return *this;
+	index.parent->incr(*this);
 }
 
-data_cube_t::multi_index_t
+const data_cube_t::multi_index_t &
 data_cube_t::data_t::iterator_t::operator*() const
 {
-	return {parent,
-	    found && !parent->df->is_removed(rid)
-	        ? std::make_optional(rid)
-	        : std::nullopt,
-	    parent->get_indices(old)};
+	return index;
 }
 
 series_index_t::series_index_t(std::string const &str,
@@ -188,27 +133,52 @@ series_index_t::series_index_t(std::string const &str,
 	}
 }
 
-std::vector<std::size_t> data_cube_t::data_t::get_indices(
-    std::size_t ix) const
+data_cube_t::data_t::iterator_t data_cube_t::data_t::begin() const
 {
-	auto res = sizes;
-	for (auto &cur : std::ranges::views::reverse(res)) {
-		if (!cur) continue;
-		auto &&newCur = ix % cur;
-		ix /= cur;
-		cur = newCur;
-	}
+	if (df->get_record_count() == 0) return {};
+	iterator_t res{{},
+	    {this, {}, std::vector<std::size_t>(sizes.size())}};
+	check(res);
 	return res;
 }
 
-data_cube_t::data_t::iterator_t data_cube_t::data_t::begin() const
+data_cube_t::data_t::iterator_t data_cube_t::data_t::end()
 {
-	return {std::size_t{}, this, std::size_t{}};
+	return {};
 }
 
-data_cube_t::data_t::iterator_t data_cube_t::data_t::end() const
+void data_cube_t::data_t::check(iterator_t &it) const
 {
-	return {df->get_record_count(), this, full_size};
+	if (it.index.rid) {
+		++it.rid;
+		it.index.rid.reset();
+	}
+
+	for (std::size_t ix{}; ix < dim_reindex.size(); ++ix) {
+		auto &&dim = dim_reindex[ix];
+		auto &&cats = df->get_categories(dim);
+		auto val =
+		    std::get<std::string_view>(df->get_data(it.rid, dim));
+		if (cats.size() == it.index.old[ix]) {
+			if (val.data() != nullptr) { return; }
+		}
+		else if (cats[it.index.old[ix]] != val) {
+			return;
+		}
+	}
+	it.index.rid.emplace(it.rid);
+}
+
+void data_cube_t::data_t::incr(iterator_t &it) const
+{
+	for (std::size_t ix{sizes.size()}; ix-- > 0;)
+		if (++it.index.old[ix] >= sizes[ix])
+			it.index.old[ix] = 0;
+		else {
+			check(it);
+			return;
+		}
+	it.index.parent = nullptr;
 }
 
 template <>
@@ -245,11 +215,6 @@ data_cube_t::data_cube_t(const data_table &table,
 
 	df->finalize();
 
-	if (options.getDimensions().empty()
-	    && options.getMeasures().empty())
-		return;
-
-	data.full_size = 1;
 	auto it = data.dim_reindex.begin();
 	for (auto sizIt = data.sizes.begin();
 	     const auto &dim : options.getDimensions()) {
@@ -257,7 +222,7 @@ data_cube_t::data_cube_t(const data_table &table,
 		*it++ = *std::lower_bound(df->get_dimensions().begin(),
 		    df->get_dimensions().end(),
 		    dimName);
-		data.full_size *= *sizIt++ =
+		*sizIt++ =
 		    df->get_categories(dimName).size() + df->has_na(dimName);
 	}
 }

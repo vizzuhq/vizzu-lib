@@ -117,31 +117,6 @@ public:
 	class data_t
 	{
 	public:
-		struct multi_index_t;
-
-	private:
-		struct iterator_t
-		{
-			std::size_t rid;
-			const data_t *parent;
-			std::size_t old;
-			bool found{};
-
-			iterator_t(std::size_t rid,
-			    const data_t *parent,
-			    std::size_t old);
-
-			void incr();
-
-			[[nodiscard]] bool operator!=(
-			    const iterator_t &oth) const;
-
-			iterator_t &operator++();
-
-			[[nodiscard]] multi_index_t operator*() const;
-		};
-
-	public:
 		struct multi_index_t
 		{
 			const data_t *parent{};
@@ -153,10 +128,24 @@ public:
 			[[nodiscard]] bool isEmpty() const;
 		};
 
+	private:
+		struct iterator_t
+		{
+			std::size_t rid{};
+			multi_index_t index;
+
+			[[nodiscard]] bool operator!=(
+			    const iterator_t &oth) const;
+
+			void operator++();
+
+			[[nodiscard]] const multi_index_t &operator*() const;
+		};
+
+	public:
 		dataframe::dataframe_interface *df;
 		std::vector<std::string_view> dim_reindex;
 		std::vector<std::size_t> sizes;
-		std::size_t full_size{};
 
 		template <class Options>
 		explicit data_t(dataframe::dataframe_interface *df,
@@ -166,11 +155,11 @@ public:
 		    sizes(options.getDimensions().size())
 		{}
 
-		[[nodiscard]] std::vector<std::size_t> get_indices(
-		    std::size_t ix) const;
-
 		[[nodiscard]] iterator_t begin() const;
-		[[nodiscard]] iterator_t end() const;
+		[[nodiscard]] static iterator_t end();
+
+		void check(iterator_t &it) const;
+		void incr(iterator_t &it) const;
 	};
 	using multi_index_t = data_t::multi_index_t;
 	using MultiIndex = multi_index_t;

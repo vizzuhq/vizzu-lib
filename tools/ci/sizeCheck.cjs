@@ -1,7 +1,7 @@
 const fs = require('fs')
 const path = require('path')
 
-const THRESHOLD = 1.06
+const THRESHOLD = 1.05
 const workspacePath = path.dirname(__filename)
 const weblibPath = path.join(workspacePath, '../..', 'build/cmake-wasm/weblib')
 const sizeFilePath = path.join(weblibPath, 'size.txt')
