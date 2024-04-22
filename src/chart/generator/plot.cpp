@@ -376,7 +376,7 @@ void Plot::calcDimensionAxis(ChannelId type)
 			        dim == 0))
 				count += 1;
 	}
-	bool hasLabel =
+	auto hasLabel =
 	    axis.setLabels(isTypeAxis ? scale.step.getValue(1.0) : 1.0);
 
 	commonAxises.at(type).title = scale.title.isAuto() && !hasLabel

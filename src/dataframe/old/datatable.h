@@ -88,12 +88,11 @@ struct slice_index_t
 {
 	std::string_view column;
 	std::string_view value;
-	std::size_t orig_index;
-	std::size_t orig_value;
 
-	[[nodiscard]] bool operator<(slice_index_t const &) const;
+	[[nodiscard]] bool operator<(const slice_index_t &) const;
 
-	[[nodiscard]] bool operator==(const slice_index_t &) const;
+	[[nodiscard]] bool operator==(
+	    const slice_index_t &) const = default;
 };
 
 using subslice_index_t = std::vector<slice_index_t>;

@@ -9,6 +9,10 @@
 - Crash on TreeMap only with negative values
 - On dimension axis where no marker, print the dimension name as default title.
 - On measure axis with specified channel min-max where no marker, print the labels.
+- Legend markers are not flickering on same data.
+- From now legend appears/disappears linear time.
+- Axis labels are not animated to a different axis label.
+- Dimension axis density on sorted values was wrongly calculated.
 
 ### Added
 

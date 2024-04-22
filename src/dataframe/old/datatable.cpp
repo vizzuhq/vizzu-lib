@@ -64,14 +64,8 @@ bool series_index_t::operator<(const series_index_t &rhs) const
 
 bool slice_index_t::operator<(slice_index_t const &rhs) const
 {
-	return orig_index < rhs.orig_index
-	    || (orig_index == rhs.orig_index
-	        && orig_value < rhs.orig_value);
-}
-
-bool slice_index_t::operator==(const slice_index_t &rhs) const
-{
-	return orig_index == rhs.orig_index;
+	return column < rhs.column
+	    || (column == rhs.column && value < rhs.value);
 }
 
 bool data_cube_t::multi_index_t::has_dimension() const
@@ -260,7 +254,6 @@ data_cube_t::Id data_cube_t::getId(const series_index_list_t &sl,
 		std::string_view value;
 		std::size_t index;
 		std::size_t size;
-		std::size_t orig_ix;
 	};
 	std::vector<std::pair<std::string_view, DimProp>> v;
 	for (std::size_t ix{}; const auto &s : sl)
@@ -272,8 +265,7 @@ data_cube_t::Id data_cube_t::getId(const series_index_list_t &sl,
 		auto &&name = mi.parent->dim_reindex[ix];
 		if (auto it = reindex.find(name); it != reindex.end()) {
 			auto &&cats = mi.parent->df->get_categories(name);
-			auto &[cat, cix, size, orig_ix] = v[it->second].second;
-			orig_ix = ix;
+			auto &[cat, cix, size] = v[it->second].second;
 			cix = mi.old[ix];
 			size = cats.size() + mi.parent->df->has_na(name);
 			if (cix < cats.size()) cat = cats[cix];
@@ -288,9 +280,9 @@ data_cube_t::Id data_cube_t::getId(const series_index_list_t &sl,
 	Id::SubSliceIndex ssi;
 	std::size_t itemId{};
 	for (std::size_t i{}; i < v.size(); ++i) {
-		auto &[cat, cix, size, orig_ix] = v[i].second;
+		auto &[cat, cix, size] = v[i].second;
 
-		ssi.emplace_back(v[i].first, cat, orig_ix, cix);
+		ssi.emplace_back(v[i].first, cat);
 		itemId *= size;
 		itemId += cix;
 	}

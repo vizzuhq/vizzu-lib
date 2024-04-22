@@ -84,7 +84,7 @@ void DrawLegend::drawDimension(const Info &info) const
 		if (itemRect.y().getMax() >= info.contentRect.y().getMax())
 			continue;
 
-		auto alpha = value.second.weight * info.weight;
+		auto alpha = std::min(value.second.weight, info.weight);
 
 		drawMarker(info,
 		    value.second.categoryValue,
@@ -104,7 +104,7 @@ void DrawLegend::drawDimension(const Info &info) const
 			            value.second.categoryValue,
 			            value.second.categoryValue,
 			            info.type),
-			        {.alpha = alpha * weighted.weight});
+			        {.alpha = std::min(alpha, weighted.weight)});
 		    });
 	}
 }
