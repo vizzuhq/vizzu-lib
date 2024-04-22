@@ -185,13 +185,13 @@
 			"refs": ["42fb179"]
 		},
 		"data_fault_and_formats/column_rectangle_less_disc": {
-			"refs": ["b604a2b"]
+			"refs": ["b9225f0"]
 		},
 		"data_fault_and_formats/column_rectangle_more_conti": {
 			"refs": ["c2c2362"]
 		},
 		"data_fault_and_formats/column_rectangle_more_disc": {
-			"refs": ["af15279"]
+			"refs": ["1b06866"]
 		},
 		"data_fault_and_formats/rectangle_data_cube": {
 			"refs": ["4b66407"]
@@ -3260,7 +3260,7 @@
 			"refs": ["60d9217"]
 		},
 		"web_content/cookbook/data_source/paint": {
-			"refs": ["bcc6cdb"]
+			"refs": ["0d9bce4"]
 		},
 		"web_content/cookbook/interactive/filter_on_click": {
 			"refs": ["4bdf36b"]

@@ -628,7 +628,7 @@ const static auto tests =
 	auto &&events = get_events(chart);
 
 	check->*events.count("plot-axis-draw") == 2u;
-	check->*events.count("plot-axis-label-draw") == 0u; // should be 8
+	check->*events.count("plot-axis-label-draw") == 4u + 4u;
 	check->*events.count("plot-axis-title-draw") == 2u;
 	check->*events.count("plot-marker-draw") == 0u;
 }
@@ -641,6 +641,6 @@ const static auto tests =
 
 	check->*events.count("plot-axis-draw") == 2u;
 	check->*events.count("plot-axis-label-draw") == 0u;
-	check->*events.count("plot-axis-title-draw") == 1u; // should be 2
+	check->*events.count("plot-axis-title-draw") == 2u;
 	check->*events.count("plot-marker-draw") == 0u;
 };

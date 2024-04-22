@@ -256,11 +256,14 @@ bool Plot::linkMarkers(const Buckets &buckets, bool main)
 
 void Plot::normalizeXY()
 {
+	const auto &xrange = options->getHorizontalAxis().range;
+	const auto &yrange = options->getVeritalAxis().range;
+
 	if (markers.empty()) {
 		stats.channels[ChannelId::x].range =
-		    Math::Range<double>(0.0, 0.0);
+		    xrange.getRange({0.0, 0.0});
 		stats.channels[ChannelId::y].range =
-		    Math::Range<double>(0.0, 0.0);
+		    yrange.getRange({0.0, 0.0});
 		return;
 	}
 
@@ -273,9 +276,6 @@ void Plot::normalizeXY()
 
 	options->setAutoRange(boundRect.positive().hSize().getMin() >= 0,
 	    boundRect.positive().vSize().getMin() >= 0);
-
-	auto xrange = options->getHorizontalAxis().range;
-	auto yrange = options->getVeritalAxis().range;
 
 	boundRect.setHSize(xrange.getRange(boundRect.hSize()));
 	boundRect.setVSize(yrange.getRange(boundRect.vSize()));
@@ -304,10 +304,10 @@ void Plot::calcMeasureAxis(ChannelId type)
 	auto &axis = measureAxises.at(type);
 	const auto &scale = options->getChannels().at(type);
 	if (!scale.isEmpty() && scale.measureId) {
-		commonAxises.at(type).title =
-		    scale.title == "auto"   ? scale.measureName(dataCube)
-		    : scale.title == "null" ? std::string()
-		                            : scale.title;
+		commonAxises.at(type).title = scale.title.isAuto()
+		                                ? scale.measureName(dataCube)
+		                            : scale.title ? *scale.title
+		                                          : std::string{};
 
 		if (type == options->subAxisType()
 		    && options->align == Base::Align::Type::stretch) {
@@ -343,10 +343,6 @@ void Plot::calcDimensionAxis(ChannelId type)
 
 	if (scale.dimensionIds.empty() || !scale.isDimension()) return;
 
-	commonAxises.at(type).title =
-	    scale.title == "auto" || scale.title == "null" ? std::string()
-	                                                   : scale.title;
-
 	auto dim = scale.labelLevel;
 
 	auto &&isTypeAxis = isAxis(type);
@@ -380,7 +376,13 @@ void Plot::calcDimensionAxis(ChannelId type)
 			        dim == 0))
 				count += 1;
 	}
-	axis.setLabels(isTypeAxis ? scale.step.getValue(1.0) : 1.0);
+	bool hasLabel =
+	    axis.setLabels(isTypeAxis ? scale.step.getValue(1.0) : 1.0);
+
+	commonAxises.at(type).title = scale.title.isAuto() && !hasLabel
+	                                ? scale.labelDimensionName()
+	                            : scale.title ? *scale.title
+	                                          : std::string{};
 
 	if (auto &&series = scale.labelSeries())
 		axis.category = series.value().getColIndex();

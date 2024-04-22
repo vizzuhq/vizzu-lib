@@ -63,7 +63,7 @@ void Channel::reset()
 {
 	measureId = std::nullopt;
 	dimensionIds.clear();
-	title = "auto";
+	title = Base::AutoParam<std::string, true>{};
 	axisLine = Base::AutoBool();
 	axisLabels = Base::AutoBool();
 	ticks = Base::AutoBool();
@@ -122,6 +122,12 @@ std::string Channel::measureName(
 		            : measureId->getOrigName();
 	}
 	return {};
+}
+
+std::string Channel::labelDimensionName() const
+{
+	auto &&ser = labelSeries();
+	return ser ? ser->getOrigName() : "";
 }
 
 std::list<std::string_view> Channel::dimensionNames() const
