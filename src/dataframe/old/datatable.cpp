@@ -17,6 +17,12 @@
 namespace Vizzu::Data
 {
 
+std::string_view data_table::getUnit(
+    std::string_view const &colIx) const
+{
+	return df.get_series_info(colIx, "unit");
+}
+
 void data_table::addColumn(std::string_view name,
     std::string_view unit,
     const std::span<const double> &values)
@@ -123,7 +129,7 @@ data_cube_t::data_t::iterator_t data_cube_t::data_t::begin() const
 	if (df->get_record_count() == 0) return {};
 	iterator_t res{this,
 	    {},
-	    {{}, std::vector<std::size_t>(sizes.size())}};
+	    {{}, std::vector<std::size_t>(dim_reindex.size())}};
 	check(res);
 	return res;
 }
@@ -141,7 +147,7 @@ void data_cube_t::data_t::check(iterator_t &it) const
 	}
 
 	for (std::size_t ix{}; ix < dim_reindex.size(); ++ix) {
-		auto &&dim = dim_reindex[ix];
+		auto &&dim = dim_reindex[ix].first;
 		auto &&cats = df->get_categories(dim);
 		auto val =
 		    std::get<std::string_view>(df->get_data(it.rid, dim));
@@ -157,8 +163,8 @@ void data_cube_t::data_t::check(iterator_t &it) const
 
 void data_cube_t::data_t::incr(iterator_t &it) const
 {
-	for (std::size_t ix{sizes.size()}; ix-- > 0;)
-		if (++it.index.old[ix] >= sizes[ix])
+	for (std::size_t ix{dim_reindex.size()}; ix-- > 0;)
+		if (++it.index.old[ix] >= dim_reindex[ix].second)
 			it.index.old[ix] = 0;
 		else {
 			check(it);
@@ -168,15 +174,20 @@ void data_cube_t::data_t::incr(iterator_t &it) const
 }
 
 template <>
+data_cube_t::data_t::data_t(const data_table &table,
+    const DataCubeOptions &options) :
+    df(options.getDimensions().empty()
+                && options.getMeasures().empty()
+            ? dataframe::dataframe::create_new()
+            : table.getDf().copy(false)),
+    dim_reindex(options.getDimensions().size())
+{}
+
+template <>
 data_cube_t::data_cube_t(const data_table &table,
     const DataCubeOptions &options,
     const Filter &filter) :
-    table(&table),
-    data{options.getDimensions().empty()
-                 && options.getMeasures().empty()
-             ? dataframe::dataframe::create_new()
-             : table.getDf().copy(false),
-        options}
+    data{table, options}
 {
 	data.df->remove_records(filter.getFunction());
 
@@ -201,15 +212,14 @@ data_cube_t::data_cube_t(const data_table &table,
 
 	data.df->finalize();
 
-	auto it = data.dim_reindex.begin();
-	for (auto sizIt = data.sizes.begin();
+	for (auto it = data.dim_reindex.begin();
 	     const auto &dim : options.getDimensions()) {
 		auto &&dimName = dim.getColIndex();
-		*it++ = *std::lower_bound(data.df->get_dimensions().begin(),
-		    data.df->get_dimensions().end(),
-		    dimName);
-		*sizIt++ = data.df->get_categories(dimName).size()
-		         + data.df->has_na(dimName);
+		*it++ = {*std::lower_bound(data.df->get_dimensions().begin(),
+		             data.df->get_dimensions().end(),
+		             dimName),
+		    data.df->get_categories(dimName).size()
+		        + data.df->has_na(dimName)};
 	}
 }
 
@@ -243,6 +253,12 @@ const std::string &data_cube_t::getName(
 	    {seriesId.getColIndex(), seriesId.getAggr()});
 }
 
+std::string_view data_cube_t::getUnit(
+    std::string_view const &colIx) const
+{
+	return data.df->get_series_info(colIx, "unit");
+}
+
 data_cube_t::Id data_cube_t::getId(const series_index_list_t &sl,
     const multi_index_t &mi) const
 {
@@ -255,8 +271,7 @@ data_cube_t::Id data_cube_t::getId(const series_index_list_t &sl,
 
 	std::size_t seriesId{};
 	for (std::size_t ix{}; ix < data.dim_reindex.size(); ++ix) {
-		auto &&name = data.dim_reindex[ix];
-		auto &&size = data.sizes[ix];
+		auto &&[name, size] = data.dim_reindex[ix];
 		if (auto it = reindex.find(name); it != reindex.end()) {
 			v[it->second] = {mi.old[ix], size};
 			auto &&cats = data.df->get_categories(name);
@@ -280,7 +295,7 @@ data_cube_t::CellInfo data_cube_t::cellInfo(
 	CellInfo my_res;
 
 	for (std::size_t ix{}; ix < data.dim_reindex.size(); ++ix) {
-		auto &&name = data.dim_reindex[ix];
+		auto &&name = data.dim_reindex[ix].first;
 		auto cats = data.df->get_categories(name);
 		auto cix = index.old[ix];
 		my_res.categories.emplace_back(name,
@@ -362,7 +377,7 @@ double data_cube_t::aggregateAt(const multi_index_t &multiIndex,
 	std::map<std::string_view, std::size_t> index;
 
 	for (std::size_t ix{}; ix < data.dim_reindex.size(); ++ix)
-		index.emplace(data.dim_reindex[ix], multiIndex.old[ix]);
+		index.emplace(data.dim_reindex[ix].first, multiIndex.old[ix]);
 
 	std::string res;
 	for (auto iit = index.begin();

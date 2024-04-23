@@ -249,7 +249,7 @@ Marker::Label::Label(double value,
     std::string &&indexStr) :
     value(value),
     measureId(measure.getColIndex()),
-    unit(data.getTable()->getUnit(measureId)),
+    unit(data.getUnit(measureId)),
     indexStr(std::move(indexStr))
 {}
 

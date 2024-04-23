@@ -29,10 +29,7 @@ class data_table
 public:
 	using Type = dataframe::series_type;
 	[[nodiscard]] std::string_view getUnit(
-	    std::string_view const &colIx) const
-	{
-		return df.get_series_info(colIx, "unit");
-	}
+	    std::string_view const &colIx) const;
 
 	void addColumn(std::string_view name,
 	    std::string_view unit,
@@ -134,17 +131,12 @@ public:
 
 	public:
 		std::shared_ptr<dataframe::dataframe_interface> df;
-		std::vector<std::string_view> dim_reindex;
-		std::vector<std::size_t> sizes;
+		std::vector<std::pair<std::string_view, std::size_t>>
+		    dim_reindex;
 
 		template <class Options>
-		explicit data_t(
-		    std::shared_ptr<dataframe::dataframe_interface> &&df,
-		    const Options &options) :
-		    df(std::move(df)),
-		    dim_reindex(options.getDimensions().size()),
-		    sizes(options.getDimensions().size())
-		{}
+		explicit data_t(const data_table &table,
+		    const Options &options);
 
 		[[nodiscard]] iterator_t begin() const;
 		[[nodiscard]] static iterator_t end();
@@ -168,7 +160,6 @@ public:
 		[[nodiscard]] bool operator==(const Id &) const;
 	};
 
-	const data_table *table;
 	std::shared_ptr<dataframe::dataframe_interface> removed;
 	std::map<std::pair<std::string_view, dataframe::aggregator_type>,
 	    std::string>
@@ -201,8 +192,6 @@ public:
 	[[nodiscard]] double valueAt(const multi_index_t &multiIndex,
 	    const series_index_t &seriesId) const;
 
-	[[nodiscard]] const data_table *getTable() const { return table; }
-
 	[[nodiscard]] Id getId(const series_index_list_t &,
 	    const multi_index_t &) const;
 
@@ -211,6 +200,9 @@ public:
 
 	[[nodiscard]] const std::string &getName(
 	    const series_index_t &seriesId) const;
+
+	[[nodiscard]] std::string_view getUnit(
+	    std::string_view const &colIx) const;
 };
 
 }
