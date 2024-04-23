@@ -247,44 +247,29 @@ data_cube_t::Id data_cube_t::getId(const series_index_list_t &sl,
     const multi_index_t &mi) const
 {
 	std::map<std::string_view, std::size_t> reindex;
-	struct DimProp
-	{
-		std::string_view value;
-		std::size_t index;
-		std::size_t size;
-	};
-	std::vector<std::pair<std::string_view, DimProp>> v;
+	std::vector<std::pair<std::size_t, std::size_t>> v(sl.size());
+	Id::SubSliceIndex ssi(sl.size());
+
 	for (std::size_t ix{}; const auto &s : sl)
-		reindex[v.emplace_back(s.getColIndex(), DimProp{}).first] =
-		    ix++;
+		reindex.try_emplace(s.getColIndex(), ix++);
 
 	std::size_t seriesId{};
 	for (std::size_t ix{}; ix < data.dim_reindex.size(); ++ix) {
 		auto &&name = data.dim_reindex[ix];
 		auto &&size = data.sizes[ix];
 		if (auto it = reindex.find(name); it != reindex.end()) {
-			auto &[cat, cix, csize] = v[it->second].second;
-			cix = mi.old[ix];
-			csize = size;
-			if (auto &&cats = data.df->get_categories(name);
-			    cix < cats.size())
-				cat = cats[cix];
+			v[it->second] = {mi.old[ix], size};
+			auto &&cats = data.df->get_categories(name);
+			ssi[it->second] = {name,
+			    mi.old[ix] < cats.size() ? cats[mi.old[ix]]
+			                             : std::string_view{}};
 		}
-		else {
-			seriesId *= size;
-			seriesId += mi.old[ix];
-		}
+		else
+			seriesId = seriesId * size + mi.old[ix];
 	}
 
-	Id::SubSliceIndex ssi;
 	std::size_t itemId{};
-	for (std::size_t i{}; i < v.size(); ++i) {
-		auto &[cat, cix, size] = v[i].second;
-
-		ssi.emplace_back(v[i].first, cat);
-		itemId *= size;
-		itemId += cix;
-	}
+	for (const auto &[cix, size] : v) itemId = itemId * size + cix;
 
 	return {mi, ssi, seriesId, itemId};
 }
