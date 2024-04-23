@@ -31,11 +31,10 @@ Plot::MarkersInfo interpolate(const Plot::MarkersInfo &op1,
 	return result;
 }
 
-Plot::MarkerInfoContent::MarkerInfoContent(const Marker &marker)
+Plot::MarkerInfoContent::MarkerInfoContent(const Marker &marker) :
+    markerId(marker.idx),
+    info(marker.cellInfo.categories)
 {
-	markerId.emplace(marker.idx);
-	info = marker.cellInfo.categories;
-
 	thread_local auto conv =
 	    Conv::NumberToString{.fractionDigitCount = 3};
 	for (auto &&[ser, val] : marker.cellInfo.values)

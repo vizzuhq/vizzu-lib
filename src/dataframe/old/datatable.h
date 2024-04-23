@@ -117,7 +117,7 @@ public:
 	private:
 		struct iterator_t
 		{
-			const data_t *parent;
+			const data_t *parent{};
 			std::size_t rid{};
 			multi_index_t index;
 
