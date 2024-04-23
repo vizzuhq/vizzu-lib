@@ -31,24 +31,15 @@ Plot::MarkersInfo interpolate(const Plot::MarkersInfo &op1,
 	return result;
 }
 
-Plot::MarkerInfoContent::MarkerInfoContent() { markerId.reset(); }
-
-Plot::MarkerInfoContent::MarkerInfoContent(const Marker &marker,
-    const Data::DataCube *dataCube)
+Plot::MarkerInfoContent::MarkerInfoContent(const Marker &marker)
 {
-	const auto &index = marker.index;
-	if (dataCube && dataCube->getTable() && index.has_dimension()) {
-		markerId = marker.idx;
-		auto &&dataCellInfo = dataCube->cellInfo(index);
-		content.assign(std::begin(dataCellInfo.categories),
-		    std::end(dataCellInfo.categories));
+	markerId.emplace(marker.idx);
+	info = marker.cellInfo.categories;
 
-		auto conv = Conv::NumberToString{.fractionDigitCount = 3};
-		for (auto &&[ser, val] : dataCellInfo.values)
-			content.emplace_back(ser, conv(val));
-	}
-	else
-		markerId.reset();
+	thread_local auto conv =
+	    Conv::NumberToString{.fractionDigitCount = 3};
+	for (auto &&[ser, val] : marker.cellInfo.values)
+		info.emplace_back(ser, conv(val));
 }
 
 Plot::MarkerInfoContent::operator bool() const
@@ -160,11 +151,9 @@ void Plot::generateMarkers()
 
 void Plot::generateMarkersInfo()
 {
-	for (auto &mi : options->markersInfo) {
-		auto &marker = markers[mi.second];
-		markersInfo.insert(std::make_pair(mi.first,
-		    MarkerInfo{MarkerInfoContent{marker, &getDataCube()}}));
-	}
+	for (auto &[ix, mid] : options->markersInfo)
+		markersInfo.insert(
+		    {ix, MarkerInfo{MarkerInfoContent{markers[mid]}}});
 }
 
 std::vector<std::pair<uint64_t, double>>

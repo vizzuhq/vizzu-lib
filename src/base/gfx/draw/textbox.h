@@ -98,7 +98,7 @@ private:
 		std::optional<int> backgroundColor;
 		double width{0};
 		Gfx::Font font{};
-		std::string content;
+		std::string content{};
 	};
 
 	struct Line

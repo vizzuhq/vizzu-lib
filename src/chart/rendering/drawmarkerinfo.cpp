@@ -95,53 +95,41 @@ void DrawMarkerInfo::MarkerDC::fillTextBox(Content &cnt)
 	text << *parent.style.color;
 	if (parent.style.layout == Styles::Tooltip::Layout::multiLine)
 		text << TextBox::TabPos(0);
-	int counter = 0;
-	std::string firstContent;
-	for (const auto &info : cnt.content) {
-		if (info.first == parent.style.seriesName) {
-			firstContent = info.second;
+	bool was_first{};
+	for (const auto &[cid, val] : cnt.info)
+		if (cid == parent.style.seriesName) {
+			text << TextBox::Bkgnd(0) << TextBox::Fgnd(1);
+			text << static_cast<Gfx::Font>(parent.style)
+			     << static_cast<TextBox::Font>(
+			            parent.style.fontSize->get() * 1.3)
+			     << TextBox::bold << val;
+			if (parent.style.layout
+			    == Styles::Tooltip::Layout::multiLine)
+				text << TextBox::NewLine();
+			if (parent.style.layout
+			    == Styles::Tooltip::Layout::singleLine)
+				text << " / ";
+			was_first = true;
+			break;
 		}
-	}
-	for (const auto &info : cnt.content) {
-		if (parent.style.layout
-		    == Styles::Tooltip::Layout::multiLine) {
-			if (counter == 0 && !firstContent.empty()) {
-				text << TextBox::Bkgnd(0) << TextBox::Fgnd(1);
-				text << static_cast<Gfx::Font>(parent.style)
-				     << static_cast<TextBox::Font>(
-				            parent.style.fontSize->get() * 1.3);
-				text << TextBox::bold << firstContent
-				     << TextBox::NewLine();
-			}
-			else {
-				text << TextBox::Bkgnd(0) << TextBox::Fgnd(1);
-				text << static_cast<Gfx::Font>(parent.style);
-				text << info.first << ": " << TextBox::Tab();
-				text << TextBox::bold;
-				text << info.second << TextBox::NewLine();
-			}
-		}
-		if (parent.style.layout
-		    == Styles::Tooltip::Layout::singleLine) {
-			if (counter == 0 && !firstContent.empty()) {
-				text << TextBox::Bkgnd(0) << TextBox::Fgnd(1);
-				text << static_cast<Gfx::Font>(parent.style)
-				     << static_cast<TextBox::Font>(
-				            parent.style.fontSize->get() * 1.3);
-				text << TextBox::bold << firstContent << " / ";
-			}
-			else {
-				text << TextBox::Bkgnd(0) << TextBox::Fgnd(1);
-				text << static_cast<Gfx::Font>(parent.style);
-				if ((firstContent.empty() && counter != 0)
-				    || (!firstContent.empty() && counter != 1))
-					text << ", ";
-				text << info.first << ": ";
-				text << TextBox::bold;
-				text << info.second;
-			}
-		}
-		++counter;
+
+	for (const auto &[cid, val] : cnt.info) {
+		if (cid == parent.style.seriesName) continue;
+
+		text << TextBox::Bkgnd(0) << TextBox::Fgnd(1);
+		text << static_cast<Gfx::Font>(parent.style);
+		if (parent.style.layout == Styles::Tooltip::Layout::singleLine
+		    && std::exchange(was_first, true))
+			text << ", ";
+		text << cid << ": ";
+
+		if (parent.style.layout == Styles::Tooltip::Layout::multiLine)
+			text << TextBox::Tab();
+
+		text << TextBox::bold << val;
+
+		if (parent.style.layout == Styles::Tooltip::Layout::multiLine)
+			text << TextBox::NewLine();
 	}
 }
 

@@ -10,7 +10,6 @@ Marker::Marker(const Options &options,
     ChannelsStats &stats,
     const Data::DataCube::MultiIndex &index,
     size_t idx) :
-    index(index),
     enabled(data.empty() || !index.isEmpty()),
     cellInfo(data.cellInfo(index)),
     sizeId(data.getId(
@@ -19,13 +18,17 @@ Marker::Marker(const Options &options,
     idx(idx)
 {
 	const auto &channels = options.getChannels();
-	auto color =
-	    getValueForChannel(channels, ChannelId::color, data, stats);
+	auto color = getValueForChannel(channels,
+	    ChannelId::color,
+	    data,
+	    stats,
+	    index);
 
 	auto lightness = getValueForChannel(channels,
 	    ChannelId::lightness,
 	    data,
-	    stats);
+	    stats,
+	    index);
 
 	colorBase = channels.at(ChannelId::color).isDimension()
 	              ? ColorBase(static_cast<uint32_t>(color), lightness)
@@ -35,6 +38,7 @@ Marker::Marker(const Options &options,
 	    ChannelId::size,
 	    data,
 	    stats,
+	    index,
 	    options.subAxisOf(ChannelId::size));
 
 	mainId = data.getId(options.mainAxis().dimensionIds, index);
@@ -62,6 +66,7 @@ Marker::Marker(const Options &options,
 	    ChannelId::x,
 	    data,
 	    stats,
+	    index,
 	    options.subAxisOf(ChannelId::x),
 	    !horizontal && stackInhibitingShape);
 
@@ -75,6 +80,7 @@ Marker::Marker(const Options &options,
 	    ChannelId::y,
 	    data,
 	    stats,
+	    index,
 	    options.subAxisOf(ChannelId::y),
 	    horizontal && stackInhibitingShape);
 
@@ -90,7 +96,8 @@ Marker::Marker(const Options &options,
 		auto value = getValueForChannel(channels,
 		    ChannelId::label,
 		    data,
-		    stats);
+		    stats,
+		    index);
 
 		auto &&labelStr = Label::getIndexString(data,
 		    channels.at(ChannelId::label).dimensionIds,
@@ -157,6 +164,7 @@ double Marker::getValueForChannel(const Channels &channels,
     ChannelId type,
     const Data::DataCube &data,
     ChannelsStats &stats,
+    const Data::DataCube::MultiIndex &index,
     const Channel *subChannel,
     bool inhibitStack) const
 {

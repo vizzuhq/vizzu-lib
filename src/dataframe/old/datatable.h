@@ -102,8 +102,8 @@ class data_cube_t
 public:
 	struct CellInfo
 	{
-		std::map<std::string_view, std::string_view> categories;
-		std::map<std::string_view, double> values;
+		std::vector<std::pair<std::string, std::string>> categories;
+		std::vector<std::pair<std::string, double>> values;
 	};
 
 	class data_t
@@ -111,11 +111,8 @@ public:
 	public:
 		struct multi_index_t
 		{
-			const data_t *parent{};
 			std::optional<std::size_t> rid;
 			std::vector<std::size_t> old;
-
-			[[nodiscard]] bool has_dimension() const;
 
 			[[nodiscard]] bool isEmpty() const;
 		};
@@ -123,6 +120,7 @@ public:
 	private:
 		struct iterator_t
 		{
+			const data_t *parent;
 			std::size_t rid{};
 			multi_index_t index;
 
@@ -135,14 +133,15 @@ public:
 		};
 
 	public:
-		dataframe::dataframe_interface *df;
+		std::shared_ptr<dataframe::dataframe_interface> df;
 		std::vector<std::string_view> dim_reindex;
 		std::vector<std::size_t> sizes;
 
 		template <class Options>
-		explicit data_t(dataframe::dataframe_interface *df,
+		explicit data_t(
+		    std::shared_ptr<dataframe::dataframe_interface> &&df,
 		    const Options &options) :
-		    df(df),
+		    df(std::move(df)),
 		    dim_reindex(options.getDimensions().size()),
 		    sizes(options.getDimensions().size())
 		{}
@@ -170,7 +169,6 @@ public:
 	};
 
 	const data_table *table;
-	std::shared_ptr<dataframe::dataframe_interface> df;
 	std::shared_ptr<dataframe::dataframe_interface> removed;
 	std::map<std::pair<std::string_view, dataframe::aggregator_type>,
 	    std::string>

@@ -28,7 +28,6 @@ public:
 	    const Data::DataCube::MultiIndex &index,
 	    size_t idx);
 
-	Data::DataCube::MultiIndex index;
 	::Anim::Interpolated<ColorBase> colorBase;
 	Geom::Point position;
 	Geom::Point size;
@@ -95,6 +94,7 @@ private:
 	    ChannelId type,
 	    const Data::DataCube &data,
 	    ChannelsStats &stats,
+	    const Data::DataCube::MultiIndex &index,
 	    const Channel *subChannel = nullptr,
 	    bool inhibitStack = false) const;
 };

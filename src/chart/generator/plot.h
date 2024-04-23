@@ -41,17 +41,15 @@ class Plot
 public:
 	using Buckets =
 	    std::unordered_map<uint64_t, std::map<uint64_t, uint64_t>>;
-	using CellInfo = std::vector<std::pair<std::string, std::string>>;
 	using Markers = std::vector<Marker>;
 
 	struct MarkerInfoContent
 	{
 		std::optional<Options::MarkerId> markerId;
-		CellInfo content;
+		std::vector<std::pair<std::string, std::string>> info;
 
-		MarkerInfoContent();
-		explicit MarkerInfoContent(const Marker &marker,
-		    const Data::DataCube *dataCube = nullptr);
+		MarkerInfoContent() = default;
+		explicit MarkerInfoContent(const Marker &marker);
 		explicit operator bool() const;
 		bool operator==(const MarkerInfoContent &op) const;
 	};
