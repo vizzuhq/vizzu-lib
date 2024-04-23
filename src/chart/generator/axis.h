@@ -157,7 +157,7 @@ public:
 	{
 		return values.cend();
 	}
-	void setLabels(double step);
+	bool setLabels(double step);
 
 private:
 	Values values;

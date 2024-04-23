@@ -47,18 +47,19 @@ public:
 	    Data::DataCubeOptions::IndexSet &series) const;
 	[[nodiscard]] std::string measureName(
 	    const std::optional<Data::DataCube> &cube = {}) const;
+	[[nodiscard]] std::string labelDimensionName() const;
 	[[nodiscard]] std::list<std::string_view> dimensionNames() const;
 	[[nodiscard]] OptionalIndex labelSeries() const;
 	bool operator==(const Channel &other) const;
 
-	Type type;
-	double defaultValue;
-	bool stackable;
+	Type type{};
+	double defaultValue{};
+	bool stackable{};
 	OptionalIndex measureId{};
 	DimensionIndices dimensionIds{};
 	ChannelRange range{};
 	std::size_t labelLevel{};
-	std::string title = "auto";
+	Base::AutoParam<std::string, true> title{};
 	Base::AutoBool axisLine{};
 	Base::AutoBool axisLabels{};
 	Base::AutoBool ticks{};

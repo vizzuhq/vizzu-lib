@@ -120,7 +120,6 @@ public:
 	struct series_meta_t
 	{
 		std::string_view name;
-		std::size_t ix;
 		series_type type;
 	};
 

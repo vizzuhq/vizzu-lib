@@ -58,6 +58,15 @@ struct MyCanvas final : Gfx::ICanvas, Vizzu::Draw::Painter
 	ICanvas &getCanvas() final { return *this; }
 };
 
+auto testcase_0 = [](Vizzu::Data::DataTable &table)
+{
+	table.addColumn("Index",
+	    std::initializer_list<const char *>{},
+	    std::initializer_list<std::uint32_t>{});
+	table.addColumn("x", "", std::initializer_list<double>{});
+	table.addColumn("y", "", std::initializer_list<double>{});
+};
+
 auto testcase_1 = [](Vizzu::Data::DataTable &table)
 {
 	table.addColumn("Dim5",
@@ -595,9 +604,43 @@ const static auto tests =
 	auto &&events = get_events(chart);
 
 	check->*events.count("plot-axis-draw") == 2u;
-	check->*events.count("plot-marker-draw") == 26u;
+	check->*events.count("plot-marker-draw") == 28u;
 
 	for (auto &&[beg, end] = events.equal_range("plot-marker-draw");
 	     const auto &[v, t, d] : values(subrange(beg, end)))
 		check->*std::get_if<Vizzu::Draw::Rect>(&d) != nullptr;
+}
+
+    | "paint" |
+    [](Vizzu::Chart &chart =
+            chart_setup{{{noop, "Index"}, {x, "x"}, {y, "y"}},
+                testcase_0})
+{
+	chart.getOptions().getChannels().at(y).range.min =
+	    Vizzu::Base::AutoParam{Vizzu::Gen::ChannelExtrema("0.0")};
+	chart.getOptions().getChannels().at(y).range.max =
+	    Vizzu::Base::AutoParam{Vizzu::Gen::ChannelExtrema("1.0")};
+	chart.getOptions().getChannels().at(x).range.min =
+	    Vizzu::Base::AutoParam{Vizzu::Gen::ChannelExtrema("0.0")};
+	chart.getOptions().getChannels().at(x).range.max =
+	    Vizzu::Base::AutoParam{Vizzu::Gen::ChannelExtrema("1.0")};
+
+	auto &&events = get_events(chart);
+
+	check->*events.count("plot-axis-draw") == 2u;
+	check->*events.count("plot-axis-label-draw") == 4u + 4u;
+	check->*events.count("plot-axis-title-draw") == 2u;
+	check->*events.count("plot-marker-draw") == 0u;
+}
+
+    | "empty_chart" |
+    [](Vizzu::Chart &chart =
+            chart_setup{{{y, "Index"}, {x, "x"}}, testcase_0})
+{
+	auto &&events = get_events(chart);
+
+	check->*events.count("plot-axis-draw") == 2u;
+	check->*events.count("plot-axis-label-draw") == 0u;
+	check->*events.count("plot-axis-title-draw") == 2u;
+	check->*events.count("plot-marker-draw") == 0u;
 };

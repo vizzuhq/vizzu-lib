@@ -93,18 +93,26 @@ bool DimensionAxis::operator==(const DimensionAxis &other) const
 	return enabled == other.enabled && values == other.values;
 }
 
-void DimensionAxis::setLabels(double step)
+bool DimensionAxis::setLabels(double step)
 {
+	bool hasLabel{};
 	step = std::max(step, 1.0);
 	double currStep = 0.0;
 
-	for (int curr{}; auto &[slice, item] : values) {
+	std::multimap<double, Values::pointer> reorder;
+	for (auto &ref : values)
+		reorder.emplace(ref.second.range.getMin(), &ref);
+
+	for (int curr{}; auto &[v, pp] : reorder) {
+		auto &[slice, item] = *pp;
 		item.categoryValue = Data::DataCube::getValue(slice);
 
 		if (++curr <= currStep) continue;
 		currStep += step;
 		item.label = item.categoryValue;
+		hasLabel = true;
 	}
+	return hasLabel;
 }
 
 DimensionAxis interpolate(const DimensionAxis &op0,
