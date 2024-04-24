@@ -155,8 +155,8 @@ void Options::simplify()
 	copy.at(stackChannelType()).reset();
 
 	for (auto dim = dimensions.rbegin();
-	     dim != dimensions.rend() && !copy.isSeriesUsed(*dim)
-	     && !labelsShownFor(*dim);
+	     dim != Channel::DimensionIndices::rend()
+	     && !copy.isSeriesUsed(*dim) && !labelsShownFor(*dim);
 	     ++dim) {
 		stackChannel.removeSeries(*dim);
 	}

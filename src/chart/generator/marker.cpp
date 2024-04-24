@@ -46,10 +46,9 @@ Marker::Marker(const Options &options,
 	auto stackInhibitingShape = options.geometry == ShapeType::area;
 	if (stackInhibitingShape) {
 		Data::SeriesList subIds(options.subAxis().dimensionIds);
-		subIds.remove(options.mainAxis().dimensionIds);
+		Data::SeriesList &&stackIds =
+		    subIds.split_by(options.mainAxis().dimensionIds);
 		subId = data.getId(subIds, index);
-		Data::SeriesList stackIds(options.subAxis().dimensionIds);
-		stackIds.section(options.mainAxis().dimensionIds);
 		stackId = data.getId(stackIds, index);
 	}
 	else {
@@ -175,15 +174,10 @@ double Marker::getValueForChannel(const Channels &channels,
 	Channel::DimensionIndices sumBy;
 
 	if (subChannel) {
-		if (inhibitStack) {
-			for (const auto &id : subChannel->dimensionIds)
-				if (channel.isSeriesUsed(id)) sumBy.pushBack(id);
-		}
-		else {
-			sumBy = subChannel->dimensionIds;
-			for (const auto &id : channel.dimensionIds)
-				sumBy.remove(id);
-		}
+		sumBy = subChannel->dimensionIds;
+		if (auto &&common = sumBy.split_by(channel.dimensionIds);
+		    inhibitStack)
+			std::swap(sumBy, common);
 	}
 
 	auto measure = channel.measureId;

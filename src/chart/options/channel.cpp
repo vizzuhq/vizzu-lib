@@ -32,7 +32,7 @@ std::pair<bool, Channel::OptionalIndex> Channel::addSeries(
     const Data::SeriesIndex &index)
 {
 	if (index.isDimension()) {
-		return {dimensionIds.pushBack(index), std::nullopt};
+		return {dimensionIds.push_back(index), std::nullopt};
 	}
 	if (!measureId) {
 		measureId = index;
@@ -48,15 +48,16 @@ std::pair<bool, Channel::OptionalIndex> Channel::addSeries(
 
 void Channel::removeSeries(const Data::SeriesIndex &index)
 {
-	if (index.isDimension()) return dimensionIds.remove(index);
-
-	if (measureId) measureId = std::nullopt;
+	if (index.isDimension())
+		dimensionIds.remove(index);
+	else if (measureId)
+		measureId = std::nullopt;
 }
 
 bool Channel::isSeriesUsed(const Data::SeriesIndex &index) const
 {
 	return (measureId && *measureId == index)
-	    || (dimensionIds.includes(index));
+	    || dimensionIds.contains(index);
 }
 
 void Channel::reset()
@@ -147,7 +148,7 @@ Channel::DimensionIndices operator&(
 	for (const auto &id : y) merged.insert(id);
 
 	Channel::DimensionIndices res;
-	for (const auto &id : merged) res.pushBack(id);
+	for (const auto &id : merged) res.push_back(id);
 	return res;
 }
 
