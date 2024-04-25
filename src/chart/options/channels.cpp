@@ -11,9 +11,11 @@ bool Channels::anyAxisSet() const
 
 bool Channels::isEmpty() const
 {
-	for (auto &&channel : channels)
-		if (!channel.isEmpty()) return false;
-	return true;
+	return std::ranges::all_of(channels,
+	    [](const auto &channel)
+	    {
+		    return channel.isEmpty();
+	    });
 }
 
 Data::DataCubeOptions::IndexSet Channels::getDimensions() const
@@ -82,9 +84,11 @@ bool Channels::clearSeries(const ChannelId &id)
 
 bool Channels::isSeriesUsed(const Data::SeriesIndex &index) const
 {
-	for (auto &&channel : channels)
-		if (channel.isSeriesUsed(index)) return true;
-	return false;
+	return std::ranges::any_of(channels,
+	    [&](const auto &channel)
+	    {
+		    return channel.isSeriesUsed(index);
+	    });
 }
 
 const Channel &Channels::at(const ChannelId &id) const

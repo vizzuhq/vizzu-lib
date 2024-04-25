@@ -345,7 +345,7 @@ struct JSONArr : protected JSONRepeat<'[', ']'>
 
 template <class T> inline void JSON::array(const T &val) const
 {
-	JSONArr arr{json};
+	auto arr = JSONArr{json};
 	for (const auto &e : val) arr << e;
 }
 
