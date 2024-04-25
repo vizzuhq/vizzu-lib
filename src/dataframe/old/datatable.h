@@ -94,57 +94,24 @@ struct slice_index_t
 
 using subslice_index_t = std::vector<slice_index_t>;
 
+struct CellInfo
+{
+	std::vector<std::pair<std::string, std::string>> categories;
+	std::vector<std::pair<std::string, double>> values;
+};
+
 class data_cube_t
 {
+	struct iterator_t;
+
 public:
-	struct CellInfo
+	struct multi_index_t
 	{
-		std::vector<std::pair<std::string, std::string>> categories;
-		std::vector<std::pair<std::string, double>> values;
+		std::optional<std::size_t> rid;
+		std::vector<std::size_t> old;
+
+		[[nodiscard]] bool isEmpty() const;
 	};
-
-	class data_t
-	{
-	public:
-		struct multi_index_t
-		{
-			std::optional<std::size_t> rid;
-			std::vector<std::size_t> old;
-
-			[[nodiscard]] bool isEmpty() const;
-		};
-
-	private:
-		struct iterator_t
-		{
-			const data_t *parent{};
-			std::size_t rid{};
-			multi_index_t index;
-
-			[[nodiscard]] bool operator!=(
-			    const iterator_t &oth) const;
-
-			void operator++();
-
-			[[nodiscard]] const multi_index_t &operator*() const;
-		};
-
-	public:
-		std::shared_ptr<dataframe::dataframe_interface> df;
-		std::vector<std::pair<std::string_view, std::size_t>>
-		    dim_reindex;
-
-		template <class Options>
-		explicit data_t(const data_table &table,
-		    const Options &options);
-
-		[[nodiscard]] iterator_t begin() const;
-		[[nodiscard]] static iterator_t end();
-
-		void check(iterator_t &it) const;
-		void incr(iterator_t &it) const;
-	};
-	using multi_index_t = data_t::multi_index_t;
 	using MultiIndex = multi_index_t;
 
 	struct Id
@@ -160,11 +127,12 @@ public:
 		[[nodiscard]] bool operator==(const Id &) const;
 	};
 
+	std::shared_ptr<dataframe::dataframe_interface> df;
 	std::shared_ptr<dataframe::dataframe_interface> removed;
 	std::map<std::pair<std::string_view, dataframe::aggregator_type>,
 	    std::string>
 	    measure_names;
-	data_t data;
+	std::vector<std::pair<std::string_view, std::size_t>> dim_reindex;
 
 	std::shared_ptr<std::map<std::string,
 	    std::shared_ptr<dataframe::dataframe_interface>>>
@@ -180,8 +148,6 @@ public:
 	    const series_index_list_t &colIndices) const;
 
 	[[nodiscard]] bool empty() const;
-
-	[[nodiscard]] const data_t &getData() const { return data; }
 
 	[[nodiscard]] CellInfo cellInfo(const multi_index_t &index) const;
 
@@ -203,6 +169,26 @@ public:
 
 	[[nodiscard]] std::string_view getUnit(
 	    std::string_view const &colIx) const;
+
+	[[nodiscard]] iterator_t begin() const;
+	[[nodiscard]] static iterator_t end();
+
+private:
+	struct iterator_t
+	{
+		const data_cube_t *parent{};
+		std::size_t rid{};
+		multi_index_t index;
+
+		[[nodiscard]] bool operator!=(const iterator_t &oth) const;
+
+		void operator++();
+
+		[[nodiscard]] const multi_index_t &operator*() const;
+	};
+
+	void check(iterator_t &it) const;
+	void incr(iterator_t &it) const;
 };
 
 }

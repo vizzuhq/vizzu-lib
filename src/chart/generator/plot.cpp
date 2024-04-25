@@ -119,8 +119,7 @@ bool Plot::isEmpty() const
 
 void Plot::generateMarkers()
 {
-	auto &&data = getDataCube().getData();
-	for (auto &&index : data) {
+	for (auto &&index : getDataCube()) {
 		auto markerIndex = markers.size();
 
 		auto &marker = markers.emplace_back(*options,
