@@ -9,24 +9,11 @@ bool Channels::anyAxisSet() const
 	    || !channels[ChannelId::y].isEmpty();
 }
 
-bool Channels::oneAxisSet() const
-{
-	return anyAxisSet() && !bothAxisSet();
-}
-
-bool Channels::bothAxisSet() const
-{
-	return !channels[ChannelId::x].isEmpty()
-	    && !channels[ChannelId::y].isEmpty();
-}
-
 bool Channels::isEmpty() const
 {
-	return std::ranges::all_of(channels,
-	    [](const auto &channel)
-	    {
-		    return channel.isEmpty();
-	    });
+	for (auto &&channel : channels)
+		if (!channel.isEmpty()) return false;
+	return true;
 }
 
 Data::DataCubeOptions::IndexSet Channels::getDimensions() const
@@ -62,16 +49,6 @@ Data::DataCubeOptions::IndexSet Channels::getDimensions(
 	return dimensions;
 }
 
-Data::DataCubeOptions::IndexSet Channels::getRealSeries(
-    const std::vector<ChannelId> &channelTypes) const
-{
-	Data::DataCubeOptions::IndexSet series;
-	for (auto channelType : channelTypes)
-		channels[static_cast<ChannelId>(channelType)]
-		    .collectRealSeries(series);
-	return series;
-}
-
 Data::DataCubeOptions Channels::getDataCubeOptions() const
 {
 	return {getDimensions(), getMeasures()};
@@ -105,43 +82,9 @@ bool Channels::clearSeries(const ChannelId &id)
 
 bool Channels::isSeriesUsed(const Data::SeriesIndex &index) const
 {
-	return std::ranges::any_of(channels,
-	    [&](const auto &channel)
-	    {
-		    return channel.isSeriesUsed(index);
-	    });
-}
-
-bool Channels::isSeriesUsed(
-    const std::vector<ChannelId> &channelTypes,
-    const Data::SeriesIndex &index) const
-{
-	return std::ranges::any_of(channelTypes,
-	    [this, &index](auto channelType)
-	    {
-		    return channels[static_cast<ChannelId>(channelType)]
-		        .isSeriesUsed(index);
-	    });
-}
-
-size_t Channels::count(const Data::SeriesIndex &index) const
-{
-	size_t cnt = 0;
-	for (const auto &channel : channels)
-		if (channel.isSeriesUsed(index)) ++cnt;
-	return cnt;
-}
-
-std::list<ChannelId> Channels::find(
-    const Data::SeriesIndex &index) const
-{
-	std::list<ChannelId> res;
-	for (auto type = 0U; type < std::size(channels); ++type) {
-		if (channels[static_cast<ChannelId>(type)].isSeriesUsed(
-		        index))
-			res.push_back(static_cast<ChannelId>(type));
-	}
-	return res;
+	for (auto &&channel : channels)
+		if (channel.isSeriesUsed(index)) return true;
+	return false;
 }
 
 const Channel &Channels::at(const ChannelId &id) const
@@ -151,13 +94,6 @@ const Channel &Channels::at(const ChannelId &id) const
 
 Channel &Channels::at(const ChannelId &id) { return channels.at(id); }
 
-ChannelId Channels::getEmptyAxisId() const
-{
-	if (at(ChannelId::x).isEmpty()) return ChannelId::x;
-	if (at(ChannelId::y).isEmpty()) return ChannelId::y;
-	return static_cast<ChannelId>(std::size(channels));
-}
-
 void Channels::reset()
 {
 	for (auto &channel : channels) channel.reset();
@@ -166,16 +102,6 @@ void Channels::reset()
 bool Channels::operator==(const Channels &other) const
 {
 	return channels == other.channels;
-}
-
-void Channels::visitAll(
-    const std::function<void(ChannelId, const Channel &)> &visitor)
-    const
-{
-	for (auto type = 0U; type < std::size(channels); ++type) {
-		const auto &channel = channels[static_cast<ChannelId>(type)];
-		visitor(static_cast<ChannelId>(type), std::ref(channel));
-	}
 }
 
 Channels Channels::shadow() const

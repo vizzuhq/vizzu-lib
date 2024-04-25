@@ -292,7 +292,7 @@ void Plot::calcMeasureAxis(ChannelId type)
 	const auto &scale = options->getChannels().at(type);
 	if (!scale.isEmpty() && scale.measureId) {
 		commonAxises.at(type).title = scale.title.isAuto()
-		                                ? scale.measureName(dataCube)
+		                                ? scale.measureName(*dataCube)
 		                            : scale.title ? *scale.title
 		                                          : std::string{};
 

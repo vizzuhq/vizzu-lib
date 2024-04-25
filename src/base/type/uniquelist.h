@@ -2,7 +2,6 @@
 #define TYPE_UNIQUELIST
 
 #include <algorithm>
-#include <list>
 #include <map>
 #include <utility>
 
@@ -99,6 +98,18 @@ public:
 		auto &&[it, newly] = items.try_emplace(value, last);
 		if (!newly) return false;
 		after_push_back(it);
+		return true;
+	}
+
+	bool push_front(const T &value)
+	{
+		auto &&[it, newly] = items.try_emplace(value, nullptr, first);
+		if (!newly) return false;
+		if (auto &&preFirst =
+		        std::exchange(first, std::to_address(it)))
+			preFirst->second.pre = first;
+		else
+			last = first;
 		return true;
 	}
 

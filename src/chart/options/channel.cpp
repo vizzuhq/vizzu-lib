@@ -74,8 +74,6 @@ void Channel::reset()
 	labelLevel = 0;
 }
 
-void Channel::clearMeasure() { measureId = std::nullopt; }
-
 bool Channel::isEmpty() const
 {
 	return (!measureId && dimensionIds.empty());
@@ -94,12 +92,6 @@ void Channel::collectDimesions(
 		dimensions.insert(dimension);
 }
 
-void Channel::collectRealSeries(
-    Data::DataCubeOptions::IndexSet &series) const
-{
-	if (measureId) series.insert(*measureId);
-}
-
 bool Channel::operator==(const Channel &other) const
 {
 	return type == other.type && measureId == other.measureId
@@ -115,41 +107,20 @@ bool Channel::operator==(const Channel &other) const
 	    && markerGuides == other.markerGuides;
 }
 
-std::string Channel::measureName(
-    const std::optional<Data::DataCube> &cube) const
+std::string Channel::measureName(const Data::DataCube &cube) const
 {
-	if (measureId) {
-		return cube ? cube->getName(*measureId)
-		            : measureId->getOrigName();
-	}
-	return {};
+	return measureId ? cube.getName(*measureId) : std::string{};
 }
 
 std::string Channel::labelDimensionName() const
 {
 	auto &&ser = labelSeries();
-	return ser ? ser->getOrigName() : "";
+	return ser ? ser->toString() : "";
 }
 
-std::list<std::string_view> Channel::dimensionNames() const
+const Channel::DimensionIndices &Channel::dimensions() const
 {
-	std::list<std::string_view> res;
-	for (const auto &dimensionId : dimensionIds)
-		res.push_back(dimensionId.getColIndex());
-	return res;
-}
-
-Channel::DimensionIndices operator&(
-    const Channel::DimensionIndices &x,
-    const Channel::DimensionIndices &y)
-{
-	std::set<Data::SeriesIndex> merged;
-	for (const auto &id : x) merged.insert(id);
-	for (const auto &id : y) merged.insert(id);
-
-	Channel::DimensionIndices res;
-	for (const auto &id : merged) res.push_back(id);
-	return res;
+	return dimensionIds;
 }
 
 Channel::OptionalIndex Channel::labelSeries() const

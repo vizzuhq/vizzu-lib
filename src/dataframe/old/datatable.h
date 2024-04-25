@@ -73,7 +73,7 @@ public:
 
 	[[nodiscard]] bool isDimension() const;
 
-	[[nodiscard]] const std::string &getOrigName() const
+	[[nodiscard]] const std::string &toString() const
 	{
 		return orig_name;
 	}

@@ -142,14 +142,11 @@ void data_cube_t::check(iterator_t &it) const
 	for (std::size_t ix{}; ix < dim_reindex.size(); ++ix) {
 		auto &&dim = dim_reindex[ix].first;
 		auto &&cats = df->get_categories(dim);
-		auto val =
-		    std::get<std::string_view>(df->get_data(it.rid, dim));
-		if (cats.size() == it.index.old[ix]) {
-			if (val.data() != nullptr) { return; }
-		}
-		else if (cats[it.index.old[ix]] != val) {
+		auto &&old_ix = it.index.old[ix];
+		if ((old_ix < cats.size() ? cats[old_ix].data() : nullptr)
+		    != std::get<std::string_view>(df->get_data(it.rid, dim))
+		           .data())
 			return;
-		}
 	}
 	it.index.rid.emplace(it.rid);
 }
