@@ -134,7 +134,7 @@ public:
 	    measure_names;
 	std::vector<std::pair<std::string_view, std::size_t>> dim_reindex;
 
-	std::shared_ptr<std::map<std::string,
+	std::shared_ptr<std::map<std::set<std::string>,
 	    std::shared_ptr<dataframe::dataframe_interface>>>
 	    cacheImpl = std::make_shared<
 	        typename decltype(cacheImpl)::element_type>();

@@ -311,48 +311,51 @@ double data_cube_t::aggregateAt(const multi_index_t &multiIndex,
 {
 	if (sumCols.empty()) return valueAt(multiIndex, seriesId);
 
-	std::string id{};
-	for (const auto &s : sumCols) {
-		id += s.getColIndex();
-		id += ';';
-	}
+	std::set<std::string> id{};
+	for (const auto &dim : sumCols) id.emplace(dim.getColIndex());
 
 	const auto &name = getName(seriesId);
 
-	id += name;
+	id.emplace(name);
 
 	auto it = cacheImpl->find(id);
 	if (it == cacheImpl->end()) {
-		it = cacheImpl->emplace(id, removed->copy(false)).first;
+		auto &[idset, cp] =
+		    *(it = cacheImpl
+		               ->emplace(std::move(id), removed->copy(false))
+		               .first);
 
-		auto &cp = it->second;
+		struct It
+		{
+			std::shared_ptr<dataframe::dataframe_interface> &df;
+			It &operator++() { return *this; }
+			It &operator*() { return *this; }
+			It &operator=(const std::string &str)
+			{
+				df->aggregate_by(str);
+				return *this;
+			}
+		};
 
-		auto keep_this =
-		    std::set<std::string_view>(df->get_dimensions().begin(),
-		        df->get_dimensions().end());
-		for (const auto &dim : sumCols)
-			keep_this.erase(dim.getColIndex());
-
-		for (const auto &dim : keep_this) cp->aggregate_by(dim);
+		std::set_difference(df->get_dimensions().begin(),
+		    df->get_dimensions().end(),
+		    idset.begin(),
+		    idset.end(),
+		    It{cp});
 
 		[[maybe_unused]] auto &&new_name =
 		    cp->set_aggregate(seriesId.getColIndex(),
 		        seriesId.getAggr());
 
-		for (auto &&dim : keep_this)
-			cp->set_sort(dim,
-			    dataframe::sort_type::by_categories,
-			    dataframe::na_position::last);
-
 		cp->finalize();
 	}
 
-	auto &sub_df = it->second;
+	auto &sub_df = *it->second;
 
 	if (multiIndex.rid) {
 		auto &&rrid = df->get_record_id_by_dims(*multiIndex.rid,
-		    sub_df->get_dimensions());
-		return std::get<double>(sub_df->get_data(rrid, name));
+		    sub_df.get_dimensions());
+		return std::get<double>(sub_df.get_data(rrid, name));
 	}
 
 	// hack for sunburst.
@@ -363,7 +366,7 @@ double data_cube_t::aggregateAt(const multi_index_t &multiIndex,
 
 	std::string res;
 	for (auto iit = index.begin();
-	     auto &&dim : sub_df->get_dimensions()) {
+	     auto &&dim : sub_df.get_dimensions()) {
 		if (iit->first != dim) ++iit;
 
 		auto &&cats = df->get_categories(dim);
@@ -373,7 +376,7 @@ double data_cube_t::aggregateAt(const multi_index_t &multiIndex,
 		                                  : cats[iit->second];
 		res += ';';
 	}
-	auto nanres = std::get<double>(sub_df->get_data(res, name));
+	auto nanres = std::get<double>(sub_df.get_data(res, name));
 	return std::isnan(nanres) ? double{} : nanres;
 }
 
