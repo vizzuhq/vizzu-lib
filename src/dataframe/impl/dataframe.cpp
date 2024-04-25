@@ -626,7 +626,7 @@ std::string dataframe::as_string() const &
 	if (!vec || vec->empty()) error();
 
 	std::string res;
-	Conv::JSONArr &&arr{res};
+	auto &&arr = Conv::JSONArr(res);
 	for (const auto s = get_data_source(); const auto &name : *vec) {
 		auto &&obj{arr.nestedObj()};
 		switch (auto &&ser = s.get_series(name)) {
