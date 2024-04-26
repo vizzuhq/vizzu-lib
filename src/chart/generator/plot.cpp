@@ -58,7 +58,7 @@ Plot::Plot(PlotOptionsPtr options, const Plot &other) :
     guides(other.guides),
     dimensionAxises(other.dimensionAxises),
     keepAspectRatio(other.keepAspectRatio),
-    dataTable(other.getTable()),
+    dataTable(other.dataTable),
     options(std::move(options)),
     style(other.style),
     markersInfo(other.markersInfo)
@@ -290,8 +290,8 @@ void Plot::calcMeasureAxis(ChannelId type)
 	auto &axis = measureAxises.at(type);
 	const auto &scale = options->getChannels().at(type);
 	if (!scale.isEmpty() && scale.measureId) {
-		commonAxises.at(type).title = scale.title.isAuto()
-		                                ? scale.measureName(*dataCube)
+		auto &&name = scale.measureName(*dataCube);
+		commonAxises.at(type).title = scale.title.isAuto() ? name
 		                            : scale.title ? *scale.title
 		                                          : std::string{};
 
@@ -302,13 +302,12 @@ void Plot::calcMeasureAxis(ChannelId type)
 			    scale.step.getValue()};
 		}
 		else {
-			auto colIndex = scale.measureId->getColIndex();
 			auto range = stats.channels[type].range;
 			if (!range.isReal())
 				range = Math::Range<double>::Raw(0.0, 0.0);
 
 			axis = {range,
-			    std::string{dataTable.getUnit(colIndex)},
+			    std::string{dataCube->getUnit(name)},
 			    scale.step.getValue()};
 		}
 	}

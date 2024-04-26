@@ -4,6 +4,7 @@
 #include <any>
 #include <memory>
 #include <shared_mutex>
+#include <thread>
 #include <unordered_map>
 
 namespace Vizzu

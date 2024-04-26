@@ -3,6 +3,7 @@
 #include <utility>
 
 #include "chart/animator/keyframe.h"
+#include "chart/generator/plot.h"
 
 namespace Vizzu::Anim
 {

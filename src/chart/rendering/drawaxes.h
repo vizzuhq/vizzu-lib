@@ -2,6 +2,7 @@
 #define DRAWAXES_H
 
 #include "base/geom/line.h"
+#include "chart/generator/axis.h"
 
 #include "drawingcontext.h"
 #include "drawinterlacing.h"

@@ -11,12 +11,6 @@
 namespace Vizzu::Data
 {
 
-std::string_view DataTable::getUnit(
-    std::string_view const &colIx) const
-{
-	return df.get_series_info(colIx, "unit");
-}
-
 void DataTable::addColumn(std::string_view name,
     std::string_view unit,
     const std::span<const double> &values)

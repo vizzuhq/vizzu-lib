@@ -14,6 +14,7 @@
 #include "channelstats.h"
 #include "guides.h"
 #include "marker.h"
+#include "plotptr.h"
 
 namespace Vizzu
 {
@@ -137,8 +138,6 @@ private:
 	sortedBuckets(const Buckets &buckets, bool main);
 	void clearEmptyBuckets(const Buckets &buckets, bool main);
 };
-
-using PlotPtr = std::shared_ptr<Plot>;
 
 struct PlotParent
 {

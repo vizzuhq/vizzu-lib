@@ -1,6 +1,7 @@
 #include "drawlegend.h"
 
 #include "base/gfx/draw/roundedrect.h"
+#include "chart/generator/plot.h"
 #include "chart/rendering/colorbuilder.h"
 #include "chart/rendering/drawbackground.h"
 #include "chart/rendering/drawlabel.h"

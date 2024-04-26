@@ -1,6 +1,7 @@
 #include "morph.h"
 
 #include "base/math/interpolation.h"
+#include "chart/generator/plot.h"
 
 namespace Vizzu::Anim::Morph
 {

@@ -1,5 +1,7 @@
 #include "drawguides.h"
 
+#include "chart/generator/plot.h"
+
 namespace Vizzu::Draw
 {
 

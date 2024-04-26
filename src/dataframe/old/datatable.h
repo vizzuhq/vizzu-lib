@@ -16,8 +16,6 @@ class DataTable
 {
 public:
 	using Type = dataframe::series_type;
-	[[nodiscard]] std::string_view getUnit(
-	    std::string_view const &colIx) const;
 
 	void addColumn(std::string_view name,
 	    std::string_view unit,

@@ -2,7 +2,7 @@
 #define DRAWINGCONTEXT_H
 
 #include "base/gfx/canvas.h"
-#include "chart/generator/plot.h"
+#include "chart/generator/plotptr.h"
 #include "chart/main/events.h"
 #include "chart/main/layout.h"
 #include "chart/main/style.h"
@@ -16,7 +16,8 @@ namespace Vizzu::Draw
 
 struct DrawingContext
 {
-	const std::shared_ptr<Gen::Plot> &plot;
+	const Gen::PlotPtr &plot;
+	const Gen::Options *options;
 	RenderedChart &renderedChart;
 	const CoordinateSystem &coordSys;
 	const Styles::Chart &rootStyle;
@@ -24,7 +25,7 @@ struct DrawingContext
 
 	[[nodiscard]] const Gen::Options &getOptions() const
 	{
-		return *plot->getOptions();
+		return *options;
 	}
 
 	[[nodiscard]] const DrawingContext &ctx() const { return *this; }

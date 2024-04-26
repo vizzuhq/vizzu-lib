@@ -2,6 +2,8 @@
 
 #include <algorithm>
 
+#include "chart/generator/plot.h"
+
 namespace Vizzu::Draw
 {
 

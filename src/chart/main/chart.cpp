@@ -1,5 +1,6 @@
 #include "chart.h"
 
+#include "chart/generator/plot.h"
 #include "chart/rendering/drawchart.h"
 
 namespace Vizzu
@@ -101,6 +102,7 @@ void Chart::draw(Gfx::ICanvas &canvas)
 	    actPlot};
 
 	Draw::DrawChart{Draw::DrawingContext{actPlot,
+	                    actPlot->getOptions().get(),
 	                    renderedChart,
 	                    renderedChart.getCoordSys(),
 	                    actPlot ? actPlot->getStyle()

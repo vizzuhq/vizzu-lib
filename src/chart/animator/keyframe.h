@@ -1,9 +1,7 @@
 #ifndef KEYFRAME_H
 #define KEYFRAME_H
 
-#include <memory>
-
-#include "chart/generator/plot.h"
+#include "chart/generator/plotptr.h"
 
 #include "options.h"
 #include "planner.h"

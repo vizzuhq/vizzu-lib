@@ -15,7 +15,7 @@ public:
 	    Gen::ShapeType type);
 
 	static const Gen::Marker *getPrev(const Gen::Marker &marker,
-	    const Gen::Plot::Markers &markers,
+	    const std::vector<Gen::Marker> &markers,
 	    size_t lineIndex);
 };
 

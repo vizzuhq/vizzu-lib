@@ -2,6 +2,8 @@
 
 #include <utility>
 
+#include "chart/generator/plot.h"
+
 namespace Vizzu::Anim
 {
 

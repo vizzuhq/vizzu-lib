@@ -1,14 +1,13 @@
 #ifndef LIB_INTERFACE_H
 #define LIB_INTERFACE_H
 
-#include "chart/main/version.h"
-#include "chart/ui/chart.h"
-
+#include "cinterface.h"
 #include "jsfunctionwrapper.h"
 #include "objectregistry.h"
 
 namespace Vizzu
 {
+class Chart;
 
 class Interface
 {
@@ -122,28 +121,11 @@ public:
 	    const char *column);
 
 private:
-	struct Snapshot
-	{
-		Snapshot(Gen::Options options, Styles::Chart styles) :
-		    options(std::move(options)),
-		    styles(std::move(styles))
-		{}
-		Gen::Options options;
-		Styles::Chart styles;
-	};
+	struct Snapshot;
 
-	struct Animation
-	{
-		Animation(Anim::AnimationPtr anim, Snapshot snapshot) :
-		    animation(std::move(anim)),
-		    snapshot(std::move(snapshot))
-		{}
-		Anim::AnimationPtr animation;
-		Snapshot snapshot;
-	};
+	struct Animation;
 
-	std::shared_ptr<Vizzu::Chart> getChart(
-	    ObjectRegistry::Handle chart);
+	std::shared_ptr<Chart> getChart(ObjectRegistry::Handle chart);
 
 	ObjectRegistry objects;
 };

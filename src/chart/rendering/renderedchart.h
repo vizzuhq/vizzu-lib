@@ -11,7 +11,8 @@
 #include "base/geom/quadrilateral.h"
 #include "base/geom/transformedrect.h"
 #include "base/util/eventdispatcher.h"
-#include "chart/generator/plot.h"
+#include "chart/generator/plotptr.h"
+#include "chart/options/shapetype.h"
 #include "chart/rendering/painter/coordinatesystem.h"
 
 namespace Vizzu::Draw
