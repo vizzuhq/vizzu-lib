@@ -4,6 +4,8 @@
 #include <cmath>
 #include <set>
 
+#include "dataframe/old/datatable.h"
+
 namespace Vizzu::Gen
 {
 

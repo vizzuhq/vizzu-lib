@@ -64,7 +64,7 @@ MeasureAxis interpolate(const MeasureAxis &op0,
 
 	return res;
 }
-bool DimensionAxis::add(const Data::DataCube::Id::SliceIndex &index,
+bool DimensionAxis::add(const Data::SliceIndex &index,
     double value,
     const Math::Range<double> &range,
     double enabled,
@@ -105,7 +105,7 @@ bool DimensionAxis::setLabels(double step)
 
 	for (int curr{}; auto &[v, pp] : reorder) {
 		auto &[slice, item] = *pp;
-		item.categoryValue = Data::DataCube::getValue(slice);
+		item.categoryValue = slice.value;
 
 		if (++curr <= currStep) continue;
 		currStep += step;

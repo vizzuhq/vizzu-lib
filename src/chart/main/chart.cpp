@@ -1,7 +1,6 @@
 #include "chart.h"
 
 #include "chart/rendering/drawchart.h"
-#include "data/datacube/datacube.h"
 
 namespace Vizzu
 {

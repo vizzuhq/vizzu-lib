@@ -5,7 +5,7 @@
 
 #include "base/math/range.h"
 #include "chart/options/channels.h"
-#include "data/datacube/datacube.h"
+#include "dataframe/old/types.h"
 
 #include "marker.h"
 
@@ -17,7 +17,7 @@ class ChannelStats
 public:
 	bool isDimension;
 	Math::Range<double> range;
-	std::vector<Data::DataCube::Id::SubSliceIndex> usedIndices;
+	std::vector<Data::SubSliceIndex> usedIndices;
 
 	ChannelStats() : isDimension(true) {}
 	ChannelStats(const Channel &channel, const Data::DataCube &cube);

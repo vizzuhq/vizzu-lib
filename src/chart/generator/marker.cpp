@@ -1,5 +1,7 @@
 #include "marker.h"
 
+#include "dataframe/old/datatable.h"
+
 #include "channelstats.h"
 
 namespace Vizzu::Gen
@@ -8,7 +10,7 @@ namespace Vizzu::Gen
 Marker::Marker(const Options &options,
     const Data::DataCube &data,
     ChannelsStats &stats,
-    const Data::DataCube::MultiIndex &index,
+    const Data::MultiIndex &index,
     size_t idx) :
     enabled(data.empty() || !index.isEmpty()),
     cellInfo(data.cellInfo(index)),
@@ -163,7 +165,7 @@ double Marker::getValueForChannel(const Channels &channels,
     ChannelId type,
     const Data::DataCube &data,
     ChannelsStats &stats,
-    const Data::DataCube::MultiIndex &index,
+    const Data::MultiIndex &index,
     const Channel *subChannel,
     bool inhibitStack) const
 {
@@ -255,14 +257,14 @@ bool Marker::Label::operator==(const Marker::Label &other) const
 
 std::string Marker::Label::getIndexString(const Data::DataCube &data,
     const Data::SeriesList &series,
-    const Data::DataCube::MultiIndex &index)
+    const Data::MultiIndex &index)
 {
 	std::string res;
 
 	for (const auto &sliceIndex :
 	    data.getId(series, index).itemSliceIndex) {
 		if (!res.empty()) res += ", ";
-		res += Data::DataCube::getValue(sliceIndex);
+		res += sliceIndex.value;
 	}
 	return res;
 }

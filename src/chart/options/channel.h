@@ -5,10 +5,7 @@
 #include <optional>
 #include <string>
 
-#include "base/anim/interpolated.h"
-#include "data/datacube/datacube.h"
-#include "data/datacube/datacubeoptions.h"
-#include "data/datacube/seriesindex.h"
+#include "dataframe/old/types.h"
 
 #include "autoparam.h"
 #include "channelrange.h"

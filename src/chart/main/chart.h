@@ -14,7 +14,7 @@
 #include "chart/main/stylesheet.h"
 #include "chart/options/config.h"
 #include "chart/rendering/renderedchart.h"
-#include "data/table/datatable.h"
+#include "dataframe/old/datatable.h"
 
 #include "events.h"
 

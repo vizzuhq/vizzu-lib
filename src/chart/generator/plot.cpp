@@ -7,7 +7,6 @@
 #include "base/conv/numtostr.h"
 #include "base/math/range.h"
 #include "chart/speclayout/speclayout.h"
-#include "data/datacube/datacube.h"
 
 namespace Vizzu::Gen
 {

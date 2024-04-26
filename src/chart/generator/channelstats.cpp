@@ -1,5 +1,7 @@
 #include "channelstats.h"
 
+#include "dataframe/old/datatable.h"
+
 namespace Vizzu::Gen
 {
 

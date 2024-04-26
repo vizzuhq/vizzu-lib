@@ -3,27 +3,21 @@
 #include <base/conv/auto_json.h>
 #include <base/text/funcstring.h>
 #include <cmath>
-#include <data/datacube/datacube.h>
 #include <dataframe/impl/aggregators.h>
 #include <dataframe/interface.h>
 #include <numeric>
 #include <utility>
 
-#include "data/datacube/datacubeoptions.h"
-#include "data/datacube/datafilter.h"
-#include "data/datacube/seriesindex.h"
-#include "data/table/datatable.h"
-
 namespace Vizzu::Data
 {
 
-std::string_view data_table::getUnit(
+std::string_view DataTable::getUnit(
     std::string_view const &colIx) const
 {
 	return df.get_series_info(colIx, "unit");
 }
 
-void data_table::addColumn(std::string_view name,
+void DataTable::addColumn(std::string_view name,
     std::string_view unit,
     const std::span<const double> &values)
 {
@@ -33,7 +27,7 @@ void data_table::addColumn(std::string_view name,
 	    {{std::pair{"unit", unit.data()}}});
 }
 
-void data_table::addColumn(std::string_view name,
+void DataTable::addColumn(std::string_view name,
     const std::span<const char *const> &categories,
     const std::span<const std::uint32_t> &values)
 {
@@ -44,59 +38,58 @@ void data_table::addColumn(std::string_view name,
 	    {});
 }
 
-void data_table::pushRow(const std::span<const char *> &cells)
+void DataTable::pushRow(const std::span<const char *> &cells)
 {
 	df.add_record(cells);
 }
 
-std::string data_table::getInfos() const { return df.as_string(); }
+std::string DataTable::getInfos() const { return df.as_string(); }
 
-bool series_index_t::isDimension() const { return !aggr; }
+bool SeriesIndex::isDimension() const { return !aggr; }
 
-const std::string_view &series_index_t::getColIndex() const
+const std::string_view &SeriesIndex::getColIndex() const
 {
 	return sid;
 }
 
-bool series_index_t::operator==(const series_index_t &rhs) const
+bool SeriesIndex::operator==(const SeriesIndex &rhs) const
 {
 	return sid == rhs.sid && aggr == rhs.aggr;
 }
 
-bool series_index_t::operator<(const series_index_t &rhs) const
+bool SeriesIndex::operator<(const SeriesIndex &rhs) const
 {
 	return sid < rhs.sid || (sid == rhs.sid && aggr < rhs.aggr);
 }
 
-bool slice_index_t::operator<(slice_index_t const &rhs) const
+bool SliceIndex::operator<(SliceIndex const &rhs) const
 {
 	return column < rhs.column
 	    || (column == rhs.column && value < rhs.value);
 }
 
-bool data_cube_t::multi_index_t::isEmpty() const { return !rid; }
+bool MultiIndex::isEmpty() const { return !rid; }
 
-bool data_cube_t::Id::operator==(const Id &id) const
+bool MarkerId::operator==(const MarkerId &id) const
 {
 	return itemSliceIndex == id.itemSliceIndex
 	    && seriesId == id.seriesId;
 }
 
-bool data_cube_t::iterator_t::operator!=(const iterator_t &oth) const
+bool DataCube::iterator_t::operator!=(const iterator_t &oth) const
 {
 	return parent != oth.parent;
 }
 
-void data_cube_t::iterator_t::operator++() { parent->incr(*this); }
+void DataCube::iterator_t::operator++() { parent->incr(*this); }
 
-const data_cube_t::multi_index_t &
-data_cube_t::iterator_t::operator*() const
+const MultiIndex &DataCube::iterator_t::operator*() const
 {
 	return index;
 }
 
-series_index_t::series_index_t(std::string const &str,
-    const data_table &table) :
+SeriesIndex::SeriesIndex(std::string const &str,
+    const DataTable &table) :
     orig_name(str)
 {
 	constinit static auto names =
@@ -120,7 +113,7 @@ series_index_t::series_index_t(std::string const &str,
 	}
 }
 
-data_cube_t::iterator_t data_cube_t::begin() const
+DataCube::iterator_t DataCube::begin() const
 {
 	if (df->get_record_count() == 0) return {};
 	iterator_t res{this,
@@ -130,9 +123,9 @@ data_cube_t::iterator_t data_cube_t::begin() const
 	return res;
 }
 
-data_cube_t::iterator_t data_cube_t::end() { return {}; }
+DataCube::iterator_t DataCube::end() { return {}; }
 
-void data_cube_t::check(iterator_t &it) const
+void DataCube::check(iterator_t &it) const
 {
 	if (it.index.rid) {
 		++it.rid;
@@ -151,7 +144,7 @@ void data_cube_t::check(iterator_t &it) const
 	it.index.rid.emplace(it.rid);
 }
 
-void data_cube_t::incr(iterator_t &it) const
+void DataCube::incr(iterator_t &it) const
 {
 	for (std::size_t ix{dim_reindex.size()}; ix-- > 0;)
 		if (++it.index.old[ix] >= dim_reindex[ix].second)
@@ -163,8 +156,7 @@ void data_cube_t::incr(iterator_t &it) const
 	it.parent = nullptr;
 }
 
-template <>
-data_cube_t::data_cube_t(const data_table &table,
+DataCube::DataCube(const DataTable &table,
     const DataCubeOptions &options,
     const Filter &filter) :
     df(options.getDimensions().empty()
@@ -206,8 +198,7 @@ data_cube_t::data_cube_t(const data_table &table,
 	}
 }
 
-size_t data_cube_t::combinedSizeOf(
-    const series_index_list_t &colIndices) const
+size_t DataCube::combinedSizeOf(const SeriesList &colIndices) const
 {
 	std::size_t my_res{1};
 	for (const auto &si : colIndices) {
@@ -217,33 +208,28 @@ size_t data_cube_t::combinedSizeOf(
 	return my_res;
 }
 
-bool data_cube_t::empty() const
+bool DataCube::empty() const
 {
 	return df->get_measures().empty() && df->get_dimensions().empty();
 }
 
-std::string data_cube_t::getValue(const slice_index_t &index)
-{
-	return std::string{index.value};
-}
-
-const std::string &data_cube_t::getName(
-    const series_index_t &seriesId) const
+const std::string &DataCube::getName(
+    const SeriesIndex &seriesId) const
 {
 	return measure_names.at(
 	    {seriesId.getColIndex(), seriesId.getAggr()});
 }
 
-std::string_view data_cube_t::getUnit(
+std::string_view DataCube::getUnit(
     std::string_view const &colIx) const
 {
 	return df->get_series_info(colIx, "unit");
 }
 
-data_cube_t::Id data_cube_t::getId(const series_index_list_t &sl,
-    const multi_index_t &mi) const
+MarkerId DataCube::getId(const SeriesList &sl,
+    const MultiIndex &mi) const
 {
-	Id res{Id::SubSliceIndex(sl.size())};
+	MarkerId res{SubSliceIndex(sl.size())};
 	std::map<std::string_view, std::size_t> reindex;
 	std::vector<std::pair<std::size_t, std::size_t>> v(sl.size());
 
@@ -269,7 +255,7 @@ data_cube_t::Id data_cube_t::getId(const series_index_list_t &sl,
 	return res;
 }
 
-CellInfo data_cube_t::cellInfo(const multi_index_t &index) const
+CellInfo DataCube::cellInfo(const MultiIndex &index) const
 {
 	CellInfo my_res;
 
@@ -290,8 +276,8 @@ CellInfo data_cube_t::cellInfo(const multi_index_t &index) const
 	return my_res;
 }
 
-double data_cube_t::valueAt(const multi_index_t &multiIndex,
-    const series_index_t &seriesId) const
+double DataCube::valueAt(const MultiIndex &multiIndex,
+    const SeriesIndex &seriesId) const
 {
 	if (multiIndex.rid) {
 		const auto &name = getName(seriesId);
@@ -301,9 +287,9 @@ double data_cube_t::valueAt(const multi_index_t &multiIndex,
 	return {};
 }
 
-double data_cube_t::aggregateAt(const multi_index_t &multiIndex,
-    const series_index_list_t &sumCols,
-    const series_index_t &seriesId) const
+double DataCube::aggregateAt(const MultiIndex &multiIndex,
+    const SeriesList &sumCols,
+    const SeriesIndex &seriesId) const
 {
 	if (sumCols.empty()) return valueAt(multiIndex, seriesId);
 

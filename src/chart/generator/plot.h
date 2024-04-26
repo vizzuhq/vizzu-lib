@@ -8,7 +8,7 @@
 
 #include "chart/main/style.h"
 #include "chart/options/options.h"
-#include "data/table/datatable.h"
+#include "dataframe/old/datatable.h"
 
 #include "axis.h"
 #include "channelstats.h"

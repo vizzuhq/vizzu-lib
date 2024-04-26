@@ -11,8 +11,7 @@
 #include "base/geom/rect.h"
 #include "base/math/fuzzybool.h"
 #include "base/math/range.h"
-#include "data/datacube/datafilter.h"
-#include "data/table/datatable.h"
+#include "dataframe/old/types.h"
 
 #include "align.h"
 #include "autoparam.h"

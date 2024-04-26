@@ -9,7 +9,10 @@
 #include <string_view>
 #include <variant>
 
-#include "../data/datacube/datafilter.h"
+namespace Vizzu::Data
+{
+struct RowWrapper;
+}
 
 namespace Vizzu::dataframe
 {
