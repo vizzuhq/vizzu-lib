@@ -119,7 +119,6 @@ public:
 		using SubSliceIndex = subslice_index_t;
 		using SliceIndex = std::ranges::range_value_t<SubSliceIndex>;
 
-		multi_index_t mi;
 		SubSliceIndex itemSliceIndex;
 		std::size_t seriesId{};
 		std::size_t itemId{};

@@ -243,31 +243,30 @@ std::string_view data_cube_t::getUnit(
 data_cube_t::Id data_cube_t::getId(const series_index_list_t &sl,
     const multi_index_t &mi) const
 {
+	Id res{Id::SubSliceIndex(sl.size())};
 	std::map<std::string_view, std::size_t> reindex;
 	std::vector<std::pair<std::size_t, std::size_t>> v(sl.size());
-	Id::SubSliceIndex ssi(sl.size());
 
 	for (std::size_t ix{}; const auto &s : sl)
 		reindex.try_emplace(s.getColIndex(), ix++);
 
-	std::size_t seriesId{};
 	for (std::size_t ix{}; ix < dim_reindex.size(); ++ix) {
 		auto &&[name, size] = dim_reindex[ix];
 		if (auto it = reindex.find(name); it != reindex.end()) {
 			v[it->second] = {mi.old[ix], size};
 			auto &&cats = df->get_categories(name);
-			ssi[it->second] = {name,
+			res.itemSliceIndex[it->second] = {name,
 			    mi.old[ix] < cats.size() ? cats[mi.old[ix]]
 			                             : std::string_view{}};
 		}
 		else
-			seriesId = seriesId * size + mi.old[ix];
+			res.seriesId = res.seriesId * size + mi.old[ix];
 	}
 
-	std::size_t itemId{};
-	for (const auto &[cix, size] : v) itemId = itemId * size + cix;
+	for (const auto &[cix, size] : v)
+		res.itemId = res.itemId * size + cix;
 
-	return {mi, ssi, seriesId, itemId};
+	return res;
 }
 
 CellInfo data_cube_t::cellInfo(const multi_index_t &index) const
