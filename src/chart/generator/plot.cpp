@@ -555,9 +555,8 @@ void Plot::appendMarkers(const Plot &plot, bool enabled)
 
 bool Plot::dimensionMatch(const Plot &a, const Plot &b)
 {
-	const auto &aDims = a.getOptions()->getChannels().getDimensions();
-	const auto &bDims = b.getOptions()->getChannels().getDimensions();
-	return (aDims == bDims);
+	return a.getOptions()->getChannels().getDimensions()
+	    == b.getOptions()->getChannels().getDimensions();
 }
 
 }

@@ -93,14 +93,12 @@ Channels Options::shadowChannels() const
 {
 	auto shadow = channels.shadow();
 
-	std::vector<Vizzu::Gen::ChannelId> stackChannels;
+	std::vector<ChannelId> stackChannels;
 	stackChannels.push_back(stackChannelType());
-	auto secondary = secondaryStackType();
-	if (secondary) stackChannels.push_back(*secondary);
+	if (auto &&secondary = secondaryStackType())
+		stackChannels.push_back(*secondary);
 
-	auto stackers = shadow.getDimensions(stackChannels);
-
-	for (const auto &stacker : stackers) {
+	for (auto &&stacker : shadow.getDimensions(stackChannels)) {
 		shadow.removeSeries(stackChannelType(), stacker);
 		shadow.removeSeries(ChannelId::noop, stacker);
 	}
@@ -112,18 +110,14 @@ void Options::drilldownTo(const Options &other)
 {
 	auto &stackChannel = this->stackChannel();
 
-	auto dimensions = other.getChannels().getDimensions();
-
-	for (const auto &dim : dimensions)
+	for (auto &&dim : other.getChannels().getDimensions())
 		if (!getChannels().isSeriesUsed(dim))
 			stackChannel.addSeries(dim);
 }
 
 void Options::intersection(const Options &other)
 {
-	auto dimensions = getChannels().getDimensions();
-
-	for (const auto &dim : dimensions)
+	for (auto &&dim : getChannels().getDimensions())
 		if (!other.getChannels().isSeriesUsed(dim))
 			getChannels().removeSeries(dim);
 }
@@ -198,8 +192,8 @@ bool Options::sameAttributes(const Options &other) const
 
 ChannelId Options::getHorizontalChannel() const
 {
-	return (Math::rad2quadrant(angle) % 2) == 0 ? ChannelId::x
-	                                            : ChannelId::y;
+	return Math::rad2quadrant(angle) % 2 == 0 ? ChannelId::x
+	                                          : ChannelId::y;
 }
 
 ChannelId Options::getVerticalChannel() const
@@ -218,9 +212,8 @@ bool Options::isShapeValid(const ShapeType &shapeType) const
 
 std::optional<uint64_t> Options::getMarkerInfoId(MarkerId id) const
 {
-	for (const auto &i : markersInfo) {
-		if (i.second == id) return i.first;
-	}
+	for (auto &&[gid, mkid] : markersInfo)
+		if (mkid == id) return gid;
 	return {};
 }
 
@@ -244,7 +237,7 @@ void Options::setAutoParameters()
 	}
 }
 
-Gen::Orientation Options::getAutoOrientation() const
+Orientation Options::getAutoOrientation() const
 {
 	if (getChannels().anyAxisSet()) {
 		const auto &x = getChannels().at(ChannelId::x);
@@ -283,10 +276,9 @@ std::optional<Options::LegendId> Options::getAutoLegend() const
 	if (channels.at(ChannelId::label).measureId)
 		series.erase(*channels.at(ChannelId::label).measureId);
 
-	for (auto channelId : {ChannelId::x, ChannelId::y}) {
-		auto id = channels.at(channelId).labelSeries();
-		if (id) series.erase(*id);
-	}
+	for (auto channelId : {ChannelId::x, ChannelId::y})
+		if (auto id = channels.at(channelId).labelSeries())
+			series.erase(*id);
 
 	for (auto channelId : {LegendId::color, LegendId::lightness})
 		for (const auto &id :
@@ -381,7 +373,7 @@ bool Options::labelsShownFor(const Data::SeriesIndex &series) const
 void Options::showTooltip(std::optional<MarkerId> marker)
 {
 	if (!marker && tooltip) {
-		if (auto miid = getMarkerInfoId(*tooltip))
+		if (auto &&miid = getMarkerInfoId(*tooltip))
 			markersInfo.erase(*miid);
 		tooltip.reset();
 	}
@@ -398,7 +390,7 @@ void Options::showTooltip(std::optional<MarkerId> marker)
 	}
 }
 
-[[nodiscard]] ChannelId Options::toChannel(const Options::LegendId &l)
+[[nodiscard]] ChannelId Options::toChannel(const LegendId &l)
 {
 	return static_cast<ChannelId>(l);
 }

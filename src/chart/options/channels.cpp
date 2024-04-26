@@ -45,9 +45,8 @@ Data::DataCubeOptions::IndexSet Channels::getDimensions(
     const std::vector<ChannelId> &channelTypes) const
 {
 	Data::DataCubeOptions::IndexSet dimensions;
-	for (auto channelType : channelTypes)
-		channels[static_cast<ChannelId>(channelType)]
-		    .collectDimesions(dimensions);
+	for (auto &&channelType : channelTypes)
+		channels[channelType].collectDimesions(dimensions);
 	return dimensions;
 }
 
@@ -112,17 +111,15 @@ Channels Channels::shadow() const
 {
 	Channels shadow = *this;
 
-	auto attrs = getDimensions({ChannelId::color,
-	    ChannelId::lightness,
-	    ChannelId::label,
-	    ChannelId::noop});
-
 	shadow.channels[ChannelId::color].reset();
 	shadow.channels[ChannelId::lightness].reset();
 	shadow.channels[ChannelId::label].reset();
 	shadow.channels[ChannelId::noop].reset();
 
-	for (const auto &attr : attrs)
+	for (auto &&attr : getDimensions({ChannelId::color,
+	         ChannelId::lightness,
+	         ChannelId::label,
+	         ChannelId::noop}))
 		shadow.channels[ChannelId::noop].addSeries(attr);
 
 	return shadow;
