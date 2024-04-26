@@ -21,6 +21,7 @@ public:
 	using Type = ChannelId;
 
 	using OptionalIndex = std::optional<Data::SeriesIndex>;
+	using IndexSet = std::set<Data::SeriesIndex>;
 	using DimensionIndices = Data::SeriesList;
 
 	static Channel makeChannel(Type id);
@@ -35,8 +36,7 @@ public:
 	[[nodiscard]] bool isDimension() const;
 	[[nodiscard]] bool isMeasure() const;
 	[[nodiscard]] size_t dimensionCount() const;
-	void collectDimesions(
-	    Data::DataCubeOptions::IndexSet &dimensions) const;
+	void collectDimesions(IndexSet &dimensions) const;
 	[[nodiscard]] std::string measureName(
 	    const Data::DataCube &cube) const;
 	[[nodiscard]] std::string labelDimensionName() const;

@@ -94,9 +94,7 @@ private:
 	    ChannelId type,
 	    const Data::DataCube &data,
 	    ChannelsStats &stats,
-	    const Data::MultiIndex &index,
-	    const Channel *subChannel = nullptr,
-	    bool inhibitStack = false) const;
+	    const Data::MultiIndex &index) const;
 };
 
 }

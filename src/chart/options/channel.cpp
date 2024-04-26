@@ -87,8 +87,7 @@ bool Channel::isMeasure() const { return !isEmpty() && measureId; }
 
 size_t Channel::dimensionCount() const { return dimensionIds.size(); }
 
-void Channel::collectDimesions(
-    Data::DataCubeOptions::IndexSet &dimensions) const
+void Channel::collectDimesions(IndexSet &dimensions) const
 {
 	for (const auto &dimension : dimensionIds)
 		dimensions.insert(dimension);

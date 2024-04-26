@@ -66,19 +66,13 @@ Plot::Plot(PlotOptionsPtr options, const Plot &other) :
 
 Plot::Plot(const Data::DataTable &dataTable,
     PlotOptionsPtr opts,
-    Styles::Chart style,
-    bool setAutoParams) :
+    Styles::Chart style) :
     dataTable(dataTable),
     options(std::move(opts)),
     style(std::move(style)),
-    dataCube(std::in_place,
-        dataTable,
-        options->getChannels().getDataCubeOptions(),
-        options->dataFilter),
+    dataCube(std::in_place, dataTable, *options),
     stats(options->getChannels(), getDataCube())
 {
-	if (setAutoParams) options->setAutoParameters();
-
 	anyAxisSet = options->getChannels().anyAxisSet();
 
 	generateMarkers();

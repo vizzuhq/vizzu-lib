@@ -15,6 +15,7 @@ namespace Vizzu::Gen
 class Channels
 {
 public:
+	using IndexSet = std::set<Data::SeriesIndex>;
 	struct Pos
 	{
 		ChannelId channelId;
@@ -24,12 +25,10 @@ public:
 	[[nodiscard]] bool anyAxisSet() const;
 	[[nodiscard]] bool isEmpty() const;
 
-	[[nodiscard]] Data::DataCubeOptions::IndexSet
-	getDimensions() const;
-	[[nodiscard]] Data::DataCubeOptions::IndexSet getMeasures() const;
-	[[nodiscard]] Data::DataCubeOptions::IndexSet getDimensions(
+	[[nodiscard]] IndexSet getDimensions() const;
+	[[nodiscard]] IndexSet getMeasures() const;
+	[[nodiscard]] IndexSet getDimensions(
 	    const std::vector<ChannelId> &channelTypes) const;
-	[[nodiscard]] Data::DataCubeOptions getDataCubeOptions() const;
 
 	[[nodiscard]] const Channel &at(const ChannelId &id) const;
 	Channel &at(const ChannelId &id);

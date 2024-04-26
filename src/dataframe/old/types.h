@@ -54,31 +54,6 @@ public:
 
 using SeriesList = Type::UniqueList<SeriesIndex>;
 
-class DataCubeOptions
-{
-public:
-	using IndexSet = std::set<SeriesIndex>;
-
-	DataCubeOptions(IndexSet &&dims, IndexSet &&msrs) :
-	    dimensions(std::move(dims)),
-	    measures(std::move(msrs))
-	{}
-
-	[[nodiscard]] const IndexSet &getDimensions() const
-	{
-		return dimensions;
-	}
-
-	[[nodiscard]] const IndexSet &getMeasures() const
-	{
-		return measures;
-	}
-
-private:
-	IndexSet dimensions;
-	IndexSet measures;
-};
-
 class Filter
 {
 public:

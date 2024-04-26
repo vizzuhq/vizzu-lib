@@ -18,9 +18,9 @@ bool Channels::isEmpty() const
 	    });
 }
 
-Data::DataCubeOptions::IndexSet Channels::getDimensions() const
+Channels::IndexSet Channels::getDimensions() const
 {
-	Data::DataCubeOptions::IndexSet dimensions;
+	IndexSet dimensions;
 
 	for (const auto &channel : channels)
 		channel.collectDimesions(dimensions);
@@ -28,9 +28,9 @@ Data::DataCubeOptions::IndexSet Channels::getDimensions() const
 	return dimensions;
 }
 
-Data::DataCubeOptions::IndexSet Channels::getMeasures() const
+Channels::IndexSet Channels::getMeasures() const
 {
-	Data::DataCubeOptions::IndexSet series;
+	IndexSet series;
 
 	for (const auto &channel : channels)
 		if (channel.measureId) {
@@ -41,18 +41,13 @@ Data::DataCubeOptions::IndexSet Channels::getMeasures() const
 	return series;
 }
 
-Data::DataCubeOptions::IndexSet Channels::getDimensions(
+Channels::IndexSet Channels::getDimensions(
     const std::vector<ChannelId> &channelTypes) const
 {
-	Data::DataCubeOptions::IndexSet dimensions;
+	IndexSet dimensions;
 	for (auto &&channelType : channelTypes)
 		channels[channelType].collectDimesions(dimensions);
 	return dimensions;
-}
-
-Data::DataCubeOptions Channels::getDataCubeOptions() const
-{
-	return {getDimensions(), getMeasures()};
 }
 
 std::pair<bool, Channel::OptionalIndex> Channels::addSeries(

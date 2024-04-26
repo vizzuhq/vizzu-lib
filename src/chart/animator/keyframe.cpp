@@ -37,8 +37,7 @@ void Keyframe::init(const Gen::PlotPtr &plot)
 		}
 		source = std::make_shared<Gen::Plot>(plot->getTable(),
 		    emptyOpt,
-		    plot->getStyle(),
-		    false);
+		    plot->getStyle());
 		source->keepAspectRatio = plot->keepAspectRatio;
 	}
 	target = plot;

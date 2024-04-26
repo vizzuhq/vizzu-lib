@@ -1,12 +1,14 @@
 #include "datatable.h"
 
-#include <base/conv/auto_json.h>
-#include <base/text/funcstring.h>
 #include <cmath>
-#include <dataframe/impl/aggregators.h>
-#include <dataframe/interface.h>
 #include <numeric>
 #include <utility>
+
+#include "base/conv/auto_json.h"
+#include "base/text/funcstring.h"
+#include "chart/options/options.h"
+#include "dataframe/impl/aggregators.h"
+#include "dataframe/interface.h"
 
 namespace Vizzu::Data
 {
@@ -151,22 +153,30 @@ void DataCube::incr(iterator_t &it) const
 }
 
 DataCube::DataCube(const DataTable &table,
-    const DataCubeOptions &options,
-    const Filter &filter) :
-    df(options.getDimensions().empty()
-                && options.getMeasures().empty()
-            ? dataframe::dataframe::create_new()
-            : table.getDf().copy(false)),
-    dim_reindex(options.getDimensions().size())
+    const Gen::Options &options)
 {
-	df->remove_records(filter.getFunction());
+	auto &&channels = options.getChannels();
+	auto &&dimensions = channels.getDimensions();
+	auto &&measures = channels.getMeasures();
+	auto empty = dimensions.empty() && measures.empty();
 
-	removed = df->copy(false);
+	df = {empty ? dataframe::dataframe::create_new()
+	            : table.getDf().copy(false)};
 
-	for (const auto &dim : options.getDimensions())
+	if (empty) {
+		df->finalize();
+		return;
+	}
+
+	dim_reindex.resize(dimensions.size());
+	df->remove_records(options.dataFilter.getFunction());
+
+	auto removed = df->copy(false);
+
+	for (const auto &dim : dimensions)
 		df->aggregate_by(dim.getColIndex());
 
-	for (const auto &meas : options.getMeasures()) {
+	for (const auto &meas : measures) {
 		auto &&sid = meas.getColIndex();
 		auto &&aggr = meas.getAggr();
 
@@ -174,7 +184,7 @@ DataCube::DataCube(const DataTable &table,
 		    df->set_aggregate(sid, aggr));
 	}
 
-	for (const auto &dim : options.getDimensions()) {
+	for (const auto &dim : dimensions) {
 		df->set_sort(dim.getColIndex(),
 		    dataframe::sort_type::by_categories,
 		    dataframe::na_position::last);
@@ -183,12 +193,48 @@ DataCube::DataCube(const DataTable &table,
 	df->finalize();
 
 	for (auto it = dim_reindex.begin();
-	     const auto &dim : options.getDimensions()) {
+	     const auto &dim : dimensions) {
 		auto &&dimName = dim.getColIndex();
 		*it++ = {*std::lower_bound(df->get_dimensions().begin(),
 		             df->get_dimensions().end(),
 		             dimName),
 		    df->get_categories(dimName).size() + df->has_na(dimName)};
+	}
+
+	auto stackInhibitingShape =
+	    options.geometry == Gen::ShapeType::area;
+	auto horizontal = options.isHorizontal();
+
+	using ChannelId = Gen::ChannelId;
+	for (auto &&[channelId, inhibitStack] :
+	    std::initializer_list<std::pair<ChannelId, bool>>{
+	        {ChannelId::size, false},
+	        {ChannelId::x, !horizontal && stackInhibitingShape},
+	        {ChannelId::y, horizontal && stackInhibitingShape}}) {
+		const auto &channel = channels.at(channelId);
+		auto &&meas = channel.measureId;
+		if (!meas) continue;
+		const auto *subChannel = options.subAxisOf(channelId);
+		if (!subChannel) continue;
+		auto sumBy = subChannel->dimensionIds;
+		if (auto &&common = sumBy.split_by(channel.dimensionIds);
+		    inhibitStack)
+			std::swap(sumBy, common);
+		if (sumBy.empty()) continue;
+
+		auto &sub_df =
+		    *cacheImpl.try_emplace(channelId, removed->copy(false))
+		         .first->second;
+
+		for (auto &&dim : dimensions)
+			if (!sumBy.contains(dim))
+				sub_df.aggregate_by(dim.getColIndex());
+
+		[[maybe_unused]] auto &&new_name =
+		    sub_df.set_aggregate(meas->getColIndex(),
+		        meas->getAggr());
+
+		sub_df.finalize();
 	}
 }
 
@@ -282,51 +328,14 @@ double DataCube::valueAt(const MultiIndex &multiIndex,
 }
 
 double DataCube::aggregateAt(const MultiIndex &multiIndex,
-    const SeriesList &sumCols,
+    const Gen::ChannelId &channelId,
     const SeriesIndex &seriesId) const
 {
-	if (sumCols.empty()) return valueAt(multiIndex, seriesId);
-
-	std::set<std::string> id{};
-	for (const auto &dim : sumCols) id.emplace(dim.getColIndex());
-
-	const auto &name = getName(seriesId);
-
-	id.emplace(name);
-
-	auto it = cacheImpl->find(id);
-	if (it == cacheImpl->end()) {
-		auto &[idset, cp] =
-		    *(it = cacheImpl
-		               ->emplace(std::move(id), removed->copy(false))
-		               .first);
-
-		struct It
-		{
-			std::shared_ptr<dataframe::dataframe_interface> &df;
-			It &operator++() { return *this; }
-			It &operator*() { return *this; }
-			It &operator=(const std::string &str)
-			{
-				df->aggregate_by(str);
-				return *this;
-			}
-		};
-
-		std::set_difference(df->get_dimensions().begin(),
-		    df->get_dimensions().end(),
-		    idset.begin(),
-		    idset.end(),
-		    It{cp});
-
-		[[maybe_unused]] auto &&new_name =
-		    cp->set_aggregate(seriesId.getColIndex(),
-		        seriesId.getAggr());
-
-		cp->finalize();
-	}
+	auto it = cacheImpl.find(channelId);
+	if (it == cacheImpl.end()) return valueAt(multiIndex, seriesId);
 
 	auto &sub_df = *it->second;
+	const auto &name = getName(seriesId);
 
 	if (multiIndex.rid) {
 		auto &&rrid = df->get_record_id_by_dims(*multiIndex.rid,

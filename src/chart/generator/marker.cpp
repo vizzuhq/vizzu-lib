@@ -40,13 +40,11 @@ Marker::Marker(const Options &options,
 	    ChannelId::size,
 	    data,
 	    stats,
-	    index,
-	    options.subAxisOf(ChannelId::size));
+	    index);
 
 	mainId = data.getId(options.mainAxis().dimensionIds, index);
 
-	auto stackInhibitingShape = options.geometry == ShapeType::area;
-	if (stackInhibitingShape) {
+	if (options.geometry == ShapeType::area) {
 		Data::SeriesList subIds(options.subAxis().dimensionIds);
 		Data::SeriesList &&stackIds =
 		    subIds.split_by(options.mainAxis().dimensionIds);
@@ -67,9 +65,7 @@ Marker::Marker(const Options &options,
 	    ChannelId::x,
 	    data,
 	    stats,
-	    index,
-	    options.subAxisOf(ChannelId::x),
-	    !horizontal && stackInhibitingShape);
+	    index);
 
 	spacing.x = (horizontal || (lineOrCircle && !polar))
 	                 && options.getChannels().anyAxisSet()
@@ -81,9 +77,7 @@ Marker::Marker(const Options &options,
 	    ChannelId::y,
 	    data,
 	    stats,
-	    index,
-	    options.subAxisOf(ChannelId::y),
-	    horizontal && stackInhibitingShape);
+	    index);
 
 	spacing.y = (!horizontal || lineOrCircle)
 	                 && options.getChannels().anyAxisSet()
@@ -165,22 +159,11 @@ double Marker::getValueForChannel(const Channels &channels,
     ChannelId type,
     const Data::DataCube &data,
     ChannelsStats &stats,
-    const Data::MultiIndex &index,
-    const Channel *subChannel,
-    bool inhibitStack) const
+    const Data::MultiIndex &index) const
 {
 	const auto &channel = channels.at(type);
 
 	if (channel.isEmpty()) return channel.defaultValue;
-
-	Channel::DimensionIndices sumBy;
-
-	if (subChannel) {
-		sumBy = subChannel->dimensionIds;
-		if (auto &&common = sumBy.split_by(channel.dimensionIds);
-		    inhibitStack)
-			std::swap(sumBy, common);
-	}
 
 	auto measure = channel.measureId;
 
@@ -198,10 +181,11 @@ double Marker::getValueForChannel(const Channels &channels,
 		if (enabled) stat.track(id);
 	}
 	else {
+		auto &measure = *channel.measureId;
 		if (channel.stackable)
-			value = data.aggregateAt(index, sumBy, *measure);
+			value = data.aggregateAt(index, type, measure);
 		else
-			value = data.valueAt(index, *measure);
+			value = data.valueAt(index, measure);
 
 		if (enabled) { stat.track(value); }
 	}

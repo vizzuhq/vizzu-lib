@@ -9,6 +9,12 @@
 
 #include "types.h"
 
+namespace Vizzu::Gen
+{
+class Options;
+enum class ChannelId;
+}
+
 namespace Vizzu::Data
 {
 
@@ -44,20 +50,16 @@ class DataCube
 
 public:
 	std::shared_ptr<dataframe::dataframe_interface> df;
-	std::shared_ptr<dataframe::dataframe_interface> removed;
 	std::map<std::pair<std::string_view, dataframe::aggregator_type>,
 	    std::string>
 	    measure_names;
 	std::vector<std::pair<std::string_view, std::size_t>> dim_reindex;
 
-	std::shared_ptr<std::map<std::set<std::string>,
-	    std::shared_ptr<dataframe::dataframe_interface>>>
-	    cacheImpl = std::make_shared<
-	        typename decltype(cacheImpl)::element_type>();
+	std::map<Gen::ChannelId,
+	    std::shared_ptr<dataframe::dataframe_interface>>
+	    cacheImpl;
 
-	DataCube(const DataTable &table,
-	    const DataCubeOptions &options,
-	    const Filter &filter);
+	DataCube(const DataTable &table, const Gen::Options &options);
 
 	[[nodiscard]] size_t combinedSizeOf(
 	    const SeriesList &colIndices) const;
@@ -67,7 +69,7 @@ public:
 	[[nodiscard]] CellInfo cellInfo(const MultiIndex &index) const;
 
 	[[nodiscard]] double aggregateAt(const MultiIndex &multiIndex,
-	    const SeriesList &sumCols,
+	    const Gen::ChannelId &channelId,
 	    const SeriesIndex &seriesId) const;
 
 	[[nodiscard]] double valueAt(const MultiIndex &multiIndex,

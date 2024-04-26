@@ -117,8 +117,7 @@ Gen::PlotPtr Chart::plot(const Gen::PlotOptionsPtr &options)
 
 	auto res = std::make_shared<Gen::Plot>(table,
 	    options,
-	    stylesheet.getFullParams(options, layout.boundary.size),
-	    false);
+	    stylesheet.getFullParams(options, layout.boundary.size));
 
 	Styles::Sheet::setAfterStyles(*res, layout.boundary.size);
 

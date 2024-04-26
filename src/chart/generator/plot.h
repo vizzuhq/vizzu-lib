@@ -72,8 +72,7 @@ public:
 	Plot(PlotOptionsPtr options, const Plot &other);
 	Plot(const Data::DataTable &dataTable,
 	    PlotOptionsPtr opts,
-	    Styles::Chart style,
-	    bool setAutoParams = true);
+	    Styles::Chart style);
 	[[nodiscard]] const Markers &getMarkers() const
 	{
 		return markers;
