@@ -225,9 +225,8 @@ void TextBox::newTextRun()
 void TextBox::newLine()
 {
 	newTextRun();
-	lines.push_back(currentLine);
-	currentLine = Line{};
-	currentLine.spacing = lines.rbegin()->spacing;
+	auto &back = lines.emplace_back(std::move(currentLine));
+	currentLine = Line{.spacing = back.spacing};
 }
 
 }
