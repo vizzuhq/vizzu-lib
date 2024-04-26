@@ -181,7 +181,7 @@ double Marker::getValueForChannel(const Channels &channels,
 		if (enabled) stat.track(id);
 	}
 	else {
-		auto &measure = *channel.measureId;
+		const auto &measure = *channel.measureId;
 		if (channel.stackable)
 			value = data.aggregateAt(index, type, measure);
 		else
