@@ -5,7 +5,7 @@
 #include "chart/rendering/drawplot.h"
 #include "chart/rendering/logo.h"
 #include "chart/ui/events.h"
-#include "data/datacube/datacube.h"
+#include "dataframe/old/datatable.h"
 
 TestChart::TestChart() {}
 
@@ -142,14 +142,16 @@ void TestChart::run()
 			IO::log() << "step 1b";
 			auto &options = chart.getChart().getOptions();
 			auto &styles = chart.getChart().getStyles();
-			options.dataFilter = {[&](const auto &row)
+			options.dataFilter = {1,
+			    [&](const Vizzu::Data::RowWrapper &row)
 			    {
-				    return std::string{row["Cat1"].dimensionValue()}
+				    return std::get<std::string_view>(
+				               row.get_value("Cat1"))
 				            == "A"
-				        || std::string{row["Cat2"].dimensionValue()}
+				        || std::get<std::string_view>(
+				               row.get_value("Cat2"))
 				               == "b";
-			    },
-			    0};
+			    }};
 			options.title = "VIZZU Chart - Phase 1b";
 			styles.legend.marker.type =
 			    Vizzu::Styles::Legend::Marker::Type::circle;

@@ -165,8 +165,6 @@ double Marker::getValueForChannel(const Channels &channels,
 
 	if (channel.isEmpty()) return channel.defaultValue;
 
-	auto measure = channel.measureId;
-
 	double value{};
 
 	auto &stat = stats.channels[type];

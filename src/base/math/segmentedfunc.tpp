@@ -16,15 +16,12 @@ T Math::SegmentedFunction<T>::at(double pos) const
 	if (pos > stops.back().pos) return stops.back().value;
 
 	for (auto i = 1U; i < stops.size(); ++i) {
-		if (pos >= stops.at(i - 1).pos && pos <= stops.at(i).pos) {
-			const Range range(stops.at(i - 1).pos, stops.at(i).pos);
-
-			auto factor = range.rescale(pos);
-
-			return interpolate(stops.at(i - 1).value,
-			    stops.at(i).value,
-			    factor);
-		}
+		auto &[ppos, pval] = stops[i - 1];
+		auto &[cpos, cval] = stops[i];
+		if (ppos <= pos && pos <= cpos)
+			return interpolate(pval,
+			    cval,
+			    Range{ppos, cpos}.rescale(pos));
 	}
 
 	return stops.back().value;
