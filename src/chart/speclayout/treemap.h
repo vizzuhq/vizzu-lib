@@ -12,7 +12,8 @@
 namespace Vizzu::Charts
 {
 
-using Hierarchy = std::vector<std::vector<uint64_t>>;
+template <class Item>
+using Hierarchy = std::vector<std::vector<Item>>;
 
 class TreeMap
 {
@@ -22,8 +23,7 @@ public:
 	    const Geom::Point &p1 = Geom::Point{1, 0});
 
 	template <typename Item>
-	static void setupVector(std::vector<Item> &items,
-	    const Hierarchy &hierarchy);
+	static void setupVector(const Hierarchy<Item> &hierarchy);
 
 private:
 	using It = std::vector<SpecMarker>::iterator;
@@ -38,17 +38,15 @@ private:
 };
 
 template <typename Item>
-void TreeMap::setupVector(std::vector<Item> &items,
-    const Hierarchy &hierarchy)
+void TreeMap::setupVector(const Hierarchy<Item> &hierarchy)
 {
-	if (items.empty()) return;
+	if (hierarchy.empty()) return;
 
 	std::vector<double> sizes(hierarchy.size());
 	for (std::size_t ix{}; const auto &level : hierarchy) {
 		auto sum = 0.0;
 		for (const auto &item : level)
-			if (items[item].sizeFactor > 0)
-				sum += items[item].sizeFactor;
+			if (item->sizeFactor > 0) sum += item->sizeFactor;
 		sizes[ix++] = sum;
 	}
 	TreeMap chart(sizes);
@@ -59,7 +57,7 @@ void TreeMap::setupVector(std::vector<Item> &items,
 
 		std::vector<double> sizes(level.size());
 		for (std::size_t ix{}; const auto &item : level)
-			sizes[ix++] = items[item].sizeFactor;
+			sizes[ix++] = item->sizeFactor;
 
 		TreeMap subChart(sizes,
 		    c.rect().pos,
@@ -67,8 +65,8 @@ void TreeMap::setupVector(std::vector<Item> &items,
 
 		for (size_t subCnt{}; const auto &item : level) {
 			auto rect = subChart.markers[subCnt++].rect().positive();
-			items[item].position = rect.topRight();
-			items[item].size = rect.size;
+			item->position = rect.topRight();
+			item->size = rect.size;
 		}
 
 		++cnt;

@@ -9,30 +9,28 @@
 namespace Vizzu::Charts
 {
 
-using Hierarchy = std::vector<std::vector<uint64_t>>;
+template <class Item>
+using Hierarchy = std::vector<std::vector<Item>>;
 
 class BubbleChartBuilder
 {
 public:
 	template <typename Item>
-	static void setupVector(std::vector<Item> &items,
-	    double maxRadius,
-	    const Hierarchy &hierarchy);
+	static void setupVector(double maxRadius,
+	    const Hierarchy<Item> &hierarchy);
 };
 
 template <typename Item>
-void BubbleChartBuilder::setupVector(std::vector<Item> &items,
-    double maxRadius,
-    const Hierarchy &hierarchy)
+void BubbleChartBuilder::setupVector(double maxRadius,
+    const Hierarchy<Item> &hierarchy)
 {
-	if (items.empty()) return;
+	if (hierarchy.empty()) return;
 
 	std::vector<double> sizes;
 	for (const auto &level : hierarchy) {
 		auto sum = 0.0;
 		for (const auto &item : level)
-			if (items[item].sizeFactor > 0)
-				sum += items[item].sizeFactor;
+			if (item->sizeFactor > 0) sum += item->sizeFactor;
 		sizes.push_back(sum);
 	}
 
@@ -45,7 +43,7 @@ void BubbleChartBuilder::setupVector(std::vector<Item> &items,
 		std::vector<double> sizes;
 		sizes.reserve(std::size(level));
 		for (const auto &item : level)
-			sizes.push_back(std::max(0.0, items[item].sizeFactor));
+			sizes.push_back(std::max(0.0, item->sizeFactor));
 
 		const BubbleChart subChart(sizes, c.boundary());
 
@@ -53,14 +51,13 @@ void BubbleChartBuilder::setupVector(std::vector<Item> &items,
 		for (const auto &item : level) {
 			const auto &c = subChart.markers[subCnt].circle();
 
-			items[item].position =
-			    Geom::Point{0.5 + (c.center.x - 0.5),
-			        0.5 + (c.center.y - 0.5)};
+			item->position = Geom::Point{0.5 + (c.center.x - 0.5),
+			    0.5 + (c.center.y - 0.5)};
 
 			auto r = c.radius;
-			items[item].size = Geom::Size{r, r};
-			items[item].sizeFactor = r * r / (maxRadius * maxRadius);
-			if (std::isnan(r)) items[item].enabled = false;
+			item->size = Geom::Size{r, r};
+			item->sizeFactor = r * r / (maxRadius * maxRadius);
+			if (std::isnan(r)) item->enabled = false;
 			++subCnt;
 		}
 		++cnt;

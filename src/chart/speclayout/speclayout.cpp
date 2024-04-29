@@ -32,22 +32,21 @@ bool SpecLayout::addIfNeeded()
 			    options->getChannels()
 			        .at(ChannelId::size)
 			        .dimensionIds);
-			hierarchy.resize(k, std::vector<uint64_t>(v));
+			hierarchy.resize(k, std::vector<Marker *>(v));
 		}
-		for (auto i = 0U; i < markers.size(); ++i) {
-			auto &marker = markers[i];
+		for (auto &marker : markers)
 			hierarchy[marker.sizeId.seriesId][marker.sizeId.itemId] =
-			    i;
-		}
+			    &marker;
+
 		if (options->geometry == ShapeType::circle) {
-			Charts::BubbleChartBuilder::setupVector(markers,
+			Charts::BubbleChartBuilder::setupVector(
 			    *style.plot.marker.circleMaxRadius,
 			    hierarchy);
 
 			plot.keepAspectRatio = true;
 		}
 		else if (options->geometry == ShapeType::rectangle) {
-			Charts::TreeMap::setupVector(markers, hierarchy);
+			Charts::TreeMap::setupVector(hierarchy);
 		}
 		else
 			return false;

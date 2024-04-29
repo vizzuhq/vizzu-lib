@@ -39,7 +39,7 @@ class Plot
 	friend class Selector;
 
 public:
-	using Buckets = std::vector<std::vector<uint64_t>>;
+	using Buckets = std::vector<std::vector<Marker *>>;
 	using Markers = std::vector<Marker>;
 
 	struct MarkerInfoContent
