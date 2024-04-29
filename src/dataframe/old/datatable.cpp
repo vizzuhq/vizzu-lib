@@ -238,14 +238,21 @@ DataCube::DataCube(const DataTable &table,
 	}
 }
 
-size_t DataCube::combinedSizeOf(const SeriesList &colIndices) const
+std::pair<size_t, size_t> DataCube::combinedSizeOf(
+    const SeriesList &colIndices) const
 {
-	std::size_t my_res{1};
-	for (const auto &si : colIndices) {
-		auto sid = si.getColIndex();
-		my_res *= df->get_categories(sid).size() + df->has_na(sid);
-	}
-	return my_res;
+	std::size_t maxBySL{1};
+	std::size_t maxByOthers{1};
+
+	std::set<std::string_view> sls;
+	for (auto &s : colIndices) sls.insert(s.getColIndex());
+	for (auto &&[n, s] : dim_reindex)
+		if (sls.contains(n))
+			maxBySL *= s;
+		else
+			maxByOthers *= s;
+
+	return {maxByOthers, maxBySL};
 }
 
 bool DataCube::empty() const
@@ -297,21 +304,26 @@ MarkerId DataCube::getId(const SeriesList &sl,
 
 CellInfo DataCube::cellInfo(const MultiIndex &index) const
 {
-	CellInfo my_res;
+	CellInfo my_res{
+	    .categories =
+	        std::vector<std::pair<std::string, std::string>>(
+	            dim_reindex.size()),
+	    .values = std::vector<std::pair<std::string, double>>(
+	        df->get_measures().size())};
 
 	for (std::size_t ix{}; ix < dim_reindex.size(); ++ix) {
 		auto &&name = dim_reindex[ix].first;
 		auto cats = df->get_categories(name);
 		auto cix = index.old[ix];
-		my_res.categories.emplace_back(name,
-		    cix < cats.size() ? cats[cix] : std::string_view{});
+		my_res.categories[ix] = {std::string{name},
+		    cix < cats.size() ? cats[cix] : std::string{}};
 	}
 
-	for (auto &&meas : df->get_measures())
-		my_res.values.emplace_back(meas,
+	for (std::size_t ix{}; auto &&meas : df->get_measures())
+		my_res.values[ix++] = {meas,
 		    index.rid
 		        ? std::get<double>(df->get_data(*index.rid, meas))
-		        : 0.0);
+		        : 0.0};
 
 	return my_res;
 }

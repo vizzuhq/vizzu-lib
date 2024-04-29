@@ -3,7 +3,6 @@
 
 #include <cstddef>
 #include <map>
-#include <unordered_map>
 #include <vector>
 
 #include "base/geom/rect.h"
@@ -13,8 +12,7 @@
 namespace Vizzu::Charts
 {
 
-using Hierarchy =
-    std::unordered_map<uint64_t, std::map<uint64_t, uint64_t>>;
+using Hierarchy = std::vector<std::vector<uint64_t>>;
 
 class TreeMap
 {
@@ -45,13 +43,13 @@ void TreeMap::setupVector(std::vector<Item> &items,
 {
 	if (items.empty()) return;
 
-	std::vector<double> sizes;
-	for (const auto &level : hierarchy) {
+	std::vector<double> sizes(hierarchy.size());
+	for (std::size_t ix{}; const auto &level : hierarchy) {
 		auto sum = 0.0;
-		for (const auto &item : level.second)
-			if (items[item.second].sizeFactor > 0)
-				sum += items[item.second].sizeFactor;
-		sizes.push_back(sum);
+		for (const auto &item : level)
+			if (items[item].sizeFactor > 0)
+				sum += items[item].sizeFactor;
+		sizes[ix++] = sum;
 	}
 	TreeMap chart(sizes);
 
@@ -59,22 +57,18 @@ void TreeMap::setupVector(std::vector<Item> &items,
 	for (const auto &level : hierarchy) {
 		auto &c = chart.markers[cnt];
 
-		std::vector<double> sizes;
-		sizes.reserve(std::size(level.second));
-		for (const auto &item : level.second)
-			sizes.push_back(items[item.second].sizeFactor);
+		std::vector<double> sizes(level.size());
+		for (std::size_t ix{}; const auto &item : level)
+			sizes[ix++] = items[item].sizeFactor;
 
 		TreeMap subChart(sizes,
 		    c.rect().pos,
 		    c.rect().pos + c.rect().size);
 
-		size_t subCnt = 0;
-		for (const auto &item : level.second) {
-			auto &c = subChart.markers[subCnt];
-			auto rect = c.rect().positive();
-			items[item.second].position = rect.topRight();
-			items[item.second].size = rect.size;
-			++subCnt;
+		for (size_t subCnt{}; const auto &item : level) {
+			auto rect = subChart.markers[subCnt++].rect().positive();
+			items[item].position = rect.topRight();
+			items[item].size = rect.size;
 		}
 
 		++cnt;

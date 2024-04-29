@@ -61,7 +61,7 @@ public:
 
 	DataCube(const DataTable &table, const Gen::Options &options);
 
-	[[nodiscard]] size_t combinedSizeOf(
+	[[nodiscard]] std::pair<size_t, size_t> combinedSizeOf(
 	    const SeriesList &colIndices) const;
 
 	[[nodiscard]] bool empty() const;

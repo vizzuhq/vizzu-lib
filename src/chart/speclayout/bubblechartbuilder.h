@@ -3,16 +3,13 @@
 
 #include <algorithm>
 #include <cmath>
-#include <map>
-#include <unordered_map>
 
 #include "bubblechart.h"
 
 namespace Vizzu::Charts
 {
 
-using Hierarchy =
-    std::unordered_map<uint64_t, std::map<uint64_t, uint64_t>>;
+using Hierarchy = std::vector<std::vector<uint64_t>>;
 
 class BubbleChartBuilder
 {
@@ -33,9 +30,9 @@ void BubbleChartBuilder::setupVector(std::vector<Item> &items,
 	std::vector<double> sizes;
 	for (const auto &level : hierarchy) {
 		auto sum = 0.0;
-		for (const auto &item : level.second)
-			if (items[item.second].sizeFactor > 0)
-				sum += items[item.second].sizeFactor;
+		for (const auto &item : level)
+			if (items[item].sizeFactor > 0)
+				sum += items[item].sizeFactor;
 		sizes.push_back(sum);
 	}
 
@@ -46,26 +43,24 @@ void BubbleChartBuilder::setupVector(std::vector<Item> &items,
 		const auto &c = chart.markers[cnt].circle();
 
 		std::vector<double> sizes;
-		sizes.reserve(std::size(level.second));
-		for (const auto &item : level.second)
-			sizes.push_back(
-			    std::max(0.0, items[item.second].sizeFactor));
+		sizes.reserve(std::size(level));
+		for (const auto &item : level)
+			sizes.push_back(std::max(0.0, items[item].sizeFactor));
 
 		const BubbleChart subChart(sizes, c.boundary());
 
 		size_t subCnt = 0;
-		for (const auto &item : level.second) {
+		for (const auto &item : level) {
 			const auto &c = subChart.markers[subCnt].circle();
 
-			items[item.second].position =
+			items[item].position =
 			    Geom::Point{0.5 + (c.center.x - 0.5),
 			        0.5 + (c.center.y - 0.5)};
 
 			auto r = c.radius;
-			items[item.second].size = Geom::Size{r, r};
-			items[item.second].sizeFactor =
-			    r * r / (maxRadius * maxRadius);
-			if (std::isnan(r)) items[item.second].enabled = false;
+			items[item].size = Geom::Size{r, r};
+			items[item].sizeFactor = r * r / (maxRadius * maxRadius);
+			if (std::isnan(r)) items[item].enabled = false;
 			++subCnt;
 		}
 		++cnt;

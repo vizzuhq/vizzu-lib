@@ -27,6 +27,13 @@ bool SpecLayout::addIfNeeded()
 	}
 	else {
 		Plot::Buckets hierarchy;
+		if (!plot.getDataCube().empty()) {
+			auto &&[k, v] = plot.getDataCube().combinedSizeOf(
+			    options->getChannels()
+			        .at(ChannelId::size)
+			        .dimensionIds);
+			hierarchy.resize(k, std::vector<uint64_t>(v));
+		}
 		for (auto i = 0U; i < markers.size(); ++i) {
 			auto &marker = markers[i];
 			hierarchy[marker.sizeId.seriesId][marker.sizeId.itemId] =

@@ -8,8 +8,9 @@ namespace Vizzu::Gen
 ChannelStats::ChannelStats(const Channel &channel,
     const Data::DataCube &cube) :
     isDimension(channel.isDimension()),
-    usedIndices(
-        isDimension ? cube.combinedSizeOf(channel.dimensionIds) : 0)
+    usedIndices(isDimension
+                    ? cube.combinedSizeOf(channel.dimensionIds).second
+                    : 0)
 {}
 
 void ChannelStats::track(double value)

@@ -4,7 +4,6 @@
 #include <array>
 #include <memory>
 #include <optional>
-#include <unordered_map>
 
 #include "chart/main/style.h"
 #include "chart/options/options.h"
@@ -40,8 +39,7 @@ class Plot
 	friend class Selector;
 
 public:
-	using Buckets =
-	    std::unordered_map<uint64_t, std::map<uint64_t, uint64_t>>;
+	using Buckets = std::vector<std::vector<uint64_t>>;
 	using Markers = std::vector<Marker>;
 
 	struct MarkerInfoContent

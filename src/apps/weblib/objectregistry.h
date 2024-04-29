@@ -2,10 +2,10 @@
 #define LIB_OBJECTREGISTRY_H
 
 #include <any>
+#include <map>
 #include <memory>
 #include <shared_mutex>
 #include <thread>
-#include <unordered_map>
 
 namespace Vizzu
 {
@@ -48,7 +48,7 @@ public:
 	}
 
 private:
-	std::unordered_map<Handle, std::any> objects;
+	std::map<Handle, std::any> objects;
 	std::shared_mutex mutex;
 };
 

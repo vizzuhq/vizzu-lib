@@ -112,6 +112,22 @@ bool Plot::isEmpty() const
 
 void Plot::generateMarkers()
 {
+	if (!getDataCube().empty()) {
+		auto &&[k, v] = getDataCube().combinedSizeOf(
+		    options->mainAxis().dimensionIds);
+		mainBuckets.resize(k, std::vector<std::uint64_t>(v));
+
+		Data::SeriesList subIds(options->subAxis().dimensionIds);
+		if (getOptions()->geometry == ShapeType::area)
+		    [[maybe_unused]]
+			auto &&_ =
+			    subIds.split_by(options->mainAxis().dimensionIds);
+		auto &&[k2, v2] = getDataCube().combinedSizeOf(subIds);
+		subBuckets.resize(k2, std::vector<std::uint64_t>(v2));
+
+		markers.reserve(getDataCube().combinedSizeOf({}).first);
+	}
+
 	for (auto &&index : getDataCube()) {
 		auto markerIndex = markers.size();
 
@@ -150,28 +166,18 @@ void Plot::generateMarkersInfo()
 std::vector<std::pair<uint64_t, double>>
 Plot::sortedBuckets(const Buckets &buckets, bool main)
 {
-	size_t maxBucketSize = 0;
-	for (const auto &pair : buckets)
-		if (pair.second.size() > maxBucketSize)
-			maxBucketSize = pair.second.size();
-
 	std::vector<std::pair<uint64_t, double>> sorted;
-	sorted.resize(maxBucketSize);
-	for (auto &pair : sorted) pair.second = 0;
+	if (!buckets.empty()) sorted.resize(buckets.front().size());
 
-	for (const auto &pair : buckets) {
-		const auto &bucket = pair.second;
-
-		for (const auto &id : bucket) {
-			auto &marker = markers[id.second];
-			auto horizontal = options->isHorizontal();
-			auto size = marker.size.getCoord(!horizontal);
-			sorted[id.first].first = id.first;
-			sorted[id.first].second += size;
+	for (const auto &bucket : buckets)
+		for (std::size_t ix{}; const auto &mark : bucket) {
+			auto &[f, s] = sorted[ix];
+			f = ix++;
+			s +=
+			    markers[mark].size.getCoord(!options->isHorizontal());
 		}
-	}
 
-	if (main && options->sort == Sort::byValue) {
+	if (main && options->sort == Sort::byValue)
 		std::sort(sorted.begin(),
 		    sorted.end(),
 		    [](const std::pair<uint64_t, double> &a,
@@ -179,29 +185,26 @@ Plot::sortedBuckets(const Buckets &buckets, bool main)
 		    {
 			    return a.second < b.second;
 		    });
-	}
-	if (main && options->reverse) {
+
+	if (main && options->reverse)
 		std::reverse(sorted.begin(), sorted.end());
-	}
 
 	return sorted;
 }
 
 void Plot::clearEmptyBuckets(const Buckets &buckets, bool main)
 {
-	for (const auto &pair : buckets) {
-		const auto &bucket = pair.second;
-
+	for (const auto &bucket : buckets) {
 		bool enabled = false;
 
-		for (const auto &id : bucket) {
-			auto &marker = markers[id.second];
+		for (const auto &mark : bucket) {
+			auto &marker = markers[mark];
 			enabled |= static_cast<bool>(marker.enabled);
 		}
 
 		if (!enabled)
-			for (const auto &id : bucket) {
-				auto &marker = markers[id.second];
+			for (const auto &mark : bucket) {
+				auto &marker = markers[mark];
 				marker.resetSize(options->isHorizontal() == !main);
 			}
 	}
@@ -212,8 +215,7 @@ bool Plot::linkMarkers(const Buckets &buckets, bool main)
 	auto sorted = sortedBuckets(buckets, main);
 
 	bool hasConnection{};
-	for (const auto &pair : buckets) {
-		const auto &bucket = pair.second;
+	for (const auto &bucket : buckets) {
 
 		for (auto i = 0U; i < sorted.size(); ++i) {
 			auto idAct = sorted[i].first;
@@ -376,11 +378,11 @@ void Plot::addAlignment()
 
 	if (options->align == Base::Align::Type::none) return;
 
-	for (auto &bucketIt : subBuckets) {
+	for (auto &bucket : subBuckets) {
 		Math::Range<double> range;
 
-		for (auto &itemIt : bucketIt.second) {
-			auto &marker = markers[itemIt.second];
+		for (auto &item : bucket) {
+			auto &marker = markers[item];
 			auto size = marker.getSizeBy(!options->isHorizontal());
 			range.include(size);
 		}
@@ -388,8 +390,8 @@ void Plot::addAlignment()
 		Base::Align aligner(options->align, Math::Range(0.0, 1.0));
 		auto transform = aligner.getAligned(range) / range;
 
-		for (auto &itemIt : bucketIt.second) {
-			auto &marker = markers[itemIt.second];
+		for (auto &item : bucket) {
+			auto &marker = markers[item];
 			auto newRange = marker.getSizeBy(!options->isHorizontal())
 			              * transform;
 			marker.setSizeBy(!options->isHorizontal(), newRange);
@@ -408,10 +410,10 @@ void Plot::addSeparation()
 		    Math::Range(0.0, 0.0));
 		std::vector<bool> anyEnabled(mainBuckets.size(), false);
 
-		for (auto &bucketIt : subBuckets) {
+		for (auto &bucket : subBuckets) {
 			auto i = 0U;
-			for (auto &itemIt : bucketIt.second) {
-				auto &marker = markers[itemIt.second];
+			for (auto &item : bucket) {
+				auto &marker = markers[item];
 				auto size =
 				    marker.getSizeBy(!options->isHorizontal()).size();
 				ranges[i].include(size);
@@ -429,10 +431,10 @@ void Plot::addSeparation()
 			ranges[i] = ranges[i] + ranges[i - 1].getMax()
 			          + (anyEnabled[i - 1] ? max.getMax() / 15 : 0);
 
-		for (auto &bucketIt : subBuckets) {
+		for (auto &bucket : subBuckets) {
 			auto i = 0U;
-			for (auto &itemIt : bucketIt.second) {
-				auto &marker = markers[itemIt.second];
+			for (auto &item : bucket) {
+				auto &marker = markers[item];
 				auto size =
 				    marker.getSizeBy(!options->isHorizontal());
 
