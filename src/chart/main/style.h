@@ -131,7 +131,7 @@ struct Text
 	};
 
 	Param<Gfx::Color> color;
-	Param<Anim::Interpolated<TextAlign>> textAlign;
+	Param<::Anim::Interpolated<TextAlign>> textAlign;
 	Param<Gfx::Color> backgroundColor;
 	Param<::Text::NumberFormat> numberFormat;
 	Param<double> maxFractionDigits;
@@ -300,7 +300,7 @@ struct MarkerParams
 
 	Param<double> borderWidth;
 	Param<double> borderOpacity;
-	Param<Anim::Interpolated<BorderOpacityMode>> borderOpacityMode;
+	Param<::Anim::Interpolated<BorderOpacityMode>> borderOpacityMode;
 	Param<double> fillOpacity;
 	Guide guides;
 	MarkerLabel label;
@@ -342,7 +342,7 @@ struct PlotParams
 	Axis xAxis;
 	Axis yAxis;
 	Param<Gfx::Color> areaColor;
-	Param<Anim::Interpolated<Overflow>> overflow;
+	Param<::Anim::Interpolated<Overflow>> overflow;
 };
 
 struct Plot : Padding, Box, PlotParams

@@ -625,11 +625,10 @@ std::string dataframe::as_string() const &
 	const auto *vec = get_if<state_type::modifying>(&state_data);
 	if (!vec || vec->empty()) error();
 
-	std::string res{'['};
-	bool first = true;
+	std::string res;
+	auto &&arr = Conv::JSONArr(res);
 	for (const auto s = get_data_source(); const auto &name : *vec) {
-		if (!std::exchange(first, false)) res += ',';
-		Conv::JSONObj obj{res};
+		auto &&obj{arr.nestedObj()};
 		switch (auto &&ser = s.get_series(name)) {
 			using enum series_type;
 		default: error();
@@ -650,7 +649,6 @@ std::string dataframe::as_string() const &
 		}
 		}
 	}
-	res += ']';
 	return res;
 }
 

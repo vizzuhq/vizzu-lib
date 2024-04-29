@@ -1,7 +1,7 @@
 #include "chart.h"
 
+#include "chart/generator/plot.h"
 #include "chart/rendering/drawchart.h"
-#include "data/datacube/datacube.h"
 
 namespace Vizzu
 {
@@ -102,6 +102,7 @@ void Chart::draw(Gfx::ICanvas &canvas)
 	    actPlot};
 
 	Draw::DrawChart{Draw::DrawingContext{actPlot,
+	                    actPlot->getOptions().get(),
 	                    renderedChart,
 	                    renderedChart.getCoordSys(),
 	                    actPlot ? actPlot->getStyle()
@@ -116,8 +117,7 @@ Gen::PlotPtr Chart::plot(const Gen::PlotOptionsPtr &options)
 
 	auto res = std::make_shared<Gen::Plot>(table,
 	    options,
-	    stylesheet.getFullParams(options, layout.boundary.size),
-	    false);
+	    stylesheet.getFullParams(options, layout.boundary.size));
 
 	Styles::Sheet::setAfterStyles(*res, layout.boundary.size);
 

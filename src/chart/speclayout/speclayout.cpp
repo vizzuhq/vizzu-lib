@@ -1,5 +1,7 @@
 #include "speclayout.h"
 
+#include "chart/generator/plot.h"
+
 #include "bubblechartbuilder.h"
 #include "tablechart.h"
 #include "treemap.h"

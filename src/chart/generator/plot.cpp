@@ -7,7 +7,6 @@
 #include "base/conv/numtostr.h"
 #include "base/math/range.h"
 #include "chart/speclayout/speclayout.h"
-#include "data/datacube/datacube.h"
 
 namespace Vizzu::Gen
 {
@@ -31,24 +30,14 @@ Plot::MarkersInfo interpolate(const Plot::MarkersInfo &op1,
 	return result;
 }
 
-Plot::MarkerInfoContent::MarkerInfoContent() { markerId.reset(); }
-
-Plot::MarkerInfoContent::MarkerInfoContent(const Marker &marker,
-    const Data::DataCube *dataCube)
+Plot::MarkerInfoContent::MarkerInfoContent(const Marker &marker) :
+    markerId(marker.idx),
+    info(marker.cellInfo.categories)
 {
-	const auto &index = marker.index;
-	if (dataCube && dataCube->getTable() && index.has_dimension()) {
-		markerId = marker.idx;
-		auto &&dataCellInfo = dataCube->cellInfo(index);
-		content.assign(std::begin(dataCellInfo.categories),
-		    std::end(dataCellInfo.categories));
-
-		auto conv = Conv::NumberToString{.fractionDigitCount = 3};
-		for (auto &&[ser, val] : dataCellInfo.values)
-			content.emplace_back(ser, conv(val));
-	}
-	else
-		markerId.reset();
+	thread_local auto conv =
+	    Conv::NumberToString{.fractionDigitCount = 3};
+	for (auto &&[ser, val] : marker.cellInfo.values)
+		info.emplace_back(ser, conv(val));
 }
 
 Plot::MarkerInfoContent::operator bool() const
@@ -69,7 +58,7 @@ Plot::Plot(PlotOptionsPtr options, const Plot &other) :
     guides(other.guides),
     dimensionAxises(other.dimensionAxises),
     keepAspectRatio(other.keepAspectRatio),
-    dataTable(other.getTable()),
+    dataTable(other.dataTable),
     options(std::move(options)),
     style(other.style),
     markersInfo(other.markersInfo)
@@ -77,19 +66,13 @@ Plot::Plot(PlotOptionsPtr options, const Plot &other) :
 
 Plot::Plot(const Data::DataTable &dataTable,
     PlotOptionsPtr opts,
-    Styles::Chart style,
-    bool setAutoParams) :
+    Styles::Chart style) :
     dataTable(dataTable),
     options(std::move(opts)),
     style(std::move(style)),
-    dataCube(std::in_place,
-        dataTable,
-        options->getChannels().getDataCubeOptions(),
-        options->dataFilter),
+    dataCube(std::in_place, dataTable, *options),
     stats(options->getChannels(), getDataCube())
 {
-	if (setAutoParams) options->setAutoParameters();
-
 	anyAxisSet = options->getChannels().anyAxisSet();
 
 	generateMarkers();
@@ -129,8 +112,7 @@ bool Plot::isEmpty() const
 
 void Plot::generateMarkers()
 {
-	auto &&data = getDataCube().getData();
-	for (auto &&index : data) {
+	for (auto &&index : getDataCube()) {
 		auto markerIndex = markers.size();
 
 		auto &marker = markers.emplace_back(*options,
@@ -160,11 +142,9 @@ void Plot::generateMarkers()
 
 void Plot::generateMarkersInfo()
 {
-	for (auto &mi : options->markersInfo) {
-		auto &marker = markers[mi.second];
-		markersInfo.insert(std::make_pair(mi.first,
-		    MarkerInfo{MarkerInfoContent{marker, &getDataCube()}}));
-	}
+	for (auto &[ix, mid] : options->markersInfo)
+		markersInfo.insert(
+		    {ix, MarkerInfo{MarkerInfoContent{markers[mid]}}});
 }
 
 std::vector<std::pair<uint64_t, double>>
@@ -304,8 +284,8 @@ void Plot::calcMeasureAxis(ChannelId type)
 	auto &axis = measureAxises.at(type);
 	const auto &scale = options->getChannels().at(type);
 	if (!scale.isEmpty() && scale.measureId) {
-		commonAxises.at(type).title = scale.title.isAuto()
-		                                ? scale.measureName(dataCube)
+		auto &&name = scale.measureName(*dataCube);
+		commonAxises.at(type).title = scale.title.isAuto() ? name
 		                            : scale.title ? *scale.title
 		                                          : std::string{};
 
@@ -316,13 +296,12 @@ void Plot::calcMeasureAxis(ChannelId type)
 			    scale.step.getValue()};
 		}
 		else {
-			auto colIndex = scale.measureId->getColIndex();
 			auto range = stats.channels[type].range;
 			if (!range.isReal())
 				range = Math::Range<double>::Raw(0.0, 0.0);
 
 			axis = {range,
-			    std::string{dataTable.getUnit(colIndex)},
+			    std::string{dataCube->getUnit(name)},
 			    scale.step.getValue()};
 		}
 	}
@@ -568,9 +547,8 @@ void Plot::appendMarkers(const Plot &plot, bool enabled)
 
 bool Plot::dimensionMatch(const Plot &a, const Plot &b)
 {
-	const auto &aDims = a.getOptions()->getChannels().getDimensions();
-	const auto &bDims = b.getOptions()->getChannels().getDimensions();
-	return (aDims == bDims);
+	return a.getOptions()->getChannels().getDimensions()
+	    == b.getOptions()->getChannels().getDimensions();
 }
 
 }

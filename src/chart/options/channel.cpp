@@ -4,6 +4,8 @@
 #include <cmath>
 #include <set>
 
+#include "dataframe/old/datatable.h"
+
 namespace Vizzu::Gen
 {
 
@@ -32,7 +34,7 @@ std::pair<bool, Channel::OptionalIndex> Channel::addSeries(
     const Data::SeriesIndex &index)
 {
 	if (index.isDimension()) {
-		return {dimensionIds.pushBack(index), std::nullopt};
+		return {dimensionIds.push_back(index), std::nullopt};
 	}
 	if (!measureId) {
 		measureId = index;
@@ -48,15 +50,16 @@ std::pair<bool, Channel::OptionalIndex> Channel::addSeries(
 
 void Channel::removeSeries(const Data::SeriesIndex &index)
 {
-	if (index.isDimension()) return dimensionIds.remove(index);
-
-	if (measureId) measureId = std::nullopt;
+	if (index.isDimension())
+		dimensionIds.remove(index);
+	else if (measureId)
+		measureId = std::nullopt;
 }
 
 bool Channel::isSeriesUsed(const Data::SeriesIndex &index) const
 {
 	return (measureId && *measureId == index)
-	    || (dimensionIds.includes(index));
+	    || dimensionIds.contains(index);
 }
 
 void Channel::reset()
@@ -73,8 +76,6 @@ void Channel::reset()
 	labelLevel = 0;
 }
 
-void Channel::clearMeasure() { measureId = std::nullopt; }
-
 bool Channel::isEmpty() const
 {
 	return (!measureId && dimensionIds.empty());
@@ -86,17 +87,10 @@ bool Channel::isMeasure() const { return !isEmpty() && measureId; }
 
 size_t Channel::dimensionCount() const { return dimensionIds.size(); }
 
-void Channel::collectDimesions(
-    Data::DataCubeOptions::IndexSet &dimensions) const
+void Channel::collectDimesions(IndexSet &dimensions) const
 {
 	for (const auto &dimension : dimensionIds)
 		dimensions.insert(dimension);
-}
-
-void Channel::collectRealSeries(
-    Data::DataCubeOptions::IndexSet &series) const
-{
-	if (measureId) series.insert(*measureId);
 }
 
 bool Channel::operator==(const Channel &other) const
@@ -114,41 +108,20 @@ bool Channel::operator==(const Channel &other) const
 	    && markerGuides == other.markerGuides;
 }
 
-std::string Channel::measureName(
-    const std::optional<Data::DataCube> &cube) const
+std::string Channel::measureName(const Data::DataCube &cube) const
 {
-	if (measureId) {
-		return cube ? cube->getName(*measureId)
-		            : measureId->getOrigName();
-	}
-	return {};
+	return measureId ? cube.getName(*measureId) : std::string{};
 }
 
 std::string Channel::labelDimensionName() const
 {
 	auto &&ser = labelSeries();
-	return ser ? ser->getOrigName() : "";
+	return ser ? ser->toString() : "";
 }
 
-std::list<std::string_view> Channel::dimensionNames() const
+const Channel::DimensionIndices &Channel::dimensions() const
 {
-	std::list<std::string_view> res;
-	for (const auto &dimensionId : dimensionIds)
-		res.push_back(dimensionId.getColIndex());
-	return res;
-}
-
-Channel::DimensionIndices operator&(
-    const Channel::DimensionIndices &x,
-    const Channel::DimensionIndices &y)
-{
-	std::set<Data::SeriesIndex> merged;
-	for (const auto &id : x) merged.insert(id);
-	for (const auto &id : y) merged.insert(id);
-
-	Channel::DimensionIndices res;
-	for (const auto &id : merged) res.pushBack(id);
-	return res;
+	return dimensionIds;
 }
 
 Channel::OptionalIndex Channel::labelSeries() const

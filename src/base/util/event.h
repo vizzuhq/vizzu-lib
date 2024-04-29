@@ -2,7 +2,6 @@
 #define BASE_UTIL_EVENT_H
 
 #include <functional>
-#include <list>
 #include <memory>
 
 namespace Util

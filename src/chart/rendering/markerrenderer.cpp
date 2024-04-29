@@ -2,6 +2,7 @@
 
 #include "base/geom/angle.h"
 #include "base/text/smartstring.h"
+#include "chart/generator/plot.h"
 #include "chart/rendering/colorbuilder.h"
 #include "chart/rendering/drawlabel.h"
 #include "chart/rendering/markers/abstractmarker.h"

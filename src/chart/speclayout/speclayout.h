@@ -1,7 +1,7 @@
 #ifndef CHART_SPECLAYOUT_H
 #define CHART_SPECLAYOUT_H
 
-#include "chart/generator/plot.h"
+#include "chart/generator/plotptr.h"
 
 namespace Vizzu::Gen
 {

@@ -10,7 +10,7 @@
 #include "base/gfx/color.h"
 #include "base/math/fuzzybool.h"
 #include "chart/options/options.h"
-#include "data/datacube/datacube.h"
+#include "dataframe/old/types.h"
 
 #include "colorbase.h"
 
@@ -25,17 +25,16 @@ public:
 	Marker(const Options &options,
 	    const Data::DataCube &data,
 	    ChannelsStats &stats,
-	    const Data::DataCube::MultiIndex &index,
+	    const Data::MultiIndex &index,
 	    size_t idx);
 
-	Data::DataCube::MultiIndex index;
 	::Anim::Interpolated<ColorBase> colorBase;
 	Geom::Point position;
 	Geom::Point size;
 	Geom::Point spacing;
 	double sizeFactor;
 	Math::FuzzyBool enabled;
-	Data::DataCube::CellInfo cellInfo;
+	Data::CellInfo cellInfo;
 
 	struct Label
 	{
@@ -56,12 +55,12 @@ public:
 		}
 		static std::string getIndexString(const Data::DataCube &data,
 		    const Data::SeriesList &series,
-		    const Data::DataCube::MultiIndex &index);
+		    const Data::MultiIndex &index);
 	};
 
 	::Anim::Interpolated<Label> label;
 
-	using Id = Data::DataCube::Id;
+	using Id = Data::MarkerId;
 
 	::Anim::Interpolated<Id> mainId;
 	Id subId;
@@ -95,8 +94,7 @@ private:
 	    ChannelId type,
 	    const Data::DataCube &data,
 	    ChannelsStats &stats,
-	    const Channel *subChannel = nullptr,
-	    bool inhibitStack = false) const;
+	    const Data::MultiIndex &index) const;
 };
 
 }

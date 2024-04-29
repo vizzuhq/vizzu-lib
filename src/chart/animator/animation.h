@@ -3,7 +3,8 @@
 
 #include "base/anim/control.h"
 #include "base/anim/sequence.h"
-#include "chart/generator/plot.h"
+#include "chart/generator/plotptr.h"
+#include "chart/options/options.h"
 
 #include "options.h"
 
@@ -26,8 +27,8 @@ public:
 	    OnComplete onThisCompletes = OnComplete());
 
 private:
-	using Modifier = std::function<void(Vizzu::Gen::Options &,
-	    const Vizzu::Gen::Options &)>;
+	using Modifier =
+	    std::function<void(Gen::Options &, const Gen::Options &)>;
 
 	OnComplete completionCallback;
 	Gen::PlotPtr source;

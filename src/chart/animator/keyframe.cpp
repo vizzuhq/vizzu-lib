@@ -2,6 +2,8 @@
 
 #include <utility>
 
+#include "chart/generator/plot.h"
+
 namespace Vizzu::Anim
 {
 
@@ -35,8 +37,7 @@ void Keyframe::init(const Gen::PlotPtr &plot)
 		}
 		source = std::make_shared<Gen::Plot>(plot->getTable(),
 		    emptyOpt,
-		    plot->getStyle(),
-		    false);
+		    plot->getStyle());
 		source->keepAspectRatio = plot->keepAspectRatio;
 	}
 	target = plot;
@@ -52,12 +53,7 @@ void Keyframe::prepareActual()
 	}
 	else {
 		copyTarget();
-		/*
-		        auto sourceSize = source->getMarkers().size();
-		        for (auto &markerInfo: target->markersInfo)
-		            markerInfo.second.values[0].value.markerId +=
-		   sourceSize;
-		*/
+
 		target->prependMarkers(*source, false);
 		source->appendMarkers(*targetCopy, false);
 

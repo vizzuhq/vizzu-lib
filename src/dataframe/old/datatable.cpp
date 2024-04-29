@@ -1,23 +1,19 @@
 #include "datatable.h"
 
-#include <base/conv/auto_json.h>
-#include <base/text/funcstring.h>
 #include <cmath>
-#include <data/datacube/datacube.h>
-#include <dataframe/impl/aggregators.h>
-#include <dataframe/interface.h>
 #include <numeric>
 #include <utility>
 
-#include "data/datacube/datacubeoptions.h"
-#include "data/datacube/datafilter.h"
-#include "data/datacube/seriesindex.h"
-#include "data/table/datatable.h"
+#include "base/conv/auto_json.h"
+#include "base/text/funcstring.h"
+#include "chart/options/options.h"
+#include "dataframe/impl/aggregators.h"
+#include "dataframe/interface.h"
 
 namespace Vizzu::Data
 {
 
-void data_table::addColumn(std::string_view name,
+void DataTable::addColumn(std::string_view name,
     std::string_view unit,
     const std::span<const double> &values)
 {
@@ -27,7 +23,7 @@ void data_table::addColumn(std::string_view name,
 	    {{std::pair{"unit", unit.data()}}});
 }
 
-void data_table::addColumn(std::string_view name,
+void DataTable::addColumn(std::string_view name,
     const std::span<const char *const> &categories,
     const std::span<const std::uint32_t> &values)
 {
@@ -38,68 +34,58 @@ void data_table::addColumn(std::string_view name,
 	    {});
 }
 
-void data_table::pushRow(const std::span<const char *> &cells)
+void DataTable::pushRow(const std::span<const char *> &cells)
 {
 	df.add_record(cells);
 }
 
-std::string data_table::getInfos() const { return df.as_string(); }
+std::string DataTable::getInfos() const { return df.as_string(); }
 
-bool series_index_t::isDimension() const { return !aggr; }
+bool SeriesIndex::isDimension() const { return !aggr; }
 
-const std::string_view &series_index_t::getColIndex() const
+const std::string_view &SeriesIndex::getColIndex() const
 {
 	return sid;
 }
 
-bool series_index_t::operator==(const series_index_t &rhs) const
+bool SeriesIndex::operator==(const SeriesIndex &rhs) const
 {
 	return sid == rhs.sid && aggr == rhs.aggr;
 }
 
-bool series_index_t::operator<(const series_index_t &rhs) const
+bool SeriesIndex::operator<(const SeriesIndex &rhs) const
 {
 	return sid < rhs.sid || (sid == rhs.sid && aggr < rhs.aggr);
 }
 
-bool slice_index_t::operator<(slice_index_t const &rhs) const
+bool SliceIndex::operator<(SliceIndex const &rhs) const
 {
 	return column < rhs.column
 	    || (column == rhs.column && value < rhs.value);
 }
 
-bool data_cube_t::multi_index_t::has_dimension() const
-{
-	return !parent->df->get_dimensions().empty();
-}
+bool MultiIndex::isEmpty() const { return !rid; }
 
-bool data_cube_t::multi_index_t::isEmpty() const { return !rid; }
-
-bool data_cube_t::Id::operator==(const Id &id) const
+bool MarkerId::operator==(const MarkerId &id) const
 {
 	return itemSliceIndex == id.itemSliceIndex
 	    && seriesId == id.seriesId;
 }
 
-bool data_cube_t::data_t::iterator_t::operator!=(
-    const iterator_t &oth) const
+bool DataCube::iterator_t::operator!=(const iterator_t &oth) const
 {
-	return index.parent != oth.index.parent;
+	return parent != oth.parent;
 }
 
-void data_cube_t::data_t::iterator_t::operator++()
-{
-	index.parent->incr(*this);
-}
+void DataCube::iterator_t::operator++() { parent->incr(*this); }
 
-const data_cube_t::multi_index_t &
-data_cube_t::data_t::iterator_t::operator*() const
+const MultiIndex &DataCube::iterator_t::operator*() const
 {
 	return index;
 }
 
-series_index_t::series_index_t(std::string const &str,
-    const data_table &table) :
+SeriesIndex::SeriesIndex(std::string const &str,
+    const DataTable &table) :
     orig_name(str)
 {
 	constinit static auto names =
@@ -123,21 +109,19 @@ series_index_t::series_index_t(std::string const &str,
 	}
 }
 
-data_cube_t::data_t::iterator_t data_cube_t::data_t::begin() const
+DataCube::iterator_t DataCube::begin() const
 {
 	if (df->get_record_count() == 0) return {};
-	iterator_t res{{},
-	    {this, {}, std::vector<std::size_t>(sizes.size())}};
+	iterator_t res{this,
+	    {},
+	    {{}, std::vector<std::size_t>(dim_reindex.size())}};
 	check(res);
 	return res;
 }
 
-data_cube_t::data_t::iterator_t data_cube_t::data_t::end()
-{
-	return {};
-}
+DataCube::iterator_t DataCube::end() { return {}; }
 
-void data_cube_t::data_t::check(iterator_t &it) const
+void DataCube::check(iterator_t &it) const
 {
 	if (it.index.rid) {
 		++it.rid;
@@ -145,51 +129,54 @@ void data_cube_t::data_t::check(iterator_t &it) const
 	}
 
 	for (std::size_t ix{}; ix < dim_reindex.size(); ++ix) {
-		auto &&dim = dim_reindex[ix];
+		auto &&dim = dim_reindex[ix].first;
 		auto &&cats = df->get_categories(dim);
-		auto val =
-		    std::get<std::string_view>(df->get_data(it.rid, dim));
-		if (cats.size() == it.index.old[ix]) {
-			if (val.data() != nullptr) { return; }
-		}
-		else if (cats[it.index.old[ix]] != val) {
+		auto &&old_ix = it.index.old[ix];
+		if ((old_ix < cats.size() ? cats[old_ix].data() : nullptr)
+		    != std::get<std::string_view>(df->get_data(it.rid, dim))
+		           .data())
 			return;
-		}
 	}
 	it.index.rid.emplace(it.rid);
 }
 
-void data_cube_t::data_t::incr(iterator_t &it) const
+void DataCube::incr(iterator_t &it) const
 {
-	for (std::size_t ix{sizes.size()}; ix-- > 0;)
-		if (++it.index.old[ix] >= sizes[ix])
+	for (std::size_t ix{dim_reindex.size()}; ix-- > 0;)
+		if (++it.index.old[ix] >= dim_reindex[ix].second)
 			it.index.old[ix] = 0;
 		else {
 			check(it);
 			return;
 		}
-	it.index.parent = nullptr;
+	it.parent = nullptr;
 }
 
-template <>
-data_cube_t::data_cube_t(const data_table &table,
-    const DataCubeOptions &options,
-    const Filter &filter) :
-    table(&table),
-    df(options.getDimensions().empty()
-                && options.getMeasures().empty()
-            ? dataframe::dataframe::create_new()
-            : table.getDf().copy(false)),
-    data{df.get(), options}
+DataCube::DataCube(const DataTable &table,
+    const Gen::Options &options)
 {
-	df->remove_records(filter.getFunction());
+	auto &&channels = options.getChannels();
+	auto &&dimensions = channels.getDimensions();
+	auto &&measures = channels.getMeasures();
+	auto empty = dimensions.empty() && measures.empty();
 
-	removed = df->copy(false);
+	df = {empty ? dataframe::dataframe::create_new()
+	            : table.getDf().copy(false)};
 
-	for (const auto &dim : options.getDimensions())
+	if (empty) {
+		df->finalize();
+		return;
+	}
+
+	dim_reindex.resize(dimensions.size());
+	df->remove_records(options.dataFilter.getFunction());
+
+	auto removed = df->copy(false);
+
+	for (const auto &dim : dimensions)
 		df->aggregate_by(dim.getColIndex());
 
-	for (const auto &meas : options.getMeasures()) {
+	for (const auto &meas : measures) {
 		auto &&sid = meas.getColIndex();
 		auto &&aggr = meas.getAggr();
 
@@ -197,7 +184,7 @@ data_cube_t::data_cube_t(const data_table &table,
 		    df->set_aggregate(sid, aggr));
 	}
 
-	for (const auto &dim : options.getDimensions()) {
+	for (const auto &dim : dimensions) {
 		df->set_sort(dim.getColIndex(),
 		    dataframe::sort_type::by_categories,
 		    dataframe::na_position::last);
@@ -205,20 +192,53 @@ data_cube_t::data_cube_t(const data_table &table,
 
 	df->finalize();
 
-	auto it = data.dim_reindex.begin();
-	for (auto sizIt = data.sizes.begin();
-	     const auto &dim : options.getDimensions()) {
+	for (auto it = dim_reindex.begin();
+	     const auto &dim : dimensions) {
 		auto &&dimName = dim.getColIndex();
-		*it++ = *std::lower_bound(df->get_dimensions().begin(),
-		    df->get_dimensions().end(),
-		    dimName);
-		*sizIt++ =
-		    df->get_categories(dimName).size() + df->has_na(dimName);
+		*it++ = {*std::lower_bound(df->get_dimensions().begin(),
+		             df->get_dimensions().end(),
+		             dimName),
+		    df->get_categories(dimName).size() + df->has_na(dimName)};
+	}
+
+	auto stackInhibitingShape =
+	    options.geometry == Gen::ShapeType::area;
+	auto horizontal = options.isHorizontal();
+
+	using ChannelId = Gen::ChannelId;
+	for (auto &&[channelId, inhibitStack] :
+	    std::initializer_list<std::pair<ChannelId, bool>>{
+	        {ChannelId::size, false},
+	        {ChannelId::x, !horizontal && stackInhibitingShape},
+	        {ChannelId::y, horizontal && stackInhibitingShape}}) {
+		const auto &channel = channels.at(channelId);
+		auto &&meas = channel.measureId;
+		if (!meas) continue;
+		const auto *subChannel = options.subAxisOf(channelId);
+		if (!subChannel) continue;
+		auto sumBy = subChannel->dimensionIds;
+		if (auto &&common = sumBy.split_by(channel.dimensionIds);
+		    inhibitStack)
+			std::swap(sumBy, common);
+		if (sumBy.empty()) continue;
+
+		auto &sub_df =
+		    *cacheImpl.try_emplace(channelId, removed->copy(false))
+		         .first->second;
+
+		for (auto &&dim : dimensions)
+			if (!sumBy.contains(dim))
+				sub_df.aggregate_by(dim.getColIndex());
+
+		[[maybe_unused]] auto &&new_name =
+		    sub_df.set_aggregate(meas->getColIndex(),
+		        meas->getAggr());
+
+		sub_df.finalize();
 	}
 }
 
-size_t data_cube_t::combinedSizeOf(
-    const series_index_list_t &colIndices) const
+size_t DataCube::combinedSizeOf(const SeriesList &colIndices) const
 {
 	std::size_t my_res{1};
 	for (const auto &si : colIndices) {
@@ -228,97 +248,76 @@ size_t data_cube_t::combinedSizeOf(
 	return my_res;
 }
 
-bool data_cube_t::empty() const
+bool DataCube::empty() const
 {
 	return df->get_measures().empty() && df->get_dimensions().empty();
 }
 
-std::string data_cube_t::getValue(const slice_index_t &index)
-{
-	return std::string{index.value};
-}
-
-const std::string &data_cube_t::getName(
-    const series_index_t &seriesId) const
+const std::string &DataCube::getName(
+    const SeriesIndex &seriesId) const
 {
 	return measure_names.at(
 	    {seriesId.getColIndex(), seriesId.getAggr()});
 }
 
-data_cube_t::Id data_cube_t::getId(const series_index_list_t &sl,
-    const multi_index_t &mi) const
+std::string_view DataCube::getUnit(
+    std::string_view const &colIx) const
 {
-	std::map<std::string_view, std::size_t> reindex;
-	struct DimProp
-	{
-		std::string_view value;
-		std::size_t index;
-		std::size_t size;
-	};
-	std::vector<std::pair<std::string_view, DimProp>> v;
-	for (std::size_t ix{}; const auto &s : sl)
-		reindex[v.emplace_back(s.getColIndex(), DimProp{}).first] =
-		    ix++;
-
-	std::size_t seriesId{};
-	for (std::size_t ix{}; ix < mi.parent->dim_reindex.size(); ++ix) {
-		auto &&name = mi.parent->dim_reindex[ix];
-		if (auto it = reindex.find(name); it != reindex.end()) {
-			auto &&cats = mi.parent->df->get_categories(name);
-			auto &[cat, cix, size] = v[it->second].second;
-			cix = mi.old[ix];
-			size = cats.size() + mi.parent->df->has_na(name);
-			if (cix < cats.size()) cat = cats[cix];
-		}
-		else {
-			seriesId *=
-			    df->get_categories(name).size() + df->has_na(name);
-			seriesId += mi.old[ix];
-		}
-	}
-
-	Id::SubSliceIndex ssi;
-	std::size_t itemId{};
-	for (std::size_t i{}; i < v.size(); ++i) {
-		auto &[cat, cix, size] = v[i].second;
-
-		ssi.emplace_back(v[i].first, cat);
-		itemId *= size;
-		itemId += cix;
-	}
-
-	return {mi, ssi, seriesId, itemId};
+	return df->get_series_info(colIx, "unit");
 }
 
-data_cube_t::CellInfo data_cube_t::cellInfo(
-    const multi_index_t &index) const
+MarkerId DataCube::getId(const SeriesList &sl,
+    const MultiIndex &mi) const
+{
+	MarkerId res{SubSliceIndex(sl.size())};
+	std::map<std::string_view, std::size_t> reindex;
+	std::vector<std::pair<std::size_t, std::size_t>> v(sl.size());
+
+	for (std::size_t ix{}; const auto &s : sl)
+		reindex.try_emplace(s.getColIndex(), ix++);
+
+	for (std::size_t ix{}; ix < dim_reindex.size(); ++ix) {
+		auto &&[name, size] = dim_reindex[ix];
+		if (auto it = reindex.find(name); it != reindex.end()) {
+			v[it->second] = {mi.old[ix], size};
+			auto &&cats = df->get_categories(name);
+			res.itemSliceIndex[it->second] = {name,
+			    mi.old[ix] < cats.size() ? cats[mi.old[ix]]
+			                             : std::string_view{}};
+		}
+		else
+			res.seriesId = res.seriesId * size + mi.old[ix];
+	}
+
+	for (const auto &[cix, size] : v)
+		res.itemId = res.itemId * size + cix;
+
+	return res;
+}
+
+CellInfo DataCube::cellInfo(const MultiIndex &index) const
 {
 	CellInfo my_res;
 
-	for (std::size_t ix{}; ix < index.parent->dim_reindex.size();
-	     ++ix) {
-		auto &&name = index.parent->dim_reindex[ix];
-		auto cats = index.parent->df->get_categories(name);
+	for (std::size_t ix{}; ix < dim_reindex.size(); ++ix) {
+		auto &&name = dim_reindex[ix].first;
+		auto cats = df->get_categories(name);
 		auto cix = index.old[ix];
-		my_res.categories[name] =
-		    cix < cats.size() ? cats[cix] : std::string_view{};
+		my_res.categories.emplace_back(name,
+		    cix < cats.size() ? cats[cix] : std::string_view{});
 	}
 
-	if (index.rid)
-		for (auto &&meas : df->get_measures()) {
-			my_res.values[meas] = std::get<double>(
-			    index.parent->df->get_data(*index.rid, meas));
-		}
-	else
-		for (auto &&meas : df->get_measures()) {
-			my_res.values[meas] = 0.0;
-		}
+	for (auto &&meas : df->get_measures())
+		my_res.values.emplace_back(meas,
+		    index.rid
+		        ? std::get<double>(df->get_data(*index.rid, meas))
+		        : 0.0);
 
 	return my_res;
 }
 
-double data_cube_t::valueAt(const multi_index_t &multiIndex,
-    const series_index_t &seriesId) const
+double DataCube::valueAt(const MultiIndex &multiIndex,
+    const SeriesIndex &seriesId) const
 {
 	if (multiIndex.rid) {
 		const auto &name = getName(seriesId);
@@ -328,77 +327,41 @@ double data_cube_t::valueAt(const multi_index_t &multiIndex,
 	return {};
 }
 
-double data_cube_t::aggregateAt(const multi_index_t &multiIndex,
-    const series_index_list_t &sumCols,
-    const series_index_t &seriesId) const
+double DataCube::aggregateAt(const MultiIndex &multiIndex,
+    const Gen::ChannelId &channelId,
+    const SeriesIndex &seriesId) const
 {
-	if (sumCols.empty()) return valueAt(multiIndex, seriesId);
+	auto it = cacheImpl.find(channelId);
+	if (it == cacheImpl.end()) return valueAt(multiIndex, seriesId);
 
-	std::string id{};
-	for (const auto &s : sumCols) {
-		id += s.getColIndex();
-		id += ';';
-	}
-
+	auto &sub_df = *it->second;
 	const auto &name = getName(seriesId);
-
-	id += name;
-
-	auto it = cacheImpl->find(id);
-	if (it == cacheImpl->end()) {
-		it = cacheImpl->emplace(id, removed->copy(false)).first;
-
-		auto &cp = it->second;
-
-		auto keep_this =
-		    std::set<std::string_view>(df->get_dimensions().begin(),
-		        df->get_dimensions().end());
-		for (const auto &dim : sumCols)
-			keep_this.erase(dim.getColIndex());
-
-		for (const auto &dim : keep_this) cp->aggregate_by(dim);
-
-		[[maybe_unused]] auto &&new_name =
-		    cp->set_aggregate(seriesId.getColIndex(),
-		        seriesId.getAggr());
-
-		for (auto &&dim : keep_this)
-			cp->set_sort(dim,
-			    dataframe::sort_type::by_categories,
-			    dataframe::na_position::last);
-
-		cp->finalize();
-	}
-
-	auto &sub_df = it->second;
 
 	if (multiIndex.rid) {
 		auto &&rrid = df->get_record_id_by_dims(*multiIndex.rid,
-		    sub_df->get_dimensions());
-		return std::get<double>(sub_df->get_data(rrid, name));
+		    sub_df.get_dimensions());
+		return std::get<double>(sub_df.get_data(rrid, name));
 	}
 
 	// hack for sunburst.
 	std::map<std::string_view, std::size_t> index;
 
-	for (std::size_t ix{}; ix < multiIndex.parent->dim_reindex.size();
-	     ++ix)
-		index.emplace(multiIndex.parent->dim_reindex[ix],
-		    multiIndex.old[ix]);
+	for (std::size_t ix{}; ix < dim_reindex.size(); ++ix)
+		index.emplace(dim_reindex[ix].first, multiIndex.old[ix]);
 
 	std::string res;
 	for (auto iit = index.begin();
-	     auto &&dim : sub_df->get_dimensions()) {
+	     auto &&dim : sub_df.get_dimensions()) {
 		if (iit->first != dim) ++iit;
 
-		auto &&cats = multiIndex.parent->df->get_categories(dim);
+		auto &&cats = df->get_categories(dim);
 		res += dim;
 		res += ':';
 		res += iit->second == cats.size() ? "__null__"
 		                                  : cats[iit->second];
 		res += ';';
 	}
-	auto nanres = std::get<double>(sub_df->get_data(res, name));
+	auto nanres = std::get<double>(sub_df.get_data(res, name));
 	return std::isnan(nanres) ? double{} : nanres;
 }
 

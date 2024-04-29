@@ -2,15 +2,10 @@
 #define CHANNEL_H
 
 #include <cstdint>
-#include <istream>
-#include <list>
 #include <optional>
 #include <string>
 
-#include "base/anim/interpolated.h"
-#include "data/datacube/datacube.h"
-#include "data/datacube/datacubeoptions.h"
-#include "data/datacube/seriesindex.h"
+#include "dataframe/old/types.h"
 
 #include "autoparam.h"
 #include "channelrange.h"
@@ -26,6 +21,7 @@ public:
 	using Type = ChannelId;
 
 	using OptionalIndex = std::optional<Data::SeriesIndex>;
+	using IndexSet = std::set<Data::SeriesIndex>;
 	using DimensionIndices = Data::SeriesList;
 
 	static Channel makeChannel(Type id);
@@ -36,19 +32,15 @@ public:
 	[[nodiscard]] bool isSeriesUsed(
 	    const Data::SeriesIndex &index) const;
 	void reset();
-	void clearMeasure();
 	[[nodiscard]] bool isEmpty() const;
 	[[nodiscard]] bool isDimension() const;
 	[[nodiscard]] bool isMeasure() const;
 	[[nodiscard]] size_t dimensionCount() const;
-	void collectDimesions(
-	    Data::DataCubeOptions::IndexSet &dimensions) const;
-	void collectRealSeries(
-	    Data::DataCubeOptions::IndexSet &series) const;
+	void collectDimesions(IndexSet &dimensions) const;
 	[[nodiscard]] std::string measureName(
-	    const std::optional<Data::DataCube> &cube = {}) const;
+	    const Data::DataCube &cube) const;
 	[[nodiscard]] std::string labelDimensionName() const;
-	[[nodiscard]] std::list<std::string_view> dimensionNames() const;
+	[[nodiscard]] const DimensionIndices &dimensions() const;
 	[[nodiscard]] OptionalIndex labelSeries() const;
 	bool operator==(const Channel &other) const;
 
@@ -68,10 +60,6 @@ public:
 	Base::AutoBool interlacing{};
 	Base::AutoParam<double> step{};
 };
-
-Channel::DimensionIndices operator&(
-    const Channel::DimensionIndices &x,
-    const Channel::DimensionIndices &y);
 
 bool isAxis(ChannelId type);
 

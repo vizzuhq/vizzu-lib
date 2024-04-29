@@ -2,13 +2,11 @@
 #define MARKERS_ABSTRACTMARKER_H
 
 #include <array>
-#include <memory>
 
 #include "base/geom/line.h"
 #include "base/geom/quadrilateral.h"
 #include "base/geom/rect.h"
 #include "chart/generator/marker.h"
-#include "chart/generator/plot.h"
 #include "chart/main/style.h"
 #include "chart/rendering/drawingcontext.h"
 #include "chart/rendering/painter/coordinatesystem.h"

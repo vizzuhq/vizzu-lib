@@ -4,11 +4,15 @@
 #include <memory>
 
 #include "base/anim/element.h"
-#include "base/math/interpolation.h"
-#include "chart/generator/plot.h"
-#include "chart/options/options.h"
 
 #include "options.h"
+
+namespace Vizzu::Gen
+{
+class Plot;
+class Options;
+class Marker;
+}
 
 namespace Vizzu::Anim::Morph
 {

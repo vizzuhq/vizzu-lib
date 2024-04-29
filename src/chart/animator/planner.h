@@ -8,7 +8,8 @@
 #include "base/anim/control.h"
 #include "base/anim/easingfunc.h"
 #include "base/anim/group.h"
-#include "chart/generator/plot.h"
+#include "chart/generator/marker.h"
+#include "chart/generator/plotptr.h"
 
 #include "options.h"
 

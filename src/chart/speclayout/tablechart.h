@@ -3,8 +3,6 @@
 
 #include <cmath>
 
-#include "chart/generator/plot.h"
-
 namespace Vizzu::Charts
 {
 

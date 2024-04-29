@@ -13,6 +13,8 @@
 - From now legend appears/disappears linear time.
 - Axis labels are not animated to a different axis label.
 - Dimension axis density on sorted values was wrongly calculated.
+- Tooltip with 'seriesName' does not rewrite first series data.
+- Handle as different category the empty string and the missing value.
 
 ### Added
 

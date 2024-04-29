@@ -3,6 +3,7 @@
 #include <utility>
 
 #include "chart/animator/keyframe.h"
+#include "chart/generator/plot.h"
 
 namespace Vizzu::Anim
 {
@@ -179,8 +180,7 @@ Gen::PlotPtr Animation::getIntermediate(const Gen::PlotPtr &base,
 	    && *extOptions != *base->getOptions()) {
 		res = std::make_shared<Gen::Plot>(base->getTable(),
 		    extOptions,
-		    base->getStyle(),
-		    false);
+		    base->getStyle());
 
 		res->keepAspectRatio = base->keepAspectRatio;
 	}

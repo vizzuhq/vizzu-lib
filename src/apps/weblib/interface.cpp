@@ -5,6 +5,8 @@
 #include "base/conv/auto_json.h"
 #include "base/io/log.h"
 #include "base/refl/auto_accessor.h"
+#include "chart/main/version.h"
+#include "chart/ui/chart.h"
 
 #include "canvas.h"
 #include "interfacejs.h"
@@ -20,6 +22,26 @@ std::unique_ptr<T, Deleter> create_unique_ptr(T *&&ptr,
 {
 	return {ptr, std::forward<Deleter>(deleter)};
 }
+
+struct Interface::Snapshot
+{
+	Snapshot(Gen::Options options, Styles::Chart styles) :
+	    options(std::move(options)),
+	    styles(std::move(styles))
+	{}
+	Gen::Options options;
+	Styles::Chart styles;
+};
+
+struct Interface::Animation
+{
+	Animation(Anim::AnimationPtr anim, Snapshot snapshot) :
+	    animation(std::move(anim)),
+	    snapshot(std::move(snapshot))
+	{}
+	Anim::AnimationPtr animation;
+	Snapshot snapshot;
+};
 
 Interface &Interface::getInstance()
 {

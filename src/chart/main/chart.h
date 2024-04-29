@@ -9,14 +9,15 @@
 #include "base/gfx/canvas.h"
 #include "base/util/eventdispatcher.h"
 #include "chart/animator/animator.h"
-#include "chart/generator/plot.h"
+#include "chart/generator/plotptr.h"
 #include "chart/main/layout.h"
 #include "chart/main/stylesheet.h"
 #include "chart/options/config.h"
 #include "chart/rendering/renderedchart.h"
-#include "data/table/datatable.h"
+#include "dataframe/old/datatable.h"
 
 #include "events.h"
+#include "layout.h"
 
 namespace Vizzu
 {

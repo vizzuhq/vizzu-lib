@@ -1,5 +1,6 @@
 #include "drawaxes.h"
 
+#include "chart/generator/plot.h"
 #include "chart/rendering/drawguides.h"
 #include "chart/rendering/orientedlabel.h"
 

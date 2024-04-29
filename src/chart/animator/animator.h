@@ -4,9 +4,6 @@
 #include <functional>
 #include <memory>
 
-#include "base/anim/sequence.h"
-#include "chart/generator/plot.h"
-
 #include "animation.h"
 #include "options.h"
 
@@ -22,7 +19,7 @@ public:
 	void addKeyframe(const Gen::PlotPtr &plot,
 	    const Options::Keyframe &options = Options::Keyframe());
 
-	void setAnimation(const Anim::AnimationPtr &animation);
+	void setAnimation(const AnimationPtr &animation);
 
 	void animate(const ::Anim::Control::Option &options = {},
 	    const Animation::OnComplete &onThisCompletes =

@@ -10,8 +10,7 @@
 #include "base/math/interpolation.h"
 #include "base/math/range.h"
 #include "chart/options/channel.h"
-#include "data/datacube/datacube.h"
-#include "data/table/datatable.h"
+#include "dataframe/old/types.h"
 
 #include "colorbase.h"
 
@@ -133,14 +132,13 @@ public:
 			return index == 0 ? start : index == 1 && end;
 		}
 	};
-	using Values =
-	    std::multimap<Data::DataCube::Id::SliceIndex, Item>;
+	using Values = std::multimap<Data::SliceIndex, Item>;
 
 	bool enabled{false};
 	std::string category{};
 
 	DimensionAxis() = default;
-	bool add(const Data::DataCube::Id::SliceIndex &index,
+	bool add(const Data::SliceIndex &index,
 	    double value,
 	    const Math::Range<double> &range,
 	    double enabled,

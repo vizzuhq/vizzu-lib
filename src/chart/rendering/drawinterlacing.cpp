@@ -2,6 +2,7 @@
 
 #include "base/math/renard.h"
 #include "base/text/smartstring.h"
+#include "chart/generator/plot.h"
 #include "chart/rendering/drawlabel.h"
 #include "chart/rendering/orientedlabel.h"
 

@@ -158,12 +158,11 @@ std::list<std::string> Config::listParams()
 	for (const auto &accessor : getAccessors())
 		res.emplace_back(accessor.first);
 
-	auto channelParams =
-	    std::ranges::views::keys(getChannelAccessors());
+	auto &&channelParams = getChannelAccessors();
 	for (auto channelName : Refl::enum_names<ChannelId>) {
 		for (const auto &param : channelParams)
 			res.push_back("channels." + std::string{channelName} + "."
-			              + std::string{param});
+			              + std::string{param.first});
 	}
 
 	return res;
@@ -246,9 +245,9 @@ std::string Config::getChannelParam(const std::string &path) const
 	const auto &channel = options.get().getChannels().at(id);
 
 	if (property == "set") {
-		auto list = channel.dimensionNames();
-		auto measure = channel.measureName();
-		if (!measure.empty()) list.push_front(measure);
+		auto list = channel.dimensions();
+		if (auto &&measure = channel.measureId)
+			list.push_front(*measure);
 		return Conv::toJSON(list);
 	}
 
