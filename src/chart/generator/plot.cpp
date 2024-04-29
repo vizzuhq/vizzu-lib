@@ -212,17 +212,15 @@ bool Plot::linkMarkers(const Buckets &buckets, bool main)
 
 		for (auto i = 0U; i < sorted.size(); ++i) {
 			auto idAct = sorted[i].first;
-			auto indexAct = bucket[idAct];
-			auto &act = *indexAct;
+			auto &act = *bucket[idAct];
 			auto iNext = (i + 1) % sorted.size();
 			auto idNext = sorted[iNext].first;
-			auto indexNext = bucket[idNext];
-			auto &next = *indexNext;
+			auto &next = *bucket[idNext];
 			act.setNextMarker(iNext,
 			    next,
 			    options->isHorizontal() == main,
 			    main);
-			if (act.enabled && next.enabled && indexAct != indexNext)
+			if (act.enabled && next.enabled && idAct != idNext)
 				hasConnection = true;
 		}
 	}
