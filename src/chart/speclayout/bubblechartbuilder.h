@@ -26,41 +26,30 @@ void BubbleChartBuilder::setupVector(double maxRadius,
 {
 	if (hierarchy.empty()) return;
 
-	std::vector<double> sizes;
-	for (const auto &level : hierarchy) {
-		auto sum = 0.0;
-		for (const auto &item : level)
+	std::vector<double> sizes(hierarchy.size());
+	for (std::size_t ix{}; const auto &level : hierarchy)
+		for (auto &sum = sizes[ix++]; const auto &item : level)
 			if (item->sizeFactor > 0) sum += item->sizeFactor;
-		sizes.push_back(sum);
-	}
 
 	const BubbleChart chart(sizes);
 
-	size_t cnt = 0;
-	for (const auto &level : hierarchy) {
-		const auto &c = chart.markers[cnt].circle();
+	for (std::size_t cnt{}; const auto &level : hierarchy) {
+		std::vector<double> ssizes(level.size());
+		for (std::size_t ix{}; const auto &item : level)
+			if (auto &s = ssizes[ix++]; item->sizeFactor > 0)
+				s = item->sizeFactor;
 
-		std::vector<double> sizes;
-		sizes.reserve(std::size(level));
-		for (const auto &item : level)
-			sizes.push_back(std::max(0.0, item->sizeFactor));
+		const BubbleChart subChart(ssizes,
+		    chart.markers[cnt++].circle().boundary());
 
-		const BubbleChart subChart(sizes, c.boundary());
-
-		size_t subCnt = 0;
-		for (const auto &item : level) {
-			const auto &c = subChart.markers[subCnt].circle();
-
-			item->position = Geom::Point{0.5 + (c.center.x - 0.5),
-			    0.5 + (c.center.y - 0.5)};
-
-			auto r = c.radius;
+		for (std::size_t subCnt{}; const auto &item : level) {
+			const auto &[center, r] =
+			    subChart.markers[subCnt++].circle();
+			item->position = center;
 			item->size = Geom::Size{r, r};
 			item->sizeFactor = r * r / (maxRadius * maxRadius);
 			if (std::isnan(r)) item->enabled = false;
-			++subCnt;
 		}
-		++cnt;
 	}
 }
 

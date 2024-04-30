@@ -195,7 +195,10 @@ void Plot::clearEmptyBuckets(const Buckets &buckets, bool main)
 		bool enabled = false;
 
 		for (const auto &marker : bucket)
-			enabled |= static_cast<bool>(marker->enabled);
+			if (static_cast<bool>(marker->enabled)) {
+				enabled = true;
+				break;
+			}
 
 		if (!enabled)
 			for (const auto &marker : bucket)
@@ -370,16 +373,14 @@ void Plot::addAlignment()
 	if (options->align == Base::Align::Type::none) return;
 
 	auto &&vectical = !options->isHorizontal();
+	const Base::Align align{options->align, Math::Range(0.0, 1.0)};
 	for (auto &bucket : subBuckets) {
 		Math::Range<double> range;
 
 		for (auto &marker : bucket)
 			range.include(marker->getSizeBy(vectical));
 
-		auto &&transform =
-		    Base::Align{options->align, Math::Range(0.0, 1.0)}
-		        .getAligned(range)
-		    / range;
+		auto &&transform = align.getAligned(range) / range;
 
 		for (auto &marker : bucket)
 			marker->setSizeBy(vectical,

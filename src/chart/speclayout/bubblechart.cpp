@@ -11,10 +11,8 @@ BubbleChart::BubbleChart(const std::vector<double> &sizes,
 {
 	markers.reserve(sizes.size());
 
-	for (auto j = 0U; j < sizes.size(); ++j) {
-		const double radius = std::sqrt(sizes[j]);
-		markers.emplace_back(j, radius);
-	}
+	for (auto j = 0U; j < sizes.size(); ++j)
+		markers.emplace_back(j, std::sqrt(sizes[j]));
 
 	std::sort(markers.begin(), markers.end(), SpecMarker::sizeOrder);
 
