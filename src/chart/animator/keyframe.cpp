@@ -102,19 +102,16 @@ void Keyframe::addMissingMarkers(const Gen::PlotPtr &source,
 {
 	for (auto i = source->getMarkers().size();
 	     i < target->getMarkers().size();
-	     ++i) {
-		auto src = target->getMarkers()[i];
-		src.enabled = false;
-		source->markers.push_back(src);
-	}
+	     ++i)
+		source->markers.emplace_back(target->getMarkers()[i])
+		    .enabled = false;
 
 	for (auto i = target->getMarkers().size();
 	     i < source->getMarkers().size();
 	     ++i) {
 		if (withTargetCopying) copyTarget();
-		auto trg = source->getMarkers()[i];
-		trg.enabled = false;
-		target->markers.push_back(trg);
+		target->markers.emplace_back(source->getMarkers()[i])
+		    .enabled = false;
 	}
 }
 

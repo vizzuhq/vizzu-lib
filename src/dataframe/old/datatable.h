@@ -58,7 +58,7 @@ public:
 	{
 		std::string_view name;
 		std::span<const std::string> categories;
-		std::size_t size;
+		std::size_t size{};
 	};
 	std::vector<DimensionInfo> dim_reindex;
 
