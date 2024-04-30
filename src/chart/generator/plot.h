@@ -115,7 +115,7 @@ private:
 	Markers markers;
 	MarkersInfo markersInfo;
 
-	std::size_t mainBucketSize;
+	std::size_t mainBucketSize{};
 	Buckets subBuckets;
 
 	void generateMarkers();

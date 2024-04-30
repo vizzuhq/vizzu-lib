@@ -35,13 +35,13 @@ bool SpecLayout::addIfNeeded(Buckets &hierarchy) const
 			     ++i)
 				hierarchy[i].resize(v);
 			hierarchy.resize(k, std::vector<Marker *>(v));
+
+			for (auto &marker : markers)
+				hierarchy[marker.sizeId.seriesId]
+				         [marker.sizeId.itemId] = &marker;
 		}
 		else
 			hierarchy.clear();
-
-		for (auto &marker : markers)
-			hierarchy[marker.sizeId.seriesId][marker.sizeId.itemId] =
-			    &marker;
 
 		if (options->geometry == ShapeType::circle) {
 			Charts::BubbleChartBuilder::setupVector(

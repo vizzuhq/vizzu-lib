@@ -2,6 +2,7 @@
 #define PLOTPTR_H
 
 #include <memory>
+#include <vector>
 
 namespace Vizzu::Gen
 {
