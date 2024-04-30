@@ -62,7 +62,7 @@ CommonAxis interpolate(const CommonAxis &op0,
 struct MeasureAxis
 {
 	::Anim::Interpolated<bool> enabled{false};
-	Math::Range<double> range = Math::Range<double>(0, 1);
+	Math::Range<double> range = Math::Range<double>::Raw(0, 1);
 	::Anim::Interpolated<std::string> unit;
 	::Anim::Interpolated<double> step{1.0};
 	MeasureAxis() = default;

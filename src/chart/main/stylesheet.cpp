@@ -218,8 +218,8 @@ void Sheet::setAfterStyles(Gen::Plot &plot, const Geom::Size &size)
 			auto rangeCenter = pair.second.range.middle();
 
 			auto next_range =
-			    Math::Range<double>{rangeCenter - xHalfSize,
-			        rangeCenter + xHalfSize};
+			    Math::Range<double>::Raw(rangeCenter - xHalfSize,
+			        rangeCenter + xHalfSize);
 
 			if (std::any_of(ranges.begin(),
 			        ranges.end(),

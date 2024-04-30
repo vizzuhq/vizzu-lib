@@ -10,7 +10,7 @@ class SpecLayout
 {
 public:
 	explicit SpecLayout(Plot &plot) : plot(plot) {}
-	bool addIfNeeded();
+	bool addIfNeeded(Buckets &hierarchy) const;
 
 private:
 	Plot &plot;

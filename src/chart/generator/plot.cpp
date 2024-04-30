@@ -78,10 +78,8 @@ Plot::Plot(const Data::DataTable &dataTable,
 	generateMarkers();
 	generateMarkersInfo();
 
-	SpecLayout specLayout(*this);
-	auto gotSpecLayout = specLayout.addIfNeeded();
-
-	if (gotSpecLayout) {
+	if (const SpecLayout specLayout(*this);
+	    specLayout.addIfNeeded(subBuckets)) {
 		calcDimensionAxises();
 		normalizeColors();
 		if (options->geometry != ShapeType::circle) normalizeSizes();
@@ -96,6 +94,7 @@ Plot::Plot(const Data::DataTable &dataTable,
 		calcMeasureAxises();
 		addAlignment();
 	}
+	subBuckets.clear();
 
 	guides.init(*options);
 }
@@ -112,10 +111,12 @@ bool Plot::isEmpty() const
 
 void Plot::generateMarkers()
 {
+	Buckets mainBuckets;
 	if (!getDataCube().empty()) {
 		auto &&[k, v] = getDataCube().combinedSizeOf(
 		    options->mainAxis().dimensionIds);
 		mainBuckets.resize(k, std::vector<Marker *>(v));
+		mainBucketSize = k;
 
 		Data::SeriesList subIds(options->subAxis().dimensionIds);
 		if (getOptions()->geometry == ShapeType::area)
@@ -287,14 +288,14 @@ void Plot::calcMeasureAxis(ChannelId type)
 
 		if (type == options->subAxisType()
 		    && options->align == Base::Align::Type::stretch) {
-			axis = {Math::Range<double>(0, 100),
+			axis = {Math::Range<double>::Raw(0, 100),
 			    "%",
 			    scale.step.getValue()};
 		}
 		else {
 			auto range = stats.channels[type].range;
 			if (!range.isReal())
-				range = Math::Range<double>::Raw(0.0, 0.0);
+				range = Math::Range<double>::Raw({}, {});
 
 			axis = {range,
 			    std::string{dataCube->getUnit(name)},
@@ -395,9 +396,9 @@ void Plot::addSeparation()
 		               ? Base::Align::Type::min
 		               : options->align;
 
-		std::vector<Math::Range<double>> ranges(mainBuckets.size(),
-		    Math::Range(0.0, 0.0));
-		std::vector<bool> anyEnabled(mainBuckets.size(), false);
+		std::vector ranges{mainBucketSize,
+		    Math::Range<double>::Raw({}, {})};
+		std::vector<bool> anyEnabled(mainBucketSize);
 
 		auto &&vertical = !options->isHorizontal();
 		for (auto &bucket : subBuckets) {

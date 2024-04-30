@@ -39,7 +39,6 @@ class Plot
 	friend class Selector;
 
 public:
-	using Buckets = std::vector<std::vector<Marker *>>;
 	using Markers = std::vector<Marker>;
 
 	struct MarkerInfoContent
@@ -116,7 +115,7 @@ private:
 	Markers markers;
 	MarkersInfo markersInfo;
 
-	Buckets mainBuckets;
+	std::size_t mainBucketSize;
 	Buckets subBuckets;
 
 	void generateMarkers();

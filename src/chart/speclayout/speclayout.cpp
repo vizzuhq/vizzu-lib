@@ -9,16 +9,13 @@
 namespace Vizzu::Gen
 {
 
-bool SpecLayout::addIfNeeded()
+bool SpecLayout::addIfNeeded(Buckets &hierarchy) const
 {
-
-	auto options = plot.getOptions();
-	auto &markers = plot.getMarkers();
-	auto &style = plot.getStyle();
-
+	auto &&options = plot.getOptions();
 	if (options->getChannels().anyAxisSet()) return false;
 
-	if (options->geometry == ShapeType::line
+	if (auto &markers = plot.getMarkers();
+	    options->geometry == ShapeType::line
 	    || options->geometry == ShapeType::area) {
 		Charts::TableChart::setupVector(markers, true);
 	}
@@ -26,30 +23,35 @@ bool SpecLayout::addIfNeeded()
 		Charts::TableChart::setupVector(markers);
 	}
 	else {
-		Plot::Buckets hierarchy;
 		if (!plot.getDataCube().empty()) {
 			auto &&[k, v] = plot.getDataCube().combinedSizeOf(
 			    options->getChannels()
 			        .at(ChannelId::size)
 			        .dimensionIds);
+
+			for (std::size_t i{},
+			     size = std::min(k, hierarchy.size());
+			     i < size;
+			     ++i)
+				hierarchy[i].resize(v);
 			hierarchy.resize(k, std::vector<Marker *>(v));
 		}
+		else
+			hierarchy.clear();
+
 		for (auto &marker : markers)
 			hierarchy[marker.sizeId.seriesId][marker.sizeId.itemId] =
 			    &marker;
 
 		if (options->geometry == ShapeType::circle) {
 			Charts::BubbleChartBuilder::setupVector(
-			    *style.plot.marker.circleMaxRadius,
+			    *plot.getStyle().plot.marker.circleMaxRadius,
 			    hierarchy);
 
 			plot.keepAspectRatio = true;
 		}
-		else if (options->geometry == ShapeType::rectangle) {
-			Charts::TreeMap::setupVector(hierarchy);
-		}
 		else
-			return false;
+			Charts::TreeMap::setupVector(hierarchy);
 	}
 	return true;
 }
