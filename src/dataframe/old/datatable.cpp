@@ -68,8 +68,7 @@ bool MultiIndex::isEmpty() const { return !rid; }
 
 bool MarkerId::operator==(const MarkerId &id) const
 {
-	return itemSliceIndex == id.itemSliceIndex
-	    && seriesId == id.seriesId;
+	return itemId == id.itemId && seriesId == id.seriesId;
 }
 
 bool DataCube::iterator_t::operator!=(const iterator_t &oth) const
@@ -129,10 +128,9 @@ void DataCube::check(iterator_t &it) const
 	}
 
 	for (std::size_t ix{}; ix < dim_reindex.size(); ++ix) {
-		auto &&dim = dim_reindex[ix].first;
-		auto &&cats = df->get_categories(dim);
-		auto &&old_ix = it.index.old[ix];
-		if ((old_ix < cats.size() ? cats[old_ix].data() : nullptr)
+		auto &&[dim, cats, size] = dim_reindex[ix];
+		if (auto &&old_ix = it.index.old[ix];
+		    (old_ix < cats.size() ? cats[old_ix].data() : nullptr)
 		    != std::get<std::string_view>(df->get_data(it.rid, dim))
 		           .data())
 			return;
@@ -143,7 +141,7 @@ void DataCube::check(iterator_t &it) const
 void DataCube::incr(iterator_t &it) const
 {
 	for (std::size_t ix{dim_reindex.size()}; ix-- > 0;)
-		if (++it.index.old[ix] >= dim_reindex[ix].second)
+		if (++it.index.old[ix] >= dim_reindex[ix].size)
 			it.index.old[ix] = 0;
 		else {
 			check(it);
@@ -195,10 +193,12 @@ DataCube::DataCube(const DataTable &table,
 	for (auto it = dim_reindex.begin();
 	     const auto &dim : dimensions) {
 		auto &&dimName = dim.getColIndex();
+		auto &&cats = df->get_categories(dimName);
 		*it++ = {*std::lower_bound(df->get_dimensions().begin(),
 		             df->get_dimensions().end(),
 		             dimName),
-		    df->get_categories(dimName).size() + df->has_na(dimName)};
+		    cats,
+		    cats.size() + df->has_na(dimName)};
 	}
 
 	auto stackInhibitingShape =
@@ -246,7 +246,7 @@ std::pair<size_t, size_t> DataCube::combinedSizeOf(
 
 	std::set<std::string_view> sls;
 	for (auto &&s : colIndices) sls.insert(s.getColIndex());
-	for (auto &&[n, s] : dim_reindex)
+	for (auto &&[n, cats, s] : dim_reindex)
 		if (sls.contains(n))
 			maxBySL *= s;
 		else
@@ -284,16 +284,16 @@ MarkerId DataCube::getId(const SeriesList &sl,
 		reindex.try_emplace(s.getColIndex(), ix++);
 
 	for (std::size_t ix{}; ix < dim_reindex.size(); ++ix) {
-		auto &&[name, size] = dim_reindex[ix];
+		auto &&[name, cats, size] = dim_reindex[ix];
+		auto &&oldIx = mi.old[ix];
 		if (auto it = reindex.find(name); it != reindex.end()) {
-			v[it->second] = {mi.old[ix], size};
-			auto &&cats = df->get_categories(name);
+			v[it->second] = {oldIx, size};
 			res.itemSliceIndex[it->second] = {name,
-			    mi.old[ix] < cats.size() ? cats[mi.old[ix]]
-			                             : std::string_view{}};
+			    oldIx < cats.size() ? cats[oldIx]
+			                        : std::string_view{}};
 		}
 		else
-			res.seriesId = res.seriesId * size + mi.old[ix];
+			res.seriesId = res.seriesId * size + oldIx;
 	}
 
 	for (const auto &[cix, size] : v)
@@ -302,25 +302,24 @@ MarkerId DataCube::getId(const SeriesList &sl,
 	return res;
 }
 
-CellInfo DataCube::cellInfo(const MultiIndex &index) const
+std::shared_ptr<CellInfo> DataCube::cellInfo(
+    const MultiIndex &index) const
 {
-	CellInfo my_res{
-	    .categories =
-	        std::vector<std::pair<std::string, std::string>>(
-	            dim_reindex.size()),
-	    .values = std::vector<std::pair<std::string, double>>(
-	        df->get_measures().size())};
+	auto my_res = std::make_shared<CellInfo>(
+	    std::vector<std::pair<std::string, std::string>>(
+	        dim_reindex.size()),
+	    std::vector<std::pair<std::string, double>>(
+	        df->get_measures().size()));
 
 	for (std::size_t ix{}; ix < dim_reindex.size(); ++ix) {
-		auto &&name = dim_reindex[ix].first;
-		auto cats = df->get_categories(name);
+		auto &&[name, cats, size] = dim_reindex[ix];
 		auto cix = index.old[ix];
-		my_res.categories[ix] = {std::string{name},
+		my_res->categories[ix] = {std::string{name},
 		    cix < cats.size() ? cats[cix] : std::string{}};
 	}
 
 	for (std::size_t ix{}; auto &&meas : df->get_measures())
-		my_res.values[ix++] = {meas,
+		my_res->values[ix++] = {meas,
 		    index.rid
 		        ? std::get<double>(df->get_data(*index.rid, meas))
 		        : 0.0};
@@ -331,10 +330,9 @@ CellInfo DataCube::cellInfo(const MultiIndex &index) const
 double DataCube::valueAt(const MultiIndex &multiIndex,
     const SeriesIndex &seriesId) const
 {
-	if (multiIndex.rid) {
-		const auto &name = getName(seriesId);
-		return std::get<double>(df->get_data(*multiIndex.rid, name));
-	}
+	if (multiIndex.rid)
+		return std::get<double>(
+		    df->get_data(*multiIndex.rid, getName(seriesId)));
 
 	return {};
 }
@@ -359,7 +357,7 @@ double DataCube::aggregateAt(const MultiIndex &multiIndex,
 	std::map<std::string_view, std::size_t> index;
 
 	for (std::size_t ix{}; ix < dim_reindex.size(); ++ix)
-		index.emplace(dim_reindex[ix].first, multiIndex.old[ix]);
+		index.emplace(dim_reindex[ix].name, multiIndex.old[ix]);
 
 	std::string res;
 	for (auto iit = index.begin();

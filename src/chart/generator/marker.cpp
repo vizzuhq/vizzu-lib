@@ -85,27 +85,23 @@ Marker::Marker(const Options &options,
 	              ? 1
 	              : 0;
 
-	if (channels.at(ChannelId::label).isEmpty())
+	if (auto &&labelChannel = channels.at(ChannelId::label);
+	    labelChannel.isEmpty())
 		label = ::Anim::Weighted<Label>(Label(), 0.0);
-	else {
-		auto value = getValueForChannel(channels,
-		    ChannelId::label,
+	else if (auto &&labelStr = Label::getIndexString(data,
+	             labelChannel.dimensionIds,
+	             index);
+	         labelChannel.isDimension())
+		label = Label(std::move(labelStr));
+	else
+		label = Label(getValueForChannel(channels,
+		                  ChannelId::label,
+		                  data,
+		                  stats,
+		                  index),
+		    *labelChannel.measureId,
 		    data,
-		    stats,
-		    index);
-
-		auto &&labelStr = Label::getIndexString(data,
-		    channels.at(ChannelId::label).dimensionIds,
-		    index);
-
-		if (channels.at(ChannelId::label).isDimension())
-			label = Label(std::move(labelStr));
-		else
-			label = Label(value,
-			    *channels.at(ChannelId::label).measureId,
-			    data,
-			    std::move(labelStr));
-	}
+		    std::move(labelStr));
 }
 
 void Marker::setNextMarker(uint64_t itemId,
@@ -151,8 +147,9 @@ std::string Marker::toJSON() const
 
 Conv::JSONObj &&Marker::appendToJSON(Conv::JSONObj &&jsonObj) const
 {
-	return std::move(jsonObj)("categories",
-	    cellInfo.categories)("values", cellInfo.values)("index", idx);
+	return std::move(
+	    jsonObj)("categories", cellInfo->categories)("values",
+	    cellInfo->values)("index", idx);
 }
 
 double Marker::getValueForChannel(const Channels &channels,
@@ -250,5 +247,4 @@ std::string Marker::Label::getIndexString(const Data::DataCube &data,
 	}
 	return res;
 }
-
 }

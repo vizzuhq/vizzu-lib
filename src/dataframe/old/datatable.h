@@ -53,7 +53,14 @@ public:
 	std::map<std::pair<std::string_view, dataframe::aggregator_type>,
 	    std::string>
 	    measure_names;
-	std::vector<std::pair<std::string_view, std::size_t>> dim_reindex;
+
+	struct DimensionInfo
+	{
+		std::string_view name;
+		std::span<const std::string> categories;
+		std::size_t size;
+	};
+	std::vector<DimensionInfo> dim_reindex;
 
 	std::map<Gen::ChannelId,
 	    std::shared_ptr<dataframe::dataframe_interface>>
@@ -66,7 +73,8 @@ public:
 
 	[[nodiscard]] bool empty() const;
 
-	[[nodiscard]] CellInfo cellInfo(const MultiIndex &index) const;
+	[[nodiscard]] std::shared_ptr<CellInfo> cellInfo(
+	    const MultiIndex &index) const;
 
 	[[nodiscard]] double aggregateAt(const MultiIndex &multiIndex,
 	    const Gen::ChannelId &channelId,

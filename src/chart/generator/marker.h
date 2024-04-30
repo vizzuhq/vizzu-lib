@@ -34,12 +34,12 @@ public:
 	Geom::Point spacing;
 	double sizeFactor;
 	Math::FuzzyBool enabled;
-	Data::CellInfo cellInfo;
+	std::shared_ptr<Data::CellInfo> cellInfo;
 
 	struct Label
 	{
 		std::optional<double> value;
-		std::string_view measureId;
+		std::string measureId;
 		std::string unit;
 		std::string indexStr;
 		Label() = default;
