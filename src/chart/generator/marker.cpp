@@ -45,16 +45,19 @@ Marker::Marker(const Options &options,
 
 	mainId = data.getId(options.mainAxis().dimensionIds, index);
 
+	Data::MarkerId *subAxisId{};
 	if (options.geometry == ShapeType::area) {
 		Data::SeriesList subIds(options.subAxis().dimensionIds);
 		Data::SeriesList &&stackIds =
 		    subIds.split_by(options.mainAxis().dimensionIds);
 		subId = data.getId(subIds, index);
 		stackId = data.getId(stackIds, index);
+		if (stackIds.empty()) subAxisId = &subId;
 	}
 	else {
 		stackId = subId =
 		    data.getId(options.subAxis().dimensionIds, index);
+		subAxisId = &subId;
 	}
 
 	auto horizontal = options.isHorizontal();
@@ -66,7 +69,8 @@ Marker::Marker(const Options &options,
 	    ChannelId::x,
 	    data,
 	    stats,
-	    index);
+	    index,
+	    horizontal ? &mainId.values[0].value : subAxisId);
 
 	spacing.x = (horizontal || (lineOrCircle && !polar))
 	                 && options.getChannels().anyAxisSet()
@@ -78,7 +82,8 @@ Marker::Marker(const Options &options,
 	    ChannelId::y,
 	    data,
 	    stats,
-	    index);
+	    index,
+	    !horizontal ? &mainId.values[0].value : subAxisId);
 
 	spacing.y = (!horizontal || lineOrCircle)
 	                 && options.getChannels().anyAxisSet()
