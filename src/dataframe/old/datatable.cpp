@@ -254,10 +254,8 @@ std::pair<size_t, size_t> DataCube::combinedSizeOf(
 	std::size_t maxBySL{1};
 	std::size_t maxByOthers{1};
 
-	std::set<std::string_view> sls;
-	for (auto &&s : colIndices) sls.insert(s.getColIndex());
 	for (auto &&[n, cats, s] : dim_reindex)
-		if (sls.contains(n))
+		if (colIndices.find(n) != SeriesList::npos)
 			maxBySL *= s;
 		else
 			maxByOthers *= s;

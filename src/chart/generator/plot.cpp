@@ -143,8 +143,8 @@ void Plot::generateMarkers()
 	}
 	clearEmptyBuckets(mainBuckets, true);
 	clearEmptyBuckets(subBuckets, false);
-	auto hasMarkerConnection = linkMarkers(mainBuckets, true);
-	linkMarkers(subBuckets, false);
+	auto &&hasMarkerConnection = linkMarkers(mainBuckets, true);
+	[[maybe_unused]] auto &&_ = linkMarkers(subBuckets, false);
 
 	if (hasMarkerConnection
 	    && options->geometry.get() == ShapeType::line
@@ -162,27 +162,21 @@ void Plot::generateMarkersInfo()
 		    {ix, MarkerInfo{MarkerInfoContent{markers[mid]}}});
 }
 
-std::vector<std::pair<uint64_t, double>>
-Plot::sortedBuckets(const Buckets &buckets, bool main)
+std::vector<std::pair<double, uint64_t>>
+Plot::sortedBuckets(const Buckets &buckets, bool main) const
 {
-	std::vector<std::pair<uint64_t, double>> sorted;
+	std::vector<std::pair<double, uint64_t>> sorted;
 	if (!buckets.empty()) sorted.resize(buckets.front().size());
 
 	for (const auto &bucket : buckets)
 		for (std::size_t ix{}; const auto &marker : bucket) {
-			auto &[f, s] = sorted[ix];
+			auto &[s, f] = sorted[ix];
 			f = ix++;
 			s += marker->size.getCoord(!options->isHorizontal());
 		}
 
 	if (main && options->sort == Sort::byValue)
-		std::sort(sorted.begin(),
-		    sorted.end(),
-		    [](const std::pair<uint64_t, double> &a,
-		        const std::pair<uint64_t, double> &b)
-		    {
-			    return a.second < b.second;
-		    });
+		std::sort(sorted.begin(), sorted.end());
 
 	if (main && options->reverse)
 		std::reverse(sorted.begin(), sorted.end());
@@ -190,7 +184,7 @@ Plot::sortedBuckets(const Buckets &buckets, bool main)
 	return sorted;
 }
 
-void Plot::clearEmptyBuckets(const Buckets &buckets, bool main)
+void Plot::clearEmptyBuckets(const Buckets &buckets, bool main) const
 {
 	for (const auto &bucket : buckets) {
 		bool enabled = false;
@@ -207,18 +201,18 @@ void Plot::clearEmptyBuckets(const Buckets &buckets, bool main)
 	}
 }
 
-bool Plot::linkMarkers(const Buckets &buckets, bool main)
+bool Plot::linkMarkers(const Buckets &buckets, bool main) const
 {
-	auto sorted = sortedBuckets(buckets, main);
+	auto &&sorted = sortedBuckets(buckets, main);
 
 	bool hasConnection{};
 	for (const auto &bucket : buckets) {
 
 		for (auto i = 0U; i < sorted.size(); ++i) {
-			auto idAct = sorted[i].first;
+			auto idAct = sorted[i].second;
 			auto &act = *bucket[idAct];
 			auto iNext = (i + 1) % sorted.size();
-			auto idNext = sorted[iNext].first;
+			auto idNext = sorted[iNext].second;
 			auto &next = *bucket[idNext];
 			act.setNextMarker(iNext,
 			    next,

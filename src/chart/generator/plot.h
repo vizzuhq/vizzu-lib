@@ -120,7 +120,8 @@ private:
 
 	void generateMarkers();
 	void generateMarkersInfo();
-	bool linkMarkers(const Buckets &buckets, bool main);
+	[[nodiscard]] bool linkMarkers(const Buckets &buckets,
+	    bool main) const;
 	void normalizeXY();
 	void calcMeasureAxises();
 	void calcMeasureAxis(ChannelId type);
@@ -130,9 +131,9 @@ private:
 	void addSeparation();
 	void normalizeSizes();
 	void normalizeColors();
-	std::vector<std::pair<uint64_t, double>>
-	sortedBuckets(const Buckets &buckets, bool main);
-	void clearEmptyBuckets(const Buckets &buckets, bool main);
+	[[nodiscard]] std::vector<std::pair<double, uint64_t>>
+	sortedBuckets(const Buckets &buckets, bool main) const;
+	void clearEmptyBuckets(const Buckets &buckets, bool main) const;
 };
 
 struct PlotParent
