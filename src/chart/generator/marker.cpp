@@ -48,15 +48,12 @@ Marker::Marker(const Options &options,
 	Data::MarkerId *subAxisId{};
 	if (options.geometry == ShapeType::area) {
 		Data::SeriesList subIds(options.subAxis().dimensionIds);
-		Data::SeriesList &&stackIds =
-		    subIds.split_by(options.mainAxis().dimensionIds);
+		if (subIds.split_by(options.mainAxis().dimensionIds).empty())
+			subAxisId = &subId;
 		subId = data.getId(subIds, index);
-		stackId = data.getId(stackIds, index);
-		if (stackIds.empty()) subAxisId = &subId;
 	}
 	else {
-		stackId = subId =
-		    data.getId(options.subAxis().dimensionIds, index);
+		subId = data.getId(options.subAxis().dimensionIds, index);
 		subAxisId = &subId;
 	}
 

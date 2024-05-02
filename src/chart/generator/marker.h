@@ -63,7 +63,6 @@ public:
 	::Anim::Interpolated<Id> mainId;
 	Id subId;
 	Id sizeId;
-	Id stackId;
 
 	uint64_t idx;
 	::Anim::Interpolated<uint64_t> prevMainMarkerIdx;
