@@ -101,13 +101,14 @@ void Chart::draw(Gfx::ICanvas &canvas)
 	            : Draw::CoordinateSystem{layout.plotArea},
 	    actPlot};
 
-	Draw::DrawChart{Draw::DrawingContext{actPlot,
-	                    actPlot->getOptions().get(),
-	                    renderedChart,
-	                    renderedChart.getCoordSys(),
-	                    actPlot ? actPlot->getStyle()
-	                            : stylesheet.getDefaultParams(),
-	                    events}}
+	Draw::DrawChart{
+	    Draw::DrawingContext{actPlot,
+	        actPlot ? actPlot->getOptions().get() : nullptr,
+	        renderedChart,
+	        renderedChart.getCoordSys(),
+	        actPlot ? actPlot->getStyle()
+	                : stylesheet.getDefaultParams(),
+	        events}}
 	    .draw(canvas, layout);
 }
 

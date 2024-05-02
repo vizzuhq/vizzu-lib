@@ -44,9 +44,8 @@ private:
 	    ::Anim::Duration delay = ::Anim::Duration(0),
 	    const std::optional<::Anim::Easing> &easing = std::nullopt);
 
-	bool anyMarker(
-	    std::function<bool(const Gen::Marker &, const Gen::Marker &)>
-	        &&compare) const;
+	bool anyMarker(bool (
+	    *compare)(const Gen::Marker &, const Gen::Marker &)) const;
 
 	[[nodiscard]] bool positionMorphNeeded() const;
 	[[nodiscard]] bool verticalBeforeHorizontal() const;

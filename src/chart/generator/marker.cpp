@@ -88,20 +88,23 @@ Marker::Marker(const Options &options,
 	if (auto &&labelChannel = channels.at(ChannelId::label);
 	    labelChannel.isEmpty())
 		label = ::Anim::Weighted<Label>(Label(), 0.0);
-	else if (auto &&labelStr = Label::getIndexString(data,
-	             labelChannel.dimensionIds,
-	             index);
-	         labelChannel.isDimension())
-		label = Label(std::move(labelStr));
-	else
-		label = Label(getValueForChannel(channels,
-		                  ChannelId::label,
-		                  data,
-		                  stats,
-		                  index),
-		    *labelChannel.measureId,
+	else {
+		auto value = getValueForChannel(channels,
+		    ChannelId::label,
 		    data,
-		    std::move(labelStr));
+		    stats,
+		    index);
+		if (auto &&labelStr = Label::getIndexString(data,
+		        labelChannel.dimensionIds,
+		        index);
+		    labelChannel.isDimension())
+			label = Label(std::move(labelStr));
+		else
+			label = Label(value,
+			    *labelChannel.measureId,
+			    data,
+			    std::move(labelStr));
+	}
 }
 
 void Marker::setNextMarker(uint64_t itemId,

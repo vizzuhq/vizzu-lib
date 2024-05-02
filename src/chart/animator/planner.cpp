@@ -298,8 +298,7 @@ void Planner::calcNeeded()
 }
 
 bool Planner::anyMarker(
-    std::function<bool(const Gen::Marker &, const Gen::Marker &)>
-        &&compare) const
+    bool (*compare)(const Gen::Marker &, const Gen::Marker &)) const
 {
 	for (auto i = 0U; i < source->getMarkers().size()
 	                  && i < target->getMarkers().size();
@@ -351,9 +350,8 @@ bool Planner::needColor() const
 	            || source->measureAxises.at(Gen::ChannelId::lightness)
 	                   != target->measureAxises.at(
 	                       Gen::ChannelId::lightness)))
-	    || anyMarker(
-	        [](const Gen::Marker &source,
-	            const Gen::Marker &target) -> bool
+	    || anyMarker(+[](const Gen::Marker &source,
+	                      const Gen::Marker &target) -> bool
 	        {
 		        return (source.enabled || target.enabled)
 		            && source.colorBase != target.colorBase;
@@ -454,9 +452,8 @@ bool Planner::needHorizontal() const
 	            || (target->markerConnectionOrientation.value_or(
 	                    Gen::Orientation::vertical)
 	                == Gen::Orientation::horizontal)))
-	    || anyMarker(
-	        [](const Gen::Marker &source,
-	            const Gen::Marker &target) -> bool
+	    || anyMarker(+[](const Gen::Marker &source,
+	                      const Gen::Marker &target) -> bool
 	        {
 		        return (source.enabled || target.enabled)
 		            && (source.position.x != target.position.x
