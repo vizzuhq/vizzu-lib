@@ -112,10 +112,9 @@ public:
 		if (auto *preFirst =
 		        std::exchange(first, std::to_address(it))) {
 			preFirst->second.pre = first;
-			std::size_t ix{};
 			while (preFirst)
-				std::exchange(preFirst, preFirst->second.post)
-				    ->second.ix = ++ix;
+				++std::exchange(preFirst, preFirst->second.post)
+				      ->second.ix;
 		}
 		else
 			last = first;
