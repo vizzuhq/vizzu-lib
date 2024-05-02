@@ -53,9 +53,7 @@ public:
 		{
 			return value.has_value();
 		}
-		static std::string getIndexString(const Data::DataCube &data,
-		    const Data::SeriesList &series,
-		    const Data::MultiIndex &index);
+		static std::string getIndexString(const Data::MarkerId &);
 	};
 
 	::Anim::Interpolated<Label> label;
@@ -94,7 +92,8 @@ private:
 	    ChannelId type,
 	    const Data::DataCube &data,
 	    ChannelsStats &stats,
-	    const Data::MultiIndex &index) const;
+	    const Data::MultiIndex &index,
+	    const Data::MarkerId * = nullptr) const;
 };
 
 }

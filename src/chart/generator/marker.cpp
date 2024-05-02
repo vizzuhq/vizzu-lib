@@ -40,7 +40,8 @@ Marker::Marker(const Options &options,
 	    ChannelId::size,
 	    data,
 	    stats,
-	    index);
+	    index,
+	    &sizeId);
 
 	mainId = data.getId(options.mainAxis().dimensionIds, index);
 
@@ -89,14 +90,14 @@ Marker::Marker(const Options &options,
 	    labelChannel.isEmpty())
 		label = ::Anim::Weighted<Label>(Label(), 0.0);
 	else {
+		auto &&lid = data.getId(labelChannel.dimensionIds, index);
 		auto value = getValueForChannel(channels,
 		    ChannelId::label,
 		    data,
 		    stats,
-		    index);
-		if (auto &&labelStr = Label::getIndexString(data,
-		        labelChannel.dimensionIds,
-		        index);
+		    index,
+		    &lid);
+		if (auto &&labelStr = Label::getIndexString(lid);
 		    labelChannel.isDimension())
 			label = Label(std::move(labelStr));
 		else
@@ -159,7 +160,8 @@ double Marker::getValueForChannel(const Channels &channels,
     ChannelId type,
     const Data::DataCube &data,
     ChannelsStats &stats,
-    const Data::MultiIndex &index) const
+    const Data::MultiIndex &index,
+    const Data::MarkerId *mid) const
 {
 	const auto &channel = channels.at(type);
 
@@ -170,7 +172,11 @@ double Marker::getValueForChannel(const Channels &channels,
 	auto &stat = stats.channels[type];
 
 	if (channel.isDimension()) {
-		auto id = data.getId(channel.dimensionIds, index);
+		std::optional<Data::MarkerId> nid;
+		if (!mid)
+			nid.emplace(data.getId(channel.dimensionIds, index));
+
+		const auto &id = mid ? *mid : *nid;
 		if (channel.stackable)
 			value = 1.0;
 		else
@@ -179,8 +185,8 @@ double Marker::getValueForChannel(const Channels &channels,
 		if (enabled) stat.track(id);
 	}
 	else {
-		const auto &measure = *channel.measureId;
-		if (channel.stackable)
+		if (const auto &measure = *channel.measureId;
+		    channel.stackable)
 			value = data.aggregateAt(index, type, measure);
 		else
 			value = data.valueAt(index, measure);
@@ -237,14 +243,10 @@ bool Marker::Label::operator==(const Marker::Label &other) const
 	    && unit == other.unit && indexStr == other.indexStr;
 }
 
-std::string Marker::Label::getIndexString(const Data::DataCube &data,
-    const Data::SeriesList &series,
-    const Data::MultiIndex &index)
+std::string Marker::Label::getIndexString(const Data::MarkerId &id)
 {
 	std::string res;
-
-	for (const auto &sliceIndex :
-	    data.getId(series, index).itemSliceIndex) {
+	for (const auto &sliceIndex : id.itemSliceIndex) {
 		if (!res.empty()) res += ", ";
 		res += sliceIndex.value;
 	}
