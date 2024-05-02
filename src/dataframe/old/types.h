@@ -41,8 +41,13 @@ public:
 
 	[[nodiscard]] const std::string_view &getColIndex() const;
 
-	bool operator==(const SeriesIndex &rhs) const;
-	bool operator<(const SeriesIndex &rhs) const;
+	[[nodiscard]] bool operator==(const SeriesIndex &rhs) const;
+	[[nodiscard]] bool operator<(const SeriesIndex &rhs) const;
+
+	friend bool operator<(const std::string_view &dim,
+	    const SeriesIndex &rhs);
+	friend bool operator<(const SeriesIndex &lhs,
+	    const std::string_view &dim);
 
 	[[nodiscard]] bool isDimension() const;
 

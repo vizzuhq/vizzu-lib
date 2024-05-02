@@ -8,10 +8,10 @@
 namespace Type
 {
 
-template <typename T> class UniqueList
+template <class T> class UniqueList
 {
 	struct links_t;
-	using container_type = std::map<T, links_t>;
+	using container_type = std::map<T, links_t, std::less<>>;
 
 	using link_t = typename container_type::pointer;
 	using const_link_t = typename container_type::const_pointer;
@@ -20,6 +20,7 @@ template <typename T> class UniqueList
 	{
 		link_t pre{};
 		link_t post{};
+		std::size_t ix{};
 	};
 
 	template <bool forward = true> struct iterator
@@ -31,10 +32,11 @@ template <typename T> class UniqueList
 		}
 		iterator &operator++() noexcept
 		{
-			if constexpr (forward) { ptr = ptr->second.post; }
-			else {
+			if constexpr (forward)
+				ptr = ptr->second.post;
+			else
 				ptr = ptr->second.pre;
-			}
+
 			return *this;
 		}
 		[[nodiscard]] iterator operator++(int) noexcept
@@ -59,8 +61,10 @@ template <typename T> class UniqueList
 	    const typename container_type::iterator &item) noexcept
 	{
 		if (auto &&preLast =
-		        std::exchange(last, std::to_address(item)))
+		        std::exchange(last, std::to_address(item))) {
 			preLast->second.post = last;
+			last->second.ix = preLast->second.ix + 1;
+		}
 		else
 			first = last;
 	}
@@ -105,9 +109,13 @@ public:
 	{
 		auto &&[it, newly] = items.try_emplace(value, nullptr, first);
 		if (!newly) return false;
-		if (auto &&preFirst =
-		        std::exchange(first, std::to_address(it)))
+		if (auto preFirst =
+		        std::exchange(first, std::to_address(it))) {
 			preFirst->second.pre = first;
+			for (std::size_t ix{}; preFirst;
+			     preFirst = preFirst->second.post)
+				preFirst->second.ix = ++ix;
+		}
 		else
 			last = first;
 		return true;
@@ -134,15 +142,27 @@ public:
 		items.clear();
 	}
 
-	[[nodiscard]] size_t size() const noexcept
+	[[nodiscard]] std::size_t size() const noexcept
 	{
 		return items.size();
+	}
+
+	constexpr static std::size_t npos = ~std::size_t{};
+
+	template <class U>
+	[[nodiscard]] std::size_t find(U &&val) const noexcept
+	{
+		auto it = items.find(std::forward<U>(val));
+		return it == items.end() ? npos : it->second.ix;
 	}
 
 	bool remove(const T &value) noexcept
 	{
 		if (auto it = items.find(value); it != items.end()) {
-			before_remove(it->second);
+			auto &link = it->second;
+			for (auto l = link.post; l; l = l->second.post)
+				--l->second.ix;
+			before_remove(link);
 			items.erase(it);
 			return true;
 		}
@@ -164,9 +184,14 @@ public:
 	[[nodiscard]] UniqueList split_by(const UniqueList &by) noexcept
 	{
 		UniqueList common;
-		for (auto it = begin(); it != end();)
-			if (auto &val = *it++; by.contains(val))
+		std::size_t ix{};
+		for (auto it = first; it;)
+			if (auto &[val, links] =
+			        *std::exchange(it, it->second.post);
+			    by.contains(val))
 				common.insert(extract(val));
+			else
+				links.ix = ix++;
 		return common;
 	}
 

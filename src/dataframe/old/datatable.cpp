@@ -58,6 +58,16 @@ bool SeriesIndex::operator<(const SeriesIndex &rhs) const
 	return sid < rhs.sid || (sid == rhs.sid && aggr < rhs.aggr);
 }
 
+bool operator<(const std::string_view &dim, const SeriesIndex &rhs)
+{
+	return dim < rhs.getColIndex() || !rhs.isDimension();
+}
+
+bool operator<(const SeriesIndex &lhs, const std::string_view &dim)
+{
+	return lhs.getColIndex() < dim && lhs.isDimension();
+}
+
 bool SliceIndex::operator<(SliceIndex const &rhs) const
 {
 	return column < rhs.column
@@ -277,18 +287,15 @@ MarkerId DataCube::getId(const SeriesList &sl,
     const MultiIndex &mi) const
 {
 	MarkerId res{SubSliceIndex(sl.size())};
-	std::map<std::string_view, std::size_t> reindex;
 	std::vector<std::pair<std::size_t, std::size_t>> v(sl.size());
-
-	for (std::size_t ix{}; const auto &s : sl)
-		reindex.try_emplace(s.getColIndex(), ix++);
 
 	for (std::size_t ix{}; ix < dim_reindex.size(); ++ix) {
 		auto &&[name, cats, size] = dim_reindex[ix];
 		auto &&oldIx = mi.old[ix];
-		if (auto it = reindex.find(name); it != reindex.end()) {
-			v[it->second] = {oldIx, size};
-			res.itemSliceIndex[it->second] = {name,
+
+		if (auto &&i = sl.find(name); i != SeriesList::npos) {
+			v[i] = {oldIx, size};
+			res.itemSliceIndex[i] = {name,
 			    oldIx < cats.size() ? cats[oldIx]
 			                        : std::string_view{}};
 		}
