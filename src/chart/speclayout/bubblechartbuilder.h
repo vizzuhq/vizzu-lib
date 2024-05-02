@@ -9,20 +9,17 @@
 namespace Vizzu::Charts
 {
 
-template <class Item>
-using Hierarchy = std::vector<std::vector<Item>>;
-
 class BubbleChartBuilder
 {
 public:
-	template <typename Item>
+	template <typename Hierarchy>
 	static void setupVector(double maxRadius,
-	    const Hierarchy<Item> &hierarchy);
+	    const Hierarchy &hierarchy);
 };
 
-template <typename Item>
+template <typename Hierarchy>
 void BubbleChartBuilder::setupVector(double maxRadius,
-    const Hierarchy<Item> &hierarchy)
+    const Hierarchy &hierarchy)
 {
 	if (hierarchy.empty()) return;
 

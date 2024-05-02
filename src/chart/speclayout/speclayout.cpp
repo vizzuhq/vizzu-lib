@@ -29,12 +29,7 @@ bool SpecLayout::addIfNeeded(Buckets &hierarchy) const
 			        .at(ChannelId::size)
 			        .dimensionIds);
 
-			for (std::size_t i{},
-			     size = std::min(k, hierarchy.size());
-			     i < size;
-			     ++i)
-				hierarchy[i].resize(v);
-			hierarchy.resize(k, std::vector<Marker *>(v));
+			hierarchy.resize(k, v);
 
 			for (auto &marker : markers)
 				hierarchy[marker.sizeId.seriesId]

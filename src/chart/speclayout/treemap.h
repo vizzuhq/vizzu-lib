@@ -12,9 +12,6 @@
 namespace Vizzu::Charts
 {
 
-template <class Item>
-using Hierarchy = std::vector<std::vector<Item>>;
-
 class TreeMap
 {
 public:
@@ -22,8 +19,8 @@ public:
 	    const Geom::Point &p0 = Geom::Point{0, 1},
 	    const Geom::Point &p1 = Geom::Point{1, 0});
 
-	template <typename Item>
-	static void setupVector(const Hierarchy<Item> &hierarchy);
+	template <typename Hierarchy>
+	static void setupVector(const Hierarchy &hierarchy);
 
 private:
 	using It = std::vector<SpecMarker>::iterator;
@@ -37,8 +34,8 @@ private:
 	    bool horizontal = true);
 };
 
-template <typename Item>
-void TreeMap::setupVector(const Hierarchy<Item> &hierarchy)
+template <typename Hierarchy>
+void TreeMap::setupVector(const Hierarchy &hierarchy)
 {
 	if (hierarchy.empty()) return;
 
