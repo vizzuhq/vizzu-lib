@@ -109,12 +109,13 @@ public:
 	{
 		auto &&[it, newly] = items.try_emplace(value, nullptr, first);
 		if (!newly) return false;
-		if (auto preFirst =
+		if (auto *preFirst =
 		        std::exchange(first, std::to_address(it))) {
 			preFirst->second.pre = first;
-			for (std::size_t ix{}; preFirst;
-			     preFirst = preFirst->second.post)
-				preFirst->second.ix = ++ix;
+			std::size_t ix{};
+			while (preFirst)
+				std::exchange(preFirst, preFirst->second.post)
+				    ->second.ix = ++ix;
 		}
 		else
 			last = first;

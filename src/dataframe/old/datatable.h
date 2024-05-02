@@ -73,7 +73,7 @@ public:
 
 	[[nodiscard]] bool empty() const;
 
-	[[nodiscard]] std::shared_ptr<CellInfo> cellInfo(
+	[[nodiscard]] std::shared_ptr<const CellInfo> cellInfo(
 	    const MultiIndex &index) const;
 
 	[[nodiscard]] double aggregateAt(const MultiIndex &multiIndex,

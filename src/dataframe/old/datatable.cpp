@@ -309,7 +309,7 @@ MarkerId DataCube::getId(const SeriesList &sl,
 	return res;
 }
 
-std::shared_ptr<CellInfo> DataCube::cellInfo(
+std::shared_ptr<const CellInfo> DataCube::cellInfo(
     const MultiIndex &index) const
 {
 	auto my_res = std::make_shared<CellInfo>(
