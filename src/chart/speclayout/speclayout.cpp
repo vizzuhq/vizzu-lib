@@ -27,7 +27,7 @@ bool SpecLayout::addIfNeeded(Buckets &hierarchy) const
 			auto &&[k, v] = plot.getDataCube().combinedSizeOf(
 			    options->getChannels()
 			        .at(ChannelId::size)
-			        .dimensionIds);
+			        .dimensions());
 
 			hierarchy.resize(k, v);
 

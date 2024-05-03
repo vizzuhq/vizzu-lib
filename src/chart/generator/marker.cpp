@@ -15,7 +15,7 @@ Marker::Marker(const Options &options,
     enabled(data.empty() || !index.isEmpty()),
     cellInfo(data.cellInfo(index)),
     sizeId(data.getId(
-        options.getChannels().at(ChannelId::size).dimensionIds,
+        options.getChannels().at(ChannelId::size).dimensions(),
         index)),
     idx(idx)
 {
@@ -43,17 +43,17 @@ Marker::Marker(const Options &options,
 	    index,
 	    &sizeId);
 
-	mainId = data.getId(options.mainAxis().dimensionIds, index);
+	mainId = data.getId(options.mainAxis().dimensions(), index);
 
 	Data::MarkerId *subAxisId{};
 	if (options.geometry == ShapeType::area) {
-		Data::SeriesList subIds(options.subAxis().dimensionIds);
-		if (subIds.split_by(options.mainAxis().dimensionIds).empty())
+		Data::SeriesList subIds(options.subAxis().dimensions());
+		if (subIds.split_by(options.mainAxis().dimensions()).empty())
 			subAxisId = &subId;
 		subId = data.getId(subIds, index);
 	}
 	else {
-		subId = data.getId(options.subAxis().dimensionIds, index);
+		subId = data.getId(options.subAxis().dimensions(), index);
 		subAxisId = &subId;
 	}
 
@@ -92,7 +92,7 @@ Marker::Marker(const Options &options,
 	    labelChannel.isEmpty())
 		label = ::Anim::Weighted<Label>(Label(), 0.0);
 	else {
-		auto &&lid = data.getId(labelChannel.dimensionIds, index);
+		auto &&lid = data.getId(labelChannel.dimensions(), index);
 		auto value = getValueForChannel(channels,
 		    ChannelId::label,
 		    data,
@@ -176,7 +176,7 @@ double Marker::getValueForChannel(const Channels &channels,
 	if (channel.isDimension()) {
 		std::optional<Data::MarkerId> nid;
 		if (!mid)
-			nid.emplace(data.getId(channel.dimensionIds, index));
+			nid.emplace(data.getId(channel.dimensions(), index));
 
 		const auto &id = mid ? *mid : *nid;
 		if (channel.stackable)
@@ -239,7 +239,7 @@ Marker::Label::Label(double value,
     indexStr(std::move(indexStr))
 {}
 
-bool Marker::Label::operator==(const Marker::Label &other) const
+bool Marker::Label::operator==(const Label &other) const
 {
 	return measureId == other.measureId && value == other.value
 	    && unit == other.unit && indexStr == other.indexStr;

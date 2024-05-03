@@ -364,7 +364,8 @@ size_t Planner::dimensionCount(const Gen::Plot *plot,
 	return plot->getOptions()
 	    ->getChannels()
 	    .at(type)
-	    .dimensionIds.size();
+	    .dimensions()
+	    .size();
 }
 
 bool Planner::verticalBeforeHorizontal() const

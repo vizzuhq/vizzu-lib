@@ -77,8 +77,7 @@ ChannelId Options::stackChannelType() const
 		case ShapeType::line: return ChannelId::size;
 		}
 	}
-	else
-		return ChannelId::size;
+	return ChannelId::size;
 }
 
 std::optional<ChannelId> Options::secondaryStackType() const
@@ -93,14 +92,17 @@ Channels Options::shadowChannels() const
 {
 	auto shadow = channels.shadow();
 
-	std::vector<ChannelId> stackChannels;
-	stackChannels.push_back(stackChannelType());
-	if (auto &&secondary = secondaryStackType())
-		stackChannels.push_back(*secondary);
+	auto &&stackChannel = stackChannelType();
+	auto &&secondary = secondaryStackType();
+	auto &&stackChannels = {stackChannel,
+	    secondary.value_or(ChannelId{})};
 
-	for (auto &&stacker : shadow.getDimensions(stackChannels)) {
-		shadow.removeSeries(stackChannelType(), stacker);
-		shadow.removeSeries(ChannelId::noop, stacker);
+	for (auto &ch1 = shadow.at(stackChannel),
+	          &ch2 = shadow.at(ChannelId::noop);
+	     auto &&stacker : shadow.getDimensions({data(stackChannels),
+	         std::size_t{1} + secondary.has_value()})) {
+		ch1.removeSeries(stacker);
+		ch2.removeSeries(stacker);
 	}
 
 	return shadow;
@@ -143,7 +145,7 @@ void Options::simplify()
 	//	remove all dimensions, only used at the end of stack
 	auto &stackChannel = this->stackChannel();
 
-	auto dimensions = stackChannel.dimensionIds;
+	auto dimensions = stackChannel.dimensions();
 
 	auto copy = getChannels();
 	copy.at(stackChannelType()).reset();
@@ -204,8 +206,7 @@ ChannelId Options::getVerticalChannel() const
 
 bool Options::isShapeValid(const ShapeType &shapeType) const
 {
-	if (channels.anyAxisSet() && mainAxis().dimensionCount() > 0)
-		return true;
+	if (mainAxis().hasDimension()) return true;
 	return shapeType == ShapeType::rectangle
 	    || shapeType == ShapeType::circle;
 }
@@ -220,48 +221,31 @@ std::optional<uint64_t> Options::getMarkerInfoId(MarkerId id) const
 uint64_t Options::generateMarkerInfoId()
 {
 	static std::atomic_uint64_t nextMarkerInfoId = 1;
-	return nextMarkerInfoId++;
+	return nextMarkerInfoId.fetch_add(1, std::memory_order_relaxed);
 }
 
 void Options::setAutoParameters()
 {
-	if (legend.get().isAuto()) {
-		LegendType tmp = legend.get();
-		tmp.setAuto(getAutoLegend());
-		legend = tmp;
+	if (auto &leg = legend.values[0]; leg.value.isAuto()) {
+		leg.weight = 1.0;
+		leg.value.setAuto(getAutoLegend());
 	}
-	if (orientation.get().isAuto()) {
-		auto tmp = orientation.get();
-		tmp.setAuto(getAutoOrientation());
-		orientation = tmp;
+
+	if (auto &ori = orientation.values[0]; ori.value.isAuto()) {
+		ori.weight = 1.0;
+		ori.value.setAuto(getAutoOrientation());
 	}
 }
 
 Orientation Options::getAutoOrientation() const
 {
-	if (getChannels().anyAxisSet()) {
-		const auto &x = getChannels().at(ChannelId::x);
-		const auto &y = getChannels().at(ChannelId::y);
+	if (const auto &x = getChannels().at(ChannelId::x),
+	    &y = getChannels().at(ChannelId::y);
+	    x.isMeasure()
+	    && (y.isDimension()
+	        || (!x.hasDimension() && y.hasDimension())))
+		return Gen::Orientation::vertical;
 
-		if (x.isEmpty() && !y.isDimension())
-			return Gen::Orientation::horizontal;
-		if (y.isEmpty() && !x.isDimension())
-			return Gen::Orientation::vertical;
-
-		if (!x.dimensionIds.empty() && y.dimensionIds.empty()
-		    && !y.isDimension())
-			return Gen::Orientation::horizontal;
-		if (!y.dimensionIds.empty() && x.dimensionIds.empty()
-		    && !x.isDimension())
-			return Gen::Orientation::vertical;
-
-		if (!x.dimensionIds.empty() && !y.dimensionIds.empty()) {
-			if (x.isDimension() && !y.isDimension())
-				return Gen::Orientation::horizontal;
-			if (y.isDimension() && !x.isDimension())
-				return Gen::Orientation::vertical;
-		}
-	}
 	return Gen::Orientation::horizontal;
 }
 
@@ -270,20 +254,21 @@ std::optional<Options::LegendId> Options::getAutoLegend() const
 	auto series = channels.getDimensions();
 	series.merge(channels.getMeasures());
 
-	for (const auto &id : channels.at(ChannelId::label).dimensionIds)
+	for (const auto &id : channels.at(ChannelId::label).dimensions())
 		series.erase(id);
 
-	if (channels.at(ChannelId::label).measureId)
-		series.erase(*channels.at(ChannelId::label).measureId);
+	if (auto &&meas = channels.at(ChannelId::label).measureId)
+		series.erase(*meas);
 
 	for (auto channelId : {ChannelId::x, ChannelId::y})
 		if (auto id = channels.at(channelId).labelSeries())
 			series.erase(*id);
 
 	for (auto channelId : {LegendId::color, LegendId::lightness})
-		for (const auto &id :
-		    channels.at(toChannel(channelId)).dimensionIds)
-			if (series.contains(id)) return channelId;
+		if (channels.at(toChannel(channelId))
+		        .dimensions()
+		        .contains_any(series.begin(), series.end()))
+			return channelId;
 
 	for (auto channelId :
 	    {LegendId::color, LegendId::lightness, LegendId::size})
@@ -297,49 +282,21 @@ void Options::setAutoRange(bool hPositive, bool vPositive)
 {
 	auto &v = getVeritalAxis();
 	auto &h = getHorizontalAxis();
+	auto &&cart = coordSystem.get() == CoordSystem::cartesian;
+	auto &&nrect = geometry != ShapeType::rectangle;
 
-	if (!channels.anyAxisSet()) {
+	if (cart && h.isMeasure() && (v.isDimension() || nrect))
+		setMeasureRange(h, hPositive);
+	else if (!cart && h.isMeasure() && v.isDimension()
+	         && v.hasDimension())
+		setRange(h, 0.0_perc, 133.0_perc);
+	else
 		setRange(h, 0.0_perc, 100.0_perc);
-		setRange(v, 0.0_perc, 100.0_perc);
-	}
-	else if (coordSystem.get() != CoordSystem::polar) {
-		if (!h.isDimension() && !v.isDimension()
-		    && geometry == ShapeType::rectangle) {
-			setRange(h, 0.0_perc, 100.0_perc);
-			setRange(v, 0.0_perc, 100.0_perc);
-		}
-		else {
-			if (h.isDimension())
-				setRange(h, 0.0_perc, 100.0_perc);
-			else
-				setMeasureRange(h, hPositive);
 
-			if (v.isDimension())
-				setRange(v, 0.0_perc, 100.0_perc);
-			else
-				setMeasureRange(v, vPositive);
-		}
-	}
-	else {
-		if (!h.isDimension() && v.isDimension()) {
-			if (v.isEmpty()) {
-				setRange(h, 0.0_perc, 100.0_perc);
-				setRange(v, 0.0_perc, 100.0_perc);
-			}
-			else {
-				setRange(h, 0.0_perc, 133.0_perc);
-				setRange(v, 0.0_perc, 100.0_perc);
-			}
-		}
-		else if (h.isDimension() && !v.isDimension()) {
-			setRange(h, 0.0_perc, 100.0_perc);
-			setMeasureRange(v, vPositive);
-		}
-		else {
-			setRange(h, 0.0_perc, 100.0_perc);
-			setRange(v, 0.0_perc, 100.0_perc);
-		}
-	}
+	if (v.isMeasure() && (h.isDimension() || (cart && nrect)))
+		setMeasureRange(v, vPositive);
+	else
+		setRange(v, 0.0_perc, 100.0_perc);
 }
 
 void Options::setMeasureRange(Channel &channel, bool positive)

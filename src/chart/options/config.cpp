@@ -98,11 +98,9 @@ const std::pair<std::string_view, Config::ChannelAccessor>
 	                ExtractType<Mptr>{}(std::invoke(Mptr, channel)));
             },
             .set =
-                [](Options &options,
-                    const ChannelId &channel,
-                    const std::string &value)
+                [](Channel &channel, const std::string &value)
             {
-	            std::invoke(Mptr, options.getChannels().at(channel)) =
+	            std::invoke(Mptr, channel) =
 	                Conv::parse<typename ExtractType<Mptr>::type>(
 	                    value);
             }}};
@@ -120,11 +118,9 @@ const Config::ChannelAccessors &Config::getChannelAccessors()
 		            return Conv::toString(channel.range.min);
 	            },
 	            .set =
-	                [](Options &options,
-	                    const ChannelId &id,
-	                    const std::string &value)
+	                [](Channel &channel, const std::string &value)
 	            {
-		            options.getChannels().at(id).range.min =
+		            channel.range.min =
 		                Conv::parse<OptionalChannelExtrema>(value);
 	            }}},
 	    {"range.max",
@@ -134,11 +130,9 @@ const Config::ChannelAccessors &Config::getChannelAccessors()
 		            return Conv::toString(channel.range.max);
 	            },
 	            .set =
-	                [](Options &options,
-	                    const ChannelId &id,
-	                    const std::string &value)
+	                [](Channel &channel, const std::string &value)
 	            {
-		            options.getChannels().at(id).range.max =
+		            channel.range.max =
 		                Conv::parse<OptionalChannelExtrema>(value);
 	            }}},
 	    channel_accessor<&Channel::labelLevel>,
@@ -197,29 +191,30 @@ std::string Config::getParam(const std::string &path) const
 void Config::setChannelParam(const std::string &path,
     const std::string &value)
 {
-	auto parts = Text::SmartString::split(path, '.');
-	auto id = Conv::parse<ChannelId>(parts.at(1));
-	auto property = parts.at(2);
 	Options &options = this->options;
+
+	auto parts = Text::SmartString::split(path, '.');
+	auto &channel =
+	    options.getChannels().at(Conv::parse<ChannelId>(parts.at(1)));
+	auto property = parts.at(2);
 
 	if (property == "attach") {
 		options.markersInfo.clear();
-		options.getChannels().addSeries(id, {value, table});
+		channel.addSeries({value, table});
 		return;
 	}
 	if (property == "detach") {
 		options.markersInfo.clear();
-		options.getChannels().removeSeries(id, {value, table});
+		channel.removeSeries({value, table});
 		return;
 	}
 	if (property == "set") {
 		options.markersInfo.clear();
 		if (parts.size() == 3 && value == "null")
-			options.getChannels().clearSeries(id);
+			channel.reset();
 		else {
-			if (std::stoi(parts.at(3)) == 0)
-				options.getChannels().clearSeries(id);
-			options.getChannels().addSeries(id, {value, table});
+			if (std::stoi(parts.at(3)) == 0) channel.reset();
+			channel.addSeries({value, table});
 		}
 		return;
 	}
@@ -227,9 +222,8 @@ void Config::setChannelParam(const std::string &path,
 	if (property == "range") property += "." + parts.at(3);
 
 	const auto &accessors = getChannelAccessors();
-	if (auto it = accessors.find(property); it != accessors.end()) {
-		return it->second.set(options, id, value);
-	}
+	if (auto it = accessors.find(property); it != accessors.end())
+		return it->second.set(channel, value);
 
 	throw std::logic_error(
 	    path + "/" + value
@@ -245,18 +239,21 @@ std::string Config::getChannelParam(const std::string &path) const
 	const auto &channel = options.get().getChannels().at(id);
 
 	if (property == "set") {
-		auto list = channel.dimensions();
+		std::string res;
+		Conv::JSONArr arr{res};
 		if (auto &&measure = channel.measureId)
-			list.push_front(*measure);
-		return Conv::toJSON(list);
+			arr << measure->toString();
+		for (auto &&dim : channel.dimensions())
+			arr << dim.getColIndex();
+		return res;
 	}
 
 	if (property == "range") property += "." + parts.at(3);
 
 	const auto &accessors = getChannelAccessors();
-	if (auto it = accessors.find(property); it != accessors.end()) {
+	if (auto it = accessors.find(property); it != accessors.end())
 		return it->second.get(channel);
-	}
+
 	throw std::logic_error(path + ": invalid channel parameter");
 }
 }

@@ -103,8 +103,8 @@ void TestChart::run()
 		auto &channels = options.getChannels();
 		auto &table = chart.getChart().getTable();
 
-		channels.removeSeries(ChannelId::y, {"Cat2", table});
-		channels.addSeries(ChannelId::x, {"Cat2", table});
+		channels.at(ChannelId::y).removeSeries({"Cat2", table});
+		channels.at(ChannelId::x).addSeries({"Cat2", table});
 		options.title = "VIZZU Chart - Phase 3";
 		chart.getChart().getStyles().title.textAlign =
 		    ::Anim::Interpolated<Vizzu::Styles::Text::TextAlign>(
@@ -123,8 +123,8 @@ void TestChart::run()
 
 		options.dataFilter = Vizzu::Data::Filter{};
 
-		channels.addSeries(ChannelId::y, {"Cat2", table});
-		channels.addSeries(ChannelId::color, {"Cat2", table});
+		channels.at(ChannelId::y).addSeries({"Cat2", table});
+		channels.at(ChannelId::color).addSeries({"Cat2", table});
 		options.coordSystem = Vizzu::Gen::CoordSystem::polar;
 		options.title = "VIZZU Chart - Phase 2";
 		styles.title.fontSize = Gfx::Length{10};
@@ -172,13 +172,13 @@ void TestChart::run()
 		auto &styles = chart.getChart().getStyles();
 		auto &table = chart.getChart().getTable();
 		auto &channels = options.getChannels();
-		channels.addSeries(ChannelId::x, {"Cat1", table});
-		channels.addSeries(ChannelId::x, {"exists()", table});
-		channels.addSeries(ChannelId::y, {"Val", table});
-		channels.addSeries(ChannelId::label, {"Val", table});
-		channels.addSeries(ChannelId::x, {"Val", table});
-		channels.addSeries(ChannelId::y, {"Cat2", table});
-		channels.addSeries(ChannelId::color, {"Cat2", table});
+		channels.at(ChannelId::x).addSeries({"Cat1", table});
+		channels.at(ChannelId::x).addSeries({"exists()", table});
+		channels.at(ChannelId::y).addSeries({"Val", table});
+		channels.at(ChannelId::label).addSeries({"Val", table});
+		channels.at(ChannelId::x).addSeries({"Val", table});
+		channels.at(ChannelId::y).addSeries({"Cat2", table});
+		channels.at(ChannelId::color).addSeries({"Cat2", table});
 		styles.plot.marker.label.filter =
 		    Gfx::ColorTransform::Lightness(0.5);
 		styles.plot.marker.label.position =

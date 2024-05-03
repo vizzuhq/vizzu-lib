@@ -277,7 +277,7 @@ struct chart_setup
 		testcase(table);
 		auto &channels = chart.getOptions().getChannels();
 		for (auto &&[ch, name] : series)
-			channels.addSeries(ch, {name, std::ref(table)});
+			channels.at(ch).addSeries({name, std::ref(table)});
 		chart.setBoundRect(Geom::Rect(Geom::Point{}, {{640, 480}}));
 		return chart;
 	}

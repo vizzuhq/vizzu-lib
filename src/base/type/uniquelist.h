@@ -3,6 +3,7 @@
 
 #include <algorithm>
 #include <map>
+#include <ranges>
 #include <utility>
 
 namespace Type
@@ -21,6 +22,7 @@ template <class T> class UniqueList
 		link_t pre{};
 		link_t post{};
 		std::size_t ix{};
+		typename container_type::iterator it{};
 	};
 
 	template <bool forward = true> struct iterator
@@ -89,9 +91,9 @@ template <class T> class UniqueList
 			last = ptr.pre;
 	}
 
-	typename container_type::node_type extract(const T &val) noexcept
+	typename container_type::node_type extract(
+	    const typename container_type::iterator &it) noexcept
 	{
-		auto &&it = items.find(val);
 		before_remove(it->second);
 		return items.extract(it);
 	}
@@ -102,22 +104,6 @@ public:
 		auto &&[it, newly] = items.try_emplace(value, last);
 		if (!newly) return false;
 		after_push_back(it);
-		return true;
-	}
-
-	bool push_front(const T &value)
-	{
-		auto &&[it, newly] = items.try_emplace(value, nullptr, first);
-		if (!newly) return false;
-		if (auto *preFirst =
-		        std::exchange(first, std::to_address(it))) {
-			preFirst->second.pre = first;
-			while (preFirst)
-				++std::exchange(preFirst, preFirst->second.post)
-				      ->second.ix;
-		}
-		else
-			last = first;
 		return true;
 	}
 
@@ -136,6 +122,7 @@ public:
 	}
 
 	[[nodiscard]] bool empty() const noexcept { return !first; }
+
 	void clear() noexcept
 	{
 		first = last = {};
@@ -183,16 +170,50 @@ public:
 
 	[[nodiscard]] UniqueList split_by(const UniqueList &by) noexcept
 	{
+		auto first1 = by.items.begin();
+		auto last1 = by.items.end();
+
+		for (auto first2 = items.begin(), last2 = items.end();
+		     first2 != last2;
+		     ++first2) {
+			auto &[k, v] = *first2;
+			while (first1 != last1 && first1->first < k) ++first1;
+			if (first1 == last1) break;
+			if (k < first1->first) continue;
+			v.it = first2;
+		}
+
 		UniqueList common;
 		std::size_t ix{};
+		const typename container_type::iterator null_it{};
 		for (auto it = first; it;)
-			if (auto &[val, links] =
-			        *std::exchange(it, it->second.post);
-			    by.contains(val))
-				common.insert(extract(val));
+			if (auto &links =
+			        std::exchange(it, it->second.post)->second;
+			    links.it != null_it)
+				common.insert(extract(links.it));
 			else
 				links.ix = ix++;
 		return common;
+	}
+
+	[[nodiscard]] auto as_set() const noexcept
+	{
+		return std::ranges::views::keys(items);
+	}
+
+	template <class It, class Sentinel = It>
+	[[nodiscard]] bool contains_any(It &&first1,
+	    Sentinel &&last1) const
+	{
+		for (auto first2 = items.begin(), last2 = items.end();
+		     first1 != last1 && first2 != last2;)
+			if (*first1 < first2->first)
+				++first1;
+			else if (first2->first < *first1)
+				++first2;
+			else
+				return true;
+		return false;
 	}
 
 	UniqueList() noexcept = default;

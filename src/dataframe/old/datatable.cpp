@@ -226,8 +226,8 @@ DataCube::DataCube(const DataTable &table,
 		if (!meas) continue;
 		const auto *subChannel = options.subAxisOf(channelId);
 		if (!subChannel) continue;
-		auto sumBy = subChannel->dimensionIds;
-		if (auto &&common = sumBy.split_by(channel.dimensionIds);
+		auto sumBy = subChannel->dimensions();
+		if (auto &&common = sumBy.split_by(channel.dimensions());
 		    inhibitStack)
 			std::swap(sumBy, common);
 		if (sumBy.empty()) continue;
@@ -236,9 +236,13 @@ DataCube::DataCube(const DataTable &table,
 		    *cacheImpl.try_emplace(channelId, removed->copy(false))
 		         .first->second;
 
-		for (auto &&dim : dimensions)
-			if (!sumBy.contains(dim))
+		auto &&set = sumBy.as_set();
+		for (auto first = set.begin(), last = set.end();
+		     auto &&dim : dimensions)
+			if (first == last || dim < *first)
 				sub_df.aggregate_by(dim.getColIndex());
+			else
+				++first;
 
 		[[maybe_unused]] auto &&new_name =
 		    sub_df.set_aggregate(meas->getColIndex(),

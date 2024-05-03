@@ -33,16 +33,14 @@ private:
 	struct ChannelAccessor
 	{
 		std::string (*get)(const Channel &);
-		void (
-		    *set)(Options &, const ChannelId &, const std::string &);
+		void (*set)(Channel &, const std::string &);
 	};
 
 	template <auto Mptr>
-	static const std::pair<std::string_view, Config::Accessor>
-	    accessor;
+	static const std::pair<std::string_view, Accessor> accessor;
 
 	template <auto Mptr>
-	static const std::pair<std::string_view, Config::ChannelAccessor>
+	static const std::pair<std::string_view, ChannelAccessor>
 	    channel_accessor;
 
 	using Accessors = std::map<std::string_view, Accessor>;

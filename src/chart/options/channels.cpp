@@ -33,47 +33,25 @@ Channels::IndexSet Channels::getMeasures() const
 	IndexSet series;
 
 	for (const auto &channel : channels)
-		if (channel.measureId) {
-			const auto &index = *channel.measureId;
-			series.insert(index);
-		}
+		if (auto &&mid = channel.measureId) series.insert(*mid);
 
 	return series;
 }
 
 Channels::IndexSet Channels::getDimensions(
-    const std::vector<ChannelId> &channelTypes) const
+    const std::span<const ChannelId> &channelTypes) const
 {
 	IndexSet dimensions;
+
 	for (auto &&channelType : channelTypes)
 		channels[channelType].collectDimesions(dimensions);
+
 	return dimensions;
-}
-
-std::pair<bool, Channel::OptionalIndex> Channels::addSeries(
-    const ChannelId &id,
-    const Data::SeriesIndex &index)
-{
-	return channels[id].addSeries(index);
-}
-
-void Channels::removeSeries(const ChannelId &id,
-    const Data::SeriesIndex &index)
-{
-	channels[id].removeSeries(index);
 }
 
 void Channels::removeSeries(const Data::SeriesIndex &index)
 {
 	for (auto &channel : channels) channel.removeSeries(index);
-}
-
-bool Channels::clearSeries(const ChannelId &id)
-{
-	auto &channel = channels[id];
-	if (channel.isEmpty()) return false;
-	channels[id].reset();
-	return true;
 }
 
 bool Channels::isSeriesUsed(const Data::SeriesIndex &index) const
@@ -111,10 +89,10 @@ Channels Channels::shadow() const
 	shadow.channels[ChannelId::label].reset();
 	shadow.channels[ChannelId::noop].reset();
 
-	for (auto &&attr : getDimensions({ChannelId::color,
+	for (auto &&attr : getDimensions({{ChannelId::color,
 	         ChannelId::lightness,
 	         ChannelId::label,
-	         ChannelId::noop}))
+	         ChannelId::noop}}))
 		shadow.channels[ChannelId::noop].addSeries(attr);
 
 	return shadow;

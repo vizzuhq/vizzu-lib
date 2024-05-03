@@ -28,17 +28,12 @@ public:
 	[[nodiscard]] IndexSet getDimensions() const;
 	[[nodiscard]] IndexSet getMeasures() const;
 	[[nodiscard]] IndexSet getDimensions(
-	    const std::vector<ChannelId> &channelTypes) const;
+	    const std::span<const ChannelId> &channelTypes) const;
 
 	[[nodiscard]] const Channel &at(const ChannelId &id) const;
 	Channel &at(const ChannelId &id);
 
-	std::pair<bool, Channel::OptionalIndex>
-	addSeries(const ChannelId &id, const Data::SeriesIndex &index);
 	void removeSeries(const Data::SeriesIndex &index);
-	void removeSeries(const ChannelId &id,
-	    const Data::SeriesIndex &index);
-	bool clearSeries(const ChannelId &id);
 
 	[[nodiscard]] bool isSeriesUsed(
 	    const Data::SeriesIndex &index) const;

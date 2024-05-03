@@ -114,15 +114,15 @@ void Plot::generateMarkers()
 	Buckets mainBuckets;
 	if (!getDataCube().empty()) {
 		auto &&[k, v] = getDataCube().combinedSizeOf(
-		    options->mainAxis().dimensionIds);
+		    options->mainAxis().dimensions());
 		mainBuckets.resize(k, v);
 		mainBucketSize = k;
 
-		Data::SeriesList subIds(options->subAxis().dimensionIds);
+		Data::SeriesList subIds(options->subAxis().dimensions());
 		if (getOptions()->geometry == ShapeType::area)
 		    [[maybe_unused]]
 			auto &&_ =
-			    subIds.split_by(options->mainAxis().dimensionIds);
+			    subIds.split_by(options->mainAxis().dimensions());
 		auto &&[k2, v2] = getDataCube().combinedSizeOf(subIds);
 		subBuckets.resize(k2, v2);
 
@@ -274,8 +274,8 @@ void Plot::calcMeasureAxis(ChannelId type)
 {
 	auto &axis = measureAxises.at(type);
 	const auto &scale = options->getChannels().at(type);
-	if (!scale.isEmpty() && scale.measureId) {
-		auto &&name = scale.measureName(*dataCube);
+	if (auto &&meas = scale.measureId) {
+		auto &&name = dataCube->getName(*meas);
 		commonAxises.at(type).title = scale.title.isAuto() ? name
 		                            : scale.title ? *scale.title
 		                                          : std::string{};
@@ -311,7 +311,7 @@ void Plot::calcDimensionAxis(ChannelId type)
 	auto &axis = dimensionAxises.at(type);
 	auto &scale = options->getChannels().at(type);
 
-	if (scale.dimensionIds.empty() || !scale.isDimension()) return;
+	if (scale.isMeasure() || !scale.hasDimension()) return;
 
 	auto dim = scale.labelLevel;
 

@@ -322,7 +322,7 @@ std::string MarkerRenderer::getLabelText(
 
 	auto needsInterpolation =
 	    label.count == 2
-	    && (values[0].value.measureId == values[1].value.measureId);
+	    && values[0].value.measureId == values[1].value.measureId;
 
 	std::string valueStr;
 	if (values[index].value.hasValue()) {

@@ -26,19 +26,16 @@ public:
 
 	static Channel makeChannel(Type id);
 
-	std::pair<bool, OptionalIndex> addSeries(
-	    const Data::SeriesIndex &index);
+	void addSeries(const Data::SeriesIndex &index);
 	void removeSeries(const Data::SeriesIndex &index);
 	[[nodiscard]] bool isSeriesUsed(
 	    const Data::SeriesIndex &index) const;
 	void reset();
 	[[nodiscard]] bool isEmpty() const;
 	[[nodiscard]] bool isDimension() const;
+	[[nodiscard]] bool hasDimension() const;
 	[[nodiscard]] bool isMeasure() const;
-	[[nodiscard]] size_t dimensionCount() const;
 	void collectDimesions(IndexSet &dimensions) const;
-	[[nodiscard]] std::string measureName(
-	    const Data::DataCube &cube) const;
 	[[nodiscard]] std::string labelDimensionName() const;
 	[[nodiscard]] const DimensionIndices &dimensions() const;
 	[[nodiscard]] OptionalIndex labelSeries() const;

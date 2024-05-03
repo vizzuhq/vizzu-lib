@@ -9,7 +9,7 @@ ChannelStats::ChannelStats(const Channel &channel,
     const Data::DataCube &cube) :
     isDimension(channel.isDimension()),
     usedIndices(isDimension
-                    ? cube.combinedSizeOf(channel.dimensionIds).second
+                    ? cube.combinedSizeOf(channel.dimensions()).second
                     : 0)
 {}
 
