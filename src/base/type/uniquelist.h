@@ -181,6 +181,7 @@ public:
 			if (first1 == last1) break;
 			if (k < first1->first) continue;
 			v.it = first2;
+			++first1;
 		}
 
 		UniqueList common;

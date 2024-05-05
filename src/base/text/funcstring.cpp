@@ -7,7 +7,7 @@ namespace Text
 
 FuncString::FuncString(std::string code, bool throwOnError)
 {
-	Text::SmartString::trim(code);
+	SmartString::trim(code);
 
 	if (code.empty()) return;
 

@@ -75,7 +75,7 @@ Plot::Plot(const Data::DataTable &dataTable,
 {
 	anyAxisSet = options->getChannels().anyAxisSet();
 
-	generateMarkers();
+	auto &&subBuckets = generateMarkers();
 	generateMarkersInfo();
 
 	if (const SpecLayout specLayout(*this);
@@ -86,15 +86,14 @@ Plot::Plot(const Data::DataTable &dataTable,
 		calcMeasureAxises();
 	}
 	else {
-		addSeparation();
+		addSeparation(subBuckets);
 		normalizeXY();
 		calcDimensionAxises();
 		normalizeSizes();
 		normalizeColors();
 		calcMeasureAxises();
-		addAlignment();
+		addAlignment(subBuckets);
 	}
-	subBuckets.clear();
 
 	guides.init(*options);
 }
@@ -109,9 +108,10 @@ bool Plot::isEmpty() const
 	return options->getChannels().isEmpty();
 }
 
-void Plot::generateMarkers()
+Buckets Plot::generateMarkers()
 {
 	Buckets mainBuckets;
+	Buckets subBuckets;
 	if (!getDataCube().empty()) {
 		auto &&[k, v] = getDataCube().combinedSizeOf(
 		    options->mainAxis().dimensions());
@@ -153,6 +153,7 @@ void Plot::generateMarkers()
 		markerConnectionOrientation.emplace(
 		    *options->orientation.get());
 	}
+	return subBuckets;
 }
 
 void Plot::generateMarkersInfo()
@@ -165,8 +166,8 @@ void Plot::generateMarkersInfo()
 std::vector<std::pair<double, uint64_t>>
 Plot::sortedBuckets(const Buckets &buckets, bool main) const
 {
-	std::vector<std::pair<double, uint64_t>> sorted;
-	if (!buckets.empty()) sorted.resize(buckets[0].size());
+	std::vector<std::pair<double, uint64_t>> sorted(
+	    buckets.inner_size());
 
 	for (auto &&bucket : buckets)
 		for (std::size_t ix{}; auto &&marker : bucket) {
@@ -358,12 +359,12 @@ void Plot::calcDimensionAxis(ChannelId type)
 		axis.category = series.value().getColIndex();
 }
 
-void Plot::addAlignment()
+void Plot::addAlignment(const Buckets &subBuckets) const
 {
 	if (static_cast<bool>(options->split)) return;
 
-	auto &axis = measureAxises.at(options->subAxisType());
-	if (axis.range.getMin() < 0) return;
+	if (measureAxises.at(options->subAxisType()).range.getMin() < 0)
+		return;
 
 	if (options->align == Base::Align::Type::none) return;
 
@@ -383,7 +384,7 @@ void Plot::addAlignment()
 	}
 }
 
-void Plot::addSeparation()
+void Plot::addSeparation(const Buckets &subBuckets) const
 {
 	if (static_cast<bool>(options->split)) {
 		auto align = options->align == Base::Align::Type::none

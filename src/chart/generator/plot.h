@@ -116,9 +116,8 @@ private:
 	MarkersInfo markersInfo;
 
 	std::size_t mainBucketSize{};
-	Buckets subBuckets;
 
-	void generateMarkers();
+	Buckets generateMarkers();
 	void generateMarkersInfo();
 	[[nodiscard]] bool linkMarkers(const Buckets &buckets,
 	    bool main) const;
@@ -127,8 +126,8 @@ private:
 	void calcMeasureAxis(ChannelId type);
 	void calcDimensionAxises();
 	void calcDimensionAxis(ChannelId type);
-	void addAlignment();
-	void addSeparation();
+	void addAlignment(const Buckets &subBuckets) const;
+	void addSeparation(const Buckets &subBuckets) const;
 	void normalizeSizes();
 	void normalizeColors();
 	[[nodiscard]] std::vector<std::pair<double, uint64_t>>

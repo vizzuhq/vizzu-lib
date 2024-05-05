@@ -24,21 +24,17 @@ NumberScale::NumberScale(PrefixType type)
 
 NumberScale::NumberScale(std::string s)
 {
-	Text::SmartString::trim(s);
+	SmartString::trim(s);
 
 	if (s.empty()) throw std::logic_error("empty number scale");
 
-	auto items = SmartString::split(s, ',');
+	prefixes = SmartString::split(s, ',');
 
-	if (items.size() == 1) {
-		prefixes =
-		    NumberScale(Conv::parse<PrefixType>(items[0])).prefixes;
-	}
-	else {
-		for (auto &item : items) SmartString::trim(item);
-
-		prefixes = std::move(items);
-	}
+	if (prefixes.size() == 1)
+		prefixes = NumberScale(Conv::parse<PrefixType>(prefixes[0]))
+		               .prefixes;
+	else
+		for (auto &item : prefixes) SmartString::trim(item);
 }
 
 std::string NumberScale::at(std::size_t index) const
