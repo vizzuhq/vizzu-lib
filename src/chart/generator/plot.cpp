@@ -479,10 +479,10 @@ void Plot::prependMarkers(const Plot &plot, bool enabled)
 {
 	auto size = plot.markers.size();
 
-	auto it = std::next(markers.insert(markers.begin(),
-	                        plot.getMarkers().begin(),
-	                        plot.getMarkers().end()),
-	    size);
+	auto it = markers.insert(markers.begin(),
+	              plot.getMarkers().begin(),
+	              plot.getMarkers().end())
+	        + static_cast<std::ptrdiff_t>(size);
 
 	if (!enabled)
 		for (auto i = markers.begin(); i < it; ++i)

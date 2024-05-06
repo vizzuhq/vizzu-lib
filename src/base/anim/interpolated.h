@@ -127,7 +127,7 @@ public:
 
 	Weighted<Type> *operator->()
 	{
-		if (count == 1) return &values[0];
+		if (count == 1) return values.data();
 
 		throw std::logic_error("Invalid Weigthed Pair dereference");
 	}
