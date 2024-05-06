@@ -5,6 +5,8 @@
 #ifndef DATAFRAME_OLD2_DATATABLE_H
 #define DATAFRAME_OLD2_DATATABLE_H
 
+#include <chart/options/channel.h>
+
 #include "../impl/dataframe.h"
 
 #include "types.h"
@@ -83,11 +85,13 @@ public:
 	[[nodiscard]] double valueAt(const MultiIndex &multiIndex,
 	    const SeriesIndex &seriesId) const;
 
-	[[nodiscard]] MarkerId getId(const SeriesList &,
+	[[nodiscard]] MarkerId getId(
+	    std::pair<const SeriesList &, const std::size_t &> &&,
 	    const MultiIndex &) const;
 
-	[[nodiscard]] static std::string getValue(
-	    const SliceIndex &index);
+	[[nodiscard]] std::vector<std::string_view> getDimensionValues(
+	    const SeriesList &sl,
+	    const MultiIndex &index) const;
 
 	[[nodiscard]] const std::string &getName(
 	    const SeriesIndex &seriesId) const;

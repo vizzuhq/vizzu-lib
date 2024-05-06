@@ -308,20 +308,19 @@ void Plot::calcDimensionAxis(ChannelId type)
 	if (scale.isMeasure() || !scale.hasDimension()) return;
 
 	auto &&isTypeAxis = isAxis(type);
-	if (auto dim = scale.labelLevel; isTypeAxis) {
+	if (auto merge = scale.labelLevel == 0; isTypeAxis) {
 		for (const auto &marker : markers) {
 			const auto &id =
 			    (type == ChannelId::x) == options->isHorizontal()
 			        ? marker.mainId.get()
 			        : marker.subId;
 
-			if (const auto &slice = id.itemSliceIndex;
-			    dim < slice.size())
-				axis.add(slice[dim],
+			if (const auto &slice = id.label)
+				axis.add(*slice,
 				    static_cast<double>(id.itemId),
 				    marker.getSizeBy(type == ChannelId::x),
 				    static_cast<double>(marker.enabled),
-				    dim == 0);
+				    merge);
 		}
 	}
 	else {
@@ -330,12 +329,12 @@ void Plot::calcDimensionAxis(ChannelId type)
 		double count = 0;
 		for (auto i = 0U; i < indices.size(); ++i)
 			if (const auto &sliceIndex = indices[i];
-			    dim < sliceIndex.size()
-			    && axis.add(sliceIndex[dim],
+			    sliceIndex
+			    && axis.add(*sliceIndex,
 			        i,
 			        {count, count},
 			        true,
-			        dim == 0))
+			        merge))
 				count += 1;
 	}
 	auto hasLabel =

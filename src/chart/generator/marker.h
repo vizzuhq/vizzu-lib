@@ -53,7 +53,8 @@ public:
 		{
 			return value.has_value();
 		}
-		static std::string getIndexString(const Data::MarkerId &);
+		static std::string getIndexString(
+		    std::vector<std::string_view> &&slices);
 	};
 
 	::Anim::Interpolated<Label> label;

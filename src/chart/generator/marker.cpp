@@ -14,8 +14,9 @@ Marker::Marker(const Options &options,
     size_t idx) :
     enabled(data.empty() || !index.isEmpty()),
     cellInfo(data.cellInfo(index)),
-    sizeId(data.getId(
-        options.getChannels().at(ChannelId::size).dimensions(),
+    sizeId(data.getId(options.getChannels()
+                          .at(ChannelId::size)
+                          .dimensionsWithLevel(),
         index)),
     idx(idx)
 {
@@ -43,17 +44,20 @@ Marker::Marker(const Options &options,
 	    index,
 	    &sizeId);
 
-	mainId = data.getId(options.mainAxis().dimensions(), index);
+	mainId =
+	    data.getId(options.mainAxis().dimensionsWithLevel(), index);
 
 	Data::MarkerId *subAxisId{};
 	if (options.geometry == ShapeType::area) {
-		Data::SeriesList subIds(options.subAxis().dimensions());
+		auto &&subAxis = options.subAxis();
+		Data::SeriesList subIds(subAxis.dimensions());
 		if (subIds.split_by(options.mainAxis().dimensions()).empty())
 			subAxisId = &subId;
-		subId = data.getId(subIds, index);
+		subId = data.getId({subIds, subAxis.labelLevel}, index);
 	}
 	else {
-		subId = data.getId(options.subAxis().dimensions(), index);
+		subId = data.getId(options.subAxis().dimensionsWithLevel(),
+		    index);
 		subAxisId = &subId;
 	}
 
@@ -92,14 +96,14 @@ Marker::Marker(const Options &options,
 	    labelChannel.isEmpty())
 		label = ::Anim::Weighted<Label>(Label(), 0.0);
 	else {
-		auto &&lid = data.getId(labelChannel.dimensions(), index);
 		auto value = getValueForChannel(channels,
 		    ChannelId::label,
 		    data,
 		    stats,
-		    index,
-		    &lid);
-		if (auto &&labelStr = Label::getIndexString(lid);
+		    index);
+		if (auto &&labelStr = Label::getIndexString(
+		        data.getDimensionValues(labelChannel.dimensions(),
+		            index));
 		    labelChannel.isDimension())
 			label = Label(std::move(labelStr));
 		else
@@ -176,7 +180,8 @@ double Marker::getValueForChannel(const Channels &channels,
 	if (channel.isDimension()) {
 		std::optional<Data::MarkerId> nid;
 		if (!mid)
-			nid.emplace(data.getId(channel.dimensions(), index));
+			nid.emplace(
+			    data.getId(channel.dimensionsWithLevel(), index));
 
 		const auto &id = mid ? *mid : *nid;
 		if (channel.stackable)
@@ -245,12 +250,13 @@ bool Marker::Label::operator==(const Label &other) const
 	    && unit == other.unit && indexStr == other.indexStr;
 }
 
-std::string Marker::Label::getIndexString(const Data::MarkerId &id)
+std::string Marker::Label::getIndexString(
+    std::vector<std::string_view> &&slices)
 {
 	std::string res;
-	for (const auto &sliceIndex : id.itemSliceIndex) {
+	for (const auto &sliceValue : slices) {
 		if (!res.empty()) res += ", ";
-		res += sliceIndex.value;
+		res += sliceValue;
 	}
 	return res;
 }

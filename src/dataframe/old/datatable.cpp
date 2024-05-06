@@ -285,10 +285,12 @@ std::string_view DataCube::getUnit(
 	return df->get_series_info(colIx, "unit");
 }
 
-MarkerId DataCube::getId(const SeriesList &sl,
+MarkerId DataCube::getId(
+    std::pair<const SeriesList &, const std::size_t &> &&slwl,
     const MultiIndex &mi) const
 {
-	MarkerId res{SubSliceIndex(sl.size())};
+	auto &&[sl, ll] = slwl;
+	MarkerId res{};
 	std::vector<std::pair<std::size_t, std::size_t>> v(sl.size());
 
 	for (std::size_t ix{}; ix < dim_reindex.size(); ++ix) {
@@ -296,10 +298,10 @@ MarkerId DataCube::getId(const SeriesList &sl,
 		auto &&oldIx = mi.old[ix];
 
 		if (auto &&i = sl.find(name); i != SeriesList::npos) {
-			v[i] = {oldIx, size};
-			res.itemSliceIndex[i] = {name,
-			    oldIx < cats.size() ? cats[oldIx]
-			                        : std::string_view{}};
+			if (v[i] = {oldIx, size}; i == ll)
+				res.label.emplace(name,
+				    oldIx < cats.size() ? cats[oldIx]
+				                        : std::string_view{});
 		}
 		else
 			res.seriesId = res.seriesId * size + oldIx;
@@ -308,6 +310,22 @@ MarkerId DataCube::getId(const SeriesList &sl,
 	for (const auto &[cix, size] : v)
 		res.itemId = res.itemId * size + cix;
 
+	return res;
+}
+
+std::vector<std::string_view> DataCube::getDimensionValues(
+    const SeriesList &sl,
+    const MultiIndex &index) const
+{
+	std::vector<std::string_view> res(sl.size());
+	for (std::size_t ix{}; ix < dim_reindex.size(); ++ix) {
+		auto &&[name, cats, size] = dim_reindex[ix];
+		if (auto &&i = sl.find(name); i != SeriesList::npos) {
+			auto &&oldIx = index.old[ix];
+			res[i] = oldIx < cats.size() ? cats[oldIx]
+			                             : std::string_view{};
+		}
+	}
 	return res;
 }
 

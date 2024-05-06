@@ -25,7 +25,7 @@ void ChannelStats::track(double value)
 void ChannelStats::track(const Marker::Id &id)
 {
 	if (isDimension)
-		usedIndices[id.itemId] = id.itemSliceIndex;
+		usedIndices[id.itemId] = id.label;
 	else
 		throw std::logic_error(
 		    "internal error: invalid measure channel tracking");

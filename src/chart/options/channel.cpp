@@ -103,6 +103,12 @@ const Channel::DimensionIndices &Channel::dimensions() const
 	return dimensionIds;
 }
 
+std::pair<const Channel::DimensionIndices &, const std::size_t &>
+Channel::dimensionsWithLevel() const
+{
+	return {dimensionIds, labelLevel};
+}
+
 Channel::OptionalIndex Channel::labelSeries() const
 {
 	if (isDimension()) {

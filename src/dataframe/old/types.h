@@ -118,8 +118,6 @@ struct SliceIndex
 	[[nodiscard]] bool operator==(const SliceIndex &) const = default;
 };
 
-using SubSliceIndex = std::vector<SliceIndex>;
-
 struct CellInfo
 {
 	std::vector<std::pair<std::string, std::string>> categories;
@@ -136,7 +134,7 @@ struct MultiIndex
 
 struct MarkerId
 {
-	SubSliceIndex itemSliceIndex;
+	std::optional<SliceIndex> label;
 	std::size_t seriesId{};
 	std::size_t itemId{};
 
