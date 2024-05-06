@@ -93,9 +93,7 @@ Marker::Marker(const Options &options,
 	              : 0;
 
 	if (auto &&labelChannel = channels.at(ChannelId::label);
-	    labelChannel.isEmpty())
-		label = ::Anim::Weighted<Label>(Label(), 0.0);
-	else {
+	    !labelChannel.isEmpty()) {
 		auto value = getValueForChannel(channels,
 		    ChannelId::label,
 		    data,

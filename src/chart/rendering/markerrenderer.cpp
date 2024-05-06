@@ -321,7 +321,7 @@ std::string MarkerRenderer::getLabelText(
 	const auto &values = label.values;
 
 	auto needsInterpolation =
-	    label.count == 2
+	    label.has_second
 	    && values[0].value.measureId == values[1].value.measureId;
 
 	std::string valueStr;
