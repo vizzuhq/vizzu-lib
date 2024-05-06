@@ -19,24 +19,17 @@ bool SpecLayout::addIfNeeded(Buckets &hierarchy) const
 	    || options->geometry == ShapeType::area) {
 		Charts::TableChart::setupVector(markers, true);
 	}
-	else if (options->getChannels().at(ChannelId::size).isEmpty()) {
+	else if (auto &&size = options->getChannels().at(ChannelId::size);
+	         size.isEmpty()) {
 		Charts::TableChart::setupVector(markers);
 	}
-	else {
-		if (!plot.getDataCube().empty()) {
-			auto &&[k, v] = plot.getDataCube().combinedSizeOf(
-			    options->getChannels()
-			        .at(ChannelId::size)
-			        .dimensions());
+	else if (!plot.getDataCube().empty()) {
+		hierarchy.resize(
+		    plot.getDataCube().combinedSizeOf(size.dimensions()));
 
-			hierarchy.resize(k, v);
-
-			for (auto &marker : markers)
-				hierarchy[marker.sizeId.seriesId]
-				         [marker.sizeId.itemId] = &marker;
-		}
-		else
-			hierarchy.clear();
+		for (auto &marker : markers)
+			hierarchy[marker.sizeId.seriesId][marker.sizeId.itemId] =
+			    &marker;
 
 		if (options->geometry == ShapeType::circle) {
 			Charts::BubbleChartBuilder::setupVector(

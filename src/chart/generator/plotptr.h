@@ -18,8 +18,9 @@ struct Buckets
 	std::size_t k{};
 	std::size_t n{};
 
-	void resize(std::size_t i, std::size_t j)
+	void resize(std::pair<std::size_t, std::size_t> &&p)
 	{
+		auto &&[i, j] = p;
 		if (k * n < i * j)
 			markers =
 			    std::make_unique_for_overwrite<MarkerPtrArr>(i * j);

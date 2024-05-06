@@ -168,7 +168,7 @@ public:
 		return items.contains(item);
 	}
 
-	[[nodiscard]] UniqueList split_by(const UniqueList &by) noexcept
+	UniqueList split_by(const UniqueList &by) noexcept
 	{
 		auto first1 = by.items.begin();
 		auto last1 = by.items.end();

@@ -98,12 +98,6 @@ bool Channel::operator==(const Channel &other) const
 	    && markerGuides == other.markerGuides;
 }
 
-std::string Channel::labelDimensionName() const
-{
-	auto &&ser = labelSeries();
-	return ser ? ser->toString() : "";
-}
-
 const Channel::DimensionIndices &Channel::dimensions() const
 {
 	return dimensionIds;

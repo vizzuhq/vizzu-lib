@@ -123,9 +123,11 @@ public:
 		throw std::logic_error("Invalid Weigthed Pair");
 	}
 
-	Weighted<Type> &operator*()
+	Weighted<Type> &operator*() { return *operator->(); }
+
+	Weighted<Type> *operator->()
 	{
-		if (count == 1) return values[0];
+		if (count == 1) return &values[0];
 
 		throw std::logic_error("Invalid Weigthed Pair dereference");
 	}

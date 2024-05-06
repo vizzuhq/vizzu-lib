@@ -36,7 +36,6 @@ public:
 	[[nodiscard]] bool hasDimension() const;
 	[[nodiscard]] bool isMeasure() const;
 	void collectDimesions(IndexSet &dimensions) const;
-	[[nodiscard]] std::string labelDimensionName() const;
 	[[nodiscard]] const DimensionIndices &dimensions() const;
 	[[nodiscard]] OptionalIndex labelSeries() const;
 	bool operator==(const Channel &other) const;

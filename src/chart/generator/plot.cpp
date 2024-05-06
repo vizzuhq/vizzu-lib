@@ -113,18 +113,14 @@ Buckets Plot::generateMarkers()
 	Buckets mainBuckets;
 	Buckets subBuckets;
 	if (!getDataCube().empty()) {
-		auto &&[k, v] = getDataCube().combinedSizeOf(
-		    options->mainAxis().dimensions());
-		mainBuckets.resize(k, v);
-		mainBucketSize = k;
+		mainBuckets.resize(getDataCube().combinedSizeOf(
+		    options->mainAxis().dimensions()));
+		mainBucketSize = mainBuckets.size();
 
 		Data::SeriesList subIds(options->subAxis().dimensions());
 		if (getOptions()->geometry == ShapeType::area)
-		    [[maybe_unused]]
-			auto &&_ =
-			    subIds.split_by(options->mainAxis().dimensions());
-		auto &&[k2, v2] = getDataCube().combinedSizeOf(subIds);
-		subBuckets.resize(k2, v2);
+			subIds.split_by(options->mainAxis().dimensions());
+		subBuckets.resize(getDataCube().combinedSizeOf(subIds));
 
 		markers.reserve(getDataCube().combinedSizeOf({}).first);
 	}
@@ -204,11 +200,9 @@ void Plot::clearEmptyBuckets(const Buckets &buckets, bool main) const
 
 bool Plot::linkMarkers(const Buckets &buckets, bool main) const
 {
-	auto &&sorted = sortedBuckets(buckets, main);
-
 	bool hasConnection{};
-	for (const auto &bucket : buckets) {
-
+	for (auto &&sorted = sortedBuckets(buckets, main);
+	     const auto &bucket : buckets)
 		for (auto i = 0U; i < sorted.size(); ++i) {
 			auto idAct = sorted[i].second;
 			auto &act = *bucket[idAct];
@@ -222,7 +216,6 @@ bool Plot::linkMarkers(const Buckets &buckets, bool main) const
 			if (act.enabled && next.enabled && idAct != idNext)
 				hasConnection = true;
 		}
-	}
 	return hasConnection;
 }
 
@@ -314,10 +307,8 @@ void Plot::calcDimensionAxis(ChannelId type)
 
 	if (scale.isMeasure() || !scale.hasDimension()) return;
 
-	auto dim = scale.labelLevel;
-
 	auto &&isTypeAxis = isAxis(type);
-	if (isTypeAxis) {
+	if (auto dim = scale.labelLevel; isTypeAxis) {
 		for (const auto &marker : markers) {
 			const auto &id =
 			    (type == ChannelId::x) == options->isHorizontal()
@@ -350,13 +341,13 @@ void Plot::calcDimensionAxis(ChannelId type)
 	auto hasLabel =
 	    axis.setLabels(isTypeAxis ? scale.step.getValue(1.0) : 1.0);
 
-	commonAxises.at(type).title = scale.title.isAuto() && !hasLabel
-	                                ? scale.labelDimensionName()
-	                            : scale.title ? *scale.title
-	                                          : std::string{};
-
 	if (auto &&series = scale.labelSeries())
 		axis.category = series.value().getColIndex();
+
+	commonAxises.at(type).title = scale.title.isAuto() && !hasLabel
+	                                ? axis.category
+	                            : scale.title ? *scale.title
+	                                          : std::string{};
 }
 
 void Plot::addAlignment(const Buckets &subBuckets) const
@@ -433,18 +424,17 @@ void Plot::normalizeSizes()
 		for (auto &marker : markers)
 			if (marker.enabled) size.include(marker.sizeFactor);
 
-		auto sizeRange =
-		    options->getChannels().at(ChannelId::size).range;
-		size = sizeRange.getRange(size);
+		size = options->getChannels()
+		           .at(ChannelId::size)
+		           .range.getRange(size);
 
 		for (auto &marker : markers)
 			marker.sizeFactor = size.getMax() == size.getMin()
 			                      ? 0
 			                      : size.normalize(marker.sizeFactor);
 	}
-	else {
+	else
 		for (auto &marker : markers) marker.sizeFactor = 0;
-	}
 }
 
 void Plot::normalizeColors()
@@ -453,37 +443,32 @@ void Plot::normalizeColors()
 	Math::Range<double> color;
 
 	for (auto &marker : markers) {
-		if (!marker.colorBase.get().isDiscrete())
-			color.include(marker.colorBase.get().getPos());
-		lightness.include(marker.colorBase.get().getLightness());
+		auto &&cbase = marker.colorBase.get();
+		if (!cbase.isDiscrete()) color.include(cbase.getPos());
+		lightness.include(cbase.getLightness());
 	}
 
-	auto colorRange =
-	    options->getChannels().at(ChannelId::color).range;
-	color = colorRange.getRange(color);
-
-	auto lightnessRange =
-	    options->getChannels().at(ChannelId::lightness).range;
-	lightness = lightnessRange.getRange(lightness);
+	color = options->getChannels()
+	            .at(ChannelId::color)
+	            .range.getRange(color);
+	lightness = options->getChannels()
+	                .at(ChannelId::lightness)
+	                .range.getRange(lightness);
 
 	for (auto &marker : markers) {
-		(*marker.colorBase)
-		    .value.setLightness(lightness.rescale(
-		        marker.colorBase.get().getLightness()));
+		auto &&cbase = marker.colorBase->value;
+		cbase.setLightness(lightness.rescale(cbase.getLightness()));
 
-		if (!marker.colorBase.get().isDiscrete())
-			(*marker.colorBase)
-			    .value.setPos(
-			        color.rescale(marker.colorBase.get().getPos()));
+		if (!cbase.isDiscrete())
+			cbase.setPos(color.rescale(cbase.getPos()));
 	}
 
 	stats.channels[ChannelId::color].range = color;
 	stats.channels[ChannelId::lightness].range = lightness;
 
-	for (auto &value : dimensionAxises.at(ChannelId::color)) {
+	for (auto &value : dimensionAxises.at(ChannelId::color))
 		value.second.colorBase =
 		    ColorBase(static_cast<uint32_t>(value.second.value), 0.5);
-	}
 
 	for (auto &value : dimensionAxises.at(ChannelId::lightness)) {
 		value.second.value = lightness.rescale(value.second.value);
@@ -495,27 +480,28 @@ void Plot::prependMarkers(const Plot &plot, bool enabled)
 {
 	auto size = plot.markers.size();
 
-	markers.insert(markers.begin(),
-	    plot.getMarkers().begin(),
-	    plot.getMarkers().end());
+	auto it = std::next(markers.insert(markers.begin(),
+	                        plot.getMarkers().begin(),
+	                        plot.getMarkers().end()),
+	    size);
 
 	if (!enabled)
-		for (auto i = 0U; i < size; ++i) markers[i].enabled = false;
+		for (auto i = markers.begin(); i < it; ++i)
+			i->enabled = false;
 
-	for (auto i = size; i < markers.size(); ++i)
-		markers[i].setIdOffset(size);
+	while (it != markers.end()) it++->setIdOffset(size);
 }
 
 void Plot::appendMarkers(const Plot &plot, bool enabled)
 {
 	auto size = markers.size();
 
-	markers.insert(markers.end(),
-	    plot.getMarkers().begin(),
-	    plot.getMarkers().end());
-
-	for (auto i = size; i < markers.size(); ++i) {
-		auto &marker = markers[i];
+	for (auto it = markers.insert(markers.end(),
+	         plot.getMarkers().begin(),
+	         plot.getMarkers().end());
+	     it != markers.end();
+	     ++it) {
+		auto &marker = *it;
 
 		marker.setIdOffset(size);
 
