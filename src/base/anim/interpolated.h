@@ -20,7 +20,8 @@ public:
 	Type value{};
 	double weight{};
 
-	Weighted() {}
+	Weighted() noexcept(
+	    std::is_nothrow_default_constructible_v<Type>) = default;
 
 	explicit Weighted(Type value) :
 	    value(std::move(value)),
@@ -46,11 +47,16 @@ public:
 	std::array<Weighted<Type>, 2> values;
 	bool has_second{};
 
-	Interpolated() = default;
-	Interpolated(const Interpolated &) = default;
-	Interpolated(Interpolated &&) noexcept = default;
-	Interpolated &operator=(const Interpolated &) = default;
-	Interpolated &operator=(Interpolated &&) noexcept = default;
+	Interpolated() noexcept(
+	    std::is_nothrow_default_constructible_v<Type>) = default;
+	Interpolated(const Interpolated &) noexcept(
+	    std::is_nothrow_copy_constructible_v<Type>) = default;
+	Interpolated(Interpolated &&) noexcept(
+	    std::is_nothrow_move_constructible_v<Type>) = default;
+	Interpolated &operator=(const Interpolated &) noexcept(
+	    std::is_nothrow_copy_assignable_v<Type>) = default;
+	Interpolated &operator=(Interpolated &&) noexcept(
+	    std::is_nothrow_move_assignable_v<Type>) = default;
 
 	explicit Interpolated(Type value)
 	{
