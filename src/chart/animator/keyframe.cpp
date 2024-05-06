@@ -71,48 +71,35 @@ void Keyframe::prepareActual()
 
 void Keyframe::prepareActualMarkersInfo()
 {
-	auto &origTMI = target->getMarkersInfo();
+	const auto &origTMI = target->getMarkersInfo();
 	auto &smi = source->getMarkersInfo();
-	for (auto &item : smi) {
-		auto iter = origTMI.find(item.first);
-		if (iter != origTMI.end()) {
-			copyTarget();
-			target->getMarkersInfo().insert(
-			    std::make_pair(item.first, item.second));
-		}
-		else {
-			copyTarget();
-			target->getMarkersInfo().insert(
-			    std::make_pair(item.first, Gen::Plot::MarkerInfo{}));
-		}
-	}
-	for (auto &item : origTMI) {
-		auto iter = smi.find(item.first);
-		if (iter != smi.end())
-			smi.insert(std::make_pair(item.first, item.second));
+	if (!smi.empty()) copyTarget();
+
+	for (auto &tmi = target->getMarkersInfo(); auto &&item : smi)
+		if (origTMI.contains(item.first))
+			tmi.insert({item.first, item.second});
 		else
-			smi.insert(
-			    std::make_pair(item.first, Gen::Plot::MarkerInfo{}));
-	}
+			tmi.insert(
+			    std::pair{item.first, Gen::Plot::MarkerInfo{}});
+
+	for (auto &&item : origTMI)
+		smi.insert(std::pair{item.first, Gen::Plot::MarkerInfo{}});
 }
 
 void Keyframe::addMissingMarkers(const Gen::PlotPtr &source,
     const Gen::PlotPtr &target,
     bool withTargetCopying)
 {
-	for (auto i = source->getMarkers().size();
-	     i < target->getMarkers().size();
-	     ++i)
-		source->markers.emplace_back(target->getMarkers()[i])
-		    .enabled = false;
+	auto &&smarkers = source->markers;
+	auto &&tmarkers = target->markers;
+	auto &&ssize = smarkers.size();
+	auto &&tsize = tmarkers.size();
+	for (auto i = ssize; i < tsize; ++i)
+		smarkers.emplace_back(tmarkers[i]).enabled = false;
 
-	for (auto i = target->getMarkers().size();
-	     i < source->getMarkers().size();
-	     ++i) {
-		if (withTargetCopying) copyTarget();
-		target->markers.emplace_back(source->getMarkers()[i])
-		    .enabled = false;
-	}
+	if (tsize < ssize && withTargetCopying) copyTarget();
+	for (auto i = tsize; i < ssize; ++i)
+		target->markers.emplace_back(smarkers[i]).enabled = false;
 }
 
 void Keyframe::copyTarget()

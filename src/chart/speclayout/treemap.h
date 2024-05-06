@@ -40,30 +40,26 @@ void TreeMap::setupVector(const Hierarchy &hierarchy)
 	if (hierarchy.empty()) return;
 
 	std::vector<double> sizes(hierarchy.size());
-	for (std::size_t ix{}; const auto &level : hierarchy) {
-		auto sum = 0.0;
-		for (const auto &item : level)
+	for (std::size_t ix{}; const auto &level : hierarchy)
+		for (auto &sum = sizes[ix++]; const auto &item : level)
 			if (item->sizeFactor > 0) sum += item->sizeFactor;
-		sizes[ix++] = sum;
-	}
+
 	TreeMap chart(sizes);
 
-	size_t cnt = 0;
-	for (const auto &level : hierarchy) {
-		auto &c = chart.markers[cnt];
+	for (size_t cnt{}; const auto &level : hierarchy) {
+		auto &[pos, size] = chart.markers[cnt].rect();
 
 		std::vector<double> sizes(level.size());
 		for (std::size_t ix{}; const auto &item : level)
 			sizes[ix++] = item->sizeFactor;
 
-		TreeMap subChart(sizes,
-		    c.rect().pos,
-		    c.rect().pos + c.rect().size);
+		TreeMap subChart(sizes, pos, pos + size);
 
 		for (size_t subCnt{}; const auto &item : level) {
-			auto rect = subChart.markers[subCnt++].rect().positive();
-			item->position = rect.topRight();
-			item->size = rect.size;
+			auto &&[spos, ssize] =
+			    subChart.markers[subCnt++].rect().positive();
+			item->position = spos + ssize;
+			item->size = ssize;
 		}
 
 		++cnt;

@@ -39,14 +39,16 @@ void BubbleChartBuilder::setupVector(double maxRadius,
 		const BubbleChart subChart(ssizes,
 		    chart.markers[cnt++].circle().boundary());
 
-		for (std::size_t subCnt{}; const auto &item : level) {
-			const auto &[center, r] =
-			    subChart.markers[subCnt++].circle();
-			item->position = center;
-			item->size = Geom::Size{r, r};
-			item->sizeFactor = r * r / (maxRadius * maxRadius);
-			if (std::isnan(r)) item->enabled = false;
-		}
+		for (std::size_t subCnt{}; const auto &item : level)
+			if (const auto &[center, r] =
+			        subChart.markers[subCnt++].circle();
+			    std::isnan(r))
+				item->enabled = false;
+			else {
+				item->position = center;
+				item->size = Geom::Size{r, r};
+				item->sizeFactor = r * r / (maxRadius * maxRadius);
+			}
 	}
 }
 
