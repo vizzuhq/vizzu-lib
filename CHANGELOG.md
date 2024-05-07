@@ -24,6 +24,8 @@
   - plugin: canvasRenderer - plugin for rendering the chart on a htmlcanvas compatible canvas
   - hook: start - hook for starting the rendering loop
   - hook: render - hook for rendering the chart 
+- Chart generation performance optimization: ~3x speed
+- Maximum marker limit increased: ~2x count 
 
 ## [0.10.1] - 2024-03-12
 
