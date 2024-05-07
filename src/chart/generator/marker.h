@@ -39,15 +39,7 @@ public:
 	struct Label
 	{
 		std::optional<double> value;
-		std::string measureId;
-		std::string unit;
 		std::string indexStr;
-		Label() = default;
-		explicit Label(std::string &&indexStr);
-		Label(double value,
-		    const Data::SeriesIndex &measure,
-		    const Data::DataCube &data,
-		    std::string &&indexStr);
 		bool operator==(const Label &other) const;
 		[[nodiscard]] bool hasValue() const
 		{

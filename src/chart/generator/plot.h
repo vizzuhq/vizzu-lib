@@ -75,8 +75,8 @@ public:
 		return markers;
 	}
 	Markers &getMarkers() { return markers; }
-	void prependMarkers(const Plot &plot, bool enabled);
-	void appendMarkers(const Plot &plot, bool enabled);
+	void prependMarkers(const Plot &plot);
+	void appendMarkers(const Plot &plot);
 	[[nodiscard]] const MarkersInfo &getMarkersInfo() const
 	{
 		return markersInfo;

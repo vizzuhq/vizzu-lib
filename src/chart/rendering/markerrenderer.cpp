@@ -172,10 +172,20 @@ void MarkerRenderer::drawMarkers(Gfx::ICanvas &canvas,
 
 void MarkerRenderer::drawLabels(Gfx::ICanvas &canvas) const
 {
+	auto &&axis = plot->measureAxises.at(Gen::ChannelId::label);
+	auto &&keepMeasure = !axis.origMeasureName.interpolates();
 	for (const auto &blended : markers) {
 		if (blended.marker.enabled == false) continue;
-		drawLabel(canvas, blended, 0);
-		drawLabel(canvas, blended, 1);
+		drawLabel(canvas,
+		    blended,
+		    axis.unit.get(0).value,
+		    keepMeasure,
+		    0);
+		drawLabel(canvas,
+		    blended,
+		    axis.unit.get(1).value,
+		    keepMeasure,
+		    1);
 	}
 }
 
@@ -276,6 +286,8 @@ void MarkerRenderer::draw(Gfx::ICanvas &canvas,
 
 void MarkerRenderer::drawLabel(Gfx::ICanvas &canvas,
     const AbstractMarker &abstractMarker,
+    const std::string &unit,
+    bool keepMeasure,
     size_t index) const
 {
 	if (abstractMarker.labelEnabled == false) return;
@@ -286,7 +298,7 @@ void MarkerRenderer::drawLabel(Gfx::ICanvas &canvas,
 
 	auto color = getColor(abstractMarker, 1, true).second;
 
-	auto text = getLabelText(marker.label, index);
+	auto text = getLabelText(marker.label, unit, keepMeasure, index);
 	if (text.empty()) return;
 
 	const auto &labelStyle = rootStyle.plot.marker.label;
@@ -315,14 +327,14 @@ void MarkerRenderer::drawLabel(Gfx::ICanvas &canvas,
 
 std::string MarkerRenderer::getLabelText(
     const ::Anim::Interpolated<Gen::Marker::Label> &label,
+    const std::string &unit,
+    bool keepMeasure,
     size_t index) const
 {
 	const auto &labelStyle = rootStyle.plot.marker.label;
 	const auto &values = label.values;
 
-	auto needsInterpolation =
-	    label.has_second
-	    && values[0].value.measureId == values[1].value.measureId;
+	auto needsInterpolation = label.interpolates() && keepMeasure;
 
 	std::string valueStr;
 	if (values[index].value.hasValue()) {
@@ -337,7 +349,7 @@ std::string MarkerRenderer::getLabelText(
 		    *labelStyle.numberFormat,
 		    static_cast<size_t>(*labelStyle.maxFractionDigits),
 		    *labelStyle.numberScale,
-		    values[index].value.unit);
+		    unit);
 	}
 
 	auto indexStr = values[index].value.indexStr;

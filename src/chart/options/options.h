@@ -53,11 +53,9 @@ public:
 	using Orientation = ::Anim::Interpolated<OrientationType>;
 	using MarkersInfoMap = std::map<uint64_t, MarkerId>;
 
-	friend bool operator==(const Options::LegendId &,
-	    const ChannelId &);
+	friend bool operator==(const LegendId &, const ChannelId &);
 
-	[[nodiscard]] static ChannelId toChannel(
-	    const Options::LegendId &);
+	[[nodiscard]] static ChannelId toChannel(const LegendId &);
 
 	Options() = default;
 

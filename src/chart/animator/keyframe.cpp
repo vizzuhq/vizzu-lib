@@ -47,15 +47,15 @@ void Keyframe::init(const Gen::PlotPtr &plot)
 void Keyframe::prepareActual()
 {
 	if (Gen::Plot::dimensionMatch(*source, *target)) {
-		addMissingMarkers(source, target, true);
+		addMissingMarkers(source, target);
 
 		prepareActualMarkersInfo();
 	}
 	else {
 		copyTarget();
 
-		target->prependMarkers(*source, false);
-		source->appendMarkers(*targetCopy, false);
+		target->prependMarkers(*source);
+		source->appendMarkers(*targetCopy);
 
 		prepareActualMarkersInfo();
 	}
@@ -87,8 +87,7 @@ void Keyframe::prepareActualMarkersInfo()
 }
 
 void Keyframe::addMissingMarkers(const Gen::PlotPtr &source,
-    const Gen::PlotPtr &target,
-    bool withTargetCopying)
+    const Gen::PlotPtr &target)
 {
 	auto &&smarkers = source->markers;
 	auto &&tmarkers = target->markers;
@@ -97,7 +96,7 @@ void Keyframe::addMissingMarkers(const Gen::PlotPtr &source,
 	for (auto i = ssize; i < tsize; ++i)
 		smarkers.emplace_back(tmarkers[i]).enabled = false;
 
-	if (tsize < ssize && withTargetCopying) copyTarget();
+	if (tsize < ssize) copyTarget();
 	for (auto i = tsize; i < ssize; ++i)
 		target->markers.emplace_back(smarkers[i]).enabled = false;
 }

@@ -32,8 +32,7 @@ private:
 	void prepareActual();
 	void prepareActualMarkersInfo();
 	void addMissingMarkers(const Gen::PlotPtr &source,
-	    const Gen::PlotPtr &target,
-	    bool withTargetCopying);
+	    const Gen::PlotPtr &target);
 	void copyTarget();
 };
 

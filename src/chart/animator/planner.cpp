@@ -415,12 +415,19 @@ bool Planner::needVertical() const
 	    || source->anyAxisSet != target->anyAxisSet
 	    || (source->markerConnectionOrientation
 	            != target->markerConnectionOrientation
-	        && ((source->markerConnectionOrientation.value_or(
-	                 Gen::Orientation::horizontal)
-	                == Gen::Orientation::vertical)
-	            || (target->markerConnectionOrientation.value_or(
-	                    Gen::Orientation::horizontal)
-	                == Gen::Orientation::vertical)))
+	        && (source->markerConnectionOrientation.value_or(
+	                Gen::Orientation::horizontal)
+	                == Gen::Orientation::vertical
+	            || target->markerConnectionOrientation.value_or(
+	                   Gen::Orientation::horizontal)
+	                   == Gen::Orientation::vertical))
+	    || source->measureAxises.at(Gen::ChannelId::label)
+	               .origMeasureName.get()
+	           != target->measureAxises.at(Gen::ChannelId::label)
+	                  .origMeasureName.get()
+	    || source->measureAxises.at(Gen::ChannelId::label).unit.get()
+	           != target->measureAxises.at(Gen::ChannelId::label)
+	                  .unit.get()
 	    || anyMarker(+[](const Gen::Marker &source,
 	                      const Gen::Marker &target) -> bool
 	        {

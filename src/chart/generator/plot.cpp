@@ -278,6 +278,7 @@ void Plot::calcMeasureAxis(ChannelId type)
 		    && options->align == Base::Align::Type::stretch) {
 			axis = {Math::Range<double>::Raw(0, 100),
 			    "%",
+			    meas->getColIndex(),
 			    scale.step.getValue()};
 		}
 		else {
@@ -287,6 +288,7 @@ void Plot::calcMeasureAxis(ChannelId type)
 
 			axis = {range,
 			    std::string{dataCube->getUnit(name)},
+			    meas->getColIndex(),
 			    scale.step.getValue()};
 		}
 	}
@@ -475,7 +477,7 @@ void Plot::normalizeColors()
 	}
 }
 
-void Plot::prependMarkers(const Plot &plot, bool enabled)
+void Plot::prependMarkers(const Plot &plot)
 {
 	auto size = plot.markers.size();
 
@@ -484,14 +486,12 @@ void Plot::prependMarkers(const Plot &plot, bool enabled)
 	              plot.getMarkers().end())
 	        + static_cast<std::ptrdiff_t>(size);
 
-	if (!enabled)
-		for (auto i = markers.begin(); i < it; ++i)
-			i->enabled = false;
+	for (auto i = markers.begin(); i < it; ++i) i->enabled = false;
 
 	while (it != markers.end()) it++->setIdOffset(size);
 }
 
-void Plot::appendMarkers(const Plot &plot, bool enabled)
+void Plot::appendMarkers(const Plot &plot)
 {
 	auto size = markers.size();
 
@@ -503,8 +503,7 @@ void Plot::appendMarkers(const Plot &plot, bool enabled)
 		auto &marker = *it;
 
 		marker.setIdOffset(size);
-
-		if (!enabled) marker.enabled = false;
+		marker.enabled = false;
 	}
 }
 

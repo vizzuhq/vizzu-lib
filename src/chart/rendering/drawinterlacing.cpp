@@ -245,9 +245,9 @@ void DrawInterlacing::drawDataLabel(
 	    {
 		    if (labelStyle.position->interpolates()
 		        && !axisEnabled
-		                .get(
-		                    std::min<uint64_t>(axisEnabled.has_second,
-		                        index))
+		                .get(std::min<uint64_t>(
+		                    axisEnabled.interpolates(),
+		                    index))
 		                .value)
 			    return;
 
@@ -264,15 +264,16 @@ void DrawInterlacing::drawDataLabel(
 		    default: break;
 		    }
 
-		    auto under = labelStyle.position->interpolates()
-		                   ? labelStyle.side
-		                             ->get(std::min<uint64_t>(
-		                                 labelStyle.side->has_second,
-		                                 index))
-		                             .value
-		                         == Styles::AxisLabel::Side::negative
-		                   : labelStyle.side->factor<double>(
-		                       Styles::AxisLabel::Side::negative);
+		    auto under =
+		        labelStyle.position->interpolates()
+		            ? labelStyle.side
+		                      ->get(std::min<uint64_t>(
+		                          labelStyle.side->interpolates(),
+		                          index))
+		                      .value
+		                  == Styles::AxisLabel::Side::negative
+		            : labelStyle.side->factor<double>(
+		                Styles::AxisLabel::Side::negative);
 		    unit.visit(
 		        [this,
 		            &drawLabel,

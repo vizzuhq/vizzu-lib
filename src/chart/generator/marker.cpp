@@ -94,21 +94,17 @@ Marker::Marker(const Options &options,
 
 	if (auto &&labelChannel = channels.at(ChannelId::label);
 	    !labelChannel.isEmpty()) {
-		auto value = getValueForChannel(channels,
+		auto value = std::make_optional(getValueForChannel(channels,
 		    ChannelId::label,
 		    data,
 		    stats,
-		    index);
-		if (auto &&labelStr = Label::getIndexString(
+		    index));
+
+		label = Label{labelChannel.isDimension() ? std::nullopt
+		                                         : std::move(value),
+		    Label::getIndexString(
 		        data.getDimensionValues(labelChannel.dimensions(),
-		            index));
-		    labelChannel.isDimension())
-			label = Label(std::move(labelStr));
-		else
-			label = Label(value,
-			    *labelChannel.measureId,
-			    data,
-			    std::move(labelStr));
+		            index))};
 	}
 }
 
@@ -228,24 +224,9 @@ void Marker::setSizeBy(bool horizontal,
 	fromRectangle(rect);
 }
 
-Marker::Label::Label(std::string &&indexStr) :
-    indexStr{std::move(indexStr)}
-{}
-
-Marker::Label::Label(double value,
-    const Data::SeriesIndex &measure,
-    const Data::DataCube &data,
-    std::string &&indexStr) :
-    value(value),
-    measureId(measure.getColIndex()),
-    unit(data.getUnit(measureId)),
-    indexStr(std::move(indexStr))
-{}
-
 bool Marker::Label::operator==(const Label &other) const
 {
-	return measureId == other.measureId && value == other.value
-	    && unit == other.unit && indexStr == other.indexStr;
+	return value == other.value && indexStr == other.indexStr;
 }
 
 std::string Marker::Label::getIndexString(
