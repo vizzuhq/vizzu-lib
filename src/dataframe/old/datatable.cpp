@@ -330,27 +330,41 @@ std::vector<std::string_view> DataCube::getDimensionValues(
 }
 
 std::shared_ptr<const CellInfo> DataCube::cellInfo(
-    const MultiIndex &index) const
+    const MultiIndex &index,
+    std::size_t markerIndex,
+    bool needMarkerInfo) const
 {
-	auto my_res = std::make_shared<CellInfo>(
-	    std::vector<std::pair<std::string, std::string>>(
-	        dim_reindex.size()),
-	    std::vector<std::pair<std::string, double>>(
-	        df->get_measures().size()));
+	auto my_res = std::make_shared<CellInfo>();
+	if (needMarkerInfo)
+		my_res->markerInfo.reserve(
+		    dim_reindex.size() + df->get_measures().size());
 
-	for (std::size_t ix{}; ix < dim_reindex.size(); ++ix) {
+	Conv::JSONObj obj{my_res->json};
+	obj("index", markerIndex);
+	std::size_t ix{};
+	for (Conv::JSONObj &&dims{obj.nested("categories")};
+	     ix < dim_reindex.size();
+	     ++ix) {
 		auto &&[name, cats, size] = dim_reindex[ix];
-		auto cix = index.old[ix];
-		my_res->categories[ix] = {std::string{name},
-		    cix < cats.size() ? cats[cix] : std::string{}};
+		auto &&cix = index.old[ix];
+		auto &&cat =
+		    cix < cats.size() ? cats[cix] : std::string_view{};
+		dims.key<false>(name).primitive(cat);
+		dims.operator()<false>(name, cat);
+		if (needMarkerInfo)
+			my_res->markerInfo.emplace_back(name, cat);
 	}
 
-	for (std::size_t ix{}; auto &&meas : df->get_measures())
-		my_res->values[ix++] = {meas,
-		    index.rid
-		        ? std::get<double>(df->get_data(*index.rid, meas))
-		        : 0.0};
-
+	for (Conv::JSONObj &&vals{obj.nested("values")};
+	     auto &&meas : df->get_measures()) {
+		auto val = std::get<double>(df->get_data(*index.rid, meas));
+		vals.key<false>(meas).primitive(val);
+		if (needMarkerInfo) {
+			thread_local auto conv =
+			    Conv::NumberToString{.fractionDigitCount = 3};
+			my_res->markerInfo.emplace_back(meas, conv(val));
+		}
+	}
 	return my_res;
 }
 

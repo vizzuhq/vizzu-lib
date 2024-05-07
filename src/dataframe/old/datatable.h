@@ -76,7 +76,9 @@ public:
 	[[nodiscard]] bool empty() const;
 
 	[[nodiscard]] std::shared_ptr<const CellInfo> cellInfo(
-	    const MultiIndex &index) const;
+	    const MultiIndex &index,
+	    std::size_t markerIndex,
+	    bool needMarkerInfo) const;
 
 	[[nodiscard]] double aggregateAt(const MultiIndex &multiIndex,
 	    const Gen::ChannelId &channelId,

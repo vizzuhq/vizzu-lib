@@ -44,7 +44,9 @@ public:
 	struct MarkerInfoContent
 	{
 		std::optional<Options::MarkerId> markerId;
-		std::vector<std::pair<std::string, std::string>> info;
+		std::shared_ptr<
+		    const std::vector<std::pair<std::string, std::string>>>
+		    info;
 
 		MarkerInfoContent() = default;
 		explicit MarkerInfoContent(const Marker &marker);
@@ -118,7 +120,6 @@ private:
 	std::size_t mainBucketSize{};
 
 	Buckets generateMarkers();
-	void generateMarkersInfo();
 	[[nodiscard]] bool linkMarkers(const Buckets &buckets,
 	    bool main) const;
 	void normalizeXY();

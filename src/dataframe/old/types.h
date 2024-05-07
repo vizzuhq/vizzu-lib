@@ -120,8 +120,9 @@ struct SliceIndex
 
 struct CellInfo
 {
-	std::vector<std::pair<std::string, std::string>> categories;
-	std::vector<std::pair<std::string, double>> values;
+	std::vector<std::pair<std::string, std::string>> markerInfo;
+
+	std::string json;
 };
 
 struct MultiIndex

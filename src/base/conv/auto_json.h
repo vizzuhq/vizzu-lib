@@ -317,6 +317,15 @@ struct JSONObj : protected JSONRepeat<'{', '}'>
 		any(val);
 		return std::move(*this);
 	}
+
+	inline JSONObj &&merge(std::string_view jsonObj) &&
+	{
+		if (jsonObj.size() > 2) {
+			sep();
+			json += jsonObj.substr(1, jsonObj.size() - 2);
+		}
+		return std::move(*this);
+	}
 };
 
 struct JSONArr : protected JSONRepeat<'[', ']'>

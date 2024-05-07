@@ -11,9 +11,12 @@ Marker::Marker(const Options &options,
     const Data::DataCube &data,
     ChannelsStats &stats,
     const Data::MultiIndex &index,
-    size_t idx) :
+    size_t idx,
+    bool needMarkerInfo) :
     enabled(data.empty() || !index.isEmpty()),
-    cellInfo(data.cellInfo(index)),
+    cellInfo(enabled || needMarkerInfo
+                 ? data.cellInfo(index, idx, needMarkerInfo)
+                 : nullptr),
     sizeId(data.getId(options.getChannels()
                           .at(ChannelId::size)
                           .dimensionsWithLevel(),
@@ -94,17 +97,17 @@ Marker::Marker(const Options &options,
 
 	if (auto &&labelChannel = channels.at(ChannelId::label);
 	    !labelChannel.isEmpty()) {
-		auto value = std::make_optional(getValueForChannel(channels,
+		auto &&value = std::make_optional(getValueForChannel(channels,
 		    ChannelId::label,
 		    data,
 		    stats,
 		    index));
 
-		label = Label{labelChannel.isDimension() ? std::nullopt
-		                                         : std::move(value),
-		    Label::getIndexString(
-		        data.getDimensionValues(labelChannel.dimensions(),
-		            index))};
+		label =
+		    Label{labelChannel.isDimension() ? std::nullopt : value,
+		        Label::getIndexString(
+		            data.getDimensionValues(labelChannel.dimensions(),
+		                index))};
 	}
 }
 
@@ -142,18 +145,10 @@ void Marker::setIdOffset(size_t offset)
 		(*nextSubMarkerIdx).value += offset;
 }
 
-std::string Marker::toJSON() const
-{
-	std::string res;
-	appendToJSON(Conv::JSONObj{res});
-	return res;
-}
-
 Conv::JSONObj &&Marker::appendToJSON(Conv::JSONObj &&jsonObj) const
 {
-	return std::move(
-	    jsonObj)("categories", cellInfo->categories)("values",
-	    cellInfo->values)("index", idx);
+	if (cellInfo) return std::move(jsonObj).merge(cellInfo->json);
+	return std::move(jsonObj);
 }
 
 double Marker::getValueForChannel(const Channels &channels,

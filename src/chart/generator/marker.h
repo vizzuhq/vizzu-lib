@@ -26,7 +26,8 @@ public:
 	    const Data::DataCube &data,
 	    ChannelsStats &stats,
 	    const Data::MultiIndex &index,
-	    size_t idx);
+	    size_t idx,
+	    bool needMarkerInfo);
 
 	::Anim::Interpolated<ColorBase> colorBase;
 	Geom::Point position;
@@ -77,7 +78,6 @@ public:
 
 	void setIdOffset(size_t offset);
 	Conv::JSONObj &&appendToJSON(Conv::JSONObj &&jsonObj) const;
-	[[nodiscard]] std::string toJSON() const;
 
 private:
 	double getValueForChannel(const Channels &channels,

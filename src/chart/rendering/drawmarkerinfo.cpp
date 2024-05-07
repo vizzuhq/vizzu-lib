@@ -96,7 +96,7 @@ void DrawMarkerInfo::MarkerDC::fillTextBox(Content &cnt)
 	if (parent.style.layout == Styles::Tooltip::Layout::multiLine)
 		text << TextBox::TabPos(0);
 	bool was_first{};
-	for (const auto &[cid, val] : cnt.info)
+	for (const auto &[cid, val] : *cnt.info)
 		if (cid == parent.style.seriesName) {
 			text << TextBox::Bkgnd(0) << TextBox::Fgnd(1);
 			text << static_cast<Gfx::Font>(parent.style)
@@ -113,7 +113,7 @@ void DrawMarkerInfo::MarkerDC::fillTextBox(Content &cnt)
 			break;
 		}
 
-	for (const auto &[cid, val] : cnt.info) {
+	for (const auto &[cid, val] : *cnt.info) {
 		if (cid == parent.style.seriesName) continue;
 
 		text << TextBox::Bkgnd(0) << TextBox::Fgnd(1);

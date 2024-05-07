@@ -32,13 +32,8 @@ Plot::MarkersInfo interpolate(const Plot::MarkersInfo &op1,
 
 Plot::MarkerInfoContent::MarkerInfoContent(const Marker &marker) :
     markerId(marker.idx),
-    info(marker.cellInfo->categories)
-{
-	thread_local auto conv =
-	    Conv::NumberToString{.fractionDigitCount = 3};
-	for (auto &&[ser, val] : marker.cellInfo->values)
-		info.emplace_back(ser, conv(val));
-}
+    info{marker.cellInfo, &marker.cellInfo->markerInfo}
+{}
 
 Plot::MarkerInfoContent::operator bool() const
 {
@@ -76,7 +71,6 @@ Plot::Plot(const Data::DataTable &dataTable,
 	anyAxisSet = options->getChannels().anyAxisSet();
 
 	auto &&subBuckets = generateMarkers();
-	generateMarkersInfo();
 
 	if (const SpecLayout specLayout(*this);
 	    specLayout.addIfNeeded(subBuckets)) {
@@ -125,17 +119,32 @@ Buckets Plot::generateMarkers()
 		markers.reserve(getDataCube().combinedSizeOf({}).first);
 	}
 
-	for (auto &&index : getDataCube()) {
+	std::multimap<Options::MarkerId, uint64_t> map;
+	for (auto &&[ix, mid] : options->markersInfo)
+		map.emplace(mid, ix);
+
+	for (auto first = map.begin(), last = map.end();
+	     auto &&index : getDataCube()) {
+		auto &&markerId = markers.size();
+		auto needInfo = first != last && first->first == markerId;
+
 		auto &marker = markers.emplace_back(*options,
 		    getDataCube(),
 		    stats,
 		    index,
-		    markers.size());
+		    markerId,
+		    needInfo);
 
 		mainBuckets[marker.mainId.get().seriesId]
 		           [marker.mainId.get().itemId] = &marker;
 		subBuckets[marker.subId.seriesId][marker.subId.itemId] =
 		    &marker;
+
+		while (needInfo) {
+			markersInfo.insert({first++->second,
+			    MarkerInfo{MarkerInfoContent{marker}}});
+			needInfo = first != last && first->first == markerId;
+		}
 	}
 	clearEmptyBuckets(mainBuckets, true);
 	clearEmptyBuckets(subBuckets, false);
@@ -150,13 +159,6 @@ Buckets Plot::generateMarkers()
 		    *options->orientation.get());
 	}
 	return subBuckets;
-}
-
-void Plot::generateMarkersInfo()
-{
-	for (auto &[ix, mid] : options->markersInfo)
-		markersInfo.insert(
-		    {ix, MarkerInfo{MarkerInfoContent{markers[mid]}}});
 }
 
 std::vector<std::pair<double, uint64_t>>
