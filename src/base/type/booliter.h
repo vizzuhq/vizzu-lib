@@ -2,15 +2,21 @@
 #define TYPE_BOOLITER_H
 
 #include <array>
-#include <span>
 
 namespace Type
 {
-constexpr static inline std::array boolArr = {false, true};
-constexpr static inline auto Bools =
-    [](bool max = true) -> std::span<const bool>
+struct Bools
 {
-	return {boolArr.data(), std::size_t{1} + max};
+	constexpr static std::array boolArr = {false, true};
+	bool max;
+	[[nodiscard]] static const bool *begin()
+	{
+		return boolArr.data();
+	}
+	[[nodiscard]] const bool *end() const
+	{
+		return boolArr.data() + 1 + max;
+	}
 };
 }
 

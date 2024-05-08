@@ -237,7 +237,7 @@ void DrawInterlacing::drawDataLabel(
 	    labelStyle.position->interpolates() || unit.interpolates();
 
 	auto &&normal = Geom::Point::Ident(horizontal);
-	for (auto &&index : Type::Bools(interpolates)) {
+	for (auto &&index : Type::Bools{interpolates}) {
 		if (labelStyle.position->interpolates()
 		    && !axisEnabled.get(index).value)
 			continue;

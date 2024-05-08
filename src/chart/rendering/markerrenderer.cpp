@@ -199,11 +199,11 @@ bool MarkerRenderer::shouldDrawMarkerBody(
 
 		if (const auto *prev0 = ConnectingMarker::getPrev(marker,
 		        plot->getMarkers(),
-		        0))
+		        false))
 			enabled |= prev0->enabled != false;
 		if (const auto *prev1 = ConnectingMarker::getPrev(marker,
 		        plot->getMarkers(),
-		        1))
+		        true))
 			enabled |= prev1->enabled != false;
 	}
 	return enabled;
@@ -292,7 +292,9 @@ void MarkerRenderer::drawLabel(Gfx::ICanvas &canvas,
 	if (abstractMarker.labelEnabled == false) return;
 	const auto &marker = abstractMarker.marker;
 
-	auto weight = marker.label.values[index].weight;
+	auto weight = marker.label.interpolates() || !index
+	                ? marker.label.get(index).weight
+	                : 0.0;
 	if (weight == 0.0) return;
 
 	auto color = getColor(abstractMarker, 1, true).second;

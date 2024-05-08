@@ -74,7 +74,7 @@ Marker::Marker(const Options &options,
 	    data,
 	    stats,
 	    index,
-	    horizontal ? &mainId.values[0].value : subAxisId);
+	    horizontal ? &mainId->value : subAxisId);
 
 	spacing.x = (horizontal || (lineOrCircle && !polar))
 	                 && options.getChannels().anyAxisSet()
@@ -87,7 +87,7 @@ Marker::Marker(const Options &options,
 	    data,
 	    stats,
 	    index,
-	    !horizontal ? &mainId.values[0].value : subAxisId);
+	    !horizontal ? &mainId->value : subAxisId);
 
 	spacing.y = (!horizontal || lineOrCircle)
 	                 && options.getChannels().anyAxisSet()

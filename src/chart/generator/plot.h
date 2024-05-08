@@ -110,7 +110,7 @@ private:
 	PlotOptionsPtr options;
 	Styles::Chart style;
 	std::optional<Data::DataCube> dataCube;
-	ChannelsStats *stats;
+	ChannelsStats *stats{};
 	Markers markers;
 	MarkersInfo markersInfo;
 

@@ -227,12 +227,12 @@ Options::MarkerInfoId Options::generateMarkerInfoId()
 
 void Options::setAutoParameters()
 {
-	if (auto &leg = legend.values[0]; leg.value.isAuto()) {
+	if (auto &leg = *legend; leg.value.isAuto()) {
 		leg.weight = 1.0;
 		leg.value.setAuto(getAutoLegend());
 	}
 
-	if (auto &ori = orientation.values[0]; ori.value.isAuto()) {
+	if (auto &ori = *orientation; ori.value.isAuto()) {
 		ori.weight = 1.0;
 		ori.value.setAuto(getAutoOrientation());
 	}

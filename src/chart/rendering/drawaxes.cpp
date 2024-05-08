@@ -164,7 +164,7 @@ void DrawAxes::drawTitle(Gen::ChannelId axisIndex) const
 	          || titleStyle.vposition->interpolates()
 	          || titleString.interpolates();
 
-	for (auto &&index : Type::Bools(fades)) {
+	for (auto &&index : Type::Bools{fades}) {
 		auto title = titleString.get(index);
 		if (title.value.empty()) continue;
 

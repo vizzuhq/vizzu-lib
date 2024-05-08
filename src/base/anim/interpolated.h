@@ -111,7 +111,8 @@ public:
 		return values[has_second && index];
 	}
 
-	template <class T> auto get(T &&index) const = delete;
+	template <class T>
+	[[nodiscard]] auto get(T &&index) const = delete;
 
 	explicit operator std::string() const
 	{
