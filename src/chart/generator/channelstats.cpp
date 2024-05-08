@@ -6,42 +6,31 @@ namespace Vizzu::Gen
 {
 
 ChannelStats::ChannelStats(const Channel &channel,
-    const Data::DataCube &cube) :
-    isDimension(channel.isDimension()),
-    usedIndices(isDimension
-                    ? cube.combinedSizeOf(channel.dimensions()).second
-                    : 0)
-{}
-
-void ChannelStats::track(double value)
+    const Data::DataCube &cube)
 {
-	if (isDimension)
-		throw std::logic_error(
-		    "internal error: invalid dimension channel tracking");
-
-	range.include(value);
+	if (channel.isDimension())
+		stat.emplace<1>(
+		    cube.combinedSizeOf(channel.dimensions()).second);
 }
+
+void ChannelStats::track(double value) { range().include(value); }
 
 void ChannelStats::track(const Marker::Id &id)
 {
-	if (isDimension)
-		usedIndices[id.itemId] = id.label;
-	else
-		throw std::logic_error(
-		    "internal error: invalid measure channel tracking");
+	indices()[id.itemId] = id.label;
 }
 
-ChannelsStats::ChannelsStats(const Channels &channels,
-    const Data::DataCube &cube)
-{
-	for (auto channelId = 0U; channelId < std::size(this->channels);
-	     ++channelId) {
-		const auto &channel =
-		    channels.at(static_cast<ChannelId>(channelId));
-
-		this->channels[static_cast<ChannelId>(channelId)] =
-		    ChannelStats(channel, cube);
-	}
-}
+ChannelsStats::ChannelsStats(const Channels &paramchannels,
+    const Data::DataCube &cube) :
+    channels(
+        [&]<std::size_t... Ix>(
+            std::index_sequence<Ix...>) -> decltype(channels)
+        {
+	        return {ChannelStats(
+	            paramchannels.at(static_cast<ChannelId>(Ix)),
+	            cube)...};
+        }(std::make_index_sequence<
+            std::tuple_size_v<decltype(channels)::base_array>>{}))
+{}
 
 }

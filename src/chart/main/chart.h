@@ -58,11 +58,11 @@ public:
 	}
 	::Anim::Control &getAnimControl()
 	{
-		return animator->getControl();
+		return animator.getControl();
 	}
 	Anim::AnimationPtr getAnimation()
 	{
-		return animator->getActAnimation();
+		return animator.getActAnimation();
 	}
 	Anim::Options &getAnimOptions() { return nextAnimOptions; }
 	[[nodiscard]] const Layout &getLayout() const { return layout; }
@@ -83,7 +83,7 @@ public:
 
 private:
 	Layout layout;
-	std::shared_ptr<Anim::Animator> animator;
+	Anim::Animator animator;
 	Data::DataTable table;
 	Gen::PlotPtr actPlot;
 	Gen::PlotOptionsPtr nextOptions;

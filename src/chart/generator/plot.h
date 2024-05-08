@@ -92,10 +92,6 @@ public:
 	{
 		return *dataCube;
 	}
-	[[nodiscard]] const ChannelsStats &getStats() const
-	{
-		return stats;
-	}
 	[[nodiscard]] const Styles::Chart &getStyle() const
 	{
 		return style;
@@ -113,12 +109,13 @@ private:
 	PlotOptionsPtr options;
 	Styles::Chart style;
 	std::optional<Data::DataCube> dataCube;
-	ChannelsStats stats;
+	ChannelsStats *stats;
 	Markers markers;
 	MarkersInfo markersInfo;
 
 	std::size_t mainBucketSize{};
 
+	[[nodiscard]] ChannelsStats &getStats() { return *stats; }
 	Buckets generateMarkers();
 	[[nodiscard]] bool linkMarkers(const Buckets &buckets,
 	    bool main) const;

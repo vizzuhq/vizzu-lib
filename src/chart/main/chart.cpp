@@ -7,7 +7,6 @@ namespace Vizzu
 {
 
 Chart::Chart() :
-    animator(std::make_shared<Anim::Animator>()),
     stylesheet(Styles::Chart::def()),
     computedStyles(stylesheet.getDefaultParams()),
     events(getEventDispatcher())
@@ -15,23 +14,23 @@ Chart::Chart() :
 	stylesheet.setActiveParams(actStyles);
 	nextOptions = std::make_shared<Gen::Options>();
 
-	animator->onDraw.attach(
+	animator.onDraw.attach(
 	    [this](const Gen::PlotPtr &actPlot)
 	    {
 		    this->actPlot = actPlot;
 		    if (onChanged) onChanged();
 	    });
-	animator->onProgress.attach(
+	animator.onProgress.attach(
 	    [this]()
 	    {
 		    events.animation.update->invoke(
-		        Events::OnUpdateEvent(animator->getControl()));
+		        Events::OnUpdateEvent(animator.getControl()));
 	    });
-	animator->onBegin = [this]()
+	animator.onBegin = [this]()
 	{
 		events.animation.begin->invoke();
 	};
-	animator->onComplete = [this]()
+	animator.onComplete = [this]()
 	{
 		events.animation.complete->invoke();
 	};
@@ -68,22 +67,21 @@ void Chart::animate(const OnComplete &onComplete)
 		}
 		if (onComplete) onComplete(ok);
 	};
-	animator->animate(nextAnimOptions.control, f);
+	animator.animate(nextAnimOptions.control, f);
 	nextAnimOptions = Anim::Options();
 	nextOptions = std::make_shared<Gen::Options>(*nextOptions);
 }
 
 void Chart::setKeyframe()
 {
-	animator->addKeyframe(plot(nextOptions),
-	    nextAnimOptions.keyframe);
+	animator.addKeyframe(plot(nextOptions), nextAnimOptions.keyframe);
 	nextAnimOptions.keyframe = Anim::Options::Keyframe();
 	nextOptions = std::make_shared<Gen::Options>(*nextOptions);
 }
 
 void Chart::setAnimation(const Anim::AnimationPtr &animation)
 {
-	animator->setAnimation(animation);
+	animator.setAnimation(animation);
 }
 
 Gen::Config Chart::getConfig()

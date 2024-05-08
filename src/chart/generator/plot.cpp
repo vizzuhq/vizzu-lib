@@ -65,9 +65,11 @@ Plot::Plot(const Data::DataTable &dataTable,
     dataTable(dataTable),
     options(std::move(opts)),
     style(std::move(style)),
-    dataCube(std::in_place, dataTable, *options),
-    stats(options->getChannels(), getDataCube())
+    dataCube(std::in_place, dataTable, *options)
 {
+	ChannelsStats stats(options->getChannels(), getDataCube());
+	this->stats = &stats;
+
 	anyAxisSet = options->getChannels().anyAxisSet();
 
 	auto &&subBuckets = generateMarkers();
@@ -90,6 +92,8 @@ Plot::Plot(const Data::DataTable &dataTable,
 	}
 
 	guides.init(*options);
+
+	this->stats = nullptr;
 }
 
 void Plot::detachOptions()
@@ -130,7 +134,7 @@ Buckets Plot::generateMarkers()
 
 		auto &marker = markers.emplace_back(*options,
 		    getDataCube(),
-		    stats,
+		    getStats(),
 		    index,
 		    markerId,
 		    needInfo);
@@ -227,9 +231,9 @@ void Plot::normalizeXY()
 	const auto &yrange = options->getVeritalAxis().range;
 
 	if (markers.empty()) {
-		stats.channels[ChannelId::x].range =
+		getStats().channels[ChannelId::x].range() =
 		    xrange.getRange({0.0, 0.0});
-		stats.channels[ChannelId::y].range =
+		getStats().channels[ChannelId::y].range() =
 		    yrange.getRange({0.0, 0.0});
 		return;
 	}
@@ -256,8 +260,8 @@ void Plot::normalizeXY()
 		marker.fromRectangle(newRect);
 	}
 
-	stats.channels[ChannelId::x].range = boundRect.hSize();
-	stats.channels[ChannelId::y].range = boundRect.vSize();
+	getStats().channels[ChannelId::x].range() = boundRect.hSize();
+	getStats().channels[ChannelId::y].range() = boundRect.vSize();
 }
 
 void Plot::calcMeasureAxises()
@@ -284,7 +288,7 @@ void Plot::calcMeasureAxis(ChannelId type)
 			    scale.step.getValue()};
 		}
 		else {
-			auto range = stats.channels[type].range;
+			auto range = getStats().channels[type].range();
 			if (!range.isReal())
 				range = Math::Range<double>::Raw({}, {});
 
@@ -328,7 +332,7 @@ void Plot::calcDimensionAxis(ChannelId type)
 		}
 	}
 	else {
-		const auto &indices = stats.channels[type].usedIndices;
+		const auto &indices = getStats().channels[type].indices();
 
 		double count = 0;
 		for (auto i = 0U; i < indices.size(); ++i)
@@ -466,8 +470,8 @@ void Plot::normalizeColors()
 			cbase.setPos(color.rescale(cbase.getPos()));
 	}
 
-	stats.channels[ChannelId::color].range = color;
-	stats.channels[ChannelId::lightness].range = lightness;
+	getStats().channels[ChannelId::color].range() = color;
+	getStats().channels[ChannelId::lightness].range() = lightness;
 
 	for (auto &value : dimensionAxises.at(ChannelId::color))
 		value.second.colorBase =
