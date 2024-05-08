@@ -113,13 +113,15 @@ void MarkerRenderer::drawMarkers(Gfx::ICanvas &canvas,
 			auto drawMarker =
 			    [this, &blended, &other, &canvas, &painter](
 			        bool index,
-			        const ::Anim::Weighted<uint64_t> &value)
+			        const ::Anim::Weighted<Gen::Options::MarkerIndex>
+			            &value = ::Anim::Weighted(
+			                Gen::Options::MarkerIndex{}))
 			{
 				if (index && !other) {
 					other.emplace(
 					    AbstractMarker::createInterpolated(ctx(),
 					        blended.marker,
-					        1));
+					        true));
 				}
 				const auto &blended0 = index ? *other : blended;
 
@@ -155,15 +157,14 @@ void MarkerRenderer::drawMarkers(Gfx::ICanvas &canvas,
 					auto lineIndex = !Gen::isConnecting(
 					    getOptions().geometry.get(false).value);
 
-					drawMarker(lineIndex,
-					    ::Anim::Weighted<uint64_t>(0));
+					drawMarker(lineIndex);
 				}
 				else
 					blended.marker.prevMainMarkerIdx.visit(
 					    drawMarker);
 			}
 			else
-				drawMarker(0, ::Anim::Weighted<uint64_t>(0));
+				drawMarker(false);
 		}
 	}
 }
@@ -178,12 +179,12 @@ void MarkerRenderer::drawLabels(Gfx::ICanvas &canvas) const
 		    blended,
 		    axis.unit.get(false).value,
 		    keepMeasure,
-		    0);
+		    false);
 		drawLabel(canvas,
 		    blended,
 		    axis.unit.get(true).value,
 		    keepMeasure,
-		    1);
+		    true);
 	}
 }
 
@@ -286,7 +287,7 @@ void MarkerRenderer::drawLabel(Gfx::ICanvas &canvas,
     const AbstractMarker &abstractMarker,
     const std::string &unit,
     bool keepMeasure,
-    size_t index) const
+    bool index) const
 {
 	if (abstractMarker.labelEnabled == false) return;
 	const auto &marker = abstractMarker.marker;
@@ -327,7 +328,7 @@ std::string MarkerRenderer::getLabelText(
     const ::Anim::Interpolated<Gen::Marker::Label> &label,
     const std::string &unit,
     bool keepMeasure,
-    size_t index) const
+    bool index) const
 {
 	const auto &labelStyle = rootStyle.plot.marker.label;
 	const auto &values = label.values;
@@ -440,7 +441,7 @@ MarkerRenderer MarkerRenderer::create(const DrawingContext &ctx)
 		if (!res.shouldDrawMarkerBody(marker)) continue;
 
 		res.markers.push_back(
-		    AbstractMarker::createInterpolated(ctx, marker, 0));
+		    AbstractMarker::createInterpolated(ctx, marker, false));
 	}
 	return res;
 }

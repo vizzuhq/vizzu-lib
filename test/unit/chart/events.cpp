@@ -368,7 +368,7 @@ std::multimap<std::string, event_as, std::less<>> get_events(
 	for (const auto &name : eventNames) {
 		auto n = chart.getEventDispatcher().getEvent(name);
 		skip->*n != nullptr;
-		n->attach(0, event_handler);
+		n->attach({}, event_handler);
 	}
 
 	using clock_t = std::chrono::steady_clock;

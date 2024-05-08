@@ -11,7 +11,7 @@ Marker::Marker(const Options &options,
     const Data::DataCube &data,
     ChannelsStats &stats,
     const Data::MultiIndex &index,
-    size_t idx,
+    MarkerIndex idx,
     bool needMarkerInfo) :
     enabled(data.empty() || !index.isEmpty()),
     cellInfo(enabled || needMarkerInfo
@@ -138,11 +138,11 @@ void Marker::resetSize(bool horizontal)
 void Marker::setIdOffset(size_t offset)
 {
 	if (prevMainMarkerIdx.hasOneValue())
-		(*prevMainMarkerIdx).value += offset;
+		prevMainMarkerIdx->value += offset;
 	if (nextMainMarkerIdx.hasOneValue())
-		(*nextMainMarkerIdx).value += offset;
+		nextMainMarkerIdx->value += offset;
 	if (nextSubMarkerIdx.hasOneValue())
-		(*nextSubMarkerIdx).value += offset;
+		nextSubMarkerIdx->value += offset;
 }
 
 Conv::JSONObj &&Marker::appendToJSON(Conv::JSONObj &&jsonObj) const

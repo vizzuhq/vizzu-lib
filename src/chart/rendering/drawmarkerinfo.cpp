@@ -78,7 +78,7 @@ void DrawMarkerInfo::MarkerDC::loadMarker(Content &cnt)
 	auto blendedMarker =
 	    Draw::AbstractMarker::createInterpolated(parent.ctx(),
 	        marker,
-	        0);
+	        false);
 
 	auto line =
 	    blendedMarker.getLabelPos(Styles::MarkerLabel::Position::top,

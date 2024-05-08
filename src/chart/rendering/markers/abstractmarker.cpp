@@ -14,7 +14,7 @@ namespace Vizzu::Draw
 AbstractMarker AbstractMarker::create(const DrawingContext &ctx,
     const Gen::Marker &marker,
     const Gen::ShapeType &shapeType,
-    size_t lineIndex)
+    bool lineIndex)
 {
 	switch (shapeType) {
 	case Gen::ShapeType::rectangle:
@@ -36,7 +36,7 @@ AbstractMarker AbstractMarker::create(const DrawingContext &ctx,
 AbstractMarker AbstractMarker::createInterpolated(
     const DrawingContext &ctx,
     const Gen::Marker &marker,
-    size_t lineIndex)
+    bool lineIndex)
 {
 	const auto &options = ctx.getOptions();
 

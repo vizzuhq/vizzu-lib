@@ -211,16 +211,17 @@ bool Options::isShapeValid(const ShapeType &shapeType) const
 	    || shapeType == ShapeType::circle;
 }
 
-std::optional<uint64_t> Options::getMarkerInfoId(MarkerId id) const
+std::optional<Options::MarkerInfoId> Options::getMarkerInfoId(
+    MarkerIndex id) const
 {
 	for (auto &&[gid, mkid] : markersInfo)
 		if (mkid == id) return gid;
 	return {};
 }
 
-uint64_t Options::generateMarkerInfoId()
+Options::MarkerInfoId Options::generateMarkerInfoId()
 {
-	static std::atomic_uint64_t nextMarkerInfoId = 1;
+	static std::atomic<MarkerInfoId> nextMarkerInfoId{1};
 	return nextMarkerInfoId.fetch_add(1, std::memory_order_relaxed);
 }
 
@@ -327,7 +328,7 @@ bool Options::labelsShownFor(const Data::SeriesIndex &series) const
 	               == series);
 }
 
-void Options::showTooltip(std::optional<MarkerId> marker)
+void Options::showTooltip(std::optional<MarkerIndex> marker)
 {
 	if (!marker && tooltip) {
 		if (auto &&miid = getMarkerInfoId(*tooltip))

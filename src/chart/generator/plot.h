@@ -40,10 +40,11 @@ class Plot
 
 public:
 	using Markers = std::vector<Marker>;
+	using MarkerInfoId = Options::MarkerInfoId;
 
 	struct MarkerInfoContent
 	{
-		std::optional<Options::MarkerId> markerId;
+		std::optional<Marker::MarkerIndex> markerId;
 		std::shared_ptr<
 		    const std::vector<std::pair<std::string, std::string>>>
 		    info;
@@ -55,7 +56,7 @@ public:
 	};
 
 	using MarkerInfo = ::Anim::Interpolated<MarkerInfoContent>;
-	using MarkersInfo = std::map<uint64_t, MarkerInfo>;
+	using MarkersInfo = std::map<MarkerInfoId, MarkerInfo>;
 
 	static bool dimensionMatch(const Plot &a, const Plot &b);
 
@@ -128,7 +129,7 @@ private:
 	void addSeparation(const Buckets &subBuckets) const;
 	void normalizeSizes();
 	void normalizeColors();
-	[[nodiscard]] std::vector<std::pair<double, uint64_t>>
+	[[nodiscard]] std::vector<std::pair<double, std::size_t>>
 	sortedBuckets(const Buckets &buckets, bool main) const;
 	void clearEmptyBuckets(const Buckets &buckets, bool main) const;
 };

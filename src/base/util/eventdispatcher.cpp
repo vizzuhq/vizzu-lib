@@ -46,13 +46,13 @@ bool EventDispatcher::Event::invoke(Params &&params)
 	return !params.preventDefault;
 }
 
-void EventDispatcher::Event::attach(std::uint64_t id,
+void EventDispatcher::Event::attach(handler_hash id,
     handler_fn handler)
 {
 	handlers.emplace_front(id, std::move(handler));
 }
 
-void EventDispatcher::Event::detach(std::uint64_t id)
+void EventDispatcher::Event::detach(handler_hash id)
 {
 	for (auto oit = handlers.before_begin(), it = std::next(oit);
 	     it != handlers.end();

@@ -24,10 +24,11 @@ class EventDispatcher
 public:
 	class Event;
 	class Params;
+	using handler_hash = std::size_t;
 	using event_ptr = std::shared_ptr<Event>;
 	using handler_fn = std::function<void(Params &)>;
 	using handler_list =
-	    std::forward_list<std::pair<std::uint64_t, handler_fn>>;
+	    std::forward_list<std::pair<handler_hash, handler_fn>>;
 
 	class Params
 	{
@@ -52,8 +53,8 @@ public:
 
 		[[nodiscard]] const std::string_view &name() const noexcept;
 		bool invoke(Params &&params = Params{});
-		void attach(std::uint64_t id, handler_fn handler);
-		void detach(std::uint64_t id);
+		void attach(handler_hash id, handler_fn handler);
+		void detach(handler_hash id);
 		[[nodiscard]] bool operator()(Params &&params);
 
 	protected:

@@ -123,7 +123,7 @@ Buckets Plot::generateMarkers()
 		markers.reserve(getDataCube().combinedSizeOf({}).first);
 	}
 
-	std::multimap<Options::MarkerId, uint64_t> map;
+	std::multimap<Marker::MarkerIndex, Options::MarkerInfoId> map;
 	for (auto &&[ix, mid] : options->markersInfo)
 		map.emplace(mid, ix);
 
@@ -165,10 +165,10 @@ Buckets Plot::generateMarkers()
 	return subBuckets;
 }
 
-std::vector<std::pair<double, uint64_t>>
+std::vector<std::pair<double, std::size_t>>
 Plot::sortedBuckets(const Buckets &buckets, bool main) const
 {
-	std::vector<std::pair<double, uint64_t>> sorted(
+	std::vector<std::pair<double, std::size_t>> sorted(
 	    buckets.inner_size());
 
 	for (auto &&bucket : buckets)

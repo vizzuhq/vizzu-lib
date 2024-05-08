@@ -22,11 +22,13 @@ class ChannelsStats;
 class Marker
 {
 public:
+	using MarkerIndex = Options::MarkerIndex;
+
 	Marker(const Options &options,
 	    const Data::DataCube &data,
 	    ChannelsStats &stats,
 	    const Data::MultiIndex &index,
-	    size_t idx,
+	    MarkerIndex idx,
 	    bool needMarkerInfo);
 
 	::Anim::Interpolated<ColorBase> colorBase;
@@ -58,10 +60,10 @@ public:
 	Id subId;
 	Id sizeId;
 
-	uint64_t idx;
-	::Anim::Interpolated<uint64_t> prevMainMarkerIdx;
-	::Anim::Interpolated<uint64_t> nextMainMarkerIdx;
-	::Anim::Interpolated<uint64_t> nextSubMarkerIdx;
+	MarkerIndex idx;
+	::Anim::Interpolated<MarkerIndex> prevMainMarkerIdx;
+	::Anim::Interpolated<MarkerIndex> nextMainMarkerIdx;
+	::Anim::Interpolated<MarkerIndex> nextSubMarkerIdx;
 
 	void setNextMarker(bool first,
 	    Marker &marker,

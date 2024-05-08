@@ -79,8 +79,8 @@ const Config::Accessors &Config::getAccessors()
 	            .set =
 	                [](Options &options, const std::string &value)
 	            {
-		            options.showTooltip(
-		                Conv::parse<std::optional<uint64_t>>(value));
+		            options.showTooltip(Conv::parse<
+		                std::optional<Options::MarkerIndex>>(value));
 	            }}}};
 
 	return accessors;

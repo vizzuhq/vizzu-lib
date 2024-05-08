@@ -35,7 +35,7 @@ private:
 	    const AbstractMarker &abstractMarker,
 	    const std::string &unit,
 	    bool keepMeasure,
-	    size_t index) const;
+	    bool index) const;
 
 	[[nodiscard]] Gfx::Color
 	getSelectedColor(const Gen::Marker &marker, bool label) const;
@@ -43,7 +43,7 @@ private:
 	    const ::Anim::Interpolated<Gen::Marker::Label> &label,
 	    const std::string &unit,
 	    bool keepMeasure,
-	    size_t index) const;
+	    bool index) const;
 };
 
 }
