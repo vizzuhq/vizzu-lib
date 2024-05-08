@@ -23,9 +23,9 @@ public:
 private:
 	[[nodiscard]] Geom::Line getAxis(Gen::ChannelId axisIndex) const;
 	[[nodiscard]] Geom::Point
-	getTitleBasePos(Gen::ChannelId axisIndex, int index) const;
+	getTitleBasePos(Gen::ChannelId axisIndex, bool index) const;
 	[[nodiscard]] Geom::Point getTitleOffset(Gen::ChannelId axisIndex,
-	    int index,
+	    bool index,
 	    bool fades) const;
 	void drawAxis(Gen::ChannelId axisIndex) const;
 	void drawTitle(Gen::ChannelId axisIndex) const;

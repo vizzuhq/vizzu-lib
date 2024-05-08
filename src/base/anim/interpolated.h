@@ -90,15 +90,13 @@ public:
 
 	[[nodiscard]] Interpolated shifted() const
 	{
-		if (!has_second) {
-			Interpolated res;
-			res.values[0] = Weighted<Type>();
-			res.values[1] = values[0];
-			res.has_second = true;
-			return res;
-		}
+		if (has_second)
+			throw std::logic_error("Cannot move Weigthed Value");
 
-		throw std::logic_error("Cannot move Weigthed Value");
+		Interpolated res;
+		res.values[1] = values[0];
+		res.has_second = true;
+		return res;
 	}
 
 	[[nodiscard]] const Type &get() const
@@ -108,13 +106,12 @@ public:
 		throw std::logic_error("Invalid Weigthed Pair");
 	}
 
-	[[nodiscard]] const Weighted<Type> &get(uint64_t index) const
+	[[nodiscard]] const Weighted<Type> &get(bool index) const
 	{
-		if (index >= 2)
-			throw std::logic_error("Invalid Weigthed Pair index");
-
-		return values[has_second ? index : 0];
+		return values[has_second && index];
 	}
+
+	template <class T> auto get(T &&index) const = delete;
 
 	explicit operator std::string() const
 	{
@@ -153,19 +150,20 @@ public:
 		return values[0] < other.values[0];
 	}
 
-	void visit(const std::function<void(int, const Weighted<Type> &)>
+	void visit(const std::function<void(bool, const Weighted<Type> &)>
 	        &branch) const
 	{
-		if (values[0].hasValue()) branch(0, values[0]);
-		if (has_second && values[1].hasValue()) branch(1, values[1]);
+		if (values[0].hasValue()) branch(false, values[0]);
+		if (has_second && values[1].hasValue())
+			branch(true, values[1]);
 	}
 
 	template <typename T>
-	T combine(const std::function<T(int, const Type &)> &branch) const
+	T combine(const std::function<T(const Type &)> &branch) const
 	{
-		auto res = branch(0, values[0].value) * values[0].weight;
+		auto res = branch(values[0].value) * values[0].weight;
 		if (has_second)
-			res = res + branch(1, values[1].value) * values[1].weight;
+			res = res + branch(values[1].value) * values[1].weight;
 		return T{res};
 	}
 
@@ -179,7 +177,7 @@ public:
 	template <class T, class U>
 	[[nodiscard]] T factor(const U &value) const
 	{
-		double res = 0;
+		double res{};
 		if (values[0].value == value) res += values[0].weight;
 		if (has_second && values[1].value == value)
 			res += values[1].weight;

@@ -32,7 +32,7 @@ void DrawChart::drawLegend(Gfx::ICanvas &canvas,
 	auto &&legendObj = DrawLegend{{ctx()}};
 
 	getOptions().legend.visit(
-	    [&legendObj, &canvas, &bounds](int, const auto &legend)
+	    [&legendObj, &canvas, &bounds](bool, const auto &legend)
 	    {
 		    if (legend.value)
 			    legendObj.draw(canvas,
@@ -53,7 +53,7 @@ void DrawChart::drawHeading(Gfx::ICanvas &canvas,
 	            &style = getter(rootStyle),
 	            &event = *getter(rootEvents.draw),
 	            &canvas,
-	            this](int, const auto &weighted)
+	            this](bool, const auto &weighted)
 	        {
 		        if (weighted.value.has_value()) {
 			        DrawLabel{{ctx()}}.draw(canvas,

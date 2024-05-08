@@ -63,7 +63,7 @@ public:
 	::Anim::Interpolated<uint64_t> nextMainMarkerIdx;
 	::Anim::Interpolated<uint64_t> nextSubMarkerIdx;
 
-	void setNextMarker(uint64_t itemId,
+	void setNextMarker(bool first,
 	    Marker &marker,
 	    bool horizontal,
 	    bool main);

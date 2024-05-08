@@ -189,19 +189,12 @@ Plot::sortedBuckets(const Buckets &buckets, bool main) const
 
 void Plot::clearEmptyBuckets(const Buckets &buckets, bool main) const
 {
-	for (auto &&bucket : buckets) {
-		bool enabled = false;
-
-		for (auto &&marker : bucket)
-			if (static_cast<bool>(marker->enabled)) {
-				enabled = true;
-				break;
-			}
-
-		if (!enabled)
+	for (auto &&bucket : buckets)
+		if (!std::any_of(bucket.begin(),
+		        bucket.end(),
+		        std::mem_fn(&Marker::enabled)))
 			for (auto &&marker : bucket)
 				marker->resetSize(options->isHorizontal() == !main);
-	}
 }
 
 bool Plot::linkMarkers(const Buckets &buckets, bool main) const
@@ -215,7 +208,7 @@ bool Plot::linkMarkers(const Buckets &buckets, bool main) const
 			auto iNext = (i + 1) % sorted.size();
 			auto idNext = sorted[iNext].second;
 			auto &next = *bucket[idNext];
-			act.setNextMarker(iNext,
+			act.setNextMarker(iNext == 0,
 			    next,
 			    options->isHorizontal() == main,
 			    main);

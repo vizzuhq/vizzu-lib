@@ -1,5 +1,6 @@
 #include "drawaxes.h"
 
+#include "base/type/booliter.h"
 #include "chart/generator/plot.h"
 #include "chart/rendering/drawguides.h"
 #include "chart/rendering/orientedlabel.h"
@@ -80,7 +81,7 @@ void DrawAxes::drawAxis(Gen::ChannelId axisIndex) const
 }
 
 Geom::Point DrawAxes::getTitleBasePos(Gen::ChannelId axisIndex,
-    int index) const
+    bool index) const
 {
 	typedef Styles::AxisTitle::Position Pos;
 	typedef Styles::AxisTitle::VPosition VPos;
@@ -113,12 +114,12 @@ Geom::Point DrawAxes::getTitleBasePos(Gen::ChannelId axisIndex,
 }
 
 Geom::Point DrawAxes::getTitleOffset(Gen::ChannelId axisIndex,
-    int index,
+    bool index,
     bool fades) const
 {
 	const auto &titleStyle = rootStyle.plot.getAxis(axisIndex).title;
 
-	auto calcSide = [](int, auto side)
+	auto calcSide = [](const auto &side)
 	{
 		typedef Styles::AxisTitle::Side Side;
 		switch (side) {
@@ -129,11 +130,11 @@ Geom::Point DrawAxes::getTitleOffset(Gen::ChannelId axisIndex,
 		}
 	};
 
-	auto orthogonal =
-	    fades ? calcSide(0, titleStyle.side->get(index).value)
-	          : titleStyle.side->combine<double>(calcSide);
+	auto orthogonal = fades
+	                    ? calcSide(titleStyle.side->get(index).value)
+	                    : titleStyle.side->combine<double>(calcSide);
 
-	auto calcVSide = [](int, auto side)
+	auto calcVSide = [](const auto &side)
 	{
 		typedef Styles::AxisTitle::VSide Side;
 		switch (side) {
@@ -144,9 +145,9 @@ Geom::Point DrawAxes::getTitleOffset(Gen::ChannelId axisIndex,
 		}
 	};
 
-	auto parallel =
-	    fades ? calcVSide(0, titleStyle.vside->get(index).value)
-	          : titleStyle.vside->combine<double>(calcVSide);
+	auto parallel = fades
+	                  ? calcVSide(titleStyle.vside->get(index).value)
+	                  : titleStyle.vside->combine<double>(calcVSide);
 
 	return axisIndex == Gen::ChannelId::x
 	         ? Geom::Point{parallel, -orthogonal}
@@ -163,82 +164,77 @@ void DrawAxes::drawTitle(Gen::ChannelId axisIndex) const
 	          || titleStyle.vposition->interpolates()
 	          || titleString.interpolates();
 
-	for (int index = 0; index < (fades ? 2 : 1); ++index) {
+	for (auto &&index : Type::Bools(fades)) {
 		auto title = titleString.get(index);
+		if (title.value.empty()) continue;
 
-		if (!title.value.empty()) {
-			auto weight = title.weight
-			            * titleStyle.position->get(index).weight
-			            * titleStyle.vposition->get(index).weight;
+		auto weight = title.weight
+		            * titleStyle.position->get(index).weight
+		            * titleStyle.vposition->get(index).weight;
 
-			const Gfx::Font font(titleStyle);
-			canvas.setFont(font);
-			auto size = titleStyle.extendSize(
-			    Gfx::ICanvas::textBoundary(font, title.value),
-			    font.size);
+		const Gfx::Font font(titleStyle);
+		canvas.setFont(font);
+		auto size = titleStyle.extendSize(
+		    Gfx::ICanvas::textBoundary(font, title.value),
+		    font.size);
 
-			auto relCenter = getTitleBasePos(axisIndex, index);
+		auto relCenter = getTitleBasePos(axisIndex, index);
 
-			auto normal = Geom::Point::Ident(true);
+		auto normal = Geom::Point::Ident(true);
 
-			auto offset = getTitleOffset(axisIndex, index, fades);
+		auto offset = getTitleOffset(axisIndex, index, fades);
 
-			auto posDir = coordSys.convertDirectionAt(
-			    {relCenter, relCenter + normal});
+		auto posDir = coordSys.convertDirectionAt(
+		    {relCenter, relCenter + normal});
 
-			auto posAngle = posDir.getDirection().angle();
+		auto posAngle = posDir.getDirection().angle();
 
-			canvas.save();
+		canvas.save();
 
-			Geom::AffineTransform transform(posDir.begin,
-			    1.0,
-			    -posAngle);
+		Geom::AffineTransform transform(posDir.begin, 1.0, -posAngle);
 
-			auto calcOrientation = [&](int, auto orientation)
-			{
-				return Geom::Size{orientation
-				                          == Styles::AxisTitle::
-				                              Orientation::vertical
-				                      ? size.flip()
-				                      : size};
-			};
+		auto calcOrientation = [&size](const auto &orientation)
+		{
+			return Geom::Size{
+			    orientation
+			            == Styles::AxisTitle::Orientation::vertical
+			        ? size.flip()
+			        : size};
+		};
 
-			auto angle =
-			    -M_PI / 2.0
-			    * (fades ? titleStyle.orientation->get(index).value
-			                   == Styles::AxisTitle::Orientation::
-			                       vertical
-			             : titleStyle.orientation->factor<double>(
-			                 Styles::AxisTitle::Orientation::
-			                     vertical));
+		auto angle =
+		    -M_PI / 2.0
+		    * (fades ? titleStyle.orientation->get(index).value
+		                   == Styles::AxisTitle::Orientation::vertical
+		             : titleStyle.orientation->factor<double>(
+		                 Styles::AxisTitle::Orientation::vertical));
 
-			auto orientedSize =
-			    (fades ? calcOrientation(0,
-			         titleStyle.orientation->get(index).value)
-			           : titleStyle.orientation->combine<Geom::Size>(
-			               calcOrientation));
+		auto orientedSize =
+		    (fades ? calcOrientation(
+		         titleStyle.orientation->get(index).value)
+		           : titleStyle.orientation->combine<Geom::Size>(
+		               calcOrientation));
 
-			auto center = offset * (orientedSize / 2.0);
+		auto center = offset * (orientedSize / 2.0);
 
-			transform = transform
-			          * Geom::AffineTransform(center, 1.0, angle)
-			          * Geom::AffineTransform((orientedSize / -2.0));
+		transform = transform
+		          * Geom::AffineTransform(center, 1.0, angle)
+		          * Geom::AffineTransform((orientedSize / -2.0));
 
-			auto realAngle = Geom::Angle(-posAngle + angle).rad();
-			auto upsideDown =
-			    realAngle > M_PI / 2.0 && realAngle < 3 * M_PI / 2.0;
+		auto realAngle = Geom::Angle(-posAngle + angle).rad();
+		auto upsideDown =
+		    realAngle > M_PI / 2.0 && realAngle < 3 * M_PI / 2.0;
 
-			DrawLabel{{ctx()}}.draw(canvas,
-			    Geom::TransformedRect{transform, Geom::Size{size}},
-			    title.value,
-			    titleStyle,
-			    *rootEvents.draw.plot.axis.title,
-			    Events::Targets::axisTitle(title.value,
-			        axisIndex == Gen::ChannelId::x),
-			    {.alpha = weight, .flip = upsideDown});
+		DrawLabel{{ctx()}}.draw(canvas,
+		    Geom::TransformedRect{transform, Geom::Size{size}},
+		    title.value,
+		    titleStyle,
+		    *rootEvents.draw.plot.axis.title,
+		    Events::Targets::axisTitle(title.value,
+		        axisIndex == Gen::ChannelId::x),
+		    {.alpha = weight, .flip = upsideDown});
 
-			canvas.restore();
-		}
+		canvas.restore();
 	}
 }
 
@@ -294,7 +290,7 @@ void DrawAxes::drawDimensionLabel(bool horizontal,
 	        &text = it->second.label,
 	        &categoryVal = it->second.categoryValue,
 	        &weight,
-	        &category](int index, const auto &position)
+	        &category](bool index, const auto &position)
 	    {
 		    if (labelStyle.position->interpolates()
 		        && !it->second.presentAt(index))
@@ -348,12 +344,12 @@ void DrawAxes::drawDimensionLabel(bool horizontal,
 			    draw(text.get(index), position.weight);
 		    if (!labelStyle.position->interpolates()
 		        && !text.interpolates())
-			    draw(text.get(0));
+			    draw(text.get(false));
 		    else if (labelStyle.position->interpolates())
-			    draw(text.get(0), position.weight);
+			    draw(text.get(false), position.weight);
 		    else if (text.interpolates()) {
-			    draw(text.get(0));
-			    draw(text.get(1));
+			    draw(text.get(false));
+			    draw(text.get(true));
 		    }
 	    });
 }

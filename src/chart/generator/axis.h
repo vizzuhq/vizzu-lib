@@ -129,9 +129,9 @@ public:
 			return range == other.range;
 		}
 
-		[[nodiscard]] bool presentAt(int index) const
+		[[nodiscard]] bool presentAt(bool index) const
 		{
-			return index == 0 ? start : index == 1 && end;
+			return (!index && start) || (index && end);
 		}
 	};
 	using Values = std::multimap<Data::SliceIndex, Item>;

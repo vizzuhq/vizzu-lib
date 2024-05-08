@@ -40,11 +40,11 @@ AbstractMarker AbstractMarker::createInterpolated(
 {
 	const auto &options = ctx.getOptions();
 
-	auto fromShapeType = options.geometry.get(0).value;
+	auto fromShapeType = options.geometry.get(false).value;
 
 	auto fromMarker = create(ctx, marker, fromShapeType, lineIndex);
 
-	auto toShapeType = options.geometry.get(1).value;
+	auto toShapeType = options.geometry.get(true).value;
 
 	if (fromShapeType == toShapeType) return fromMarker;
 

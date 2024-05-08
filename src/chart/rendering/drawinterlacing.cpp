@@ -1,5 +1,7 @@
 #include "drawinterlacing.h"
 
+#include <base/type/booliter.h>
+
 #include "base/math/renard.h"
 #include "base/text/smartstring.h"
 #include "chart/generator/plot.h"
@@ -231,88 +233,51 @@ void DrawInterlacing::drawDataLabel(
 	const auto &labelStyle = rootStyle.plot.getAxis(axisIndex).label;
 
 	auto drawLabel = OrientedLabel{{ctx()}};
-	labelStyle.position->visit(
-	    [this,
-	        &drawLabel,
-	        &labelStyle,
-	        &axisEnabled,
-	        &tickPos,
-	        &horizontal,
-	        normal = Geom::Point::Ident(horizontal),
-	        &unit,
-	        &value,
-	        &alpha](int index, const auto &position)
-	    {
-		    if (labelStyle.position->interpolates()
-		        && !axisEnabled
-		                .get(std::min<uint64_t>(
-		                    axisEnabled.interpolates(),
-		                    index))
-		                .value)
-			    return;
+	auto interpolates =
+	    labelStyle.position->interpolates() || unit.interpolates();
 
-		    Geom::Point refPos = tickPos;
+	auto &&normal = Geom::Point::Ident(horizontal);
+	for (auto &&index : Type::Bools(interpolates)) {
+		if (labelStyle.position->interpolates()
+		    && !axisEnabled.get(index).value)
+			continue;
+		auto &&position = labelStyle.position->get(index);
 
-		    switch (position.value) {
-			    using Pos = Styles::AxisLabel::Position;
-		    case Pos::min_edge:
-			    refPos[horizontal ? 0 : 1] = 0.0;
-			    break;
-		    case Pos::max_edge:
-			    refPos[horizontal ? 0 : 1] = 1.0;
-			    break;
-		    default: break;
-		    }
+		Geom::Point refPos = tickPos;
 
-		    auto under =
-		        labelStyle.position->interpolates()
-		            ? labelStyle.side
-		                      ->get(std::min<uint64_t>(
-		                          labelStyle.side->interpolates(),
-		                          index))
-		                      .value
-		                  == Styles::AxisLabel::Side::negative
-		            : labelStyle.side->factor<double>(
-		                Styles::AxisLabel::Side::negative);
-		    unit.visit(
-		        [this,
-		            &drawLabel,
-		            &unit,
-		            &labelStyle,
-		            &index,
-		            &value,
-		            posDir = coordSys
-		                         .convertDirectionAt(
-		                             {refPos, refPos + normal})
-		                         .extend(1 - 2 * under),
-		            &alpha,
-		            &position,
-		            &horizontal](int index2, const auto &wUnit)
-		        {
-			        if (labelStyle.position->interpolates()
-			            && unit.interpolates() && index != index2)
-				        return;
-			        auto str =
-			            Text::SmartString::fromPhysicalValue(value,
-			                *labelStyle.numberFormat,
-			                static_cast<size_t>(
-			                    *labelStyle.maxFractionDigits),
-			                *labelStyle.numberScale,
-			                wUnit.value);
-			        drawLabel.draw(canvas,
-			            str,
-			            posDir,
-			            labelStyle,
-			            0,
-			            alpha * position.weight * wUnit.weight,
-			            wUnit.weight,
-			            *rootEvents.draw.plot.axis.label,
-			            Events::Targets::axisLabel({},
-			                {},
-			                str,
-			                !horizontal));
-		        });
-	    });
+		switch (position.value) {
+			using Pos = Styles::AxisLabel::Position;
+		case Pos::min_edge: refPos[horizontal ? 0 : 1] = 0.0; break;
+		case Pos::max_edge: refPos[horizontal ? 0 : 1] = 1.0; break;
+		default: break;
+		}
+
+		auto under = labelStyle.position->interpolates()
+		               ? labelStyle.side->get(index).value
+		                     == Styles::AxisLabel::Side::negative
+		               : labelStyle.side->factor<double>(
+		                   Styles::AxisLabel::Side::negative);
+
+		auto &&posDir =
+		    coordSys.convertDirectionAt({refPos, refPos + normal})
+		        .extend(1 - 2 * under);
+
+		auto &&wUnit = unit.get(index);
+		auto str = Text::SmartString::fromPhysicalValue(value,
+		    *labelStyle.numberFormat,
+		    static_cast<size_t>(*labelStyle.maxFractionDigits),
+		    *labelStyle.numberScale,
+		    wUnit.value);
+		drawLabel.draw(canvas,
+		    str,
+		    posDir,
+		    labelStyle,
+		    0,
+		    alpha * position.weight * wUnit.weight,
+		    wUnit.weight,
+		    *rootEvents.draw.plot.axis.label,
+		    Events::Targets::axisLabel({}, {}, str, !horizontal));
+	}
 }
 
 void DrawInterlacing::drawSticks(double tickIntensity,
@@ -352,7 +317,7 @@ void DrawInterlacing::drawSticks(double tickIntensity,
 
 	typedef Styles::Tick::Position Pos;
 	tickLine = tickStyle.position->combine<Geom::Line>(
-	    [&](int, const auto &position)
+	    [&tickLine](const auto &position)
 	    {
 		    switch (position) {
 		    default:

@@ -111,7 +111,7 @@ Marker::Marker(const Options &options,
 	}
 }
 
-void Marker::setNextMarker(uint64_t itemId,
+void Marker::setNextMarker(bool first,
     Marker &marker,
     bool horizontal,
     bool main)
@@ -120,7 +120,7 @@ void Marker::setNextMarker(uint64_t itemId,
 
 	if (main) marker.prevMainMarkerIdx = idx;
 
-	if (itemId != 0) {
+	if (!first) {
 		double Geom::Point::*const coord =
 		    horizontal ? &Geom::Point::x : &Geom::Point::y;
 		marker.position.*coord += position.*coord;

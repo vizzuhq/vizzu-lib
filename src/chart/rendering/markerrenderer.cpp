@@ -95,14 +95,14 @@ void MarkerRenderer::drawMarkers(Gfx::ICanvas &canvas,
 			draw(canvas, painter, circle, 1, false);
 
 			blended.marker.prevMainMarkerIdx.visit(
-			    [this, &blended, &canvas, &painter](int index,
-			        auto value)
+			    [this, &blended, &canvas, &painter](bool index,
+			        const auto &value)
 			    {
 				    draw(canvas,
 				        painter,
 				        ConnectingMarker{ctx(),
 				            blended.marker,
-				            static_cast<size_t>(index),
+				            index,
 				            Gen::ShapeType::line},
 				        value.weight,
 				        true);
@@ -111,16 +111,17 @@ void MarkerRenderer::drawMarkers(Gfx::ICanvas &canvas,
 		else {
 			std::optional<AbstractMarker> other;
 			auto drawMarker =
-			    [this, &blended, &other, &canvas, &painter](int index,
-			        ::Anim::Weighted<uint64_t> value)
+			    [this, &blended, &other, &canvas, &painter](
+			        bool index,
+			        const ::Anim::Weighted<uint64_t> &value)
 			{
-				if (index == 1 && !other) {
+				if (index && !other) {
 					other.emplace(
 					    AbstractMarker::createInterpolated(ctx(),
 					        blended.marker,
 					        1));
 				}
-				const auto &blended0 = index == 0 ? blended : *other;
+				const auto &blended0 = index ? *other : blended;
 
 				auto lineFactor =
 				    getOptions().geometry.factor<double>(
@@ -151,11 +152,8 @@ void MarkerRenderer::drawMarkers(Gfx::ICanvas &canvas,
 
 			if (containsConnected) {
 				if (containsSingle) {
-					auto lineIndex =
-					    Gen::isConnecting(
-					        getOptions().geometry.get(0).value)
-					        ? 0
-					        : 1;
+					auto lineIndex = !Gen::isConnecting(
+					    getOptions().geometry.get(false).value);
 
 					drawMarker(lineIndex,
 					    ::Anim::Weighted<uint64_t>(0));
@@ -178,12 +176,12 @@ void MarkerRenderer::drawLabels(Gfx::ICanvas &canvas) const
 		if (blended.marker.enabled == false) continue;
 		drawLabel(canvas,
 		    blended,
-		    axis.unit.get(0).value,
+		    axis.unit.get(false).value,
 		    keepMeasure,
 		    0);
 		drawLabel(canvas,
 		    blended,
-		    axis.unit.get(1).value,
+		    axis.unit.get(true).value,
 		    keepMeasure,
 		    1);
 	}
@@ -304,7 +302,7 @@ void MarkerRenderer::drawLabel(Gfx::ICanvas &canvas,
 	const auto &labelStyle = rootStyle.plot.marker.label;
 
 	auto labelPos = labelStyle.position->combine<Geom::Line>(
-	    [this, &abstractMarker](int, const auto &position)
+	    [this, &abstractMarker](const auto &position)
 	    {
 		    return abstractMarker.getLabelPos(position, coordSys);
 	    });
@@ -340,7 +338,7 @@ std::string MarkerRenderer::getLabelText(
 	if (values[index].value.hasValue()) {
 		auto value = needsInterpolation
 		               ? label.combine<double>(
-		                   [&](int, const auto &value)
+		                   [](const auto &value)
 		                   {
 			                   return value.value.value_or(0);
 		                   })
@@ -394,7 +392,7 @@ std::pair<Gfx::Color, Gfx::Color> MarkerRenderer::getColor(
 
 	auto borderColor =
 	    rootStyle.plot.marker.borderOpacityMode->combine<Gfx::Color>(
-	        [&](int, const auto &mode)
+	        [&](const auto &mode)
 	        {
 		        if (mode
 		            == Styles::Marker::BorderOpacityMode::

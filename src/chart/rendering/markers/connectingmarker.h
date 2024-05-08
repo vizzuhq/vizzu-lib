@@ -11,12 +11,12 @@ class ConnectingMarker : public AbstractMarker
 public:
 	ConnectingMarker(const DrawingContext &ctx,
 	    const Gen::Marker &marker,
-	    size_t lineIndex,
+	    bool lineIndex,
 	    Gen::ShapeType type);
 
 	static const Gen::Marker *getPrev(const Gen::Marker &marker,
 	    const std::vector<Gen::Marker> &markers,
-	    size_t lineIndex);
+	    bool lineIndex);
 };
 
 }
