@@ -100,7 +100,7 @@ void DrawLegend::drawDimension(const Info &info) const
 			        weighted.value,
 			        style.label,
 			        *events.label,
-			        Events::Targets::legendLabel(
+			        Events::Targets::dimLegendLabel(
 			            info.dimension.category,
 			            value.second.categoryValue,
 			            value.second.categoryValue,
@@ -214,7 +214,7 @@ void DrawLegend::extremaLabel(const Info &info,
 	    text,
 	    style.label,
 	    *events.label,
-	    Events::Targets::legendLabel({}, {}, text, info.type),
+	    Events::Targets::measLegendLabel(text, info.type),
 	    {.alpha = info.measureWeight * plusWeight});
 }
 

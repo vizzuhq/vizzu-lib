@@ -276,7 +276,7 @@ void DrawInterlacing::drawDataLabel(
 		    alpha * position.weight * wUnit.weight,
 		    wUnit.weight,
 		    *rootEvents.draw.plot.axis.label,
-		    Events::Targets::axisLabel({}, {}, str, !horizontal));
+		    Events::Targets::measAxisLabel(str, !horizontal));
 	}
 }
 

@@ -333,7 +333,7 @@ void DrawAxes::drawDimensionLabel(bool horizontal,
 			        weight * str.weight * plusWeight,
 			        1.0,
 			        *rootEvents.draw.plot.axis.label,
-			        Events::Targets::axisLabel(category,
+			        Events::Targets::dimAxisLabel(category,
 			            categoryVal,
 			            categoryVal,
 			            horizontal));

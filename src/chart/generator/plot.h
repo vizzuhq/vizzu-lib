@@ -89,10 +89,6 @@ public:
 	{
 		return options;
 	}
-	[[nodiscard]] const Data::DataCube &getDataCube() const
-	{
-		return *dataCube;
-	}
 	[[nodiscard]] const Styles::Chart &getStyle() const
 	{
 		return style;
@@ -106,15 +102,22 @@ public:
 	[[nodiscard]] bool isEmpty() const;
 
 private:
+	friend class SpecLayout;
+
 	const Data::DataTable &dataTable;
 	PlotOptionsPtr options;
 	Styles::Chart style;
-	std::optional<Data::DataCube> dataCube;
-	ChannelsStats *stats{};
 	Markers markers;
 	MarkersInfo markersInfo;
 
+	Data::DataCube *dataCube{};
+	ChannelsStats *stats{};
 	std::size_t mainBucketSize{};
+
+	[[nodiscard]] const Data::DataCube &getDataCube() const
+	{
+		return *dataCube;
+	}
 
 	[[nodiscard]] ChannelsStats &getStats() { return *stats; }
 	Buckets generateMarkers();

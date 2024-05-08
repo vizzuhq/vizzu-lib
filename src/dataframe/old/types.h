@@ -75,15 +75,11 @@ class Filter
 
 public:
 	Filter() noexcept = default;
-	Filter(const Filter &) = default;
-	Filter(Filter &&) noexcept = default;
-	Filter &operator=(const Filter &) = default;
-	Filter &operator=(Filter &&) noexcept = default;
 
-	template <class Pointer>
-	    requires(
-	        !std::is_same_v<std::remove_cvref_t<Pointer>, Filter>)
-	explicit Filter(Pointer &&wr) : func1{std::forward<Pointer>(wr)}
+	template <template <class, class...> class PointerType,
+	    class... Types>
+	explicit Filter(PointerType<Fun, Types...> &&wr) :
+	    func1{std::move(wr)}
 	{}
 
 	[[nodiscard]] bool operator==(

@@ -35,6 +35,9 @@ public:
 
 	void pushRow(const std::span<const char *> &cells);
 
+	[[nodiscard]] std::string_view getUnit(
+	    std::string_view const &colIx) const;
+
 	[[nodiscard]] std::string getInfos() const;
 
 	[[nodiscard]] const dataframe::dataframe &getDf() const
@@ -115,9 +118,6 @@ public:
 
 	[[nodiscard]] const std::string &getName(
 	    const SeriesIndex &seriesId) const;
-
-	[[nodiscard]] std::string_view getUnit(
-	    std::string_view const &colIx) const;
 
 	[[nodiscard]] iterator_t begin() const;
 	[[nodiscard]] static iterator_t end();

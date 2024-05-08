@@ -65,9 +65,10 @@ Plot::Plot(const Data::DataTable &dataTable,
     Styles::Chart style) :
     dataTable(dataTable),
     options(std::move(opts)),
-    style(std::move(style)),
-    dataCube(std::in_place, dataTable, *options)
+    style(std::move(style))
 {
+	Data::DataCube dataCube(dataTable, *options);
+	this->dataCube = &dataCube;
 	ChannelsStats stats(options->getChannels(), getDataCube());
 	this->stats = &stats;
 
@@ -93,8 +94,6 @@ Plot::Plot(const Data::DataTable &dataTable,
 	}
 
 	guides.init(*options);
-
-	this->stats = nullptr;
 }
 
 void Plot::detachOptions()
@@ -269,8 +268,8 @@ void Plot::calcMeasureAxis(ChannelId type)
 	auto &axis = measureAxises.at(type);
 	const auto &scale = options->getChannels().at(type);
 	if (auto &&meas = scale.measureId) {
-		auto &&name = dataCube->getName(*meas);
-		commonAxises.at(type).title = scale.title.isAuto() ? name
+		commonAxises.at(type).title = scale.title.isAuto()
+		                                ? dataCube->getName(*meas)
 		                            : scale.title ? *scale.title
 		                                          : std::string{};
 
@@ -287,7 +286,7 @@ void Plot::calcMeasureAxis(ChannelId type)
 				range = Math::Range<double>::Raw({}, {});
 
 			axis = {range,
-			    dataCube->getUnit(name),
+			    dataTable.getUnit(meas->getColIndex()),
 			    meas->getColIndex(),
 			    scale.step.getValue()};
 		}

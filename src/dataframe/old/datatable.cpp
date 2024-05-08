@@ -138,10 +138,11 @@ void DataCube::check(iterator_t &it) const
 	}
 
 	for (auto &&[dim, cats, size, ix] : dim_reindex) {
+		auto str_view =
+		    std::get<std::string_view>(df->get_data(it.rid, dim));
 		if (auto &&old_ix = it.index.old[ix];
-		    (old_ix < cats.size() ? cats[old_ix].data() : nullptr)
-		    != std::get<std::string_view>(df->get_data(it.rid, dim))
-		           .data())
+		    old_ix < cats.size() ? cats[old_ix] != str_view
+		                         : str_view.data() != nullptr)
 			return;
 	}
 	it.index.rid.emplace(it.rid);
@@ -202,7 +203,7 @@ DataCube::DataCube(const DataTable &table,
 	df->finalize();
 	for (std::size_t ix{}; const auto &dim : dimensions) {
 		auto &&dimName = dim.getColIndex();
-		auto &&cats = df->get_categories(dimName);
+		auto &&cats = table.getDf().get_categories(dimName);
 		dim_reindex.push_back(DimensionInfo{dimName,
 		    cats,
 		    cats.size() + df->has_na(dimName),
@@ -277,10 +278,10 @@ const std::string &DataCube::getName(
 	    {seriesId.getColIndex(), seriesId.getAggr()});
 }
 
-std::string_view DataCube::getUnit(
+std::string_view DataTable::getUnit(
     std::string_view const &colIx) const
 {
-	return df->get_series_info(colIx, "unit");
+	return df.get_series_info(colIx, "unit");
 }
 
 MarkerId DataCube::getId(
