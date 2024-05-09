@@ -58,10 +58,10 @@ Marker::Marker(const Options &options,
 		subId = data.getId({subIds, subAxis.second}, index);
 	}
 	else {
-		subId = data.getId(std::move(subAxis), index);
+		subId = data.getId(subAxis, index);
 		subAxisId = &subId;
 	}
-	mainId = data.getId(std::move(mainAxisDims), index);
+	mainId = data.getId(mainAxisDims, index);
 
 	auto horizontal = options.isHorizontal();
 	auto lineOrCircle = options.geometry == ShapeType::line

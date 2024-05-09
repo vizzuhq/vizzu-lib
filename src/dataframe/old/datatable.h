@@ -88,7 +88,7 @@ public:
 	    const SeriesIndex &seriesId) const;
 
 	[[nodiscard]] MarkerId getId(
-	    std::pair<const SeriesList &, const std::size_t &> &&,
+	    const std::pair<const SeriesList &, const std::size_t &> &,
 	    const MultiIndex &) const;
 
 	[[nodiscard]] std::vector<std::string_view> getDimensionValues(

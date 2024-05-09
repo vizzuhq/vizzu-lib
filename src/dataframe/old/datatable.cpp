@@ -286,7 +286,7 @@ std::string_view DataCube::getUnit(
 }
 
 MarkerId DataCube::getId(
-    std::pair<const SeriesList &, const std::size_t &> &&slwl,
+    const std::pair<const SeriesList &, const std::size_t &> &slwl,
     const MultiIndex &mi) const
 {
 	auto &&[sl, ll] = slwl;
