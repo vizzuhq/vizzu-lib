@@ -22,7 +22,9 @@ template <class T> class UniqueList
 		link_t pre{};
 		link_t post{};
 		std::size_t ix{};
-		typename container_type::iterator it{};
+		typename container_type::const_iterator it{};
+		const std::size_t *mark{};
+		links_t *self = this;
 	};
 
 	template <bool forward = true> struct iterator
@@ -30,7 +32,11 @@ template <class T> class UniqueList
 		const_link_t ptr;
 		[[nodiscard]] const T &operator*() const noexcept
 		{
-			return ptr->first;
+			return *operator->();
+		}
+		[[nodiscard]] const T *operator->() const noexcept
+		{
+			return &ptr->first;
 		}
 		iterator &operator++() noexcept
 		{
@@ -48,8 +54,6 @@ template <class T> class UniqueList
 			return tmp;
 		}
 		[[nodiscard]] bool operator==(
-		    const iterator &other) const noexcept = default;
-		[[nodiscard]] bool operator!=(
 		    const iterator &other) const noexcept = default;
 
 		using difference_type = std::ptrdiff_t;
@@ -74,7 +78,11 @@ template <class T> class UniqueList
 	void insert(typename container_type::node_type &&node) noexcept
 	{
 		auto &&it = items.insert(std::move(node)).position;
-		it->second = {last};
+		it->second.pre = last;
+		it->second.post = nullptr;
+		it->second.ix = 0;
+		it->second.it = typename container_type::const_iterator{};
+		it->second.mark = nullptr;
 		after_push_back(it);
 	}
 
@@ -92,13 +100,37 @@ template <class T> class UniqueList
 	}
 
 	typename container_type::node_type extract(
-	    const typename container_type::iterator &it) noexcept
+	    const typename container_type::const_iterator &it) noexcept
 	{
-		before_remove(it->second);
+		before_remove(*it->second.self);
 		return items.extract(it);
 	}
 
+	template <class Other>
+	void mark_common(const UniqueList<Other> &by) const
+	{
+		auto first1 = by.items.begin();
+		const auto last1 = by.items.end();
+		auto first2 = items.begin();
+		const auto last2 = items.end();
+
+		while (first1 != last1 && first2 != last2) {
+			if (first1->first < first2->first)
+				++first1;
+			else if (first2->first < first1->first)
+				++first2;
+			else {
+				auto &link = *first2->second.self;
+				link.it = first2;
+				link.mark = &first1->second.ix;
+				++first1, ++first2;
+			}
+		}
+	}
+
 public:
+	template <class U> friend class UniqueList;
+
 	bool push_back(const T &value)
 	{
 		auto &&[it, newly] = items.try_emplace(value, last);
@@ -134,15 +166,6 @@ public:
 		return items.size();
 	}
 
-	constexpr static std::size_t npos = ~std::size_t{};
-
-	template <class U>
-	[[nodiscard]] std::size_t find(U &&val) const noexcept
-	{
-		auto it = items.find(std::forward<U>(val));
-		return it == items.end() ? npos : it->second.ix;
-	}
-
 	bool remove(const T &value) noexcept
 	{
 		if (auto it = items.find(value); it != items.end()) {
@@ -170,19 +193,7 @@ public:
 
 	UniqueList split_by(const UniqueList &by) noexcept
 	{
-		auto first1 = by.items.begin();
-		auto last1 = by.items.end();
-
-		for (auto first2 = items.begin(), last2 = items.end();
-		     first2 != last2;
-		     ++first2) {
-			auto &[k, v] = *first2;
-			while (first1 != last1 && first1->first < k) ++first1;
-			if (first1 == last1) break;
-			if (k < first1->first) continue;
-			v.it = first2;
-			++first1;
-		}
+		mark_common(by);
 
 		UniqueList common;
 		std::size_t ix{};
@@ -215,6 +226,52 @@ public:
 			else
 				return true;
 		return false;
+	}
+
+	struct CommonIterateVal
+	{
+		const T &value;
+		const std::size_t *othIx;
+	};
+
+	struct common_iterator
+	{
+		iterator<> it;
+		[[nodiscard]] CommonIterateVal operator*() const noexcept
+		{
+			auto &link = *it.ptr->second.self;
+			link.it = typename container_type::const_iterator{};
+			return {*it, std::exchange(link.mark, {})};
+		}
+		common_iterator &operator++() noexcept
+		{
+			++it;
+			return *this;
+		}
+		[[nodiscard]] bool operator==(
+		    const common_iterator &other) const noexcept = default;
+	};
+
+	struct common_range
+	{
+		common_iterator begin_it;
+		common_iterator end_it;
+		[[nodiscard]] common_iterator begin() const noexcept
+		{
+			return begin_it;
+		}
+		[[nodiscard]] common_iterator end() const noexcept
+		{
+			return end_it;
+		}
+	};
+
+	template <class Other>
+	[[nodiscard]] common_range iterate_common(
+	    const UniqueList<Other> &by) const
+	{
+		mark_common(by);
+		return {{begin()}, {end()}};
 	}
 
 	UniqueList() noexcept = default;

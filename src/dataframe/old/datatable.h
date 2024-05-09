@@ -61,8 +61,26 @@ public:
 		std::string_view name;
 		std::span<const std::string> categories;
 		std::size_t size{};
+		std::size_t ix{};
+
+		[[nodiscard]] bool operator<(const DimensionInfo &other) const
+		{
+			return name < other.name;
+		}
+
+		[[nodiscard]] friend bool operator<(const DimensionInfo &lhs,
+		    const SeriesIndex &si)
+		{
+			return lhs.name < si.getColIndex();
+		}
+
+		[[nodiscard]] friend bool operator<(const SeriesIndex &si,
+		    const DimensionInfo &rhs)
+		{
+			return si.getColIndex() < rhs.name;
+		}
 	};
-	std::vector<DimensionInfo> dim_reindex;
+	Type::UniqueList<DimensionInfo> dim_reindex;
 
 	std::map<Gen::ChannelId,
 	    std::shared_ptr<dataframe::dataframe_interface>>
@@ -91,7 +109,7 @@ public:
 	    const std::pair<const SeriesList &, const std::size_t &> &,
 	    const MultiIndex &) const;
 
-	[[nodiscard]] std::vector<std::string_view> getDimensionValues(
+	[[nodiscard]] std::string joinDimensionValues(
 	    const SeriesList &sl,
 	    const MultiIndex &index) const;
 

@@ -104,9 +104,8 @@ Marker::Marker(const Options &options,
 
 		label =
 		    Label{labelChannel.isDimension() ? std::nullopt : value,
-		        Label::getIndexString(
-		            data.getDimensionValues(labelChannel.dimensions(),
-		                index))};
+		        data.joinDimensionValues(labelChannel.dimensions(),
+		            index)};
 	}
 }
 
@@ -221,16 +220,5 @@ void Marker::setSizeBy(bool horizontal,
 bool Marker::Label::operator==(const Label &other) const
 {
 	return value == other.value && indexStr == other.indexStr;
-}
-
-std::string Marker::Label::getIndexString(
-    std::vector<std::string_view> &&slices)
-{
-	std::string res;
-	for (const auto &sliceValue : slices) {
-		if (!res.empty()) res += ", ";
-		res += sliceValue;
-	}
-	return res;
 }
 }
