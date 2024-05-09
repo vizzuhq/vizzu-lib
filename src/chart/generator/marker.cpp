@@ -47,22 +47,21 @@ Marker::Marker(const Options &options,
 	    index,
 	    &sizeId);
 
-	mainId =
-	    data.getId(options.mainAxis().dimensionsWithLevel(), index);
+	auto &&mainAxisDims = options.mainAxis().dimensionsWithLevel();
 
 	Data::MarkerId *subAxisId{};
-	if (options.geometry == ShapeType::area) {
-		auto &&subAxis = options.subAxis();
-		Data::SeriesList subIds(subAxis.dimensions());
-		if (subIds.split_by(options.mainAxis().dimensions()).empty())
+	if (auto &&subAxis = options.subAxis().dimensionsWithLevel();
+	    options.geometry == ShapeType::area) {
+		Data::SeriesList subIds(subAxis.first);
+		if (subIds.split_by(mainAxisDims.first).empty())
 			subAxisId = &subId;
-		subId = data.getId({subIds, subAxis.labelLevel}, index);
+		subId = data.getId({subIds, subAxis.second}, index);
 	}
 	else {
-		subId = data.getId(options.subAxis().dimensionsWithLevel(),
-		    index);
+		subId = data.getId(std::move(subAxis), index);
 		subAxisId = &subId;
 	}
+	mainId = data.getId(std::move(mainAxisDims), index);
 
 	auto horizontal = options.isHorizontal();
 	auto lineOrCircle = options.geometry == ShapeType::line

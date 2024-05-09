@@ -8,7 +8,7 @@ namespace Type
 struct Bools
 {
 	constexpr static std::array boolArr = {false, true};
-	bool max;
+	bool max{true};
 	[[nodiscard]] static const bool *begin()
 	{
 		return boolArr.data();

@@ -30,8 +30,8 @@ void BubbleChartBuilder::setupVector(double maxRadius,
 
 	const BubbleChart chart(sizes);
 
+	std::vector<double> ssizes(hierarchy.inner_size());
 	for (std::size_t cnt{}; const auto &level : hierarchy) {
-		std::vector<double> ssizes(level.size());
 		for (std::size_t ix{}; const auto &item : level)
 			if (auto &s = ssizes[ix++]; item->sizeFactor > 0)
 				s = item->sizeFactor;

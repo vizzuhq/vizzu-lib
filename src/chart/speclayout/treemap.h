@@ -46,14 +46,14 @@ void TreeMap::setupVector(const Hierarchy &hierarchy)
 
 	TreeMap chart(sizes);
 
+	std::vector<double> in_sizes(hierarchy.inner_size());
 	for (std::size_t cnt{}; const auto &level : hierarchy) {
 		auto &&[pos, size] = chart.markers[cnt++].rect();
 
-		std::vector<double> sizes(level.size());
 		for (std::size_t ix{}; const auto &item : level)
-			sizes[ix++] = item->sizeFactor;
+			in_sizes[ix++] = item->sizeFactor;
 
-		TreeMap subChart(sizes, pos, pos + size);
+		TreeMap subChart(in_sizes, pos, pos + size);
 
 		for (size_t subCnt{}; const auto &item : level) {
 			auto &&[spos, ssize] =

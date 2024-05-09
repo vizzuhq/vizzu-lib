@@ -76,11 +76,7 @@ void Keyframe::prepareActualMarkersInfo()
 	if (!smi.empty()) copyTarget();
 
 	for (auto &tmi = target->getMarkersInfo(); auto &&item : smi)
-		if (origTMI.contains(item.first))
-			tmi.insert({item.first, item.second});
-		else
-			tmi.insert(
-			    std::pair{item.first, Gen::Plot::MarkerInfo{}});
+		tmi.insert(std::pair{item.first, Gen::Plot::MarkerInfo{}});
 
 	for (auto &&item : origTMI)
 		smi.insert(std::pair{item.first, Gen::Plot::MarkerInfo{}});
