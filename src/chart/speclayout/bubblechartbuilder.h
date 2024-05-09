@@ -33,8 +33,7 @@ void BubbleChartBuilder::setupVector(double maxRadius,
 	std::vector<double> ssizes(hierarchy.inner_size());
 	for (std::size_t cnt{}; const auto &level : hierarchy) {
 		for (std::size_t ix{}; const auto &item : level)
-			if (auto &s = ssizes[ix++]; item->sizeFactor > 0)
-				s = item->sizeFactor;
+			ssizes[ix++] = item->sizeFactor;
 
 		const BubbleChart subChart(ssizes,
 		    chart.markers[cnt++].circle().boundary());

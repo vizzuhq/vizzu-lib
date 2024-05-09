@@ -12,7 +12,7 @@ BubbleChart::BubbleChart(const std::vector<double> &sizes,
 	markers.reserve(sizes.size());
 
 	for (auto j = 0U; j < sizes.size(); ++j)
-		markers.emplace_back(j, std::sqrt(sizes[j]));
+		markers.emplace_back(j, std::sqrt(std::max(0.0, sizes[j])));
 
 	std::sort(markers.begin(), markers.end(), SpecMarker::sizeOrder);
 
