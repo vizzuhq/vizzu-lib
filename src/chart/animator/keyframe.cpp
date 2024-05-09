@@ -49,6 +49,8 @@ void Keyframe::prepareActual()
 	if (Gen::Plot::dimensionMatch(*source, *target)) {
 		addMissingMarkers(source, target);
 
+		mergeMarkerCellInfo(source, target);
+
 		prepareActualMarkersInfo();
 	}
 	else {
@@ -64,9 +66,6 @@ void Keyframe::prepareActual()
 	    std::make_shared<Gen::Options>(*source->getOptions());
 
 	actual = std::make_shared<Gen::Plot>(options, *source);
-
-	actual->markers = source->getMarkers();
-	actual->markersInfo = source->getMarkersInfo();
 }
 
 void Keyframe::prepareActualMarkersInfo()
@@ -95,6 +94,19 @@ void Keyframe::addMissingMarkers(const Gen::PlotPtr &source,
 	if (tsize < ssize) copyTarget();
 	for (auto i = tsize; i < ssize; ++i)
 		target->markers.emplace_back(smarkers[i]).enabled = false;
+}
+
+void Keyframe::mergeMarkerCellInfo(const Gen::PlotPtr &source,
+    const Gen::PlotPtr &target)
+{
+	const auto markers_size = source->markers.size();
+	for (std::size_t ix{}; ix < markers_size; ++ix)
+		if (auto &scell = source->markers[ix].cellInfo,
+		    &tcell = target->markers[ix].cellInfo;
+		    scell && !tcell)
+			tcell = scell;
+		else if (!scell && tcell)
+			scell = tcell;
 }
 
 void Keyframe::copyTarget()

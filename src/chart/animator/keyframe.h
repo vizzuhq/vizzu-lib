@@ -33,6 +33,8 @@ private:
 	void prepareActualMarkersInfo();
 	void addMissingMarkers(const Gen::PlotPtr &source,
 	    const Gen::PlotPtr &target);
+	static void mergeMarkerCellInfo(const Gen::PlotPtr &source,
+	    const Gen::PlotPtr &target);
 	void copyTarget();
 };
 

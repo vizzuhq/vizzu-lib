@@ -56,6 +56,7 @@ Plot::Plot(PlotOptionsPtr options, const Plot &other) :
     dataTable(other.dataTable),
     options(std::move(options)),
     style(other.style),
+    markers(other.markers),
     markersInfo(other.markersInfo)
 {}
 
