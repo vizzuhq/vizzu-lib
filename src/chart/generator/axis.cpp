@@ -19,13 +19,13 @@ Geom::Point MeasureAxises::origo() const
 }
 
 MeasureAxis::MeasureAxis(Math::Range<double> interval,
-    std::string &&unit,
+    const std::string_view &unit,
     const std::string_view &measName,
     std::optional<double> step) :
     enabled(true),
     range(interval),
-    unit(std::move(unit)),
-    origMeasureName(measName),
+    unit(std::string{unit}),
+    origMeasureName(std::string{measName}),
     step(step ? *step : Math::Renard::R5().ceil(range.size() / 5.0))
 {}
 

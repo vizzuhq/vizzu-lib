@@ -287,7 +287,7 @@ void Plot::calcMeasureAxis(ChannelId type)
 				range = Math::Range<double>::Raw({}, {});
 
 			axis = {range,
-			    std::string{dataCube->getUnit(name)},
+			    dataCube->getUnit(name),
 			    meas->getColIndex(),
 			    scale.step.getValue()};
 		}
