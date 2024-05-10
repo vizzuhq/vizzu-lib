@@ -24,11 +24,11 @@ Chart::Chart() :
 		    events.animation.update->invoke(
 		        Events::OnUpdateEvent(animator.getControl()));
 	    });
-	animator.onBegin = [this]()
+	animator.onBegin = [this]
 	{
 		events.animation.begin->invoke();
 	};
-	animator.onComplete = [this]()
+	animator.onComplete = [this]
 	{
 		events.animation.complete->invoke();
 	};

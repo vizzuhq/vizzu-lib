@@ -22,9 +22,8 @@ template <class T> class UniqueList
 		link_t pre{};
 		link_t post{};
 		std::size_t ix{};
-		typename container_type::const_iterator it{};
-		const std::size_t *mark{};
-		links_t *self = this;
+		mutable typename container_type::const_iterator it{};
+		mutable const std::size_t *mark{};
 	};
 
 	template <bool forward = true> struct iterator
@@ -78,11 +77,7 @@ template <class T> class UniqueList
 	void insert(typename container_type::node_type &&node) noexcept
 	{
 		auto &&it = items.insert(std::move(node)).position;
-		it->second.pre = last;
-		it->second.post = nullptr;
-		it->second.ix = 0;
-		it->second.it = typename container_type::const_iterator{};
-		it->second.mark = nullptr;
+		it->second = {last};
 		after_push_back(it);
 	}
 
@@ -99,10 +94,17 @@ template <class T> class UniqueList
 			last = ptr.pre;
 	}
 
+	typename container_type::iterator remove_const_from_iterator(
+	    const typename container_type::const_iterator &first,
+	    const typename container_type::const_iterator &last)
+	{
+		return items.erase(first, last);
+	}
+
 	typename container_type::node_type extract(
 	    const typename container_type::const_iterator &it) noexcept
 	{
-		before_remove(*it->second.self);
+		before_remove(remove_const_from_iterator(it, it)->second);
 		return items.extract(it);
 	}
 
@@ -120,7 +122,7 @@ template <class T> class UniqueList
 			else if (first2->first < first1->first)
 				++first2;
 			else {
-				auto &link = *first2->second.self;
+				const auto &link = first2->second;
 				link.it = first2;
 				link.mark = &first1->second.ix;
 				++first1, ++first2;
@@ -239,7 +241,7 @@ public:
 		iterator<> it;
 		[[nodiscard]] CommonIterateVal operator*() const noexcept
 		{
-			auto &link = *it.ptr->second.self;
+			const auto &link = it.ptr->second;
 			link.it = typename container_type::const_iterator{};
 			return {*it, std::exchange(link.mark, {})};
 		}

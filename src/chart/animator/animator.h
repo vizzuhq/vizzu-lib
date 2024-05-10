@@ -24,7 +24,7 @@ public:
 	    const Animation::OnComplete &onThisCompletes =
 	        Animation::OnComplete());
 
-	Util::Event<Gen::PlotPtr> onDraw;
+	Util::Event<const Gen::PlotPtr> onDraw;
 	Util::Event<> onProgress;
 	std::function<void()> onBegin;
 	std::function<void()> onComplete;

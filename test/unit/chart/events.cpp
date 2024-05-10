@@ -336,15 +336,16 @@ std::multimap<std::string, event_as, std::less<>> get_events(
 
 	auto line =
 	    chart.getOptions().geometry == Vizzu::Gen::ShapeType::line;
-	auto event_handler = [&events, &line](
-	                         Util::EventDispatcher::Params &params)
+	auto event_handler =
+	    [&events, &line](Util::EventDispatcher::Params &params,
+	        const std::string &json)
 	{
 		auto marker = params.eventName == "plot-marker-draw";
 		if ((marker && line)
 		    || params.eventName == "plot-axis-draw") {
 			events.emplace(std::piecewise_construct,
 			    std::tuple{params.eventName},
-			    std::tuple{params.toJSON(),
+			    std::tuple{json,
 			        params.target,
 			        static_cast<Vizzu::Events::OnLineDrawEvent &>(
 			            params)
@@ -368,7 +369,7 @@ std::multimap<std::string, event_as, std::less<>> get_events(
 	for (const auto &name : eventNames) {
 		auto n = chart.getEventDispatcher().getEvent(name);
 		skip->*n != nullptr;
-		n->attach({}, event_handler);
+		n->attach(event_handler);
 	}
 
 	using clock_t = std::chrono::steady_clock;

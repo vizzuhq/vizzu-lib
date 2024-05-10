@@ -16,7 +16,7 @@ class Animation : public ::Anim::Sequence, public ::Anim::Control
 public:
 	using OnComplete = std::function<void(Gen::PlotPtr, bool)>;
 
-	Util::Event<Gen::PlotPtr> onPlotChanged;
+	Util::Event<const Gen::PlotPtr> onPlotChanged;
 
 	explicit Animation(const Gen::PlotPtr &plot);
 

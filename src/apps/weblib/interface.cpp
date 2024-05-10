@@ -207,22 +207,20 @@ void Interface::addEventListener(ObjectRegistry::Handle chart,
 {
 	auto &&chartPtr = getChart(chart);
 	if (auto &&ev = chartPtr->getEventDispatcher().getEvent(event)) {
-		ev->attach(std::hash<decltype(callback)>{}(callback),
-		    [this, callback](Util::EventDispatcher::Params &params)
+		ev->attach(
+		    [this, callback](Util::EventDispatcher::Params &params,
+		        const std::string &jsonStrIn)
 		    {
-			    auto &&jsonStrIn = params.toJSON();
-
-			    callback(
-			        create_unique_ptr(
-			            objects.reg<Util::EventDispatcher::Params>(
-			                {std::shared_ptr<void>{}, &params}),
-			            [this](const void *handle)
-			            {
-				            objects.unreg(handle);
-			            })
-			            .get(),
-			        jsonStrIn.c_str());
-		    });
+			    auto &&ptr = create_unique_ptr(
+			        objects.reg<Util::EventDispatcher::Params>(
+			            {std::shared_ptr<void>{}, &params}),
+			        [this](const void *handle)
+			        {
+				        objects.unreg(handle);
+			        });
+			    callback(ptr.get(), jsonStrIn.c_str());
+		    },
+		    std::hash<decltype(callback)>{}(callback));
 	}
 }
 

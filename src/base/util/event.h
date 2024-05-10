@@ -1,48 +1,47 @@
 #ifndef BASE_UTIL_EVENT_H
 #define BASE_UTIL_EVENT_H
 
+#include <forward_list>
 #include <functional>
-#include <memory>
 
 namespace Util
 {
 
 template <typename... ParamTypes> class Event
 {
+protected:
+	using handler_id = std::size_t;
+	using handler_fn = std::function<void(ParamTypes &...)>;
+	using handler_list =
+	    std::forward_list<std::pair<handler_id, handler_fn>>;
+
 public:
-	using Listener = std::function<void(const ParamTypes &...)>;
-
-	struct CompositeListener
+	void operator()(ParamTypes &...params) const
 	{
-		inline void operator()(const ParamTypes &...params) const
-		{
-			listener1(params...);
-			listener2(params...);
-		}
-
-		Listener listener1;
-		Listener listener2;
-	};
-
-	void operator()(const ParamTypes &...params) const
-	{
-		listens(params...);
+		for (auto iter = handlers.begin(); iter != handlers.end();)
+			iter++->second(params...);
 	}
 
-	void attach(const Listener &listener)
+	template <class T> void attach(T &&listener, handler_id id = {})
 	{
-		if (listens) {
-			listens = CompositeListener{std::move(listens), listener};
-		}
-		else {
-			listens = listener;
-		}
+		handlers.push_front({id, std::forward<T>(listener)});
 	}
 
-	void detachAll() { listens = nullptr; }
+	void detach(handler_id id)
+	{
+		for (auto oit = handlers.before_begin(), it = std::next(oit);
+		     it != handlers.end();
+		     oit = it++)
+			if (it->first == id) {
+				handlers.erase_after(oit);
+				break;
+			}
+	}
 
-private:
-	Listener listens;
+	void detachAll() { handlers.clear(); }
+
+protected:
+	handler_list handlers;
 };
 
 }

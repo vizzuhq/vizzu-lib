@@ -25,36 +25,13 @@ void EventDispatcher::Params::appendToJSON(Conv::JSON &obj) const
 
 EventDispatcher::Params::~Params() = default;
 
-bool EventDispatcher::Event::invoke(Params &&params)
+bool EventDispatcher::Event::invoke(Params &&params) const
 {
 	params.eventName = name;
 
-	for (auto iter = handlers.begin(); iter != handlers.end();)
-		iter++->second(params);
+	operator()(params, params.toJSON());
 
 	return !params.preventDefault;
-}
-
-void EventDispatcher::Event::attach(handler_hash id,
-    handler_fn handler)
-{
-	handlers.emplace_front(id, std::move(handler));
-}
-
-void EventDispatcher::Event::detach(handler_hash id)
-{
-	for (auto oit = handlers.before_begin(), it = std::next(oit);
-	     it != handlers.end();
-	     oit = it++)
-		if (it->first == id) {
-			handlers.erase_after(oit);
-			break;
-		}
-}
-
-bool EventDispatcher::Event::operator()(Params &&params)
-{
-	return invoke(std::move(params));
 }
 
 EventDispatcher::~EventDispatcher() = default;
