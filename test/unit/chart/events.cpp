@@ -296,13 +296,13 @@ std::multimap<std::string, event_as, std::less<>> get_events(
 {
 	chart.getAnimOptions().control.position = 1.0;
 
-	bool ends{};
+	static bool ends{};
 	chart.setKeyframe();
-	chart.animate(
-	    [&ends](bool b)
-	    {
-		    ends = b;
-	    });
+	ends = false;
+	chart.animate(+[](bool b)
+	              {
+		              ends = b;
+	              });
 
 	std::multimap<std::string, event_as, std::less<>> events;
 
