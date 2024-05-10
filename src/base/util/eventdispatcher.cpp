@@ -75,7 +75,10 @@ EventDispatcher::event_ptr EventDispatcher::createEvent(
 
 	if (auto iter_place = eventRegistry.lower_bound(name);
 	    iter_place == eventRegistry.end() || iter_place->first != name
-	    || (res = iter_place->second.lock()) == nullptr) {
+	        || ![&res, &iter_place]() -> auto &
+	    {
+		    return res = iter_place->second.lock();
+	    }()) {
 		res = std::make_shared<Event>();
 		res->name =
 		    eventRegistry
