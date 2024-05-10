@@ -151,20 +151,18 @@ public:
 		return values[0] < other.values[0];
 	}
 
-	void visit(const std::function<void(bool, const Weighted<Type> &)>
-	        &branch) const
+	template <class T> void visit(T &&branch) const
 	{
 		if (values[0].hasValue()) branch(false, values[0]);
 		if (has_second && values[1].hasValue())
 			branch(true, values[1]);
 	}
 
-	template <typename T>
-	T combine(const std::function<T(const Type &)> &branch) const
+	template <class T, class Fun> T combine(Fun &&branch) const
 	{
-		auto res = branch(values[0].value) * values[0].weight;
+		auto res = T{branch(values[0].value)} * values[0].weight;
 		if (has_second)
-			res = res + branch(values[1].value) * values[1].weight;
+			res = res + T{branch(values[1].value)} * values[1].weight;
 		return T{res};
 	}
 

@@ -18,17 +18,7 @@ ChartWidget::ChartWidget() :
         chart.getEventDispatcher().createEvent("pointerup")),
     onPointerLeaveEvent(
         chart.getEventDispatcher().createEvent("pointerleave"))
-{
-	chart.onChanged = [this]
-	{
-		onChanged();
-	};
-}
-
-void ChartWidget::onChanged() const
-{
-	if (doChange) doChange();
-}
+{}
 
 void ChartWidget::onPointerDown(const GUI::PointerEvent &event) const
 {
@@ -51,9 +41,7 @@ void ChartWidget::onPointerUp(const GUI::PointerEvent &event) const
 
 	if (onClick->invoke(PointerEvent{event, eventTarget})) {
 		if (chart.getLayout().logo.contains(event.position)) {
-			if (openUrl)
-				openUrl(
-				    Main::siteUrl + std::string("?utm_source=logo"));
+			openUrl(Main::siteUrl + std::string("?utm_source=logo"));
 		}
 	}
 }

@@ -16,6 +16,12 @@ protected:
 	    std::forward_list<std::pair<handler_id, handler_fn>>;
 
 public:
+	Event() noexcept = default;
+	Event(const Event &) = delete;
+	Event(Event &&) noexcept = default;
+	Event &operator=(const Event &) = delete;
+	Event &operator=(Event &&) noexcept = default;
+
 	void operator()(ParamTypes &...params) const
 	{
 		for (auto iter = handlers.begin(); iter != handlers.end();)

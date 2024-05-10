@@ -25,10 +25,9 @@ namespace Vizzu
 class Chart
 {
 public:
-	using Event = std::function<void()>;
-	using OnComplete = std::function<void(bool)>;
+	using OnComplete = void (*)(bool);
 
-	Event onChanged;
+	Util::Event<> onChanged;
 
 	Chart();
 	Chart(Chart &&) noexcept = delete;
@@ -77,14 +76,13 @@ public:
 
 	Gen::Config getConfig();
 
-	void animate(const OnComplete &onComplete = OnComplete());
+	void animate(const OnComplete &onComplete);
 	void setKeyframe();
 	void setAnimation(const Anim::AnimationPtr &animation);
 
 private:
 	Layout layout;
 	Data::DataTable table;
-	Anim::Animator animator;
 	Gen::PlotPtr actPlot;
 	Gen::PlotOptionsPtr nextOptions;
 	Gen::Options prevOptions;
@@ -96,6 +94,7 @@ private:
 	Util::EventDispatcher eventDispatcher;
 	Draw::RenderedChart renderedChart;
 	Events events;
+	Anim::Animator animator;
 
 	Gen::PlotPtr plot(const Gen::PlotOptionsPtr &options);
 };

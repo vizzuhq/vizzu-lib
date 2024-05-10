@@ -11,14 +11,14 @@
 
 Window::Window(QWidget *parent) :
     QMainWindow(parent),
-    chart(),
     ui(std::make_unique<Ui::Window>())
 {
 	ui->setupUi(this);
-	chart.getChart().doChange = [this]()
-	{
-		update();
-	};
+	chart.getChart().getChart().onChanged.attach(
+	    [this]
+	    {
+		    update();
+	    });
 	resize(640, 480);
 	QPalette pal = palette();
 	pal.setColor(QPalette::Window, Qt::white);

@@ -13,7 +13,7 @@ Animation::Animation(const Gen::PlotPtr &plot) :
     source(plot),
     target(plot)
 {
-	::Anim::Control::setOnChange(
+	onChange.attach(
 	    [this]
 	    {
 		    if (!::Anim::Sequence::actual) return;
@@ -23,10 +23,13 @@ Animation::Animation(const Gen::PlotPtr &plot) :
 		        std::static_pointer_cast<Gen::Plot>(std::move(plot)));
 	    });
 
-	::Anim::Control::setOnFinish(
-	    [this](bool ok)
+	onFinish.attach(
+	    [this](const bool &ok)
 	    {
-		    finish(ok);
+		    onComplete();
+
+		    auto f = std::move(completionCallback);
+		    f(ok && atEndPosition() ? target : source, ok);
 	    });
 }
 
@@ -51,16 +54,20 @@ void Animation::addKeyframe(const Gen::PlotPtr &next,
 	Vizzu::Gen::PlotPtr intermediate1;
 
 	if (strategy == RegroupStrategy::drilldown) {
-		intermediate0 = getIntermediate(target,
+		intermediate0 = getIntermediate(
+		    target,
 		    next,
-		    [=](auto &base, const auto &other)
+		    +[](Vizzu::Gen::Options &base,
+		         const Vizzu::Gen::Options &other)
 		    {
 			    base.drilldownTo(other);
 		    });
 
-		intermediate1 = getIntermediate(next,
+		intermediate1 = getIntermediate(
+		    next,
 		    target,
-		    [=](auto &base, const auto &other)
+		    +[](Vizzu::Gen::Options &base,
+		         const Vizzu::Gen::Options &other)
 		    {
 			    base.drilldownTo(other);
 		    });
@@ -85,8 +92,9 @@ void Animation::addKeyframe(const Gen::PlotPtr &next,
 		              && next->getOptions()->dataFilter](
 		        bool drilldownToBase)
 		{
-			return [&andFilter, drilldownToBase](auto &base,
-			           const auto &target)
+			return [&andFilter,
+			           drilldownToBase](Vizzu::Gen::Options &base,
+			           const Vizzu::Gen::Options &target)
 			{
 				auto baseCopy = base;
 				base.intersection(target);
@@ -164,10 +172,10 @@ void Animation::addKeyframe(const Gen::PlotPtr &next,
 	target = next;
 }
 
+template <class Modifier>
 Gen::PlotPtr Animation::getIntermediate(const Gen::PlotPtr &base,
     const Gen::PlotPtr &other,
-    const std::function<void(Vizzu::Gen::Options &,
-        const Vizzu::Gen::Options &)> &modifier)
+    Modifier &&modifier)
 {
 	Gen::PlotPtr res;
 
@@ -203,7 +211,7 @@ void Animation::addKeyframe(const Gen::PlotPtr &source,
 }
 
 void Animation::animate(const ::Anim::Control::Option &options,
-    OnComplete onThisCompletes)
+    OnComplete &&onThisCompletes)
 {
 	if (isRunning())
 		throw std::logic_error("animation already in progress");
@@ -212,17 +220,6 @@ void Animation::animate(const ::Anim::Control::Option &options,
 	::Anim::Control::reset();
 	this->options = options;
 	onBegin();
-}
-
-void Animation::finish(bool ok)
-{
-	onComplete();
-	auto f = completionCallback;
-	completionCallback = OnComplete();
-	if (f)
-		f(ok ? (::Anim::Control::atEndPosition() ? target : source)
-		     : source,
-		    ok);
 }
 
 }

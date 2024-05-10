@@ -11,8 +11,7 @@ namespace Vizzu::UI
 class ChartWidget
 {
 public:
-	std::function<void()> doChange;
-	std::function<void(const std::string &)> openUrl;
+	Util::Event<const std::string> openUrl;
 
 	explicit ChartWidget();
 
@@ -21,7 +20,6 @@ public:
 	void onPointerUp(const GUI::PointerEvent &event) const;
 	void onPointerLeave(const GUI::PointerEvent &event) const;
 	void onWheel(double delta) const;
-	void onChanged() const;
 	void onDraw(const std::shared_ptr<Gfx::ICanvas> &);
 	void onUpdateSize(Geom::Size size);
 

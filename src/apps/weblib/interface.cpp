@@ -347,17 +347,22 @@ ObjectRegistry::Handle Interface::createChart()
 {
 	auto &&widget = std::make_shared<UI::ChartWidget>();
 
-	auto handle = objects.reg(widget);
+	auto &openUrl = widget->openUrl;
+	auto &doChange = widget->getChart().onChanged;
 
-	widget->openUrl = [handle](const std::string &url)
-	{
-		::chart_openUrl(handle, url.c_str());
-	};
+	auto handle = objects.reg(std::move(widget));
 
-	widget->doChange = [handle]()
-	{
-		::chart_doChange(handle);
-	};
+	openUrl.attach(
+	    [handle](const std::string &url)
+	    {
+		    ::chart_openUrl(handle, url.c_str());
+	    });
+
+	doChange.attach(
+	    [handle]
+	    {
+		    ::chart_doChange(handle);
+	    });
 
 	return handle;
 }

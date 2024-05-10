@@ -10,28 +10,21 @@ Chart::Chart() :
     nextOptions(std::make_shared<Gen::Options>()),
     stylesheet(Styles::Chart::def(), actStyles),
     computedStyles(stylesheet.getDefaultParams()),
-    events(getEventDispatcher())
+    events(eventDispatcher),
+    animator(*events.animation.begin, *events.animation.complete)
 {
 	animator.onDraw.attach(
 	    [this](const Gen::PlotPtr &actPlot)
 	    {
 		    this->actPlot = actPlot;
-		    if (onChanged) onChanged();
+		    onChanged();
 	    });
 	animator.onProgress.attach(
-	    [this]()
+	    [this]
 	    {
 		    events.animation.update->invoke(
 		        Events::OnUpdateEvent(animator.getControl()));
 	    });
-	animator.onBegin = [this]
-	{
-		events.animation.begin->invoke();
-	};
-	animator.onComplete = [this]
-	{
-		events.animation.complete->invoke();
-	};
 }
 
 void Chart::setBoundRect(const Geom::Rect &rect)
@@ -51,21 +44,30 @@ void Chart::setBoundRect(const Geom::Rect &rect)
 
 void Chart::animate(const OnComplete &onComplete)
 {
-	auto f = [this, onComplete](const Gen::PlotPtr &plot, bool ok)
-	{
-		actPlot = plot;
-		if (ok) {
-			prevOptions = *nextOptions;
-			prevStyles = actStyles;
-		}
-		else {
-			*nextOptions = prevOptions;
-			actStyles = prevStyles;
-			computedStyles = plot->getStyle();
-		}
-		if (onComplete) onComplete(ok);
-	};
-	animator.animate(nextAnimOptions.control, f);
+	Util::Event<const Gen::PlotPtr, const bool> ev;
+
+	if (onComplete)
+		ev.attach(
+		    [onComplete](const Gen::PlotPtr &, const bool &ok)
+		    {
+			    onComplete(ok);
+		    });
+
+	ev.attach(
+	    [this](const Gen::PlotPtr &plot, const bool &ok)
+	    {
+		    actPlot = plot;
+		    if (ok) {
+			    prevOptions = *nextOptions;
+			    prevStyles = actStyles;
+		    }
+		    else {
+			    *nextOptions = prevOptions;
+			    actStyles = prevStyles;
+			    computedStyles = plot->getStyle();
+		    }
+	    });
+	animator.animate(nextAnimOptions.control, std::move(ev));
 	nextAnimOptions = Anim::Options();
 	nextOptions = std::make_shared<Gen::Options>(*nextOptions);
 }

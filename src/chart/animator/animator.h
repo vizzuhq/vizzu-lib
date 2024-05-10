@@ -4,6 +4,8 @@
 #include <functional>
 #include <memory>
 
+#include "base/util/eventdispatcher.h"
+
 #include "animation.h"
 #include "options.h"
 
@@ -13,21 +15,23 @@ namespace Vizzu::Anim
 class Animator
 {
 public:
-	Animator();
+	Animator(const Util::EventDispatcher::Event &onBegin,
+	    const Util::EventDispatcher::Event &onComplete);
 
 	void addKeyframe(const Gen::PlotPtr &plot,
 	    const Options::Keyframe &options) const;
 
 	void setAnimation(const AnimationPtr &animation);
 
-	void animate(const ::Anim::Control::Option &options = {},
-	    const Animation::OnComplete &onThisCompletes =
-	        Animation::OnComplete());
+	void animate(const ::Anim::Control::Option &options,
+	    Animation::OnComplete &&onThisCompletes);
 
 	Util::Event<const Gen::PlotPtr> onDraw;
 	Util::Event<> onProgress;
-	std::function<void()> onBegin;
-	std::function<void()> onComplete;
+	std::reference_wrapper<const Util::EventDispatcher::Event>
+	    onBegin;
+	std::reference_wrapper<const Util::EventDispatcher::Event>
+	    onComplete;
 
 	::Anim::Control &getControl() { return *actAnimation; }
 	AnimationPtr getActAnimation() { return actAnimation; }
