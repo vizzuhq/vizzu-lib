@@ -14,10 +14,9 @@ class Animator
 {
 public:
 	Animator();
-	Animator(const Animator &) = delete;
 
 	void addKeyframe(const Gen::PlotPtr &plot,
-	    const Options::Keyframe &options = Options::Keyframe());
+	    const Options::Keyframe &options) const;
 
 	void setAnimation(const AnimationPtr &animation);
 
@@ -37,8 +36,8 @@ private:
 	bool running{};
 	AnimationPtr actAnimation;
 	AnimationPtr nextAnimation;
-	void stripActAnimation();
-	void setupActAnimation();
+	void stripActAnimation() const;
+	void setupActAnimation() const;
 };
 
 }

@@ -7,13 +7,11 @@ namespace Vizzu
 {
 
 Chart::Chart() :
-    stylesheet(Styles::Chart::def()),
+    nextOptions(std::make_shared<Gen::Options>()),
+    stylesheet(Styles::Chart::def(), actStyles),
     computedStyles(stylesheet.getDefaultParams()),
     events(getEventDispatcher())
 {
-	stylesheet.setActiveParams(actStyles);
-	nextOptions = std::make_shared<Gen::Options>();
-
 	animator.onDraw.attach(
 	    [this](const Gen::PlotPtr &actPlot)
 	    {

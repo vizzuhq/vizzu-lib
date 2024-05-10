@@ -114,7 +114,7 @@ void Interface::freeObj(ObjectRegistry::Handle ptr)
 const char *Interface::getStyleList()
 {
 	static const std::string res =
-	    Conv::toJSON(Styles::Sheet::paramList());
+	    Conv::toJSON(Styles::Sheet::listParams());
 	return res.c_str();
 }
 
@@ -139,8 +139,7 @@ void Interface::setStyleValue(ObjectRegistry::Handle chart,
 
 const char *Interface::getChartParamList()
 {
-	static const std::string res =
-	    Conv::toJSON(Gen::Config::listParams());
+	static const std::string res = Gen::Config::paramsJson();
 	return res.c_str();
 }
 

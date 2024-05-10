@@ -10,10 +10,7 @@ namespace Style
 
 template <class T> T Sheet<T>::getFullParams() const
 {
-	if (!activeParams)
-		throw std::logic_error("no active parameters set");
-
-	return ParamMerger::merge(T{defaultParams}, *activeParams);
+	return ParamMerger::merge(T{defaultParams}, activeParams.get());
 }
 
 template <class T> ParamRegistry<T>::ParamRegistry()

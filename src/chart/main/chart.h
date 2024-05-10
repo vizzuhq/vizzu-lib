@@ -83,15 +83,15 @@ public:
 
 private:
 	Layout layout;
-	Anim::Animator animator;
 	Data::DataTable table;
+	Anim::Animator animator;
 	Gen::PlotPtr actPlot;
 	Gen::PlotOptionsPtr nextOptions;
 	Gen::Options prevOptions;
 	Anim::Options nextAnimOptions;
-	Styles::Sheet stylesheet;
 	Styles::Chart actStyles;
 	Styles::Chart prevStyles;
+	Styles::Sheet stylesheet;
 	Styles::Chart computedStyles;
 	Util::EventDispatcher eventDispatcher;
 	Draw::RenderedChart renderedChart;

@@ -11,7 +11,7 @@ Animator::Animator() :
 {}
 
 void Animator::addKeyframe(const Gen::PlotPtr &plot,
-    const Options::Keyframe &options)
+    const Options::Keyframe &options) const
 {
 	if (running)
 		throw std::logic_error("animation already in progress");
@@ -45,7 +45,7 @@ void Animator::animate(const ::Anim::Control::Option &options,
 	actAnimation->animate(options, completionCallback);
 }
 
-void Animator::setupActAnimation()
+void Animator::setupActAnimation() const
 {
 	actAnimation->onPlotChanged.attach(
 	    [this](const Gen::PlotPtr &actual)
@@ -58,7 +58,7 @@ void Animator::setupActAnimation()
 	actAnimation->onComplete.attach(onComplete);
 }
 
-void Animator::stripActAnimation()
+void Animator::stripActAnimation() const
 {
 	actAnimation->onPlotChanged.detachAll();
 	actAnimation->onBegin.detachAll();

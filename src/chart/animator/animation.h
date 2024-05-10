@@ -42,7 +42,7 @@ private:
 	void addKeyframe(const Gen::PlotPtr &source,
 	    const Gen::PlotPtr &target,
 	    const Options::Keyframe &options,
-	    bool isInstant = false);
+	    bool isInstant);
 };
 
 using AnimationPtr = std::shared_ptr<Animation>;

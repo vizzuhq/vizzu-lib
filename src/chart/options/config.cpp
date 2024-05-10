@@ -146,19 +146,17 @@ const Config::ChannelAccessors &Config::getChannelAccessors()
 	return accessors;
 }
 
-std::list<std::string> Config::listParams()
+std::string Config::paramsJson()
 {
-	std::list<std::string> res;
-	for (const auto &accessor : getAccessors())
-		res.emplace_back(accessor.first);
+	std::string res;
+	Conv::JSONArr arr{res};
+	for (const auto &accessor : getAccessors()) arr << accessor.first;
 
-	auto &&channelParams = getChannelAccessors();
-	for (auto channelName : Refl::enum_names<ChannelId>) {
+	for (auto &&channelParams = getChannelAccessors();
+	     auto channelName : Refl::enum_names<ChannelId>)
 		for (const auto &param : channelParams)
-			res.push_back("channels." + std::string{channelName} + "."
-			              + std::string{param.first});
-	}
-
+			arr << "channels." + std::string{channelName} + "."
+			           + std::string{param.first};
 	return res;
 }
 

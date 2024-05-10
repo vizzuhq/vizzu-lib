@@ -192,13 +192,14 @@ void Animation::addKeyframe(const Gen::PlotPtr &source,
     const Options::Keyframe &options,
     bool isInstant)
 {
-	auto instant = options;
-	instant.all.duration = ::Anim::Duration(0);
-
-	auto keyframe = std::make_shared<Keyframe>(source,
-	    target,
-	    isInstant ? instant : options);
-	::Anim::Sequence::addKeyframe(keyframe);
+	::Anim::Sequence::addKeyframe(std::make_shared<Keyframe>(source,
+		target,
+		isInstant ? [&options]
+		{
+			auto instant = options;
+			instant.all.duration = ::Anim::Duration(0);
+			return instant;
+		} () : options));
 }
 
 void Animation::animate(const ::Anim::Control::Option &options,

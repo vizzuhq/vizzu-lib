@@ -25,20 +25,9 @@ void EventDispatcher::Params::appendToJSON(Conv::JSON &obj) const
 
 EventDispatcher::Params::~Params() = default;
 
-EventDispatcher::Event::Event(std::string_view name) :
-    uniqueName(name)
-{}
-
-EventDispatcher::Event::~Event() = default;
-
-const std::string_view &EventDispatcher::Event::name() const noexcept
-{
-	return uniqueName;
-}
-
 bool EventDispatcher::Event::invoke(Params &&params)
 {
-	params.eventName = name();
+	params.eventName = name;
 
 	for (auto iter = handlers.begin(); iter != handlers.end();)
 		iter++->second(params);
@@ -75,27 +64,26 @@ EventDispatcher::event_ptr EventDispatcher::getEvent(
 {
 	if (auto iter = eventRegistry.find(name);
 	    iter != eventRegistry.end())
-		return *iter;
+		return iter->second.lock();
 	return {};
 }
 
-const EventDispatcher::event_ptr &EventDispatcher::createEvent(
-    std::string_view name)
+EventDispatcher::event_ptr EventDispatcher::createEvent(
+    std::string &&name)
 {
-	auto iter_place = eventRegistry.lower_bound(name);
-	if (iter_place == eventRegistry.end()
-	    || (*iter_place)->name() != name)
-		iter_place = eventRegistry.insert(iter_place,
-		    std::make_shared<Event>(name));
+	event_ptr res;
 
-	return *iter_place;
+	if (auto iter_place = eventRegistry.lower_bound(name);
+	    iter_place == eventRegistry.end() || iter_place->first != name
+	    || (res = iter_place->second.lock()) == nullptr) {
+		res = std::make_shared<Event>();
+		res->name =
+		    eventRegistry
+		        .insert_or_assign(iter_place, std::move(name), res)
+		        ->first;
+	}
+
+	return res;
 }
 
-bool EventDispatcher::destroyEvent(const event_ptr &event)
-{
-	auto iter = eventRegistry.find(event->name());
-	if (iter == eventRegistry.end()) return false;
-	eventRegistry.erase(iter);
-	return true;
-}
 }

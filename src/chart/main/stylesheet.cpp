@@ -160,10 +160,9 @@ void Sheet::setMarkerLabels()
 	else
 		def.position = MarkerLabel::Position::center;
 
-	const auto &pos =
-	    (activeParams && activeParams->plot.marker.label.position)
-	        ? activeParams->plot.marker.label.position
-	        : def.position;
+	const auto &activePos =
+	    activeParams.get().plot.marker.label.position;
+	const auto &pos = activePos ? activePos : def.position;
 
 	if (pos == MarkerLabel::Position::center)
 		def.filter = Gfx::ColorTransform::Lightness(0.7);
