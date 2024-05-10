@@ -146,7 +146,9 @@ void Marker::setIdOffset(size_t offset)
 Conv::JSONObj &&Marker::appendToJSON(Conv::JSONObj &&jsonObj) const
 {
 	if (cellInfo) return std::move(jsonObj).merge(cellInfo->json);
-	return std::move(jsonObj);
+	jsonObj.nested("categories");
+	jsonObj.nested("values");
+	return std::move(jsonObj)("index", idx);
 }
 
 double Marker::getValueForChannel(const Channels &channels,
