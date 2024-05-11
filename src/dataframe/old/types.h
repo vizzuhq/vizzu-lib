@@ -81,6 +81,8 @@ public:
 	Filter &operator=(Filter &&) noexcept = default;
 
 	template <class Pointer>
+	    requires(
+	        !std::is_same_v<std::remove_cvref_t<Pointer>, Filter>)
 	explicit Filter(Pointer &&wr) : func1{std::forward<Pointer>(wr)}
 	{}
 
