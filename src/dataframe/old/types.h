@@ -63,7 +63,7 @@ class Filter
 {
 	using Fun = bool(const RowWrapper *);
 	using SharedFun = std::shared_ptr<Fun>;
-	constexpr static Fun *True = +[](const RowWrapper *)
+	constexpr static auto True = [](const RowWrapper *)
 	{
 		return true;
 	};
@@ -75,6 +75,10 @@ class Filter
 
 public:
 	Filter() noexcept = default;
+	Filter(const Filter &) = default;
+	Filter(Filter &&) noexcept = default;
+	Filter &operator=(const Filter &) = default;
+	Filter &operator=(Filter &&) noexcept = default;
 
 	template <class Pointer>
 	explicit Filter(Pointer &&wr) : func1{std::forward<Pointer>(wr)}
@@ -85,8 +89,11 @@ public:
 
 	[[nodiscard]] Filter operator&&(const Filter &other) const
 	{
-		return {func1.get(),
-		    func1 == other.func1 ? True : other.func1.get()};
+		auto first =
+		    func1.get() == True ? other.func1.get() : func1.get();
+		auto second =
+		    other.func1.get() == first ? True : other.func1.get();
+		return {first, second};
 	}
 
 	[[nodiscard]] auto getFunction() const
