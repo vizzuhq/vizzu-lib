@@ -243,7 +243,11 @@ void Interface::preventDefaultEvent(ObjectRegistry::Handle obj)
 void Interface::animate(ObjectRegistry::Handle chart,
     void (*callback)(bool))
 {
-	getChart(chart)->animate(callback);
+	getChart(chart)->animate(
+	    {[callback](const Gen::PlotPtr &, const bool &ok)
+	        {
+		        callback(ok);
+	        }});
 }
 
 void Interface::setKeyframe(ObjectRegistry::Handle chart)

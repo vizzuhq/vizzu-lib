@@ -22,6 +22,11 @@ public:
 	Event &operator=(const Event &) = delete;
 	Event &operator=(Event &&) noexcept = default;
 
+	template <class T> Event(std::initializer_list<T> listeners)
+	{
+		for (auto &listener : listeners) attach(listener);
+	}
+
 	void operator()(ParamTypes &...params) const
 	{
 		for (auto iter = handlers.begin(); iter != handlers.end();)

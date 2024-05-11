@@ -61,51 +61,45 @@ using SeriesList = Type::UniqueList<SeriesIndex>;
 
 class Filter
 {
-public:
-	using Function = std::function<bool(const RowWrapper &)>;
+	using Fun = bool(const RowWrapper *);
+	using SharedFun = std::shared_ptr<Fun>;
+	constexpr static Fun *True = +[](const RowWrapper *)
+	{
+		return true;
+	};
 
+	Filter(Fun *lhs, Fun *rhs) noexcept :
+	    func1{std::shared_ptr<void>{}, lhs},
+	    func2{std::shared_ptr<void>{}, rhs}
+	{}
+
+public:
 	Filter() noexcept = default;
 
-	template <class Ptr, class Deleter>
-	explicit Filter(std::unique_ptr<Ptr, Deleter> &&wr) :
-	    hash(std::hash<bool (*)(const RowWrapper *)>{}(wr.get())),
-	    function(
-	        [wr = std::shared_ptr{std::move(wr)}](
-	            const RowWrapper &row) noexcept -> bool
-	        {
-		        return (*wr)(&row);
-	        })
+	template <class Pointer>
+	explicit Filter(Pointer &&wr) : func1{std::forward<Pointer>(wr)}
 	{}
 
-	template <class Fun>
-	Filter(std::size_t hash, Fun &&function) :
-	    hash(hash),
-	    function(std::forward<Fun>(function))
-	{}
-
-	[[nodiscard]] bool operator==(const Filter &other) const
-	{
-		return hash == other.hash;
-	}
+	[[nodiscard]] bool operator==(
+	    const Filter &other) const = default;
 
 	[[nodiscard]] Filter operator&&(const Filter &other) const
 	{
-		return {hash == other.hash ? hash : hash ^ other.hash,
-		    [fun1 = this->function, fun2 = other.function](
-		        const RowWrapper &row) noexcept -> bool
-		    {
-			    return (!fun1 || fun1(row)) && (!fun2 || fun2(row));
-		    }};
+		return {func1.get(),
+		    func1 == other.func1 ? True : other.func1.get()};
 	}
 
-	[[nodiscard]] const Function &getFunction() const
+	[[nodiscard]] auto getFunction() const
 	{
-		return function;
+		return [this](const RowWrapper &row)
+		{
+			return (*func1)(&row) && (*func2)(&row);
+		};
 	}
 
 private:
-	std::size_t hash{};
-	Function function;
+	SharedFun func1{std::shared_ptr<void>{}, True};
+	SharedFun func2{std::shared_ptr<void>{}, True};
 };
 
 struct SliceIndex

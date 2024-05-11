@@ -100,7 +100,7 @@ void Window::resizeEvent(QResizeEvent *)
 {
 	try {
 		chart.getChart().getChart().setKeyframe();
-		chart.getChart().getChart().animate();
+		chart.getChart().getChart().animate({});
 	}
 	catch (...) {
 	}

@@ -54,32 +54,23 @@ void Animation::addKeyframe(const Gen::PlotPtr &next,
 	Vizzu::Gen::PlotPtr intermediate1;
 
 	if (strategy == RegroupStrategy::drilldown) {
-		intermediate0 = getIntermediate(
-		    target,
-		    next,
-		    +[](Vizzu::Gen::Options &base,
-		         const Vizzu::Gen::Options &other)
-		    {
-			    base.drilldownTo(other);
-		    });
+		auto drilldown = +[](Vizzu::Gen::Options &base,
+		                      const Vizzu::Gen::Options &other)
+		{
+			base.drilldownTo(other);
+		};
+		intermediate0 = getIntermediate(target, next, drilldown);
 
-		intermediate1 = getIntermediate(
-		    next,
-		    target,
-		    +[](Vizzu::Gen::Options &base,
-		         const Vizzu::Gen::Options &other)
-		    {
-			    base.drilldownTo(other);
-		    });
+		intermediate1 = getIntermediate(next, target, drilldown);
 	}
 	else if (strategy == RegroupStrategy::aggregate) {
-		auto &&loosingCoordsys =
-		    target->getOptions()->getChannels().anyAxisSet()
-		    && !next->getOptions()->getChannels().anyAxisSet();
+		auto &&targetAxisSet =
+		    target->getOptions()->getChannels().anyAxisSet();
+		auto &&nextAxisSet =
+		    next->getOptions()->getChannels().anyAxisSet();
 
-		auto &&gainingCoordsys =
-		    !target->getOptions()->getChannels().anyAxisSet()
-		    && next->getOptions()->getChannels().anyAxisSet();
+		auto &&loosingCoordsys = targetAxisSet && !nextAxisSet;
+		auto &&gainingCoordsys = !targetAxisSet && nextAxisSet;
 
 		auto &&geometryChanges = target->getOptions()->geometry
 		                      != next->getOptions()->geometry;
@@ -103,35 +94,29 @@ void Animation::addKeyframe(const Gen::PlotPtr &next,
 			};
 		};
 
-		if (basedOnSource) {
-			intermediate0 =
-			    getIntermediate(target, next, getModifier(true));
-			intermediate1 =
-			    getIntermediate(target, next, getModifier(false));
-		}
-		else {
-			intermediate0 =
-			    getIntermediate(next, target, getModifier(false));
-			intermediate1 =
-			    getIntermediate(next, target, getModifier(true));
-		}
+		const auto &base = basedOnSource ? target : next;
+		const auto &other = basedOnSource ? next : target;
+		intermediate0 =
+		    getIntermediate(base, other, getModifier(basedOnSource));
+		intermediate1 =
+		    getIntermediate(base, other, getModifier(!basedOnSource));
 	}
 
 	auto &&intermediate0Instant = intermediate0
 	                           && strategy != RegroupStrategy::fade
 	                           && target->getOptions()->looksTheSame(
 	                               *intermediate0->getOptions());
-	auto begin = intermediate0 ? intermediate0 : target;
+	auto begin = std::ref(intermediate0 ? intermediate0 : target);
 
 	auto &&intermediate1Instant =
 	    intermediate1 && strategy == RegroupStrategy::aggregate
-	    && begin->getOptions()->looksTheSame(
+	    && begin.get()->getOptions()->looksTheSame(
 	        *intermediate1->getOptions());
-	begin = intermediate1 ? intermediate1 : begin;
+	begin = intermediate1 ? std::ref(intermediate1) : begin;
 
-	auto &&nextInstant =
-	    strategy != RegroupStrategy::fade
-	    && begin->getOptions()->looksTheSame(*next->getOptions());
+	auto &&nextInstant = strategy != RegroupStrategy::fade
+	                  && begin.get()->getOptions()->looksTheSame(
+	                      *next->getOptions());
 
 	auto &&duration_fix = (intermediate0 && !intermediate0Instant)
 	                    + (intermediate1 && !intermediate1Instant)

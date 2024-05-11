@@ -1,5 +1,7 @@
 #include "chart.h"
 
+#include <chart/generator/plot.h>
+
 #include "base/io/log.h"
 #include "chart/main/events.h"
 #include "chart/rendering/drawplot.h"
@@ -35,10 +37,11 @@ void TestChart::prepareData()
 	chart.getChart()
 	    .getEventDispatcher()
 	    .getEvent("pointermove")
-	    ->attach(0, std::ref(*this));
+	    ->attach(std::ref(*this));
 }
 
-void TestChart::operator()(Util::EventDispatcher::Params &params)
+void TestChart::operator()(Util::EventDispatcher::Params &params,
+    const std::string &)
 {
 	std::optional<uint64_t> markerId;
 	using Marker = Vizzu::Events::Targets::Marker;
@@ -52,51 +55,52 @@ void TestChart::operator()(Util::EventDispatcher::Params &params)
 
 	chart.getChart().getOptions().showTooltip(markerId);
 	chart.getChart().setKeyframe();
-	chart.getChart().animate();
+	chart.getChart().animate({});
 }
 
 void TestChart::run()
 {
 	using Vizzu::Gen::ChannelId;
+	using Vizzu::Gen::PlotPtr;
 
 	prepareData();
 
-	auto end = [=](bool)
+	auto end = [](const PlotPtr &, const bool &)
 	{
 		IO::log() << "finished";
 	};
 
-	auto step6 = [end, this](bool)
+	auto step6 = [end, this](const PlotPtr &, const bool &)
 	{
 		IO::log() << "step 6";
 		auto &options = chart.getChart().getOptions();
 		options.title = "VIZZU Chart - Phase 6";
 		options.showTooltip({});
 		chart.getChart().setKeyframe();
-		chart.getChart().animate(end);
+		chart.getChart().animate({end});
 	};
 
-	auto step5 = [step6, this](bool)
+	auto step5 = [step6, this](const PlotPtr &, const bool &)
 	{
 		IO::log() << "step 5";
 		auto &options = chart.getChart().getOptions();
 		options.title = "VIZZU Chart - Phase 5";
 		options.showTooltip(5);
 		chart.getChart().setKeyframe();
-		chart.getChart().animate(step6);
+		chart.getChart().animate({step6});
 	};
 
-	auto step4 = [step5, this](bool)
+	auto step4 = [step5, this](const PlotPtr &, const bool &)
 	{
 		IO::log() << "step 4";
 		auto &options = chart.getChart().getOptions();
 		options.title = "VIZZU Chart - Phase 4";
 		options.showTooltip(4);
 		chart.getChart().setKeyframe();
-		chart.getChart().animate(step5);
+		chart.getChart().animate({step5});
 	};
 
-	auto step3 = [step4, this](bool)
+	auto step3 = [step4, this](const PlotPtr &, const bool &)
 	{
 		IO::log() << "step 3";
 		auto &options = chart.getChart().getOptions();
@@ -110,10 +114,10 @@ void TestChart::run()
 		    ::Anim::Interpolated<Vizzu::Styles::Text::TextAlign>(
 		        Vizzu::Styles::Text::TextAlign::right);
 		chart.getChart().setKeyframe();
-		chart.getChart().animate(step4);
+		chart.getChart().animate({step4});
 	};
 
-	auto step2 = [step3, this](bool)
+	auto step2 = [step3, this](const PlotPtr &, const bool &)
 	{
 		IO::log() << "step 2";
 		auto &options = chart.getChart().getOptions();
@@ -133,39 +137,42 @@ void TestChart::run()
 		styles.title.textAlign = ::Anim::Interpolated(
 		    Vizzu::Styles::Text::TextAlign::center);
 		chart.getChart().setKeyframe();
-		chart.getChart().animate(step3);
+		chart.getChart().animate({step3});
 	};
 
-	auto step1b = [step2, this](bool)
+	auto step1b = [step2, this](const PlotPtr &, const bool &)
 	{
 		try {
 			IO::log() << "step 1b";
 			auto &options = chart.getChart().getOptions();
 			auto &styles = chart.getChart().getStyles();
-			options.dataFilter = {1,
-			    [&](const Vizzu::Data::RowWrapper &row)
-			    {
-				    return std::get<std::string_view>(
-				               row.get_value("Cat1"))
-				            == "A"
-				        || std::get<std::string_view>(
-				               row.get_value("Cat2"))
-				               == "b";
-			    }};
+			options.dataFilter =
+			    Vizzu::Data::Filter{std::shared_ptr<bool(
+			        const Vizzu::Data::RowWrapper *)>{
+			        std::shared_ptr<void>{},
+			        +[](const Vizzu::Data::RowWrapper *row) -> bool
+			        {
+				        return std::get<std::string_view>(
+				                   row->get_value("Cat1"))
+				                == "A"
+				            || std::get<std::string_view>(
+				                   row->get_value("Cat2"))
+				                   == "b";
+			        }}};
 			options.title = "VIZZU Chart - Phase 1b";
 			styles.legend.marker.type =
 			    Vizzu::Styles::Legend::Marker::Type::circle;
 			styles.title.textAlign = ::Anim::Interpolated(
 			    Vizzu::Styles::Text::TextAlign::right);
 			chart.getChart().setKeyframe();
-			chart.getChart().animate(step2);
+			chart.getChart().animate({step2});
 		}
 		catch (const std::exception &e) {
 			IO::log() << e.what();
 		}
 	};
 
-	auto step1 = [step1b, this](bool)
+	auto step1 = [step1b, this]
 	{
 		IO::log() << "step 1";
 		auto &options = chart.getChart().getOptions();
@@ -189,8 +196,8 @@ void TestChart::run()
 		    Vizzu::Styles::Text::TextAlign::left);
 		options.title = "Example VIZZU Chart";
 		chart.getChart().setKeyframe();
-		chart.getChart().animate(step1b);
+		chart.getChart().animate({step1b});
 	};
 
-	step1(true);
+	step1();
 }

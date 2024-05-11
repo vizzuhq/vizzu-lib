@@ -76,7 +76,7 @@ public:
 
 	Gen::Config getConfig();
 
-	void animate(const OnComplete &onComplete);
+	void animate(Anim::Animation::OnComplete &&onComplete);
 	void setKeyframe();
 	void setAnimation(const Anim::AnimationPtr &animation);
 

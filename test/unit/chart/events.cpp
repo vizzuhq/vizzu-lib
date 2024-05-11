@@ -299,10 +299,10 @@ std::multimap<std::string, event_as, std::less<>> get_events(
 	static bool ends{};
 	chart.setKeyframe();
 	ends = false;
-	chart.animate(+[](bool b)
-	              {
-		              ends = b;
-	              });
+	chart.animate({[](const Vizzu::Gen::PlotPtr &, const bool &b)
+	    {
+		    ends = b;
+	    }});
 
 	std::multimap<std::string, event_as, std::less<>> events;
 

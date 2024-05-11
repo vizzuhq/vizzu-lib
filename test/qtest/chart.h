@@ -9,7 +9,8 @@ public:
 	explicit TestChart();
 	void run();
 	Vizzu::UI::ChartWidget &getChart() { return chart; }
-	void operator()(Util::EventDispatcher::Params &param);
+	void operator()(Util::EventDispatcher::Params &param,
+	    const std::string &);
 
 private:
 	Vizzu::UI::ChartWidget chart;

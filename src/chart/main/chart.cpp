@@ -42,18 +42,9 @@ void Chart::setBoundRect(const Geom::Rect &rect)
 	}
 }
 
-void Chart::animate(const OnComplete &onComplete)
+void Chart::animate(Anim::Animation::OnComplete &&onComplete)
 {
-	Util::Event<const Gen::PlotPtr, const bool> ev;
-
-	if (onComplete)
-		ev.attach(
-		    [onComplete](const Gen::PlotPtr &, const bool &ok)
-		    {
-			    onComplete(ok);
-		    });
-
-	ev.attach(
+	onComplete.attach(
 	    [this](const Gen::PlotPtr &plot, const bool &ok)
 	    {
 		    actPlot = plot;
@@ -67,7 +58,8 @@ void Chart::animate(const OnComplete &onComplete)
 			    computedStyles = plot->getStyle();
 		    }
 	    });
-	animator.animate(nextAnimOptions.control, std::move(ev));
+
+	animator.animate(nextAnimOptions.control, std::move(onComplete));
 	nextAnimOptions = Anim::Options();
 	nextOptions = std::make_shared<Gen::Options>(*nextOptions);
 }
