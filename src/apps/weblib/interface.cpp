@@ -64,8 +64,7 @@ const char *Interface::version()
 std::shared_ptr<Vizzu::Chart> Interface::getChart(
     ObjectRegistry::Handle chart)
 {
-	auto &&widget =
-	    objects.get<std::shared_ptr<UI::ChartWidget>>(chart);
+	auto &&widget = objects.get<UI::ChartWidget>(chart);
 	auto &chartRef = widget->getChart();
 	return {std::move(widget), &chartRef};
 }
@@ -82,8 +81,7 @@ ObjectRegistry::Handle Interface::storeChart(
 void Interface::restoreChart(ObjectRegistry::Handle chart,
     ObjectRegistry::Handle snapshot)
 {
-	auto &&snapshotPtr =
-	    objects.get<std::shared_ptr<Snapshot>>(snapshot);
+	auto &&snapshotPtr = objects.get<Snapshot>(snapshot);
 	auto &&chartPtr = getChart(chart);
 	chartPtr->setOptions(snapshotPtr->options);
 	chartPtr->setStyles(snapshotPtr->styles);
@@ -101,7 +99,7 @@ ObjectRegistry::Handle Interface::storeAnim(
 void Interface::restoreAnim(ObjectRegistry::Handle chart,
     ObjectRegistry::Handle animPtr)
 {
-	auto &&anim = objects.get<std::shared_ptr<Animation>>(animPtr);
+	auto &&anim = objects.get<Animation>(animPtr);
 	auto &&chartPtr = getChart(chart);
 	chartPtr->setAnimation(anim->animation);
 	chartPtr->setOptions(anim->snapshot.options);
@@ -205,20 +203,15 @@ std::variant<double, std::string_view> Interface::getRecordValue(
 
 void Interface::addEventListener(ObjectRegistry::Handle chart,
     const char *event,
-    void (*callback)(ObjectRegistry::Handle, const char *))
+    void (*callback)(APIHandles::Event, const char *))
 {
 	auto &&chartPtr = getChart(chart);
 	if (auto &&ev = chartPtr->getEventDispatcher().getEvent(event)) {
 		ev->attach(
-		    [this, callback](Util::EventDispatcher::Params &params,
+		    [callback](Util::EventDispatcher::Params &params,
 		        const std::string &jsonStrIn)
 		    {
-			    auto &&ptr = create_unique_ptr(objects.reg(&params),
-			        [this](const void *handle)
-			        {
-				        objects.unreg(handle);
-			        });
-			    callback(ptr.get(), jsonStrIn.c_str());
+			    callback(&params, jsonStrIn.c_str());
 		    },
 		    std::hash<decltype(callback)>{}(callback));
 	}
@@ -226,7 +219,7 @@ void Interface::addEventListener(ObjectRegistry::Handle chart,
 
 void Interface::removeEventListener(ObjectRegistry::Handle chart,
     const char *event,
-    void (*callback)(ObjectRegistry::Handle, const char *))
+    void (*callback)(APIHandles::Event, const char *))
 {
 	auto &&chartPtr = getChart(chart);
 	if (auto &&ev = chartPtr->getEventDispatcher().getEvent(event)) {
@@ -234,10 +227,9 @@ void Interface::removeEventListener(ObjectRegistry::Handle chart,
 	}
 }
 
-void Interface::preventDefaultEvent(ObjectRegistry::Handle obj)
+void Interface::preventDefaultEvent(APIHandles::Event obj)
 {
-	objects.get<Util::EventDispatcher::Params *>(obj)
-	    ->preventDefault = true;
+	obj->preventDefault = true;
 }
 
 void Interface::animate(ObjectRegistry::Handle chart,
@@ -385,8 +377,7 @@ void Interface::setLogging(bool enable)
 void Interface::update(ObjectRegistry::Handle chart,
     double timeInMSecs)
 {
-	auto &&widget =
-	    objects.get<std::shared_ptr<UI::ChartWidget>>(chart);
+	auto &&widget = objects.get<UI::ChartWidget>(chart);
 
 	std::chrono::duration<double, std::milli> milliSecs(timeInMSecs);
 
@@ -404,9 +395,8 @@ void Interface::render(ObjectRegistry::Handle chart,
     double width,
     double height)
 {
-	auto &&widget =
-	    objects.get<std::shared_ptr<UI::ChartWidget>>(chart);
-	auto &&ptr = objects.get<std::shared_ptr<Gfx::ICanvas>>(canvas);
+	auto &&widget = objects.get<UI::ChartWidget>(chart);
+	auto &&ptr = objects.get<Gfx::ICanvas>(canvas);
 
 	ptr->frameBegin();
 
@@ -423,8 +413,8 @@ void Interface::pointerDown(ObjectRegistry::Handle chart,
     double x,
     double y)
 {
-	objects.get<std::shared_ptr<UI::ChartWidget>>(chart)
-	    ->onPointerDown({pointerId, Geom::Point{x, y}});
+	objects.get<UI::ChartWidget>(chart)->onPointerDown(
+	    {pointerId, Geom::Point{x, y}});
 }
 
 void Interface::pointerUp(ObjectRegistry::Handle chart,
@@ -433,7 +423,7 @@ void Interface::pointerUp(ObjectRegistry::Handle chart,
     double x,
     double y)
 {
-	objects.get<std::shared_ptr<UI::ChartWidget>>(chart)->onPointerUp(
+	objects.get<UI::ChartWidget>(chart)->onPointerUp(
 	    {pointerId, Geom::Point{x, y}});
 }
 
@@ -441,16 +431,15 @@ void Interface::pointerLeave(ObjectRegistry::Handle chart,
     ObjectRegistry::Handle,
     int pointerId)
 {
-	objects.get<std::shared_ptr<UI::ChartWidget>>(chart)
-	    ->onPointerLeave({pointerId, Geom::Point::Invalid()});
+	objects.get<UI::ChartWidget>(chart)->onPointerLeave(
+	    {pointerId, Geom::Point::Invalid()});
 }
 
 void Interface::wheel(ObjectRegistry::Handle chart,
     ObjectRegistry::Handle,
     double delta)
 {
-	objects.get<std::shared_ptr<UI::ChartWidget>>(chart)->onWheel(
-	    delta);
+	objects.get<UI::ChartWidget>(chart)->onWheel(delta);
 }
 
 void Interface::pointerMove(ObjectRegistry::Handle chart,
@@ -459,8 +448,8 @@ void Interface::pointerMove(ObjectRegistry::Handle chart,
     double x,
     double y)
 {
-	objects.get<std::shared_ptr<UI::ChartWidget>>(chart)
-	    ->onPointerMove({pointerId, Geom::Point{x, y}});
+	objects.get<UI::ChartWidget>(chart)->onPointerMove(
+	    {pointerId, Geom::Point{x, y}});
 }
 
 }

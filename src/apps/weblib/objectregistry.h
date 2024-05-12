@@ -1,7 +1,6 @@
 #ifndef LIB_OBJECTREGISTRY_H
 #define LIB_OBJECTREGISTRY_H
 
-#include <base/util/eventdispatcher.h>
 #include <map>
 #include <memory>
 #include <shared_mutex>
@@ -28,7 +27,7 @@ class ObjectRegistry
 public:
 	using Handle = const void *;
 
-	template <class T> Handle reg(T &&ptr)
+	template <class T> Handle reg(std::shared_ptr<T> &&ptr)
 	{
 		Handle res{std::to_address(ptr)};
 		{
@@ -38,14 +37,15 @@ public:
 		return res;
 	}
 
-	template <class T> T get(Handle handle)
+	template <class T> std::shared_ptr<T> get(Handle handle)
 	{
 		{
 			auto lock = std::shared_lock{mutex};
 
 			if (auto it = objects.find(handle); it != objects.end())
 				if (const auto *casted =
-				        std::get_if<T>(std::addressof(it->second)))
+				        std::get_if<std::shared_ptr<T>>(
+				            std::addressof(it->second)))
 					return *casted;
 		}
 		throw std::logic_error("No such object exists");
@@ -64,8 +64,7 @@ private:
 	    std::variant<std::shared_ptr<Snapshot>,
 	        std::shared_ptr<Animation>,
 	        std::shared_ptr<UI::ChartWidget>,
-	        std::shared_ptr<Gfx::ICanvas>,
-	        Util::EventDispatcher::Params *>>
+	        std::shared_ptr<Gfx::ICanvas>>>
 	    objects;
 	std::shared_mutex mutex;
 };

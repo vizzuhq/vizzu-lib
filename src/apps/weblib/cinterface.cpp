@@ -332,7 +332,7 @@ void removeEventListener(APIHandles::Chart chart,
 
 void event_preventDefault(APIHandles::Event event)
 {
-	return Interface::getInstance().preventDefaultEvent(event);
+	return Interface::preventDefaultEvent(event);
 }
 
 void chart_animate(APIHandles::Chart chart, void (*callback)(bool))

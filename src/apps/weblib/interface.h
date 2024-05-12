@@ -102,11 +102,11 @@ public:
 	const char *dataMetaInfo(ObjectRegistry::Handle chart);
 	void addEventListener(ObjectRegistry::Handle chart,
 	    const char *event,
-	    void (*callback)(ObjectRegistry::Handle, const char *));
+	    void (*callback)(APIHandles::Event, const char *));
 	void removeEventListener(ObjectRegistry::Handle chart,
 	    const char *event,
-	    void (*callback)(ObjectRegistry::Handle, const char *));
-	void preventDefaultEvent(ObjectRegistry::Handle);
+	    void (*callback)(APIHandles::Event, const char *));
+	static void preventDefaultEvent(APIHandles::Event);
 	void animate(ObjectRegistry::Handle chart,
 	    void (*callback)(bool));
 	void setKeyframe(ObjectRegistry::Handle chart);
