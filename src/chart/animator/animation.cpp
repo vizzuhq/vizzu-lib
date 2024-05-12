@@ -187,7 +187,7 @@ void Animation::addKeyframe(const Gen::PlotPtr &source,
 {
 	::Anim::Sequence::addKeyframe(std::make_shared<Keyframe>(source,
 	    target,
-	    options,
+	    &options,
 	    isInstant));
 }
 

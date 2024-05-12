@@ -14,7 +14,7 @@ class Keyframe : public Planner
 public:
 	Keyframe(Gen::PlotPtr src,
 	    const Gen::PlotPtr &trg,
-	    const Options::Keyframe &options,
+	    const Options::Keyframe *options,
 	    bool isInstant);
 
 	[[nodiscard]] std::shared_ptr<void> data() const final

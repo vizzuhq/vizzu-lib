@@ -9,9 +9,9 @@ namespace Vizzu::Anim
 
 Keyframe::Keyframe(Gen::PlotPtr src,
     const Gen::PlotPtr &trg,
-    const Options::Keyframe &options,
+    const Options::Keyframe *options,
     bool isInstant) :
-    options(options),
+    options(*options),
     source(std::move(src))
 {
 	if (isInstant) this->options.all.duration = ::Anim::Duration(0);
