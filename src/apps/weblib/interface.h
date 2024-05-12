@@ -9,6 +9,9 @@ namespace Vizzu
 {
 class Chart;
 
+struct Snapshot;
+struct Animation;
+
 class Interface
 {
 public:
@@ -121,10 +124,6 @@ public:
 	    const char *column);
 
 private:
-	struct Snapshot;
-
-	struct Animation;
-
 	std::shared_ptr<Chart> getChart(ObjectRegistry::Handle chart);
 
 	ObjectRegistry objects;

@@ -1,23 +1,36 @@
 #ifndef LIB_OBJECTREGISTRY_H
 #define LIB_OBJECTREGISTRY_H
 
-#include <any>
+#include <base/util/eventdispatcher.h>
 #include <map>
 #include <memory>
 #include <shared_mutex>
 #include <thread>
+#include <variant>
+
+namespace Gfx
+{
+struct ICanvas;
+}
 
 namespace Vizzu
 {
+namespace UI
+{
+class ChartWidget;
+}
+
+struct Snapshot;
+struct Animation;
 
 class ObjectRegistry
 {
 public:
 	using Handle = const void *;
 
-	template <class T> Handle reg(std::shared_ptr<T> ptr)
+	template <class T> Handle reg(T &&ptr)
 	{
-		Handle res{ptr.get()};
+		Handle res{std::to_address(ptr)};
 		{
 			auto lock = std::lock_guard{mutex};
 			objects.try_emplace(res, std::move(ptr));
@@ -25,15 +38,14 @@ public:
 		return res;
 	}
 
-	template <class T> std::shared_ptr<T> get(Handle handle)
+	template <class T> T get(Handle handle)
 	{
 		{
 			auto lock = std::shared_lock{mutex};
 
 			if (auto it = objects.find(handle); it != objects.end())
 				if (const auto *casted =
-				        std::any_cast<std::shared_ptr<T>>(
-				            std::addressof(it->second)))
+				        std::get_if<T>(std::addressof(it->second)))
 					return *casted;
 		}
 		throw std::logic_error("No such object exists");
@@ -48,7 +60,13 @@ public:
 	}
 
 private:
-	std::map<Handle, std::any> objects;
+	std::map<Handle,
+	    std::variant<std::shared_ptr<Snapshot>,
+	        std::shared_ptr<Animation>,
+	        std::shared_ptr<UI::ChartWidget>,
+	        std::shared_ptr<Gfx::ICanvas>,
+	        Util::EventDispatcher::Params *>>
+	    objects;
 	std::shared_mutex mutex;
 };
 

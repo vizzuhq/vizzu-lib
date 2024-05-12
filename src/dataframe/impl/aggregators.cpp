@@ -36,7 +36,7 @@ get_aggregators() noexcept
 	              [](custom_aggregator::id_type &id,
 	                  cell_value const &cell) -> double
 	              {
-		              auto &ref = *std::any_cast<double>(&id);
+		              auto &ref = *std::get_if<double>(&id);
 		              const double &value =
 		                  *std::get_if<double>(&cell);
 		              if (std::isfinite(value)) ref += value;
@@ -48,7 +48,7 @@ get_aggregators() noexcept
 	        [](custom_aggregator::id_type &id,
 	            cell_value const &cell) -> double
 	        {
-		        auto &ref = *std::any_cast<double>(&id);
+		        auto &ref = *std::get_if<double>(&id);
 		        const auto &value = *std::get_if<double>(&cell);
 		        if (std::isfinite(value) && !(value >= ref))
 			        ref = value;
@@ -60,7 +60,7 @@ get_aggregators() noexcept
 	        [](custom_aggregator::id_type &id,
 	            cell_value const &cell) -> double
 	        {
-		        auto &ref = *std::any_cast<double>(&id);
+		        auto &ref = *std::get_if<double>(&id);
 		        const auto &value = *std::get_if<double>(&cell);
 		        if (std::isfinite(value) && !(value <= ref))
 			        ref = value;
@@ -76,8 +76,7 @@ get_aggregators() noexcept
 	            cell_value const &cell) -> double
 	        {
 		        auto &[sum, count] =
-		            *std::any_cast<std::pair<double, std::size_t>>(
-		                &id);
+		            *std::get_if<std::pair<double, std::size_t>>(&id);
 		        const auto &value = *std::get_if<double>(&cell);
 		        if (std::isfinite(value)) {
 			        sum += value;
@@ -91,7 +90,7 @@ get_aggregators() noexcept
 	        [](custom_aggregator::id_type &id,
 	            cell_value const &cell) -> double
 	        {
-		        auto &s = *std::any_cast<double>(&id);
+		        auto &s = *std::get_if<double>(&id);
 		        if (is_valid(cell)) s += 1;
 		        return s;
 	        }},
@@ -103,8 +102,7 @@ get_aggregators() noexcept
 	        [](custom_aggregator::id_type &id,
 	            cell_value const &cell) -> double
 	        {
-		        auto &set =
-		            *std::any_cast<std::set<const char *>>(&id);
+		        auto &set = *std::get_if<std::set<const char *>>(&id);
 		        if (const char *v =
 		                std::get_if<std::string_view>(&cell)->data())
 			        set.insert(v);
@@ -115,7 +113,7 @@ get_aggregators() noexcept
 	        [](custom_aggregator::id_type &id,
 	            cell_value const &cell) -> double
 	        {
-		        auto &b = *std::any_cast<double>(&id);
+		        auto &b = *std::get_if<double>(&id);
 		        if (is_valid(cell)) b = 1.0;
 		        return b;
 	        }}}}};

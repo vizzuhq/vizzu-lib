@@ -492,7 +492,7 @@ auto &&m1t = df->set_aggregate("m1",
 	        cell_value const &cell) -> double
 	    {
 	        auto &[min, min2] =
-	            std::any_cast<std::pair<double, double> &>(id);
+	            std::get<std::pair<double, double>>(id);
 	        const double &v = *std::get_if<double>(&cell);
 	        if (v < min)
 	            min2 = std::exchange(min, v);

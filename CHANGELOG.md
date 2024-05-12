@@ -26,7 +26,7 @@
   - hook: render - hook for rendering the chart 
 - Chart generation performance optimization: ~3x speed
 - Maximum marker limit increased: ~2x count 
-- Reduced wasm binary size: ~3%
+- Reduced wasm binary size: ~4%
 
 ## [0.10.1] - 2024-03-12
 
