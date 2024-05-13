@@ -349,7 +349,6 @@ std::shared_ptr<const CellInfo> DataCube::cellInfo(
 		auto &&cat =
 		    cix < cats.size() ? cats[cix] : std::string_view{};
 		dims.key<false>(name).primitive(cat);
-		dims.operator()<false>(name, cat);
 		if (needMarkerInfo)
 			my_res->markerInfo.emplace_back(name, cat);
 	}
