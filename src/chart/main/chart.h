@@ -25,8 +25,6 @@ namespace Vizzu
 class Chart
 {
 public:
-	using OnComplete = void (*)(bool);
-
 	Util::Event<> onChanged;
 
 	Chart();

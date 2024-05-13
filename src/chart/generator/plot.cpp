@@ -6,7 +6,9 @@
 #include "base/anim/interpolated.h"
 #include "base/conv/numtostr.h"
 #include "base/math/range.h"
-#include "chart/speclayout/speclayout.h"
+#include "chart/speclayout/bubblechartbuilder.h"
+#include "chart/speclayout/tablechart.h"
+#include "chart/speclayout/treemap.h"
 
 namespace Vizzu::Gen
 {
@@ -76,8 +78,8 @@ Plot::Plot(const Data::DataTable &dataTable,
 
 	auto &&subBuckets = generateMarkers();
 
-	if (const SpecLayout specLayout(*this);
-	    specLayout.addIfNeeded(subBuckets)) {
+	if (!options->getChannels().anyAxisSet()) {
+		addSpecLayout(subBuckets);
 		calcDimensionAxises();
 		normalizeColors();
 		if (options->geometry != ShapeType::circle) normalizeSizes();
@@ -195,6 +197,38 @@ void Plot::clearEmptyBuckets(const Buckets &buckets, bool main) const
 		        std::mem_fn(&Marker::enabled)))
 			for (auto &&marker : bucket)
 				marker->resetSize(options->isHorizontal() == !main);
+}
+
+void Plot::addSpecLayout(Buckets &buckets)
+{
+	auto geometry = getOptions()->geometry.get(false).value;
+	if (auto &markers = getMarkers();
+	    geometry == ShapeType::line || geometry == ShapeType::area) {
+		Charts::TableChart::setupVector(markers, true);
+	}
+	else if (auto &&size =
+	             getOptions()->getChannels().at(ChannelId::size);
+	         size.isEmpty()) {
+		Charts::TableChart::setupVector(markers);
+	}
+	else if (!getDataCube().empty()) {
+		buckets.resize(
+		    getDataCube().combinedSizeOf(size.dimensions()));
+
+		for (auto &marker : markers)
+			buckets[marker.sizeId.seriesId][marker.sizeId.itemId] =
+			    &marker;
+
+		if (geometry == ShapeType::circle) {
+			Charts::BubbleChartBuilder::setupVector(
+			    *getStyle().plot.marker.circleMaxRadius,
+			    buckets);
+
+			keepAspectRatio = true;
+		}
+		else
+			Charts::TreeMap::setupVector(buckets);
+	}
 }
 
 bool Plot::linkMarkers(const Buckets &buckets, bool main) const
@@ -387,15 +421,13 @@ void Plot::addSeparation(const Buckets &subBuckets) const
 		std::vector<bool> anyEnabled(mainBucketSize);
 
 		auto &&vertical = !options->isHorizontal();
-		for (auto &&bucket : subBuckets) {
-			auto i = 0U;
-			for (auto &&marker : bucket) {
+		for (auto &&bucket : subBuckets)
+			for (auto i = 0U; auto &&marker : bucket) {
 				ranges[i].include(marker->getSizeBy(vertical).size());
 				if (static_cast<double>(marker->enabled) > 0)
 					anyEnabled[i] = true;
 				++i %= ranges.size();
 			}
-		}
 
 		auto max = Math::Range(0.0, 0.0);
 		for (auto i = 1U; i < ranges.size(); ++i)
@@ -405,13 +437,11 @@ void Plot::addSeparation(const Buckets &subBuckets) const
 			ranges[i] = ranges[i] + ranges[i - 1].getMax()
 			          + (anyEnabled[i - 1] ? max.getMax() / 15 : 0);
 
-		for (auto &&bucket : subBuckets) {
-			auto i = 0U;
-			for (auto &&marker : bucket)
+		for (auto &&bucket : subBuckets)
+			for (auto i = 0U; auto &&marker : bucket)
 				marker->setSizeBy(vertical,
 				    Base::Align{align, ranges[(i %= ranges.size())++]}
 				        .getAligned(marker->getSizeBy(vertical)));
-		}
 	}
 }
 

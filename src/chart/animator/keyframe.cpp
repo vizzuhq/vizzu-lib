@@ -24,7 +24,7 @@ void Keyframe::init(const Gen::PlotPtr &plot)
 {
 	if (!plot) return;
 
-	if ((!source || source->isEmpty())) {
+	if (!source || source->isEmpty()) {
 		auto emptyOpt =
 		    std::make_shared<Gen::Options>(*plot->getOptions());
 		emptyOpt->reset();

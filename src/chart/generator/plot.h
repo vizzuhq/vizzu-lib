@@ -102,8 +102,6 @@ public:
 	[[nodiscard]] bool isEmpty() const;
 
 private:
-	friend class SpecLayout;
-
 	const Data::DataTable &dataTable;
 	PlotOptionsPtr options;
 	Styles::Chart style;
@@ -135,6 +133,7 @@ private:
 	[[nodiscard]] std::vector<std::pair<double, std::size_t>>
 	sortedBuckets(const Buckets &buckets, bool main) const;
 	void clearEmptyBuckets(const Buckets &buckets, bool main) const;
+	void addSpecLayout(Buckets &buckets);
 };
 
 struct PlotParent

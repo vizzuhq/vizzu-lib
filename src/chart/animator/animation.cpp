@@ -28,8 +28,10 @@ Animation::Animation(const Gen::PlotPtr &plot) :
 	    {
 		    onComplete();
 
-		    auto f = std::move(completionCallback);
-		    f(ok && atEndPosition() ? target : source, ok);
+		    completionCallback(ok && atEndPosition() ? target
+		                                             : source,
+		        ok);
+		    completionCallback.detachAll();
 	    });
 }
 
