@@ -7,25 +7,15 @@
 #include <thread>
 #include <variant>
 
-namespace Gfx
-{
-struct ICanvas;
-}
-
 namespace Vizzu
 {
-namespace UI
-{
-class ChartWidget;
-}
 
-struct Snapshot;
-struct Animation;
+using ObjectRegistryHandle = const void *;
 
-class ObjectRegistry
+template <class... Ts> class ObjectRegistry
 {
 public:
-	using Handle = const void *;
+	using Handle = ObjectRegistryHandle;
 
 	template <class T> Handle reg(std::shared_ptr<T> &&ptr)
 	{
@@ -60,12 +50,7 @@ public:
 	}
 
 private:
-	std::map<Handle,
-	    std::variant<std::shared_ptr<Snapshot>,
-	        std::shared_ptr<Animation>,
-	        std::shared_ptr<UI::ChartWidget>,
-	        std::shared_ptr<Gfx::ICanvas>>>
-	    objects;
+	std::map<Handle, std::variant<std::shared_ptr<Ts>...>> objects;
 	std::shared_mutex mutex;
 };
 
