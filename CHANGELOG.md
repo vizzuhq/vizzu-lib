@@ -15,6 +15,7 @@
 - Dimension axis density on sorted values was wrongly calculated.
 - Tooltip with 'seriesName' does not rewrite first series data.
 - Handle as different category the empty string and the missing value.
+- On chart resize, the font size is recalculated. 
 
 ### Added
 
