@@ -16,7 +16,9 @@ struct SpecMarker
 	double size;
 	std::variant<Geom::Rect, Geom::Circle> shape;
 
-	SpecMarker(size_t index, double size) : index(index), size(size)
+	SpecMarker(size_t index, double radiusOrAreaFactor) :
+	    index(index),
+	    size(radiusOrAreaFactor)
 	{}
 
 	template <typename... T> void emplaceCircle(T &&...params)

@@ -222,7 +222,7 @@ std::optional<Options::MarkerInfoId> Options::getMarkerInfoId(
 Options::MarkerInfoId Options::generateMarkerInfoId()
 {
 	static std::atomic<MarkerInfoId> nextMarkerInfoId{1};
-	return nextMarkerInfoId.fetch_add(1, std::memory_order_relaxed);
+	return nextMarkerInfoId.fetch_add(1, std::memory_order_acq_rel);
 }
 
 void Options::setAutoParameters()

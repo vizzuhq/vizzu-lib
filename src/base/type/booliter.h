@@ -19,6 +19,9 @@ struct Bools
 		return boolArr.data() + 1 + static_cast<bool>(max);
 	}
 };
+
+template <class T> Bools(T) -> Bools<T>;
+
 }
 
 #endif

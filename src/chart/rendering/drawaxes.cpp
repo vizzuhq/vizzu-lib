@@ -195,7 +195,8 @@ void DrawAxes::drawTitle(Gen::ChannelId axisIndex) const
 
 		Geom::AffineTransform transform(posDir.begin, 1.0, -posAngle);
 
-		auto calcOrientation = [&size](const auto &orientation)
+		auto calcOrientation =
+		    [&size](const Styles::AxisTitle::Orientation &orientation)
 		{
 			return Geom::Size{
 			    orientation

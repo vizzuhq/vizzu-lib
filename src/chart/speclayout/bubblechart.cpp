@@ -6,13 +6,14 @@
 namespace Vizzu::Charts
 {
 
-BubbleChart::BubbleChart(const std::vector<double> &sizes,
+BubbleChart::BubbleChart(const std::vector<double> &circleAreas,
     const Geom::Rect &rect)
 {
-	markers.reserve(sizes.size());
+	markers.reserve(circleAreas.size());
 
-	for (auto j = 0U; j < sizes.size(); ++j)
-		markers.emplace_back(j, std::sqrt(std::max(0.0, sizes[j])));
+	for (auto j = 0U; j < circleAreas.size(); ++j)
+		markers.emplace_back(j,
+		    std::sqrt(std::max(0.0, circleAreas[j])));
 
 	std::sort(markers.begin(), markers.end(), SpecMarker::sizeOrder);
 
