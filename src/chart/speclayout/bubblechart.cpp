@@ -27,22 +27,24 @@ void BubbleChart::generate()
 {
 	auto baseIndex = 0U;
 
+	auto firstMarkerSize = markers.empty() ? 0.0 : markers[0].size();
 	for (auto i = 0U; i < markers.size(); ++i) {
 		auto &marker = markers[i];
+		auto markerSize = marker.size();
 
 		switch (i) {
 		case 0:
-			marker.emplaceCircle(Geom::Point{0, 0}, marker.size);
+			marker.emplaceCircle(Geom::Point{0, 0}, markerSize);
 			break;
 
 		case 1:
 			marker.emplaceCircle(
-			    Geom::Point{markers[0].size + marker.size, 0},
-			    marker.size);
+			    Geom::Point{firstMarkerSize + markerSize, 0},
+			    markerSize);
 			break;
 
 		default:
-			if (marker.size == 0.0) {
+			if (markerSize == 0.0) {
 				marker.emplaceCircle(Geom::Point{0, 0}, 0);
 				continue;
 			}
@@ -109,14 +111,15 @@ std::optional<Geom::Circle> BubbleChart::getTouchingCircle(
 	auto first = markers[firstIdx].circle();
 	auto last = markers[lastIdx].circle();
 
-	first.radius += act.size;
-	last.radius += act.size;
+	auto &&size = act.size();
+	first.radius += size;
+	last.radius += size;
 
 	auto newCenter = last.intersection(first)[0];
 
 	if (!newCenter) return std::nullopt;
 
-	return Geom::Circle(*newCenter, act.size);
+	return Geom::Circle(*newCenter, size);
 }
 
 }

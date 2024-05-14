@@ -27,7 +27,7 @@ private:
 
 	std::vector<SpecMarker> markers;
 
-	void divide(It begin,
+	static void divide(It begin,
 	    It end,
 	    const Geom::Point &p0,
 	    const Geom::Point &p1,

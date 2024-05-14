@@ -41,7 +41,7 @@ void TreeMap::divide(It begin,
 	}
 
 	auto sum = 0.0;
-	for (auto it = begin; it != end; ++it) sum += it->size;
+	for (auto it = begin; it != end; ++it) sum += it->size();
 
 	if (sum == 0) {
 		for (auto it = begin; it != end; ++it)
@@ -52,7 +52,7 @@ void TreeMap::divide(It begin,
 	double factor{};
 	auto it = begin;
 	while (it != end)
-		if (factor += it++->size / sum; factor > 0.4) break;
+		if (factor += it++->size() / sum; factor > 0.4) break;
 
 	auto &&[px, py] = Math::interpolate(p0, p1, factor);
 

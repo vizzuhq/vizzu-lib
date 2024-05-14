@@ -13,31 +13,35 @@ namespace Vizzu::Charts
 struct SpecMarker
 {
 	size_t index;
-	double size;
-	std::variant<Geom::Rect, Geom::Circle> shape;
+	std::variant<double, Geom::Rect, Geom::Circle> sizeOrShape;
 
-	SpecMarker(size_t index, double radiusOrAreaFactor) :
+	SpecMarker(size_t index, double radiusOrAreaFactorSize) :
 	    index(index),
-	    size(radiusOrAreaFactor)
+	    sizeOrShape(radiusOrAreaFactorSize)
 	{}
 
 	template <typename... T> void emplaceCircle(T &&...params)
 	{
-		shape.emplace<Geom::Circle>(std::forward<T>(params)...);
+		sizeOrShape.emplace<Geom::Circle>(std::forward<T>(params)...);
 	}
 
 	void emplaceRect(const Geom::Point &p0, const Geom::Point &p1)
 	{
-		shape.emplace<Geom::Rect>(p0, Geom::Size{p1 - p0});
+		sizeOrShape.emplace<Geom::Rect>(p0, Geom::Size{p1 - p0});
+	}
+
+	[[nodiscard]] const double &size() const
+	{
+		return *std::get_if<double>(&sizeOrShape);
 	}
 
 	[[nodiscard]] const Geom::Rect &rect() const
 	{
-		return *std::get_if<Geom::Rect>(&shape);
+		return *std::get_if<Geom::Rect>(&sizeOrShape);
 	}
 	[[nodiscard]] const Geom::Circle &circle() const
 	{
-		return *std::get_if<Geom::Circle>(&shape);
+		return *std::get_if<Geom::Circle>(&sizeOrShape);
 	}
 
 	static bool indexOrder(const SpecMarker &a, const SpecMarker &b)
@@ -47,7 +51,7 @@ struct SpecMarker
 
 	static bool sizeOrder(const SpecMarker &a, const SpecMarker &b)
 	{
-		return b.size < a.size;
+		return b.size() < a.size();
 	}
 };
 
