@@ -57,7 +57,8 @@ void DrawLegend::drawTitle(const Info &info) const
 	        &info,
 	        &rect,
 	        mul = std::max<double>(info.measureEnabled,
-	            info.dimensionEnabled)](bool, const auto &title)
+	            info.dimensionEnabled)](::Anim::InterpolateIndex,
+	        const auto &title)
 	    {
 		    if (title.weight <= 0) return;
 
@@ -93,7 +94,7 @@ void DrawLegend::drawDimension(const Info &info) const
 		    getMarkerRect(info, itemRect));
 
 		value.second.label.visit(
-		    [&](bool, const auto &weighted)
+		    [&](::Anim::InterpolateIndex, const auto &weighted)
 		    {
 			    label.draw(info.canvas,
 			        getLabelRect(info, itemRect),
@@ -172,7 +173,7 @@ void DrawLegend::drawMeasure(const Info &info) const
 	if (info.measureEnabled <= 0) return;
 
 	info.measure.unit.visit(
-	    [this, &info](bool, const auto &unit)
+	    [this, &info](::Anim::InterpolateIndex, const auto &unit)
 	    {
 		    extremaLabel(info,
 		        info.measure.range.getMax(),

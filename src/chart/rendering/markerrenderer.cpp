@@ -95,7 +95,8 @@ void MarkerRenderer::drawMarkers(Gfx::ICanvas &canvas,
 			draw(canvas, painter, circle, 1, false);
 
 			blended.marker.prevMainMarkerIdx.visit(
-			    [this, &blended, &canvas, &painter](bool index,
+			    [this, &blended, &canvas, &painter](
+			        ::Anim::InterpolateIndex index,
 			        const auto &value)
 			    {
 				    draw(canvas,
@@ -112,18 +113,20 @@ void MarkerRenderer::drawMarkers(Gfx::ICanvas &canvas,
 			std::optional<AbstractMarker> other;
 			auto drawMarker =
 			    [this, &blended, &other, &canvas, &painter](
-			        bool index,
+			        ::Anim::InterpolateIndex index,
 			        const ::Anim::Weighted<Gen::Options::MarkerIndex>
 			            &value = ::Anim::Weighted(
 			                Gen::Options::MarkerIndex{}))
 			{
-				if (index && !other) {
+				if (index == ::Anim::secondIfExists && !other) {
 					other.emplace(
 					    AbstractMarker::createInterpolated(ctx(),
 					        blended.marker,
-					        true));
+					        ::Anim::secondIfExists));
 				}
-				const auto &blended0 = index ? *other : blended;
+				const auto &blended0 = index == ::Anim::secondIfExists
+				                         ? *other
+				                         : blended;
 
 				auto lineFactor =
 				    getOptions().geometry.factor<double>(
@@ -154,8 +157,13 @@ void MarkerRenderer::drawMarkers(Gfx::ICanvas &canvas,
 
 			if (containsConnected) {
 				if (containsSingle) {
-					auto lineIndex = !Gen::isConnecting(
-					    getOptions().geometry.get(false).value);
+					auto lineIndex =
+					    Gen::isConnecting(
+					        getOptions()
+					            .geometry.get(::Anim::first)
+					            .value)
+					        ? ::Anim::first
+					        : ::Anim::secondIfExists;
 
 					drawMarker(lineIndex);
 				}
@@ -164,7 +172,7 @@ void MarkerRenderer::drawMarkers(Gfx::ICanvas &canvas,
 					    drawMarker);
 			}
 			else
-				drawMarker(false);
+				drawMarker(::Anim::first);
 		}
 	}
 }
@@ -177,14 +185,14 @@ void MarkerRenderer::drawLabels(Gfx::ICanvas &canvas) const
 		if (blended.marker.enabled == false) continue;
 		drawLabel(canvas,
 		    blended,
-		    axis.unit.get(false).value,
+		    axis.unit.get(::Anim::first).value,
 		    keepMeasure,
-		    false);
+		    ::Anim::first);
 		drawLabel(canvas,
 		    blended,
-		    axis.unit.get(true).value,
+		    axis.unit.get(::Anim::secondIfExists).value,
 		    keepMeasure,
-		    true);
+		    ::Anim::secondIfExists);
 	}
 }
 
@@ -199,11 +207,11 @@ bool MarkerRenderer::shouldDrawMarkerBody(
 
 		if (const auto *prev0 = ConnectingMarker::getPrev(marker,
 		        plot->getMarkers(),
-		        false))
+		        ::Anim::first))
 			enabled |= prev0->enabled != false;
 		if (const auto *prev1 = ConnectingMarker::getPrev(marker,
 		        plot->getMarkers(),
-		        true))
+		        ::Anim::secondIfExists))
 			enabled |= prev1->enabled != false;
 	}
 	return enabled;
@@ -287,14 +295,15 @@ void MarkerRenderer::drawLabel(Gfx::ICanvas &canvas,
     const AbstractMarker &abstractMarker,
     const std::string &unit,
     bool keepMeasure,
-    bool index) const
+    ::Anim::InterpolateIndex index) const
 {
 	if (abstractMarker.labelEnabled == false) return;
 	const auto &marker = abstractMarker.marker;
 
-	auto weight = marker.label.interpolates() || !index
-	                ? marker.label.get(index).weight
-	                : 0.0;
+	auto weight =
+	    marker.label.interpolates() || index == ::Anim::first
+	        ? marker.label.get(index).weight
+	        : 0.0;
 	if (weight == 0.0) return;
 
 	auto color = getColor(abstractMarker, 1, true).second;
@@ -330,22 +339,21 @@ std::string MarkerRenderer::getLabelText(
     const ::Anim::Interpolated<Gen::Marker::Label> &label,
     const std::string &unit,
     bool keepMeasure,
-    bool index) const
+    ::Anim::InterpolateIndex index) const
 {
 	const auto &labelStyle = rootStyle.plot.marker.label;
-	const auto &values = label.values;
+	const auto &labelValue = label.get(index).value;
 
 	auto needsInterpolation = label.interpolates() && keepMeasure;
 
 	std::string valueStr;
-	if (values[index].value.hasValue()) {
-		auto value = needsInterpolation
-		               ? label.combine<double>(
-		                   [](const auto &value)
-		                   {
-			                   return value.value.value_or(0);
-		                   })
-		               : values[index].value.value.value();
+	if (labelValue.hasValue()) {
+		auto value = needsInterpolation ? label.combine<double>(
+		                 [](const auto &value)
+		                 {
+			                 return value.value.value_or(0);
+		                 })
+		                                : labelValue.value.value();
 		valueStr = Text::SmartString::fromPhysicalValue(value,
 		    *labelStyle.numberFormat,
 		    static_cast<size_t>(*labelStyle.maxFractionDigits),
@@ -353,13 +361,13 @@ std::string MarkerRenderer::getLabelText(
 		    unit);
 	}
 
-	auto indexStr = values[index].value.indexStr;
+	auto &&indexStr = labelValue.indexStr;
 
 	typedef Styles::MarkerLabel::Format Format;
 	switch (*labelStyle.format) {
 	default:
 	case Format::measureFirst: {
-		auto text = valueStr;
+		auto text{valueStr};
 		if (!indexStr.empty()) {
 			if (!text.empty()) text += ", ";
 			text += indexStr;
@@ -368,7 +376,7 @@ std::string MarkerRenderer::getLabelText(
 	}
 
 	case Format::dimensionsFirst: {
-		auto text = indexStr;
+		auto text{indexStr};
 		if (!valueStr.empty()) {
 			if (!text.empty()) text += ", ";
 			text += valueStr;
@@ -442,8 +450,9 @@ MarkerRenderer MarkerRenderer::create(const DrawingContext &ctx)
 	for (auto &marker : res.plot->getMarkers()) {
 		if (!res.shouldDrawMarkerBody(marker)) continue;
 
-		res.markers.push_back(
-		    AbstractMarker::createInterpolated(ctx, marker, false));
+		res.markers.push_back(AbstractMarker::createInterpolated(ctx,
+		    marker,
+		    ::Anim::first));
 	}
 	return res;
 }

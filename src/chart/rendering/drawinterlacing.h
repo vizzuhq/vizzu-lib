@@ -29,7 +29,7 @@ private:
 	    bool horizontal,
 	    const Geom::Point &tickPos,
 	    double value,
-	    const ::Anim::Interpolated<std::string> &unit,
+	    const ::Anim::String &unit,
 	    double alpha) const;
 
 	void drawSticks(double tickIntensity,

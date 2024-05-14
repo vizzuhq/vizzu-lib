@@ -41,6 +41,20 @@ public:
 	[[nodiscard]] bool hasValue() const { return weight > 0.0; }
 };
 
+enum class InterpolateIndex : bool {
+	first = false,
+	secondIfExists = true
+};
+
+using enum InterpolateIndex;
+
+inline InterpolateIndex operator||(const InterpolateIndex &lhs,
+    const InterpolateIndex &rhs)
+{
+	return static_cast<InterpolateIndex>(
+	    static_cast<bool>(lhs) || static_cast<bool>(rhs));
+}
+
 template <typename Type> class Interpolated
 {
 public:
@@ -88,6 +102,11 @@ public:
 
 	[[nodiscard]] bool interpolates() const { return has_second; }
 
+	[[nodiscard]] InterpolateIndex maxIndex() const
+	{
+		return static_cast<InterpolateIndex>(has_second);
+	}
+
 	[[nodiscard]] Interpolated shifted() const
 	{
 		if (has_second)
@@ -106,9 +125,10 @@ public:
 		throw std::logic_error("Invalid Weigthed Pair");
 	}
 
-	[[nodiscard]] const Weighted<Type> &get(bool index) const
+	[[nodiscard]] const Weighted<Type> &get(
+	    InterpolateIndex index) const
 	{
-		return values[has_second && index];
+		return values[has_second && static_cast<bool>(index)];
 	}
 
 	template <class T>
@@ -153,9 +173,9 @@ public:
 
 	template <class T> void visit(T &&branch) const
 	{
-		if (values[0].hasValue()) branch(false, values[0]);
+		if (values[0].hasValue()) branch(first, values[0]);
 		if (has_second && values[1].hasValue())
-			branch(true, values[1]);
+			branch(secondIfExists, values[1]);
 	}
 
 	template <class T, class Fun> T combine(Fun &&branch) const

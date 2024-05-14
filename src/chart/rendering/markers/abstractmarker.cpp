@@ -14,7 +14,7 @@ namespace Vizzu::Draw
 AbstractMarker AbstractMarker::create(const DrawingContext &ctx,
     const Gen::Marker &marker,
     const Gen::ShapeType &shapeType,
-    bool lineIndex)
+    ::Anim::InterpolateIndex lineIndex)
 {
 	switch (shapeType) {
 	case Gen::ShapeType::rectangle:
@@ -36,15 +36,16 @@ AbstractMarker AbstractMarker::create(const DrawingContext &ctx,
 AbstractMarker AbstractMarker::createInterpolated(
     const DrawingContext &ctx,
     const Gen::Marker &marker,
-    bool lineIndex)
+    ::Anim::InterpolateIndex lineIndex)
 {
 	const auto &options = ctx.getOptions();
 
-	auto fromShapeType = options.geometry.get(false).value;
+	auto fromShapeType = options.geometry.get(::Anim::first).value;
 
 	auto fromMarker = create(ctx, marker, fromShapeType, lineIndex);
 
-	auto toShapeType = options.geometry.get(true).value;
+	auto toShapeType =
+	    options.geometry.get(::Anim::secondIfExists).value;
 
 	if (fromShapeType == toShapeType) return fromMarker;
 

@@ -81,7 +81,7 @@ void DrawAxes::drawAxis(Gen::ChannelId axisIndex) const
 }
 
 Geom::Point DrawAxes::getTitleBasePos(Gen::ChannelId axisIndex,
-    bool index) const
+    ::Anim::InterpolateIndex index) const
 {
 	typedef Styles::AxisTitle::Position Pos;
 	typedef Styles::AxisTitle::VPosition VPos;
@@ -114,7 +114,7 @@ Geom::Point DrawAxes::getTitleBasePos(Gen::ChannelId axisIndex,
 }
 
 Geom::Point DrawAxes::getTitleOffset(Gen::ChannelId axisIndex,
-    bool index,
+    ::Anim::InterpolateIndex index,
     bool fades) const
 {
 	const auto &titleStyle = rootStyle.plot.getAxis(axisIndex).title;
@@ -160,9 +160,9 @@ void DrawAxes::drawTitle(Gen::ChannelId axisIndex) const
 
 	const auto &titleStyle = rootStyle.plot.getAxis(axisIndex).title;
 
-	auto fades = titleStyle.position->interpolates()
-	          || titleStyle.vposition->interpolates()
-	          || titleString.interpolates();
+	auto fades = titleStyle.position->maxIndex()
+	          || titleStyle.vposition->maxIndex()
+	          || titleString.maxIndex();
 
 	for (auto &&index : Type::Bools{fades}) {
 		auto title = titleString.get(index);
@@ -182,7 +182,9 @@ void DrawAxes::drawTitle(Gen::ChannelId axisIndex) const
 
 		auto normal = Geom::Point::Ident(true);
 
-		auto offset = getTitleOffset(axisIndex, index, fades);
+		auto offset = getTitleOffset(axisIndex,
+		    index,
+		    fades == ::Anim::secondIfExists);
 
 		auto posDir = coordSys.convertDirectionAt(
 		    {relCenter, relCenter + normal});
@@ -204,16 +206,18 @@ void DrawAxes::drawTitle(Gen::ChannelId axisIndex) const
 
 		auto angle =
 		    -M_PI / 2.0
-		    * (fades ? titleStyle.orientation->get(index).value
-		                   == Styles::AxisTitle::Orientation::vertical
-		             : titleStyle.orientation->factor<double>(
-		                 Styles::AxisTitle::Orientation::vertical));
+		    * (fades == ::Anim::secondIfExists
+		            ? titleStyle.orientation->get(index).value
+		                  == Styles::AxisTitle::Orientation::vertical
+		            : titleStyle.orientation->factor<double>(
+		                Styles::AxisTitle::Orientation::vertical));
 
 		auto orientedSize =
-		    (fades ? calcOrientation(
-		         titleStyle.orientation->get(index).value)
-		           : titleStyle.orientation->combine<Geom::Size>(
-		               calcOrientation));
+		    fades == ::Anim::secondIfExists
+		        ? calcOrientation(
+		            titleStyle.orientation->get(index).value)
+		        : titleStyle.orientation->combine<Geom::Size>(
+		            calcOrientation);
 
 		auto center = offset * (orientedSize / 2.0);
 
@@ -290,7 +294,8 @@ void DrawAxes::drawDimensionLabel(bool horizontal,
 	        &text = it->second.label,
 	        &categoryVal = it->second.categoryValue,
 	        &weight,
-	        &category](bool index, const auto &position)
+	        &category](::Anim::InterpolateIndex index,
+	        const auto &position)
 	    {
 		    if (labelStyle.position->interpolates()
 		        && !it->second.presentAt(index))
@@ -344,12 +349,12 @@ void DrawAxes::drawDimensionLabel(bool horizontal,
 			    draw(text.get(index), position.weight);
 		    if (!labelStyle.position->interpolates()
 		        && !text.interpolates())
-			    draw(text.get(false));
+			    draw(text.get(::Anim::first));
 		    else if (labelStyle.position->interpolates())
-			    draw(text.get(false), position.weight);
+			    draw(text.get(::Anim::first), position.weight);
 		    else if (text.interpolates()) {
-			    draw(text.get(false));
-			    draw(text.get(true));
+			    draw(text.get(::Anim::first));
+			    draw(text.get(::Anim::secondIfExists));
 		    }
 	    });
 }

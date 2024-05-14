@@ -9,7 +9,7 @@ namespace Vizzu::Draw
 
 ConnectingMarker::ConnectingMarker(const DrawingContext &ctx,
     const Gen::Marker &marker,
-    bool lineIndex,
+    ::Anim::InterpolateIndex lineIndex,
     Gen::ShapeType type) :
     AbstractMarker(marker, ctx.getOptions())
 {
@@ -126,7 +126,7 @@ ConnectingMarker::ConnectingMarker(const DrawingContext &ctx,
 const Gen::Marker *ConnectingMarker::getPrev(
     const Gen::Marker &marker,
     const Gen::Plot::Markers &markers,
-    bool lineIndex)
+    ::Anim::InterpolateIndex lineIndex)
 {
 	const auto &prevId = marker.prevMainMarkerIdx.get(lineIndex);
 	return (prevId.weight > 0.0) ? &markers[prevId.value] : nullptr;

@@ -20,7 +20,7 @@ public:
 	static AbstractMarker createInterpolated(
 	    const DrawingContext &ctx,
 	    const Gen::Marker &marker,
-	    bool lineIndex);
+	    ::Anim::InterpolateIndex lineIndex);
 
 	const Gen::Marker &marker;
 	::Anim::Interpolated<Gen::ShapeType> shapeType;
@@ -50,7 +50,7 @@ protected:
 	static AbstractMarker create(const DrawingContext &ctx,
 	    const Gen::Marker &marker,
 	    const Gen::ShapeType &shapeType,
-	    bool lineIndex);
+	    ::Anim::InterpolateIndex lineIndex);
 };
 
 class SingleDrawMarker : public AbstractMarker

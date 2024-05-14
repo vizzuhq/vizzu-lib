@@ -78,7 +78,7 @@ void DrawMarkerInfo::MarkerDC::loadMarker(Content &cnt)
 	auto blendedMarker =
 	    Draw::AbstractMarker::createInterpolated(parent.ctx(),
 	        marker,
-	        false);
+	        ::Anim::first);
 
 	auto line =
 	    blendedMarker.getLabelPos(Styles::MarkerLabel::Position::top,
@@ -188,13 +188,14 @@ void DrawMarkerInfo::draw(Gfx::ICanvas &canvas,
     const Geom::Rect &boundary) const
 {
 	for (const auto &info : plot->getMarkersInfo()) {
-		auto &&[cnt1, weight1] = info.second.get(false);
+		auto &&[cnt1, weight1] = info.second.get(::Anim::first);
 		if (!info.second.interpolates() && cnt1) {
 			MarkerDC dc(*this, canvas, boundary, cnt1);
 			dc.draw(weight1);
 		}
 		else if (info.second.interpolates()) {
-			auto &&[cnt2, weight2] = info.second.get(true);
+			auto &&[cnt2, weight2] =
+			    info.second.get(::Anim::secondIfExists);
 			if (!cnt1 && cnt2)
 				fadeInMarkerInfo(canvas, boundary, cnt2, weight2);
 			else if (cnt1 && !cnt2)

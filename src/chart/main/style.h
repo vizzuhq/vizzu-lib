@@ -105,7 +105,8 @@ struct Font
 	[[nodiscard]] std::string calculatedFamily() const
 	{
 		if (fontFamily.has_value())
-			if (auto &&ff = fontFamily->get(false).value; !ff.empty())
+			if (auto &&ff = fontFamily->get(::Anim::first).value;
+			    !ff.empty())
 				return ff;
 
 		if (fontParent) return fontParent->calculatedFamily();

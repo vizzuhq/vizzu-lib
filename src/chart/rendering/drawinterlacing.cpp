@@ -225,7 +225,7 @@ void DrawInterlacing::drawDataLabel(
     bool horizontal,
     const Geom::Point &tickPos,
     double value,
-    const ::Anim::Interpolated<std::string> &unit,
+    const ::Anim::String &unit,
     double alpha) const
 {
 	auto axisIndex =
@@ -234,7 +234,7 @@ void DrawInterlacing::drawDataLabel(
 
 	auto drawLabel = OrientedLabel{{ctx()}};
 	auto interpolates =
-	    labelStyle.position->interpolates() || unit.interpolates();
+	    labelStyle.position->maxIndex() || unit.maxIndex();
 
 	auto &&normal = Geom::Point::Ident(horizontal);
 	for (auto &&index : Type::Bools{interpolates}) {

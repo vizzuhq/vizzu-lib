@@ -63,8 +63,8 @@ struct MeasureAxis
 {
 	::Anim::Interpolated<bool> enabled{false};
 	Math::Range<double> range = Math::Range<double>::Raw(0, 1);
-	::Anim::Interpolated<std::string> unit;
-	::Anim::Interpolated<std::string> origMeasureName;
+	::Anim::String unit;
+	::Anim::String origMeasureName;
 	::Anim::Interpolated<double> step{1.0};
 	MeasureAxis() = default;
 	MeasureAxis(Math::Range<double> interval,
@@ -99,7 +99,7 @@ public:
 		Math::Range<double> range;
 		double value;
 		::Anim::Interpolated<ColorBase> colorBase;
-		::Anim::Interpolated<std::string> label;
+		::Anim::String label;
 		std::string categoryValue;
 		double weight;
 
@@ -129,9 +129,11 @@ public:
 			return range == other.range;
 		}
 
-		[[nodiscard]] bool presentAt(bool index) const
+		[[nodiscard]] bool presentAt(
+		    ::Anim::InterpolateIndex index) const
 		{
-			return (!index && start) || (index && end);
+			return (index == ::Anim::first && start)
+			    || (index == ::Anim::secondIfExists && end);
 		}
 	};
 	using Values = std::multimap<Data::SliceIndex, Item>;

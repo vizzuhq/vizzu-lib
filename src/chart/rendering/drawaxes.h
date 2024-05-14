@@ -22,10 +22,11 @@ public:
 
 private:
 	[[nodiscard]] Geom::Line getAxis(Gen::ChannelId axisIndex) const;
-	[[nodiscard]] Geom::Point
-	getTitleBasePos(Gen::ChannelId axisIndex, bool index) const;
+	[[nodiscard]] Geom::Point getTitleBasePos(
+	    Gen::ChannelId axisIndex,
+	    ::Anim::InterpolateIndex index) const;
 	[[nodiscard]] Geom::Point getTitleOffset(Gen::ChannelId axisIndex,
-	    bool index,
+	    ::Anim::InterpolateIndex index,
 	    bool fades) const;
 	void drawAxis(Gen::ChannelId axisIndex) const;
 	void drawTitle(Gen::ChannelId axisIndex) const;
