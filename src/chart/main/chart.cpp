@@ -30,10 +30,12 @@ Chart::Chart() :
 void Chart::setBoundRect(const Geom::Rect &rect)
 {
 	if (actPlot) {
-		actPlot->getStyle().setup();
-		layout.setBoundary(rect,
-		    actPlot->getStyle(),
-		    actPlot->getOptions());
+		auto &style = actPlot->getStyle();
+		style.setup();
+		if (!actStyles.fontSize)
+			computedStyles.fontSize = style.fontSize = Gfx::Length{
+			    Styles::Sheet::baseFontSize(rect.size, true)};
+		layout.setBoundary(rect, style, actPlot->getOptions());
 	}
 	else {
 		layout.setBoundary(rect,
