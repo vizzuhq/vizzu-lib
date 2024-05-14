@@ -17,7 +17,20 @@ namespace Vizzu::dataframe
 
 enum class series_type { unknown, dimension, measure };
 
-[[maybe_unused]] [[noreturn]] void error();
+enum class error_type {
+	series_not_found,
+	duplicated_series,
+	wrong_type,
+	aggregator,
+	sort,
+	nan,
+	record,
+	unimplemented,
+	internal_error
+};
+
+[[maybe_unused]] [[noreturn]] void error(error_type err,
+    std::string_view arg = {});
 
 class data_source : public std::enable_shared_from_this<data_source>
 {

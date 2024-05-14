@@ -115,7 +115,7 @@ public:
 	[[nodiscard]] std::span<const std::string> get_measures() const &;
 
 	[[nodiscard]] std::span<const std::string> get_categories(
-	    std::string_view dimension) const &;
+	    const std::string_view &dimension) const &;
 
 	struct series_meta_t
 	{

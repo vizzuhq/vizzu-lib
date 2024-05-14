@@ -147,7 +147,7 @@ dataframe_interface::get_measures() const &
 }
 
 std::span<const std::string> dataframe_interface::get_categories(
-    std::string_view dimension) const &
+    const std::string_view &dimension) const &
 {
 	return as_impl(this).get_categories(dimension);
 }
