@@ -12,7 +12,8 @@ Marker::Marker(const Options &options,
     ChannelsStats &stats,
     const Data::MultiIndex &index,
     MarkerIndex idx,
-    bool needMarkerInfo) :
+    bool needMarkerInfo,
+    bool rectangleSpacing) :
     enabled(data.empty() || !index.isEmpty()),
     cellInfo(enabled || needMarkerInfo
                  ? data.cellInfo(index, idx, needMarkerInfo)
@@ -75,7 +76,12 @@ Marker::Marker(const Options &options,
 	    index,
 	    horizontal ? &mainId->value : subAxisId);
 
-	spacing.x = (horizontal || (lineOrCircle && !polar))
+	spacing.x = (horizontal || (lineOrCircle && !polar)
+	                || (channels.at(ChannelId::y).isDimension()
+	                    && channels.at(ChannelId::y).hasDimension()
+	                    && options.geometry == ShapeType::rectangle
+	                    && options.align != Base::Align::Type::stretch
+	                    && rectangleSpacing))
 	                 && options.getChannels().anyAxisSet()
 	                 && channels.at(ChannelId::x).isDimension()
 	              ? 1
@@ -88,7 +94,12 @@ Marker::Marker(const Options &options,
 	    index,
 	    !horizontal ? &mainId->value : subAxisId);
 
-	spacing.y = (!horizontal || lineOrCircle)
+	spacing.y = (!horizontal || lineOrCircle
+	                || (channels.at(ChannelId::x).isDimension()
+	                    && channels.at(ChannelId::y).hasDimension()
+	                    && options.geometry == ShapeType::rectangle
+	                    && options.align != Base::Align::Type::stretch
+	                    && rectangleSpacing))
 	                 && options.getChannels().anyAxisSet()
 	                 && channels.at(ChannelId::y).isDimension()
 	              ? 1

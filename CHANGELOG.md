@@ -16,6 +16,7 @@
 - Tooltip with 'seriesName' does not rewrite first series data.
 - Handle as different category the empty string and the missing value.
 - On chart resize, the font size is recalculated. 
+- Dim-Dim on x-y shows separated rectangles.
 
 ### Added
 

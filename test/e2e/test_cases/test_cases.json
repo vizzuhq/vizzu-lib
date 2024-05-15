@@ -1775,7 +1775,7 @@
 			"refs": ["2352b28"]
 		},
 		"ww_next_steps/next_steps/38_C_L_line": {
-			"refs": ["b8ffd23"]
+			"refs": ["d03e139"]
 		},
 		"ww_next_steps/next_steps_Tests/02_C_R": {
 			"refs": ["c550e7b"]
@@ -1802,7 +1802,7 @@
 			"refs": ["feed828"]
 		},
 		"ww_next_steps/next_steps_Tests/38_C_L_line": {
-			"refs": ["a19aa52"]
+			"refs": ["3b273c7"]
 		},
 		"ww_next_steps/next_steps_Tests/axisLabel_problem": {
 			"refs": ["d33f180"]
@@ -3146,10 +3146,10 @@
 			"refs": ["dfa1f88"]
 		},
 		"ww_samples_for_presets/without_coo_sys/602_W_R_heatmap3": {
-			"refs": ["4905e0d"]
+			"refs": ["049e495"]
 		},
 		"ww_samples_for_presets/without_coo_sys/60_W_R_heatmap": {
-			"refs": ["4d4090e"]
+			"refs": ["6276534"]
 		},
 		"www_new_analytical_operations/operations/01_drilldown/Bar_Bar": {
 			"refs": ["6396b85"]
@@ -3236,7 +3236,7 @@
 			"refs": ["bd104b0"]
 		},
 		"web_content/cookbook/style/dark_theme": {
-			"refs": ["5c4e3c1"]
+			"refs": ["b38086a"]
 		},
 		"web_content/cookbook/style/highligh_markers": {
 			"refs": ["48d6207"]

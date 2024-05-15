@@ -29,7 +29,8 @@ public:
 	    ChannelsStats &stats,
 	    const Data::MultiIndex &index,
 	    MarkerIndex idx,
-	    bool needMarkerInfo);
+	    bool needMarkerInfo,
+	    bool rectangleSpacing);
 
 	::Anim::Interpolated<ColorBase> colorBase;
 	Geom::Point position;
