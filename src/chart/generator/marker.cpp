@@ -11,11 +11,15 @@ Marker::Marker(const Options &options,
     const Data::DataCube &data,
     ChannelsStats &stats,
     const Data::MultiIndex &index,
-    size_t idx) :
+    MarkerIndex idx,
+    bool needMarkerInfo) :
     enabled(data.empty() || !index.isEmpty()),
-    cellInfo(data.cellInfo(index)),
-    sizeId(data.getId(
-        options.getChannels().at(ChannelId::size).dimensionIds,
+    cellInfo(enabled || needMarkerInfo
+                 ? data.cellInfo(index, idx, needMarkerInfo)
+                 : nullptr),
+    sizeId(data.getId(options.getChannels()
+                          .at(ChannelId::size)
+                          .dimensionsWithLevel(),
         index)),
     idx(idx)
 {
@@ -40,21 +44,24 @@ Marker::Marker(const Options &options,
 	    ChannelId::size,
 	    data,
 	    stats,
-	    index);
+	    index,
+	    &sizeId);
 
-	mainId = data.getId(options.mainAxis().dimensionIds, index);
+	auto &&mainAxisDims = options.mainAxis().dimensionsWithLevel();
 
-	if (options.geometry == ShapeType::area) {
-		Data::SeriesList subIds(options.subAxis().dimensionIds);
-		Data::SeriesList &&stackIds =
-		    subIds.split_by(options.mainAxis().dimensionIds);
-		subId = data.getId(subIds, index);
-		stackId = data.getId(stackIds, index);
+	Data::MarkerId *subAxisId{};
+	if (auto &&subAxis = options.subAxis().dimensionsWithLevel();
+	    options.geometry == ShapeType::area) {
+		Data::SeriesList subIds(subAxis.first);
+		if (subIds.split_by(mainAxisDims.first).empty())
+			subAxisId = &subId;
+		subId = data.getId({subIds, subAxis.second}, index);
 	}
 	else {
-		stackId = subId =
-		    data.getId(options.subAxis().dimensionIds, index);
+		subId = data.getId(subAxis, index);
+		subAxisId = &subId;
 	}
+	mainId = data.getId(mainAxisDims, index);
 
 	auto horizontal = options.isHorizontal();
 	auto lineOrCircle = options.geometry == ShapeType::line
@@ -65,7 +72,8 @@ Marker::Marker(const Options &options,
 	    ChannelId::x,
 	    data,
 	    stats,
-	    index);
+	    index,
+	    horizontal ? &mainId->value : subAxisId);
 
 	spacing.x = (horizontal || (lineOrCircle && !polar))
 	                 && options.getChannels().anyAxisSet()
@@ -77,7 +85,8 @@ Marker::Marker(const Options &options,
 	    ChannelId::y,
 	    data,
 	    stats,
-	    index);
+	    index,
+	    !horizontal ? &mainId->value : subAxisId);
 
 	spacing.y = (!horizontal || lineOrCircle)
 	                 && options.getChannels().anyAxisSet()
@@ -85,30 +94,22 @@ Marker::Marker(const Options &options,
 	              ? 1
 	              : 0;
 
-	if (channels.at(ChannelId::label).isEmpty())
-		label = ::Anim::Weighted<Label>(Label(), 0.0);
-	else {
-		auto value = getValueForChannel(channels,
+	if (auto &&labelChannel = channels.at(ChannelId::label);
+	    !labelChannel.isEmpty()) {
+		auto &&value = std::make_optional(getValueForChannel(channels,
 		    ChannelId::label,
 		    data,
 		    stats,
-		    index);
+		    index));
 
-		auto &&labelStr = Label::getIndexString(data,
-		    channels.at(ChannelId::label).dimensionIds,
-		    index);
-
-		if (channels.at(ChannelId::label).isDimension())
-			label = Label(std::move(labelStr));
-		else
-			label = Label(value,
-			    *channels.at(ChannelId::label).measureId,
-			    data,
-			    std::move(labelStr));
+		label =
+		    Label{labelChannel.isDimension() ? std::nullopt : value,
+		        data.joinDimensionValues(labelChannel.dimensions(),
+		            index)};
 	}
 }
 
-void Marker::setNextMarker(uint64_t itemId,
+void Marker::setNextMarker(bool first,
     Marker &marker,
     bool horizontal,
     bool main)
@@ -117,7 +118,7 @@ void Marker::setNextMarker(uint64_t itemId,
 
 	if (main) marker.prevMainMarkerIdx = idx;
 
-	if (itemId != 0) {
+	if (!first) {
 		double Geom::Point::*const coord =
 		    horizontal ? &Geom::Point::x : &Geom::Point::y;
 		marker.position.*coord += position.*coord;
@@ -135,31 +136,27 @@ void Marker::resetSize(bool horizontal)
 void Marker::setIdOffset(size_t offset)
 {
 	if (prevMainMarkerIdx.hasOneValue())
-		(*prevMainMarkerIdx).value += offset;
+		prevMainMarkerIdx->value += offset;
 	if (nextMainMarkerIdx.hasOneValue())
-		(*nextMainMarkerIdx).value += offset;
+		nextMainMarkerIdx->value += offset;
 	if (nextSubMarkerIdx.hasOneValue())
-		(*nextSubMarkerIdx).value += offset;
-}
-
-std::string Marker::toJSON() const
-{
-	std::string res;
-	appendToJSON(Conv::JSONObj{res});
-	return res;
+		nextSubMarkerIdx->value += offset;
 }
 
 Conv::JSONObj &&Marker::appendToJSON(Conv::JSONObj &&jsonObj) const
 {
-	return std::move(jsonObj)("categories",
-	    cellInfo.categories)("values", cellInfo.values)("index", idx);
+	if (cellInfo) return std::move(jsonObj).merge(cellInfo->json);
+	jsonObj.nested("categories");
+	jsonObj.nested("values");
+	return std::move(jsonObj)("index", idx);
 }
 
 double Marker::getValueForChannel(const Channels &channels,
     ChannelId type,
     const Data::DataCube &data,
     ChannelsStats &stats,
-    const Data::MultiIndex &index) const
+    const Data::MultiIndex &index,
+    const Data::MarkerId *mid) const
 {
 	const auto &channel = channels.at(type);
 
@@ -170,7 +167,12 @@ double Marker::getValueForChannel(const Channels &channels,
 	auto &stat = stats.channels[type];
 
 	if (channel.isDimension()) {
-		auto id = data.getId(channel.dimensionIds, index);
+		std::optional<Data::MarkerId> nid;
+		if (!mid)
+			nid.emplace(
+			    data.getId(channel.dimensionsWithLevel(), index));
+
+		const auto &id = mid ? *mid : *nid;
 		if (channel.stackable)
 			value = 1.0;
 		else
@@ -179,8 +181,8 @@ double Marker::getValueForChannel(const Channels &channels,
 		if (enabled) stat.track(id);
 	}
 	else {
-		const auto &measure = *channel.measureId;
-		if (channel.stackable)
+		if (const auto &measure = *channel.measureId;
+		    channel.stackable)
 			value = data.aggregateAt(index, type, measure);
 		else
 			value = data.valueAt(index, measure);
@@ -217,38 +219,8 @@ void Marker::setSizeBy(bool horizontal,
 	fromRectangle(rect);
 }
 
-Marker::Label::Label(std::string &&indexStr) :
-    indexStr{std::move(indexStr)}
-{}
-
-Marker::Label::Label(double value,
-    const Data::SeriesIndex &measure,
-    const Data::DataCube &data,
-    std::string &&indexStr) :
-    value(value),
-    measureId(measure.getColIndex()),
-    unit(data.getUnit(measureId)),
-    indexStr(std::move(indexStr))
-{}
-
-bool Marker::Label::operator==(const Marker::Label &other) const
+bool Marker::Label::operator==(const Label &other) const
 {
-	return measureId == other.measureId && value == other.value
-	    && unit == other.unit && indexStr == other.indexStr;
+	return value == other.value && indexStr == other.indexStr;
 }
-
-std::string Marker::Label::getIndexString(const Data::DataCube &data,
-    const Data::SeriesList &series,
-    const Data::MultiIndex &index)
-{
-	std::string res;
-
-	for (const auto &sliceIndex :
-	    data.getId(series, index).itemSliceIndex) {
-		if (!res.empty()) res += ", ";
-		res += sliceIndex.value;
-	}
-	return res;
-}
-
 }

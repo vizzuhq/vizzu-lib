@@ -258,19 +258,21 @@ void Planner::calcNeeded()
 	        && static_cast<bool>(trgOpt->legend.get())
 	        && (*srcOpt->legend.get() != *trgOpt->legend.get()));
 
-	animNeeded[SectionId::show] = anyMarker(
-	    [&](const auto &source, const auto &target)
-	    {
-		    return static_cast<bool>(
-		        !source.enabled && target.enabled);
-	    });
+	animNeeded[SectionId::show] =
+	    anyMarker(+[](const Gen::Marker &source,
+	                   const Gen::Marker &target) -> bool
+	        {
+		        return static_cast<bool>(
+		            !source.enabled && target.enabled);
+	        });
 
-	animNeeded[SectionId::hide] = anyMarker(
-	    [&](const auto &source, const auto &target)
-	    {
-		    return static_cast<bool>(
-		        source.enabled && !target.enabled);
-	    });
+	animNeeded[SectionId::hide] =
+	    anyMarker(+[](const Gen::Marker &source,
+	                   const Gen::Marker &target) -> bool
+	        {
+		        return static_cast<bool>(
+		            source.enabled && !target.enabled);
+	        });
 
 	animNeeded[SectionId::color] = needColor();
 
@@ -285,19 +287,18 @@ void Planner::calcNeeded()
 	animNeeded[SectionId::x] = needHorizontal();
 
 	animNeeded[SectionId::connection] =
-	    anyMarker(
-	        [&](const auto &source, const auto &target)
+	    anyMarker(+[](const Gen::Marker &source,
+	                   const Gen::Marker &target) -> bool
 	        {
-		        return static_cast<bool>(
-		            source.prevMainMarkerIdx
+		        return source.prevMainMarkerIdx
 		                != target.prevMainMarkerIdx
-		            || source.mainId != target.mainId);
+		            || source.mainId != target.mainId;
 	        })
 	    || srcOpt->isHorizontal() != trgOpt->isHorizontal();
 }
 
-bool Planner::anyMarker(const std::function<bool(const Gen::Marker &,
-        const Gen::Marker &)> &compare) const
+bool Planner::anyMarker(
+    bool (*compare)(const Gen::Marker &, const Gen::Marker &)) const
 {
 	for (auto i = 0U; i < source->getMarkers().size()
 	                  && i < target->getMarkers().size();
@@ -349,8 +350,8 @@ bool Planner::needColor() const
 	            || source->measureAxises.at(Gen::ChannelId::lightness)
 	                   != target->measureAxises.at(
 	                       Gen::ChannelId::lightness)))
-	    || anyMarker(
-	        [&](const auto &source, const auto &target)
+	    || anyMarker(+[](const Gen::Marker &source,
+	                      const Gen::Marker &target) -> bool
 	        {
 		        return (source.enabled || target.enabled)
 		            && source.colorBase != target.colorBase;
@@ -363,7 +364,8 @@ size_t Planner::dimensionCount(const Gen::Plot *plot,
 	return plot->getOptions()
 	    ->getChannels()
 	    .at(type)
-	    .dimensionIds.size();
+	    .dimensions()
+	    .size();
 }
 
 bool Planner::verticalBeforeHorizontal() const
@@ -413,14 +415,21 @@ bool Planner::needVertical() const
 	    || source->anyAxisSet != target->anyAxisSet
 	    || (source->markerConnectionOrientation
 	            != target->markerConnectionOrientation
-	        && ((source->markerConnectionOrientation.value_or(
-	                 Gen::Orientation::horizontal)
-	                == Gen::Orientation::vertical)
-	            || (target->markerConnectionOrientation.value_or(
-	                    Gen::Orientation::horizontal)
-	                == Gen::Orientation::vertical)))
-	    || anyMarker(
-	        [&](const auto &source, const auto &target)
+	        && (source->markerConnectionOrientation.value_or(
+	                Gen::Orientation::horizontal)
+	                == Gen::Orientation::vertical
+	            || target->markerConnectionOrientation.value_or(
+	                   Gen::Orientation::horizontal)
+	                   == Gen::Orientation::vertical))
+	    || source->measureAxises.at(Gen::ChannelId::label)
+	               .origMeasureName.get()
+	           != target->measureAxises.at(Gen::ChannelId::label)
+	                  .origMeasureName.get()
+	    || source->measureAxises.at(Gen::ChannelId::label).unit.get()
+	           != target->measureAxises.at(Gen::ChannelId::label)
+	                  .unit.get()
+	    || anyMarker(+[](const Gen::Marker &source,
+	                      const Gen::Marker &target) -> bool
 	        {
 		        return (source.enabled || target.enabled)
 		            && (source.position.y != target.position.y
@@ -451,8 +460,8 @@ bool Planner::needHorizontal() const
 	            || (target->markerConnectionOrientation.value_or(
 	                    Gen::Orientation::vertical)
 	                == Gen::Orientation::horizontal)))
-	    || anyMarker(
-	        [&](const auto &source, const auto &target)
+	    || anyMarker(+[](const Gen::Marker &source,
+	                      const Gen::Marker &target) -> bool
 	        {
 		        return (source.enabled || target.enabled)
 		            && (source.position.x != target.position.x

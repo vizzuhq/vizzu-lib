@@ -2,7 +2,6 @@
 #define CHART_CONFIG_H
 
 #include <functional>
-#include <list>
 #include <map>
 #include <string>
 #include <utility>
@@ -15,7 +14,7 @@ namespace Vizzu::Gen
 class Config
 {
 public:
-	static std::list<std::string> listParams();
+	static std::string paramsJson();
 	[[nodiscard]] std::string getParam(const std::string &path) const;
 	void setParam(const std::string &path, const std::string &value);
 	explicit Config(Options &options, Data::DataTable &table) :
@@ -33,16 +32,14 @@ private:
 	struct ChannelAccessor
 	{
 		std::string (*get)(const Channel &);
-		void (
-		    *set)(Options &, const ChannelId &, const std::string &);
+		void (*set)(Channel &, const std::string &);
 	};
 
 	template <auto Mptr>
-	static const std::pair<std::string_view, Config::Accessor>
-	    accessor;
+	static const std::pair<std::string_view, Accessor> accessor;
 
 	template <auto Mptr>
-	static const std::pair<std::string_view, Config::ChannelAccessor>
+	static const std::pair<std::string_view, ChannelAccessor>
 	    channel_accessor;
 
 	using Accessors = std::map<std::string_view, Accessor>;

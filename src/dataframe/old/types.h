@@ -41,8 +41,13 @@ public:
 
 	[[nodiscard]] const std::string_view &getColIndex() const;
 
-	bool operator==(const SeriesIndex &rhs) const;
-	bool operator<(const SeriesIndex &rhs) const;
+	[[nodiscard]] bool operator==(const SeriesIndex &rhs) const;
+	[[nodiscard]] bool operator<(const SeriesIndex &rhs) const;
+
+	friend bool operator<(const std::string_view &dim,
+	    const SeriesIndex &rhs);
+	friend bool operator<(const SeriesIndex &lhs,
+	    const std::string_view &dim);
 
 	[[nodiscard]] bool isDimension() const;
 
@@ -56,51 +61,50 @@ using SeriesList = Type::UniqueList<SeriesIndex>;
 
 class Filter
 {
-public:
-	using Function = std::function<bool(const RowWrapper &)>;
+	using Fun = bool(const RowWrapper *);
+	using SharedFun = std::shared_ptr<Fun>;
+	constexpr static auto True = [](const RowWrapper *)
+	{
+		return true;
+	};
 
+	Filter(Fun *lhs, Fun *rhs) noexcept :
+	    func1{std::shared_ptr<void>{}, lhs},
+	    func2{std::shared_ptr<void>{}, rhs}
+	{}
+
+public:
 	Filter() noexcept = default;
 
-	template <class Ptr, class Deleter>
-	explicit Filter(std::unique_ptr<Ptr, Deleter> &&wr) :
-	    hash(std::hash<bool (*)(const RowWrapper *)>{}(wr.get())),
-	    function(
-	        [wr = std::shared_ptr{std::move(wr)}](
-	            const RowWrapper &row) noexcept -> bool
-	        {
-		        return (*wr)(&row);
-	        })
+	template <template <class, class...> class PointerType,
+	    class... Types>
+	explicit Filter(PointerType<Fun, Types...> &&wr) :
+	    func1{std::move(wr)}
 	{}
 
-	template <class Fun>
-	Filter(std::size_t hash, Fun &&function) :
-	    hash(hash),
-	    function(std::forward<Fun>(function))
-	{}
-
-	[[nodiscard]] bool operator==(const Filter &other) const
-	{
-		return hash == other.hash;
-	}
+	[[nodiscard]] bool operator==(
+	    const Filter &other) const = default;
 
 	[[nodiscard]] Filter operator&&(const Filter &other) const
 	{
-		return {hash == other.hash ? hash : hash ^ other.hash,
-		    [fun1 = this->function, fun2 = other.function](
-		        const RowWrapper &row) noexcept -> bool
-		    {
-			    return (!fun1 || fun1(row)) && (!fun2 || fun2(row));
-		    }};
+		auto first =
+		    func1.get() == True ? other.func1.get() : func1.get();
+		auto second =
+		    other.func1.get() == first ? True : other.func1.get();
+		return {first, second};
 	}
 
-	[[nodiscard]] const Function &getFunction() const
+	[[nodiscard]] auto getFunction() const
 	{
-		return function;
+		return [this](const RowWrapper &row)
+		{
+			return (*func1)(&row) && (*func2)(&row);
+		};
 	}
 
 private:
-	std::size_t hash{};
-	Function function;
+	SharedFun func1{std::shared_ptr<void>{}, True};
+	SharedFun func2{std::shared_ptr<void>{}, True};
 };
 
 struct SliceIndex
@@ -113,12 +117,11 @@ struct SliceIndex
 	[[nodiscard]] bool operator==(const SliceIndex &) const = default;
 };
 
-using SubSliceIndex = std::vector<SliceIndex>;
-
 struct CellInfo
 {
-	std::vector<std::pair<std::string, std::string>> categories;
-	std::vector<std::pair<std::string, double>> values;
+	std::vector<std::pair<std::string, std::string>> markerInfo;
+
+	std::string json;
 };
 
 struct MultiIndex
@@ -131,7 +134,7 @@ struct MultiIndex
 
 struct MarkerId
 {
-	SubSliceIndex itemSliceIndex;
+	std::optional<SliceIndex> label;
 	std::size_t seriesId{};
 	std::size_t itemId{};
 

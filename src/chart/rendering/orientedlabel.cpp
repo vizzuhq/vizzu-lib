@@ -19,7 +19,7 @@ void OrientedLabel::draw(Gfx::ICanvas &canvas,
 
 	auto absAngle =
 	    labelStyle.orientation->combine<double>(
-	        [&](int, const auto &orientation)
+	        [&labelPos](const auto &orientation)
 	        {
 		        using enum Styles::OrientedLabel::Orientation;
 		        switch (orientation) {

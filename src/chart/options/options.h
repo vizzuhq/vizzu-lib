@@ -45,19 +45,18 @@ public:
 		            Refl::get_enum<ChannelId>(name));
 	    }));
 
-	using MarkerId = uint64_t;
+	using MarkerIndex = std::size_t;
+	using MarkerInfoId = std::uint32_t;
 	using Heading = ::Anim::Interpolated<std::optional<std::string>>;
 	using LegendType = Base::AutoParam<LegendId, true>;
 	using Legend = ::Anim::Interpolated<LegendType>;
 	using OrientationType = Base::AutoParam<Gen::Orientation>;
 	using Orientation = ::Anim::Interpolated<OrientationType>;
-	using MarkersInfoMap = std::map<uint64_t, MarkerId>;
+	using MarkersInfoMap = std::map<MarkerInfoId, MarkerIndex>;
 
-	friend bool operator==(const Options::LegendId &,
-	    const ChannelId &);
+	friend bool operator==(const LegendId &, const ChannelId &);
 
-	[[nodiscard]] static ChannelId toChannel(
-	    const Options::LegendId &);
+	[[nodiscard]] static ChannelId toChannel(const LegendId &);
 
 	Options() = default;
 
@@ -124,7 +123,7 @@ public:
 	Sort sort{Sort::none};
 	Math::FuzzyBool reverse{false};
 	Legend legend;
-	std::optional<uint64_t> tooltip;
+	std::optional<MarkerIndex> tooltip;
 	MarkersInfoMap markersInfo;
 
 	bool operator==(const Options &other) const;
@@ -161,9 +160,9 @@ public:
 	}
 
 	[[nodiscard]] bool isShapeValid(const ShapeType &) const;
-	[[nodiscard]] std::optional<uint64_t> getMarkerInfoId(
-	    MarkerId) const;
-	static uint64_t generateMarkerInfoId();
+	[[nodiscard]] std::optional<MarkerInfoId> getMarkerInfoId(
+	    MarkerIndex) const;
+	static MarkerInfoId generateMarkerInfoId();
 
 	void setAutoParameters();
 	void setAutoRange(bool hPositive, bool vPositive);
@@ -171,7 +170,7 @@ public:
 	[[nodiscard]] bool labelsShownFor(
 	    const Data::SeriesIndex &series) const;
 
-	void showTooltip(std::optional<MarkerId> marker);
+	void showTooltip(std::optional<MarkerIndex> marker);
 
 private:
 	Channels channels;

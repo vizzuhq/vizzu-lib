@@ -1,10 +1,10 @@
 #ifndef VIZZU_DATAFRAME_INTERFACE_H
 #define VIZZU_DATAFRAME_INTERFACE_H
 
-#include <any>
 #include <functional>
 #include <memory>
 #include <optional>
+#include <set>
 #include <span>
 #include <string_view>
 #include <variant>
@@ -50,7 +50,9 @@ enum class adding_type {
 struct custom_aggregator
 {
 	std::string_view name;
-	using id_type = std::any;
+	using id_type = std::variant<double,
+	    std::pair<double, std::size_t>,
+	    std::set<const char *>>;
 	id_type (*create)();
 	double (*add)(id_type &, cell_value const &);
 

@@ -13,12 +13,10 @@ namespace Style
 template <class Params> class Sheet
 {
 public:
-	explicit Sheet(Params defaultParams) :
+	explicit Sheet(Params defaultParams, Params &activeParams) :
 	    defaultParams(std::move(defaultParams)),
-	    activeParams(nullptr)
+	    activeParams(activeParams)
 	{}
-
-	void setActiveParams(Params &params) { activeParams = &params; }
 
 	[[nodiscard]] const Params &getDefaultParams() const
 	{
@@ -27,17 +25,14 @@ public:
 
 	[[nodiscard]] Params getFullParams() const;
 
-	static std::list<std::string> paramList()
+	static auto listParams()
 	{
-		return Style::ParamRegistry<Params>::instance().listParams();
+		return ParamRegistry<Params>::instance().listParams();
 	}
 
 	void setParams(const std::string &path, const std::string &value)
 	{
-		if (!activeParams)
-			throw std::logic_error("no active parameters set");
-
-		setParams(*activeParams, path, value);
+		setParams(activeParams.get(), path, value);
 	}
 
 	static void setParams(Params &params,
@@ -78,7 +73,7 @@ public:
 
 protected:
 	Params defaultParams;
-	Params *activeParams;
+	std::reference_wrapper<Params> activeParams;
 };
 
 }

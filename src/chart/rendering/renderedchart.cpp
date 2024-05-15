@@ -45,8 +45,7 @@ bool Marker::bounds(const CoordinateSystem &coordSys,
 
 	/** Approximated solution */
 	auto isInside = shapeType.combine<Math::FuzzyBool>(
-	    [this, &point, &coordSys](int,
-	        const Gen::ShapeType &shapeType)
+	    [this, &point, &coordSys](const Gen::ShapeType &shapeType)
 	    {
 		    switch (shapeType) {
 		    case Gen::ShapeType::rectangle:
