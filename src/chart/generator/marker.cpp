@@ -96,7 +96,7 @@ Marker::Marker(const Options &options,
 
 	spacing.y = (!horizontal || lineOrCircle
 	                || (channels.at(ChannelId::x).isDimension()
-	                    && channels.at(ChannelId::y).hasDimension()
+	                    && channels.at(ChannelId::x).hasDimension()
 	                    && options.geometry == ShapeType::rectangle
 	                    && options.align != Base::Align::Type::stretch
 	                    && rectangleSpacing))
