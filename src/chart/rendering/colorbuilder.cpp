@@ -17,8 +17,8 @@ ColorBuilder::ColorBuilder(const LighnessRange &lighnessRange,
 Gfx::Color ColorBuilder::render(
     const Anim::Interpolated<Gen::ColorBase> &colorBase) const
 {
-	if (!colorBase.get(::Anim::first).value.isDiscrete()
-	    && !colorBase.get(::Anim::secondIfExists)
+	if (!colorBase.get_or_first(::Anim::first).value.isDiscrete()
+	    && !colorBase.get_or_first(::Anim::second)
 	            .value.isDiscrete()) {
 		auto pos = colorBase.combine<double>(
 		    [](const Gen::ColorBase &base)

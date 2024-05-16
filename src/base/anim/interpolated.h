@@ -41,10 +41,7 @@ public:
 	[[nodiscard]] bool hasValue() const { return weight > 0.0; }
 };
 
-enum class InterpolateIndex : bool {
-	first = false,
-	secondIfExists = true
-};
+enum class InterpolateIndex : bool { first = false, second = true };
 
 using enum InterpolateIndex;
 
@@ -125,7 +122,7 @@ public:
 		throw std::logic_error("Invalid Weigthed Pair");
 	}
 
-	[[nodiscard]] const Weighted<Type> &get(
+	[[nodiscard]] const Weighted<Type> &get_or_first(
 	    InterpolateIndex index) const
 	{
 		return values[has_second && static_cast<bool>(index)];
@@ -175,7 +172,7 @@ public:
 	{
 		if (values[0].hasValue()) branch(first, values[0]);
 		if (has_second && values[1].hasValue())
-			branch(secondIfExists, values[1]);
+			branch(second, values[1]);
 	}
 
 	template <class T, class Fun> T combine(Fun &&branch) const

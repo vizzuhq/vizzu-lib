@@ -90,7 +90,7 @@ Geom::Point DrawAxes::getTitleBasePos(Gen::ChannelId axisIndex,
 
 	double orthogonal{0.0};
 
-	switch (titleStyle.position->get(index).value) {
+	switch (titleStyle.position->get_or_first(index).value) {
 	default:
 	case Pos::min_edge: break;
 	case Pos::max_edge: orthogonal = 1.0; break;
@@ -101,7 +101,7 @@ Geom::Point DrawAxes::getTitleBasePos(Gen::ChannelId axisIndex,
 
 	double parallel{0.0};
 
-	switch (titleStyle.vposition->get(index).value) {
+	switch (titleStyle.vposition->get_or_first(index).value) {
 	default:
 	case VPos::end: parallel = 1.0; break;
 	case VPos::middle: parallel = 0.5; break;
@@ -130,9 +130,9 @@ Geom::Point DrawAxes::getTitleOffset(Gen::ChannelId axisIndex,
 		}
 	};
 
-	auto orthogonal = fades
-	                    ? calcSide(titleStyle.side->get(index).value)
-	                    : titleStyle.side->combine<double>(calcSide);
+	auto orthogonal =
+	    fades ? calcSide(titleStyle.side->get_or_first(index).value)
+	          : titleStyle.side->combine<double>(calcSide);
 
 	auto calcVSide = [](const auto &side)
 	{
@@ -145,9 +145,9 @@ Geom::Point DrawAxes::getTitleOffset(Gen::ChannelId axisIndex,
 		}
 	};
 
-	auto parallel = fades
-	                  ? calcVSide(titleStyle.vside->get(index).value)
-	                  : titleStyle.vside->combine<double>(calcVSide);
+	auto parallel =
+	    fades ? calcVSide(titleStyle.vside->get_or_first(index).value)
+	          : titleStyle.vside->combine<double>(calcVSide);
 
 	return axisIndex == Gen::ChannelId::x
 	         ? Geom::Point{parallel, -orthogonal}
@@ -165,12 +165,13 @@ void DrawAxes::drawTitle(Gen::ChannelId axisIndex) const
 	          || titleString.maxIndex();
 
 	for (auto &&index : Type::Bools{fades}) {
-		auto title = titleString.get(index);
+		auto title = titleString.get_or_first(index);
 		if (title.value.empty()) continue;
 
-		auto weight = title.weight
-		            * titleStyle.position->get(index).weight
-		            * titleStyle.vposition->get(index).weight;
+		auto weight =
+		    title.weight
+		    * titleStyle.position->get_or_first(index).weight
+		    * titleStyle.vposition->get_or_first(index).weight;
 
 		const Gfx::Font font(titleStyle);
 		canvas.setFont(font);
@@ -182,9 +183,8 @@ void DrawAxes::drawTitle(Gen::ChannelId axisIndex) const
 
 		auto normal = Geom::Point::Ident(true);
 
-		auto offset = getTitleOffset(axisIndex,
-		    index,
-		    fades == ::Anim::secondIfExists);
+		auto offset =
+		    getTitleOffset(axisIndex, index, fades == ::Anim::second);
 
 		auto posDir = coordSys.convertDirectionAt(
 		    {relCenter, relCenter + normal});
@@ -207,16 +207,17 @@ void DrawAxes::drawTitle(Gen::ChannelId axisIndex) const
 
 		auto angle =
 		    -M_PI / 2.0
-		    * (fades == ::Anim::secondIfExists
-		            ? titleStyle.orientation->get(index).value
+		    * (fades == ::Anim::second
+		            ? titleStyle.orientation->get_or_first(index)
+		                      .value
 		                  == Styles::AxisTitle::Orientation::vertical
 		            : titleStyle.orientation->factor<double>(
 		                Styles::AxisTitle::Orientation::vertical));
 
 		auto orientedSize =
-		    fades == ::Anim::secondIfExists
+		    fades == ::Anim::second
 		        ? calcOrientation(
-		            titleStyle.orientation->get(index).value)
+		            titleStyle.orientation->get_or_first(index).value)
 		        : titleStyle.orientation->combine<Geom::Size>(
 		            calcOrientation);
 
@@ -315,11 +316,12 @@ void DrawAxes::drawDimensionLabel(bool horizontal,
 		    auto relCenter =
 		        refPos + ident * it->second.range.middle();
 
-		    auto under = labelStyle.position->interpolates()
-		                   ? labelStyle.side->get(index).value
-		                         == Styles::AxisLabel::Side::negative
-		                   : labelStyle.side->factor<double>(
-		                       Styles::AxisLabel::Side::negative);
+		    auto under =
+		        labelStyle.position->interpolates()
+		            ? labelStyle.side->get_or_first(index).value
+		                  == Styles::AxisLabel::Side::negative
+		            : labelStyle.side->factor<double>(
+		                Styles::AxisLabel::Side::negative);
 
 		    auto sign = 1 - 2 * under;
 
@@ -347,15 +349,16 @@ void DrawAxes::drawDimensionLabel(bool horizontal,
 
 		    if (labelStyle.position->interpolates()
 		        && text.interpolates())
-			    draw(text.get(index), position.weight);
+			    draw(text.get_or_first(index), position.weight);
 		    if (!labelStyle.position->interpolates()
 		        && !text.interpolates())
-			    draw(text.get(::Anim::first));
+			    draw(text.get_or_first(::Anim::first));
 		    else if (labelStyle.position->interpolates())
-			    draw(text.get(::Anim::first), position.weight);
+			    draw(text.get_or_first(::Anim::first),
+			        position.weight);
 		    else if (text.interpolates()) {
-			    draw(text.get(::Anim::first));
-			    draw(text.get(::Anim::secondIfExists));
+			    draw(text.get_or_first(::Anim::first));
+			    draw(text.get_or_first(::Anim::second));
 		    }
 	    });
 }
