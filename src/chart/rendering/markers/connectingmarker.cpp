@@ -30,7 +30,8 @@ ConnectingMarker::ConnectingMarker(const DrawingContext &ctx,
 
 	labelEnabled = enabled && marker.enabled;
 
-	auto weight = marker.prevMainMarkerIdx.get(lineIndex).weight;
+	auto weight =
+	    marker.prevMainMarkerIdx.get_or_first(lineIndex).weight;
 
 	connected = enabled && Math::FuzzyBool(weight);
 
@@ -42,8 +43,9 @@ ConnectingMarker::ConnectingMarker(const DrawingContext &ctx,
 			    enabled && (marker.enabled || prev->enabled);
 			connected =
 			    connected && (prev->enabled || marker.enabled);
-			if (prev->mainId.get(lineIndex).value.itemId
-			    > marker.mainId.get(lineIndex).value.itemId) {
+			if (prev->mainId.get_or_first(lineIndex).value.itemId
+			    > marker.mainId.get_or_first(lineIndex)
+			          .value.itemId) {
 				linear = linear || polar.more();
 				connected = connected && polar.more() && horizontal;
 				enabled = enabled && polar && horizontal;
@@ -127,7 +129,8 @@ const Gen::Marker *ConnectingMarker::getPrev(
     const Gen::Plot::Markers &markers,
     ::Anim::InterpolateIndex lineIndex)
 {
-	const auto &prevId = marker.prevMainMarkerIdx.get(lineIndex);
+	const auto &prevId =
+	    marker.prevMainMarkerIdx.get_or_first(lineIndex);
 	return (prevId.weight > 0.0) ? &markers[prevId.value] : nullptr;
 }
 
