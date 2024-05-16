@@ -7,51 +7,32 @@
 namespace Vizzu::UI
 {
 
-ChartWidget::ChartWidget()
-{
-	chart.onChanged = [this]()
-	{
-		onChanged();
-	};
+ChartWidget::ChartWidget() :
+    onClick(chart.getEventDispatcher().createEvent("click")),
+    onPointerMoveEvent(
+        chart.getEventDispatcher().createEvent("pointermove")),
+    onWheelEvent(chart.getEventDispatcher().createEvent("wheel")),
+    onPointerDownEvent(
+        chart.getEventDispatcher().createEvent("pointerdown")),
+    onPointerUpEvent(
+        chart.getEventDispatcher().createEvent("pointerup")),
+    onPointerLeaveEvent(
+        chart.getEventDispatcher().createEvent("pointerleave"))
+{}
 
-	auto &ed = chart.getEventDispatcher();
-	onClick = ed.createEvent("click");
-	onPointerDownEvent = ed.createEvent("pointerdown");
-	onPointerUpEvent = ed.createEvent("pointerup");
-	onPointerMoveEvent = ed.createEvent("pointermove");
-	onPointerLeaveEvent = ed.createEvent("pointerleave");
-	onWheelEvent = ed.createEvent("wheel");
-}
-
-ChartWidget::~ChartWidget()
-{
-	auto &ed = chart.getEventDispatcher();
-	ed.destroyEvent(onClick);
-	ed.destroyEvent(onPointerMoveEvent);
-	ed.destroyEvent(onWheelEvent);
-	ed.destroyEvent(onPointerDownEvent);
-	ed.destroyEvent(onPointerUpEvent);
-	ed.destroyEvent(onPointerLeaveEvent);
-}
-
-void ChartWidget::onChanged()
-{
-	if (doChange) doChange();
-}
-
-void ChartWidget::onPointerDown(const GUI::PointerEvent &event)
+void ChartWidget::onPointerDown(const GUI::PointerEvent &event) const
 {
 	onPointerDownEvent->invoke(PointerEvent{event,
 	    chart.getRenderedChart().find(event.position)});
 }
 
-void ChartWidget::onPointerMove(const GUI::PointerEvent &event)
+void ChartWidget::onPointerMove(const GUI::PointerEvent &event) const
 {
 	onPointerMoveEvent->invoke(PointerEvent{event,
 	    chart.getRenderedChart().find(event.position)});
 }
 
-void ChartWidget::onPointerUp(const GUI::PointerEvent &event)
+void ChartWidget::onPointerUp(const GUI::PointerEvent &event) const
 {
 	const auto *eventTarget =
 	    chart.getRenderedChart().find(event.position);
@@ -60,19 +41,17 @@ void ChartWidget::onPointerUp(const GUI::PointerEvent &event)
 
 	if (onClick->invoke(PointerEvent{event, eventTarget})) {
 		if (chart.getLayout().logo.contains(event.position)) {
-			if (openUrl)
-				openUrl(
-				    Main::siteUrl + std::string("?utm_source=logo"));
+			openUrl(Main::siteUrl + std::string("?utm_source=logo"));
 		}
 	}
 }
 
-void ChartWidget::onPointerLeave(const GUI::PointerEvent &event)
+void ChartWidget::onPointerLeave(const GUI::PointerEvent &event) const
 {
 	onPointerLeaveEvent->invoke(PointerEvent{event, nullptr});
 }
 
-void ChartWidget::onWheel(double delta)
+void ChartWidget::onWheel(double delta) const
 {
 	onWheelEvent->invoke(WheelEvent(delta, nullptr));
 }

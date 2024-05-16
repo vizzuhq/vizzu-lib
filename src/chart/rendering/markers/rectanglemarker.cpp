@@ -16,7 +16,7 @@ RectangleMarker::RectangleMarker(const Gen::Marker &marker,
 	auto spacing = Geom::Size{
 	    marker.spacing
 	    * style.plot.marker.rectangleSpacing->combine<Geom::Size>(
-	        [&](int, const auto rectangleSpacing)
+	        [&marker](const auto &rectangleSpacing)
 	        {
 		        if (rectangleSpacing) {
 			        auto padding = *rectangleSpacing;

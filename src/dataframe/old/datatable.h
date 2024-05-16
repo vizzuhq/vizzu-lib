@@ -5,6 +5,8 @@
 #ifndef DATAFRAME_OLD2_DATATABLE_H
 #define DATAFRAME_OLD2_DATATABLE_H
 
+#include <chart/options/channel.h>
+
 #include "../impl/dataframe.h"
 
 #include "types.h"
@@ -33,6 +35,9 @@ public:
 
 	void pushRow(const std::span<const char *> &cells);
 
+	[[nodiscard]] std::string_view getUnit(
+	    std::string_view const &colIx) const;
+
 	[[nodiscard]] std::string getInfos() const;
 
 	[[nodiscard]] const dataframe::dataframe &getDf() const
@@ -53,7 +58,32 @@ public:
 	std::map<std::pair<std::string_view, dataframe::aggregator_type>,
 	    std::string>
 	    measure_names;
-	std::vector<std::pair<std::string_view, std::size_t>> dim_reindex;
+
+	struct DimensionInfo
+	{
+		std::string_view name;
+		std::span<const std::string> categories;
+		std::size_t size{};
+		std::size_t ix{};
+
+		[[nodiscard]] bool operator<(const DimensionInfo &other) const
+		{
+			return name < other.name;
+		}
+
+		[[nodiscard]] friend bool operator<(const DimensionInfo &lhs,
+		    const SeriesIndex &si)
+		{
+			return lhs.name < si.getColIndex();
+		}
+
+		[[nodiscard]] friend bool operator<(const SeriesIndex &si,
+		    const DimensionInfo &rhs)
+		{
+			return si.getColIndex() < rhs.name;
+		}
+	};
+	Type::UniqueList<DimensionInfo> dim_reindex;
 
 	std::map<Gen::ChannelId,
 	    std::shared_ptr<dataframe::dataframe_interface>>
@@ -61,12 +91,15 @@ public:
 
 	DataCube(const DataTable &table, const Gen::Options &options);
 
-	[[nodiscard]] size_t combinedSizeOf(
+	[[nodiscard]] std::pair<size_t, size_t> combinedSizeOf(
 	    const SeriesList &colIndices) const;
 
 	[[nodiscard]] bool empty() const;
 
-	[[nodiscard]] CellInfo cellInfo(const MultiIndex &index) const;
+	[[nodiscard]] std::shared_ptr<const CellInfo> cellInfo(
+	    const MultiIndex &index,
+	    std::size_t markerIndex,
+	    bool needMarkerInfo) const;
 
 	[[nodiscard]] double aggregateAt(const MultiIndex &multiIndex,
 	    const Gen::ChannelId &channelId,
@@ -75,17 +108,16 @@ public:
 	[[nodiscard]] double valueAt(const MultiIndex &multiIndex,
 	    const SeriesIndex &seriesId) const;
 
-	[[nodiscard]] MarkerId getId(const SeriesList &,
+	[[nodiscard]] MarkerId getId(
+	    const std::pair<const SeriesList &, const std::size_t &> &,
 	    const MultiIndex &) const;
 
-	[[nodiscard]] static std::string getValue(
-	    const SliceIndex &index);
+	[[nodiscard]] std::string joinDimensionValues(
+	    const SeriesList &sl,
+	    const MultiIndex &index) const;
 
 	[[nodiscard]] const std::string &getName(
 	    const SeriesIndex &seriesId) const;
-
-	[[nodiscard]] std::string_view getUnit(
-	    std::string_view const &colIx) const;
 
 	[[nodiscard]] iterator_t begin() const;
 	[[nodiscard]] static iterator_t end();

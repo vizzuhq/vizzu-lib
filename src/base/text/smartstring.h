@@ -25,10 +25,10 @@ namespace SmartString
 void trim(std::string &string);
 
 [[nodiscard]] std::string fromPhysicalValue(double value,
-    NumberFormat format = NumberFormat::none,
-    size_t maxFractionDigits = 2,
-    const NumberScale &numberScale = NumberScale{},
-    const std::string &unit = "");
+    NumberFormat format,
+    size_t maxFractionDigits,
+    const NumberScale &numberScale,
+    const std::string &unit);
 }
 
 }

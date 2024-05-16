@@ -25,10 +25,7 @@ namespace Vizzu
 class Chart
 {
 public:
-	using Event = std::function<void()>;
-	using OnComplete = std::function<void(bool)>;
-
-	Event onChanged;
+	Util::Event<> onChanged;
 
 	Chart();
 	Chart(Chart &&) noexcept = delete;
@@ -58,11 +55,11 @@ public:
 	}
 	::Anim::Control &getAnimControl()
 	{
-		return animator->getControl();
+		return animator.getControl();
 	}
 	Anim::AnimationPtr getAnimation()
 	{
-		return animator->getActAnimation();
+		return animator.getActAnimation();
 	}
 	Anim::Options &getAnimOptions() { return nextAnimOptions; }
 	[[nodiscard]] const Layout &getLayout() const { return layout; }
@@ -77,25 +74,25 @@ public:
 
 	Gen::Config getConfig();
 
-	void animate(const OnComplete &onComplete = OnComplete());
+	void animate(Anim::Animation::OnComplete &&onComplete);
 	void setKeyframe();
 	void setAnimation(const Anim::AnimationPtr &animation);
 
 private:
 	Layout layout;
-	std::shared_ptr<Anim::Animator> animator;
 	Data::DataTable table;
 	Gen::PlotPtr actPlot;
 	Gen::PlotOptionsPtr nextOptions;
 	Gen::Options prevOptions;
 	Anim::Options nextAnimOptions;
-	Styles::Sheet stylesheet;
 	Styles::Chart actStyles;
 	Styles::Chart prevStyles;
+	Styles::Sheet stylesheet;
 	Styles::Chart computedStyles;
 	Util::EventDispatcher eventDispatcher;
 	Draw::RenderedChart renderedChart;
 	Events events;
+	Anim::Animator animator;
 
 	Gen::PlotPtr plot(const Gen::PlotOptionsPtr &options);
 };

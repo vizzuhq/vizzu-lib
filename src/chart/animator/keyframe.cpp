@@ -9,10 +9,12 @@ namespace Vizzu::Anim
 
 Keyframe::Keyframe(Gen::PlotPtr src,
     const Gen::PlotPtr &trg,
-    Options::Keyframe options) :
-    options(std::move(options)),
+    const Options::Keyframe *options,
+    bool isInstant) :
+    options(*options),
     source(std::move(src))
 {
+	if (isInstant) this->options.all.duration = ::Anim::Duration(0);
 	init(trg);
 	prepareActual();
 	createPlan(*source, *target, *actual, this->options);
@@ -22,7 +24,7 @@ void Keyframe::init(const Gen::PlotPtr &plot)
 {
 	if (!plot) return;
 
-	if ((!source || source->isEmpty())) {
+	if (!source || source->isEmpty()) {
 		auto emptyOpt =
 		    std::make_shared<Gen::Options>(*plot->getOptions());
 		emptyOpt->reset();
@@ -47,15 +49,17 @@ void Keyframe::init(const Gen::PlotPtr &plot)
 void Keyframe::prepareActual()
 {
 	if (Gen::Plot::dimensionMatch(*source, *target)) {
-		addMissingMarkers(source, target, true);
+		addMissingMarkers(source, target);
+
+		mergeMarkerCellInfo(source, target);
 
 		prepareActualMarkersInfo();
 	}
 	else {
 		copyTarget();
 
-		target->prependMarkers(*source, false);
-		source->appendMarkers(*targetCopy, false);
+		target->prependMarkers(*source);
+		source->appendMarkers(*targetCopy);
 
 		prepareActualMarkersInfo();
 	}
@@ -64,58 +68,47 @@ void Keyframe::prepareActual()
 	    std::make_shared<Gen::Options>(*source->getOptions());
 
 	actual = std::make_shared<Gen::Plot>(options, *source);
-
-	actual->markers = source->getMarkers();
-	actual->markersInfo = source->getMarkersInfo();
 }
 
 void Keyframe::prepareActualMarkersInfo()
 {
-	auto &origTMI = target->getMarkersInfo();
+	const auto &origTMI = target->getMarkersInfo();
 	auto &smi = source->getMarkersInfo();
-	for (auto &item : smi) {
-		auto iter = origTMI.find(item.first);
-		if (iter != origTMI.end()) {
-			copyTarget();
-			target->getMarkersInfo().insert(
-			    std::make_pair(item.first, item.second));
-		}
-		else {
-			copyTarget();
-			target->getMarkersInfo().insert(
-			    std::make_pair(item.first, Gen::Plot::MarkerInfo{}));
-		}
-	}
-	for (auto &item : origTMI) {
-		auto iter = smi.find(item.first);
-		if (iter != smi.end())
-			smi.insert(std::make_pair(item.first, item.second));
-		else
-			smi.insert(
-			    std::make_pair(item.first, Gen::Plot::MarkerInfo{}));
-	}
+	if (!smi.empty()) copyTarget();
+
+	for (auto &tmi = target->getMarkersInfo(); auto &&item : smi)
+		tmi.insert(std::pair{item.first, Gen::Plot::MarkerInfo{}});
+
+	for (auto &&item : origTMI)
+		smi.insert(std::pair{item.first, Gen::Plot::MarkerInfo{}});
 }
 
 void Keyframe::addMissingMarkers(const Gen::PlotPtr &source,
-    const Gen::PlotPtr &target,
-    bool withTargetCopying)
+    const Gen::PlotPtr &target)
 {
-	for (auto i = source->getMarkers().size();
-	     i < target->getMarkers().size();
-	     ++i) {
-		auto src = target->getMarkers()[i];
-		src.enabled = false;
-		source->markers.push_back(src);
-	}
+	auto &&smarkers = source->markers;
+	auto &&tmarkers = target->markers;
+	auto &&ssize = smarkers.size();
+	auto &&tsize = tmarkers.size();
+	for (auto i = ssize; i < tsize; ++i)
+		smarkers.emplace_back(tmarkers[i]).enabled = false;
 
-	for (auto i = target->getMarkers().size();
-	     i < source->getMarkers().size();
-	     ++i) {
-		if (withTargetCopying) copyTarget();
-		auto trg = source->getMarkers()[i];
-		trg.enabled = false;
-		target->markers.push_back(trg);
-	}
+	if (tsize < ssize) copyTarget();
+	for (auto i = tsize; i < ssize; ++i)
+		target->markers.emplace_back(smarkers[i]).enabled = false;
+}
+
+void Keyframe::mergeMarkerCellInfo(const Gen::PlotPtr &source,
+    const Gen::PlotPtr &target)
+{
+	const auto markers_size = source->markers.size();
+	for (std::size_t ix{}; ix < markers_size; ++ix)
+		if (auto &scell = source->markers[ix].cellInfo,
+		    &tcell = target->markers[ix].cellInfo;
+		    scell && !tcell)
+			tcell = scell;
+		else if (!scell && tcell)
+			scell = tcell;
 }
 
 void Keyframe::copyTarget()

@@ -91,7 +91,7 @@ void Sheet::setAxisLabels()
 	}
 	else if (const auto &xAxis =
 	             options->getChannels().at(Gen::ChannelId::x);
-	         !xAxis.isEmpty() && xAxis.isDimension()
+	         xAxis.isDimension() && xAxis.hasDimension()
 	         && options->angle == 0)
 		def.angle.reset();
 }
@@ -116,23 +116,21 @@ void Sheet::setMarkers()
 		defaultParams.plot.marker.borderWidth = 0.5;
 		defaultParams.plot.marker.borderOpacity = 0.7;
 	}
+	else {
+		if (options->geometry == Gen::ShapeType::circle
+		    && options->getChannels()
+		           .at(Gen::ChannelId::size)
+		           .isMeasure()
+		    && (options->mainAxis().isMeasure()
+		        || options->subAxis().isMeasure())) {
+			defaultParams.plot.marker.borderWidth = 1;
+			defaultParams.plot.marker.fillOpacity = 0.8;
+		}
 
-	if (options->getChannels().anyAxisSet()
-	    && options->geometry == Gen::ShapeType::circle
-	    && !options->getChannels()
-	            .at(Gen::ChannelId::size)
-	            .isDimension()
-	    && (!options->mainAxis().isDimension()
-	        || !options->subAxis().isDimension())) {
-		defaultParams.plot.marker.borderWidth = 1;
-		defaultParams.plot.marker.fillOpacity = 0.8;
-	}
-
-	if (options->getChannels().anyAxisSet()
-	    && options->geometry == Gen::ShapeType::rectangle
-	    && options->coordSystem.get() == Gen::CoordSystem::polar
-	    && options->getVeritalAxis().isEmpty()) {
-		defaultParams.plot.marker.rectangleSpacing = 0;
+		if (options->geometry == Gen::ShapeType::rectangle
+		    && options->coordSystem.get() == Gen::CoordSystem::polar
+		    && options->getVeritalAxis().isEmpty())
+			defaultParams.plot.marker.rectangleSpacing = 0;
 	}
 }
 
@@ -141,11 +139,10 @@ void Sheet::setMarkerLabels()
 	auto &def = defaultParams.plot.marker.label;
 
 	if (options->getChannels().anyAxisSet()
-	    && (!(options->geometry == Gen::ShapeType::rectangle)
-	        || options->subAxis().dimensionCount() == 0)) {
-		if (options->geometry == Gen::ShapeType::circle) {
+	    && (options->geometry != Gen::ShapeType::rectangle
+	        || !options->subAxis().hasDimension())) {
+		if (options->geometry == Gen::ShapeType::circle)
 			def.position = MarkerLabel::Position::right;
-		}
 		else {
 			def.position = options->isHorizontal()
 			                 ? MarkerLabel::Position::top
@@ -160,18 +157,14 @@ void Sheet::setMarkerLabels()
 			}
 		}
 	}
-	else {
+	else
 		def.position = MarkerLabel::Position::center;
-	}
 
-	const auto &pos =
-	    (activeParams && activeParams->plot.marker.label.position)
-	        ? activeParams->plot.marker.label.position
-	        : def.position;
-
-	if (pos == MarkerLabel::Position::center) {
+	if (const auto &activePos =
+	        activeParams.get().plot.marker.label.position;
+	    (activePos ? activePos : def.position)
+	    == MarkerLabel::Position::center)
 		def.filter = Gfx::ColorTransform::Lightness(0.7);
-	}
 }
 
 void Sheet::setData()
@@ -218,8 +211,8 @@ void Sheet::setAfterStyles(Gen::Plot &plot, const Geom::Size &size)
 			auto rangeCenter = pair.second.range.middle();
 
 			auto next_range =
-			    Math::Range<double>{rangeCenter - xHalfSize,
-			        rangeCenter + xHalfSize};
+			    Math::Range<double>::Raw(rangeCenter - xHalfSize,
+			        rangeCenter + xHalfSize);
 
 			if (std::any_of(ranges.begin(),
 			        ranges.end(),

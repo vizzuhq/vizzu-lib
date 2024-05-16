@@ -1,6 +1,7 @@
 #ifndef LIB_CINTERFACE_H
 #define LIB_CINTERFACE_H
 
+#include <base/util/eventdispatcher.h>
 #include <cstdint>
 #include <typeinfo>
 
@@ -14,7 +15,7 @@ namespace APIHandles
 using Any = const void *;
 using Chart = const void *;
 using Snapshot = const void *;
-using Event = const void *;
+using Event = Util::EventDispatcher::Params *;
 using Animation = const void *;
 using Exception = const void *;
 using Canvas = const void *;

@@ -80,10 +80,6 @@ const char *vizzu_errorMessage(APIHandles::Exception exceptionPtr,
 			realException =
 			    static_cast<const std::bad_cast *>(exceptionPtr);
 			break;
-		case hash("bad_any_cast"):
-			realException =
-			    static_cast<const std::bad_any_cast *>(exceptionPtr);
-			break;
 		case hash("bad_function_call"):
 			realException =
 			    static_cast<const std::bad_function_call *>(
@@ -336,7 +332,7 @@ void removeEventListener(APIHandles::Chart chart,
 
 void event_preventDefault(APIHandles::Event event)
 {
-	return Interface::getInstance().preventDefaultEvent(event);
+	return Interface::preventDefaultEvent(event);
 }
 
 void chart_animate(APIHandles::Chart chart, void (*callback)(bool))

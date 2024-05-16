@@ -22,11 +22,14 @@ class ChannelsStats;
 class Marker
 {
 public:
+	using MarkerIndex = Options::MarkerIndex;
+
 	Marker(const Options &options,
 	    const Data::DataCube &data,
 	    ChannelsStats &stats,
 	    const Data::MultiIndex &index,
-	    size_t idx);
+	    MarkerIndex idx,
+	    bool needMarkerInfo);
 
 	::Anim::Interpolated<ColorBase> colorBase;
 	Geom::Point position;
@@ -34,28 +37,17 @@ public:
 	Geom::Point spacing;
 	double sizeFactor;
 	Math::FuzzyBool enabled;
-	Data::CellInfo cellInfo;
+	std::shared_ptr<const Data::CellInfo> cellInfo;
 
 	struct Label
 	{
 		std::optional<double> value;
-		std::string_view measureId;
-		std::string unit;
 		std::string indexStr;
-		Label() = default;
-		explicit Label(std::string &&indexStr);
-		Label(double value,
-		    const Data::SeriesIndex &measure,
-		    const Data::DataCube &data,
-		    std::string &&indexStr);
 		bool operator==(const Label &other) const;
 		[[nodiscard]] bool hasValue() const
 		{
 			return value.has_value();
 		}
-		static std::string getIndexString(const Data::DataCube &data,
-		    const Data::SeriesList &series,
-		    const Data::MultiIndex &index);
 	};
 
 	::Anim::Interpolated<Label> label;
@@ -65,14 +57,13 @@ public:
 	::Anim::Interpolated<Id> mainId;
 	Id subId;
 	Id sizeId;
-	Id stackId;
 
-	uint64_t idx;
-	::Anim::Interpolated<uint64_t> prevMainMarkerIdx;
-	::Anim::Interpolated<uint64_t> nextMainMarkerIdx;
-	::Anim::Interpolated<uint64_t> nextSubMarkerIdx;
+	MarkerIndex idx;
+	::Anim::Interpolated<MarkerIndex> prevMainMarkerIdx;
+	::Anim::Interpolated<MarkerIndex> nextMainMarkerIdx;
+	::Anim::Interpolated<MarkerIndex> nextSubMarkerIdx;
 
-	void setNextMarker(uint64_t itemId,
+	void setNextMarker(bool first,
 	    Marker &marker,
 	    bool horizontal,
 	    bool main);
@@ -87,14 +78,14 @@ public:
 
 	void setIdOffset(size_t offset);
 	Conv::JSONObj &&appendToJSON(Conv::JSONObj &&jsonObj) const;
-	[[nodiscard]] std::string toJSON() const;
 
 private:
 	double getValueForChannel(const Channels &channels,
 	    ChannelId type,
 	    const Data::DataCube &data,
 	    ChannelsStats &stats,
-	    const Data::MultiIndex &index) const;
+	    const Data::MultiIndex &index,
+	    const Data::MarkerId * = nullptr) const;
 };
 
 }

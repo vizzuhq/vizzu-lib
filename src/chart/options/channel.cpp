@@ -30,22 +30,12 @@ Channel Channel::makeChannel(Type id)
 	throw std::logic_error("internal error: invalid channel id");
 }
 
-std::pair<bool, Channel::OptionalIndex> Channel::addSeries(
-    const Data::SeriesIndex &index)
+void Channel::addSeries(const Data::SeriesIndex &index)
 {
-	if (index.isDimension()) {
-		return {dimensionIds.push_back(index), std::nullopt};
-	}
-	if (!measureId) {
+	if (index.isDimension())
+		dimensionIds.push_back(index);
+	else
 		measureId = index;
-		return {true, std::nullopt};
-	}
-	if (*measureId != index) {
-		auto replaced = *measureId;
-		measureId = index;
-		return {true, replaced};
-	}
-	return {false, std::nullopt};
 }
 
 void Channel::removeSeries(const Data::SeriesIndex &index)
@@ -78,14 +68,14 @@ void Channel::reset()
 
 bool Channel::isEmpty() const
 {
-	return (!measureId && dimensionIds.empty());
+	return !measureId && dimensionIds.empty();
 }
 
 bool Channel::isDimension() const { return !measureId; }
 
-bool Channel::isMeasure() const { return !isEmpty() && measureId; }
+bool Channel::hasDimension() const { return !dimensionIds.empty(); }
 
-size_t Channel::dimensionCount() const { return dimensionIds.size(); }
+bool Channel::isMeasure() const { return measureId.has_value(); }
 
 void Channel::collectDimesions(IndexSet &dimensions) const
 {
@@ -108,20 +98,15 @@ bool Channel::operator==(const Channel &other) const
 	    && markerGuides == other.markerGuides;
 }
 
-std::string Channel::measureName(const Data::DataCube &cube) const
-{
-	return measureId ? cube.getName(*measureId) : std::string{};
-}
-
-std::string Channel::labelDimensionName() const
-{
-	auto &&ser = labelSeries();
-	return ser ? ser->toString() : "";
-}
-
 const Channel::DimensionIndices &Channel::dimensions() const
 {
 	return dimensionIds;
+}
+
+std::pair<const Channel::DimensionIndices &, const std::size_t &>
+Channel::dimensionsWithLevel() const
+{
+	return {dimensionIds, labelLevel};
 }
 
 Channel::OptionalIndex Channel::labelSeries() const

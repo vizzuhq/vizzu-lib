@@ -26,7 +26,7 @@ struct ColorBuilder
 	    const Gen::ColorBase &colorBase) const;
 
 private:
-	LighnessRange lighnessRange{0.4, -0.4};
+	LighnessRange lighnessRange;
 
 	std::reference_wrapper<const Gfx::ColorGradient> gradient;
 	std::reference_wrapper<
