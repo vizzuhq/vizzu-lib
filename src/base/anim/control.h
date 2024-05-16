@@ -23,10 +23,6 @@ public:
 		double speed{1.0};
 	};
 
-	using OnChange = std::function<void()>;
-	using OnFinish = std::function<void(bool)>;
-
-	Control(const Control &) = default;
 	Control(Control &&) noexcept = default;
 
 	explicit Control(Controllable &controlled);
@@ -65,11 +61,9 @@ protected:
 	double lastPosition{0.0};
 
 	TimePoint actTime;
-	OnFinish onFinish;
-	OnChange onChange;
+	Util::Event<const bool> onFinish;
+	Util::Event<> onChange;
 
-	void setOnFinish(OnFinish onFinish);
-	void setOnChange(OnChange onChange);
 	void reset();
 
 private:

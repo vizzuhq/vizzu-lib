@@ -19,11 +19,13 @@ Geom::Point MeasureAxises::origo() const
 }
 
 MeasureAxis::MeasureAxis(Math::Range<double> interval,
-    std::string &&unit,
+    const std::string_view &unit,
+    const std::string_view &measName,
     std::optional<double> step) :
     enabled(true),
     range(interval),
-    unit(std::move(unit)),
+    unit(std::string{unit}),
+    origMeasureName(std::string{measName}),
     step(step ? *step : Math::Renard::R5().ceil(range.size() / 5.0))
 {}
 
@@ -45,6 +47,8 @@ MeasureAxis interpolate(const MeasureAxis &op0,
 {
 	MeasureAxis res;
 	res.enabled = interpolate(op0.enabled, op1.enabled, factor);
+	res.origMeasureName =
+	    interpolate(op0.origMeasureName, op1.origMeasureName, factor);
 
 	if (op0.enabled.get() && op1.enabled.get()) {
 		res.range = Math::interpolate(op0.range, op1.range, factor);

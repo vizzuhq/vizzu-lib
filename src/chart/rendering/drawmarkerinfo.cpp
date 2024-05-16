@@ -78,7 +78,7 @@ void DrawMarkerInfo::MarkerDC::loadMarker(Content &cnt)
 	auto blendedMarker =
 	    Draw::AbstractMarker::createInterpolated(parent.ctx(),
 	        marker,
-	        0);
+	        ::Anim::first);
 
 	auto line =
 	    blendedMarker.getLabelPos(Styles::MarkerLabel::Position::top,
@@ -96,7 +96,7 @@ void DrawMarkerInfo::MarkerDC::fillTextBox(Content &cnt)
 	if (parent.style.layout == Styles::Tooltip::Layout::multiLine)
 		text << TextBox::TabPos(0);
 	bool was_first{};
-	for (const auto &[cid, val] : cnt.info)
+	for (const auto &[cid, val] : *cnt.info)
 		if (cid == parent.style.seriesName) {
 			text << TextBox::Bkgnd(0) << TextBox::Fgnd(1);
 			text << static_cast<Gfx::Font>(parent.style)
@@ -113,7 +113,7 @@ void DrawMarkerInfo::MarkerDC::fillTextBox(Content &cnt)
 			break;
 		}
 
-	for (const auto &[cid, val] : cnt.info) {
+	for (const auto &[cid, val] : *cnt.info) {
 		if (cid == parent.style.seriesName) continue;
 
 		text << TextBox::Bkgnd(0) << TextBox::Fgnd(1);
@@ -188,16 +188,15 @@ void DrawMarkerInfo::draw(Gfx::ICanvas &canvas,
     const Geom::Rect &boundary) const
 {
 	for (const auto &info : plot->getMarkersInfo()) {
-		if (info.second.count == 0) continue;
-		auto weight1 = info.second.values[0].weight;
-		const auto &cnt1 = info.second.values[0].value;
-		if (info.second.count == 1 && cnt1) {
+		auto &&[cnt1, weight1] =
+		    info.second.get_or_first(::Anim::first);
+		if (!info.second.interpolates() && cnt1) {
 			MarkerDC dc(*this, canvas, boundary, cnt1);
 			dc.draw(weight1);
 		}
-		else if (info.second.count == 2) {
-			auto weight2 = info.second.values[1].weight;
-			const auto &cnt2 = info.second.values[1].value;
+		else if (info.second.interpolates()) {
+			auto &&[cnt2, weight2] =
+			    info.second.get_or_first(::Anim::second);
 			if (!cnt1 && cnt2)
 				fadeInMarkerInfo(canvas, boundary, cnt2, weight2);
 			else if (cnt1 && !cnt2)

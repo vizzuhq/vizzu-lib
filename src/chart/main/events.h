@@ -275,26 +275,23 @@ public:
 
 		template <class Base> struct CategoryInfo : Base
 		{
-			std::string_view categoryName;
-			std::string_view categoryValue;
+			std::string info;
 
 			template <class... Args>
 			explicit CategoryInfo(
 			    const std::string_view &categoryName,
 			    const std::string_view &categoryValue,
 			    Args &&...args) :
-			    Base(std::forward<Args>(args)...),
-			    categoryName(categoryName),
-			    categoryValue(categoryValue)
-			{}
+			    Base(std::forward<Args>(args)...)
+			{
+				Conv::JSONObj{info}.template operator()<false>(
+				    categoryName,
+				    categoryValue);
+			}
 
 			void appendToJSON(Conv::JSONObj &&jsonObj) const override
 			{
-				if (!categoryName.empty() && !categoryValue.empty())
-					jsonObj.nested("categories")
-					    .template operator()<false>(categoryName,
-					        categoryValue);
-
+				jsonObj.raw("categories", info);
 				Base::appendToJSON(std::move(jsonObj));
 			}
 		};
@@ -365,7 +362,8 @@ public:
 			    marker);
 		}
 
-		static auto legendLabel(const std::string_view &categoryName,
+		static auto dimLegendLabel(
+		    const std::string_view &categoryName,
 		    const std::string_view &categoryValue,
 		    const std::string &label,
 		    Gen::ChannelId channel)
@@ -374,6 +372,14 @@ public:
 			    categoryName,
 			    categoryValue,
 			    label,
+			    "label",
+			    channel);
+		}
+
+		static auto measLegendLabel(const std::string &label,
+		    Gen::ChannelId channel)
+		{
+			return std::make_unique<Text<LegendChild>>(label,
 			    "label",
 			    channel);
 		}
@@ -402,7 +408,7 @@ public:
 			return std::make_unique<LegendChild>("bar", channel);
 		}
 
-		static auto axisLabel(const std::string_view &categoryName,
+		static auto dimAxisLabel(const std::string_view &categoryName,
 		    const std::string_view &categoryValue,
 		    const std::string &label,
 		    bool horizontal)
@@ -411,6 +417,14 @@ public:
 			    categoryName,
 			    categoryValue,
 			    label,
+			    "label",
+			    horizontal);
+		}
+
+		static auto measAxisLabel(const std::string &label,
+		    bool horizontal)
+		{
+			return std::make_unique<Text<AxisChild>>(label,
 			    "label",
 			    horizontal);
 		}

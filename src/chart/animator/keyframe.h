@@ -14,7 +14,8 @@ class Keyframe : public Planner
 public:
 	Keyframe(Gen::PlotPtr src,
 	    const Gen::PlotPtr &trg,
-	    Options::Keyframe options = Options::Keyframe());
+	    const Options::Keyframe *options,
+	    bool isInstant);
 
 	[[nodiscard]] std::shared_ptr<void> data() const final
 	{
@@ -32,8 +33,9 @@ private:
 	void prepareActual();
 	void prepareActualMarkersInfo();
 	void addMissingMarkers(const Gen::PlotPtr &source,
-	    const Gen::PlotPtr &target,
-	    bool withTargetCopying);
+	    const Gen::PlotPtr &target);
+	static void mergeMarkerCellInfo(const Gen::PlotPtr &source,
+	    const Gen::PlotPtr &target);
 	void copyTarget();
 };
 

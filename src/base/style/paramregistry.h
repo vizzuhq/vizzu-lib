@@ -2,7 +2,6 @@
 #define STYLE_PARAMREGISTRY
 
 #include <functional>
-#include <list>
 #include <map>
 #include <string>
 #include <type_traits>
@@ -76,12 +75,9 @@ public:
 		return registry;
 	}
 
-	[[nodiscard]] std::list<std::string> listParams() const
+	[[nodiscard]] auto listParams() const
 	{
-		std::list<std::string> list;
-		for (const auto &accessor : accessors)
-			list.push_back(accessor.first);
-		return list;
+		return std::ranges::views::keys(accessors);
 	}
 
 	[[nodiscard]] const Accessor *find(const std::string &path) const
