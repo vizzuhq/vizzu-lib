@@ -408,13 +408,10 @@ const static auto tests =
            {"m1"},
            {{{"dm0", "5.3"}}, {{"dm1", "2.0"}}, {{"dm2", "3.3"}}}})
 {
+	df->change_data(std::size_t{0}, "d1", NAN);
 	df->change_data(std::size_t{1}, "m1", 3.0);
 	df->change_data(std::size_t{2}, "d1", "dmX");
 
-	throw_<&interface::change_data>(df,
-	    {std::size_t{0}},
-	    {"d1"},
-	    {NAN});
 	throw_<&interface::change_data>(df,
 	    {std::size_t{0}},
 	    {"m1"},
@@ -426,7 +423,8 @@ const static auto tests =
 	check->*df->get_data(std::size_t{1}, "m1") == 3.0;
 	check->*df->get_data(std::size_t{2}, "m1") == 3.3;
 
-	check->*df->get_data(std::size_t{0}, "d1") == "dm0";
+	check->*df->get_data(std::size_t{0}, "d1")
+	    == Conv::NumberToString{}(NAN);
 	check->*df->get_data(std::size_t{1}, "d1") == "dm1";
 	check->*df->get_data(std::size_t{2}, "d1") == "dmX";
 }

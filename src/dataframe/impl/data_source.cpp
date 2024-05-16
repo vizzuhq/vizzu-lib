@@ -224,7 +224,7 @@ cell_value data_source::get_data(std::size_t record_id,
 		return meas.values[record_id];
 	}
 	case unknown:
-	default: error();
+	default: error(error_type::series_not_found, column);
 	}
 }
 
@@ -293,7 +293,7 @@ void data_source::finalize()
 		for (std::size_t r{}; r < records; ++r)
 			if (!finalized.try_emplace(get_id(r, dimension_names), r)
 			         .second)
-				error();
+				error(error_type::record, "dup");
 	}
 }
 data_source::dimension_t &data_source::add_new_dimension(
@@ -561,7 +561,27 @@ void data_source::dimension_t::add_element(
 	if (values.emplace_back(get_or_set_cat(cat)) == nav)
 		contains_nav = true;
 }
-void error() { throw std::runtime_error("dataframe"); }
+
+constexpr std::string_view unique_enum_names(error_type)
+{
+	return "series not found,duplicated series,wrong type,"
+	       "aggregator,sort,nan,record,unimplemented,internal error";
+}
+
+void error(error_type err_t, std::string_view arg)
+{
+	auto &&[data, size] =
+	    Refl::enum_name<std::pair<const char *, int>>(err_t);
+	std::array<char, 64> arr{};
+	[[maybe_unused]] auto &&_ = std::snprintf(arr.data(),
+	    arr.size(),
+	    "dataframe error: %.*s: %.*s",
+	    size,
+	    data,
+	    static_cast<int>(arg.size()),
+	    arg.data());
+	throw std::runtime_error(arr.data());
+}
 
 void data_source::dimension_t::add_more_data(
     std::span<const char *const> new_categories,
