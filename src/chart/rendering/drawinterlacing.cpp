@@ -239,9 +239,9 @@ void DrawInterlacing::drawDataLabel(
 	auto &&normal = Geom::Point::Ident(horizontal);
 	for (auto &&index : Type::Bools{interpolates}) {
 		if (labelStyle.position->interpolates()
-		    && !axisEnabled.get(index).value)
+		    && !axisEnabled.get_or_first(index).value)
 			continue;
-		auto &&position = labelStyle.position->get(index);
+		auto &&position = labelStyle.position->get_or_first(index);
 
 		Geom::Point refPos = tickPos;
 
@@ -253,7 +253,7 @@ void DrawInterlacing::drawDataLabel(
 		}
 
 		auto under = labelStyle.position->interpolates()
-		               ? labelStyle.side->get(index).value
+		               ? labelStyle.side->get_or_first(index).value
 		                     == Styles::AxisLabel::Side::negative
 		               : labelStyle.side->factor<double>(
 		                   Styles::AxisLabel::Side::negative);
@@ -262,7 +262,7 @@ void DrawInterlacing::drawDataLabel(
 		    coordSys.convertDirectionAt({refPos, refPos + normal})
 		        .extend(1 - 2 * under);
 
-		auto &&wUnit = unit.get(index);
+		auto &&wUnit = unit.get_or_first(index);
 		auto str = Text::SmartString::fromPhysicalValue(value,
 		    *labelStyle.numberFormat,
 		    static_cast<size_t>(*labelStyle.maxFractionDigits),

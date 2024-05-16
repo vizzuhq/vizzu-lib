@@ -207,7 +207,8 @@ void Plot::clearEmptyBuckets(const Buckets &buckets, bool main) const
 
 void Plot::addSpecLayout(Buckets &buckets)
 {
-	auto geometry = getOptions()->geometry.get(::Anim::first).value;
+	auto geometry =
+	    getOptions()->geometry.get_or_first(::Anim::first).value;
 	if (auto &markers = getMarkers();
 	    geometry == ShapeType::line || geometry == ShapeType::area) {
 		Charts::TableChart::setupVector(markers, true);

@@ -133,7 +133,7 @@ public:
 		    ::Anim::InterpolateIndex index) const
 		{
 			return (index == ::Anim::first && start)
-			    || (index == ::Anim::secondIfExists && end);
+			    || (index == ::Anim::second && end);
 		}
 	};
 	using Values = std::multimap<Data::SliceIndex, Item>;
