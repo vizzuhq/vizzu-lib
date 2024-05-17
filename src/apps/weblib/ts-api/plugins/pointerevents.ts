@@ -2,7 +2,7 @@ import Vizzu from '../vizzu.js'
 import { Plugin } from '../plugins.js'
 import { CChart } from '../module/cchart.js'
 import { NotInitializedError } from '../errors.js'
-import { HtmlCanvasApi } from '../htmlcanvas.js'
+import { HtmlCanvasApi } from './htmlcanvas.js'
 
 interface Handlers {
 	pointermove: (event: PointerEvent) => void

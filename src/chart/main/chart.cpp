@@ -1,48 +1,41 @@
 #include "chart.h"
 
+#include "chart/generator/plot.h"
 #include "chart/rendering/drawchart.h"
-#include "data/datacube/datacube.h"
 
 namespace Vizzu
 {
 
 Chart::Chart() :
-    animator(std::make_shared<Anim::Animator>()),
-    stylesheet(Styles::Chart::def()),
-    events(getEventDispatcher())
+    nextOptions(std::make_shared<Gen::Options>()),
+    stylesheet(Styles::Chart::def(), actStyles),
+    computedStyles(stylesheet.getDefaultParams()),
+    events(eventDispatcher),
+    animator(*events.animation.begin, *events.animation.complete)
 {
-	stylesheet.setActiveParams(actStyles);
-	nextOptions = std::make_shared<Gen::Options>();
-
-	animator->onDraw.attach(
+	animator.onDraw.attach(
 	    [this](const Gen::PlotPtr &actPlot)
 	    {
 		    this->actPlot = actPlot;
-		    if (onChanged) onChanged();
+		    onChanged();
 	    });
-	animator->onProgress.attach(
-	    [this]()
+	animator.onProgress.attach(
+	    [this]
 	    {
 		    events.animation.update->invoke(
-		        Events::OnUpdateEvent(animator->getControl()));
+		        Events::OnUpdateEvent(animator.getControl()));
 	    });
-	animator->onBegin = [this]()
-	{
-		events.animation.begin->invoke();
-	};
-	animator->onComplete = [this]()
-	{
-		events.animation.complete->invoke();
-	};
 }
 
 void Chart::setBoundRect(const Geom::Rect &rect)
 {
 	if (actPlot) {
-		actPlot->getStyle().setup();
-		layout.setBoundary(rect,
-		    actPlot->getStyle(),
-		    actPlot->getOptions());
+		auto &style = actPlot->getStyle();
+		style.setup();
+		if (!actStyles.fontSize)
+			computedStyles.fontSize = style.fontSize = Gfx::Length{
+			    Styles::Sheet::baseFontSize(rect.size, true)};
+		layout.setBoundary(rect, style, actPlot->getOptions());
 	}
 	else {
 		layout.setBoundary(rect,
@@ -51,46 +44,43 @@ void Chart::setBoundRect(const Geom::Rect &rect)
 	}
 }
 
-void Chart::animate(const OnComplete &onComplete)
+void Chart::animate(Anim::Animation::OnComplete &&onComplete)
 {
-	auto f = [this, onComplete](const Gen::PlotPtr &plot, bool ok)
-	{
-		actPlot = plot;
-		if (ok) {
-			prevOptions = *nextOptions;
-			prevStyles = actStyles;
-		}
-		else {
-			*nextOptions = prevOptions;
-			actStyles = prevStyles;
-		}
-		if (onComplete) onComplete(ok);
-	};
-	animator->animate(nextAnimOptions.control, f);
+	onComplete.attach(
+	    [this](const Gen::PlotPtr &plot, const bool &ok)
+	    {
+		    actPlot = plot;
+		    if (ok) {
+			    prevOptions = *nextOptions;
+			    prevStyles = actStyles;
+		    }
+		    else {
+			    *nextOptions = prevOptions;
+			    actStyles = prevStyles;
+			    computedStyles = plot->getStyle();
+		    }
+	    });
+
+	animator.animate(nextAnimOptions.control, std::move(onComplete));
 	nextAnimOptions = Anim::Options();
 	nextOptions = std::make_shared<Gen::Options>(*nextOptions);
 }
 
 void Chart::setKeyframe()
 {
-	animator->addKeyframe(plot(nextOptions),
-	    nextAnimOptions.keyframe);
+	animator.addKeyframe(plot(nextOptions), nextAnimOptions.keyframe);
 	nextAnimOptions.keyframe = Anim::Options::Keyframe();
 	nextOptions = std::make_shared<Gen::Options>(*nextOptions);
 }
 
 void Chart::setAnimation(const Anim::AnimationPtr &animation)
 {
-	animator->setAnimation(animation);
+	animator.setAnimation(animation);
 }
 
-Gen::Config Chart::getConfig() { return Gen::Config{getSetter()}; }
-
-Gen::OptionsSetter Chart::getSetter()
+Gen::Config Chart::getConfig()
 {
-	Gen::OptionsSetter setter(*nextOptions);
-	setter.setTable(&table);
-	return setter;
+	return Gen::Config{getOptions(), table};
 }
 
 void Chart::draw(Gfx::ICanvas &canvas)
@@ -103,12 +93,14 @@ void Chart::draw(Gfx::ICanvas &canvas)
 	            : Draw::CoordinateSystem{layout.plotArea},
 	    actPlot};
 
-	Draw::DrawChart{Draw::DrawingContext{actPlot,
-	                    renderedChart,
-	                    renderedChart.getCoordSys(),
-	                    actPlot ? actPlot->getStyle()
-	                            : stylesheet.getDefaultParams(),
-	                    events}}
+	Draw::DrawChart{
+	    Draw::DrawingContext{actPlot,
+	        actPlot ? actPlot->getOptions().get() : nullptr,
+	        renderedChart,
+	        renderedChart.getCoordSys(),
+	        actPlot ? actPlot->getStyle()
+	                : stylesheet.getDefaultParams(),
+	        events}}
 	    .draw(canvas, layout);
 }
 
@@ -118,18 +110,13 @@ Gen::PlotPtr Chart::plot(const Gen::PlotOptionsPtr &options)
 
 	auto res = std::make_shared<Gen::Plot>(table,
 	    options,
-	    stylesheet.getFullParams(options, layout.boundary.size),
-	    false);
+	    stylesheet.getFullParams(options, layout.boundary.size));
 
 	Styles::Sheet::setAfterStyles(*res, layout.boundary.size);
 
-	return res;
-}
+	computedStyles = res->getStyle();
 
-const Styles::Chart &Chart::getComputedStyles() const
-{
-	return actPlot ? actPlot->getStyle()
-	               : stylesheet.getDefaultParams();
+	return res;
 }
 
 }

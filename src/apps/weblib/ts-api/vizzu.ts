@@ -14,7 +14,7 @@ import { Mirrored } from './tsutils.js'
 import { NotInitializedError, CancelError } from './errors.js'
 import { Plugin, PluginApi, PluginRegistry, Hooks } from './plugins.js'
 import Presets from './plugins/presets.js'
-import { LazyCanvasOptions, HtmlCanvasApi } from './htmlcanvas.js'
+import { LazyCanvasOptions, HtmlCanvasApi } from './plugins/htmlcanvas.js'
 import { CoordSystemApi } from './plugins/coordsys.js'
 
 /** Options for the library. */
@@ -286,8 +286,9 @@ export default class Vizzu {
 	detach(): void {
 		try {
 			this._plugins.destruct()
-		} finally {
-			this._chart?.destruct()
+			this._chart?.detach()
+		} catch (e) {
+			console.error(`Error during plugin destruct: ${e}`)
 		}
 	}
 }

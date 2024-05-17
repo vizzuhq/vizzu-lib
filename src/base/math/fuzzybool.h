@@ -110,12 +110,6 @@ public:
 		return std::to_string(value);
 	}
 
-	void visit(const std::function<void(bool, double)> &branch) const
-	{
-		if (value > 0) branch(true, value);
-		if (1 - value > 0) branch(false, 1 - value);
-	}
-
 	[[nodiscard]] FuzzyBool more() const
 	{
 		return FuzzyBool(std::max(0.0, 2 * value - 1));

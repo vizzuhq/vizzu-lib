@@ -4,16 +4,16 @@
 #include <array>
 #include <memory>
 #include <optional>
-#include <unordered_map>
 
 #include "chart/main/style.h"
 #include "chart/options/options.h"
-#include "data/table/datatable.h"
+#include "dataframe/old/datatable.h"
 
 #include "axis.h"
 #include "channelstats.h"
 #include "guides.h"
 #include "marker.h"
+#include "plotptr.h"
 
 namespace Vizzu
 {
@@ -39,25 +39,24 @@ class Plot
 	friend class Selector;
 
 public:
-	using Buckets =
-	    std::unordered_map<uint64_t, std::map<uint64_t, uint64_t>>;
-	using CellInfo = std::vector<std::pair<std::string, std::string>>;
 	using Markers = std::vector<Marker>;
+	using MarkerInfoId = Options::MarkerInfoId;
 
 	struct MarkerInfoContent
 	{
-		std::optional<Options::MarkerId> markerId;
-		CellInfo content;
+		std::optional<Marker::MarkerIndex> markerId;
+		std::shared_ptr<
+		    const std::vector<std::pair<std::string, std::string>>>
+		    info;
 
-		MarkerInfoContent();
-		explicit MarkerInfoContent(const Marker &marker,
-		    Data::DataCube *dataCube = nullptr);
+		MarkerInfoContent() = default;
+		explicit MarkerInfoContent(const Marker &marker);
 		explicit operator bool() const;
 		bool operator==(const MarkerInfoContent &op) const;
 	};
 
 	using MarkerInfo = ::Anim::Interpolated<MarkerInfoContent>;
-	using MarkersInfo = std::map<uint64_t, MarkerInfo>;
+	using MarkersInfo = std::map<MarkerInfoId, MarkerInfo>;
 
 	static bool dimensionMatch(const Plot &a, const Plot &b);
 
@@ -67,20 +66,20 @@ public:
 	Guides guides;
 	DimensionAxises dimensionAxises;
 	Math::FuzzyBool keepAspectRatio;
+	std::optional<Orientation> markerConnectionOrientation;
 
 	Plot(const Plot &other) = default;
 	Plot(PlotOptionsPtr options, const Plot &other);
 	Plot(const Data::DataTable &dataTable,
 	    PlotOptionsPtr opts,
-	    Styles::Chart style,
-	    bool setAutoParams = true);
+	    Styles::Chart style);
 	[[nodiscard]] const Markers &getMarkers() const
 	{
 		return markers;
 	}
 	Markers &getMarkers() { return markers; }
-	void prependMarkers(const Plot &plot, bool enabled);
-	void appendMarkers(const Plot &plot, bool enabled);
+	void prependMarkers(const Plot &plot);
+	void appendMarkers(const Plot &plot);
 	[[nodiscard]] const MarkersInfo &getMarkersInfo() const
 	{
 		return markersInfo;
@@ -89,14 +88,6 @@ public:
 	[[nodiscard]] const PlotOptionsPtr &getOptions() const
 	{
 		return options;
-	}
-	[[nodiscard]] const Data::DataCube &getDataCube() const
-	{
-		return dataCube;
-	}
-	[[nodiscard]] const ChannelsStats &getStats() const
-	{
-		return stats;
 	}
 	[[nodiscard]] const Styles::Chart &getStyle() const
 	{
@@ -114,35 +105,36 @@ private:
 	const Data::DataTable &dataTable;
 	PlotOptionsPtr options;
 	Styles::Chart style;
-	Data::DataCube dataCube;
-	ChannelsStats stats;
 	Markers markers;
 	MarkersInfo markersInfo;
 
-	Buckets mainBuckets;
-	Buckets subBuckets;
+	Data::DataCube *dataCube{};
+	ChannelsStats *stats{};
+	std::size_t mainBucketSize{};
 
-	void generateMarkers(const Data::DataCube &dataCube,
-	    const Data::DataTable &table);
-	void generateMarkersInfo();
-	void linkMarkers(const Buckets &buckets, bool main);
+	[[nodiscard]] const Data::DataCube &getDataCube() const
+	{
+		return *dataCube;
+	}
+
+	[[nodiscard]] ChannelsStats &getStats() { return *stats; }
+	Buckets generateMarkers();
+	[[nodiscard]] bool linkMarkers(const Buckets &buckets,
+	    bool main) const;
 	void normalizeXY();
-	void calcMeasureAxises(const Data::DataTable &dataTable);
-	void calcMeasureAxis(ChannelId type,
-	    const Data::DataTable &dataTable);
-	void calcDimensionAxises(const Data::DataTable &table);
-	void calcDimensionAxis(ChannelId type,
-	    const Data::DataTable &table);
-	void addAlignment();
-	void addSeparation();
+	void calcMeasureAxises();
+	void calcMeasureAxis(ChannelId type);
+	void calcDimensionAxises();
+	void calcDimensionAxis(ChannelId type);
+	void addAlignment(const Buckets &subBuckets) const;
+	void addSeparation(const Buckets &subBuckets) const;
 	void normalizeSizes();
 	void normalizeColors();
-	std::vector<std::pair<uint64_t, double>>
-	sortedBuckets(const Buckets &buckets, bool main);
-	void clearEmptyBuckets(const Buckets &buckets, bool main);
+	[[nodiscard]] std::vector<std::pair<double, std::size_t>>
+	sortedBuckets(const Buckets &buckets, bool main) const;
+	void clearEmptyBuckets(const Buckets &buckets, bool main) const;
+	void addSpecLayout(Buckets &buckets);
 };
-
-using PlotPtr = std::shared_ptr<Plot>;
 
 struct PlotParent
 {

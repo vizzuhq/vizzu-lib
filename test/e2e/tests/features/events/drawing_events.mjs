@@ -38,6 +38,14 @@ function overlay(e, chart) {
 			const height = metrics.actualBoundingBoxAscent + metrics.actualBoundingBoxDescent
 
 			ctx.transform(t[0][0], t[1][0], t[0][1], t[1][1], t[0][2], t[1][2])
+
+			if (e.type.includes('legend-label-draw')) {
+				const orectsize = e.detail.outerRect.size
+				ctx.fillStyle = '#FF00FFA0'
+				ctx.fillRect(0, 0, orectsize.x, orectsize.y)
+				ctx.fillStyle = '#FF00000F'
+			}
+
 			ctx.translate(inPos.x, inPos.y)
 			if (e.detail.innerRect.size.x > width) {
 				ctx.translate(((e.detail.innerRect.size.x - width) / 2) * (1 + e.detail.align), 0)
@@ -48,11 +56,11 @@ function overlay(e, chart) {
 				ctx.fillStyle = '#FF0000A0'
 				ctx.textAlign = 'left'
 				ctx.textBaseline = 'top'
-				console.log(e)
 				ctx.fillText(e.detail.text, 0, 0)
 			}
 		} else if (e.detail.rect && e.detail.rect.pos && e.detail.rect.size) {
 			const r = e.detail.rect
+			if (e.type.includes('legend-background-draw')) ctx.fillStyle = '#FFFF00A0'
 			ctx.fillRect(r.pos.x, r.pos.y, r.size.x, r.size.y)
 			ctx.fillStyle = '#FF0000A0'
 			if (e.detail.text) ctx.fillText(e.detail.text, r.pos.x, r.pos.y, r.pos.y + r.size.y)

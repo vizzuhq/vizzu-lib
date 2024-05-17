@@ -18,7 +18,8 @@ public:
 	    type(type)
 	{}
 
-	Range<double> getAligned(const Range<double> &range)
+	[[nodiscard]] Range<double> getAligned(
+	    const Range<double> &range) const
 	{
 		switch (type) {
 		case Type::none: return range;
@@ -26,7 +27,7 @@ public:
 		case Type::center: return range - range.middle() + middle();
 		case Type::max: return range + max - range.getMax();
 		case Type::stretch:
-			return static_cast<Range<double> &>(*this);
+			return static_cast<const Range<double> &>(*this);
 		}
 		throw std::logic_error("invalid align type");
 	}

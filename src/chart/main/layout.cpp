@@ -17,7 +17,7 @@ auto popRectArea(double height,
     double plus = 0.0)
 {
 	auto pos = interpolated.template combine<double>(
-	    [&](int, const auto &weight)
+	    [&height](const auto &weight)
 	    {
 		    return weight ? 0 : -height;
 	    });

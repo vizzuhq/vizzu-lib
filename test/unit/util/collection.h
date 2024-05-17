@@ -76,6 +76,7 @@ private:
 	{
 		std::size_t run{};
 		std::size_t failed{};
+		std::size_t skipped{};
 		statistics() = default;
 	};
 
@@ -88,10 +89,13 @@ private:
 
 		for (auto &act_case : cases) {
 			if (condition(act_case)) {
-				stats.run++;
 				running_case = &act_case;
-				act_case();
-				if (!act_case) stats.failed++;
+				switch (act_case()) {
+					using enum case_type::result_t;
+				case FAIL: ++stats.failed; [[fallthrough]];
+				case OK: ++stats.run; break;
+				case SKIP: ++stats.skipped; break;
+				}
 			}
 		}
 		return stats;
@@ -103,15 +107,24 @@ private:
 		          << "all tests:    " << cases.size() << "\n"
 		          << "tests run:    " << stats.run << "\n"
 		          << "tests failed: " << stats.failed << "\n";
+		if (stats.skipped > 0)
+			std::cout << "test skipped: " << stats.skipped << "\n";
 
 		if (stats.failed > 0)
 			for (auto &act_case : cases)
-				if (!act_case)
+				if (static_cast<case_type::result_t>(act_case)
+				    == case_type::result_t::FAIL)
 					std::cout << "\t" << act_case.full_name() << "\n";
 
 		std::cout << "\n";
 	}
 };
+
+inline suite_proxy operator""_suite(const char *s,
+    std::size_t n) noexcept
+{
+	return collection::add_suite(std::string_view{s, n});
+}
 
 }
 

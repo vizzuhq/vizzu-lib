@@ -1,40 +1,29 @@
 #ifndef CHART_UI_CHART_H
 #define CHART_UI_CHART_H
 
-#include <optional>
-
 #include "base/gui/pointer.h"
-#include "base/gui/widget.h"
 #include "base/util/eventdispatcher.h"
 #include "chart/main/chart.h"
 
 namespace Vizzu::UI
 {
 
-class ChartWidget : public GUI::Widget
+class ChartWidget
 {
 public:
-	std::function<void(void)> doChange;
-	std::function<void(const std::string &)> openUrl;
+	Util::Event<const std::string> openUrl;
 
 	explicit ChartWidget();
-	~ChartWidget() override;
 
-	void onPointerDown(const GUI::PointerEvent &event) override;
-	void onPointerMove(const GUI::PointerEvent &event) override;
-	void onPointerUp(const GUI::PointerEvent &event) override;
-	void onPointerLeave(const GUI::PointerEvent &event) override;
-	void onWheel(double delta) override;
-	void onChanged() override;
-	void onDraw(const std::shared_ptr<Gfx::ICanvas> &) override;
-	void onUpdateSize(Geom::Size size) override;
+	void onPointerDown(const GUI::PointerEvent &event) const;
+	void onPointerMove(const GUI::PointerEvent &event) const;
+	void onPointerUp(const GUI::PointerEvent &event) const;
+	void onPointerLeave(const GUI::PointerEvent &event) const;
+	void onWheel(double delta) const;
+	void onDraw(const std::shared_ptr<Gfx::ICanvas> &);
+	void onUpdateSize(Geom::Size size);
 
 	[[nodiscard]] Chart &getChart() { return chart; }
-
-	[[nodiscard]] bool needsUpdate(Geom::Size size) const final
-	{
-		return needUpdate || chart.getLayout().boundary.size != size;
-	}
 
 private:
 	Chart chart;
@@ -44,7 +33,6 @@ private:
 	Util::EventDispatcher::event_ptr onPointerDownEvent;
 	Util::EventDispatcher::event_ptr onPointerUpEvent;
 	Util::EventDispatcher::event_ptr onPointerLeaveEvent;
-	bool needUpdate{true};
 };
 
 }

@@ -80,10 +80,6 @@ const char *vizzu_errorMessage(APIHandles::Exception exceptionPtr,
 			realException =
 			    static_cast<const std::bad_cast *>(exceptionPtr);
 			break;
-		case hash("bad_any_cast"):
-			realException =
-			    static_cast<const std::bad_any_cast *>(exceptionPtr);
-			break;
 		case hash("bad_function_call"):
 			realException =
 			    static_cast<const std::bad_function_call *>(
@@ -180,17 +176,20 @@ void vizzu_wheel(APIHandles::Chart chart,
 	return Interface::getInstance().wheel(chart, canvas, delta);
 }
 
-void vizzu_update(APIHandles::Chart chart,
+void vizzu_update(APIHandles::Chart chart, double timeInMSecs)
+{
+	return Interface::getInstance().update(chart, timeInMSecs);
+}
+
+void vizzu_render(APIHandles::Chart chart,
     APIHandles::Canvas canvas,
     double width,
-    double height,
-    int renderControl)
+    double height)
 {
-	return Interface::getInstance().update(chart,
+	return Interface::getInstance().render(chart,
 	    canvas,
 	    width,
-	    height,
-	    static_cast<Interface::RenderControl>(renderControl));
+	    height);
 }
 
 const char *style_getList() { return Interface::getStyleList(); }
@@ -256,30 +255,20 @@ void chart_setFilter(APIHandles::Chart chart,
     bool (*filter)(const Vizzu::Data::RowWrapper *),
     void (*deleter)(bool (*)(const Vizzu::Data::RowWrapper *)))
 {
-	if (filter)
-		return Interface::getInstance().setChartFilter(chart,
-		    Vizzu::JsFunctionWrapper<bool,
-		        const Vizzu::Data::RowWrapper &>{{filter, deleter}});
-
 	return Interface::getInstance().setChartFilter(chart,
-	    Vizzu::JsFunctionWrapper<bool,
-	        const Vizzu::Data::RowWrapper &>{});
+	    {filter, deleter});
 }
 
 const Value *record_getValue(const Vizzu::Data::RowWrapper *record,
     const char *column)
 {
 	thread_local Value val{{}, {}};
-	std::visit(
-	    []<class T>(T to)
-	    {
-		    if constexpr (std::is_same_v<T, double>)
-			    val = Value{false, {.measureValue = to}};
-		    else
-			    val = Value{true, {.dimensionValue = to}};
-	    },
-	    Interface::getRecordValue(*record, column));
-
+	if (auto &&cval = Interface::getRecordValue(*record, column);
+	    (val.dimension = cval.index()))
+		new (&val.dimensionValue) const char *{
+		    std::get_if<std::string_view>(&cval)->data()};
+	else
+		new (&val.measureValue) double{*std::get_if<double>(&cval)};
 	return &val;
 }
 
@@ -343,7 +332,7 @@ void removeEventListener(APIHandles::Chart chart,
 
 void event_preventDefault(APIHandles::Event event)
 {
-	return Interface::getInstance().preventDefaultEvent(event);
+	return Interface::preventDefaultEvent(event);
 }
 
 void chart_animate(APIHandles::Chart chart, void (*callback)(bool))

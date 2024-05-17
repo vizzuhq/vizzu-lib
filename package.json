@@ -122,13 +122,13 @@
 		"build:wasm-wocpp-gsutil": "./tools/ci/run/pkg-build-wasm-wocpp-gsutil.sh"
 	},
 	"dependencies": {
-		"type-fest": "^4.6.0"
+		"type-fest": "^4.12.0"
 	},
 	"devDependencies": {
 		"@rollup/plugin-terser": "^0.4.3",
 		"@tsconfig/strictest": "^2.0.2",
-		"@typescript-eslint/eslint-plugin": "^6.7.5",
-		"@typescript-eslint/parser": "^6.7.5",
+		"@typescript-eslint/eslint-plugin": "^7.2.0",
+		"@typescript-eslint/parser": "^7.0.0",
 		"@vizzu/eslint-config": "^0.2.0",
 		"@vizzu/prettier-config": "^0.1.0",
 		"aggregate-error": "^5.0.0",
@@ -148,7 +148,7 @@
 		"p-limit": "^4.0.0",
 		"pngjs": "^7.0.0",
 		"prettier": "^3.0.3",
-		"puppeteer": "^21.3.6",
+		"puppeteer": "^22.4.1",
 		"puppeteer-extra": "^3.3.6",
 		"puppeteer-extra-plugin-user-preferences": "^2.4.1",
 		"rollup": "^3.29.2",

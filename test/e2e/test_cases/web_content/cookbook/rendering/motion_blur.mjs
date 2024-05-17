@@ -37,18 +37,11 @@ const testSteps = [
 
 		chart.on('draw-complete', drawComplete)
 
-		return chart
-			.animate({
-				coordSystem: 'polar',
-				y: 'Joy factors',
-				x: 'Value 2 (+)'
-			})
-			.then((chart) => {
-				const handle = setInterval(() => {
-					const ctx = chart.feature.htmlCanvas.element.getContext('2d')
-					if (!drawImages(ctx)) clearInterval(handle)
-				}, 40)
-			})
+		return chart.animate({
+			coordSystem: 'polar',
+			y: 'Joy factors',
+			x: 'Value 2 (+)'
+		})
 	}
 ]
 

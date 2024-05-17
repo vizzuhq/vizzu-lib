@@ -2,11 +2,15 @@
 #define CHART_LAYOUT_H
 
 #include "base/geom/rect.h"
-#include "base/gfx/canvas.h"
-#include "chart/generator/plot.h"
+#include "chart/options/options.h"
 
 namespace Vizzu
 {
+namespace Styles
+{
+struct Chart;
+struct Logo;
+}
 
 class Layout
 {

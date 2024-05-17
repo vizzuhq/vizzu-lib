@@ -1,39 +1,40 @@
 #include "marker.h"
 
+#include "dataframe/old/datatable.h"
+
 #include "channelstats.h"
 
 namespace Vizzu::Gen
 {
 
-Marker::Id::Id(const Data::DataCube &data,
-    const Channel::DimensionIndices &dimensionIds,
-    const Data::MultiDim::MultiIndex &index) :
-    seriesId(data.subSliceID(dimensionIds, index)),
-    itemSliceIndex(data.subSliceIndex(dimensionIds, index)),
-    itemId(data.getData().unfoldSubSliceIndex(itemSliceIndex))
-{}
-
 Marker::Marker(const Options &options,
     const Data::DataCube &data,
-    const Data::DataTable &table,
     ChannelsStats &stats,
-    const Data::MultiDim::MultiIndex &index,
-    size_t idx) :
-    index(index),
-    enabled(data.subCellSize() == 0
-            || !data.getData().at(index).subCells[0].isEmpty()),
-    cellInfo(data.cellInfo(index)),
-    idx(idx),
-    table(table)
+    const Data::MultiIndex &index,
+    MarkerIndex idx,
+    bool needMarkerInfo) :
+    enabled(data.empty() || !index.isEmpty()),
+    cellInfo(enabled || needMarkerInfo
+                 ? data.cellInfo(index, idx, needMarkerInfo)
+                 : nullptr),
+    sizeId(data.getId(options.getChannels()
+                          .at(ChannelId::size)
+                          .dimensionsWithLevel(),
+        index)),
+    idx(idx)
 {
 	const auto &channels = options.getChannels();
-	auto color =
-	    getValueForChannel(channels, ChannelId::color, data, stats);
+	auto color = getValueForChannel(channels,
+	    ChannelId::color,
+	    data,
+	    stats,
+	    index);
 
 	auto lightness = getValueForChannel(channels,
 	    ChannelId::lightness,
 	    data,
-	    stats);
+	    stats,
+	    index);
 
 	colorBase = channels.at(ChannelId::color).isDimension()
 	              ? ColorBase(static_cast<uint32_t>(color), lightness)
@@ -43,36 +44,40 @@ Marker::Marker(const Options &options,
 	    ChannelId::size,
 	    data,
 	    stats,
-	    options.subAxisOf(ChannelId::size));
-	sizeId =
-	    Id(data, channels.at(ChannelId::size).dimensionIds, index);
+	    index,
+	    &sizeId);
 
-	mainId = Id(data, options.mainAxis().dimensionIds, index);
+	auto &&mainAxisDims = options.mainAxis().dimensionsWithLevel();
 
-	auto stackInhibitingShape = options.geometry == ShapeType::area;
-	if (stackInhibitingShape) {
-		Data::SeriesList subIds(options.subAxis().dimensionIds);
-		subIds.remove(options.mainAxis().dimensionIds);
-		subId = Id(data, subIds, index);
-		Data::SeriesList stackIds(options.subAxis().dimensionIds);
-		stackIds.section(options.mainAxis().dimensionIds);
-		stackId = Id(data, stackIds, index);
+	Data::MarkerId *subAxisId{};
+	if (auto &&subAxis = options.subAxis().dimensionsWithLevel();
+	    options.geometry == ShapeType::area) {
+		Data::SeriesList subIds(subAxis.first);
+		if (subIds.split_by(mainAxisDims.first).empty())
+			subAxisId = &subId;
+		subId = data.getId({subIds, subAxis.second}, index);
 	}
 	else {
-		stackId = subId =
-		    Id(data, options.subAxis().dimensionIds, index);
+		subId = data.getId(subAxis, index);
+		subAxisId = &subId;
 	}
+	mainId = data.getId(mainAxisDims, index);
 
 	auto horizontal = options.isHorizontal();
+	auto lineOrCircle = options.geometry == ShapeType::line
+	                 || options.geometry == ShapeType::circle;
+	auto polar = options.coordSystem.get() == CoordSystem::polar;
+
 	position.x = size.x = getValueForChannel(channels,
 	    ChannelId::x,
 	    data,
 	    stats,
-	    options.subAxisOf(ChannelId::x),
-	    !horizontal && stackInhibitingShape);
+	    index,
+	    horizontal ? &mainId->value : subAxisId);
 
-	spacing.x = (horizontal && options.getChannels().anyAxisSet()
-	                && channels.at(ChannelId::x).isDimension())
+	spacing.x = (horizontal || (lineOrCircle && !polar))
+	                 && options.getChannels().anyAxisSet()
+	                 && channels.at(ChannelId::x).isDimension()
 	              ? 1
 	              : 0;
 
@@ -80,50 +85,43 @@ Marker::Marker(const Options &options,
 	    ChannelId::y,
 	    data,
 	    stats,
-	    options.subAxisOf(ChannelId::y),
-	    horizontal && stackInhibitingShape);
+	    index,
+	    !horizontal ? &mainId->value : subAxisId);
 
-	spacing.y = (!horizontal && options.getChannels().anyAxisSet()
-	                && channels.at(ChannelId::y).isDimension())
+	spacing.y = (!horizontal || lineOrCircle)
+	                 && options.getChannels().anyAxisSet()
+	                 && channels.at(ChannelId::y).isDimension()
 	              ? 1
 	              : 0;
 
-	if (channels.at(ChannelId::label).isEmpty())
-		label = ::Anim::Weighted<Label>(Label(), 0.0);
-	else {
-		auto value = getValueForChannel(channels,
+	if (auto &&labelChannel = channels.at(ChannelId::label);
+	    !labelChannel.isEmpty()) {
+		auto &&value = std::make_optional(getValueForChannel(channels,
 		    ChannelId::label,
 		    data,
-		    stats);
-		auto sliceIndex = data.subSliceIndex(
-		    channels.at(ChannelId::label).dimensionIds,
-		    index);
-		if (channels.at(ChannelId::label).isDimension())
-			label = Label(sliceIndex, data, table);
-		else
-			label = Label(value,
-			    *channels.at(ChannelId::label).measureId,
-			    sliceIndex,
-			    data,
-			    table);
+		    stats,
+		    index));
+
+		label =
+		    Label{labelChannel.isDimension() ? std::nullopt : value,
+		        data.joinDimensionValues(labelChannel.dimensions(),
+		            index)};
 	}
 }
 
-void Marker::setNextMarker(uint64_t itemId,
-    Marker *marker,
+void Marker::setNextMarker(bool first,
+    Marker &marker,
     bool horizontal,
     bool main)
 {
-	if (marker) {
-		(main ? nextMainMarkerIdx : nextSubMarkerIdx) = marker->idx;
+	(main ? nextMainMarkerIdx : nextSubMarkerIdx) = marker.idx;
 
-		if (main) marker->prevMainMarkerIdx = idx;
+	if (main) marker.prevMainMarkerIdx = idx;
 
-		if (itemId != 0) {
-			double Geom::Point::*const coord =
-			    horizontal ? &Geom::Point::x : &Geom::Point::y;
-			marker->position.*coord += position.*coord;
-		}
+	if (!first) {
+		double Geom::Point::*const coord =
+		    horizontal ? &Geom::Point::x : &Geom::Point::y;
+		marker.position.*coord += position.*coord;
 	}
 }
 
@@ -138,71 +136,43 @@ void Marker::resetSize(bool horizontal)
 void Marker::setIdOffset(size_t offset)
 {
 	if (prevMainMarkerIdx.hasOneValue())
-		(*prevMainMarkerIdx).value += offset;
+		prevMainMarkerIdx->value += offset;
 	if (nextMainMarkerIdx.hasOneValue())
-		(*nextMainMarkerIdx).value += offset;
+		nextMainMarkerIdx->value += offset;
 	if (nextSubMarkerIdx.hasOneValue())
-		(*nextSubMarkerIdx).value += offset;
-}
-
-std::string Marker::toJSON() const
-{
-	std::string res;
-	appendToJSON(Conv::JSONObj{res});
-	return res;
+		nextSubMarkerIdx->value += offset;
 }
 
 Conv::JSONObj &&Marker::appendToJSON(Conv::JSONObj &&jsonObj) const
 {
-	return std::move(jsonObj)("categories",
-	    std::ranges::views::transform(cellInfo.categories,
-	        [this](const auto &pair)
-	        {
-		        return std::make_pair(pair.first.toString(table),
-		            table.get()
-		                .getInfo(pair.first.getColIndex().value())
-		                .categories()[pair.second]);
-	        }))("values",
-	    std::ranges::views::transform(cellInfo.values,
-	        [this](const auto &pair)
-	        {
-		        return std::make_pair(pair.first.toString(table),
-		            pair.second);
-	        }))("index", idx);
+	if (cellInfo) return std::move(jsonObj).merge(cellInfo->json);
+	jsonObj.nested("categories");
+	jsonObj.nested("values");
+	return std::move(jsonObj)("index", idx);
 }
 
 double Marker::getValueForChannel(const Channels &channels,
     ChannelId type,
     const Data::DataCube &data,
     ChannelsStats &stats,
-    const Channel *subChannel,
-    bool inhibitStack) const
+    const Data::MultiIndex &index,
+    const Data::MarkerId *mid) const
 {
 	const auto &channel = channels.at(type);
 
 	if (channel.isEmpty()) return channel.defaultValue;
 
-	Channel::DimensionIndices sumBy;
-
-	if (subChannel) {
-		if (inhibitStack) {
-			for (auto id : subChannel->dimensionIds)
-				if (channel.isSeriesUsed(id)) sumBy.pushBack(id);
-		}
-		else {
-			sumBy = subChannel->dimensionIds;
-			for (auto id : channel.dimensionIds) sumBy.remove(id);
-		}
-	}
-
-	auto measure = channel.measureId;
-
 	double value{};
-	auto id = Id(data, channel.dimensionIds, index);
 
 	auto &stat = stats.channels[type];
 
 	if (channel.isDimension()) {
+		std::optional<Data::MarkerId> nid;
+		if (!mid)
+			nid.emplace(
+			    data.getId(channel.dimensionsWithLevel(), index));
+
+		const auto &id = mid ? *mid : *nid;
 		if (channel.stackable)
 			value = 1.0;
 		else
@@ -211,14 +181,11 @@ double Marker::getValueForChannel(const Channels &channels,
 		if (enabled) stat.track(id);
 	}
 	else {
-		auto singlevalue =
-		    static_cast<double>(data.valueAt(index, *measure));
-
-		if (channel.stackable)
-			value = static_cast<double>(
-			    data.aggregateAt(index, sumBy, *measure));
+		if (const auto &measure = *channel.measureId;
+		    channel.stackable)
+			value = data.aggregateAt(index, type, measure);
 		else
-			value = singlevalue;
+			value = data.valueAt(index, measure);
 
 		if (enabled) { stat.track(value); }
 	}
@@ -252,44 +219,8 @@ void Marker::setSizeBy(bool horizontal,
 	fromRectangle(rect);
 }
 
-Marker::Label::Label(const Data::MultiDim::SubSliceIndex &index,
-    const Data::DataCube &data,
-    const Data::DataTable &table) :
-    indexStr{getIndexString(index, data, table)}
-{}
-
-Marker::Label::Label(double value,
-    const Data::SeriesIndex &measure,
-    const Data::MultiDim::SubSliceIndex &index,
-    const Data::DataCube &data,
-    const Data::DataTable &table) :
-    value(value),
-    measureId(measure.getColIndex())
+bool Marker::Label::operator==(const Label &other) const
 {
-	if (measureId) unit = table.getInfo(measureId.value()).getUnit();
-	indexStr = getIndexString(index, data, table);
+	return value == other.value && indexStr == other.indexStr;
 }
-
-bool Marker::Label::operator==(const Marker::Label &other) const
-{
-	return measureId == other.measureId && value == other.value
-	    && unit == other.unit && indexStr == other.indexStr;
-}
-
-std::string Marker::Label::getIndexString(
-    const Data::MultiDim::SubSliceIndex &index,
-    const Data::DataCube &data,
-    const Data::DataTable &table)
-{
-	std::string res;
-
-	for (const auto &[dimIx, ix] : index) {
-		if (!res.empty()) res += ", ";
-		auto colIndex = data.getSeriesByDim(dimIx).getColIndex();
-		auto value = table.getInfo(colIndex.value()).categories()[ix];
-		res += value;
-	}
-	return res;
-}
-
 }

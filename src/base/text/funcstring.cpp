@@ -7,7 +7,7 @@ namespace Text
 
 FuncString::FuncString(std::string code, bool throwOnError)
 {
-	Text::SmartString::trim(code);
+	SmartString::trim(code);
 
 	if (code.empty()) return;
 
@@ -24,6 +24,7 @@ FuncString::FuncString(std::string code, bool throwOnError)
 	}
 
 	parts[1].pop_back();
+	SmartString::trim(parts[1]);
 
 	name = parts[0];
 	params = SmartString::split(parts[1], ',');

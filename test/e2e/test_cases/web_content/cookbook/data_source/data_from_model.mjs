@@ -120,7 +120,7 @@ const testSteps = [
 		function update(model, chart) {
 			const timeStep = 0.01
 			model.update(timeStep)
-			if (model.time < 3)
+			if (model.time < 1)
 				return chart
 					.animate(
 						{

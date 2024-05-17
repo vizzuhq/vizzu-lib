@@ -9,14 +9,15 @@
 #include "base/gfx/canvas.h"
 #include "base/util/eventdispatcher.h"
 #include "chart/animator/animator.h"
-#include "chart/generator/plot.h"
+#include "chart/generator/plotptr.h"
 #include "chart/main/layout.h"
 #include "chart/main/stylesheet.h"
 #include "chart/options/config.h"
 #include "chart/rendering/renderedchart.h"
-#include "data/table/datatable.h"
+#include "dataframe/old/datatable.h"
 
 #include "events.h"
+#include "layout.h"
 
 namespace Vizzu
 {
@@ -24,28 +25,26 @@ namespace Vizzu
 class Chart
 {
 public:
-	using Event = std::function<void()>;
-	using OnComplete = std::function<void(bool)>;
-
-	Event onChanged;
+	Util::Event<> onChanged;
 
 	Chart();
+	Chart(Chart &&) noexcept = delete;
 	void draw(Gfx::ICanvas &canvas);
 	void setBoundRect(const Geom::Rect &rect);
 
 	Data::DataTable &getTable() { return table; }
-	Gen::OptionsSetter getSetter();
 	Styles::Sheet &getStylesheet() { return stylesheet; }
 	Styles::Chart &getStyles() { return actStyles; }
-
-	[[nodiscard]] const Styles::Chart &getComputedStyles() const;
-
+	[[nodiscard]] const Styles::Chart &getComputedStyles() const
+	{
+		return computedStyles;
+	}
 	void setStyles(const Styles::Chart &styles)
 	{
 		actStyles = styles;
 		actStyles.setup();
 	}
-	Gen::Options getOptions() { return *nextOptions; }
+	Gen::Options &getOptions() { return *nextOptions; }
 	void setOptions(const Gen::Options &options)
 	{
 		*nextOptions = options;
@@ -56,11 +55,11 @@ public:
 	}
 	::Anim::Control &getAnimControl()
 	{
-		return animator->getControl();
+		return animator.getControl();
 	}
 	Anim::AnimationPtr getAnimation()
 	{
-		return animator->getActAnimation();
+		return animator.getActAnimation();
 	}
 	Anim::Options &getAnimOptions() { return nextAnimOptions; }
 	[[nodiscard]] const Layout &getLayout() const { return layout; }
@@ -75,24 +74,25 @@ public:
 
 	Gen::Config getConfig();
 
-	void animate(const OnComplete &onComplete = OnComplete());
+	void animate(Anim::Animation::OnComplete &&onComplete);
 	void setKeyframe();
 	void setAnimation(const Anim::AnimationPtr &animation);
 
 private:
 	Layout layout;
-	std::shared_ptr<Anim::Animator> animator;
 	Data::DataTable table;
 	Gen::PlotPtr actPlot;
 	Gen::PlotOptionsPtr nextOptions;
 	Gen::Options prevOptions;
 	Anim::Options nextAnimOptions;
-	Styles::Sheet stylesheet;
 	Styles::Chart actStyles;
 	Styles::Chart prevStyles;
+	Styles::Sheet stylesheet;
+	Styles::Chart computedStyles;
 	Util::EventDispatcher eventDispatcher;
 	Draw::RenderedChart renderedChart;
 	Events events;
+	Anim::Animator animator;
 
 	Gen::PlotPtr plot(const Gen::PlotOptionsPtr &options);
 };

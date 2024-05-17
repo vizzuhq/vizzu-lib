@@ -6,6 +6,7 @@
 #include <string>
 #include <string_view>
 #include <type_traits>
+#include <variant>
 
 #include "auto_name.h"
 
@@ -115,15 +116,16 @@ consteval auto get_names(std::index_sequence<Ix...> = {})
 
 template <class E> constexpr std::array enum_names = get_names<E>();
 
-template <class E> std::string enum_name(E name)
+template <class Type = std::string_view, class E>
+Type enum_name(E name)
 {
 	constexpr auto first = Detail::from_to<E, 0, 0>().first;
 	constexpr auto n = std::size(enum_names<E>);
 	if (static_cast<std::size_t>(
 	        static_cast<Detail::real_t<E>>(name) - first)
 	    < n) {
-		auto sv = enum_names<E>[static_cast<Detail::real_t<E>>(name)
-		                        - first];
+		auto &&sv = enum_names<E>[static_cast<Detail::real_t<E>>(name)
+		                          - first];
 		return {sv.data(), sv.size()};
 	}
 	error_str(static_cast<std::intptr_t>(name),
@@ -172,6 +174,70 @@ struct EnumArray : std::array<V, std::size(enum_names<E>)>
 		return base_array::at(static_cast<std::size_t>(value));
 	}
 };
+
+template <class E, class... Args>
+    requires(std::is_enum_v<E>
+             && sizeof...(Args) == Detail::count<E>()
+             && Detail::from_to<E, 0, 0>().first == 0)
+struct EnumVariant : std::variant<Args...>
+{
+	using base_variant = std::variant<Args...>;
+	using base_variant::base_variant;
+
+	[[nodiscard]] constexpr operator E() const noexcept // NOLINT
+	{
+		return static_cast<E>(base_variant::index());
+	}
+
+	using base_variant::emplace;
+
+	template <E value, class... Constr>
+	decltype(auto) emplace(Constr &&...args)
+	{
+		return base_variant::template emplace<
+		    static_cast<std::size_t>(value)>(
+		    std::forward<Constr>(args)...);
+	}
+};
+
+template <auto E, class... Args>
+constexpr decltype(auto) unsafe_get(
+    EnumVariant<decltype(E), Args...> const &e)
+{
+	return *std::get_if<static_cast<std::size_t>(E)>(&e);
+}
+
+template <auto E, class... Args>
+constexpr decltype(auto) unsafe_get(
+    EnumVariant<decltype(E), Args...> &e)
+{
+	return *std::get_if<static_cast<std::size_t>(E)>(&e);
+}
+
+template <class T, class E, class... Args>
+constexpr decltype(auto) unsafe_get(EnumVariant<E, Args...> const &e)
+{
+	return *std::get_if<T>(&e);
+}
+
+template <class T, class E, class... Args>
+constexpr decltype(auto) unsafe_get(EnumVariant<E, Args...> &e)
+{
+	return *std::get_if<T>(&e);
+}
+
+template <auto E, class... Args>
+constexpr decltype(auto) get_if(
+    EnumVariant<decltype(E), Args...> const *e)
+{
+	return std::get_if<static_cast<std::size_t>(E)>(e);
+}
+
+template <auto E, class... Args>
+constexpr decltype(auto) get_if(EnumVariant<decltype(E), Args...> *e)
+{
+	return std::get_if<static_cast<std::size_t>(E)>(e);
+}
 
 }
 

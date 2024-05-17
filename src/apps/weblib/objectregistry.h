@@ -1,22 +1,25 @@
 #ifndef LIB_OBJECTREGISTRY_H
 #define LIB_OBJECTREGISTRY_H
 
-#include <any>
+#include <map>
 #include <memory>
 #include <shared_mutex>
-#include <unordered_map>
+#include <thread>
+#include <variant>
 
 namespace Vizzu
 {
 
-class ObjectRegistry
+using ObjectRegistryHandle = const void *;
+
+template <class... Ts> class ObjectRegistry
 {
 public:
-	using Handle = const void *;
+	using Handle = ObjectRegistryHandle;
 
-	template <class T> Handle reg(std::shared_ptr<T> ptr)
+	template <class T> Handle reg(std::shared_ptr<T> &&ptr)
 	{
-		Handle res{ptr.get()};
+		Handle res{std::to_address(ptr)};
 		{
 			auto lock = std::lock_guard{mutex};
 			objects.try_emplace(res, std::move(ptr));
@@ -31,7 +34,7 @@ public:
 
 			if (auto it = objects.find(handle); it != objects.end())
 				if (const auto *casted =
-				        std::any_cast<std::shared_ptr<T>>(
+				        std::get_if<std::shared_ptr<T>>(
 				            std::addressof(it->second)))
 					return *casted;
 		}
@@ -47,7 +50,7 @@ public:
 	}
 
 private:
-	std::unordered_map<Handle, std::any> objects;
+	std::map<Handle, std::variant<std::shared_ptr<Ts>...>> objects;
 	std::shared_mutex mutex;
 };
 

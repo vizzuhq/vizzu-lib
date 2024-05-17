@@ -2,9 +2,18 @@ import Vizzu from './vizzu.js'
 import * as Anim from './types/anim.js'
 import { Events, EventType, EventHandler, EventMap } from './events.js'
 import { AnimCompleting } from './animcompleting.js'
+import { Point } from './geom.js'
+import { CRenderer } from './module/crenderer.js'
+import { Canvas } from './module/canvas.js'
 
 /** Available hooks for plugins in Vizzu. */
 export enum Hooks {
+	/** Called once on startup for start the rendering loop. */
+	start = 'start',
+	/** Called when updating the chart due to time change. */
+	update = 'update',
+	/** Called on rendering. */
+	render = 'render',
 	/** Called when the animate() parameters gets set in the library to prepare 
       the animation. */
 	prepareAnimation = 'prepareAnimation',
@@ -27,6 +36,27 @@ export interface PluginMeta {
 	depends?: string[]
 }
 
+export interface StartContext {
+	update: (force: boolean) => void
+}
+
+export interface UpdateContext {
+	timeInMSecs: number | null
+}
+
+export enum RenderControlMode {
+	forced = 'forced',
+	allowed = 'allowed',
+	disabled = 'disabled'
+}
+
+export interface RenderContext {
+	renderer: (CRenderer & Canvas) | null
+	control: RenderControlMode
+	changed: boolean
+	size: Point
+}
+
 export interface PrepareAnimationContext {
 	target: Anim.AnimTarget
 	options?: Anim.ControlOptions
@@ -43,6 +73,9 @@ export interface RunAnimationContext {
 }
 
 export interface HookContexts {
+	[Hooks.start]: StartContext
+	[Hooks.update]: UpdateContext
+	[Hooks.render]: RenderContext
 	[Hooks.prepareAnimation]: PrepareAnimationContext
 	[Hooks.registerAnimation]: RegisterAnimationContext
 	[Hooks.runAnimation]: RunAnimationContext
@@ -272,13 +305,12 @@ export class PluginRegistry {
 	}
 
 	private _executeHooks<T>(hooks: PluginHook<T>[], ctx: T): void {
-		let next = (): void => {}
-		const iterator = hooks
-			.map((fn) => {
-				return fn ? (): void => fn(ctx, next) : (): void => next()
-			})
-			[Symbol.iterator]()
-		next = (): void => iterator.next().value()
-		next()
+		const executeHookAtIndex = (index: number): void => {
+			if (index >= hooks.length) return
+			const fn = hooks[index]
+			const next = (): void => executeHookAtIndex(index + 1)
+			fn ? fn(ctx, next) : next()
+		}
+		executeHookAtIndex(0)
 	}
 }

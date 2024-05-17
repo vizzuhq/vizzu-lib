@@ -1,6 +1,7 @@
 #ifndef CHART_RENDERING_DRAWLEGEND_H
 #define CHART_RENDERING_DRAWLEGEND_H
 
+#include "chart/generator/axis.h"
 #include "chart/rendering/colorbuilder.h"
 #include "chart/rendering/drawingcontext.h"
 

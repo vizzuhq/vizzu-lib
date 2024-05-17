@@ -4,8 +4,7 @@
 #include <functional>
 #include <memory>
 
-#include "base/anim/sequence.h"
-#include "chart/generator/plot.h"
+#include "base/util/eventdispatcher.h"
 
 #include "animation.h"
 #include "options.h"
@@ -16,22 +15,23 @@ namespace Vizzu::Anim
 class Animator
 {
 public:
-	Animator();
-	Animator(const Animator &) = delete;
+	Animator(const Util::EventDispatcher::Event &onBegin,
+	    const Util::EventDispatcher::Event &onComplete);
 
 	void addKeyframe(const Gen::PlotPtr &plot,
-	    const Options::Keyframe &options = Options::Keyframe());
+	    const Options::Keyframe &options) const;
 
-	void setAnimation(const Anim::AnimationPtr &animation);
+	void setAnimation(const AnimationPtr &animation);
 
-	void animate(const ::Anim::Control::Option &options = {},
-	    const Animation::OnComplete &onThisCompletes =
-	        Animation::OnComplete());
+	void animate(const ::Anim::Control::Option &options,
+	    Animation::OnComplete &&onThisCompletes);
 
-	Util::Event<Gen::PlotPtr> onDraw;
+	Util::Event<const Gen::PlotPtr> onDraw;
 	Util::Event<> onProgress;
-	std::function<void()> onBegin;
-	std::function<void()> onComplete;
+	std::reference_wrapper<const Util::EventDispatcher::Event>
+	    onBegin;
+	std::reference_wrapper<const Util::EventDispatcher::Event>
+	    onComplete;
 
 	::Anim::Control &getControl() { return *actAnimation; }
 	AnimationPtr getActAnimation() { return actAnimation; }
@@ -40,8 +40,8 @@ private:
 	bool running{};
 	AnimationPtr actAnimation;
 	AnimationPtr nextAnimation;
-	void stripActAnimation();
-	void setupActAnimation();
+	void stripActAnimation() const;
+	void setupActAnimation() const;
 };
 
 }

@@ -3,6 +3,7 @@
 #include <utility>
 
 #include "chart/animator/keyframe.h"
+#include "chart/generator/plot.h"
 
 namespace Vizzu::Anim
 {
@@ -12,7 +13,7 @@ Animation::Animation(const Gen::PlotPtr &plot) :
     source(plot),
     target(plot)
 {
-	::Anim::Control::setOnChange(
+	onChange.attach(
 	    [this]
 	    {
 		    if (!::Anim::Sequence::actual) return;
@@ -22,10 +23,15 @@ Animation::Animation(const Gen::PlotPtr &plot) :
 		        std::static_pointer_cast<Gen::Plot>(std::move(plot)));
 	    });
 
-	::Anim::Control::setOnFinish(
-	    [this](bool ok)
+	onFinish.attach(
+	    [this](const bool &ok)
 	    {
-		    finish(ok);
+		    onComplete();
+
+		    completionCallback(ok && atEndPosition() ? target
+		                                             : source,
+		        ok);
+		    completionCallback.detachAll();
 	    });
 }
 
@@ -50,43 +56,38 @@ void Animation::addKeyframe(const Gen::PlotPtr &next,
 	Vizzu::Gen::PlotPtr intermediate1;
 
 	if (strategy == RegroupStrategy::drilldown) {
-		intermediate0 = getIntermediate(target,
-		    next,
-		    [=](auto &base, const auto &other)
-		    {
-			    base.drilldownTo(other);
-		    });
+		auto drilldown = +[](Vizzu::Gen::Options &base,
+		                      const Vizzu::Gen::Options &other)
+		{
+			base.drilldownTo(other);
+		};
+		intermediate0 = getIntermediate(target, next, drilldown);
 
-		intermediate1 = getIntermediate(next,
-		    target,
-		    [=](auto &base, const auto &other)
-		    {
-			    base.drilldownTo(other);
-		    });
+		intermediate1 = getIntermediate(next, target, drilldown);
 	}
 	else if (strategy == RegroupStrategy::aggregate) {
-		auto &&andFilter = target->getOptions()->dataFilter
-		                && next->getOptions()->dataFilter;
+		auto &&targetAxisSet =
+		    target->getOptions()->getChannels().anyAxisSet();
+		auto &&nextAxisSet =
+		    next->getOptions()->getChannels().anyAxisSet();
 
-		auto loosingCoordsys =
-		    target->getOptions()->getChannels().anyAxisSet()
-		    && !next->getOptions()->getChannels().anyAxisSet();
+		auto &&loosingCoordsys = targetAxisSet && !nextAxisSet;
+		auto &&gainingCoordsys = !targetAxisSet && nextAxisSet;
 
-		auto gainingCoordsys =
-		    !target->getOptions()->getChannels().anyAxisSet()
-		    && next->getOptions()->getChannels().anyAxisSet();
+		auto &&geometryChanges = target->getOptions()->geometry
+		                      != next->getOptions()->geometry;
 
-		auto geometryChanges = target->getOptions()->geometry
-		                    != next->getOptions()->geometry;
-
-		auto basedOnSource =
+		auto &&basedOnSource =
 		    loosingCoordsys || (!gainingCoordsys && geometryChanges);
 
-		auto getModifier = [andFilter = std::move(andFilter)](
-		                       bool drilldownToBase)
+		auto &&getModifier =
+		    [andFilter = target->getOptions()->dataFilter
+		              && next->getOptions()->dataFilter](
+		        bool drilldownToBase)
 		{
-			return [andFilter, drilldownToBase](auto &base,
-			           const auto &target)
+			return [&andFilter,
+			           drilldownToBase](Vizzu::Gen::Options &base,
+			           const Vizzu::Gen::Options &target)
 			{
 				auto baseCopy = base;
 				base.intersection(target);
@@ -95,41 +96,33 @@ void Animation::addKeyframe(const Gen::PlotPtr &next,
 			};
 		};
 
-		if (basedOnSource) {
-			intermediate0 =
-			    getIntermediate(target, next, getModifier(true));
-			intermediate1 =
-			    getIntermediate(target, next, getModifier(false));
-		}
-		else {
-			intermediate0 =
-			    getIntermediate(next, target, getModifier(false));
-			intermediate1 =
-			    getIntermediate(next, target, getModifier(true));
-		}
+		const auto &base = basedOnSource ? target : next;
+		const auto &other = basedOnSource ? next : target;
+		intermediate0 =
+		    getIntermediate(base, other, getModifier(basedOnSource));
+		intermediate1 =
+		    getIntermediate(base, other, getModifier(!basedOnSource));
 	}
 
-	auto begin = target;
+	auto &&intermediate0Instant = intermediate0
+	                           && strategy != RegroupStrategy::fade
+	                           && target->getOptions()->looksTheSame(
+	                               *intermediate0->getOptions());
+	auto begin = std::ref(intermediate0 ? intermediate0 : target);
 
-	auto intermediate0Instant = intermediate0
-	                         && strategy != RegroupStrategy::fade
-	                         && begin->getOptions()->looksTheSame(
-	                             *intermediate0->getOptions());
-	begin = intermediate0 ? intermediate0 : begin;
+	auto &&intermediate1Instant =
+	    intermediate1 && strategy == RegroupStrategy::aggregate
+	    && begin.get()->getOptions()->looksTheSame(
+	        *intermediate1->getOptions());
+	begin = intermediate1 ? std::ref(intermediate1) : begin;
 
-	auto intermediate1Instant = intermediate1
-	                         && strategy == RegroupStrategy::aggregate
-	                         && begin->getOptions()->looksTheSame(
-	                             *intermediate1->getOptions());
-	begin = intermediate1 ? intermediate1 : begin;
+	auto &&nextInstant = strategy != RegroupStrategy::fade
+	                  && begin.get()->getOptions()->looksTheSame(
+	                      *next->getOptions());
 
-	auto nextInstant =
-	    strategy != RegroupStrategy::fade
-	    && begin->getOptions()->looksTheSame(*next->getOptions());
-
-	auto duration_fix = (intermediate0 && !intermediate0Instant)
-	                  + (intermediate1 && !intermediate1Instant)
-	                  + !nextInstant;
+	auto &&duration_fix = (intermediate0 && !intermediate0Instant)
+	                    + (intermediate1 && !intermediate1Instant)
+	                    + !nextInstant;
 
 	auto real_options = options;
 	if (auto &duration = real_options.all.duration;
@@ -166,10 +159,10 @@ void Animation::addKeyframe(const Gen::PlotPtr &next,
 	target = next;
 }
 
+template <class Modifier>
 Gen::PlotPtr Animation::getIntermediate(const Gen::PlotPtr &base,
     const Gen::PlotPtr &other,
-    const std::function<void(Vizzu::Gen::Options &,
-        const Vizzu::Gen::Options &)> &modifier)
+    Modifier &&modifier)
 {
 	Gen::PlotPtr res;
 
@@ -182,8 +175,7 @@ Gen::PlotPtr Animation::getIntermediate(const Gen::PlotPtr &base,
 	    && *extOptions != *base->getOptions()) {
 		res = std::make_shared<Gen::Plot>(base->getTable(),
 		    extOptions,
-		    base->getStyle(),
-		    false);
+		    base->getStyle());
 
 		res->keepAspectRatio = base->keepAspectRatio;
 	}
@@ -195,17 +187,14 @@ void Animation::addKeyframe(const Gen::PlotPtr &source,
     const Options::Keyframe &options,
     bool isInstant)
 {
-	auto instant = options;
-	instant.all.duration = ::Anim::Duration(0);
-
-	auto keyframe = std::make_shared<Keyframe>(source,
+	::Anim::Sequence::addKeyframe(std::make_shared<Keyframe>(source,
 	    target,
-	    isInstant ? instant : options);
-	::Anim::Sequence::addKeyframe(keyframe);
+	    &options,
+	    isInstant));
 }
 
 void Animation::animate(const ::Anim::Control::Option &options,
-    OnComplete onThisCompletes)
+    OnComplete &&onThisCompletes)
 {
 	if (isRunning())
 		throw std::logic_error("animation already in progress");
@@ -214,17 +203,6 @@ void Animation::animate(const ::Anim::Control::Option &options,
 	::Anim::Control::reset();
 	this->options = options;
 	onBegin();
-}
-
-void Animation::finish(bool ok)
-{
-	onComplete();
-	auto f = completionCallback;
-	completionCallback = OnComplete();
-	if (f)
-		f(ok ? (::Anim::Control::atEndPosition() ? target : source)
-		     : source,
-		    ok);
 }
 
 }

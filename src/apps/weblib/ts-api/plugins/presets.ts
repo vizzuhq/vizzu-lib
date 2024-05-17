@@ -78,7 +78,7 @@ export default class Presets {
 			} else if (Array.isArray(channel.set)) {
 				const newChannel = []
 				for (let i = 0; i < channel.set.length; i++) {
-					const key = channel.set[i]! as keyof Config.Chart
+					const key = channel.set[i]!.name as keyof Config.Chart
 					const channelConfig = this._getChannelCopy(config[key] as Data.SeriesList)
 					if (channelConfig !== null) {
 						newChannel.push(channelConfig)
@@ -95,12 +95,17 @@ export default class Presets {
 		return typeof channel === 'object' && channel !== null && 'set' in channel
 	}
 
+	private _assignProperty<T, K extends keyof T>(base: T, config: T, prop: K): void {
+		const value = config[prop]
+		if (value !== undefined) {
+			base[prop] = value
+		}
+	}
+
 	private _setupUserParams(base: Config.Chart, config: Config.Chart): void {
 		;['legend', 'title', 'subtitle', 'caption', 'reverse', 'sort'].forEach((key) => {
 			const prop = key as keyof Config.Chart
-			if (config[prop] !== undefined) {
-				base[prop] = config[prop] as undefined
-			}
+			this._assignProperty(base, config, prop)
 		})
 	}
 

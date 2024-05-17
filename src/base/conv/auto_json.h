@@ -92,32 +92,9 @@ struct JSON
 		}
 	}
 
-	template <class T> inline void array(const T &val) const
-	{
-		json += '[';
-		bool not_first = false;
-		for (const auto &e : val) {
-			if (not_first)
-				json += ',';
-			else
-				not_first = true;
-			any(e);
-		}
-		json += ']';
-	}
+	template <class T> inline void array(const T &val) const;
 
-	template <class T> inline void tupleObj(const T &val) const
-	{
-		std::apply(
-		    [this](const auto &arg, const auto &...args)
-		    {
-			    json += '[';
-			    any(arg);
-			    ((json += ',', any(args)), ...);
-			    json += ']';
-		    },
-		    val);
-	}
+	template <class T> inline void tupleObj(const T &val) const;
 
 	template <class T> void dynamicObj(const T &val) const;
 
@@ -267,26 +244,36 @@ template <class J> struct JSONNoBaseAutoObj : JSONAutoObj
 	}
 };
 
-struct JSONObj : JSON
+template <char open, char close> struct JSONRepeat : JSON
 {
 	using JSON::JSON;
 
-	inline ~JSONObj()
+	JSONRepeat(JSONRepeat &&) = delete;
+	JSONRepeat(const JSONRepeat &) = delete;
+	JSONRepeat &operator=(const JSONRepeat &) = delete;
+	JSONRepeat &operator=(JSONRepeat &&) = delete;
+
+	inline ~JSONRepeat()
 	{
-		if (!was) json += '{';
-		json += '}';
+		if (!was) json += open;
+		json += close;
 	}
 
-	JSONObj(JSONObj &&) = delete;
-	JSONObj(const JSONObj &) = delete;
-	JSONObj &operator=(const JSONObj &) = delete;
-	JSONObj &operator=(JSONObj &&) = delete;
+	void sep() { json += std::exchange(was, true) ? ',' : open; }
+
+	bool was{};
+};
+
+struct JSONArr;
+
+struct JSONObj : protected JSONRepeat<'{', '}'>
+{
+	using JSONRepeat::JSONRepeat;
 
 	template <bool KeyNoEscape = true>
 	inline JSON &key(std::string_view key)
 	{
-		json += std::exchange(was, true) ? ',' : '{';
-
+		sep();
 		json += '\"';
 		if constexpr (KeyNoEscape)
 			json.append(key);
@@ -303,6 +290,9 @@ struct JSONObj : JSON
 		this->key<KeyNoEscape>(key);
 		return JSONObj{json};
 	}
+
+	template <bool KeyNoEscape = true>
+	inline JSONArr nestedArr(std::string_view key);
 
 	template <bool KeyNoEscape = true>
 	inline JSONObj &raw(std::string_view key, const std::string &str)
@@ -328,8 +318,55 @@ struct JSONObj : JSON
 		return std::move(*this);
 	}
 
-	bool was{};
+	inline JSONObj &&merge(std::string_view jsonObj) &&
+	{
+		if (jsonObj.size() > 2) {
+			sep();
+			json += jsonObj.substr(1, jsonObj.size() - 2);
+		}
+		return std::move(*this);
+	}
 };
+
+struct JSONArr : protected JSONRepeat<'[', ']'>
+{
+	using JSONRepeat::JSONRepeat;
+
+	template <class T> inline JSONArr &operator<<(const T &obj)
+	{
+		sep();
+		any(obj);
+		return *this;
+	}
+
+	inline JSONArr nested()
+	{
+		sep();
+		return JSONArr{json};
+	}
+
+	inline JSONObj nestedObj()
+	{
+		sep();
+		return JSONObj{json};
+	}
+};
+
+template <class T> inline void JSON::array(const T &val) const
+{
+	auto arr = JSONArr{json};
+	for (const auto &e : val) arr << e;
+}
+
+template <class T> inline void JSON::tupleObj(const T &val) const
+{
+	std::apply(
+	    [this](const auto &...args)
+	    {
+		    (JSONArr{json} << ... << args);
+	    },
+	    val);
+}
 
 template <class T> inline void JSON::dynamicObj(const T &val) const
 {
@@ -342,6 +379,13 @@ template <class T> inline void JSON::dynamicObj(const T &val) const
 template <class T> inline void JSON::staticObj(const T &val) const
 {
 	Refl::visit(JSONNoBaseAutoObj<T>{json}, val);
+}
+
+template <bool KeyNoEscape>
+inline JSONArr JSONObj::nestedArr(std::string_view key)
+{
+	this->key<KeyNoEscape>(key);
+	return JSONArr{json};
 }
 
 template <class T> inline std::string toJSON(const T &v)

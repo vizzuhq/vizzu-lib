@@ -3,11 +3,13 @@
 
 #include <forward_list>
 #include <functional>
+#include <map>
 #include <memory>
-#include <set>
 #include <string>
 
 #include "base/conv/auto_json.h"
+
+#include "event.h"
 
 namespace Util
 {
@@ -23,11 +25,8 @@ class EventDispatcher
 {
 public:
 	class Event;
-	class Params;
 	using event_ptr = std::shared_ptr<Event>;
-	using handler_fn = std::function<void(Params &)>;
-	using handler_list =
-	    std::forward_list<std::pair<std::uint64_t, handler_fn>>;
+	using stored_event_ptr = std::weak_ptr<Event>;
 
 	class Params
 	{
@@ -42,57 +41,26 @@ public:
 		virtual void appendToJSON(Conv::JSON &obj) const;
 	};
 
-	class Event : public std::enable_shared_from_this<Event>
+	class Event : public Util::Event<Params, const std::string>
 	{
 		friend class EventDispatcher;
 
 	public:
-		explicit Event(std::string_view name);
-		virtual ~Event();
+		bool invoke(Params &&params = Params{}) const;
 
-		[[nodiscard]] const std::string_view &name() const noexcept;
-		bool invoke(Params &&params = Params{});
-		void attach(std::uint64_t id, handler_fn handler);
-		void detach(std::uint64_t id);
-		[[nodiscard]] bool operator()(Params &&params);
-
-	protected:
-		std::string_view uniqueName;
-		handler_list handlers;
+	private:
+		std::string_view name;
 	};
 
 	virtual ~EventDispatcher();
 
 	[[nodiscard]] event_ptr getEvent(std::string_view name) const;
 
-	[[nodiscard]] const event_ptr &createEvent(std::string_view name);
-
-	bool destroyEvent(const event_ptr &event);
+	[[nodiscard]] event_ptr createEvent(std::string &&name);
 
 protected:
-	struct EventPtrComp
-	{
-		using is_transparent = std::true_type;
-		[[nodiscard]] bool operator()(const event_ptr &lhs,
-		    const std::string_view &rhs) const noexcept
-		{
-			return lhs->name() < rhs;
-		}
-
-		[[nodiscard]] bool operator()(const std::string_view &lhs,
-		    const event_ptr &rhs) const noexcept
-		{
-			return lhs < rhs->name();
-		}
-
-		[[nodiscard]] bool operator()(const event_ptr &lhs,
-		    const event_ptr &rhs) const noexcept
-		{
-			return lhs->name() < rhs->name();
-		}
-	};
-
-	std::set<event_ptr, EventPtrComp> eventRegistry;
+	std::map<std::string, stored_event_ptr, std::less<>>
+	    eventRegistry;
 };
 
 }

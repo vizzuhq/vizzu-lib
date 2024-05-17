@@ -27,9 +27,7 @@ public:
 
 	void drawStraightLine(const Geom::Line &line,
 	    std::array<double, 2> widths,
-	    double straightFactor,
-	    const Gfx::Color &endColor,
-	    const Gfx::Color &lineColor);
+	    double straightFactor);
 
 	void setPolygonToCircleFactor(double factor)
 	{

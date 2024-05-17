@@ -9,16 +9,6 @@ namespace Anim
 
 Control::Control(Controllable &controlled) : controlled(controlled) {}
 
-void Control::setOnFinish(OnFinish onFinish)
-{
-	this->onFinish = std::move(onFinish);
-}
-
-void Control::setOnChange(OnChange onChange)
-{
-	this->onChange = std::move(onChange);
-}
-
 void Control::seek(const std::string &value)
 {
 	if (const Text::ValueUnit vu(value); vu.getUnit() == "%")
@@ -124,7 +114,7 @@ void Control::update(const TimePoint &time)
 
 	if (lastPosition != options.position) {
 		controlled.setPosition(getPosition());
-		if (onChange) onChange();
+		onChange();
 	}
 
 	lastPosition = options.position;
@@ -136,7 +126,7 @@ void Control::finish(bool preRun)
 {
 	if (cancelled) {
 		cancelled = false;
-		if (!finished && onFinish) {
+		if (!finished) {
 			onFinish(false);
 			finished = true;
 		}
@@ -147,7 +137,7 @@ void Control::finish(bool preRun)
 	             || (options.direction == Direction::reverse
 	                 && atStartPosition()))
 	         && options.playState != PlayState::running) {
-		if (!finished && onFinish) {
+		if (!finished) {
 			onFinish(true);
 			finished = true;
 		}

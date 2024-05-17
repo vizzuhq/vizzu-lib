@@ -1,153 +1,142 @@
 #ifndef LIB_INTERFACE_H
 #define LIB_INTERFACE_H
 
-#include "chart/main/version.h"
-#include "chart/ui/chart.h"
-
+#include "cinterface.h"
 #include "jsfunctionwrapper.h"
 #include "objectregistry.h"
 
+namespace Gfx
+{
+struct ICanvas;
+}
+
 namespace Vizzu
 {
+namespace UI
+{
+class ChartWidget;
+}
+
+class Chart;
 
 class Interface
 {
 public:
 	static Interface &getInstance();
 
-	enum RenderControl { allow = 0, force = 1, inhibit = 2 };
-
 	Interface();
 	static const char *version();
-	ObjectRegistry::Handle createChart();
-	ObjectRegistry::Handle createCanvas();
+	ObjectRegistryHandle createChart();
+	ObjectRegistryHandle createCanvas();
 	static void setLogging(bool enable);
-	void pointerMove(ObjectRegistry::Handle chart,
-	    ObjectRegistry::Handle canvas,
+	void pointerMove(ObjectRegistryHandle chart,
+	    ObjectRegistryHandle canvas,
 	    int pointerId,
 	    double x,
 	    double y);
-	void pointerDown(ObjectRegistry::Handle chart,
-	    ObjectRegistry::Handle canvas,
+	void pointerDown(ObjectRegistryHandle chart,
+	    ObjectRegistryHandle canvas,
 	    int pointerId,
 	    double x,
 	    double y);
-	void pointerUp(ObjectRegistry::Handle chart,
-	    ObjectRegistry::Handle canvas,
+	void pointerUp(ObjectRegistryHandle chart,
+	    ObjectRegistryHandle canvas,
 	    int pointerId,
 	    double x,
 	    double y);
-	void pointerLeave(ObjectRegistry::Handle chart,
-	    ObjectRegistry::Handle canvas,
+	void pointerLeave(ObjectRegistryHandle chart,
+	    ObjectRegistryHandle canvas,
 	    int pointerId);
-	void wheel(ObjectRegistry::Handle chart,
-	    ObjectRegistry::Handle canvas,
+	void wheel(ObjectRegistryHandle chart,
+	    ObjectRegistryHandle canvas,
 	    double delta);
-	void update(ObjectRegistry::Handle chart,
-	    ObjectRegistry::Handle canvas,
+	void update(ObjectRegistryHandle chart, double timeInMSecs);
+	void render(ObjectRegistryHandle chart,
+	    ObjectRegistryHandle canvas,
 	    double width,
-	    double height,
-	    RenderControl renderControl);
+	    double height);
 
-	ObjectRegistry::Handle storeAnim(ObjectRegistry::Handle chart);
-	void restoreAnim(ObjectRegistry::Handle chart,
-	    ObjectRegistry::Handle anim);
-	ObjectRegistry::Handle storeChart(ObjectRegistry::Handle chart);
-	void restoreChart(ObjectRegistry::Handle chart,
-	    ObjectRegistry::Handle snapshot);
-	void freeObj(ObjectRegistry::Handle ptr);
+	ObjectRegistryHandle storeAnim(ObjectRegistryHandle chart);
+	void restoreAnim(ObjectRegistryHandle chart,
+	    ObjectRegistryHandle anim);
+	ObjectRegistryHandle storeChart(ObjectRegistryHandle chart);
+	void restoreChart(ObjectRegistryHandle chart,
+	    ObjectRegistryHandle snapshot);
+	void freeObj(ObjectRegistryHandle ptr);
 
 	static const char *getStyleList();
-	const char *getStyleValue(ObjectRegistry::Handle chart,
+	const char *getStyleValue(ObjectRegistryHandle chart,
 	    const char *path,
 	    bool computed);
-	void setStyleValue(ObjectRegistry::Handle chart,
+	void setStyleValue(ObjectRegistryHandle chart,
 	    const char *path,
 	    const char *value);
 
 	static const char *getChartParamList();
-	const char *getChartValue(ObjectRegistry::Handle chart,
+	const char *getChartValue(ObjectRegistryHandle chart,
 	    const char *path);
-	void setChartValue(ObjectRegistry::Handle chart,
+	void setChartValue(ObjectRegistryHandle chart,
 	    const char *path,
 	    const char *value);
-	void setChartFilter(ObjectRegistry::Handle chart,
+	void setChartFilter(ObjectRegistryHandle chart,
 	    JsFunctionWrapper<bool, const Data::RowWrapper &> &&filter);
 
-	void relToCanvasCoords(ObjectRegistry::Handle chart,
+	void relToCanvasCoords(ObjectRegistryHandle chart,
 	    double rx,
 	    double ry,
 	    double &x,
 	    double &y);
-	void canvasToRelCoords(ObjectRegistry::Handle chart,
+	void canvasToRelCoords(ObjectRegistryHandle chart,
 	    double x,
 	    double y,
 	    double &rx,
 	    double &ry);
 
-	void addDimension(ObjectRegistry::Handle chart,
+	void addDimension(ObjectRegistryHandle chart,
 	    const char *name,
 	    const char **categories,
 	    std::uint32_t categoriesCount,
 	    const std::uint32_t *categoryIndices,
 	    std::uint32_t categoryIndicesCount);
-	void addMeasure(ObjectRegistry::Handle chart,
+	void addMeasure(ObjectRegistryHandle chart,
 	    const char *name,
 	    const char *unit,
 	    const double *values,
 	    std::uint32_t count);
-	void addRecord(ObjectRegistry::Handle chart,
+	void addRecord(ObjectRegistryHandle chart,
 	    const char **cells,
 	    std::uint32_t count);
-	const char *dataMetaInfo(ObjectRegistry::Handle chart);
-	void addEventListener(ObjectRegistry::Handle chart,
+	const char *dataMetaInfo(ObjectRegistryHandle chart);
+	void addEventListener(ObjectRegistryHandle chart,
 	    const char *event,
-	    void (*callback)(ObjectRegistry::Handle, const char *));
-	void removeEventListener(ObjectRegistry::Handle chart,
+	    void (*callback)(APIHandles::Event, const char *));
+	void removeEventListener(ObjectRegistryHandle chart,
 	    const char *event,
-	    void (*callback)(ObjectRegistry::Handle, const char *));
-	void preventDefaultEvent(ObjectRegistry::Handle);
-	void animate(ObjectRegistry::Handle chart,
-	    void (*callback)(bool));
-	void setKeyframe(ObjectRegistry::Handle chart);
-	void setAnimControlValue(ObjectRegistry::Handle chart,
+	    void (*callback)(APIHandles::Event, const char *));
+	static void preventDefaultEvent(APIHandles::Event);
+	void animate(ObjectRegistryHandle chart, void (*callback)(bool));
+	void setKeyframe(ObjectRegistryHandle chart);
+	void setAnimControlValue(ObjectRegistryHandle chart,
 	    std::string_view path,
 	    const char *value);
-	const char *getAnimControlValue(ObjectRegistry::Handle chart,
+	const char *getAnimControlValue(ObjectRegistryHandle chart,
 	    std::string_view path);
-	void setAnimValue(ObjectRegistry::Handle chart,
+	void setAnimValue(ObjectRegistryHandle chart,
 	    const char *path,
 	    const char *value);
 
-	static std::variant<const char *, double> getRecordValue(
+	static std::variant<double, std::string_view> getRecordValue(
 	    const Data::RowWrapper &record,
 	    const char *column);
 
 private:
-	struct Snapshot
-	{
-		Snapshot(Gen::Options options, Styles::Chart styles) :
-		    options(std::move(options)),
-		    styles(std::move(styles))
-		{}
-		Gen::Options options;
-		Styles::Chart styles;
-	};
+	struct Snapshot;
+	struct Animation;
 
-	struct Animation
-	{
-		Animation(Anim::AnimationPtr anim, Snapshot snapshot) :
-		    animation(std::move(anim)),
-		    snapshot(std::move(snapshot))
-		{}
-		Anim::AnimationPtr animation;
-		Snapshot snapshot;
-	};
+	std::shared_ptr<Chart> getChart(ObjectRegistryHandle chart);
 
-	std::shared_ptr<Vizzu::Chart> getChart(
-	    ObjectRegistry::Handle chart);
-
-	ObjectRegistry objects;
+	ObjectRegistry<Snapshot, Animation, Gfx::ICanvas, UI::ChartWidget>
+	    objects;
 };
 
 }

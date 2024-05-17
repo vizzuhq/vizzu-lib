@@ -2,13 +2,11 @@
 #define MARKERS_ABSTRACTMARKER_H
 
 #include <array>
-#include <memory>
 
 #include "base/geom/line.h"
 #include "base/geom/quadrilateral.h"
 #include "base/geom/rect.h"
 #include "chart/generator/marker.h"
-#include "chart/generator/plot.h"
 #include "chart/main/style.h"
 #include "chart/rendering/drawingcontext.h"
 #include "chart/rendering/painter/coordinatesystem.h"
@@ -22,7 +20,7 @@ public:
 	static AbstractMarker createInterpolated(
 	    const DrawingContext &ctx,
 	    const Gen::Marker &marker,
-	    size_t lineIndex);
+	    ::Anim::InterpolateIndex lineIndex);
 
 	const Gen::Marker &marker;
 	::Anim::Interpolated<Gen::ShapeType> shapeType;
@@ -52,7 +50,7 @@ protected:
 	static AbstractMarker create(const DrawingContext &ctx,
 	    const Gen::Marker &marker,
 	    const Gen::ShapeType &shapeType,
-	    size_t lineIndex);
+	    ::Anim::InterpolateIndex lineIndex);
 };
 
 class SingleDrawMarker : public AbstractMarker

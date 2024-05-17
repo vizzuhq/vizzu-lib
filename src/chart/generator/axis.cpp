@@ -19,11 +19,13 @@ Geom::Point MeasureAxises::origo() const
 }
 
 MeasureAxis::MeasureAxis(Math::Range<double> interval,
-    std::string unit,
+    const std::string_view &unit,
+    const std::string_view &measName,
     std::optional<double> step) :
     enabled(true),
     range(interval),
-    unit(std::move(unit)),
+    unit(std::string{unit}),
+    origMeasureName(std::string{measName}),
     step(step ? *step : Math::Renard::R5().ceil(range.size() / 5.0))
 {}
 
@@ -45,6 +47,8 @@ MeasureAxis interpolate(const MeasureAxis &op0,
 {
 	MeasureAxis res;
 	res.enabled = interpolate(op0.enabled, op1.enabled, factor);
+	res.origMeasureName =
+	    interpolate(op0.origMeasureName, op1.origMeasureName, factor);
 
 	if (op0.enabled.get() && op1.enabled.get()) {
 		res.range = Math::interpolate(op0.range, op1.range, factor);
@@ -64,9 +68,9 @@ MeasureAxis interpolate(const MeasureAxis &op0,
 
 	return res;
 }
-bool DimensionAxis::add(const Data::MultiDim::SliceIndex &index,
+bool DimensionAxis::add(const Data::SliceIndex &index,
     double value,
-    Math::Range<double> &range,
+    const Math::Range<double> &range,
     double enabled,
     bool merge)
 {
@@ -93,28 +97,26 @@ bool DimensionAxis::operator==(const DimensionAxis &other) const
 	return enabled == other.enabled && values == other.values;
 }
 
-void DimensionAxis::setLabels(const Data::DataCube &data,
-    const Data::DataTable &table,
-    double step)
+bool DimensionAxis::setLabels(double step)
 {
+	bool hasLabel{};
 	step = std::max(step, 1.0);
 	double currStep = 0.0;
 
-	for (int curr{}; auto &[slice, item] : values) {
-		auto colIndex =
-		    data.getSeriesByDim(slice.dimIndex).getColIndex();
-		const auto &categories =
-		    table.getInfo(colIndex.value()).categories();
+	std::multimap<double, Values::pointer> reorder;
+	for (auto &ref : values)
+		reorder.emplace(ref.second.range.getMin(), &ref);
 
-		if (slice.index < categories.size())
-			item.categoryValue = categories[slice.index];
-		else
-			item.categoryValue = "NA";
+	for (int curr{}; auto &[v, pp] : reorder) {
+		auto &[slice, item] = *pp;
+		item.categoryValue = slice.value;
 
 		if (++curr <= currStep) continue;
 		currStep += step;
 		item.label = item.categoryValue;
+		hasLabel = true;
 	}
+	return hasLabel;
 }
 
 DimensionAxis interpolate(const DimensionAxis &op0,

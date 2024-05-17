@@ -8,36 +8,33 @@ namespace Text
 
 NumberScale::NumberScale(PrefixType type)
 {
-	static const std::vector<std::vector<std::string>> prefixes{
-	    {"k", "M", "G", "T", "P", "E", "Z", "Y"},
-	    {"K", "M", "B", "T"},
-	    {"k", "m", "bn", "tn"}};
-
-	if (const auto u_type = static_cast<unsigned>(type);
-	    u_type < prefixes.size()) {
-		this->prefixes = prefixes.at(u_type);
+	switch (type) {
+	case PrefixType::SISymbol:
+		prefixes.assign({"k", "M", "G", "T", "P", "E", "Z", "Y"});
+		break;
+	case PrefixType::shortScaleSymbolUS:
+		prefixes.assign({"K", "M", "B", "T"});
+		break;
+	case PrefixType::shortScaleSymbolUK:
+		prefixes.assign({"k", "m", "bn", "tn"});
+		break;
+	default: throw std::logic_error("invalid number scale type");
 	}
-	else
-		throw std::logic_error("invalid number scale type");
 }
 
 NumberScale::NumberScale(std::string s)
 {
-	Text::SmartString::trim(s);
+	SmartString::trim(s);
 
 	if (s.empty()) throw std::logic_error("empty number scale");
 
-	auto items = SmartString::split(s, ',');
+	prefixes = SmartString::split(s, ',');
 
-	if (items.size() == 1) {
-		prefixes =
-		    NumberScale(Conv::parse<PrefixType>(items[0])).prefixes;
-	}
-	else {
-		for (auto &item : items) SmartString::trim(item);
-
-		prefixes = items;
-	}
+	if (prefixes.size() == 1)
+		prefixes = NumberScale(Conv::parse<PrefixType>(prefixes[0]))
+		               .prefixes;
+	else
+		for (auto &item : prefixes) SmartString::trim(item);
 }
 
 std::string NumberScale::at(std::size_t index) const

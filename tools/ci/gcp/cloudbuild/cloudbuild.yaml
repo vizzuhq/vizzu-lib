@@ -1,8 +1,20 @@
 steps:
-    - name: vizzu/vizzu-dev-wasm:0.9
-      id: init
+    - name: 'gcr.io/cloud-builders/docker'
+      id: pull_wasm
       waitFor:
           - '-'
+      args: ['pull', 'vizzu/vizzu-dev-wasm:0.10']
+
+    - name: 'gcr.io/cloud-builders/docker'
+      id: pull_desktop
+      waitFor:
+          - '-'
+      args: ['pull', 'vizzu/vizzu-dev-desktop:0.10']
+
+    - name: vizzu/vizzu-dev-wasm:0.10
+      id: init
+      waitFor:
+          - pull_wasm
       entrypoint: bash
       args:
           - '-c'
@@ -12,7 +24,7 @@ steps:
               ./tools/ci/run/init-py.sh
       dir: /workspace
 
-    - name: vizzu/vizzu-dev-wasm:0.9
+    - name: vizzu/vizzu-dev-wasm:0.10
       id: check_src
       waitFor:
           - init
@@ -29,7 +41,7 @@ steps:
                 npm run lint:src
               fi
       dir: /workspace
-    - name: vizzu/vizzu-dev-wasm:0.9
+    - name: vizzu/vizzu-dev-wasm:0.10
       id: check_docs
       waitFor:
           - init
@@ -46,7 +58,7 @@ steps:
                 npm run lint:docs
               fi
       dir: /workspace
-    - name: vizzu/vizzu-dev-wasm:0.9
+    - name: vizzu/vizzu-dev-wasm:0.10
       id: check_tools
       waitFor:
           - init
@@ -65,9 +77,10 @@ steps:
               fi
       dir: /workspace
 
-    - name: vizzu/vizzu-dev-desktop:0.9
+    - name: vizzu/vizzu-dev-desktop:0.10
       id: build_desktop_clangformat
       waitFor:
+          - pull_desktop
           - check_src
           - check_docs
           - check_tools
@@ -84,7 +97,7 @@ steps:
               fi
       dir: /workspace
 
-    - name: vizzu/vizzu-dev-desktop:0.9
+    - name: vizzu/vizzu-dev-desktop:0.10
       id: build_desktop_clangtidy
       waitFor:
           - build_desktop_clangformat
@@ -100,7 +113,7 @@ steps:
                 ./tools/ci/run/pkg-build-desktop-clangtidy.sh
               fi
       dir: /workspace
-    - name: vizzu/vizzu-dev-wasm:0.9
+    - name: vizzu/vizzu-dev-wasm:0.10
       id: build_wasm
       waitFor:
           - build_desktop_clangformat
@@ -121,7 +134,7 @@ steps:
               ./tools/ci/run/pkg-build-js.sh
       dir: /workspace
 
-    - name: vizzu/vizzu-dev-wasm:0.9
+    - name: vizzu/vizzu-dev-wasm:0.10
       id: lib_sha
       waitFor:
           - build_wasm
@@ -144,7 +157,7 @@ steps:
               fi
       dir: /workspace
 
-    - name: vizzu/vizzu-dev-wasm:0.9
+    - name: vizzu/vizzu-dev-wasm:0.10
       id: test
       waitFor:
           - lib_sha
@@ -159,7 +172,7 @@ steps:
               fi
       dir: /workspace
 
-    - name: vizzu/vizzu-dev-wasm:0.9
+    - name: vizzu/vizzu-dev-wasm:0.10
       id: docs
       waitFor:
           - test
@@ -202,7 +215,7 @@ steps:
           - VIZZUHQ_GITHUB_USER
           - VIZZUHQ_GITHUB_EMAIL
 
-    - name: vizzu/vizzu-dev-wasm:0.9
+    - name: vizzu/vizzu-dev-wasm:0.10
       id: publish
       waitFor:
           - docs

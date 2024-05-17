@@ -25,7 +25,7 @@ template <typename From>
 std::string toString(const From &value)
 {
 	if constexpr (std::is_enum_v<From>) {
-		return Refl::enum_name(value);
+		return Refl::enum_name<std::string>(value);
 	}
 	else if constexpr (Type::isoptional<From>::value) {
 		if (!value) return "null";

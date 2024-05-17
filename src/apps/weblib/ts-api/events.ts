@@ -2,7 +2,6 @@ import { CFunction } from './cvizzu.types'
 import { PluginListeners } from './plugins.js'
 
 import { CChart, CEvent } from './module/cchart.js'
-import { HtmlCanvas, HtmlCanvasContext } from './htmlcanvas.js'
 
 import * as Data from './types/data.js'
 import * as Anim from './types/anim.js'
@@ -218,6 +217,7 @@ export interface LegendBar extends Element {
 	tagName: 'legend-bar'
 	parent: Legend
 }
+
 /** The interface of the event object is passed to event handlers by the library.
     Detail properties will vary by event type. */
 export interface Event<T> {
@@ -226,10 +226,8 @@ export interface Event<T> {
 	target: T | null
 	/** If called, the default action of the event will be canceled. */
 	preventDefault(): void
-	/** For drawing events the rendering context of the underlying 
-    canvas set up for drawing the element. */
-	renderingContext?: HtmlCanvasContext
 }
+
 export interface PointerDetail {
 	pointerId: number | null
 	position: Point
@@ -309,12 +307,10 @@ type EventHandlers<T extends EventType> = {
 
 export class Events {
 	private _cChart: CChart
-	private _canvas: HtmlCanvas
 	private _eventHandlers: EventHandlers<EventType> = {}
 
-	constructor(cChart: CChart, canvas: HtmlCanvas) {
+	constructor(cChart: CChart) {
 		this._cChart = cChart
-		this._canvas = canvas
 	}
 
 	add<T extends EventType>(eventName: T, handler: EventHandler<EventMap[T]>): void {
@@ -390,8 +386,8 @@ export class Events {
 					const eventParam = this._isJSEvent(eventName)
 						? this._makeJSEventParam(param, state)
 						: cEvent
-						  ? this._makeCEventParam(cEvent, param, state)
-						  : param
+							? this._makeCEventParam(cEvent, param, state)
+							: param
 					handler(eventParam)
 				}
 			}
@@ -416,9 +412,6 @@ export class Events {
 		param.preventDefault = (): void => {
 			cEvent.preventDefault()
 			state.canceled = true
-		}
-		if (param.type.endsWith('-draw') || param.type.startsWith('draw-')) {
-			param.renderingContext = this._canvas.context
 		}
 		return param
 	}

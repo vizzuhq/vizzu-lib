@@ -3,72 +3,51 @@
 
 #include <algorithm>
 #include <cmath>
-#include <map>
-#include <unordered_map>
 
 #include "bubblechart.h"
 
 namespace Vizzu::Charts
 {
 
-using Hierarchy =
-    std::unordered_map<uint64_t, std::map<uint64_t, uint64_t>>;
-
 class BubbleChartBuilder
 {
 public:
-	template <typename Item>
-	static void setupVector(std::vector<Item> &items,
-	    double maxRadius,
+	template <typename Hierarchy>
+	static void setupVector(double maxRadius,
 	    const Hierarchy &hierarchy);
 };
 
-template <typename Item>
-void BubbleChartBuilder::setupVector(std::vector<Item> &items,
-    double maxRadius,
+template <typename Hierarchy>
+void BubbleChartBuilder::setupVector(double maxRadius,
     const Hierarchy &hierarchy)
 {
-	if (items.empty()) return;
+	if (hierarchy.empty()) return;
 
-	std::vector<double> sizes;
-	for (const auto &level : hierarchy) {
-		auto sum = 0.0;
-		for (const auto &item : level.second)
-			if (items[item.second].sizeFactor > 0)
-				sum += items[item.second].sizeFactor;
-		sizes.push_back(sum);
-	}
+	std::vector<double> sizes(hierarchy.size());
+	for (std::size_t ix{}; const auto &level : hierarchy)
+		for (auto &sum = sizes[ix++]; const auto &item : level)
+			if (item->sizeFactor > 0) sum += item->sizeFactor;
 
 	const BubbleChart chart(sizes);
 
-	size_t cnt = 0;
-	for (const auto &level : hierarchy) {
-		const auto &c = chart.markers[cnt].circle();
+	std::vector<double> ssizes(hierarchy.inner_size());
+	for (std::size_t cnt{}; const auto &level : hierarchy) {
+		for (std::size_t ix{}; const auto &item : level)
+			ssizes[ix++] = item->sizeFactor;
 
-		std::vector<double> sizes;
-		sizes.reserve(std::size(level.second));
-		for (const auto &item : level.second)
-			sizes.push_back(
-			    std::max(0.0, items[item.second].sizeFactor));
+		const BubbleChart subChart(ssizes,
+		    chart.markers[cnt++].circle().boundary());
 
-		const BubbleChart subChart(sizes, c.boundary());
-
-		size_t subCnt = 0;
-		for (const auto &item : level.second) {
-			const auto &c = subChart.markers[subCnt].circle();
-
-			items[item.second].position =
-			    Geom::Point{0.5 + (c.center.x - 0.5),
-			        0.5 + (c.center.y - 0.5)};
-
-			auto r = c.radius;
-			items[item.second].size = Geom::Size{r, r};
-			items[item.second].sizeFactor =
-			    r * r / (maxRadius * maxRadius);
-			if (std::isnan(r)) items[item.second].enabled = false;
-			++subCnt;
-		}
-		++cnt;
+		for (std::size_t subCnt{}; const auto &item : level)
+			if (const auto &[center, r] =
+			        subChart.markers[subCnt++].circle();
+			    std::isnan(r))
+				item->enabled = false;
+			else {
+				item->position = center;
+				item->size = Geom::Size{r, r};
+				item->sizeFactor = r * r / (maxRadius * maxRadius);
+			}
 	}
 }
 

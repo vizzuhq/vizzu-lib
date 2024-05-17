@@ -49,10 +49,13 @@ struct Padding
 	}
 
 	[[nodiscard]] Geom::Rect contentRect(const Geom::Rect &rect,
-	    double fontSize) const
+	    double fontSize,
+	    bool flip = false) const
 	{
 		auto margin = toMargin(rect.size, fontSize);
-		return {rect.pos + margin.topLeft(),
+		return {
+		    rect.pos
+		        + (flip ? margin.bottomRight() : margin.topLeft()),
 		    Geom::Size(rect.size - margin.getSpace()).positive()};
 	}
 
@@ -101,9 +104,11 @@ struct Font
 
 	[[nodiscard]] std::string calculatedFamily() const
 	{
-		if (fontFamily.has_value()
-		    && !fontFamily->values[0].value.empty())
-			return fontFamily->values[0].value;
+		if (fontFamily.has_value())
+			if (auto &&ff =
+			        fontFamily->get_or_first(::Anim::first).value;
+			    !ff.empty())
+				return ff;
 
 		if (fontParent) return fontParent->calculatedFamily();
 
@@ -128,7 +133,7 @@ struct Text
 	};
 
 	Param<Gfx::Color> color;
-	Param<Anim::Interpolated<TextAlign>> textAlign;
+	Param<::Anim::Interpolated<TextAlign>> textAlign;
 	Param<Gfx::Color> backgroundColor;
 	Param<::Text::NumberFormat> numberFormat;
 	Param<double> maxFractionDigits;
@@ -297,7 +302,7 @@ struct MarkerParams
 
 	Param<double> borderWidth;
 	Param<double> borderOpacity;
-	Param<Anim::Interpolated<BorderOpacityMode>> borderOpacityMode;
+	Param<::Anim::Interpolated<BorderOpacityMode>> borderOpacityMode;
 	Param<double> fillOpacity;
 	Guide guides;
 	MarkerLabel label;
@@ -339,7 +344,7 @@ struct PlotParams
 	Axis xAxis;
 	Axis yAxis;
 	Param<Gfx::Color> areaColor;
-	Param<Anim::Interpolated<Overflow>> overflow;
+	Param<::Anim::Interpolated<Overflow>> overflow;
 };
 
 struct Plot : Padding, Box, PlotParams

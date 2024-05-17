@@ -4,6 +4,8 @@
 #include <cmath>
 #include <set>
 
+#include "dataframe/old/datatable.h"
+
 namespace Vizzu::Gen
 {
 
@@ -28,57 +30,33 @@ Channel Channel::makeChannel(Type id)
 	throw std::logic_error("internal error: invalid channel id");
 }
 
-std::pair<bool, Channel::OptionalIndex> Channel::addSeries(
-    const Data::SeriesIndex &index,
-    std::optional<size_t> pos)
+void Channel::addSeries(const Data::SeriesIndex &index)
 {
-	if (index.getType().isDimension()) {
-		if (pos) {
-			auto actPos = dimensionIds.getIndex(index);
-			if (static_cast<int>(*pos) == actPos)
-				return {false, std::nullopt};
-			dimensionIds.remove(index);
-			return {dimensionIds.insertAt(*pos, index), std::nullopt};
-		}
-
-		return {dimensionIds.pushBack(index), std::nullopt};
-	}
-	if (!measureId) {
+	if (index.isDimension())
+		dimensionIds.push_back(index);
+	else
 		measureId = index;
-		return {true, std::nullopt};
-	}
-	if (*measureId != index) {
-		auto replaced = *measureId;
-		measureId = index;
-		return {true, replaced};
-	}
-	return {false, std::nullopt};
 }
 
-bool Channel::removeSeries(const Data::SeriesIndex &index)
+void Channel::removeSeries(const Data::SeriesIndex &index)
 {
-	if (index.getType().isDimension()) {
-		return dimensionIds.remove(index);
-	}
-	if (measureId) {
+	if (index.isDimension())
+		dimensionIds.remove(index);
+	else if (measureId)
 		measureId = std::nullopt;
-		return true;
-	}
-
-	return false;
 }
 
 bool Channel::isSeriesUsed(const Data::SeriesIndex &index) const
 {
 	return (measureId && *measureId == index)
-	    || (dimensionIds.includes(index));
+	    || dimensionIds.contains(index);
 }
 
 void Channel::reset()
 {
 	measureId = std::nullopt;
 	dimensionIds.clear();
-	title = "auto";
+	title = Base::AutoParam<std::string, true>{};
 	axisLine = Base::AutoBool();
 	axisLabels = Base::AutoBool();
 	ticks = Base::AutoBool();
@@ -88,30 +66,21 @@ void Channel::reset()
 	labelLevel = 0;
 }
 
-void Channel::clearMeasure() { measureId = std::nullopt; }
-
 bool Channel::isEmpty() const
 {
-	return (!measureId && dimensionIds.empty());
+	return !measureId && dimensionIds.empty();
 }
 
 bool Channel::isDimension() const { return !measureId; }
 
-bool Channel::isMeasure() const { return !isEmpty() && measureId; }
+bool Channel::hasDimension() const { return !dimensionIds.empty(); }
 
-size_t Channel::dimensionCount() const { return dimensionIds.size(); }
+bool Channel::isMeasure() const { return measureId.has_value(); }
 
-void Channel::collectDimesions(
-    Data::DataCubeOptions::IndexSet &dimensions) const
+void Channel::collectDimesions(IndexSet &dimensions) const
 {
 	for (const auto &dimension : dimensionIds)
 		dimensions.insert(dimension);
-}
-
-void Channel::collectRealSeries(
-    Data::DataCubeOptions::IndexSet &series) const
-{
-	if (measureId) series.insert(*measureId);
 }
 
 bool Channel::operator==(const Channel &other) const
@@ -129,41 +98,23 @@ bool Channel::operator==(const Channel &other) const
 	    && markerGuides == other.markerGuides;
 }
 
-std::string Channel::measureName(const Data::DataTable &table) const
+const Channel::DimensionIndices &Channel::dimensions() const
 {
-	if (!isEmpty() && measureId && !isDimension()) {
-		return measureId->toString(table);
-	}
-	return {};
+	return dimensionIds;
 }
 
-std::list<std::string> Channel::dimensionNames(
-    const Data::DataTable &table) const
+std::pair<const Channel::DimensionIndices &, const std::size_t &>
+Channel::dimensionsWithLevel() const
 {
-	std::list<std::string> res;
-	for (const auto &dimensionId : dimensionIds)
-		res.push_back(dimensionId.toString(table));
-	return res;
-}
-
-Channel::DimensionIndices operator&(
-    const Channel::DimensionIndices &x,
-    const Channel::DimensionIndices &y)
-{
-	std::set<Data::SeriesIndex> merged;
-	for (const auto &id : x) merged.insert(id);
-	for (const auto &id : y) merged.insert(id);
-
-	Channel::DimensionIndices res;
-	for (const auto &id : merged) res.pushBack(id);
-	return res;
+	return {dimensionIds, labelLevel};
 }
 
 Channel::OptionalIndex Channel::labelSeries() const
 {
 	if (isDimension()) {
 		if (labelLevel < dimensionIds.size())
-			return dimensionIds.at(labelLevel);
+			return *std::next(dimensionIds.begin(),
+			    static_cast<std::intptr_t>(labelLevel));
 		return std::nullopt;
 	}
 	return measureId;

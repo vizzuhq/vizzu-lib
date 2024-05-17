@@ -6,6 +6,7 @@ Checks: >
   -bugprone-narrowing-conversions,
   -bugprone-unchecked-optional-access,
   cert-*,
+  -cert-dcl21-cpp,
   -cert-err58-cpp,
   clang-analyzer-*,
   clang-diagnostic-*,

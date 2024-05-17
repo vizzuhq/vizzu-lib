@@ -10,7 +10,7 @@
 #include "base/gfx/color.h"
 #include "base/math/fuzzybool.h"
 #include "chart/options/options.h"
-#include "data/datacube/datacube.h"
+#include "dataframe/old/types.h"
 
 #include "colorbase.h"
 
@@ -22,74 +22,49 @@ class ChannelsStats;
 class Marker
 {
 public:
+	using MarkerIndex = Options::MarkerIndex;
+
 	Marker(const Options &options,
 	    const Data::DataCube &data,
-	    const Data::DataTable &table,
 	    ChannelsStats &stats,
-	    const Data::MultiDim::MultiIndex &index,
-	    size_t idx);
+	    const Data::MultiIndex &index,
+	    MarkerIndex idx,
+	    bool needMarkerInfo);
 
-	Data::MultiDim::MultiIndex index;
 	::Anim::Interpolated<ColorBase> colorBase;
 	Geom::Point position;
 	Geom::Point size;
 	Geom::Point spacing;
 	double sizeFactor;
 	Math::FuzzyBool enabled;
-	Data::CellInfo cellInfo;
+	std::shared_ptr<const Data::CellInfo> cellInfo;
 
 	struct Label
 	{
 		std::optional<double> value;
-		std::optional<Data::ColumnIndex> measureId;
-		std::string unit;
 		std::string indexStr;
-		Label() = default;
-		Label(const Data::MultiDim::SubSliceIndex &index,
-		    const Data::DataCube &data,
-		    const Data::DataTable &table);
-		Label(double value,
-		    const Data::SeriesIndex &measure,
-		    const Data::MultiDim::SubSliceIndex &index,
-		    const Data::DataCube &data,
-		    const Data::DataTable &table);
 		bool operator==(const Label &other) const;
 		[[nodiscard]] bool hasValue() const
 		{
 			return value.has_value();
 		}
-		static std::string getIndexString(
-		    const Data::MultiDim::SubSliceIndex &index,
-		    const Data::DataCube &data,
-		    const Data::DataTable &table);
 	};
 
 	::Anim::Interpolated<Label> label;
 
-	struct Id
-	{
-		uint64_t seriesId{};
-		Data::MultiDim::SubSliceIndex itemSliceIndex;
-		uint64_t itemId{};
-		Id() = default;
-		bool operator==(const Id &other) const = default;
-		Id(const Data::DataCube &,
-		    const Channel::DimensionIndices &dimensionIds,
-		    const Data::MultiDim::MultiIndex &);
-	};
+	using Id = Data::MarkerId;
 
 	::Anim::Interpolated<Id> mainId;
 	Id subId;
 	Id sizeId;
-	Id stackId;
 
-	uint64_t idx;
-	::Anim::Interpolated<uint64_t> prevMainMarkerIdx;
-	::Anim::Interpolated<uint64_t> nextMainMarkerIdx;
-	::Anim::Interpolated<uint64_t> nextSubMarkerIdx;
+	MarkerIndex idx;
+	::Anim::Interpolated<MarkerIndex> prevMainMarkerIdx;
+	::Anim::Interpolated<MarkerIndex> nextMainMarkerIdx;
+	::Anim::Interpolated<MarkerIndex> nextSubMarkerIdx;
 
-	void setNextMarker(uint64_t itemId,
-	    Marker *marker,
+	void setNextMarker(bool first,
+	    Marker &marker,
 	    bool horizontal,
 	    bool main);
 	void resetSize(bool horizontal);
@@ -103,17 +78,14 @@ public:
 
 	void setIdOffset(size_t offset);
 	Conv::JSONObj &&appendToJSON(Conv::JSONObj &&jsonObj) const;
-	[[nodiscard]] std::string toJSON() const;
 
 private:
-	std::reference_wrapper<const Data::DataTable> table;
-
 	double getValueForChannel(const Channels &channels,
 	    ChannelId type,
 	    const Data::DataCube &data,
 	    ChannelsStats &stats,
-	    const Channel *subChannel = nullptr,
-	    bool inhibitStack = false) const;
+	    const Data::MultiIndex &index,
+	    const Data::MarkerId * = nullptr) const;
 };
 
 }
