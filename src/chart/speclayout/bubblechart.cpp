@@ -7,7 +7,7 @@ namespace Vizzu::Charts
 {
 
 BubbleChart::BubbleChart(const std::vector<double> &circleAreas,
-    const Geom::Rect &rect)
+    const SpecMarker *parent)
 {
 	markers.reserve(circleAreas.size());
 
@@ -18,7 +18,8 @@ BubbleChart::BubbleChart(const std::vector<double> &circleAreas,
 	std::sort(markers.begin(), markers.end(), SpecMarker::sizeOrder);
 
 	generate();
-	normalize(rect);
+	normalize(parent ? parent->circle().boundary()
+	                 : Geom::Rect{{}, Geom::Size{1, 1}});
 
 	std::sort(markers.begin(), markers.end(), SpecMarker::indexOrder);
 }

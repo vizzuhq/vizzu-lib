@@ -19,8 +19,7 @@ public:
 	Markers markers;
 
 	explicit BubbleChart(const std::vector<double> &circleAreas,
-	    const Geom::Rect &rect = Geom::Rect(Geom::Point{0, 0},
-	        Geom::Size{1, 1}));
+	    const SpecMarker *parent = nullptr);
 
 private:
 	void generate();
