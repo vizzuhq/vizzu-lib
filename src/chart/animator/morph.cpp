@@ -1,6 +1,7 @@
 #include "morph.h"
 
 #include "base/math/interpolation.h"
+#include "chart/generator/plot.h"
 
 namespace Vizzu::Anim::Morph
 {
@@ -215,6 +216,11 @@ void Vertical::transform(const Gen::Plot &source,
 
 	actual.guides.y =
 	    interpolate(source.guides.y, target.guides.y, factor);
+
+	actual.measureAxises.at(Gen::ChannelId::label) =
+	    interpolate(source.measureAxises.at(Gen::ChannelId::label),
+	        target.measureAxises.at(Gen::ChannelId::label),
+	        factor);
 }
 
 void Vertical::transform(const Marker &source,
@@ -237,9 +243,6 @@ void Morph::Color::transform(const Gen::Plot &source,
     Gen::Plot &actual,
     double factor) const
 {
-	actual.anySelected =
-	    interpolate(source.anySelected, target.anySelected, factor);
-
 	actual.commonAxises.at(Gen::ChannelId::color) =
 	    interpolate(source.commonAxises.at(Gen::ChannelId::color),
 	        target.commonAxises.at(Gen::ChannelId::color),
@@ -279,8 +282,6 @@ void Morph::Color::transform(const Marker &source,
 {
 	actual.colorBase =
 	    interpolate(source.colorBase, target.colorBase, factor);
-	actual.selected =
-	    interpolate(source.selected, target.selected, factor);
 }
 
 }

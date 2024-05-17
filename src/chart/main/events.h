@@ -23,7 +23,7 @@ public:
 	struct OnUpdateDetail
 	{
 		::Anim::Duration position;
-		double progress{};
+		[[maybe_unused]] double progress{};
 	};
 
 	struct OnUpdateEvent :
@@ -41,19 +41,14 @@ public:
 		}
 	};
 
-	struct OnDrawEvent : public Util::EventDispatcher::Params
-	{
-		explicit OnDrawEvent(const Util::EventTarget &target) :
-		    Util::EventDispatcher::Params(&target)
-		{}
-	};
+	using OnDrawEvent = Util::EventDispatcher::Params;
 
 	struct OnRectDrawEvent : public OnDrawEvent
 	{
 		Draw::Rect rect;
 		OnRectDrawEvent(const Util::EventTarget &target,
 		    const Draw::Rect &rect) :
-		    OnDrawEvent(target),
+		    OnDrawEvent(&target),
 		    rect(rect)
 		{}
 
@@ -68,7 +63,7 @@ public:
 		Draw::Line line;
 		OnLineDrawEvent(const Util::EventTarget &target,
 		    const Draw::Line &line) :
-		    OnDrawEvent(target),
+		    OnDrawEvent(&target),
 		    line(line)
 		{}
 
@@ -80,7 +75,9 @@ public:
 
 	struct OnTextDrawDetail
 	{
-		Geom::TransformedRect rect;
+		Geom::TransformedRect outerRect;
+		[[maybe_unused]] Geom::Rect innerRect;
+		[[maybe_unused]] double align{};
 		std::string_view text;
 	};
 
@@ -88,11 +85,11 @@ public:
 	    public OnDrawEvent,
 	    public OnTextDrawDetail
 	{
-		OnTextDrawEvent(const Util::EventTarget &target,
-		    const Geom::TransformedRect &rect,
-		    const std::string_view &text) :
-		    OnDrawEvent(target),
-		    OnTextDrawDetail{rect, text}
+		template <class... Ts>
+		explicit OnTextDrawEvent(const Util::EventTarget &target,
+		    Ts &&...ts) :
+		    OnDrawEvent(&target),
+		    OnTextDrawDetail{std::forward<Ts>(ts)...}
 		{}
 
 		void appendToJSON(Conv::JSON &json) const override
@@ -276,6 +273,29 @@ public:
 			}
 		};
 
+		template <class Base> struct CategoryInfo : Base
+		{
+			std::string info;
+
+			template <class... Args>
+			explicit CategoryInfo(
+			    const std::string_view &categoryName,
+			    const std::string_view &categoryValue,
+			    Args &&...args) :
+			    Base(std::forward<Args>(args)...)
+			{
+				Conv::JSONObj{info}.template operator()<false>(
+				    categoryName,
+				    categoryValue);
+			}
+
+			void appendToJSON(Conv::JSONObj &&jsonObj) const override
+			{
+				jsonObj.raw("categories", info);
+				Base::appendToJSON(std::move(jsonObj));
+			}
+		};
+
 		static auto axis(bool horizontal)
 		{
 			return std::make_unique<Axis>(horizontal);
@@ -342,7 +362,21 @@ public:
 			    marker);
 		}
 
-		static auto legendLabel(const std::string &label,
+		static auto dimLegendLabel(
+		    const std::string_view &categoryName,
+		    const std::string_view &categoryValue,
+		    const std::string &label,
+		    Gen::ChannelId channel)
+		{
+			return std::make_unique<CategoryInfo<Text<LegendChild>>>(
+			    categoryName,
+			    categoryValue,
+			    label,
+			    "label",
+			    channel);
+		}
+
+		static auto measLegendLabel(const std::string &label,
 		    Gen::ChannelId channel)
 		{
 			return std::make_unique<Text<LegendChild>>(label,
@@ -358,9 +392,15 @@ public:
 			    channel);
 		}
 
-		static auto legendMarker(Gen::ChannelId channel)
+		static auto legendMarker(const std::string_view &categoryName,
+		    const std::string_view &categoryValue,
+		    Gen::ChannelId channel)
 		{
-			return std::make_unique<LegendChild>("marker", channel);
+			return std::make_unique<CategoryInfo<LegendChild>>(
+			    categoryName,
+			    categoryValue,
+			    "marker",
+			    channel);
 		}
 
 		static auto legendBar(Gen::ChannelId channel)
@@ -368,7 +408,20 @@ public:
 			return std::make_unique<LegendChild>("bar", channel);
 		}
 
-		static auto axisLabel(const std::string &label,
+		static auto dimAxisLabel(const std::string_view &categoryName,
+		    const std::string_view &categoryValue,
+		    const std::string &label,
+		    bool horizontal)
+		{
+			return std::make_unique<CategoryInfo<Text<AxisChild>>>(
+			    categoryName,
+			    categoryValue,
+			    label,
+			    "label",
+			    horizontal);
+		}
+
+		static auto measAxisLabel(const std::string &label,
 		    bool horizontal)
 		{
 			return std::make_unique<Text<AxisChild>>(label,

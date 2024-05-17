@@ -1,276 +1,291 @@
 steps:
-  - name: vizzu/vizzu-dev-wasm:0.9
-    id: init
-    waitFor:
-      - '-'
-    entrypoint: bash
-    args:
-      - '-c'
-      - '-e'
-      - |-
-        npm run init
-    dir: /workspace
+    - name: 'gcr.io/cloud-builders/docker'
+      id: pull_wasm
+      waitFor:
+          - '-'
+      args: ['pull', 'vizzu/vizzu-dev-wasm:0.10']
 
-  - name: vizzu/vizzu-dev-wasm:0.9
-    id: ci-src
-    waitFor:
-      - init
-    entrypoint: bash
-    args:
-      - '-c'
-      - '-e'
-      - |-
-        if [ "$_ISRELEASE" == "true" ]
-        then
-          echo "skipped"
-        else
-          npm run format-src
-          npm run lint-src
-        fi
-    dir: /workspace
-  - name: vizzu/vizzu-dev-wasm:0.9
-    id: ci-docs
-    waitFor:
-      - init
-    entrypoint: bash
-    args:
-      - '-c'
-      - '-e'
-      - |-
-        if [ "$_ISRELEASE" == "true" ]
-        then
-          echo "skipped"
-        else
-          npm run format-docs
-          npm run lint-docs
-        fi
-    dir: /workspace
-  - name: vizzu/vizzu-dev-wasm:0.9
-    id: ci-tools
-    waitFor:
-      - init
-    entrypoint: bash
-    args:
-      - '-c'
-      - '-e'
-      - |-
-        if [ "$_ISRELEASE" == "true" ]
-        then
-          echo "skipped"
-        else
-          npm run format-tools
-          npm run lint-tools
-          npm run type-tools
-        fi
-    dir: /workspace
+    - name: 'gcr.io/cloud-builders/docker'
+      id: pull_desktop
+      waitFor:
+          - '-'
+      args: ['pull', 'vizzu/vizzu-dev-desktop:0.10']
 
-  - name: vizzu/vizzu-dev-desktop:0.9
-    id: build-desktop-clangformat
-    waitFor:
-      - ci-src
-      - ci-docs
-      - ci-tools
-    entrypoint: bash
-    args:
-      - '-c'
-      - '-e'
-      - |-
-        if [ "$_ISRELEASE" == "true" ]
-        then
-          echo "skipped"
-        else
-          ./tools/ci/run/pkg-build-desktop-clangformat.sh
-        fi
-    dir: /workspace
+    - name: vizzu/vizzu-dev-wasm:0.10
+      id: init
+      waitFor:
+          - pull_wasm
+      entrypoint: bash
+      args:
+          - '-c'
+          - '-e'
+          - |-
+              npm install &&
+              ./tools/ci/run/init-py.sh
+      dir: /workspace
 
-  - name: vizzu/vizzu-dev-desktop:0.9
-    id: build-desktop-clangtidy
-    waitFor:
-      - build-desktop-clangformat
-    entrypoint: bash
-    args:
-      - '-c'
-      - '-e'
-      - |-
-        if [ "$_ISRELEASE" == "true" ]
-        then
-          echo "skipped"
-        else
-          ./tools/ci/run/pkg-build-desktop-clangtidy.sh
-        fi
-    dir: /workspace
-  - name: vizzu/vizzu-dev-wasm:0.9
-    id: build-wasm
-    waitFor:
-      - build-desktop-clangformat
-    entrypoint: bash
-    args:
-      - '-c'
-      - '-e'
-      - '-i'
-      - |-
-        if [ "$_ISRELEASE" == "true" ]
-        then
-          ./tools/ci/run/pkg-build-wasm-wocpp-gsutil.sh $SHORT_SHA
-        else
-          source /root/.bashrc &&
-          ./tools/ci/run/pkg-build-wasm.sh
-        fi
-        ./tools/ci/run/pkg-set-version-js.sh
-        ./tools/ci/run/pkg-build-js.sh
-    dir: /workspace
+    - name: vizzu/vizzu-dev-wasm:0.10
+      id: check_src
+      waitFor:
+          - init
+      entrypoint: bash
+      args:
+          - '-c'
+          - '-e'
+          - |-
+              if [ "$_ISRELEASE" == "true" ]
+              then
+                echo "skipped"
+              else
+                npm run format:src
+                npm run lint:src
+              fi
+      dir: /workspace
+    - name: vizzu/vizzu-dev-wasm:0.10
+      id: check_docs
+      waitFor:
+          - init
+      entrypoint: bash
+      args:
+          - '-c'
+          - '-e'
+          - |-
+              if [ "$_ISRELEASE" == "true" ]
+              then
+                echo "skipped"
+              else
+                npm run format:docs
+                npm run lint:docs
+              fi
+      dir: /workspace
+    - name: vizzu/vizzu-dev-wasm:0.10
+      id: check_tools
+      waitFor:
+          - init
+      entrypoint: bash
+      args:
+          - '-c'
+          - '-e'
+          - |-
+              if [ "$_ISRELEASE" == "true" ]
+              then
+                echo "skipped"
+              else
+                npm run format:tools
+                npm run lint:tools
+                npm run type:tools
+              fi
+      dir: /workspace
 
-  - name: vizzu/vizzu-dev-wasm:0.9
-    id: lib-sha
-    waitFor:
-      - build-wasm
-    entrypoint: bash
-    args:
-      - '-c'
-      - '-e'
-      - |-
-        if [ "$_ISRELEASE" == "true" ]
-        then
-          echo "skipped"
-        else
-          gsutil -m cp -r 'dist/*' 'gs://vizzu-lib-main-sha/lib-$SHORT_SHA'
-          for file in build/js/*
-          do
-            if [ -f "$file" ]; then
-              gsutil cp $file 'gs://vizzu-lib-main-sha/lib-$SHORT_SHA/vizzu.tgz'
-            fi
-          done
-        fi
-    dir: /workspace
+    - name: vizzu/vizzu-dev-desktop:0.10
+      id: build_desktop_clangformat
+      waitFor:
+          - pull_desktop
+          - check_src
+          - check_docs
+          - check_tools
+      entrypoint: bash
+      args:
+          - '-c'
+          - '-e'
+          - |-
+              if [ "$_ISRELEASE" == "true" ]
+              then
+                echo "skipped"
+              else
+                ./tools/ci/run/pkg-build-desktop-clangformat.sh
+              fi
+      dir: /workspace
 
-  - name: vizzu/vizzu-dev-wasm:0.9
-    id: test
-    waitFor:
-      - lib-sha
-    entrypoint: bash
-    args:
-      - '-c'
-      - |-
-        if [ "$_ISRELEASE" == "true" ]; then
-          echo "skipped"
-        else
-          ./tools/ci/run/test-gsutil.sh $SHORT_SHA
-        fi
-    dir: /workspace
+    - name: vizzu/vizzu-dev-desktop:0.10
+      id: build_desktop_clangtidy
+      waitFor:
+          - build_desktop_clangformat
+      entrypoint: bash
+      args:
+          - '-c'
+          - '-e'
+          - |-
+              if [ "$_ISRELEASE" == "true" ]
+              then
+                echo "skipped"
+              else
+                ./tools/ci/run/pkg-build-desktop-clangtidy.sh
+              fi
+      dir: /workspace
+    - name: vizzu/vizzu-dev-wasm:0.10
+      id: build_wasm
+      waitFor:
+          - build_desktop_clangformat
+      entrypoint: bash
+      args:
+          - '-c'
+          - '-e'
+          - '-i'
+          - |-
+              if [ "$_ISRELEASE" == "true" ]
+              then
+                ./tools/ci/run/pkg-build-wasm-wocpp-gsutil.sh $SHORT_SHA
+              else
+                source /root/.bashrc &&
+                ./tools/ci/run/pkg-build-wasm.sh
+              fi
+              ./tools/ci/run/pkg-set-version-js.sh
+              ./tools/ci/run/pkg-build-js.sh
+      dir: /workspace
 
-  - name: vizzu/vizzu-dev-wasm:0.9
-    id: docs
-    waitFor:
-      - test
-    entrypoint: bash
-    args:
-      - '-c'
-      - '-e'
-      - |
-        git reset --hard
-        mkdir -p /root/.ssh
-        echo "$$VIZZUHQ_GITHUB_SSH" > /root/.ssh/id_rsa
-        chmod 400 /root/.ssh/id_rsa
-        ssh-keyscan -t rsa github.com > /root/.ssh/known_hosts
-        git clone --single-branch --branch main --depth 1 'git@github.com:vizzuhq/vizzu-lib-doc'
-        git config --global user.name "$$VIZZUHQ_GITHUB_USER"
-        git config --global user.email "$$VIZZUHQ_GITHUB_EMAIL"
-        npm run docs-gen-thumbnail-gsutil
-        if [ "$_ISRELEASE" == "true" ]
-        then
-          git remote add vizzu-lib-doc git@github.com:vizzuhq/vizzu-lib-doc
-          git fetch git@github.com:vizzuhq/vizzu-lib-doc gh-pages:gh-pages --depth=1
-          npm run docs-deploy
-          git push vizzu-lib-doc gh-pages:gh-pages
-        else
-          npm run docs-build
-          if [ "$BRANCH_NAME" == "main" ]; then
-            cd vizzu-lib-doc
-            git checkout -b gh-pages-dev
-            git rm -r .
-            git clean -df
-            cp -r ../site/* .
-            git add .
-            git commit -m "Site development version"
-            git push origin gh-pages-dev:gh-pages-dev -f
-          fi
-        fi
-    dir: /workspace
-    secretEnv:
-      - VIZZUHQ_GITHUB_SSH
-      - VIZZUHQ_GITHUB_USER
-      - VIZZUHQ_GITHUB_EMAIL
+    - name: vizzu/vizzu-dev-wasm:0.10
+      id: lib_sha
+      waitFor:
+          - build_wasm
+      entrypoint: bash
+      args:
+          - '-c'
+          - '-e'
+          - |-
+              if [ "$_ISRELEASE" == "true" ]
+              then
+                echo "skipped"
+              else
+                gsutil -m cp -r 'dist/*' 'gs://vizzu-lib-main-sha/lib-$SHORT_SHA'
+                for file in build/js/*
+                do
+                  if [ -f "$file" ]; then
+                    gsutil cp $file 'gs://vizzu-lib-main-sha/lib-$SHORT_SHA/vizzu.tgz'
+                  fi
+                done
+              fi
+      dir: /workspace
 
-  - name: vizzu/vizzu-dev-wasm:0.9
-    id: release
-    waitFor:
-      - docs
-    entrypoint: bash
-    args:
-      - '-c'
-      - '-e'
-      - |-
-        ./tools/ci/run/pkg-set-version-js.sh
-        npm config set registry=https://registry.npmjs.org/
-        npm config set //registry.npmjs.org/:_authToken=$$VIZZUHQ_NPM_API
-        if [ "$_ISRELEASE" == "true" ]
-        then
-          npm publish
-          npm run pkg-purge-js
-          git fetch --depth=1
-          echo $$VIZZUHQ_GITHUB_API | gh auth login --with-token
-          gh release upload $(git describe --tags --abbrev=0) build/js/*tgz --clobber
-        else
-          npm publish --dry-run
-        fi
-    dir: /workspace
-    secretEnv:
-      - VIZZUHQ_NPM_API
-      - VIZZUHQ_GITHUB_API
+    - name: vizzu/vizzu-dev-wasm:0.10
+      id: test
+      waitFor:
+          - lib_sha
+      entrypoint: bash
+      args:
+          - '-c'
+          - |-
+              if [ "$_ISRELEASE" == "true" ]; then
+                echo "skipped"
+              else
+                ./tools/ci/run/test-gsutil.sh $SHORT_SHA
+              fi
+      dir: /workspace
 
-  - name: gcr.io/cloud-builders/gsutil
-    id: lib
-    waitFor:
-      - release
-    entrypoint: bash
-    args:
-      - '-c'
-      - '-e'
-      - |-
-        if [ "$_ISRELEASE" == "false" ] && [ "$BRANCH_NAME" == "main" ]; then
-          for file in $(gsutil ls gs://vizzu-lib-main/lib); do
-            filename=$(basename "$file")
-            if [ "$filename" != "size.txt" ] && [ "$filename" != "sha.txt" ]; then
-              gsutil -m rm -r "$file"
-            fi
-          done
-          gsutil -m cp -r 'dist/*' 'gs://vizzu-lib-main/lib'
-          echo $SHORT_SHA | gsutil cp - gs://vizzu-lib-main/lib/sha.txt
-          gsutil cp 'build/cmake-wasm/weblib/size.txt' 'gs://vizzu-lib-main/lib'
-          for file in build/js/*
-          do
-            if [ -f "$file" ]; then
-              gsutil cp $file 'gs://vizzu-lib-main/lib/vizzu.tgz'
-            fi
-          done
-          gsutil -m setmeta -r -h 'cache-control: max-age=0,public' 'gs://vizzu-lib-main/*'
-        else
-          echo "skipped"
-        fi
-    dir: /workspace
+    - name: vizzu/vizzu-dev-wasm:0.10
+      id: docs
+      waitFor:
+          - test
+      entrypoint: bash
+      args:
+          - '-c'
+          - '-e'
+          - |
+              git reset --hard
+              mkdir -p /root/.ssh
+              echo "$$VIZZUHQ_GITHUB_SSH" > /root/.ssh/id_rsa
+              chmod 400 /root/.ssh/id_rsa
+              ssh-keyscan -t rsa github.com > /root/.ssh/known_hosts
+              git clone --single-branch --branch main --depth 1 'git@github.com:vizzuhq/vizzu-lib-doc'
+              git config --global user.name "$$VIZZUHQ_GITHUB_USER"
+              git config --global user.email "$$VIZZUHQ_GITHUB_EMAIL"
+              npm run gen-thumbnail-gsutil
+              if [ "$_ISRELEASE" == "true" ]
+              then
+                git remote add vizzu-lib-doc git@github.com:vizzuhq/vizzu-lib-doc
+                git fetch git@github.com:vizzuhq/vizzu-lib-doc gh-pages:gh-pages --depth=1
+                npm run deploy-docs
+                git push vizzu-lib-doc gh-pages:gh-pages
+              else
+                npm run build-docs
+                if [ "$BRANCH_NAME" == "main" ]; then
+                  cd vizzu-lib-doc
+                  git checkout -b gh-pages-dev
+                  git rm -r .
+                  git clean -df
+                  cp -r ../site/* .
+                  git add .
+                  git commit -m "Site development version"
+                  git push origin gh-pages-dev:gh-pages-dev -f
+                fi
+              fi
+      dir: /workspace
+      secretEnv:
+          - VIZZUHQ_GITHUB_SSH
+          - VIZZUHQ_GITHUB_USER
+          - VIZZUHQ_GITHUB_EMAIL
+
+    - name: vizzu/vizzu-dev-wasm:0.10
+      id: publish
+      waitFor:
+          - docs
+      entrypoint: bash
+      args:
+          - '-c'
+          - '-e'
+          - |-
+              ./tools/ci/run/pkg-set-version-js.sh
+              npm config set registry=https://registry.npmjs.org/
+              npm config set //registry.npmjs.org/:_authToken=$$VIZZUHQ_NPM_API
+              if [ "$_ISRELEASE" == "true" ]
+              then
+                npm publish
+                npm run purge
+                git fetch --depth=1
+                echo $$VIZZUHQ_GITHUB_API | gh auth login --with-token
+                gh release upload $(git describe --tags --abbrev=0) build/js/*tgz --clobber
+              else
+                npm publish --dry-run
+              fi
+      dir: /workspace
+      secretEnv:
+          - VIZZUHQ_NPM_API
+          - VIZZUHQ_GITHUB_API
+
+    - name: gcr.io/cloud-builders/gsutil
+      id: lib
+      waitFor:
+          - publish
+      entrypoint: bash
+      args:
+          - '-c'
+          - '-e'
+          - |-
+              if [ "$_ISRELEASE" == "false" ] && [ "$BRANCH_NAME" == "main" ]; then
+                for file in $(gsutil ls gs://vizzu-lib-main/lib); do
+                  filename=$(basename "$file")
+                  if [ "$filename" != "size.txt" ] && [ "$filename" != "sha.txt" ]; then
+                    gsutil -m rm -r "$file"
+                  fi
+                done
+                gsutil -m cp -r 'dist/*' 'gs://vizzu-lib-main/lib'
+                echo $SHORT_SHA | gsutil cp - gs://vizzu-lib-main/lib/sha.txt
+                gsutil cp 'build/cmake-wasm/weblib/size.txt' 'gs://vizzu-lib-main/lib'
+                for file in build/js/*
+                do
+                  if [ -f "$file" ]; then
+                    gsutil cp $file 'gs://vizzu-lib-main/lib/vizzu.tgz'
+                  fi
+                done
+                gsutil -m setmeta -r -h 'cache-control: max-age=0,public' 'gs://vizzu-lib-main/*'
+              else
+                echo "skipped"
+              fi
+      dir: /workspace
 
 availableSecrets:
-  secretManager:
-    - versionName: projects/418279184538/secrets/VIZZUHQ_GITHUB_SSH/versions/latest
-      env: VIZZUHQ_GITHUB_SSH
-    - versionName: projects/418279184538/secrets/VIZZUHQ_GITHUB_API/versions/latest
-      env: VIZZUHQ_GITHUB_API
-    - versionName: projects/418279184538/secrets/VIZZUHQ_GITHUB_USER/versions/latest
-      env: VIZZUHQ_GITHUB_USER
-    - versionName: projects/418279184538/secrets/VIZZUHQ_GITHUB_EMAIL/versions/latest
-      env: VIZZUHQ_GITHUB_EMAIL
-    - versionName: projects/418279184538/secrets/VIZZUHQ_NPM_API/versions/latest
-      env: VIZZUHQ_NPM_API
+    secretManager:
+        - versionName: projects/418279184538/secrets/VIZZUHQ_GITHUB_SSH/versions/latest
+          env: VIZZUHQ_GITHUB_SSH
+        - versionName: projects/418279184538/secrets/VIZZUHQ_GITHUB_API/versions/latest
+          env: VIZZUHQ_GITHUB_API
+        - versionName: projects/418279184538/secrets/VIZZUHQ_GITHUB_USER/versions/latest
+          env: VIZZUHQ_GITHUB_USER
+        - versionName: projects/418279184538/secrets/VIZZUHQ_GITHUB_EMAIL/versions/latest
+          env: VIZZUHQ_GITHUB_EMAIL
+        - versionName: projects/418279184538/secrets/VIZZUHQ_NPM_API/versions/latest
+          env: VIZZUHQ_NPM_API
 timeout: 2400s
 options:
-  machineType: E2_HIGHCPU_8
+    machineType: E2_HIGHCPU_8
+    logging: CLOUD_LOGGING_ONLY

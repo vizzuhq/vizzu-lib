@@ -4,149 +4,150 @@ const prettier = require('prettier')
 const YAML = require('yaml')
 
 function capitalize(str) {
-  return str.charAt(0).toUpperCase() + str.slice(1)
+	return str.charAt(0).toUpperCase() + str.slice(1)
 }
 
 function collectUniqueValues(obj) {
-  let values = []
-  for (const key in obj) {
-    const value = obj[key].set ? obj[key].set : obj[key]
-    if (typeof value === 'string') {
-      values.push(value)
-    } else if (Array.isArray(value)) {
-      values = values.concat(value)
-    }
-  }
-  return [...new Set(values)]
+	let values = []
+	for (const key in obj) {
+		const value = obj[key].set ? obj[key].set : obj[key]
+		if (typeof value === 'string') {
+			values.push({ name: value })
+		} else if (value.name) {
+			values.push(value)
+		} else if (Array.isArray(value)) {
+			values = values.concat(value.map((v) => (v.name ? v : { name: v })))
+		}
+	}
+	return [...new Set(values)]
 }
 
 function genPreset(presetName, preset) {
-  const properties = collectUniqueValues(preset.channels)
+	const properties = collectUniqueValues(preset.channels)
 
-  const definition = {
-    type: 'object',
-    $extends: 'Preset',
-    description: `Configuration for the ${presetName} preset.`,
-    properties: {}
-  }
+	const definition = {
+		type: 'object',
+		$extends: 'Preset',
+		description: `Configuration for the ${presetName} preset.`,
+		properties: {}
+	}
 
-  for (let i = 0; i < properties.length; i++) {
-    const propertyName = properties[i]
-    definition.properties[propertyName] = {
-      description: `The ${propertyName} channel.`,
-      oneOf: [{ type: 'array', items: { type: 'string' } }, { type: 'string' }]
-    }
-    definition.required = definition.required || []
-    definition.required.push(propertyName)
-  }
+	for (let i = 0; i < properties.length; i++) {
+		const propertyName = properties[i].name
+		definition.properties[propertyName] = {
+			description: `The ${propertyName} channel.`,
+			oneOf: [{ type: 'array', items: { type: 'string' } }, { type: 'string' }]
+		}
+		definition.required = definition.required || []
+		definition.required.push(propertyName)
+	}
 
-  return definition
+	return definition
 }
 
 function genPresetClass(presets) {
-  const definition = {
-    type: 'object',
-    description: 'Collection of factory functions for creating preset chart configs.',
-    properties: {}
-  }
-  for (const name in presets) {
-    const methodName = name
-    const parameterType = capitalize(name)
-    definition.properties[methodName] = {
-      type: 'function',
-      description: `Creates a chart config for the ${name} preset.`,
-      arguments: {
-        config: {
-          description: 'The preset configuration.',
-          $ref: parameterType
-        }
-      },
-      return: {
-        $ref: 'Config:Chart'
-      },
-      required: ['config']
-    }
-  }
-  return definition
+	const definition = {
+		type: 'object',
+		description: 'Collection of factory functions for creating preset chart configs.',
+		properties: {}
+	}
+	for (const name in presets) {
+		const methodName = name
+		const parameterType = capitalize(name)
+		definition.properties[methodName] = {
+			type: 'function',
+			description: `Creates a chart config for the ${name} preset.`,
+			arguments: {
+				config: {
+					description: 'The preset configuration.',
+					$ref: parameterType
+				}
+			},
+			return: {
+				$ref: 'Config:Chart'
+			},
+			required: ['config']
+		}
+	}
+	return definition
 }
 
 function genSchema(presets) {
-  const schema = {
-    definitions: {
-      Preset: {
-        type: 'object',
-        properties: {
-          legend: {
-            type: 'string',
-            enum: ['color', 'lightness', 'size'],
-            nullable: true
-          },
-          title: {
-            type: 'string',
-            nullable: true
-          },
-          subtitle: {
-            type: 'string',
-            nullable: true
-          },
-          caption: {
-            type: 'string',
-            nullable: true
-          },
-          reverse: {
-            type: 'boolean'
-          },
-          sort: {
-            type: 'string',
-            enum: ['none', 'byValue']
-          }
-        }
-      }
-    }
-  }
+	const schema = {
+		definitions: {
+			Preset: {
+				type: 'object',
+				properties: {
+					legend: {
+						type: 'string',
+						enum: ['color', 'lightness', 'size'],
+						nullable: true
+					},
+					title: {
+						type: 'string',
+						nullable: true
+					},
+					subtitle: {
+						type: 'string',
+						nullable: true
+					},
+					caption: {
+						type: 'string',
+						nullable: true
+					},
+					reverse: {
+						type: 'boolean'
+					},
+					sort: {
+						type: 'string',
+						enum: ['none', 'byValue']
+					}
+				}
+			}
+		}
+	}
 
-  for (const presetName in presets) {
-    schema.definitions[capitalize(presetName)] = genPreset(presetName, presets[presetName])
-  }
-  schema.definitions.Presets = genPresetClass(presets)
+	for (const presetName in presets) {
+		schema.definitions[capitalize(presetName)] = genPreset(presetName, presets[presetName])
+	}
+	schema.definitions.Presets = genPresetClass(presets)
 
-  return schema
+	return schema
 }
 
 async function writeSchema(schema, outputPath) {
-  console.log('Writing to ' + outputPath)
+	console.log('Writing to ' + outputPath)
 
-  const warningText = `
-# This file is auto-generated by preset-typeschema-gen.js
+	const warningText = `
+# This file is auto-generated by gen-presets.cjs
 # Do not edit this file directly.
 # Instead, edit the presets in src/apps/weblib/ts-api/plugins/presetconfigs.js
-# and run tools/preset-typeschema-gen to regenerate this file.
+# and run \`npm run build:ts\` to regenerate this file.
 ---
 $import:
   Config: ./config
-
 `
 
-  const content = warningText + YAML.stringify(schema, null, 2)
-  const cfg = await prettier.resolveConfig(__dirname)
-  const formattedContent = await prettier.format(content, { ...cfg, parser: 'yaml' })
-  fs.writeFileSync(outputPath, formattedContent)
+	const content = warningText + YAML.stringify(schema, null, 2)
+	const cfg = await prettier.resolveConfig(__dirname)
+	const formattedContent = await prettier.format(content, { ...cfg, parser: 'yaml' })
+	fs.writeFileSync(outputPath, formattedContent)
 }
 
 let presetPath = process.argv[2]
 let outputPath = process.argv[3]
 
 if (!presetPath)
-  presetPath = path.join(__dirname, '../../..', 'src/apps/weblib/ts-api/plugins/presetconfigs.js')
+	presetPath = path.join(__dirname, '../../..', 'src/apps/weblib/ts-api/plugins/presetconfigs.js')
 if (!outputPath)
-  outputPath = path.join(__dirname, '../../..', 'src/apps/weblib/typeschema-api/presets.yaml')
+	outputPath = path.join(__dirname, '../../..', 'src/apps/weblib/typeschema-api/presets.yaml')
 
 import(presetPath)
-  .then((PresetsModule) => {
-    const presets = PresetsModule.presetConfigs
-    const schema = genSchema(presets)
-    return writeSchema(schema, outputPath)
-  })
-  .catch((err) => {
-    console.error(err)
-  })
+	.then((PresetsModule) => {
+		const presets = PresetsModule.presetConfigs
+		const schema = genSchema(presets)
+		return writeSchema(schema, outputPath)
+	})
+	.catch((err) => {
+		console.error(err)
+	})

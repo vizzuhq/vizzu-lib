@@ -1,6 +1,7 @@
 #include "drawlegend.h"
 
 #include "base/gfx/draw/roundedrect.h"
+#include "chart/generator/plot.h"
 #include "chart/rendering/colorbuilder.h"
 #include "chart/rendering/drawbackground.h"
 #include "chart/rendering/drawlabel.h"
@@ -21,8 +22,8 @@ void DrawLegend::draw(Gfx::ICanvas &canvas,
 	    .contentRect = contentRect,
 	    .type = channelType,
 	    .weight = weight,
-	    .itemHeight = DrawLabel::getHeight(style.label, canvas),
-	    .titleHeight = DrawLabel::getHeight(style.title, canvas),
+	    .itemHeight = style.label.getHeight(),
+	    .titleHeight = style.title.getHeight(),
 	    .markerSize = style.marker.size->get(contentRect.size.y,
 	        style.label.calculatedSize()),
 	    .measure = plot->measureAxises.at(channelType),
@@ -50,13 +51,14 @@ void DrawLegend::draw(Gfx::ICanvas &canvas,
 void DrawLegend::drawTitle(const Info &info) const
 {
 	auto rect = info.contentRect;
-	rect.size.y += info.titleHeight;
+	rect.size.y = info.titleHeight;
 	plot->commonAxises.at(info.type).title.visit(
 	    [this,
 	        &info,
 	        &rect,
 	        mul = std::max<double>(info.measureEnabled,
-	            info.dimensionEnabled)](int, const auto &title)
+	            info.dimensionEnabled)](::Anim::InterpolateIndex,
+	        const auto &title)
 	    {
 		    if (title.weight <= 0) return;
 
@@ -66,8 +68,7 @@ void DrawLegend::drawTitle(const Info &info) const
 		        style.title,
 		        *events.title,
 		        Events::Targets::legendTitle(title.value, info.type),
-		        DrawLabel::Options(true,
-		            title.weight * info.weight * mul));
+		        {.alpha = title.weight * info.weight * mul});
 	    });
 }
 
@@ -85,20 +86,28 @@ void DrawLegend::drawDimension(const Info &info) const
 		if (itemRect.y().getMax() >= info.contentRect.y().getMax())
 			continue;
 
-		auto alpha = value.second.weight * info.weight;
+		auto alpha = std::min(value.second.weight, info.weight);
 
 		drawMarker(info,
+		    value.second.categoryValue,
 		    colorBuilder.render(value.second.colorBase) * alpha,
 		    getMarkerRect(info, itemRect));
 
-		label.draw(info.canvas,
-		    getLabelRect(info, itemRect),
-		    value.second.label,
-		    style.label,
-		    *events.label,
-		    Events::Targets::legendLabel(value.second.label,
-		        info.type),
-		    DrawLabel::Options(true, alpha));
+		value.second.label.visit(
+		    [&](::Anim::InterpolateIndex, const auto &weighted)
+		    {
+			    label.draw(info.canvas,
+			        getLabelRect(info, itemRect),
+			        weighted.value,
+			        style.label,
+			        *events.label,
+			        Events::Targets::dimLegendLabel(
+			            info.dimension.category,
+			            value.second.categoryValue,
+			            value.second.categoryValue,
+			            info.type),
+			        {.alpha = std::min(alpha, weighted.weight)});
+		    });
 	}
 }
 
@@ -125,11 +134,12 @@ Geom::TransformedRect DrawLegend::getLabelRect(const Info &info,
 {
 	Geom::Rect res = itemRect;
 	res.pos.x += info.markerSize;
-	res.size.x -= std::max(0.0, res.size.x - info.markerSize);
+	res.size.x = std::max(0.0, res.size.x - info.markerSize);
 	return Geom::TransformedRect::fromRect(res);
 }
 
 void DrawLegend::drawMarker(const Info &info,
+    std::string_view categoryValue,
     const Gfx::Color &color,
     const Geom::Rect &rect) const
 {
@@ -143,7 +153,10 @@ void DrawLegend::drawMarker(const Info &info,
 	                  Styles::Legend::Marker::Type::circle)
 	            * rect.size.minSize() / 2.0;
 
-	auto markerElement = Events::Targets::legendMarker(info.type);
+	auto markerElement =
+	    Events::Targets::legendMarker(info.dimension.category,
+	        categoryValue,
+	        info.type);
 
 	if (events.marker->invoke(
 	        Events::OnRectDrawEvent(*markerElement, {rect, false}))) {
@@ -160,7 +173,7 @@ void DrawLegend::drawMeasure(const Info &info) const
 	if (info.measureEnabled <= 0) return;
 
 	info.measure.unit.visit(
-	    [this, &info](int, const auto &unit)
+	    [this, &info](::Anim::InterpolateIndex, const auto &unit)
 	    {
 		    extremaLabel(info,
 		        info.measure.range.getMax(),
@@ -202,8 +215,8 @@ void DrawLegend::extremaLabel(const Info &info,
 	    text,
 	    style.label,
 	    *events.label,
-	    Events::Targets::legendLabel(text, info.type),
-	    DrawLabel::Options(true, info.measureWeight * plusWeight));
+	    Events::Targets::measLegendLabel(text, info.type),
+	    {.alpha = info.measureWeight * plusWeight});
 }
 
 Geom::Rect DrawLegend::getBarRect(const Info &info)

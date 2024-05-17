@@ -1,27 +1,29 @@
-name: Docker Build and Push vizzu-dev-desktop
+name: Docker publish vizzu-dev-desktop
 
 on:
-  push:
-    branches-ignore:
-      - main
-    paths:
-      - '**/vizzu-dev-desktop'
-      - '**/docker-vizzu-dev-desktop.yml'
+    push:
+        branches-ignore:
+            - main
+        paths:
+            - '**/vizzu-dev-desktop'
+            - '**/docker-vizzu-dev-desktop.yml'
 
 jobs:
-  build-and-push:
-    runs-on: ubuntu-22.04
+    publish:
+        runs-on: ubuntu-22.04
 
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
+        steps:
+            - name: Checkout repo
+              uses: actions/checkout@v3
+              with:
+                  fetch-depth: 1
 
-      - name: Login to Docker Hub
-        run: echo ${{ secrets.VIZZUHQ_DOCKER_API }} | docker login -u ${{ secrets.VIZZUHQ_DOCKER_USER }} --password-stdin
+            - name: Login to Docker
+              run: echo ${{ secrets.VIZZUHQ_DOCKER_API }} | docker login -u ${{ secrets.VIZZUHQ_DOCKER_USER }} --password-stdin
 
-      - name: Build and Push Docker Image
-        run: |
-          IMAGE="vizzu-dev-desktop"
-          IMAGE_NAME="vizzu/$IMAGE:0.9"
-          docker build -t $IMAGE_NAME -f tools/ci/docker/$IMAGE .
-          docker push $IMAGE_NAME
+            - name: Build and Publish
+              run: |
+                  IMAGE="vizzu-dev-desktop"
+                  IMAGE_NAME="vizzu/$IMAGE:0.10"
+                  docker build -t $IMAGE_NAME -f tools/ci/docker/$IMAGE .
+                  docker push $IMAGE_NAME

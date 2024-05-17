@@ -16,9 +16,6 @@ public:
 	JScriptCanvas() = default;
 	~JScriptCanvas() override = default;
 
-	Geom::Size textBoundary(const std::string &text) override;
-
-	[[nodiscard]] Geom::Rect getClipRect() const override;
 	void setClipRect(const Geom::Rect &rect) override;
 	void setClipCircle(const Geom::Circle &circle) override;
 	void setClipPolygon() override;

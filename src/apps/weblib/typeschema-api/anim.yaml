@@ -1,188 +1,188 @@
 ---
 $import:
-  Data: ./data
-  Config: ./config
-  Styles: ./styles
-  CA: ../module/canimctrl
-  CC: ../module/cchart
+    Data: ./data
+    Config: ./config
+    Styles: ./styles
+    CA: ../module/canimctrl
+    CC: ../module/cchart
 
 definitions:
-  Duration:
-    description: |
-      Duration can be set in seconds or milliseconds.
-      In case no unit is set, it defaults to seconds.
-    oneOf:
-      - { type: string, mask: /:number:s/ }
-      - { type: string, mask: /:number:ms/ }
-      - type: number
-
-  Position:
-    description: Seek position in the animation.
-    oneOf:
-      - { type: string, mask: /:number:%/ }
-      - { $ref: Duration }
-
-  Easing:
-    oneOf:
-      - type: string
-        enum: [none, linear, step-start, step-end, ease, ease-in, ease-out, ease-in-out]
-      - type: string
-        mask: '/cubic-bezier(:number:,:number:,:number:,:number:)/'
-
-  GroupOptions:
-    description: Animation parameters for an animation group.
-    type: object
-    properties:
-      easing:
-        description: Sets the easing used for the animation.
-        $ref: Easing
-      duration:
-        description: The length of time an animation should take to complete.
-        $ref: Duration
-      delay:
-        description: Waiting time interval before the animation starts.
-        $ref: Duration
-
-  RegroupStrategy:
-    description: |
-      Type of transition when the categorical series differ on the source and the target chart.
-      - fade: the source chart fades out while the target chart fades in
-      - drilldown: markers are splitted to be able to represent the target chart
-      - aggregate: markers are aggregated then splitted differently to be
-        able to represent the target chart.
-    type: string
-    enum: [fade, drilldown, aggregate]
-
-  Options:
-    $extends: GroupOptions
-    type: object
-    description: |
-      If no animation settings are passed to Vizzu, it will use an automatic 
-      setting depending on the actual configuration of the chart. This behavior can be
-      overridden via the animation setting parameter.
-
-      The animation between two states of the chart can require the transitioning
-      of several different chart properties. These properties are grouped into 
-      separately configurable animation groups.
-
-      The parameters can also be set for the animation as a whole. These settings
-      rescale the durations and delays of the animation groups to the 
-      specified total delay and duration.
-    properties:
-      style:
-        description: Animation group for style parameters.
-        $ref: GroupOptions
-      title:
-        description: Title animation parameters.
-        $ref: GroupOptions
-      subtitle:
-        description: Subtitle animation parameters.
-        $ref: GroupOptions
-      caption:
-        description: Caption animation parameters.
-        $ref: GroupOptions
-      legend:
-        description: Legend animation parameters.
-        $ref: GroupOptions
-      show:
+    Duration:
         description: |
-          Animation group for new markers fading in 
-          (due to filtering or added/removed data series).
-        $ref: GroupOptions
-      hide:
-        description: |
-          Animation group for markers fading out 
-          (due to filtering or added/removed data series).
-        $ref: GroupOptions
-      color:
-        description: Marker color animation group.
-        $ref: GroupOptions
-      coordSystem:
-        description: Coordinate system transformations animation group.
-        $ref: GroupOptions
-      geometry:
-        description: Marker geometry morph animation group.
-        $ref: GroupOptions
-      y:
-        description: Animation group for marker transitions in the direction of the y-axis.
-        $ref: GroupOptions
-      x:
-        description: Animation group for marker transitions in the direction of the x-axis.
-        $ref: GroupOptions
-      tooltip:
-        description: Animation group for tooltip transitions.
-        $ref: GroupOptions
-      connection:
-        description: Animation group for area/line rewiring transitions.
-        $ref: GroupOptions
-      regroupStrategy:
-        description: |
-          Selects the algorithm for transition in case of data grouped 
-          differently on the source and target chart.
-        $ref: RegroupStrategy
-
-  ControlOptions:
-    type: object
-    description: Animation playback related oprtions.
-    properties:
-      playState:
-        type: string
-        enum: [paused, running]
-        description: |
-          Determines if the animation should start automatically after the 
-          animate() call.
-      position:
-        type: number
-        description: The starting position of the animation.
-      direction:
-        type: string
-        enum: [normal, reverse]
-        description: Play direction of the animation.
-      speed:
-        type: number
-        description: |
-          Playback speed of the animation. It is 1.0 by default.
-          Negative values are considered 0.
-
-  Target:
-    description: |
-      Represents a state in the animation describing the data, the chart, and 
-      the style parameters to be changed from the actual state.
-      Passing null as style will reset every style parameter to default.
-    type: object
-    properties:
-      data:
-        description: Data set.
-        $ref: Data:Set
-      config:
-        description: Chart configuration changes.
-        $ref: Config:Chart
-      style:
-        description: Style changes.
-        $ref: Styles:Chart
-        nullable: true
-
-  Keyframe:
-    description: |
-      Object for describing a single animation target chart state and the 
-      options of the animation to this chart state.
-    type: object
-    properties:
-      target:
+            Duration can be set in seconds or milliseconds.
+            In case no unit is set, it defaults to seconds.
         oneOf:
-          - $ref: Target
-          - $ref: CC:Snapshot
-      options:
-        $ref: Options
-    required: [target]
+            - { type: string, mask: /:number:s/ }
+            - { type: string, mask: /:number:ms/ }
+            - type: number
 
-  Keyframes:
-    description: Sequence of keyframe descriptors
-    type: array
-    items: { $ref: Keyframe }
+    Position:
+        description: Seek position in the animation.
+        oneOf:
+            - { type: string, mask: /:number:%/ }
+            - { $ref: Duration }
 
-  AnimTarget:
-    description: Types, that can represent an animation.
-    oneOf:
-      - $ref: Keyframes
-      - $ref: CA:CAnimation
+    Easing:
+        oneOf:
+            - type: string
+              enum: [none, linear, step-start, step-end, ease, ease-in, ease-out, ease-in-out]
+            - type: string
+              mask: '/cubic-bezier(:number:,:number:,:number:,:number:)/'
+
+    GroupOptions:
+        description: Animation parameters for an animation group.
+        type: object
+        properties:
+            easing:
+                description: Sets the easing used for the animation.
+                $ref: Easing
+            duration:
+                description: The length of time an animation should take to complete.
+                $ref: Duration
+            delay:
+                description: Waiting time interval before the animation starts.
+                $ref: Duration
+
+    RegroupStrategy:
+        description: |
+            Type of transition when the categorical series differ on the source and the target chart.
+            - fade: the source chart fades out while the target chart fades in
+            - drilldown: markers are splitted to be able to represent the target chart
+            - aggregate: markers are aggregated then splitted differently to be
+              able to represent the target chart.
+        type: string
+        enum: [fade, drilldown, aggregate]
+
+    Options:
+        $extends: GroupOptions
+        type: object
+        description: |
+            If no animation settings are passed to Vizzu, it will use an automatic 
+            setting depending on the actual configuration of the chart. This behavior can be
+            overridden via the animation setting parameter.
+
+            The animation between two states of the chart can require the transitioning
+            of several different chart properties. These properties are grouped into 
+            separately configurable animation groups.
+
+            The parameters can also be set for the animation as a whole. These settings
+            rescale the durations and delays of the animation groups to the 
+            specified total delay and duration.
+        properties:
+            style:
+                description: Animation group for style parameters.
+                $ref: GroupOptions
+            title:
+                description: Title animation parameters.
+                $ref: GroupOptions
+            subtitle:
+                description: Subtitle animation parameters.
+                $ref: GroupOptions
+            caption:
+                description: Caption animation parameters.
+                $ref: GroupOptions
+            legend:
+                description: Legend animation parameters.
+                $ref: GroupOptions
+            show:
+                description: |
+                    Animation group for new markers fading in 
+                    (due to filtering or added/removed data series).
+                $ref: GroupOptions
+            hide:
+                description: |
+                    Animation group for markers fading out 
+                    (due to filtering or added/removed data series).
+                $ref: GroupOptions
+            color:
+                description: Marker color animation group.
+                $ref: GroupOptions
+            coordSystem:
+                description: Coordinate system transformations animation group.
+                $ref: GroupOptions
+            geometry:
+                description: Marker geometry morph animation group.
+                $ref: GroupOptions
+            y:
+                description: Animation group for marker transitions in the direction of the y-axis.
+                $ref: GroupOptions
+            x:
+                description: Animation group for marker transitions in the direction of the x-axis.
+                $ref: GroupOptions
+            tooltip:
+                description: Animation group for tooltip transitions.
+                $ref: GroupOptions
+            connection:
+                description: Animation group for area/line rewiring transitions.
+                $ref: GroupOptions
+            regroupStrategy:
+                description: |
+                    Selects the algorithm for transition in case of data grouped 
+                    differently on the source and target chart.
+                $ref: RegroupStrategy
+
+    ControlOptions:
+        type: object
+        description: Animation playback related oprtions.
+        properties:
+            playState:
+                type: string
+                enum: [paused, running]
+                description: |
+                    Determines if the animation should start automatically after the 
+                    animate() call.
+            position:
+                type: number
+                description: The starting position of the animation.
+            direction:
+                type: string
+                enum: [normal, reverse]
+                description: Play direction of the animation.
+            speed:
+                type: number
+                description: |
+                    Playback speed of the animation. It is 1.0 by default.
+                    Negative values are considered 0.
+
+    Target:
+        description: |
+            Represents a state in the animation describing the data, the chart, and 
+            the style parameters to be changed from the actual state.
+            Passing null as style will reset every style parameter to default.
+        type: object
+        properties:
+            data:
+                description: Data set.
+                $ref: Data:Set
+            config:
+                description: Chart configuration changes.
+                $ref: Config:Chart
+            style:
+                description: Style changes.
+                $ref: Styles:Chart
+                nullable: true
+
+    Keyframe:
+        description: |
+            Object for describing a single animation target chart state and the 
+            options of the animation to this chart state.
+        type: object
+        properties:
+            target:
+                oneOf:
+                    - $ref: Target
+                    - $ref: CC:Snapshot
+            options:
+                $ref: Options
+        required: [target]
+
+    Keyframes:
+        description: Sequence of keyframe descriptors
+        type: array
+        items: { $ref: Keyframe }
+
+    AnimTarget:
+        description: Types, that can represent an animation.
+        oneOf:
+            - $ref: Keyframes
+            - $ref: CA:CAnimation

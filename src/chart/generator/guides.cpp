@@ -12,10 +12,10 @@ GuidesByAxis interpolate(const GuidesByAxis &op0,
 	res.labels = interpolate(op0.labels, op1.labels, factor);
 	res.axisSticks =
 	    interpolate(op0.axisSticks, op1.axisSticks, factor);
-	res.dimensionGuides =
-	    interpolate(op0.dimensionGuides, op1.dimensionGuides, factor);
-	res.guidelines =
-	    interpolate(op0.guidelines, op1.guidelines, factor);
+	res.axisGuides =
+	    interpolate(op0.axisGuides, op1.axisGuides, factor);
+	res.markerGuides =
+	    interpolate(op0.markerGuides, op1.markerGuides, factor);
 	res.interlacings =
 	    interpolate(op0.interlacings, op1.interlacings, factor);
 	return res;
@@ -24,9 +24,9 @@ GuidesByAxis interpolate(const GuidesByAxis &op0,
 bool GuidesByAxis::operator==(const GuidesByAxis &other) const
 {
 	return axis == other.axis && labels == other.labels
-	    && dimensionGuides == other.dimensionGuides
+	    && axisGuides == other.axisGuides
 	    && axisSticks == other.axisSticks
-	    && guidelines == other.guidelines
+	    && markerGuides == other.markerGuides
 	    && interlacings == other.interlacings;
 }
 
@@ -47,14 +47,14 @@ void Guides::init(const Options &options)
 	x.axis = xOpt.axisLine.getValue(yIsMeasure);
 	y.axis = yOpt.axisLine.getValue(xIsMeasure && !isPolar);
 
-	x.guidelines = xOpt.markerGuides.getValue(
+	x.markerGuides = xOpt.markerGuides.getValue(
 	    isCircle && yIsMeasure && !isPolar);
 
-	y.guidelines = yOpt.markerGuides.getValue(
+	y.markerGuides = yOpt.markerGuides.getValue(
 	    isCircle && xIsMeasure && !isPolar);
 
-	x.dimensionGuides = xOpt.guides.getValue(isLine && xIsMeasure);
-	y.dimensionGuides = yOpt.guides.getValue(isLine && yIsMeasure);
+	x.axisGuides = xOpt.guides.getValue(isLine && xIsMeasure);
+	y.axisGuides = yOpt.guides.getValue(isLine && yIsMeasure);
 
 	x.interlacings = xOpt.interlacing.getValue(
 	    xIsMeasure && !isPolar && (!isHorizontal || !yIsMeasure));
@@ -100,7 +100,7 @@ const GuidesByAxis &Guides::at(ChannelId channel) const
 
 bool Guides::hasAnyGuides() const
 {
-	return y.guidelines != false || x.guidelines != false;
+	return y.markerGuides != false || x.markerGuides != false;
 }
 
 }

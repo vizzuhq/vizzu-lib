@@ -38,7 +38,12 @@ public:
 	[[nodiscard]] bool transforms() const;
 	void shift(const Geom::Point &offset);
 
-	AffineTransform operator*(const AffineTransform &other) const;
+	friend AffineTransform operator*(AffineTransform lhs,
+	    const AffineTransform &rhs)
+	{
+		return lhs *= rhs;
+	}
+	AffineTransform &operator*=(const AffineTransform &other);
 	bool operator==(const AffineTransform &other) const = default;
 
 	Geom::Point operator()(const Geom::Point &original) const;

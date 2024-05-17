@@ -50,6 +50,14 @@ public:
 		     + emphemeral * fontSize;
 	}
 
+	[[nodiscard]] double fromNet(double netReference,
+	    double fontSize) const
+	{
+		if (relative == 1.0)
+			throw std::logic_error("padding relative is 1.0");
+		return get(netReference, fontSize) / (1 - relative);
+	}
+
 	[[nodiscard]] double get() const
 	{
 		if (isAbsolute()) return absolute;

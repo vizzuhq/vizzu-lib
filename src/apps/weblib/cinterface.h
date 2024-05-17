@@ -1,12 +1,13 @@
 #ifndef LIB_CINTERFACE_H
 #define LIB_CINTERFACE_H
 
+#include <base/util/eventdispatcher.h>
 #include <cstdint>
 #include <typeinfo>
 
 namespace Vizzu::Data
 {
-class RowWrapper;
+struct RowWrapper;
 }
 
 namespace APIHandles
@@ -14,7 +15,7 @@ namespace APIHandles
 using Any = const void *;
 using Chart = const void *;
 using Snapshot = const void *;
-using Event = const void *;
+using Event = Util::EventDispatcher::Params *;
 using Animation = const void *;
 using Exception = const void *;
 using Canvas = const void *;
@@ -62,11 +63,11 @@ extern void vizzu_wheel(APIHandles::Chart chart,
     APIHandles::Canvas canvas,
     double delta);
 extern void vizzu_setLogging(bool enable);
-extern void vizzu_update(APIHandles::Chart chart,
+extern void vizzu_update(APIHandles::Chart chart, double timeInMSecs);
+extern void vizzu_render(APIHandles::Chart chart,
     APIHandles::Canvas canvas,
     double width,
     double height,
-    int renderControl,
     int highResolution);
 extern const char *vizzu_errorMessage(
     APIHandles::Exception exceptionPtr,
@@ -76,15 +77,17 @@ extern const char *vizzu_version();
 extern void data_addDimension(APIHandles::Chart chart,
     const char *name,
     const char **categories,
-    int count);
+    std::uint32_t categoriesCount,
+    const std::uint32_t *categoryIndices,
+    std::uint32_t categoryIndicesCount);
 extern void data_addMeasure(APIHandles::Chart chart,
     const char *name,
     const char *unit,
-    double *values,
-    int count);
+    const double *values,
+    std::uint32_t count);
 extern void data_addRecord(APIHandles::Chart chart,
     const char **cells,
-    int count);
+    std::uint32_t count);
 const char *data_metaInfo(APIHandles::Chart chart);
 
 extern const Value *record_getValue(

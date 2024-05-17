@@ -16,7 +16,10 @@ template <typename Type, bool nullable = false> struct AutoParam
 public:
 	AutoParam() : autoSet(true) {}
 
-	explicit AutoParam(const Type &value) : value(value) {}
+	explicit AutoParam(const Type &value)
+	    requires(!std::is_same_v<Type, std::string>)
+	    : value(value)
+	{}
 
 	explicit AutoParam(std::optional<Type> value) :
 	    value(std::move(value))

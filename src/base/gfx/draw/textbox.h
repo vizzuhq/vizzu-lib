@@ -98,7 +98,7 @@ private:
 		std::optional<int> backgroundColor;
 		double width{0};
 		Gfx::Font font{};
-		std::string content;
+		std::string content{};
 	};
 
 	struct Line
@@ -106,7 +106,7 @@ private:
 		double spacing{1.0};
 		double height{0};
 		double width{0};
-		std::vector<TextRun> texts;
+		std::vector<TextRun> texts{};
 	};
 
 	Geom::Size size;

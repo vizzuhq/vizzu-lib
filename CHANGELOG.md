@@ -4,14 +4,83 @@
 
 ### Fixed
 
-- When only logo rendered chart resized, the previous drawn logo position was not deleted.   
-- At the mouse events the lib is not queried the exact rendered chart position through API.
-- On axis labels sometimes missed a space character between value and unit.
-- Rendered label units are suddenly disappeared when target plot does not contain a unit.
+- next() can be called multiple times from Plugin hooks
+- Line and circle chats with only dimensions on x, and y axes the markers were off the axis labels.
+- Crash on TreeMap only with negative values
+- On dimension axis where no marker, print the dimension name as default title.
+- On measure axis with specified channel min-max where no marker, print the labels.
+- Legend markers are not flickering on same data.
+- From now legend appears/disappears linear time.
+- Axis labels are not animated to a different axis label.
+- Dimension axis density on sorted values was wrongly calculated.
+- Tooltip with 'seriesName' does not rewrite first series data.
+- Handle as different category the empty string and the missing value.
+- On chart resize, the font size is recalculated. 
 
 ### Added
 
-- Units on legend. 
+- New plugins and plugin hooks introduced: 
+  - plugin: scheduler - plugin resposible for scheduling the rendering
+  - plugin: clock - supplying the current time for the animation
+  - plugin: canvasRenderer - plugin for rendering the chart on a htmlcanvas compatible canvas
+  - hook: start - hook for starting the rendering loop
+  - hook: render - hook for rendering the chart 
+- Chart generation performance optimization: ~3x speed
+- Maximum marker limit increased: ~2x count 
+- Reduced wasm binary size: ~3%
+
+## [0.10.1] - 2024-03-12
+
+### Added
+
+- Updated `type-fest` dependency version to `4.12.0`
+
+## [0.10.0] - 2024-03-11
+
+### Fixed
+
+- Json serializer control character escape fixed. Some unicode characters
+  were not escaped properly.
+- Fix dimension label transition on axis and legend.
+- Through event handler call, when a new event handler is registered, undefined behaviour happened.
+- Fixed channel reset with empty array when shorthands plugin switched off.
+- Legend label outerRect was not properly calculated.
+- Line chart connector circles color was not contained the alpha channel.
+- Line chart draws was overwrite the event's settings.
+- Legend title outerRect was not properly calculated.
+- Fixed stacked empty min/max aggregated values.
+- Fixed error when an animation triggered during tooptip activation which removed the corresopnding marker. 
+
+### Added
+
+- In config channels, data series and their aggregators can be specified separately 
+  in a descriptor object, besides encoding them into one string (old way).
+- Added optional `categories` member to the `legend-marker`, `legend-label` and `plot-axis-label` events.
+- Remove unused marker selection and selected marker coloring.
+- Removed marker's alpha color when tooltip is shown.  
+- Remove cursor modification over logo.
+- Make `channel.step` option to work on dimensions.
+- When X axis dimension labels are close to each other, they are rotated to avoid overlapping.
+- The event handler registration order changed. Now the handlers are called in the opposite order of the registration.
+- Added the padded rectangle, the bounding rectangle and the align parameter to the draw text event object.
+- Tooltip works on marker labels too.
+
+## [0.9.3] - 2023-12-20
+
+### Fixed
+
+- Orientation and channel min/max cannot be null, only auto
+- Corrected listing of Type-fest dependency from development to normal.
+- Added missing `cvizzu.d.ts` and `cvizzu.types.d.ts` to the npm package.
+- Logo positioning issue in charts when only the logo is rendered and the chart is resized.
+- API issue where exact chart position was not accurately queried during mouse events.
+- Missing space between value and unit in axis labels.
+- Bug fixed where rendered label units disappeared when target plot did not contain a unit.
+- Configuration of experimental plot rotation feature changed from relative `rotate` to absolute `angle`. 
+
+### Added
+
+- Units on legend.
 
 ## [0.9.2] - 2023-11-22
 
@@ -20,7 +89,6 @@
 - Fixed redraw on browser zoom (bug since 0.9.0).
 - Fixed clearing of the canvas before rendering when devicePixelRatio is not 1.
 - TypeScript definition fixed, measures can contain null values. 
-- Orientation and channel min/max cannot be null, only auto
 
 ### Added
 

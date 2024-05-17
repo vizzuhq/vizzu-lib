@@ -1,8 +1,0 @@
-{
-  "suite": "/test/integration/modules/integration-test/test-cases/test-suite",
-  "test": {
-    "example": {
-      "animstep": 1
-    }
-  }
-}

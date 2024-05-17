@@ -31,24 +31,57 @@ const Util::EventTarget *RenderedChart::find(
 		}
 		else if (const auto *marker =
 		             std::get_if<Marker>(&element.geometry)) {
-			if (plot) {
-				const auto &options = *plot->getOptions();
-
-				auto drawItem =
-				    Draw::AbstractMarker::createInterpolated(
-				        marker->marker,
-				        options,
-				        plot->getStyle(),
-				        coordinateSystem,
-				        plot->getMarkers(),
-				        0);
-
-				if (drawItem.bounds(original))
-					return element.target.get();
-			}
+			if (marker->bounds(coordinateSystem, original))
+				return element.target.get();
 		}
 	}
 	return nullptr;
 }
 
+bool Marker::bounds(const CoordinateSystem &coordSys,
+    const Geom::Point &point) const
+{
+	if (!enabled) return false;
+
+	/** Approximated solution */
+	auto isInside = shapeType.combine<Math::FuzzyBool>(
+	    [this, &point, &coordSys](const Gen::ShapeType &shapeType)
+	    {
+		    switch (shapeType) {
+		    case Gen::ShapeType::rectangle:
+		    case Gen::ShapeType::area:
+			    return Math::FuzzyBool{
+			        Geom::ConvexQuad(points).contains(point, 0.01)};
+		    case Gen::ShapeType::circle:
+			    return Math::FuzzyBool{
+			        Geom::Circle(Geom::Rect::Boundary(points),
+			            Geom::Circle::FromRect::sameWidth)
+			            .overlaps(Geom::Circle(point, 0.01), 0.1)};
+		    case Gen::ShapeType::line:
+			    return Math::FuzzyBool{
+			        lineToQuad(coordSys, 10.0)
+			            .contains(coordSys.convert(point), 0.1)};
+		    }
+		    return Math::FuzzyBool{false};
+	    });
+
+	return isInside != false;
+}
+
+Geom::ConvexQuad Marker::lineToQuad(const CoordinateSystem &coordSys,
+    double atLeastWidth) const
+{
+	auto line = getLine();
+
+	auto pBeg = coordSys.convert(line.begin);
+	auto pEnd = coordSys.convert(line.end);
+
+	auto wBeg = lineWidth[0] * coordSys.getRect().size.minSize();
+	auto wEnd = lineWidth[1] * coordSys.getRect().size.minSize();
+	return Geom::ConvexQuad::Isosceles(pBeg,
+	    pEnd,
+	    std::max(atLeastWidth, wBeg * 2),
+	    std::max(atLeastWidth, wEnd * 2));
+}
+Geom::Line Marker::getLine() const { return {points[3], points[2]}; }
 }

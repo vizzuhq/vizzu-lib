@@ -1,11 +1,11 @@
 {
-  "name": "getVizzuList",
-  "version": "0.0.2",
-  "dependencies": {
-    "@google-cloud/storage": "*",
-    "@google-cloud/functions-framework": "*"
-  },
-  "scripts": {
-    "start": "npx functions-framework --target=getVizzuList"
-  }
+	"name": "getVizzuList",
+	"version": "0.0.2",
+	"dependencies": {
+		"@google-cloud/storage": "*",
+		"@google-cloud/functions-framework": "*"
+	},
+	"scripts": {
+		"start": "npx functions-framework --target=getVizzuList"
+	}
 }

@@ -135,15 +135,6 @@ void BaseCanvas::endPolygon()
 	polygon = QPainterPath();
 }
 
-Geom::Rect BaseCanvas::getClipRect() const
-{
-	if (painter.hasClipping())
-		return fromQRectF(painter.clipBoundingRect());
-	return {Geom::Point(),
-	    Geom::Size{static_cast<double>(painter.device()->width()),
-	        static_cast<double>(painter.device()->height())}};
-}
-
 void BaseCanvas::setClipRect(const Geom::Rect &rect)
 {
 	painter.setClipping(true);
@@ -166,25 +157,7 @@ void BaseCanvas::setClipPolygon()
 
 void BaseCanvas::setFont(const Gfx::Font &newFont)
 {
-	auto font = painter.font();
-	font.setPixelSize(static_cast<int>(newFont.size));
-
-	if (!newFont.family.empty())
-		font.setFamily(QString::fromStdString(newFont.family));
-
-	font.setWeight(newFont.weight == Gfx::Font::Weight::Bold()
-	                   ? QFont::Bold
-	               : newFont.weight == Gfx::Font::Weight::Normal()
-	                   ? QFont::Normal
-	                   : static_cast<int>(newFont.weight) / 10);
-
-	font.setStyle(newFont.style == Gfx::Font::Style::italic
-	                  ? QFont::StyleItalic
-	              : newFont.style == Gfx::Font::Style::oblique
-	                  ? QFont::StyleOblique
-	                  : QFont::StyleNormal);
-
-	painter.setFont(font);
+	painter.setFont(fromGfxFont(newFont, painter.font()));
 }
 
 void BaseCanvas::setTextColor(const Gfx::Color &color)
@@ -253,10 +226,12 @@ QPen BaseCanvas::brushToPen(const QBrush &brush)
 	return pen;
 }
 
-Geom::Size BaseCanvas::textBoundary(const std::string &text)
+Geom::Size Gfx::ICanvas::textBoundary(const Gfx::Font &font,
+    const std::string &text)
 {
 	auto res =
-	    QFontMetrics{painter.font()}.boundingRect(QRect(0, 0, 0, 0),
+	    QFontMetrics{BaseCanvas::fromGfxFont(font)}.boundingRect(
+	        QRect(0, 0, 0, 0),
 	        Qt::AlignLeft,
 	        QString::fromStdString(text));
 
@@ -281,3 +256,24 @@ void BaseCanvas::transform(const Geom::AffineTransform &transform)
 void BaseCanvas::save() { painter.save(); }
 
 void BaseCanvas::restore() { painter.restore(); }
+
+QFont BaseCanvas::fromGfxFont(const Gfx::Font &newFont, QFont font)
+{
+	font.setPixelSize(static_cast<int>(newFont.size));
+
+	if (!newFont.family.empty())
+		font.setFamily(QString::fromStdString(newFont.family));
+
+	font.setWeight(newFont.weight == Gfx::Font::Weight::Bold()
+	                   ? QFont::Bold
+	               : newFont.weight == Gfx::Font::Weight::Normal()
+	                   ? QFont::Normal
+	                   : static_cast<int>(newFont.weight) / 10);
+
+	font.setStyle(newFont.style == Gfx::Font::Style::italic
+	                  ? QFont::StyleItalic
+	              : newFont.style == Gfx::Font::Style::oblique
+	                  ? QFont::StyleOblique
+	                  : QFont::StyleNormal);
+	return font;
+}

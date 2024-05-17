@@ -19,11 +19,13 @@ Geom::Point MeasureAxises::origo() const
 }
 
 MeasureAxis::MeasureAxis(Math::Range<double> interval,
-    std::string unit,
+    const std::string_view &unit,
+    const std::string_view &measName,
     std::optional<double> step) :
     enabled(true),
     range(interval),
-    unit(std::move(unit)),
+    unit(std::string{unit}),
+    origMeasureName(std::string{measName}),
     step(step ? *step : Math::Renard::R5().ceil(range.size() / 5.0))
 {}
 
@@ -45,6 +47,8 @@ MeasureAxis interpolate(const MeasureAxis &op0,
 {
 	MeasureAxis res;
 	res.enabled = interpolate(op0.enabled, op1.enabled, factor);
+	res.origMeasureName =
+	    interpolate(op0.origMeasureName, op1.origMeasureName, factor);
 
 	if (op0.enabled.get() && op1.enabled.get()) {
 		res.range = Math::interpolate(op0.range, op1.range, factor);
@@ -64,9 +68,9 @@ MeasureAxis interpolate(const MeasureAxis &op0,
 
 	return res;
 }
-bool DimensionAxis::add(const Data::MultiDim::SliceIndex &index,
+bool DimensionAxis::add(const Data::SliceIndex &index,
     double value,
-    Math::Range<double> &range,
+    const Math::Range<double> &range,
     double enabled,
     bool merge)
 {
@@ -93,20 +97,26 @@ bool DimensionAxis::operator==(const DimensionAxis &other) const
 	return enabled == other.enabled && values == other.values;
 }
 
-void DimensionAxis::setLabels(const Data::DataCube &data,
-    const Data::DataTable &table)
+bool DimensionAxis::setLabels(double step)
 {
-	Values::iterator it;
-	for (it = values.begin(); it != values.end(); ++it) {
-		auto colIndex =
-		    data.getSeriesByDim(it->first.dimIndex).getColIndex();
-		const auto &categories =
-		    table.getInfo(colIndex.value()).categories();
-		if (it->first.index < categories.size())
-			it->second.label = categories[it->first.index];
-		else
-			it->second.label = "NA";
+	bool hasLabel{};
+	step = std::max(step, 1.0);
+	double currStep = 0.0;
+
+	std::multimap<double, Values::pointer> reorder;
+	for (auto &ref : values)
+		reorder.emplace(ref.second.range.getMin(), &ref);
+
+	for (int curr{}; auto &[v, pp] : reorder) {
+		auto &[slice, item] = *pp;
+		item.categoryValue = slice.value;
+
+		if (++curr <= currStep) continue;
+		currStep += step;
+		item.label = item.categoryValue;
+		hasLabel = true;
 	}
+	return hasLabel;
 }
 
 DimensionAxis interpolate(const DimensionAxis &op0,
@@ -115,45 +125,47 @@ DimensionAxis interpolate(const DimensionAxis &op0,
 {
 	DimensionAxis res;
 
-	DimensionAxis::Values::const_iterator it;
-	for (it = op0.values.cbegin(); it != op0.values.cend(); ++it) {
+	for (const auto &[slice, item] : op0.values) {
 		res.enabled = true;
 		res.values.emplace(std::piecewise_construct,
-		    std::tuple{it->first},
-		    std::tuple{it->second, true, 1 - factor});
+		    std::tuple{slice},
+		    std::forward_as_tuple(item, true, 1 - factor));
 	}
 
-	for (it = op1.values.cbegin(); it != op1.values.cend(); ++it) {
+	for (const auto &[slice, item] : op1.values) {
 		res.enabled = true;
-		auto [resIt, end] = res.values.equal_range(it->first);
+		auto [resIt, end] = res.values.equal_range(slice);
 
 		while (resIt != end && resIt->second.end) { ++resIt; }
 
 		if (resIt == end) {
 			res.values.emplace_hint(resIt,
 			    std::piecewise_construct,
-			    std::tuple{it->first},
-			    std::tuple{it->second, false, factor});
+			    std::tuple{slice},
+			    std::forward_as_tuple(item, false, factor));
 		}
 		else {
 			resIt->second.end = true;
 
 			resIt->second.range =
 			    Math::interpolate(resIt->second.range,
-			        it->second.range,
+			        item.range,
 			        factor);
 
 			resIt->second.colorBase =
 			    interpolate(resIt->second.colorBase,
-			        it->second.colorBase,
+			        item.colorBase,
 			        factor);
+
+			resIt->second.label =
+			    interpolate(resIt->second.label, item.label, factor);
 
 			resIt->second.value =
 			    Math::interpolate(resIt->second.value,
-			        it->second.value,
+			        item.value,
 			        factor);
 
-			resIt->second.weight += it->second.weight * factor;
+			resIt->second.weight += item.weight * factor;
 		}
 	}
 

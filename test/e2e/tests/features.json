@@ -1,0 +1,38 @@
+{
+	"suite": "/test/e2e/tests/features",
+	"test": {
+		"aggregators/aggregators": {
+			"refs": ["bd61770"]
+		},
+		"aggregators/aggregators_together": {
+			"refs": ["0e6a340"]
+		},
+		"axis_title_positioning": {
+			"refs": ["9fc11e0"]
+		},
+		"data_input/object_records": {
+			"refs": ["9d5443f"]
+		},
+		"events/drawing_events": {
+			"refs": ["49abe43"]
+		},
+		"subtitle_caption": {
+			"refs": ["5c04f20"]
+		},
+		"cssproperties": {
+			"refs": ["f3212ba"]
+		},
+		"anim/speed": {
+			"refs": ["7b07504"]
+		},
+		"presets": {
+			"refs": ["e071fb7"]
+		},
+		"detach": {
+			"refs": ["e3b0c44"]
+		},
+		"data_input/category_indexed": {
+			"refs": ["f978aac"]
+		}
+	}
+}

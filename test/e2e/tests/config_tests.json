@@ -1,0 +1,50 @@
+{
+	"suite": "/test/e2e/tests/config_tests",
+	"test": {
+		"geometry/static_area": {
+			"refs": ["809bba0"]
+		},
+		"geometry/static_circle": {
+			"refs": ["8d44ab6"]
+		},
+		"geometry/static_default": {
+			"refs": ["a491c17"]
+		},
+		"geometry/static_line": {
+			"refs": ["b9bee48"]
+		},
+		"geometry/static_rectangle": {
+			"refs": ["a491c17"]
+		},
+		"geometry/animated_area-line": {
+			"refs": ["3622f0e"]
+		},
+		"geometry/animated_area-rectangle": {
+			"refs": ["82a57d0"]
+		},
+		"geometry/animated_line-area": {
+			"refs": ["69de3f9"]
+		},
+		"geometry/animated_line-circle": {
+			"refs": ["f67aea6"]
+		},
+		"geometry/animated_line-rectangle": {
+			"refs": ["d2d80c6"]
+		},
+		"geometry/animated_rectangle-area": {
+			"refs": ["6577fd3"]
+		},
+		"geometry/animated_rectangle-circle": {
+			"refs": ["12d82f2"]
+		},
+		"geometry/animated_rectangle-line": {
+			"refs": ["5949df4"]
+		},
+		"dimension_axis_title": {
+			"refs": ["d9bab94"]
+		},
+		"dimension_axis_density": {
+			"refs": ["9b330fb"]
+		}
+	}
+}

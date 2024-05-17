@@ -11,7 +11,8 @@
 #include "base/geom/quadrilateral.h"
 #include "base/geom/transformedrect.h"
 #include "base/util/eventdispatcher.h"
-#include "chart/generator/plot.h"
+#include "chart/generator/plotptr.h"
+#include "chart/options/shapetype.h"
 #include "chart/rendering/painter/coordinatesystem.h"
 
 namespace Vizzu::Draw
@@ -34,7 +35,20 @@ public:
 class Marker
 {
 public:
-	const Gen::Marker &marker;
+	bool enabled;
+	::Anim::Interpolated<Gen::ShapeType> shapeType;
+	std::array<Geom::Point, 4> points;
+	std::array<double, 2> lineWidth;
+
+	[[nodiscard]] bool bounds(const CoordinateSystem &coordSys,
+	    const Geom::Point &point) const;
+
+private:
+	[[nodiscard]] Geom::ConvexQuad lineToQuad(
+	    const CoordinateSystem &coordSys,
+	    double atLeastWidth) const;
+
+	[[nodiscard]] Geom::Line getLine() const;
 };
 
 class DrawingElement

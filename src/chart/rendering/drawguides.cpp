@@ -1,5 +1,7 @@
 #include "drawguides.h"
 
+#include "chart/generator/plot.h"
+
 namespace Vizzu::Draw
 {
 
@@ -22,15 +24,14 @@ void DrawGuides::draw(bool horizontal)
 	const auto &axis = axises.at(axisId);
 
 	if (axis.enabled && *guideStyle.lineWidth > 0
-	    && (static_cast<double>(
-	            plot->guides.at(axisId).dimensionGuides)
+	    && (static_cast<double>(plot->guides.at(axisId).axisGuides)
 	        > 0)) {
 		canvas.setLineWidth(*guideStyle.lineWidth);
 
 		for (auto it = axis.begin(); it != axis.end(); ++it) {
 			auto weight = it->second.weight;
 			weight *= static_cast<double>(
-			    plot->guides.at(axisId).dimensionGuides);
+			    plot->guides.at(axisId).axisGuides);
 			if (weight == 0) continue;
 
 			auto next = std::next(it);

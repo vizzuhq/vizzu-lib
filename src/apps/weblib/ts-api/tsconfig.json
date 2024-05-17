@@ -1,13 +1,13 @@
 {
-  "extends": "@tsconfig/strictest/tsconfig.json",
-  "include": ["**/*.ts"],
-  "compilerOptions": {
-    "target": "es2021",
-    "module": "ES6",
-    "rootDir": "./",
-    "outDir": "../../../../dist",
-    "moduleResolution": "node",
-    "declaration": true,
-    "skipLibCheck": false
-  }
+	"extends": "@tsconfig/strictest/tsconfig.json",
+	"include": ["**/*.ts"],
+	"compilerOptions": {
+		"target": "es2021",
+		"module": "ES6",
+		"rootDir": "./",
+		"outDir": "../../../../dist",
+		"moduleResolution": "node",
+		"declaration": true,
+		"skipLibCheck": false
+	}
 }

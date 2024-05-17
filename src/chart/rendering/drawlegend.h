@@ -1,6 +1,7 @@
 #ifndef CHART_RENDERING_DRAWLEGEND_H
 #define CHART_RENDERING_DRAWLEGEND_H
 
+#include "chart/generator/axis.h"
 #include "chart/rendering/colorbuilder.h"
 #include "chart/rendering/drawingcontext.h"
 
@@ -46,6 +47,7 @@ private:
 	void drawMeasure(const Info &info) const;
 
 	void drawMarker(const Info &info,
+	    std::string_view categoryValue,
 	    const Gfx::Color &color,
 	    const Geom::Rect &rect) const;
 	[[nodiscard]] static Geom::Rect getItemRect(const Info &info,

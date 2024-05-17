@@ -15,25 +15,21 @@ namespace Text
 
 enum class NumberFormat { none, grouped, prefixed };
 
-class SmartString
+namespace SmartString
 {
-public:
-	static std::vector<std::string> split(const std::string &str,
-	    char delim,
-	    bool ignoreEmpty = false,
-	    const char *parens = nullptr);
+[[nodiscard]] std::vector<std::string> split(const std::string &str,
+    char delim,
+    bool ignoreEmpty = false,
+    const char *parens = nullptr);
 
-	static void trim(std::string &string,
-	    int (*ignore)(int) = &isspace);
+void trim(std::string &string);
 
-	static std::string fromPhysicalValue(double value,
-	    NumberFormat format = NumberFormat::none,
-	    size_t maxFractionDigits = 2,
-	    const NumberScale &numberScale = NumberScale{},
-	    const std::string &unit = "");
-
-	static std::string escape(const std::string &str);
-};
+[[nodiscard]] std::string fromPhysicalValue(double value,
+    NumberFormat format,
+    size_t maxFractionDigits,
+    const NumberScale &numberScale,
+    const std::string &unit);
+}
 
 }
 

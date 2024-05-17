@@ -12,7 +12,7 @@ from PIL import Image
 REPO_PATH = Path(__file__).parent / ".." / ".." / ".."
 TOOLS_PATH = REPO_PATH / "tools"
 MKDOCS_PATH = TOOLS_PATH / "docs"
-VIZZU_TEST_PATH = REPO_PATH / "test" / "integration"
+VIZZU_TEST_PATH = REPO_PATH / "test" / "e2e"
 VIZZU_VIDEO_PATH = VIZZU_TEST_PATH / "modules" / "videorecorder"
 
 sys.path.insert(0, str(TOOLS_PATH / "modules"))

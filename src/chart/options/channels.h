@@ -5,8 +5,7 @@
 #include <functional>
 #include <vector>
 
-#include "base/type/uniquetype.h"
-#include "data/datacube/datacubeoptions.h"
+#include "dataframe/old/types.h"
 
 #include "channel.h"
 
@@ -16,6 +15,7 @@ namespace Vizzu::Gen
 class Channels
 {
 public:
+	using IndexSet = std::set<Data::SeriesIndex>;
 	struct Pos
 	{
 		ChannelId channelId;
@@ -23,48 +23,24 @@ public:
 	};
 
 	[[nodiscard]] bool anyAxisSet() const;
-	[[nodiscard]] bool oneAxisSet() const;
-	[[nodiscard]] bool bothAxisSet() const;
 	[[nodiscard]] bool isEmpty() const;
 
-	[[nodiscard]] Data::DataCubeOptions::IndexSet
-	getDimensions() const;
-	[[nodiscard]] Data::DataCubeOptions::IndexSet getMeasures() const;
-	[[nodiscard]] Data::DataCubeOptions::IndexSet getDimensions(
-	    const std::vector<ChannelId> &channelTypes) const;
-	[[nodiscard]] Data::DataCubeOptions::IndexSet getRealSeries(
-	    const std::vector<ChannelId> &channelTypes) const;
-	[[nodiscard]] Data::DataCubeOptions getDataCubeOptions() const;
+	[[nodiscard]] IndexSet getDimensions() const;
+	[[nodiscard]] IndexSet getMeasures() const;
+	[[nodiscard]] IndexSet getDimensions(
+	    const std::span<const ChannelId> &channelTypes) const;
 
 	[[nodiscard]] const Channel &at(const ChannelId &id) const;
 	Channel &at(const ChannelId &id);
-	[[nodiscard]] ChannelId getEmptyAxisId() const;
 
-	std::pair<bool, Channel::OptionalIndex> addSeries(
-	    const ChannelId &id,
-	    const Data::SeriesIndex &index,
-	    std::optional<size_t> pos = std::nullopt);
-	bool removeSeries(const Data::SeriesIndex &index);
-	bool removeSeries(const ChannelId &id,
-	    const Data::SeriesIndex &index);
-	bool clearSeries(const ChannelId &id);
+	void removeSeries(const Data::SeriesIndex &index);
 
 	[[nodiscard]] bool isSeriesUsed(
-	    const Data::SeriesIndex &index) const;
-	[[nodiscard]] bool isSeriesUsed(
-	    const std::vector<ChannelId> &channelTypes,
-	    const Data::SeriesIndex &index) const;
-	[[nodiscard]] size_t count(const Data::SeriesIndex &index) const;
-	[[nodiscard]] std::list<ChannelId> find(
 	    const Data::SeriesIndex &index) const;
 
 	void reset();
 
 	bool operator==(const Channels &other) const;
-
-	void visitAll(
-	    const std::function<void(ChannelId, const Channel &)>
-	        &visitor) const;
 
 	[[nodiscard]] Channels shadow() const;
 

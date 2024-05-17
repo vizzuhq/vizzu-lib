@@ -13,12 +13,10 @@ namespace Style
 template <class Params> class Sheet
 {
 public:
-	explicit Sheet(Params defaultParams) :
+	explicit Sheet(Params defaultParams, Params &activeParams) :
 	    defaultParams(std::move(defaultParams)),
-	    activeParams(nullptr)
+	    activeParams(activeParams)
 	{}
-
-	void setActiveParams(Params &params) { activeParams = &params; }
 
 	[[nodiscard]] const Params &getDefaultParams() const
 	{
@@ -27,53 +25,14 @@ public:
 
 	[[nodiscard]] Params getFullParams() const;
 
-	static std::list<std::string> paramList()
+	static auto listParams()
 	{
-		return Style::ParamRegistry<Params>::instance().listParams();
-	}
-
-	void setParamDefault(const std::string &path,
-	    const std::string &value)
-	{
-		setParam(defaultParams, path, value);
-	}
-
-	void setParam(const std::string &path, const std::string &value)
-	{
-		if (!activeParams)
-			throw std::logic_error("no active parameters set");
-
-		setParam(*activeParams, path, value);
+		return ParamRegistry<Params>::instance().listParams();
 	}
 
 	void setParams(const std::string &path, const std::string &value)
 	{
-		if (!activeParams)
-			throw std::logic_error("no active parameters set");
-
-		setParams(*activeParams, path, value);
-	}
-
-	static bool hasParam(const std::string &path)
-	{
-		return Style::ParamRegistry<Params>::instance().hasParam(
-		    path);
-	}
-
-	static void setParam(Params &params,
-	    const std::string &path,
-	    const std::string &value)
-	{
-		if (!hasParam(path))
-			throw std::logic_error(
-			    path + "/" + value
-			    + ": non-existent style parameter");
-
-		Style::ParamRegistry<Params>::instance().visit(path,
-		    [&](auto &p)
-		    {
-			    p.fromString(params, value);
-		    });
+		setParams(activeParams.get(), path, value);
 	}
 
 	static void setParams(Params &params,
@@ -89,7 +48,8 @@ public:
 
 			if (std::empty(range))
 				throw std::logic_error(
-				    path + ".*: non-existent style parameter(s)");
+				    path + ".*" + ": non-existent style parameter"
+				    + "(s)");
 
 			for (auto &e : range) e.second.fromString(params, value);
 		}
@@ -99,7 +59,7 @@ public:
 			    + ": non-existent style parameter");
 	}
 
-	static std::string getParam(Params &params,
+	[[nodiscard]] static std::string getParam(const Params &params,
 	    const std::string &path)
 	{
 		auto &paramReg = Style::ParamRegistry<Params>::instance();
@@ -113,7 +73,7 @@ public:
 
 protected:
 	Params defaultParams;
-	Params *activeParams;
+	std::reference_wrapper<Params> activeParams;
 };
 
 }

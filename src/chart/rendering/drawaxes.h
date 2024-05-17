@@ -2,6 +2,7 @@
 #define DRAWAXES_H
 
 #include "base/geom/line.h"
+#include "chart/generator/axis.h"
 
 #include "drawingcontext.h"
 #include "drawinterlacing.h"
@@ -21,17 +22,19 @@ public:
 
 private:
 	[[nodiscard]] Geom::Line getAxis(Gen::ChannelId axisIndex) const;
-	[[nodiscard]] Geom::Point
-	getTitleBasePos(Gen::ChannelId axisIndex, int index) const;
+	[[nodiscard]] Geom::Point getTitleBasePos(
+	    Gen::ChannelId axisIndex,
+	    ::Anim::InterpolateIndex index) const;
 	[[nodiscard]] Geom::Point getTitleOffset(Gen::ChannelId axisIndex,
-	    int index,
+	    ::Anim::InterpolateIndex index,
 	    bool fades) const;
 	void drawAxis(Gen::ChannelId axisIndex) const;
 	void drawTitle(Gen::ChannelId axisIndex) const;
 	void drawDimensionLabels(bool horizontal) const;
 	void drawDimensionLabel(bool horizontal,
 	    const Geom::Point &origo,
-	    Gen::DimensionAxis::Values::const_iterator it) const;
+	    Gen::DimensionAxis::Values::const_iterator it,
+	    const std::string_view &category) const;
 };
 
 }

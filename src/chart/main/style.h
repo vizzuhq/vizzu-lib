@@ -4,6 +4,7 @@
 #include "base/anim/interpolated.h"
 #include "base/geom/angle.h"
 #include "base/geom/rect.h"
+#include "base/gfx/canvas.h"
 #include "base/gfx/color.h"
 #include "base/gfx/colorgradient.h"
 #include "base/gfx/colorpalette.h"
@@ -41,12 +42,32 @@ struct Padding
 		    paddingRight->get(size.x, fontSize)};
 	}
 
-	[[nodiscard]] Geom::Rect contentRect(const Geom::Rect &rect,
+	[[nodiscard]] GUI::Margin toInvMargin(const Geom::Size &size,
 	    double fontSize) const
 	{
+		return toMargin(extendSize(size, fontSize), fontSize);
+	}
+
+	[[nodiscard]] Geom::Rect contentRect(const Geom::Rect &rect,
+	    double fontSize,
+	    bool flip = false) const
+	{
 		auto margin = toMargin(rect.size, fontSize);
-		return {rect.pos + margin.topLeft(),
+		return {
+		    rect.pos
+		        + (flip ? margin.bottomRight() : margin.topLeft()),
 		    Geom::Size(rect.size - margin.getSpace()).positive()};
+	}
+
+	[[nodiscard]] Geom::Size extendSize(const Geom::Size &size,
+	    double fontSize) const
+	{
+		return {size.x
+		            + (*paddingLeft + *paddingRight)
+		                  .fromNet(size.x, fontSize),
+		    size.y
+		        + (*paddingTop + *paddingBottom)
+		              .fromNet(size.y, fontSize)};
 	}
 };
 
@@ -83,9 +104,11 @@ struct Font
 
 	[[nodiscard]] std::string calculatedFamily() const
 	{
-		if (fontFamily.has_value()
-		    && !fontFamily->values[0].value.empty())
-			return fontFamily->values[0].value;
+		if (fontFamily.has_value())
+			if (auto &&ff =
+			        fontFamily->get_or_first(::Anim::first).value;
+			    !ff.empty())
+				return ff;
 
 		if (fontParent) return fontParent->calculatedFamily();
 
@@ -103,10 +126,14 @@ struct Font
 
 struct Text
 {
-	enum class TextAlign { center, left, right };
+	enum class TextAlign : std::int8_t {
+		left = -1,
+		center = 0,
+		right = 1
+	};
 
 	Param<Gfx::Color> color;
-	Param<Anim::Interpolated<TextAlign>> textAlign;
+	Param<::Anim::Interpolated<TextAlign>> textAlign;
 	Param<Gfx::Color> backgroundColor;
 	Param<::Text::NumberFormat> numberFormat;
 	Param<double> maxFractionDigits;
@@ -121,7 +148,15 @@ struct Box
 };
 
 struct Label : Padding, Font, Text
-{};
+{
+	[[nodiscard]] double getHeight() const
+	{
+		auto font = Gfx::Font{*this};
+		auto textHeight = Gfx::ICanvas::textBoundary(font, "").y;
+		return paddingTop->get(textHeight, font.size)
+		     + paddingBottom->get(textHeight, font.size) + textHeight;
+	}
+};
 
 struct Tick
 {
@@ -267,7 +302,7 @@ struct MarkerParams
 
 	Param<double> borderWidth;
 	Param<double> borderOpacity;
-	Param<Anim::Interpolated<BorderOpacityMode>> borderOpacityMode;
+	Param<::Anim::Interpolated<BorderOpacityMode>> borderOpacityMode;
 	Param<double> fillOpacity;
 	Guide guides;
 	MarkerLabel label;
@@ -309,7 +344,7 @@ struct PlotParams
 	Axis xAxis;
 	Axis yAxis;
 	Param<Gfx::Color> areaColor;
-	Param<Anim::Interpolated<Overflow>> overflow;
+	Param<::Anim::Interpolated<Overflow>> overflow;
 };
 
 struct Plot : Padding, Box, PlotParams

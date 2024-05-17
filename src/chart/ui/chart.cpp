@@ -1,8 +1,5 @@
 #include "chart.h"
 
-#include <utility>
-
-#include "chart/generator/selector.h"
 #include "chart/main/version.h"
 
 #include "events.h"
@@ -10,163 +7,64 @@
 namespace Vizzu::UI
 {
 
-ChartWidget::ChartWidget()
-{
-	chart.onChanged = [this]()
-	{
-		onChanged();
-	};
+ChartWidget::ChartWidget() :
+    onClick(chart.getEventDispatcher().createEvent("click")),
+    onPointerMoveEvent(
+        chart.getEventDispatcher().createEvent("pointermove")),
+    onWheelEvent(chart.getEventDispatcher().createEvent("wheel")),
+    onPointerDownEvent(
+        chart.getEventDispatcher().createEvent("pointerdown")),
+    onPointerUpEvent(
+        chart.getEventDispatcher().createEvent("pointerup")),
+    onPointerLeaveEvent(
+        chart.getEventDispatcher().createEvent("pointerleave"))
+{}
 
-	auto &ed = chart.getEventDispatcher();
-	onClick = ed.createEvent("click");
-	onPointerDownEvent = ed.createEvent("pointerdown");
-	onPointerUpEvent = ed.createEvent("pointerup");
-	onPointerMoveEvent = ed.createEvent("pointermove");
-	onPointerLeaveEvent = ed.createEvent("pointerleave");
-	onWheelEvent = ed.createEvent("wheel");
+void ChartWidget::onPointerDown(const GUI::PointerEvent &event) const
+{
+	onPointerDownEvent->invoke(PointerEvent{event,
+	    chart.getRenderedChart().find(event.position)});
 }
 
-ChartWidget::~ChartWidget()
+void ChartWidget::onPointerMove(const GUI::PointerEvent &event) const
 {
-	auto &ed = chart.getEventDispatcher();
-	ed.destroyEvent(onClick);
-	ed.destroyEvent(onPointerMoveEvent);
-	ed.destroyEvent(onWheelEvent);
-	ed.destroyEvent(onPointerDownEvent);
-	ed.destroyEvent(onPointerUpEvent);
-	ed.destroyEvent(onPointerLeaveEvent);
+	onPointerMoveEvent->invoke(PointerEvent{event,
+	    chart.getRenderedChart().find(event.position)});
 }
 
-void ChartWidget::onChanged()
-{
-	if (doChange) doChange();
-	needUpdate = true;
-}
-
-void ChartWidget::setCursor(
-    const std::shared_ptr<Gfx::ICanvas> &canvas,
-    GUI::Cursor cursor) const
-{
-	if (doSetCursor) doSetCursor(canvas, cursor);
-}
-
-void ChartWidget::onPointerDown(
-    const std::shared_ptr<Gfx::ICanvas> &canvas,
-    const GUI::PointerEvent &event)
-{
-	updateCursor(canvas, event.pos);
-
-	onPointerDownEvent->invoke(PointerEvent(event.pointerId,
-	    event.pos,
-	    chart.getRenderedChart().find(event.pos)));
-}
-
-void ChartWidget::onPointerMove(
-    const std::shared_ptr<Gfx::ICanvas> &canvas,
-    const GUI::PointerEvent &event)
-{
-	updateCursor(canvas, event.pos);
-
-	onPointerMoveEvent->invoke(PointerEvent(event.pointerId,
-	    event.pos,
-	    chart.getRenderedChart().find(event.pos)));
-}
-
-void ChartWidget::onPointerUp(
-    const std::shared_ptr<Gfx::ICanvas> &canvas,
-    const GUI::PointerEvent &event)
+void ChartWidget::onPointerUp(const GUI::PointerEvent &event) const
 {
 	const auto *eventTarget =
-	    chart.getRenderedChart().find(event.pos);
+	    chart.getRenderedChart().find(event.position);
 
-	onPointerUpEvent->invoke(
-	    PointerEvent(event.pointerId, event.pos, eventTarget));
+	onPointerUpEvent->invoke(PointerEvent{event, eventTarget});
 
-	if (onClick->invoke(
-	        PointerEvent(event.pointerId, event.pos, eventTarget))) {
-		if (chart.getLayout().logo.contains(event.pos)) {
-			if (openUrl)
-				openUrl(
-				    Main::siteUrl + std::string("?utm_source=logo"));
-		}
-		else if (auto plot = chart.getPlot()) {
-			if (const auto *clickedMarker = getIfMarker(eventTarget))
-				Gen::Selector(*plot).toggleMarker(
-				    const_cast<Gen::Marker &>( // NOLINT
-				        *clickedMarker));
-			else
-				Gen::Selector(*plot).clearSelection();
-			onChanged();
+	if (onClick->invoke(PointerEvent{event, eventTarget})) {
+		if (chart.getLayout().logo.contains(event.position)) {
+			openUrl(Main::siteUrl + std::string("?utm_source=logo"));
 		}
 	}
-
-	updateCursor(canvas, event.pos);
 }
 
-void ChartWidget::onPointerLeave(
-    const std::shared_ptr<Gfx::ICanvas> &canvas,
-    const GUI::PointerEvent &event)
+void ChartWidget::onPointerLeave(const GUI::PointerEvent &event) const
 {
-	updateCursor(canvas, event.pos);
-
-	onPointerLeaveEvent->invoke(
-	    PointerEvent(event.pointerId, event.pos, nullptr));
+	onPointerLeaveEvent->invoke(PointerEvent{event, nullptr});
 }
 
-void ChartWidget::onWheel(const std::shared_ptr<Gfx::ICanvas> &,
-    double delta)
+void ChartWidget::onWheel(double delta) const
 {
 	onWheelEvent->invoke(WheelEvent(delta, nullptr));
-}
-
-Geom::Size ChartWidget::getSize(
-    const std::shared_ptr<Gfx::ICanvas> &) const
-{
-	return chart.getLayout().boundary.size;
 }
 
 void ChartWidget::onDraw(const std::shared_ptr<Gfx::ICanvas> &canvas,
     bool highResolution)
 {
 	chart.draw(*canvas, highResolution);
-	needUpdate = false;
 }
 
-void ChartWidget::onUpdateSize(
-    const std::shared_ptr<Gfx::ICanvas> &canvas,
-    Geom::Size size)
+void ChartWidget::onUpdateSize(Geom::Size size)
 {
-	chart.setBoundRect(Geom::Rect(Geom::Point{}, size), *canvas);
-}
-
-void ChartWidget::updateCursor(
-    const std::shared_ptr<Gfx::ICanvas> &canvas,
-    const Geom::Point &pos)
-{
-	if (chart.getLayout().logo.contains(pos))
-		return setCursor(canvas, GUI::Cursor::push);
-
-	if (!chart.getAnimControl().isRunning())
-		if (auto plot = chart.getPlot())
-			if (plot->anySelected
-			    || getIfMarker(chart.getRenderedChart().find(pos)))
-				return setCursor(canvas, GUI::Cursor::push);
-	return setCursor(canvas, GUI::Cursor::point);
-}
-
-const Gen::Marker *ChartWidget::getIfMarker(
-    const Util::EventTarget *target)
-{
-	if (!target) [[unlikely]]
-		throw std::runtime_error("Nothing at this position");
-
-	const auto *element =
-	    static_cast<const Events::Targets::Element *>(target);
-
-	return element->tagName == "plot-marker"
-	         ? &static_cast<const Events::Targets::Marker *>(element)
-	                ->marker
-	         : nullptr;
+	chart.setBoundRect(Geom::Rect(Geom::Point{}, size));
 }
 
 }

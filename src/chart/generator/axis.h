@@ -10,9 +10,7 @@
 #include "base/math/interpolation.h"
 #include "base/math/range.h"
 #include "chart/options/channel.h"
-#include "data/datacube/datacube.h"
-#include "data/multidim/multidimindex.h"
-#include "data/table/datatable.h"
+#include "dataframe/old/types.h"
 
 #include "colorbase.h"
 
@@ -64,12 +62,14 @@ CommonAxis interpolate(const CommonAxis &op0,
 struct MeasureAxis
 {
 	::Anim::Interpolated<bool> enabled{false};
-	Math::Range<double> range = Math::Range<double>(0, 1);
-	::Anim::Interpolated<std::string> unit;
+	Math::Range<double> range = Math::Range<double>::Raw(0, 1);
+	::Anim::String unit;
+	::Anim::String origMeasureName;
 	::Anim::Interpolated<double> step{1.0};
 	MeasureAxis() = default;
 	MeasureAxis(Math::Range<double> interval,
-	    std::string unit,
+	    const std::string_view &unit,
+	    const std::string_view &measName,
 	    std::optional<double> step);
 	bool operator==(const MeasureAxis &other) const;
 	[[nodiscard]] double origo() const;
@@ -99,7 +99,8 @@ public:
 		Math::Range<double> range;
 		double value;
 		::Anim::Interpolated<ColorBase> colorBase;
-		std::string label;
+		::Anim::String label;
+		std::string categoryValue;
 		double weight;
 
 		Item(Math::Range<double> range,
@@ -119,6 +120,7 @@ public:
 		    value(item.value),
 		    colorBase(item.colorBase),
 		    label(item.label),
+		    categoryValue(item.categoryValue),
 		    weight(item.weight * factor)
 		{}
 
@@ -127,19 +129,22 @@ public:
 			return range == other.range;
 		}
 
-		[[nodiscard]] bool presentAt(int index) const
+		[[nodiscard]] bool presentAt(
+		    ::Anim::InterpolateIndex index) const
 		{
-			return index == 0 ? start : index == 1 && end;
+			return (index == ::Anim::first && start)
+			    || (index == ::Anim::second && end);
 		}
 	};
-	using Values = std::multimap<Data::MultiDim::SliceIndex, Item>;
+	using Values = std::multimap<Data::SliceIndex, Item>;
 
 	bool enabled{false};
+	std::string category{};
 
 	DimensionAxis() = default;
-	bool add(const Data::MultiDim::SliceIndex &index,
+	bool add(const Data::SliceIndex &index,
 	    double value,
-	    Math::Range<double> &range,
+	    const Math::Range<double> &range,
 	    double enabled,
 	    bool merge);
 	bool operator==(const DimensionAxis &other) const;
@@ -154,8 +159,7 @@ public:
 	{
 		return values.cend();
 	}
-	void setLabels(const Data::DataCube &data,
-	    const Data::DataTable &table);
+	bool setLabels(double step);
 
 private:
 	Values values;

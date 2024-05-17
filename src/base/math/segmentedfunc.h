@@ -10,10 +10,8 @@ template <typename T> struct SegmentedFunction
 {
 	struct Stop
 	{
-		double pos;
-		T value;
-		Stop() : pos(0), value(T()) {}
-		Stop(double pos, const T &value) : pos(pos), value(value) {}
+		double pos{};
+		T value{};
 		bool operator==(const Stop &other) const
 		{
 			return pos == other.pos && value == other.value;
@@ -22,8 +20,9 @@ template <typename T> struct SegmentedFunction
 
 	std::vector<Stop> stops;
 
-	SegmentedFunction() = default;
-	explicit SegmentedFunction(std::vector<Stop> stops) :
+	SegmentedFunction() noexcept = default;
+	explicit SegmentedFunction(std::size_t init) : stops(init) {}
+	explicit SegmentedFunction(std::vector<Stop> &&stops) noexcept :
 	    stops(std::move(stops))
 	{}
 

@@ -4,7 +4,7 @@ const dataFileName = process.argv[4]
 const dataName = process.argv[5]
 
 import(inputFileName).then((module) => {
-  const test = `
+	const test = `
 const dataLoaded = import("${assetsPath}/assets/data/${dataFileName}.js");
 const mdChartLoaded = import("${assetsPath}/assets/javascripts/mdchart.js");
   
@@ -22,5 +22,5 @@ Promise.all([dataLoaded, mdChartLoaded]).then((results) => {
   ]);
 });
 `
-  console.log(test)
+	console.log(test)
 })

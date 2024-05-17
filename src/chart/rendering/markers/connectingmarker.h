@@ -9,17 +9,14 @@ namespace Vizzu::Draw
 class ConnectingMarker : public AbstractMarker
 {
 public:
-	ConnectingMarker(const Gen::Marker &marker,
-	    const CoordinateSystem &coordSys,
-	    const Gen::Options &options,
-	    const Styles::Chart &style,
-	    const Gen::Plot::Markers &markers,
-	    size_t lineIndex,
+	ConnectingMarker(const DrawingContext &ctx,
+	    const Gen::Marker &marker,
+	    ::Anim::InterpolateIndex lineIndex,
 	    Gen::ShapeType type);
 
 	static const Gen::Marker *getPrev(const Gen::Marker &marker,
-	    const Gen::Plot::Markers &markers,
-	    size_t lineIndex);
+	    const std::vector<Gen::Marker> &markers,
+	    ::Anim::InterpolateIndex lineIndex);
 };
 
 }

@@ -1,6 +1,8 @@
 #ifndef DRAWORIENTEDLABEL_H
 #define DRAWORIENTEDLABEL_H
 
+#include <optional>
+
 #include "base/geom/transformedrect.h"
 #include "chart/rendering/drawlabel.h"
 
@@ -9,33 +11,18 @@
 namespace Vizzu::Draw
 {
 
-class OrientedLabel
+struct OrientedLabel : DrawLabel
 {
-public:
-	explicit OrientedLabel(const std::string &text) : text(text) {}
-	Geom::TransformedRect rect;
-	Geom::Rect contentRect;
-	const std::string &text;
-};
-
-class OrientedLabelRenderer : public DrawingContext
-{
-public:
-	Gfx::ICanvas &canvas;
-	Painter &painter;
-
-	[[nodiscard]] OrientedLabel create(const std::string &text,
+	void draw(Gfx::ICanvas &canvas,
+	    const std::string &text,
 	    const Geom::Line &labelPos,
 	    const Styles::OrientedLabel &labelStyle,
-	    double centered) const;
-
-	void render(const OrientedLabel &label,
-	    const Gfx::Color &textColor,
-	    const Gfx::Color &bgColor,
+	    double centered,
+	    std::optional<double> textAlpha,
+	    double bgAlpha,
 	    Util::EventDispatcher::Event &event,
-	    std::unique_ptr<Util::EventTarget> eventTarget);
+	    std::unique_ptr<Util::EventTarget> eventTarget) const;
 };
-
 }
 
 #endif

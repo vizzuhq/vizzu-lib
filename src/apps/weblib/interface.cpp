@@ -5,6 +5,8 @@
 #include "base/conv/auto_json.h"
 #include "base/io/log.h"
 #include "base/refl/auto_accessor.h"
+#include "chart/main/version.h"
+#include "chart/ui/chart.h"
 
 #include "canvas.h"
 #include "interfacejs.h"
@@ -20,6 +22,26 @@ std::unique_ptr<T, Deleter> create_unique_ptr(T *&&ptr,
 {
 	return {ptr, std::forward<Deleter>(deleter)};
 }
+
+struct Interface::Snapshot
+{
+	Snapshot(Gen::Options options, Styles::Chart styles) :
+	    options(std::move(options)),
+	    styles(std::move(styles))
+	{}
+	Gen::Options options;
+	Styles::Chart styles;
+};
+
+struct Interface::Animation
+{
+	Animation(Anim::AnimationPtr anim, Snapshot snapshot) :
+	    animation(std::move(anim)),
+	    snapshot(std::move(snapshot))
+	{}
+	Anim::AnimationPtr animation;
+	Snapshot snapshot;
+};
 
 Interface &Interface::getInstance()
 {
@@ -40,15 +62,14 @@ const char *Interface::version()
 }
 
 std::shared_ptr<Vizzu::Chart> Interface::getChart(
-    ObjectRegistry::Handle chart)
+    ObjectRegistryHandle chart)
 {
 	auto &&widget = objects.get<UI::ChartWidget>(chart);
 	auto &chartRef = widget->getChart();
 	return {std::move(widget), &chartRef};
 }
 
-ObjectRegistry::Handle Interface::storeChart(
-    ObjectRegistry::Handle chart)
+ObjectRegistryHandle Interface::storeChart(ObjectRegistryHandle chart)
 {
 	auto &&chartPtr = getChart(chart);
 	return objects.reg(
@@ -56,8 +77,8 @@ ObjectRegistry::Handle Interface::storeChart(
 	        chartPtr->getStyles()));
 }
 
-void Interface::restoreChart(ObjectRegistry::Handle chart,
-    ObjectRegistry::Handle snapshot)
+void Interface::restoreChart(ObjectRegistryHandle chart,
+    ObjectRegistryHandle snapshot)
 {
 	auto &&snapshotPtr = objects.get<Snapshot>(snapshot);
 	auto &&chartPtr = getChart(chart);
@@ -65,8 +86,7 @@ void Interface::restoreChart(ObjectRegistry::Handle chart,
 	chartPtr->setStyles(snapshotPtr->styles);
 }
 
-ObjectRegistry::Handle Interface::storeAnim(
-    ObjectRegistry::Handle chart)
+ObjectRegistryHandle Interface::storeAnim(ObjectRegistryHandle chart)
 {
 	auto &&chartPtr = getChart(chart);
 	return objects.reg(
@@ -74,8 +94,8 @@ ObjectRegistry::Handle Interface::storeAnim(
 	        Snapshot(chartPtr->getOptions(), chartPtr->getStyles())));
 }
 
-void Interface::restoreAnim(ObjectRegistry::Handle chart,
-    ObjectRegistry::Handle animPtr)
+void Interface::restoreAnim(ObjectRegistryHandle chart,
+    ObjectRegistryHandle animPtr)
 {
 	auto &&anim = objects.get<Animation>(animPtr);
 	auto &&chartPtr = getChart(chart);
@@ -84,7 +104,7 @@ void Interface::restoreAnim(ObjectRegistry::Handle chart,
 	chartPtr->setStyles(anim->snapshot.styles);
 }
 
-void Interface::freeObj(ObjectRegistry::Handle ptr)
+void Interface::freeObj(ObjectRegistryHandle ptr)
 {
 	objects.unreg(ptr);
 }
@@ -92,11 +112,11 @@ void Interface::freeObj(ObjectRegistry::Handle ptr)
 const char *Interface::getStyleList()
 {
 	static const std::string res =
-	    Conv::toJSON(Styles::Sheet::paramList());
+	    Conv::toJSON(Styles::Sheet::listParams());
 	return res.c_str();
 }
 
-const char *Interface::getStyleValue(ObjectRegistry::Handle chart,
+const char *Interface::getStyleValue(ObjectRegistryHandle chart,
     const char *path,
     bool computed)
 {
@@ -108,7 +128,7 @@ const char *Interface::getStyleValue(ObjectRegistry::Handle chart,
 	return res.c_str();
 }
 
-void Interface::setStyleValue(ObjectRegistry::Handle chart,
+void Interface::setStyleValue(ObjectRegistryHandle chart,
     const char *path,
     const char *value)
 {
@@ -117,12 +137,11 @@ void Interface::setStyleValue(ObjectRegistry::Handle chart,
 
 const char *Interface::getChartParamList()
 {
-	static const std::string res =
-	    Conv::toJSON(Gen::Config::listParams());
+	static const std::string res = Gen::Config::paramsJson();
 	return res.c_str();
 }
 
-const char *Interface::getChartValue(ObjectRegistry::Handle chart,
+const char *Interface::getChartValue(ObjectRegistryHandle chart,
     const char *path)
 {
 	thread_local std::string res;
@@ -130,14 +149,14 @@ const char *Interface::getChartValue(ObjectRegistry::Handle chart,
 	return res.c_str();
 }
 
-void Interface::setChartValue(ObjectRegistry::Handle chart,
+void Interface::setChartValue(ObjectRegistryHandle chart,
     const char *path,
     const char *value)
 {
 	getChart(chart)->getConfig().setParam(path, value);
 }
 
-void Interface::relToCanvasCoords(ObjectRegistry::Handle chart,
+void Interface::relToCanvasCoords(ObjectRegistryHandle chart,
     double rx,
     double ry,
     double &x,
@@ -150,7 +169,7 @@ void Interface::relToCanvasCoords(ObjectRegistry::Handle chart,
 	y = to.y;
 }
 
-void Interface::canvasToRelCoords(ObjectRegistry::Handle chart,
+void Interface::canvasToRelCoords(ObjectRegistryHandle chart,
     double x,
     double y,
     double &rx,
@@ -163,53 +182,42 @@ void Interface::canvasToRelCoords(ObjectRegistry::Handle chart,
 	ry = to.y;
 }
 
-void Interface::setChartFilter(ObjectRegistry::Handle chart,
+void Interface::setChartFilter(ObjectRegistryHandle chart,
     JsFunctionWrapper<bool, const Data::RowWrapper &> &&filter)
 {
-	const auto hash = filter.hash();
-	getChart(chart)->getConfig().setFilter(
-	    Data::Filter::Function{std::move(filter)},
-	    hash);
+	if (filter)
+		getChart(chart)->getOptions().dataFilter =
+		    Data::Filter{std::move(filter)};
+	else
+		getChart(chart)->getOptions().dataFilter = {};
 }
 
-std::variant<const char *, double> Interface::getRecordValue(
+std::variant<double, std::string_view> Interface::getRecordValue(
     const Data::RowWrapper &record,
     const char *column)
 {
-	auto cell = record[column];
-	if (cell.isDimension()) return cell.dimensionValue();
-
-	return *cell;
+	return record.get_value(column);
 }
 
-void Interface::addEventListener(ObjectRegistry::Handle chart,
+void Interface::addEventListener(ObjectRegistryHandle chart,
     const char *event,
-    void (*callback)(ObjectRegistry::Handle, const char *))
+    void (*callback)(APIHandles::Event, const char *))
 {
 	auto &&chartPtr = getChart(chart);
 	if (auto &&ev = chartPtr->getEventDispatcher().getEvent(event)) {
-		ev->attach(std::hash<decltype(callback)>{}(callback),
-		    [this, callback](Util::EventDispatcher::Params &params)
+		ev->attach(
+		    [callback](Util::EventDispatcher::Params &params,
+		        const std::string &jsonStrIn)
 		    {
-			    auto &&jsonStrIn = params.toJSON();
-
-			    callback(
-			        create_unique_ptr(
-			            objects.reg<Util::EventDispatcher::Params>(
-			                {std::shared_ptr<void>{}, &params}),
-			            [this](const void *handle)
-			            {
-				            objects.unreg(handle);
-			            })
-			            .get(),
-			        jsonStrIn.c_str());
-		    });
+			    callback(&params, jsonStrIn.c_str());
+		    },
+		    std::hash<decltype(callback)>{}(callback));
 	}
 }
 
-void Interface::removeEventListener(ObjectRegistry::Handle chart,
+void Interface::removeEventListener(ObjectRegistryHandle chart,
     const char *event,
-    void (*callback)(ObjectRegistry::Handle, const char *))
+    void (*callback)(APIHandles::Event, const char *))
 {
 	auto &&chartPtr = getChart(chart);
 	if (auto &&ev = chartPtr->getEventDispatcher().getEvent(event)) {
@@ -217,24 +225,27 @@ void Interface::removeEventListener(ObjectRegistry::Handle chart,
 	}
 }
 
-void Interface::preventDefaultEvent(ObjectRegistry::Handle obj)
+void Interface::preventDefaultEvent(APIHandles::Event obj)
 {
-	objects.get<Util::EventDispatcher::Params>(obj)->preventDefault =
-	    true;
+	obj->preventDefault = true;
 }
 
-void Interface::animate(ObjectRegistry::Handle chart,
+void Interface::animate(ObjectRegistryHandle chart,
     void (*callback)(bool))
 {
-	getChart(chart)->animate(callback);
+	getChart(chart)->animate(
+	    {[callback](const Gen::PlotPtr &, const bool &ok)
+	        {
+		        callback(ok);
+	        }});
 }
 
-void Interface::setKeyframe(ObjectRegistry::Handle chart)
+void Interface::setKeyframe(ObjectRegistryHandle chart)
 {
 	getChart(chart)->setKeyframe();
 }
 
-void Interface::setAnimControlValue(ObjectRegistry::Handle chart,
+void Interface::setAnimControlValue(ObjectRegistryHandle chart,
     std::string_view path,
     const char *value)
 {
@@ -260,8 +271,7 @@ void Interface::setAnimControlValue(ObjectRegistry::Handle chart,
 	ctrl.update();
 }
 
-const char *Interface::getAnimControlValue(
-    ObjectRegistry::Handle chart,
+const char *Interface::getAnimControlValue(ObjectRegistryHandle chart,
     std::string_view path)
 {
 	thread_local std::string res;
@@ -280,73 +290,77 @@ const char *Interface::getAnimControlValue(
 	return res.c_str();
 }
 
-void Interface::setAnimValue(ObjectRegistry::Handle chart,
+void Interface::setAnimValue(ObjectRegistryHandle chart,
     const char *path,
     const char *value)
 {
 	getChart(chart)->getAnimOptions().set(path, value);
 }
 
-void Interface::addDimension(ObjectRegistry::Handle chart,
+void Interface::addDimension(ObjectRegistryHandle chart,
     const char *name,
     const char **categories,
-    int count)
+    std::uint32_t categoriesCount,
+    const std::uint32_t *categoryIndices,
+    std::uint32_t categoryIndicesCount)
 {
 	if (categories) {
 		getChart(chart)->getTable().addColumn(name,
-		    {categories, static_cast<size_t>(count)});
+		    {categories, categoriesCount},
+		    {categoryIndices, categoryIndicesCount});
 	}
 }
 
-void Interface::addMeasure(ObjectRegistry::Handle chart,
+void Interface::addMeasure(ObjectRegistryHandle chart,
     const char *name,
     const char *unit,
-    double *values,
-    int count)
+    const double *values,
+    std::uint32_t count)
 {
 	getChart(chart)->getTable().addColumn(name,
 	    unit,
-	    {values, static_cast<size_t>(count)});
+	    {values, count});
 }
 
-void Interface::addRecord(ObjectRegistry::Handle chart,
+void Interface::addRecord(ObjectRegistryHandle chart,
     const char **cells,
-    int count)
+    std::uint32_t count)
 {
-	getChart(chart)->getTable().pushRow(
-	    {cells, static_cast<size_t>(count)});
+	getChart(chart)->getTable().pushRow({cells, count});
 }
 
-const char *Interface::dataMetaInfo(ObjectRegistry::Handle chart)
+const char *Interface::dataMetaInfo(ObjectRegistryHandle chart)
 {
 	thread_local std::string res;
-	res = Conv::toJSON(getChart(chart)->getTable().getInfos());
+	res = getChart(chart)->getTable().getInfos();
 	return res.c_str();
 }
 
-ObjectRegistry::Handle Interface::createChart()
+ObjectRegistryHandle Interface::createChart()
 {
 	auto &&widget = std::make_shared<UI::ChartWidget>();
 
-	widget->doSetCursor =
-	    [&](const std::shared_ptr<Gfx::ICanvas> &target,
-	        GUI::Cursor cursor)
-	{
-		::canvas_setCursor(
-		    std::static_pointer_cast<Vizzu::Main::JScriptCanvas>(
-		        target)
-		        .get(),
-		    toCSS(cursor));
-	};
-	widget->openUrl = [&](const std::string &url)
-	{
-		::openUrl(url.c_str());
-	};
+	auto &openUrl = widget->openUrl;
+	auto &doChange = widget->getChart().onChanged;
 
-	return objects.reg(std::move(widget));
+	auto handle = objects.reg(std::move(widget));
+
+	openUrl.attach(
+	    [handle](const std::string &url)
+	    {
+		    ::chart_openUrl(handle, url.c_str());
+	    });
+
+	doChange.attach(
+	    [handle]
+	    {
+		    ::chart_doChange(handle);
+	    });
+
+	return handle;
 }
 
-ObjectRegistry::Handle Interface::createCanvas()
+ObjectRegistryHandle Interface::createCanvas()
 {
 	return objects.reg(
 	    std::make_shared<Vizzu::Main::JScriptCanvas>());
@@ -357,83 +371,82 @@ void Interface::setLogging(bool enable)
 	IO::Log::setEnabled(enable);
 }
 
-void Interface::update(ObjectRegistry::Handle chart,
-    ObjectRegistry::Handle canvas,
+void Interface::update(ObjectRegistryHandle chart, double timeInMSecs)
+{
+	auto &&widget = objects.get<UI::ChartWidget>(chart);
+
+	std::chrono::duration<double, std::milli> milliSecs(timeInMSecs);
+
+	auto nanoSecs =
+	    std::chrono::duration_cast<std::chrono::nanoseconds>(
+	        milliSecs);
+
+	::Anim::TimePoint time(nanoSecs);
+
+	widget->getChart().getAnimControl().update(time);
+}
+
+void Interface::render(ObjectRegistryHandle chart,
+    ObjectRegistryHandle canvas,
     double width,
     double height,
-    RenderControl renderControl,
     bool highResolution)
 {
 	auto &&widget = objects.get<UI::ChartWidget>(chart);
-	auto now = std::chrono::steady_clock::now();
-	widget->getChart().getAnimControl().update(now);
+	auto &&ptr = objects.get<Gfx::ICanvas>(canvas);
 
-	const Geom::Size size{width, height};
+	ptr->frameBegin();
 
-	auto &&canvasPtr =
-	    objects.get<Vizzu::Main::JScriptCanvas>(canvas);
+	widget->onUpdateSize({width, height});
 
-	const bool renderNeeded = widget->needsUpdate(canvasPtr)
-	                       || widget->getSize(canvasPtr) != size;
+	widget->onDraw(ptr, highResolution);
 
-	if ((renderControl == allow && renderNeeded)
-	    || renderControl == force) {
-		canvasPtr->frameBegin();
-		widget->onUpdateSize(canvasPtr, size);
-		widget->onDraw(canvasPtr, highResolution);
-		canvasPtr->frameEnd();
-	}
+	ptr->frameEnd();
 }
 
-void Interface::pointerDown(ObjectRegistry::Handle chart,
-    ObjectRegistry::Handle canvas,
+void Interface::pointerDown(ObjectRegistryHandle chart,
+    ObjectRegistryHandle,
     int pointerId,
     double x,
     double y)
 {
 	objects.get<UI::ChartWidget>(chart)->onPointerDown(
-	    objects.get<Vizzu::Main::JScriptCanvas>(canvas),
-	    GUI::PointerEvent(pointerId, Geom::Point{x, y}));
+	    {pointerId, Geom::Point{x, y}});
 }
 
-void Interface::pointerUp(ObjectRegistry::Handle chart,
-    ObjectRegistry::Handle canvas,
+void Interface::pointerUp(ObjectRegistryHandle chart,
+    ObjectRegistryHandle,
     int pointerId,
     double x,
     double y)
 {
 	objects.get<UI::ChartWidget>(chart)->onPointerUp(
-	    objects.get<Vizzu::Main::JScriptCanvas>(canvas),
-	    GUI::PointerEvent(pointerId, Geom::Point{x, y}));
+	    {pointerId, Geom::Point{x, y}});
 }
 
-void Interface::pointerLeave(ObjectRegistry::Handle chart,
-    ObjectRegistry::Handle canvas,
+void Interface::pointerLeave(ObjectRegistryHandle chart,
+    ObjectRegistryHandle,
     int pointerId)
 {
 	objects.get<UI::ChartWidget>(chart)->onPointerLeave(
-	    objects.get<Vizzu::Main::JScriptCanvas>(canvas),
-	    GUI::PointerEvent(pointerId, Geom::Point::Invalid()));
+	    {pointerId, Geom::Point::Invalid()});
 }
 
-void Interface::wheel(ObjectRegistry::Handle chart,
-    ObjectRegistry::Handle canvas,
+void Interface::wheel(ObjectRegistryHandle chart,
+    ObjectRegistryHandle,
     double delta)
 {
-	objects.get<UI::ChartWidget>(chart)->onWheel(
-	    objects.get<Vizzu::Main::JScriptCanvas>(canvas),
-	    delta);
+	objects.get<UI::ChartWidget>(chart)->onWheel(delta);
 }
 
-void Interface::pointerMove(ObjectRegistry::Handle chart,
-    ObjectRegistry::Handle canvas,
+void Interface::pointerMove(ObjectRegistryHandle chart,
+    ObjectRegistryHandle,
     int pointerId,
     double x,
     double y)
 {
 	objects.get<UI::ChartWidget>(chart)->onPointerMove(
-	    objects.get<Vizzu::Main::JScriptCanvas>(canvas),
-	    GUI::PointerEvent(pointerId, Geom::Point{x, y}));
+	    {pointerId, Geom::Point{x, y}});
 }
 
 }

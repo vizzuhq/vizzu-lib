@@ -34,14 +34,14 @@ void DrawPlot::draw(Gfx::ICanvas &canvas,
 		drawPlotArea(canvas, painter, true);
 	}
 
-	auto markerRenderer = MarkerRenderer{{ctx()}, canvas, painter};
-	markerRenderer.drawLines();
+	auto &&markerRenderer = MarkerRenderer::create(ctx());
+	markerRenderer.drawLines(canvas, painter);
 
-	markerRenderer.drawMarkers();
+	markerRenderer.drawMarkers(canvas, painter);
 
 	if (clip) canvas.restore();
 
-	markerRenderer.drawLabels();
+	markerRenderer.drawLabels(canvas);
 
 	axes.drawLabels();
 }

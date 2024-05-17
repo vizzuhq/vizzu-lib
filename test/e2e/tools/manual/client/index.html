@@ -1,0 +1,32 @@
+<!doctype html>
+<html>
+	<head>
+		<title>Vizzu library test - manual</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+	</head>
+	<body>
+		<input type="text" id="filterByName" placeholder="Filter Test Cases by Name" />
+		<select id="filterByResult">
+			<option value="">Filter Test Cases by Result</option>
+			<option value="pass">PASS</option>
+			<option value="fail">FAIL</option>
+			<option value="warn">WARN</option>
+			<option value="-">-</option>
+		</select>
+		<br />
+		<select name="testCase" id="testCase" size="20"></select>
+		<select name="vizzuUrl" id="vizzuUrl" size="20"></select>
+		<select name="vizzuRef" id="vizzuRef" size="20"></select>
+		<br />
+		<button id="replay">Replay</button>
+		<button id="play">Play</button>
+		<button id="vscode">Open in VSCode</button>
+		<button id="validate">Validate</button>
+		<br />
+		<iframe id="frame" style="width: 700px; height: 600px; border: 0"></iframe>
+		<iframe id="frame-ref" style="width: 700px; height: 600px; border: 0"></iframe>
+		<canvas id="canvas-dif" style="width: 682px; height: 446px"></canvas>
+		<script src="index.js" type="module"></script>
+	</body>
+</html>

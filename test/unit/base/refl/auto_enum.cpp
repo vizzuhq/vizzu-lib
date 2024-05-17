@@ -26,6 +26,8 @@ consteval auto unique_enum_names(Foobar::ins_struct)
 }
 }
 
+enum class my_enum { foo = -1, bar, out = 3 };
+
 static_assert(!Refl::Detail::UniqueNames<Foo::fobar>);
 static_assert(Refl::Detail::UniqueNames<Foo::uniq_names>);
 static_assert(Refl::Detail::UniqueNames<Foo::Foobar::ins_struct>);
@@ -34,7 +36,7 @@ namespace Bar
 {
 template <typename T> std::string toString(T v)
 {
-	return Refl::enum_name(v);
+	return Refl::enum_name<std::string>(v);
 }
 template <typename T> T parse(std::string s)
 {
@@ -50,6 +52,9 @@ const static auto tests =
             {
 	            static_assert(
 	                std::size(Refl::enum_names<Foo::fobar>) == 2U);
+
+	            static_assert(
+	                std::size(Refl::enum_names<my_enum>) == 2U);
             })
 
         .add_case("enum_names_are_available_compile_time",
@@ -73,6 +78,9 @@ const static auto tests =
             {
 	            check() << Refl::enum_name(Foo::fobar::foo) == "foo";
 	            check() << Refl::enum_name(Foo::fobar::bar) == "bar";
+
+	            check() << Refl::enum_name(my_enum::foo) == "foo";
+	            check() << Refl::enum_name(my_enum::bar) == "bar";
             })
 
         .add_case("enum_can_be_created_from_string",
@@ -82,6 +90,11 @@ const static auto tests =
 	                == Foo::fobar::foo;
 	            check() << Refl::get_enum<Foo::fobar>("bar")
 	                == Foo::fobar::bar;
+
+	            check() << Refl::get_enum<my_enum>("foo")
+	                == my_enum::foo;
+	            check() << Refl::get_enum<my_enum>("bar")
+	                == my_enum::bar;
             })
 
         .add_case("enum_unique_name_can_be_converted_to_string",
@@ -133,6 +146,20 @@ const static auto tests =
             {
 	            check() << Bar::parse<Foo::Foobar::fobar>("bar")
 	                == Foo::Foobar::fobar::bar;
+            })
+
+        .add_case("enum_out_of_sequence_throws",
+            []
+            {
+	            throws<std::logic_error>() << []
+	            {
+		            return Refl::enum_name(my_enum::out);
+	            };
+
+	            throws<std::logic_error>() << []
+	            {
+		            return Refl::get_enum<my_enum>("out");
+	            };
             })
 
     ;

@@ -8,35 +8,12 @@
 namespace Vizzu
 {
 
-template <class R, class... Ts> class JsFunctionWrapper
-{
-private:
-	using JsFun = R(std::remove_reference_t<Ts> *...);
-
-public:
-	constexpr explicit JsFunctionWrapper(
-	    std::shared_ptr<JsFun> &&fun = {}) :
-	    wrapper{std::move(fun)}
-	{}
-
-	explicit operator std::function<R(Ts...)>() &&
-	{
-		if (wrapper.fun) return {std::move(wrapper)};
-		return {};
-	}
-
-	[[nodiscard]] std::size_t hash() const noexcept
-	{
-		return std::hash<std::shared_ptr<JsFun>>{}(wrapper.fun);
-	}
-
-private:
-	struct
-	{
-		std::shared_ptr<JsFun> fun;
-		R operator()(Ts &&...ts) const { return (*fun)(&ts...); }
-	} wrapper;
-};
+// Unlike std::unique_ptr, the deleter of std::shared_ptr is invoked
+// even if the managed pointer is null -> keep unique_ptr
+template <class R, class... Ts>
+using JsFunctionWrapper =
+    std::unique_ptr<R(std::remove_reference_t<Ts> *...),
+        void (*)(R(std::remove_reference_t<Ts> *...))>;
 
 }
 

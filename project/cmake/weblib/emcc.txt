@@ -20,6 +20,7 @@ set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} \
 '_vizzu_pointerLeave',\
 '_vizzu_wheel',\
 '_vizzu_update',\
+'_vizzu_render',\
 '_vizzu_setLogging',\
 '_vizzu_errorMessage',\
 '_vizzu_version',\

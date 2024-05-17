@@ -7,10 +7,7 @@ CircleMarker::CircleMarker(const Gen::Marker &marker,
     const CoordinateSystem &coordSys,
     const Gen::Options &options,
     const Styles::Chart &style) :
-    SingleDrawMarker(marker,
-        coordSys,
-        options,
-        Gen::ShapeType::circle)
+    SingleDrawMarker(marker, options, Gen::ShapeType::circle)
 {
 	morphToCircle = true;
 	border = false;

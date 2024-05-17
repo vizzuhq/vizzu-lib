@@ -17,11 +17,8 @@ public:
 	~BaseCanvas() override;
 	void init(QPaintDevice *device);
 
-	Geom::Size textBoundary(const std::string &text) override;
-
 	Gfx::ICanvas &getCanvas() override { return *this; }
 
-	[[nodiscard]] Geom::Rect getClipRect() const override;
 	void setClipRect(const Geom::Rect &rect) override;
 	void setClipCircle(const Geom::Circle &circle) override;
 	void setClipPolygon() override;
@@ -64,6 +61,9 @@ public:
 	{
 		return static_cast<Vizzu::Draw::Painter *>(this);
 	}
+
+	[[nodiscard]] static QFont fromGfxFont(const Gfx::Font &newFont,
+	    QFont font = {});
 
 protected:
 	QPainter painter;

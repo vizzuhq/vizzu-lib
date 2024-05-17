@@ -10,7 +10,6 @@ class RectangleMarker : public SingleDrawMarker
 {
 public:
 	RectangleMarker(const Gen::Marker &marker,
-	    const CoordinateSystem &coordSys,
 	    const Gen::Options &options,
 	    const Styles::Chart &style);
 };

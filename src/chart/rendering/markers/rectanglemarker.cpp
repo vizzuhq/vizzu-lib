@@ -4,13 +4,9 @@ namespace Vizzu::Draw
 {
 
 RectangleMarker::RectangleMarker(const Gen::Marker &marker,
-    const CoordinateSystem &coordSystem,
     const Gen::Options &options,
     const Styles::Chart &style) :
-    SingleDrawMarker(marker,
-        coordSystem,
-        options,
-        Gen::ShapeType::rectangle)
+    SingleDrawMarker(marker, options, Gen::ShapeType::rectangle)
 {
 	linear =
 	    options.coordSystem.factor<double>(Gen::CoordSystem::polar)
@@ -20,7 +16,7 @@ RectangleMarker::RectangleMarker(const Gen::Marker &marker,
 	auto spacing = Geom::Size{
 	    marker.spacing
 	    * style.plot.marker.rectangleSpacing->combine<Geom::Size>(
-	        [&](int, const auto rectangleSpacing)
+	        [&marker](const auto &rectangleSpacing)
 	        {
 		        if (rectangleSpacing) {
 			        auto padding = *rectangleSpacing;

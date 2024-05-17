@@ -1,22 +1,18 @@
-import { CEnv, CObject } from './cenv.js'
-import { CPointerClosure } from './objregistry.js'
+import { type CEnv, CObject } from './cenv.js'
+import { type CPointerClosure } from './objregistry.js'
 import { CColorGradient } from './ccolorgradient.js'
-import { CString, CPointer, CColorGradientPtr } from '../cvizzu.types'
+import type { CString, CColorGradientPtr } from '../cvizzu.types'
 
 export class CCanvas extends CObject {
-  constructor(env: CEnv, getId: CPointerClosure) {
-    super(getId, env)
-  }
+	constructor(env: CEnv, getId: CPointerClosure) {
+		super(getId, env)
+	}
 
-  getColorGradient(stops: CColorGradientPtr, stopCount: number): CColorGradient {
-    return new CColorGradient(this, stops, stopCount)
-  }
+	getColorGradient(stops: CColorGradientPtr, stopCount: number): CColorGradient {
+		return new CColorGradient(this, stops, stopCount)
+	}
 
-  getString(text: CString): string {
-    return this._wasm.UTF8ToString(text)
-  }
-
-  setNumber(cNumber: CPointer, value: number): void {
-    this._wasm.setValue(cNumber, value, 'double')
-  }
+	getString(text: CString): string {
+		return this._wasm.UTF8ToString(text)
+	}
 }

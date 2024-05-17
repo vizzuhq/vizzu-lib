@@ -11,14 +11,14 @@
 
 Window::Window(QWidget *parent) :
     QMainWindow(parent),
-    chart(),
     ui(std::make_unique<Ui::Window>())
 {
 	ui->setupUi(this);
-	chart.getChart().doChange = [this]()
-	{
-		update();
-	};
+	chart.getChart().getChart().onChanged.attach(
+	    [this]
+	    {
+		    update();
+	    });
 	resize(640, 480);
 	QPalette pal = palette();
 	pal.setColor(QPalette::Window, Qt::white);
@@ -50,8 +50,7 @@ void Window::paintEvent(QPaintEvent *)
 	const Geom::Size size{static_cast<double>(width()),
 	    static_cast<double>(height())};
 
-	chart.getChart().onUpdateSize({std::shared_ptr<void>{}, &canvas},
-	    size);
+	chart.getChart().onUpdateSize(size);
 	canvas.frameBegin();
 	chart.getChart().onDraw({std::shared_ptr<void>{}, &canvas}, true);
 	canvas.frameEnd();
@@ -59,29 +58,42 @@ void Window::paintEvent(QPaintEvent *)
 
 bool Window::eventFilter(QObject *, QEvent *event)
 {
-	auto type = event->type();
-	if (type == QEvent::MouseButtonPress) {
-		auto *e = static_cast<QMouseEvent *>(event);
-		const Geom::Point pos(e->x(), e->y());
-		chart.getChart().onPointerDown({}, GUI::PointerEvent(0, pos));
-		return true;
+	try {
+		auto type = event->type();
+		if (type == QEvent::MouseButtonPress) {
+			auto *e = static_cast<QMouseEvent *>(event);
+			const Geom::Point pos(e->x(), e->y());
+			chart.getChart().onPointerDown({0, pos});
+			return true;
+		}
+		if (type == QEvent::MouseButtonRelease) {
+			auto *e = static_cast<QMouseEvent *>(event);
+			const Geom::Point pos(e->x(), e->y());
+			chart.getChart().onPointerUp({0, pos});
+			return true;
+		}
+		if (type == QEvent::HoverMove) {
+			auto *e = static_cast<QHoverEvent *>(event);
+			const Geom::Point pos(e->pos().x(), e->pos().y());
+			chart.getChart().onPointerMove({0, pos});
+			return true;
+		}
+		if (type == QEvent::HoverLeave) {
+			chart.getChart().onPointerLeave(
+			    {0, Geom::Point::Invalid()});
+			return true;
+		}
 	}
-	if (type == QEvent::MouseButtonRelease) {
-		auto *e = static_cast<QMouseEvent *>(event);
-		const Geom::Point pos(e->x(), e->y());
-		chart.getChart().onPointerUp({}, GUI::PointerEvent(0, pos));
-		return true;
+	catch (std::exception const &x) {
+		if (x.what()
+		    != std::string_view{"animation already in progress"})
+			printf("Exception thrown at mouse event: %s(\"%s\")\n",
+			    typeid(x).name() + 4,
+			    x.what());
 	}
-	if (type == QEvent::HoverMove) {
-		auto *e = static_cast<QHoverEvent *>(event);
-		const Geom::Point pos(e->pos().x(), e->pos().y());
-		chart.getChart().onPointerMove({}, GUI::PointerEvent(0, pos));
-		return true;
-	}
-	if (type == QEvent::HoverLeave) {
-		chart.getChart().onPointerLeave({},
-		    GUI::PointerEvent(0, Geom::Point::Invalid()));
-		return true;
+	catch (...) {
+		printf("Unknown exception thrown at mouse event.\n");
 	}
 	return false;
 }
+void Window::resizeEvent(QResizeEvent *) { update(); }

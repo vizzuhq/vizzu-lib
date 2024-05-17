@@ -12,132 +12,135 @@ edit_uri: https://github.com/vizzuhq/vizzu-lib/edit/main/docs
 use_directory_urls: true
 
 theme:
-  name: material
-  palette:
-    scheme: vizzu
-  font:
-    text: Roboto
-    code: Roboto Mono
-  logo: assets/logo-white.svg
-  favicon: assets/favicon.svg
-  custom_dir: ./overrides
-  features:
-    - toc.follow
-    - search.suggest
-    - search.highlight
-    - navigation.top
-    - navigation.footer
-    - content.code.copy
-    - content.action.edit
+    name: material
+    palette:
+        scheme: vizzu
+    font:
+        text: Roboto
+        code: Roboto Mono
+    logo: assets/logo-white.svg
+    favicon: assets/favicon.svg
+    custom_dir: ./overrides
+    features:
+        - toc.follow
+        - search.suggest
+        - search.highlight
+        - navigation.top
+        - navigation.footer
+        - content.code.copy
+        - content.action.edit
 
 extra_css:
-  - assets/stylesheets/vizzu.css
-  - assets/stylesheets/highlight.css
-  - assets/stylesheets/gallery.css
-  - assets/stylesheets/chart.css
-  - assets/stylesheets/style_reference.css
+    - assets/stylesheets/vizzu.css
+    - assets/stylesheets/highlight.css
+    - assets/stylesheets/gallery.css
+    - assets/stylesheets/chart.css
+    - assets/stylesheets/style_reference.css
 
 extra_javascript:
-  - assets/javascripts/extlinks.js
-  - //cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.7/build/highlight.min.js
-  - //cdn.jsdelivr.net/npm/highlightjs-line-numbers.js@2.8.0/dist/highlightjs-line-numbers.min.js
-  - assets/javascripts/highlight.js
+    - assets/javascripts/extlinks.js
+    - //cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.7/build/highlight.min.js
+    - //cdn.jsdelivr.net/npm/highlightjs-line-numbers.js@2.8.0/dist/highlightjs-line-numbers.min.js
+    - assets/javascripts/highlight.js
 
 extra:
-  version:
-    provider: mike
-    default: latest
-  social:
-    - icon: fontawesome/brands/slack
-      name: Vizzu on Slack
-      link: https://join.slack.com/t/vizzu-community/shared_invite/zt-w2nqhq44-2CCWL4o7qn2Ns1EFSf9kEg
-    - icon: fontawesome/brands/twitter
-      name: Vizzu on Twitter
-      link: https://twitter.com/VizzuHQ
-    - icon: fontawesome/brands/reddit
-      name: Vizzu on Reddit
-      link: https://www.reddit.com/user/VizzuHQ/?sort=top
-    - icon: fontawesome/brands/github
-      name: Vizzu on GitHub
-      link: https://github.com/vizzuhq/
+    version:
+        provider: mike
+        default: latest
+    social:
+        - icon: fontawesome/brands/slack
+          name: Vizzu on Slack
+          link: https://join.slack.com/t/vizzu-community/shared_invite/zt-w2nqhq44-2CCWL4o7qn2Ns1EFSf9kEg
+        - icon: fontawesome/brands/twitter
+          name: Vizzu on Twitter
+          link: https://twitter.com/VizzuHQ
+        - icon: fontawesome/brands/reddit
+          name: Vizzu on Reddit
+          link: https://www.reddit.com/user/VizzuHQ/?sort=top
+        - icon: fontawesome/brands/github
+          name: Vizzu on GitHub
+          link: https://github.com/vizzuhq/
 
 markdown_extensions:
-  - pymdownx.tasklist:
-      custom_checkbox: true
-  - mdx_truly_sane_lists
-  - attr_list
-  - md_in_html
-  - admonition
-  - pymdownx.highlight:
-      use_pygments: false
-  - pymdownx.details
-  - pymdownx.superfences
+    - pymdownx.tasklist:
+          custom_checkbox: true
+    - mdx_truly_sane_lists
+    - attr_list
+    - md_in_html
+    - admonition
+    - pymdownx.highlight:
+          use_pygments: false
+    - pymdownx.details
+    - pymdownx.superfences
 
 plugins:
-  - mike:
-      version_selector: true
-      alias_type: symlink
-      canonical_version: latest
-      redirect_template: ./tools/docs/overrides/mike/redirect.html
-  - search
-  - section-index
-  - literate-nav:
-      implicit_index: true
-  - autorefs
-  - include-markdown
-  - placeholder
-  - gen-files:
-      scripts:
-        - pages/gen_pages.py
-        - examples/gen_examples.py
-        - reference/gen_reference.py
-        - style/gen_style_reference.py
+    - exclude:
+          glob:
+              - tutorial/assets/**
+    - mike:
+          version_selector: true
+          alias_type: symlink
+          canonical_version: latest
+          redirect_template: ./tools/docs/overrides/mike/redirect.html
+    - search
+    - section-index
+    - literate-nav:
+          implicit_index: true
+    - autorefs
+    - include-markdown
+    - placeholder
+    - gen-files:
+          scripts:
+              - pages/gen_pages.py
+              - examples/gen_examples.py
+              - reference/gen_reference.py
+              - style/gen_style_reference.py
 
 nav:
-  - Home: index.md
-  - installation.md
-  - Tutorial:
-      - tutorial/index.md
-      - tutorial/initialization.md
-      - tutorial/data.md
-      - Axes, title, tooltip: tutorial/axes_title_tooltip.md
-      - Aggregating data: tutorial/aggregating_data.md
-      - tutorial/geometry.md
-      - Channels & legend: tutorial/channels_legend.md
-      - Group/stack: tutorial/group_stack.md
-      - tutorial/stacking_explanation.md
-      - tutorial/sorting.md
-      - Align & range: tutorial/align_range.md
-      - Changing dimensions: tutorial/changing_dimensions.md
-      - Orientation, split & polar: tutorial/orientation_split_polar.md
-      - Filtering & adding new records: tutorial/filter_add_new_records.md
-      - Without coordinates & noop channel: tutorial/without_coordinates_noop_channel.md
-      - Color palette & fonts: tutorial/color_palette_fonts.md
-      - Chart layout: tutorial/chart_layout.md
-      - Animation options: tutorial/animation_options.md
-      - Animation control & keyframes: tutorial/animation_control_keyframes.md
-      - tutorial/events.md
-      - Shorthands & Store: tutorial/shorthands_store.md
-      - Chart presets: tutorial/chart_presets.md
-      - tutorial/style.md
-      - tutorial/writing_plugins.md
-  - Examples:
-      - examples/index.md
-      - Preset charts: examples/presets/
-      - Analytical operations:
-          - examples/analytical_operations/index.md
-          - Drill down: examples/analytical_operations/drilldown/
-          - Sum: examples/analytical_operations/sum/
-          - Compare: examples/analytical_operations/compare/
-          - Split: examples/analytical_operations/split/
-          - Stretch to proportion: examples/analytical_operations/stretch_to_proportion/
-          - Distribute: examples/analytical_operations/distribute/
-          - Filter: examples/analytical_operations/filter/
-          - Change dimension: examples/analytical_operations/change_dimension/
-          - Miscellaneous: examples/analytical_operations/misc/
-      - Static charts: examples/static/
-  - Showcases: showcases/
-  - Code reference:
-      - reference/README.md
-      - Vizzu: reference/modules.md
-  - License: LICENSE.md
+    - Home: index.md
+    - installation.md
+    - Tutorial:
+          - tutorial/index.md
+          - tutorial/initialization.md
+          - tutorial/data.md
+          - Axes, title, tooltip: tutorial/axes_title_tooltip.md
+          - Aggregating data: tutorial/aggregating_data.md
+          - tutorial/geometry.md
+          - Channels & legend: tutorial/channels_legend.md
+          - Group/stack: tutorial/group_stack.md
+          - tutorial/stacking_explanation.md
+          - tutorial/sorting.md
+          - Align & range: tutorial/align_range.md
+          - Changing dimensions: tutorial/changing_dimensions.md
+          - Orientation, split & polar: tutorial/orientation_split_polar.md
+          - Filtering & adding new records: tutorial/filter_add_new_records.md
+          - Without coordinates & noop channel: tutorial/without_coordinates_noop_channel.md
+          - Color palette & fonts: tutorial/color_palette_fonts.md
+          - Chart layout: tutorial/chart_layout.md
+          - Animation options: tutorial/animation_options.md
+          - Animation control & keyframes: tutorial/animation_control_keyframes.md
+          - tutorial/events.md
+          - Shorthands & Store: tutorial/shorthands_store.md
+          - Chart presets: tutorial/chart_presets.md
+          - tutorial/style.md
+          - tutorial/writing_plugins.md
+    - Examples:
+          - examples/index.md
+          - Preset charts: examples/presets/
+          - Analytical operations:
+                - examples/analytical_operations/index.md
+                - Drill down: examples/analytical_operations/drilldown/
+                - Sum: examples/analytical_operations/sum/
+                - Compare: examples/analytical_operations/compare/
+                - Split: examples/analytical_operations/split/
+                - Stretch to proportion: examples/analytical_operations/stretch_to_proportion/
+                - Distribute: examples/analytical_operations/distribute/
+                - Filter: examples/analytical_operations/filter/
+                - Change dimension: examples/analytical_operations/change_dimension/
+                - Miscellaneous: examples/analytical_operations/misc/
+          - Static charts: examples/static/
+    - Showcases: showcases/
+    - Code reference:
+          - reference/README.md
+          - Vizzu: reference/modules.md
+    - License: LICENSE.md

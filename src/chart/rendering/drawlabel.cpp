@@ -4,99 +4,76 @@ namespace Vizzu::Draw
 {
 
 void DrawLabel::draw(Gfx::ICanvas &canvas,
-    const Geom::TransformedRect &rect,
+    const Geom::TransformedRect &fullRect,
     const std::string &text,
     const Styles::Label &style,
     Util::EventDispatcher::Event &onDraw,
     std::unique_ptr<Util::EventTarget> eventTarget,
     Options options) const
 {
-	auto relRect = Geom::Rect{Geom::Point(), rect.size};
+	auto relativeRect = Geom::Rect{{}, fullRect.size};
 
 	if (!style.backgroundColor->isTransparent()) {
 		canvas.save();
-		canvas.setBrushColor(*style.backgroundColor);
-		canvas.setLineColor(*style.backgroundColor);
-		canvas.transform(rect.transform);
-		canvas.rectangle(relRect);
+		auto bgColor = *style.backgroundColor * options.bgAlpha;
+		canvas.setBrushColor(bgColor);
+		canvas.setLineColor(bgColor);
+		canvas.transform(fullRect.transform);
+		canvas.rectangle(relativeRect);
 		canvas.restore();
 	}
 
+	auto font = Gfx::Font{style};
+	auto paddedRect =
+	    style.contentRect(relativeRect, font.size, options.flip);
+	auto [alignRect, alignConstant] = alignText(paddedRect,
+	    style,
+	    Gfx::ICanvas::textBoundary(font, text));
+
 	canvas.save();
 
-	auto contentRect =
-	    style.contentRect(relRect, style.calculatedSize());
+	canvas.setFont(font);
+	if (options.alpha)
+		canvas.setTextColor(*style.color * *options.alpha);
 
-	canvas.setFont(Gfx::Font{style});
-	if (options.setColor)
-		canvas.setTextColor(*style.color * options.alpha);
-
-	auto textSize = canvas.textBoundary(text);
-	auto alignSize = textSize;
-	alignSize.x = std::min(alignSize.x, contentRect.size.x);
-	auto textRect = alignText(contentRect, style, alignSize);
-	textRect.size = textSize;
-
-	auto transform =
-	    rect.transform * Geom::AffineTransform(textRect.bottomLeft());
+	auto copyRect = fullRect;
 
 	if (options.flip)
-		transform = transform
-		          * Geom::AffineTransform(textRect.size, 1.0, -M_PI);
+		copyRect.transform *=
+		    Geom::AffineTransform(fullRect.size, 1.0, -M_PI);
 
-	Geom::TransformedRect trRect;
-	trRect.transform = transform;
-	trRect.size = textRect.size;
+	if (onDraw.invoke(Events::OnTextDrawEvent{*eventTarget,
+	        copyRect,
+	        paddedRect,
+	        alignConstant,
+	        text})) {
 
-	if (onDraw.invoke(
-	        Events::OnTextDrawEvent(*eventTarget, trRect, text))) {
-		canvas.transform(transform);
+		auto textTransform =
+		    copyRect.transform
+		    * Geom::AffineTransform(alignRect.bottomLeft());
 
-		canvas.text(Geom::Rect(Geom::Point(), textRect.size), text);
+		canvas.transform(textTransform);
 
-		renderedChart.emplace(trRect, std::move(eventTarget));
+		canvas.text({{}, alignRect.size}, text);
+
+		renderedChart.emplace(copyRect, std::move(eventTarget));
 	}
 
 	canvas.restore();
 }
 
-double DrawLabel::getHeight(const Styles::Label &style,
-    Gfx::ICanvas &canvas)
-{
-	const Gfx::Font font(style);
-	canvas.setFont(font);
-	auto textHeight = canvas.textBoundary("").y;
-	return style.paddingTop->get(textHeight, font.size)
-	     + style.paddingBottom->get(textHeight, font.size)
-	     + textHeight;
-}
-
-Geom::Rect DrawLabel::alignText(const Geom::Rect &contentRect,
+std::pair<Geom::Rect, double> DrawLabel::alignText(
+    const Geom::Rect &paddedRect,
     const Styles::Label &style,
     const Geom::Size &textSize)
 {
-	Geom::Rect res;
-	res.size = textSize;
-	res.pos = contentRect.pos;
+	Geom::Rect res{paddedRect.pos, textSize};
 
-	res.pos.x = style.textAlign->combine<double>(
-	    [&contentRect, &textSize](int,
-	        const Styles::Text::TextAlign &align) -> double
-	    {
-		    switch (align) {
-		    case Styles::Text::TextAlign::left:
-			    return contentRect.left();
+	auto align = style.textAlign->calculate<double>();
+	if (auto space = paddedRect.size.x - textSize.x; space > 0)
+		res.pos.x += space / 2.0 * (1 + align);
 
-		    case Styles::Text::TextAlign::right:
-			    return contentRect.right() - textSize.x;
-
-		    default:
-		    case Styles::Text::TextAlign::center:
-			    return contentRect.center().x - textSize.x / 2.0;
-		    }
-	    });
-
-	return res;
+	return {res, align};
 }
 
 }

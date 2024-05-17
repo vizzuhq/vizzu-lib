@@ -32,12 +32,12 @@ To contribute to the `JavaScript` part of the project, it is recommended to use
 Run the following command to install the `JavaScript` development dependencies:
 
 ```sh
-npm run init-js
+npm install
 ```
 
 The `JavaScript` development requirements are installed based on the
 `package-lock.json` file. To update the development requirements, you can use
-the command `npm run lock-js`.
+the command `npm run lock:js`.
 
 However, for the documentation we are also using `Python`. If you plan to
 contribute to this part of the project, you will need `Python`, preferably
@@ -46,21 +46,12 @@ version `3.10`.
 Run the following command to install the `Python` development dependencies:
 
 ```sh
-npm run init-py
+./tools/ci/run/init-py.sh
 ```
 
 The `Python` development requirements are installed based on the
 `tools/ci/pdm.lock` file. To update the development requirements, you can use
-the command `npm run lock-py`.
-
-Once set up, you can utilize the pre-defined `npm` scripts. For example, you can
-initialize the `JavaScript` and `Python` development environments using the
-command `npm run init`, or specific parts like `init-src`, `init-docs`, or
-`init-tools`.
-
-```sh
-npm run init
-```
+the command `npm run lock:py`.
 
 **Note:** For all available `npm` scripts, run `npm run --list`.
 
@@ -79,7 +70,7 @@ docker run -i -t -v .:/workspace vizzu/vizzu-dev-desktop bash
 or you can use a specific version of the prebuilt image:
 
 ```sh
-docker run -i -t -v .:/workspace vizzu/vizzu-dev-desktop:0.9 bash
+docker run -i -t -v .:/workspace vizzu/vizzu-dev-desktop:0.10 bash
 ```
 
 Run the following commands to build and run the `WASM` version's development
@@ -93,7 +84,7 @@ docker run -i -t -v .:/workspace vizzu/vizzu-dev-wasm bash
 or you can use a specific version of the prebuilt image:
 
 ```sh
-docker run -i -t -v .:/workspace vizzu/vizzu-dev-wasm:0.9 bash
+docker run -i -t -v .:/workspace vizzu/vizzu-dev-wasm:0.10 bash
 ```
 
 ### Building the project
@@ -148,12 +139,12 @@ Run the following script in the running `vizzu-dev-wasm` container to build the
 
 If you used the above script to build the `WASM` version, the minified
 `JavaScript` file is already created otherwise you can run
-`npm run pkg-build-ts && npm run pkg-rollup-js`. After run the following command
-in order to create the npm package:
+`npm run build:ts && npm run rollup`. After run the following command in order
+to create the npm package:
 
 ```sh
-npm run pkg-set-version-js
-npm run pkg-build-js
+npm run set-version
+npm run build:js
 ```
 
 **Note:** This task will set the version number in the `package.json` file.
@@ -161,9 +152,9 @@ npm run pkg-build-js
 **Note:** You can build the `npm` package without building the `WASM` version:
 
 ```sh
-npm run pkg-build-wasm-wocpp
-npm run pkg-set-version-js
-npm run pkg-build-js
+npm run build:wasm-wocpp
+npm run set-version
+npm run build:js
 ```
 
 ### CI
@@ -178,7 +169,7 @@ npm run ci
 ```
 
 However, if you want to run the CI steps on specific parts of the project, you
-can use the following scripts: `ci-src`, `ci-docs`, or `ci-tools`.
+can use the following scripts: `ci:src`, `ci:docs`, or `ci:tools`.
 
 #### Formatting
 
@@ -195,8 +186,8 @@ npm run fix-format
 ```
 
 If you wish to format specific parts of the project, you can use the following
-scripts: `format-src`, `format-docs`, `format-tools`, or `fix-format-src`,
-`fix-format-docs`, `fix-format-tools`.
+scripts: `format:src`, `format:docs`, `format:tools`, or `fix-format:src`,
+`fix-format:docs`, `fix-format:tools`.
 
 #### Code analyses
 
@@ -207,7 +198,7 @@ npm run lint
 ```
 
 If you need to run code analyses for specific parts of the project, you can
-utilize the following scripts: `lint-src`, `lint-docs`, or `lint-tools`.
+utilize the following scripts: `lint:src`, `lint:docs`, or `lint:tools`.
 
 #### Typing
 
@@ -218,18 +209,18 @@ npm run type
 ```
 
 If you want to check specific parts of the project, you can use the following
-script: `type-tools`.
+script: `type:tools`.
 
 #### Testing
 
-Run the following command to start integration testing:
+Run the following command to start e2e testing:
 
 ```sh
 npm test
 ```
 
-For information on how integration testing works and what options it has, please
-see the program help:
+For information on how e2e testing works and what options it has, please see the
+program help:
 
 ```sh
 npm test -- --help
@@ -241,14 +232,14 @@ Test cases can be viewed using different versions of `Vizzu` using the manual
 checker.
 
 ```sh
-npm run test-man
+npm run test:man
 # Press CTRL and click on the URL to open it in the default browser
 ```
 
 For more options please see the program help.
 
 ```sh
-npm run test-man -- --help
+npm run test:man -- --help
 ```
 
 ### "Nightly" builds
@@ -284,13 +275,13 @@ git clone --single-branch --branch main --depth 1 'git@github.com:vizzuhq/vizzu-
 **Note:** If you also want to generate thumbnails, run the following command:
 
 ```sh
-npm run docs-gen-thumbnail
+npm run gen-thumbnail
 ```
 
-To build the documentation, you can use the `docs-build` script:
+To build the documentation, you can use the `build-docs` script:
 
 ```sh
-npm run docs-build
+npm run build-docs
 ```
 
 You can read the online version at

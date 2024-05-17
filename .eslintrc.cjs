@@ -1,31 +1,25 @@
 module.exports = {
-  env: {
-    browser: true,
-    jest: true
-  },
-  extends: ['standard', 'prettier'],
-  root: true,
-  parserOptions: {
-    ecmaVersion: 'latest'
-  },
-  overrides: [
-    {
-      files: ['test/integration/test_cases/**', 'test/integration/test_data/**'],
-      rules: {
-        camelcase: 'off'
-      }
-    },
-    {
-      files: ['*.ts', '*.tsx'],
-      extends: ['standard', 'prettier', 'plugin:@typescript-eslint/recommended'],
-      parser: '@typescript-eslint/parser',
-      plugins: ['@typescript-eslint'],
-      rules: {
-        'no-use-before-define': 'off',
-        '@typescript-eslint/no-use-before-define': 'error',
-        '@typescript-eslint/explicit-function-return-type': ['error']
-      }
-    }
-  ],
-  ignorePatterns: ['**/dist/**', '!.puppeteerrc.cjs']
+	overrides: [
+		{
+			files: ['*.ts', '*.tsx'],
+			extends: ['@vizzu/eslint-config/typescript'],
+			rules: {
+				'no-use-before-define': 'off',
+				'@typescript-eslint/no-use-before-define': 'error',
+				'@typescript-eslint/explicit-function-return-type': ['error']
+			}
+		},
+		{
+			files: ['*.js', '*.mjs', '*.cjs'],
+			extends: ['@vizzu/eslint-config/standard']
+		},
+		{
+			files: ['test/e2e/test_cases/**', 'test/e2e/test_data/**'],
+			extends: ['@vizzu/eslint-config/standard'],
+			rules: {
+				camelcase: 'off'
+			}
+		}
+	],
+	ignorePatterns: ['**/dist/**']
 }

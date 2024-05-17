@@ -16,9 +16,9 @@ struct GuidesByAxis
 	Math::FuzzyBool axis;
 	Math::FuzzyBool labels;
 	Math::FuzzyBool axisSticks;
-	Math::FuzzyBool guidelines;
+	Math::FuzzyBool markerGuides;
 	Math::FuzzyBool interlacings;
-	Math::FuzzyBool dimensionGuides;
+	Math::FuzzyBool axisGuides;
 	bool operator==(const GuidesByAxis &other) const;
 };
 

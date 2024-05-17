@@ -2,11 +2,15 @@
 #define CHART_LAYOUT_H
 
 #include "base/geom/rect.h"
-#include "base/gfx/canvas.h"
-#include "chart/generator/plot.h"
+#include "chart/options/options.h"
 
 namespace Vizzu
 {
+namespace Styles
+{
+struct Chart;
+struct Logo;
+}
 
 class Layout
 {
@@ -20,14 +24,11 @@ public:
 	Geom::Rect legend;
 	Geom::Rect plot;
 	Geom::Rect plotArea;
-	Geom::Rect xTitle;
-	Geom::Rect yTitle;
 	Geom::Rect logo;
 
 	void setBoundary(const Geom::Rect &boundary,
 	    const Styles::Chart &style,
-	    const Gen::PlotOptionsPtr &options,
-	    Gfx::ICanvas &info);
+	    const Gen::PlotOptionsPtr &options);
 
 private:
 	void setLogoBoundary(const Styles::Logo &logoStyle);

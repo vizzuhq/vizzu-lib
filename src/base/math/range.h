@@ -63,6 +63,11 @@ public:
 		return value >= min && value <= max;
 	}
 
+	[[nodiscard]] bool includes(const Range<T> &range) const
+	{
+		return range.max >= min && range.min <= max;
+	}
+
 	[[nodiscard]] T rescale(const T &value) const
 	{
 		return max == min ? 0.5 : (value - min) / size();

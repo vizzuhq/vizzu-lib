@@ -17,19 +17,15 @@ namespace Anim
 template <typename Type> class Weighted
 {
 public:
-	Type value;
-	double weight;
+	Type value{};
+	double weight{};
 
-	Weighted() : value(Type()), weight(0.0) {}
+	Weighted() noexcept(
+	    std::is_nothrow_default_constructible_v<Type>) = default;
 
 	explicit Weighted(Type value) :
 	    value(std::move(value)),
 	    weight(1.0)
-	{}
-
-	explicit Weighted(Type value, double weight) :
-	    value(std::move(value)),
-	    weight(weight)
 	{}
 
 	bool operator==(const Weighted<Type> &other) const
@@ -45,17 +41,33 @@ public:
 	[[nodiscard]] bool hasValue() const { return weight > 0.0; }
 };
 
+enum class InterpolateIndex : bool { first = false, second = true };
+
+using enum InterpolateIndex;
+
+inline InterpolateIndex operator||(const InterpolateIndex &lhs,
+    const InterpolateIndex &rhs)
+{
+	return static_cast<InterpolateIndex>(
+	    static_cast<bool>(lhs) || static_cast<bool>(rhs));
+}
+
 template <typename Type> class Interpolated
 {
 public:
-	uint64_t count{1};
 	std::array<Weighted<Type>, 2> values;
+	bool has_second{};
 
-	Interpolated() = default;
-	Interpolated(const Interpolated &) = default;
-	Interpolated(Interpolated &&) noexcept = default;
-	Interpolated &operator=(const Interpolated &) = default;
-	Interpolated &operator=(Interpolated &&) noexcept = default;
+	Interpolated() noexcept(
+	    std::is_nothrow_default_constructible_v<Type>) = default;
+	Interpolated(const Interpolated &) noexcept(
+	    std::is_nothrow_copy_constructible_v<Type>) = default;
+	Interpolated(Interpolated &&) noexcept(
+	    std::is_nothrow_move_constructible_v<Type>) = default;
+	Interpolated &operator=(const Interpolated &) noexcept(
+	    std::is_nothrow_copy_assignable_v<Type>) = default;
+	Interpolated &operator=(Interpolated &&) noexcept(
+	    std::is_nothrow_move_assignable_v<Type>) = default;
 
 	explicit Interpolated(Type value)
 	{
@@ -82,145 +94,135 @@ public:
 
 	[[nodiscard]] bool hasOneValue() const
 	{
-		return count == 1 && values[0].hasValue();
+		return !has_second && values[0].hasValue();
 	}
 
-	[[nodiscard]] bool interpolates() const { return count == 2; }
+	[[nodiscard]] bool interpolates() const { return has_second; }
+
+	[[nodiscard]] InterpolateIndex maxIndex() const
+	{
+		return static_cast<InterpolateIndex>(has_second);
+	}
 
 	[[nodiscard]] Interpolated shifted() const
 	{
-		if (count == 1) {
-			Interpolated res;
-			res.values[0] = Weighted<Type>();
-			res.values[1] = values[0];
-			res.count = 2;
-			return res;
-		}
+		if (has_second)
+			throw std::logic_error("Cannot move Weigthed Value");
 
-		throw std::logic_error("Cannot move Weigthed Value");
+		Interpolated res;
+		res.values[1] = values[0];
+		res.has_second = true;
+		return res;
 	}
 
 	[[nodiscard]] const Type &get() const
 	{
-		if (count == 1) return values[0].value;
+		if (!has_second) return values[0].value;
 
 		throw std::logic_error("Invalid Weigthed Pair");
 	}
 
-	[[nodiscard]] const Weighted<Type> &get(uint64_t index) const
+	[[nodiscard]] const Weighted<Type> &get_or_first(
+	    InterpolateIndex index) const
 	{
-		if (count == 0) throw std::logic_error("Empty Weigthed Pair");
-		if (index >= 2)
-			throw std::logic_error("Invalid Weigthed Pair index");
-
-		return values[count == 1 ? 0 : index];
+		return values[has_second && static_cast<bool>(index)];
 	}
+
+	template <class T>
+	[[nodiscard]] auto get(T &&index) const = delete;
 
 	explicit operator std::string() const
 	{
-		if (count == 1) return Conv::toString(values[0].value);
+		if (!has_second) return Conv::toString(values[0].value);
 
 		throw std::logic_error("Invalid Weigthed Pair");
 	}
 
-	Weighted<Type> &operator*()
+	Weighted<Type> &operator*() { return *operator->(); }
+
+	Weighted<Type> *operator->()
 	{
-		if (count == 1) return values[0];
+		if (!has_second) return values.data();
 
 		throw std::logic_error("Invalid Weigthed Pair dereference");
 	}
 
 	bool operator==(const Interpolated<Type> &other) const
 	{
-		if (count != other.count) return false;
-		if (count == 0) return true;
-		if (count == 1 && values[0] == other.values[0]) return true;
-		if (count == 2 && values[0] == other.values[0]
-		    && values[1] == other.values[1])
-			return true;
-		return false;
+		return has_second == other.has_second
+		    && values[0] == other.values[0]
+		    && (!has_second || values[1] == other.values[1]);
 	}
 
 	bool operator==(const Type &other) const
 	{
-		return count == 1 && values[0].weight == 1.0
+		return !has_second && values[0].weight == 1.0
 		    && values[0].value == other;
 	}
 
 	bool operator<(const Interpolated<Type> &other) const
 	{
-		if (count != 1 && other.count != 1)
+		if (has_second && other.has_second)
 			throw std::logic_error("cannot compare weigthed pairs");
-		if (count >= other.count) return false;
+		if (!other.has_second) return false;
 		return values[0] < other.values[0];
 	}
 
-	void visit(const std::function<void(int, const Weighted<Type> &)>
-	        &branch) const
+	template <class T> void visit(T &&branch) const
 	{
-		if (count >= 1 && values[0].hasValue()) branch(0, values[0]);
-		if (count >= 2 && values[1].hasValue()) branch(1, values[1]);
+		if (values[0].hasValue()) branch(first, values[0]);
+		if (has_second && values[1].hasValue())
+			branch(second, values[1]);
 	}
 
-	template <typename T>
-	T combine(const std::function<T(int, const Type &)> &branch) const
+	template <class T, class Fun> T combine(Fun &&branch) const
 	{
-		if (count >= 1) {
-			auto res = branch(0, values[0].value) * values[0].weight;
-			if (count == 2)
-				res = res
-				    + branch(1, values[1].value) * values[1].weight;
-			return T{res};
-		}
-		return T();
+		auto res = T{branch(values[0].value)} * values[0].weight;
+		if (has_second)
+			res = res + T{branch(values[1].value)} * values[1].weight;
+		return T{res};
 	}
 
 	[[nodiscard]] bool contains(const Type &value) const
 	{
-		if (count >= 1 && value == values[0].value) return true;
-		if (count >= 2 && value == values[1].value) return true;
+		if (value == values[0].value) return true;
+		if (has_second && value == values[1].value) return true;
 		return false;
 	}
 
 	template <class T, class U>
 	[[nodiscard]] T factor(const U &value) const
 	{
-		double res = 0;
-		if (count >= 1 && values[0].value == value)
-			res += values[0].weight;
-		if (count >= 2 && values[1].value == value)
+		double res{};
+		if (values[0].value == value) res += values[0].weight;
+		if (has_second && values[1].value == value)
 			res += values[1].weight;
 		return T{res};
 	}
 
 	template <typename T = Type> [[nodiscard]] T calculate() const
 	{
-		if (this->count >= 1) {
-			auto res = static_cast<T>(this->values[0].value)
-			         * this->values[0].weight;
-			if (this->count == 2)
-				res = res
-				    + static_cast<T>(this->values[1].value)
-				          * this->values[1].weight;
-			return res;
-		}
-		return T();
+		auto res = static_cast<T>(this->values[0].value)
+		         * this->values[0].weight;
+		if (has_second)
+			res = res
+			    + static_cast<T>(this->values[1].value)
+			          * this->values[1].weight;
+		return res;
 	}
 
 	template <typename T = Type> [[nodiscard]] T min() const
 	{
-		return (this->count == 1) ? this->values[0].value
-		     : (this->count == 2) ? std::min(this->values[0].value,
-		           this->values[1].value)
-		                          : INFINITY;
+		return !has_second ? this->values[0].value
+		                   : std::min(this->values[0].value,
+		                       this->values[1].value);
 	}
 
 	template <typename T = Type> [[nodiscard]] T max() const
 	{
-		return (this->count == 1) ? this->values[0].value
-		     : (this->count == 2) ? std::max(this->values[0].value,
-		           this->values[1].value)
-		                          : -INFINITY;
+		return !has_second ? this->values[0].value
+		                   : std::max(this->values[0].value,
+		                       this->values[1].value);
 	}
 };
 
@@ -232,7 +234,7 @@ Interpolated<Type> interpolate(const Interpolated<Type> &op0,
 	if (factor <= 0.0) return op0;
 	if (factor >= 1.0) return op1.shifted();
 
-	if (op0.count != 1 || op1.count != 1)
+	if (op0.has_second || op1.has_second)
 		throw std::logic_error("Cannot interpolate Weigthed Pairs");
 
 	Interpolated<Type> res;
@@ -247,7 +249,7 @@ Interpolated<Type> interpolate(const Interpolated<Type> &op0,
 		res.values[0].weight = op0.values[0].weight * (1.0 - factor);
 		res.values[1].value = op1.values[0].value;
 		res.values[1].weight = op1.values[0].weight * factor;
-		res.count = 2;
+		res.has_second = true;
 	}
 	return res;
 }

@@ -11,14 +11,18 @@ class NaturalCmp
 public:
 	explicit NaturalCmp(bool ignoreCase = true,
 	    bool ignoreSpace = true);
-	bool operator()(const std::string &, const std::string &) const;
+	[[nodiscard]] bool operator()(const std::string &,
+	    const std::string &) const;
 
 private:
 	bool ignoreCase;
 	bool ignoreSpace;
-	int cmp(const char *&, const char *&) const;
-	int cmpChar(const char *&, const char *&) const;
-	static int cmpNum(const char *&, const char *&);
+	[[nodiscard]] std::weak_ordering cmp(const char *,
+	    const char *) const;
+	[[nodiscard]] std::weak_ordering cmpChar(const char &,
+	    const char &) const;
+	[[nodiscard]] static std::weak_ordering cmpNum(const char *&,
+	    const char *&);
 	static void skipSpaces(const char *&);
 };
 

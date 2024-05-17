@@ -15,9 +15,33 @@ namespace test
 
 using runnable = void (*)();
 
+struct assertion_error : std::runtime_error
+{
+	src_location location;
+
+	explicit assertion_error(const std::string &msg,
+	    src_location location = src_location()) noexcept :
+	    runtime_error("Assert " + msg),
+	    location(location)
+	{}
+};
+
+struct skip_error : std::runtime_error
+{
+	src_location location;
+
+	explicit skip_error(const std::string &msg,
+	    src_location location = src_location()) noexcept :
+	    runtime_error("Skip " + msg),
+	    location(location)
+	{}
+};
+
 class case_type
 {
 public:
+	enum class result_t { OK, SKIP, FAIL };
+
 	case_type(std::string_view suite_name,
 	    std::string_view case_name,
 	    runnable runner,
@@ -28,7 +52,7 @@ public:
 	    location(location)
 	{}
 
-	void operator()()
+	result_t operator()()
 	{
 		using std::chrono::steady_clock;
 
@@ -39,19 +63,22 @@ public:
 
 		auto duration = steady_clock::now() - start;
 		print_summary(duration);
+
+		return static_cast<result_t>(*this);
 	}
 
 	void fail(const src_location &location,
 	    const std::string &message)
 	{
-		if (!error_messages.contains(location))
-			error_messages.insert({location, message});
+		error_messages.try_emplace({location, suffix},
+		    message + suffix);
 	}
 
 	[[nodiscard]] std::string full_name() const
 	{
 		return "[" + std::string{suite_name} + "] "
-		     + std::string{case_name};
+		     + std::string{case_name} + " (" + file_name() + ":"
+		     + std::to_string(location.get_line()) + ")";
 	}
 
 	[[nodiscard]] std::string file_name() const
@@ -59,27 +86,50 @@ public:
 		return location.get_file_name();
 	}
 
-	explicit operator bool() const { return error_messages.empty(); }
+	explicit operator result_t() const
+	{
+		using enum result_t;
+		return skip ? SKIP : error_messages.empty() ? OK : FAIL;
+	}
+
+	void set_latest_location(const src_location &loc)
+	{
+		latest_location = loc;
+	}
+
+	const src_location &get_test_location() const { return location; }
+
+	void set_suffix(const std::string &s) { suffix = s; }
 
 private:
 	std::string_view suite_name;
 	std::string_view case_name;
 	runnable runner;
+	bool skip = false;
 	src_location location;
-	std::map<src_location, std::string> error_messages;
+	src_location latest_location = location;
+	std::map<std::pair<src_location, std::string>, std::string>
+	    error_messages;
+	std::string suffix;
 
 	void run_safely() noexcept
 	{
 		try {
 			runner();
 		}
-
+		catch (const assertion_error &e) {
+			fail(e.location, e.what());
+		}
+		catch (const skip_error &e) {
+			if (error_messages.empty()) { skip = true; }
+			fail(e.location, e.what());
+		}
 		catch (std::exception &e) {
-			fail(location,
+			fail(latest_location,
 			    "exception thrown: " + std::string(e.what()));
 		}
 		catch (...) {
-			fail(location, "unknown exception thrown");
+			fail(latest_location, "unknown exception thrown");
 		}
 	}
 
@@ -97,14 +147,17 @@ private:
 		std::cout << (error_messages.empty()
 		                  ? std::string(ansi::fg_green)
 		                        + "[     OK ] "
+		              : skip
+		                  ? std::string(ansi::fg_yellow)
+		                        + "[   SKIP ] "
 		                  : std::string(ansi::fg_red) + "[ FAILED ] ")
 		          << ansi::reset << full_name() << " ("
 		          << (duration_cast<milliseconds>(duration).count())
 		          << " ms)\n";
 
 		for (const auto &error : error_messages)
-			std::cerr << error.first.error_prefix()
-			          << "error: " << error.second << "\n";
+			std::cerr << error.first.first.error_prefix()
+			          << error.second << "\n";
 	}
 };
 

@@ -88,15 +88,19 @@ TextBox &TextBox::operator<<(const NewLine &)
 TextBox &TextBox::operator<<(const Font &font)
 {
 	newTextRun();
-	if (font.opCode == 0)
-		currentTextRun.font.size = font.size;
-	else if (font.opCode == 1)
+	switch (font.opCode) {
+	case 0: currentTextRun.font.size = font.size; break;
+	case 1:
 		currentTextRun.font.weight = Gfx::Font::Weight::Bold();
-	else if (font.opCode == 2)
+		break;
+	case 2:
 		currentTextRun.font.style = Gfx::Font::Style::italic;
-	else if (font.opCode == 3) {
+		break;
+	case 3:
 		currentTextRun.font.weight = Gfx::Font::Weight::Normal();
 		currentTextRun.font.style = Gfx::Font::Style::normal;
+		break;
+	default: break;
 	}
 	return *this;
 }
@@ -164,7 +168,8 @@ Geom::Size TextBox::measure(ICanvas &canvas)
 			line.height = 0;
 			for (auto &text : line.texts) {
 				canvas.setFont(text.font);
-				auto size = canvas.textBoundary(text.content);
+				auto size =
+				    ICanvas::textBoundary(text.font, text.content);
 				text.width = size.x;
 				line.width += size.x;
 				if (size.y > line.height) line.height = size.y;
@@ -208,22 +213,20 @@ void TextBox::newTextRun()
 {
 	size.x = size.y = 0;
 	if (!currentTextRun.content.empty()) {
-		currentLine.texts.push_back(currentTextRun);
-		currentTextRun = TextRun{};
-		currentTextRun.font = currentLine.texts.rbegin()->font;
-		currentTextRun.backgroundColor =
-		    currentLine.texts.rbegin()->backgroundColor;
-		currentTextRun.foregroundColor =
-		    currentLine.texts.rbegin()->foregroundColor;
+		auto &preTextRun =
+		    currentLine.texts.emplace_back(std::move(currentTextRun));
+		currentTextRun =
+		    TextRun{.foregroundColor = preTextRun.foregroundColor,
+		        .backgroundColor = preTextRun.backgroundColor,
+		        .font = preTextRun.font};
 	}
 }
 
 void TextBox::newLine()
 {
 	newTextRun();
-	lines.push_back(currentLine);
-	currentLine = Line{};
-	currentLine.spacing = lines.rbegin()->spacing;
+	auto &back = lines.emplace_back(std::move(currentLine));
+	currentLine = Line{.spacing = back.spacing};
 }
 
 }
