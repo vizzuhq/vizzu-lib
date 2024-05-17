@@ -32,10 +32,11 @@ public:
 	enum class LegendId : ChannelIdType {
 		color = static_cast<ChannelIdType>(ChannelId::color),
 		lightness = static_cast<ChannelIdType>(ChannelId::lightness),
-		size = static_cast<ChannelIdType>(ChannelId::size)
+		size = static_cast<ChannelIdType>(ChannelId::size),
+		noop = static_cast<ChannelIdType>(ChannelId::noop)
 	};
 
-	static_assert(Refl::enum_names<LegendId>.size() == 3);
+	static_assert(Refl::enum_names<LegendId>.size() == 4);
 	static_assert(std::ranges::all_of(Refl::enum_names<LegendId>,
 	    [](std::string_view name)
 	    {

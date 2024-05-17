@@ -35,7 +35,7 @@ void DrawChart::drawLegend(Gfx::ICanvas &canvas,
 	    [&legendObj, &canvas, &bounds](::Anim::InterpolateIndex,
 	        const auto &legend)
 	    {
-		    if (legend.value)
+		    if (legend.value && *legend.value != Gen::ChannelId::noop)
 			    legendObj.draw(canvas,
 			        bounds,
 			        Gen::Options::toChannel(*legend.value),

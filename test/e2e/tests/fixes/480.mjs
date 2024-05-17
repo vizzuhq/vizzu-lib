@@ -14,15 +14,16 @@ const testSteps = [
 			config: {
 				size: 'count()',
 				label: 'count()',
+				noop: 'Foo2',
 				geometry: 'circle',
+				legend: 'color',
 				title: 'Pre title'
 			}
 		}),
 	(chart) =>
 		chart.animate({
 			config: {
-				legend: 'color',
-				title: 'Some change'
+				legend: 'noop'
 			}
 		})
 ]

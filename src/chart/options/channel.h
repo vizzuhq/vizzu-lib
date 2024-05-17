@@ -13,7 +13,7 @@
 namespace Vizzu::Gen
 {
 
-enum class ChannelId { color, lightness, size, label, x, y, noop };
+enum class ChannelId { color, lightness, size, noop, label, x, y };
 
 class Channel
 {

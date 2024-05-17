@@ -227,9 +227,13 @@ Options::MarkerInfoId Options::generateMarkerInfoId()
 
 void Options::setAutoParameters()
 {
-	if (auto &leg = *legend; leg.value.isAuto()) {
-		leg.weight = 1.0;
-		leg.value.setAuto(getAutoLegend());
+	if (auto &[val, weight] = *legend; val.isAuto()) {
+		weight = 1.0;
+		val.setAuto(getAutoLegend());
+	}
+	else if (weight > 0 && val && *val != ChannelId::noop
+	         && channels.at(toChannel(*val)).isEmpty()) {
+		legend = LegendType{};
 	}
 
 	if (auto &ori = *orientation; ori.value.isAuto()) {
@@ -323,7 +327,7 @@ bool Options::labelsShownFor(const Data::SeriesIndex &series) const
 {
 	return channels.at(ChannelId::x).labelSeries() == series
 	    || channels.at(ChannelId::y).labelSeries() == series
-	    || (legend.get()
+	    || (legend.get() && *legend.get() != ChannelId::noop
 	        && channels.at(toChannel(*legend.get())).labelSeries()
 	               == series);
 }

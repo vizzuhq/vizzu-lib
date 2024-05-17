@@ -26,8 +26,8 @@ const testSteps = [
 					size: null,
 					label: 'Year'
 				},
-				title: 'If Remove a Measure, then a Scatter plot is Better'
-				//           legend: null
+				title: 'If Remove a Measure, then a Scatter plot is Better',
+				legend: 'noop'
 			}
 		}),
 	(chart) => {
