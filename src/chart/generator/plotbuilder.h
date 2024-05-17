@@ -13,7 +13,7 @@ class PlotBuilder
 {
 public:
 	PlotBuilder(const Data::DataTable &dataTable,
-	    const PlotOptionsPtr &opts,
+	    const PlotOptionsPtr &options,
 	    const Styles::Chart &style);
 
 	PlotPtr &&build() && { return std::move(plot); }
@@ -41,7 +41,8 @@ private:
 	void clearEmptyBuckets(const Buckets &buckets, bool main) const;
 	void addSpecLayout(Buckets &buckets);
 
-	Math::Range<double> &getMeasTrackRange(ChannelId type) const;
+	[[nodiscard]] Math::Range<double> &getMeasTrackRange(
+	    ChannelId type) const;
 };
 }
 

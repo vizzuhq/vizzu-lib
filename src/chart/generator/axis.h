@@ -170,7 +170,7 @@ struct Axis
 
 struct Axises : AbstractAxises<Axis>
 {
-	Geom::Point origo() const;
+	[[nodiscard]] Geom::Point origo() const;
 };
 
 }
