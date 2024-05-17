@@ -44,6 +44,8 @@ public:
 
 	[[nodiscard]] Channels shadow() const;
 
+	[[nodiscard]] auto &getChannels() { return channels; }
+
 private:
 	Refl::EnumArray<ChannelId, Channel> channels =
 	    []<std::size_t... Ix>(std::index_sequence<Ix...>)

@@ -1,5 +1,6 @@
 #include "keyframe.h"
 
+#include <chart/generator/plotbuilder.h>
 #include <utility>
 
 #include "chart/generator/plot.h"
@@ -9,18 +10,20 @@ namespace Vizzu::Anim
 
 Keyframe::Keyframe(Gen::PlotPtr src,
     const Gen::PlotPtr &trg,
+    const Data::DataTable &dataTable,
     const Options::Keyframe *options,
     bool isInstant) :
     options(*options),
     source(std::move(src))
 {
 	if (isInstant) this->options.all.duration = ::Anim::Duration(0);
-	init(trg);
+	init(trg, dataTable);
 	prepareActual();
 	createPlan(*source, *target, *actual, this->options);
 }
 
-void Keyframe::init(const Gen::PlotPtr &plot)
+void Keyframe::init(const Gen::PlotPtr &plot,
+    const Data::DataTable &dataTable)
 {
 	if (!plot) return;
 
@@ -37,9 +40,9 @@ void Keyframe::init(const Gen::PlotPtr &plot)
 			if (auto &&caption = source->getOptions()->caption.get())
 				emptyOpt->caption = caption;
 		}
-		source = std::make_shared<Gen::Plot>(plot->getTable(),
-		    emptyOpt,
-		    plot->getStyle());
+		source =
+		    Gen::PlotBuilder{dataTable, emptyOpt, plot->getStyle()}
+		        .build();
 		source->keepAspectRatio = plot->keepAspectRatio;
 	}
 	target = plot;
@@ -64,10 +67,8 @@ void Keyframe::prepareActual()
 		prepareActualMarkersInfo();
 	}
 
-	auto options =
-	    std::make_shared<Gen::Options>(*source->getOptions());
-
-	actual = std::make_shared<Gen::Plot>(options, *source);
+	actual = std::make_shared<Gen::Plot>(*source);
+	actual->detachOptions();
 }
 
 void Keyframe::prepareActualMarkersInfo()

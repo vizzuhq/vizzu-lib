@@ -36,14 +36,8 @@ template <typename Type> struct AbstractAxises
 		         : throw std::logic_error("not an axis channel");
 	}
 
-	bool operator==(const AbstractAxises<Type> &other) const
-	{
-		for (auto i = 0; i < std::size(axises); ++i) {
-			auto id = static_cast<ChannelId>(i);
-			if (axises[id] != other.axises[id]) return false;
-		}
-		return true;
-	}
+	[[nodiscard]] bool operator==(
+	    const AbstractAxises &other) const = default;
 };
 
 struct CommonAxis
@@ -53,14 +47,13 @@ struct CommonAxis
 	[[nodiscard]] bool operator==(const CommonAxis &) const = default;
 };
 
-using CommonAxises = AbstractAxises<CommonAxis>;
-
 CommonAxis interpolate(const CommonAxis &op0,
     const CommonAxis &op1,
     double factor);
 
 struct MeasureAxis
 {
+	Math::Range<double> trackedRange;
 	::Anim::Interpolated<bool> enabled{false};
 	Math::Range<double> range = Math::Range<double>::Raw(0, 1);
 	::Anim::String unit;
@@ -73,16 +66,13 @@ struct MeasureAxis
 	    std::optional<double> step);
 	bool operator==(const MeasureAxis &other) const;
 	[[nodiscard]] double origo() const;
+
+	void track(double value);
 };
 
 MeasureAxis interpolate(const MeasureAxis &op0,
     const MeasureAxis &op1,
     double factor);
-
-struct MeasureAxises : public AbstractAxises<MeasureAxis>
-{
-	[[nodiscard]] Geom::Point origo() const;
-};
 
 struct DimensionAxis
 {
@@ -90,7 +80,6 @@ struct DimensionAxis
 	    const DimensionAxis &op1,
 	    double factor);
 
-public:
 	class Item
 	{
 	public:
@@ -140,6 +129,8 @@ public:
 
 	bool enabled{false};
 	std::string category{};
+	std::shared_ptr<std::vector<std::optional<Data::SliceIndex>>>
+	    trackedValues;
 
 	DimensionAxis() = default;
 	bool add(const Data::SliceIndex &index,
@@ -160,6 +151,7 @@ public:
 		return values.cend();
 	}
 	bool setLabels(double step);
+	void track(const Data::MarkerId &id);
 
 private:
 	Values values;
@@ -169,7 +161,17 @@ DimensionAxis interpolate(const DimensionAxis &op0,
     const DimensionAxis &op1,
     double factor);
 
-using DimensionAxises = AbstractAxises<DimensionAxis>;
+struct Axis
+{
+	CommonAxis common;
+	MeasureAxis measure;
+	DimensionAxis dimension;
+};
+
+struct Axises : AbstractAxises<Axis>
+{
+	Geom::Point origo() const;
+};
 
 }
 

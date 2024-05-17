@@ -30,7 +30,7 @@ bool GuidesByAxis::operator==(const GuidesByAxis &other) const
 	    && interlacings == other.interlacings;
 }
 
-void Guides::init(const Options &options)
+Guides::Guides(const Options &options)
 {
 	auto isCircle = options.geometry.get() == ShapeType::circle;
 	auto isLine = options.geometry.get() == ShapeType::line;

@@ -194,7 +194,7 @@ void Sheet::setAfterStyles(Gen::Plot &plot, const Geom::Size &size)
 		std::vector<Math::Range<double>> ranges;
 		bool has_collision = false;
 		for (const auto &pair :
-		    plot.dimensionAxises.at(Gen::ChannelId::x)) {
+		    plot.axises.at(Gen::ChannelId::x).dimension) {
 
 			if (pair.second.weight == 0) continue;
 

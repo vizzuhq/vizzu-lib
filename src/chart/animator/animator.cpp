@@ -5,12 +5,16 @@
 namespace Vizzu::Anim
 {
 
-Animator::Animator(const Util::EventDispatcher::Event &onBegin,
+Animator::Animator(const Data::DataTable &dataTable,
+    const Util::EventDispatcher::Event &onBegin,
     const Util::EventDispatcher::Event &onComplete) :
+    dataTable(dataTable),
     onBegin(onBegin),
     onComplete(onComplete),
-    actAnimation(std::make_shared<Animation>(Gen::PlotPtr())),
-    nextAnimation(std::make_shared<Animation>(Gen::PlotPtr()))
+    actAnimation(
+        std::make_shared<Animation>(dataTable, Gen::PlotPtr())),
+    nextAnimation(
+        std::make_shared<Animation>(dataTable, Gen::PlotPtr()))
 {}
 
 void Animator::addKeyframe(const Gen::PlotPtr &plot,
@@ -36,7 +40,8 @@ void Animator::animate(const ::Anim::Control::Option &options,
 	onThisCompletes.attach(
 	    [this](const Gen::PlotPtr &plot, const bool &)
 	    {
-		    nextAnimation = std::make_shared<Animation>(plot);
+		    nextAnimation =
+		        std::make_shared<Animation>(dataTable, plot);
 		    this->running = false;
 	    });
 

@@ -2,14 +2,14 @@
 
 #include "dataframe/old/datatable.h"
 
-#include "channelstats.h"
+#include "axis.h"
 
 namespace Vizzu::Gen
 {
 
 Marker::Marker(const Options &options,
     const Data::DataCube &data,
-    ChannelsStats &stats,
+    Axises &stats,
     const Data::MultiIndex &index,
     MarkerIndex idx,
     bool needMarkerInfo) :
@@ -154,7 +154,7 @@ Conv::JSONObj &&Marker::appendToJSON(Conv::JSONObj &&jsonObj) const
 double Marker::getValueForChannel(const Channels &channels,
     ChannelId type,
     const Data::DataCube &data,
-    ChannelsStats &stats,
+    Axises &stats,
     const Data::MultiIndex &index,
     const Data::MarkerId *mid) const
 {
@@ -164,7 +164,7 @@ double Marker::getValueForChannel(const Channels &channels,
 
 	double value{};
 
-	auto &stat = stats.channels[type];
+	auto &stat = stats.at(type);
 
 	if (channel.isDimension()) {
 		std::optional<Data::MarkerId> nid;
@@ -178,7 +178,7 @@ double Marker::getValueForChannel(const Channels &channels,
 		else
 			value = static_cast<double>(id.itemId);
 
-		if (enabled) stat.track(id);
+		if (enabled) stat.dimension.track(id);
 	}
 	else {
 		if (const auto &measure = *channel.measureId;
@@ -187,7 +187,7 @@ double Marker::getValueForChannel(const Channels &channels,
 		else
 			value = data.valueAt(index, measure);
 
-		if (enabled) { stat.track(value); }
+		if (enabled) stat.measure.track(value);
 	}
 	return value;
 }

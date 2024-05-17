@@ -329,27 +329,28 @@ bool Planner::positionMorphNeeded() const
 bool Planner::needColor() const
 {
 	return (isAnyLegend(Gen::ChannelId::color)
-	           && (source->commonAxises.at(Gen::ChannelId::color)
-	                   != target->commonAxises.at(
-	                       Gen::ChannelId::color)
-	               || source->dimensionAxises.at(
-	                      Gen::ChannelId::color)
-	                      != target->dimensionAxises.at(
-	                          Gen::ChannelId::color)
-	               || source->measureAxises.at(Gen::ChannelId::color)
-	                      != target->measureAxises.at(
-	                          Gen::ChannelId::color)))
+	           && (source->axises.at(Gen::ChannelId::color).common
+	                   != target->axises.at(Gen::ChannelId::color)
+	                          .common
+	               || source->axises.at(Gen::ChannelId::color)
+	                          .dimension
+	                      != target->axises.at(Gen::ChannelId::color)
+	                             .dimension
+	               || source->axises.at(Gen::ChannelId::color).measure
+	                      != target->axises.at(Gen::ChannelId::color)
+	                             .measure))
 	    || (isAnyLegend(Gen::ChannelId::lightness)
-	        && (source->commonAxises.at(Gen::ChannelId::lightness)
-	                != target->commonAxises.at(
-	                    Gen::ChannelId::lightness)
-	            || source->dimensionAxises.at(
-	                   Gen::ChannelId::lightness)
-	                   != target->dimensionAxises.at(
-	                       Gen::ChannelId::lightness)
-	            || source->measureAxises.at(Gen::ChannelId::lightness)
-	                   != target->measureAxises.at(
-	                       Gen::ChannelId::lightness)))
+	        && (source->axises.at(Gen::ChannelId::lightness).common
+	                != target->axises.at(Gen::ChannelId::lightness)
+	                       .common
+	            || source->axises.at(Gen::ChannelId::lightness)
+	                       .dimension
+	                   != target->axises.at(Gen::ChannelId::lightness)
+	                          .dimension
+	            || source->axises.at(Gen::ChannelId::lightness)
+	                       .measure
+	                   != target->axises.at(Gen::ChannelId::lightness)
+	                          .measure))
 	    || anyMarker(+[](const Gen::Marker &source,
 	                      const Gen::Marker &target) -> bool
 	        {
@@ -395,23 +396,23 @@ bool Planner::verticalBeforeHorizontal() const
 
 bool Planner::needVertical() const
 {
-	return source->commonAxises.at(Gen::ChannelId::y)
-	        != target->commonAxises.at(Gen::ChannelId::y)
-	    || source->measureAxises.at(Gen::ChannelId::y)
-	           != target->measureAxises.at(Gen::ChannelId::y)
-	    || source->dimensionAxises.at(Gen::ChannelId::y)
-	           != target->dimensionAxises.at(Gen::ChannelId::y)
+	return source->axises.at(Gen::ChannelId::y).common
+	        != target->axises.at(Gen::ChannelId::y).common
+	    || source->axises.at(Gen::ChannelId::y).measure
+	           != target->axises.at(Gen::ChannelId::y).measure
+	    || source->axises.at(Gen::ChannelId::y).dimension
+	           != target->axises.at(Gen::ChannelId::y).dimension
 	    || source->guides.at(Gen::ChannelId::y)
 	           != target->guides.at(Gen::ChannelId::y)
 	    || (isAnyLegend(Gen::ChannelId::size)
-	        && (source->commonAxises.at(Gen::ChannelId::size)
-	                != target->commonAxises.at(Gen::ChannelId::size)
-	            || source->measureAxises.at(Gen::ChannelId::size)
-	                   != target->measureAxises.at(
-	                       Gen::ChannelId::size)
-	            || source->dimensionAxises.at(Gen::ChannelId::size)
-	                   != target->dimensionAxises.at(
-	                       Gen::ChannelId::size)))
+	        && (source->axises.at(Gen::ChannelId::size).common
+	                != target->axises.at(Gen::ChannelId::size).common
+	            || source->axises.at(Gen::ChannelId::size).measure
+	                   != target->axises.at(Gen::ChannelId::size)
+	                          .measure
+	            || source->axises.at(Gen::ChannelId::size).dimension
+	                   != target->axises.at(Gen::ChannelId::size)
+	                          .dimension))
 	    || source->anyAxisSet != target->anyAxisSet
 	    || (source->markerConnectionOrientation
 	            != target->markerConnectionOrientation
@@ -421,13 +422,13 @@ bool Planner::needVertical() const
 	            || target->markerConnectionOrientation.value_or(
 	                   Gen::Orientation::horizontal)
 	                   == Gen::Orientation::vertical))
-	    || source->measureAxises.at(Gen::ChannelId::label)
-	               .origMeasureName.get()
-	           != target->measureAxises.at(Gen::ChannelId::label)
-	                  .origMeasureName.get()
-	    || source->measureAxises.at(Gen::ChannelId::label).unit.get()
-	           != target->measureAxises.at(Gen::ChannelId::label)
-	                  .unit.get()
+	    || source->axises.at(Gen::ChannelId::label)
+	               .measure.origMeasureName.get()
+	           != target->axises.at(Gen::ChannelId::label)
+	                  .measure.origMeasureName.get()
+	    || source->axises.at(Gen::ChannelId::label).measure.unit.get()
+	           != target->axises.at(Gen::ChannelId::label)
+	                  .measure.unit.get()
 	    || anyMarker(+[](const Gen::Marker &source,
 	                      const Gen::Marker &target) -> bool
 	        {
@@ -442,12 +443,12 @@ bool Planner::needVertical() const
 
 bool Planner::needHorizontal() const
 {
-	return source->commonAxises.at(Gen::ChannelId::x)
-	        != target->commonAxises.at(Gen::ChannelId::x)
-	    || source->measureAxises.at(Gen::ChannelId::x)
-	           != target->measureAxises.at(Gen::ChannelId::x)
-	    || source->dimensionAxises.at(Gen::ChannelId::x)
-	           != target->dimensionAxises.at(Gen::ChannelId::x)
+	return source->axises.at(Gen::ChannelId::x).common
+	        != target->axises.at(Gen::ChannelId::x).common
+	    || source->axises.at(Gen::ChannelId::x).measure
+	           != target->axises.at(Gen::ChannelId::x).measure
+	    || source->axises.at(Gen::ChannelId::x).dimension
+	           != target->axises.at(Gen::ChannelId::x).dimension
 	    || source->guides.at(Gen::ChannelId::x)
 	           != target->guides.at(Gen::ChannelId::x)
 	    || source->anyAxisSet != target->anyAxisSet

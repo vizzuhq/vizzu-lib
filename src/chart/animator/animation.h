@@ -18,7 +18,8 @@ public:
 
 	Util::Event<const Gen::PlotPtr> onPlotChanged;
 
-	explicit Animation(const Gen::PlotPtr &plot);
+	Animation(const Data::DataTable &dataTable,
+	    const Gen::PlotPtr &plot);
 
 	void addKeyframe(const Gen::PlotPtr &next,
 	    const Options::Keyframe &options);
@@ -27,14 +28,15 @@ public:
 	    OnComplete &&onThisCompletes);
 
 private:
+	const Data::DataTable &dataTable;
 	OnComplete completionCallback;
 	Gen::PlotPtr source;
 	Gen::PlotPtr target;
 
 	template <class Modifier>
-	static Gen::PlotPtr getIntermediate(const Gen::PlotPtr &base,
+	Gen::PlotPtr getIntermediate(const Gen::PlotPtr &base,
 	    const Gen::PlotPtr &other,
-	    Modifier &&modifier);
+	    Modifier &&modifier) const;
 
 	void addKeyframe(const Gen::PlotPtr &source,
 	    const Gen::PlotPtr &target,

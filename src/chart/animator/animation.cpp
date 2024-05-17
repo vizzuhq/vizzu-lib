@@ -4,12 +4,15 @@
 
 #include "chart/animator/keyframe.h"
 #include "chart/generator/plot.h"
+#include "chart/generator/plotbuilder.h"
 
 namespace Vizzu::Anim
 {
 
-Animation::Animation(const Gen::PlotPtr &plot) :
+Animation::Animation(const Data::DataTable &dataTable,
+    const Gen::PlotPtr &plot) :
     ::Anim::Control(static_cast<Controllable &>(*this)),
+    dataTable(dataTable),
     source(plot),
     target(plot)
 {
@@ -162,7 +165,7 @@ void Animation::addKeyframe(const Gen::PlotPtr &next,
 template <class Modifier>
 Gen::PlotPtr Animation::getIntermediate(const Gen::PlotPtr &base,
     const Gen::PlotPtr &other,
-    Modifier &&modifier)
+    Modifier &&modifier) const
 {
 	Gen::PlotPtr res;
 
@@ -173,9 +176,9 @@ Gen::PlotPtr Animation::getIntermediate(const Gen::PlotPtr &base,
 
 	if (*extOptions != *other->getOptions()
 	    && *extOptions != *base->getOptions()) {
-		res = std::make_shared<Gen::Plot>(base->getTable(),
-		    extOptions,
-		    base->getStyle());
+		res =
+		    Gen::PlotBuilder{dataTable, extOptions, base->getStyle()}
+		        .build();
 
 		res->keepAspectRatio = base->keepAspectRatio;
 	}
@@ -189,6 +192,7 @@ void Animation::addKeyframe(const Gen::PlotPtr &source,
 {
 	::Anim::Sequence::addKeyframe(std::make_shared<Keyframe>(source,
 	    target,
+	    dataTable,
 	    &options,
 	    isInstant));
 }

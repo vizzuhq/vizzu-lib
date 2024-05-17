@@ -20,8 +20,8 @@ void DrawGuides::draw(bool horizontal)
 	auto baseColor = *guideStyle.color;
 	if (baseColor.alpha == 0) return;
 
-	const auto &axises = plot->dimensionAxises;
-	const auto &axis = axises.at(axisId);
+	const auto &axises = plot->axises;
+	const auto &axis = axises.at(axisId).dimension;
 
 	if (axis.enabled && *guideStyle.lineWidth > 0
 	    && (static_cast<double>(plot->guides.at(axisId).axisGuides)
