@@ -26,10 +26,10 @@ private:
 
 	void normalize(const Geom::Rect &rect);
 
-	[[nodiscard]] std::optional<Geom::Circle> getTouchingCircle(
-	    const SpecMarker &act,
-	    size_t firstIdx,
-	    size_t lastIdx) const;
+	[[nodiscard]] static std::optional<Geom::Circle>
+	getTouchingCircle(double newMarkerSize,
+	    const SpecMarker &firstMarker,
+	    const SpecMarker &lastMarker);
 };
 
 }

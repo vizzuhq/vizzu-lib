@@ -11,9 +11,10 @@ BubbleChart::BubbleChart(const std::vector<double> &circleAreas,
 {
 	markers.reserve(circleAreas.size());
 
-	for (auto j = 0U; j < circleAreas.size(); ++j)
-		markers.emplace_back(j,
-		    std::sqrt(std::max(0.0, circleAreas[j])));
+	for (auto j = 0U; const auto &circleArea : circleAreas)
+		markers.emplace_back(j++,
+		    std::sqrt(std::abs(circleArea)),
+		    std::signbit(circleArea));
 
 	std::sort(markers.begin(), markers.end(), SpecMarker::sizeOrder);
 
@@ -26,101 +27,94 @@ BubbleChart::BubbleChart(const std::vector<double> &circleAreas,
 
 void BubbleChart::generate()
 {
-	auto baseIndex = 0U;
+	auto baseMarker = markers.begin();
+	while (baseMarker != markers.end()
+	       && !std::isfinite(baseMarker->size()))
+		baseMarker++->emplaceCircle(Geom::Point{0, 0}, 0);
+	while (baseMarker != markers.end() && baseMarker->negative)
+		baseMarker++->emplaceCircle(Geom::Point{0, 0}, 0);
+	if (baseMarker == markers.end()) return;
 
-	auto firstMarkerSize = markers.empty() ? 0.0 : markers[0].size();
-	for (auto i = 0U; i < markers.size(); ++i) {
-		auto &marker = markers[i];
-		auto markerSize = marker.size();
+	auto firstMarkerSize = baseMarker->size();
+	baseMarker->emplaceCircle(Geom::Point{0, 0}, firstMarkerSize);
 
-		switch (i) {
-		case 0:
-			marker.emplaceCircle(Geom::Point{0, 0}, markerSize);
-			break;
+	auto currMarker = baseMarker + 1;
+	while (currMarker != markers.end() && currMarker->negative)
+		currMarker++->emplaceCircle(Geom::Point{0, 0}, 0);
+	if (currMarker == markers.end()) return;
 
-		case 1:
-			marker.emplaceCircle(
-			    Geom::Point{firstMarkerSize + markerSize, 0},
-			    markerSize);
-			break;
+	auto markerSize = currMarker->size();
+	currMarker->emplaceCircle(
+	    Geom::Point{firstMarkerSize + markerSize, 0},
+	    markerSize);
 
-		default:
-			if (markerSize == 0.0) {
-				marker.emplaceCircle(Geom::Point{0, 0}, 0);
-				continue;
-			}
-
-			auto candidate0 =
-			    getTouchingCircle(marker, baseIndex, i - 1);
-			auto candidate1 =
-			    getTouchingCircle(marker, baseIndex + 1, i - 1);
-
-			if (candidate1
-			    && !candidate1->overlaps(markers[baseIndex].circle(),
-			        0.00001)) {
-				marker.emplaceCircle(*candidate1);
-				++baseIndex;
-			}
-			else if (candidate0
-			         && !candidate0->overlaps(
-			             markers[baseIndex + 1].circle(),
-			             0.00001)) {
-				marker.emplaceCircle(*candidate0);
-			}
-			else
-				throw std::logic_error(
-				    "Cannot generate bubble chart");
-
-			break;
+	for (auto preMarker = currMarker++; currMarker != markers.end();
+	     ++currMarker) {
+		if (currMarker->negative) {
+			currMarker->emplaceCircle(Geom::Point{0, 0}, 0);
+			continue;
 		}
+
+		markerSize = currMarker->size();
+		if (markerSize == 0.0) break;
+
+		if (auto &&candidate1 = getTouchingCircle(markerSize,
+		        baseMarker[1],
+		        *preMarker);
+		    candidate1
+		    && !candidate1->overlaps(baseMarker->circle(), 0.00001)) {
+			currMarker->emplaceCircle(*candidate1);
+			++baseMarker;
+		}
+		else if (auto &&candidate0 = getTouchingCircle(markerSize,
+		             *baseMarker,
+		             *preMarker);
+		         candidate0
+		         && !candidate0->overlaps(baseMarker[1].circle(),
+		             0.00001))
+			currMarker->emplaceCircle(*candidate0);
+		else
+			throw std::logic_error("Cannot generate bubble chart");
+		preMarker = currMarker;
 	}
+
+	while (currMarker != markers.end())
+		currMarker++->emplaceCircle(Geom::Point{0, 0}, 0);
 }
 
 void BubbleChart::normalize(const Geom::Rect &rect)
 {
 	if (markers.empty()) return;
 
-	Geom::Rect bound = markers[0].circle().boundary();
-
-	for (auto &marker : markers)
+	auto bound = markers[0].circle().boundary();
+	for (const auto &marker : markers)
 		bound = bound.boundary(marker.circle().boundary());
 
 	auto maxSize = std::max(bound.width(), bound.height());
-
-	auto center = rect.center();
-
-	for (auto &marker : markers) {
-		auto normCenter =
-		    center
-		    + rect.size * (marker.circle().center - bound.center())
-		          / maxSize;
-
-		auto normRadius =
-		    marker.circle().radius * rect.size.minSize() / maxSize;
-
-		marker.emplaceCircle(Geom::Circle(normCenter, normRadius));
-	}
+	auto &&cMul = rect.size / maxSize;
+	auto &&radMul = rect.size.minSize() / maxSize;
+	for (auto &&center = rect.center(); auto &marker : markers)
+		marker.emplaceCircle(
+		    center + cMul * (marker.circle().center - bound.center()),
+		    marker.circle().radius * radMul);
 }
 
 std::optional<Geom::Circle> BubbleChart::getTouchingCircle(
-    const SpecMarker &act,
-    size_t firstIdx,
-    size_t lastIdx) const
+    double newMarkerSize,
+    const SpecMarker &firstMarker,
+    const SpecMarker &lastMarker)
 {
-	if (firstIdx == lastIdx) return std::nullopt;
+	if (&firstMarker == &lastMarker) return {};
+	auto first = firstMarker.circle();
+	auto last = lastMarker.circle();
 
-	auto first = markers[firstIdx].circle();
-	auto last = markers[lastIdx].circle();
+	first.radius += newMarkerSize;
+	last.radius += newMarkerSize;
 
-	auto &&size = act.size();
-	first.radius += size;
-	last.radius += size;
+	if (const auto newCenter = last.intersection(first)[0])
+		return Geom::Circle(*newCenter, newMarkerSize);
 
-	auto newCenter = last.intersection(first)[0];
-
-	if (!newCenter) return std::nullopt;
-
-	return Geom::Circle(*newCenter, size);
+	return {};
 }
 
 }

@@ -181,7 +181,16 @@ Plot::sortedBuckets(const Buckets &buckets, bool main) const
 		}
 
 	if (main && options->sort == Sort::byValue)
-		std::sort(sorted.begin(), sorted.end());
+		std::sort(sorted.begin(),
+		    sorted.end(),
+		    [](const std::pair<double, std::size_t> &lhs,
+		        const std::pair<double, std::size_t> &rhs)
+		    {
+			    if (auto ord = std::weak_order(lhs.first, rhs.first);
+			        !std::is_eq(ord))
+				    return std::is_lt(ord);
+			    return lhs.second < rhs.second;
+		    });
 
 	if (main && options->reverse)
 		std::reverse(sorted.begin(), sorted.end());
