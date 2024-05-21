@@ -7,6 +7,7 @@
 
 #include "base/geom/rect.h"
 
+#include "sizedependentlayout.h"
 #include "specmarker.h"
 
 namespace Vizzu::Charts
@@ -16,16 +17,12 @@ class TreeMap
 {
 public:
 	explicit TreeMap(const std::vector<double> &sizes,
-	    const Geom::Point &p0 = Geom::Point{0, 1},
-	    const Geom::Point &p1 = Geom::Point{1, 0});
+	    const SpecMarker *parent = nullptr);
 
-	template <typename Hierarchy>
-	static void setupVector(const Hierarchy &hierarchy);
+	std::vector<SpecMarker> markers;
 
 private:
 	using It = std::vector<SpecMarker>::iterator;
-
-	std::vector<SpecMarker> markers;
 
 	static void divide(It begin,
 	    It end,
@@ -34,36 +31,22 @@ private:
 	    bool horizontal = true);
 };
 
-template <typename Hierarchy>
-void TreeMap::setupVector(const Hierarchy &hierarchy)
+struct TreeMapBuilder : SizeDependentLayout<TreeMap>
 {
-	if (hierarchy.empty()) return;
+	template <typename Hierarchy>
+	static void setupVector(const Hierarchy &hierarchy);
+};
 
-	std::vector<double> sizes(hierarchy.size());
-	for (std::size_t ix{}; const auto &level : hierarchy)
-		for (auto &sum = sizes[ix++]; const auto &item : level)
-			if (auto &&size = item->sizeFactor;
-			    std::isfinite(size) && size > 0)
-				sum += size;
-
-	TreeMap chart(sizes);
-
-	std::vector<double> in_sizes(hierarchy.inner_size());
-	for (std::size_t cnt{}; const auto &level : hierarchy) {
-		auto &&[pos, size] = chart.markers[cnt++].rect();
-
-		for (std::size_t ix{}; const auto &item : level)
-			in_sizes[ix++] = item->sizeFactor;
-
-		TreeMap subChart(in_sizes, pos, pos + size);
-
-		for (size_t subCnt{}; const auto &item : level) {
-			auto &&[spos, ssize] =
-			    subChart.markers[subCnt++].rect().positive();
-			item->position = spos + ssize;
-			item->size = ssize;
-		}
-	}
+template <typename Hierarchy>
+void TreeMapBuilder::setupVector(const Hierarchy &hierarchy)
+{
+	SizeDependentLayout::setupVector(hierarchy,
+	    [](auto *item, const SpecMarker &marker)
+	    {
+		    auto &&[spos, ssize] = marker.rect().positive();
+		    item->position = spos + ssize;
+		    item->size = ssize;
+	    });
 }
 
 }
