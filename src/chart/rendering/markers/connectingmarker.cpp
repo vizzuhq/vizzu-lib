@@ -69,7 +69,7 @@ ConnectingMarker::ConnectingMarker(const DrawingContext &ctx,
 		    isLine ? *ctx.rootStyle.plot.marker.lineMaxWidth : 0;
 
 		lineWidth[1] =
-		    std::max(maxWidth * marker.sizeFactor, minWidth);
+		    std::max(minWidth, maxWidth * marker.sizeFactor);
 
 		auto horizontalFactor =
 		    isArea ? fabs(2 * static_cast<double>(horizontal) - 1)
@@ -96,10 +96,9 @@ ConnectingMarker::ConnectingMarker(const DrawingContext &ctx,
 
 			points[3] = prevPos - prevSpacing;
 
-			lineWidth[0] =
-			    isLine
-			        ? std::max(maxWidth * prev->sizeFactor, minWidth)
-			        : 0;
+			lineWidth[0] = isLine ? std::max(minWidth,
+			                   maxWidth * prev->sizeFactor)
+			                      : 0;
 
 			points[0] =
 			    prevPos - prevSpacing

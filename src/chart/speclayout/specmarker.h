@@ -12,12 +12,16 @@ namespace Vizzu::Charts
 
 struct SpecMarker
 {
-	size_t index;
 	std::variant<double, Geom::Rect, Geom::Circle> sizeOrShape;
+	size_t index;
+	bool negative;
 
-	SpecMarker(size_t index, double radiusOrAreaFactorSize) :
+	SpecMarker(size_t index,
+	    double radiusOrAreaFactorSize,
+	    bool negative) :
+	    sizeOrShape(radiusOrAreaFactorSize),
 	    index(index),
-	    sizeOrShape(radiusOrAreaFactorSize)
+	    negative(negative)
 	{}
 
 	template <typename... T> void emplaceCircle(T &&...params)
@@ -51,7 +55,7 @@ struct SpecMarker
 
 	static bool sizeOrder(const SpecMarker &a, const SpecMarker &b)
 	{
-		return b.size() < a.size();
+		return std::is_lt(std::weak_order(b.size(), a.size()));
 	}
 };
 
