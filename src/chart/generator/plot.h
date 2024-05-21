@@ -31,8 +31,6 @@ namespace Gen
 
 class Plot
 {
-	friend class Anim::Keyframe;
-	friend class Anim::Morph::AbstractMorph;
 	friend class PlotBuilder;
 
 public:
@@ -54,8 +52,6 @@ public:
 
 	using MarkerInfo = ::Anim::Interpolated<MarkerInfoContent>;
 	using MarkersInfo = std::map<MarkerInfoId, MarkerInfo>;
-
-	static bool dimensionMatch(const Plot &a, const Plot &b);
 
 	Math::FuzzyBool anyAxisSet;
 	Axises axises;
@@ -88,6 +84,11 @@ public:
 	Styles::Chart &getStyle() { return style; }
 	void detachOptions();
 	[[nodiscard]] bool isEmpty() const;
+
+	static bool dimensionMatch(const Plot &a, const Plot &b);
+	static bool hasMarkerChange(const Plot &source,
+	    const Plot &target);
+	static void mergeMarkersWithCellInfo(Plot &source, Plot &target);
 
 private:
 	PlotOptionsPtr options;

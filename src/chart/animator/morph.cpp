@@ -51,13 +51,13 @@ void AbstractMorph::transform(double factor)
 
 	transform(*source.getOptions(),
 	    *target.getOptions(),
-	    *actual.options,
+	    *actual.getOptions(),
 	    factor);
 
 	for (auto i = 0U; i < source.getMarkers().size(); ++i) {
 		transform(source.getMarkers()[i],
 		    target.getMarkers()[i],
-		    actual.markers[i],
+		    actual.getMarkers()[i],
 		    factor);
 	}
 }
