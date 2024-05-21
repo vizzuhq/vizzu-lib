@@ -180,7 +180,7 @@ void PlotBuilder::addSpecLayout(Buckets &buckets)
 			plot->keepAspectRatio = true;
 		}
 		else
-			Charts::TreeMap::setupVector(buckets);
+			Charts::TreeMapBuilder::setupVector(buckets);
 	}
 }
 

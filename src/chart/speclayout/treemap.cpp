@@ -8,8 +8,7 @@ namespace Vizzu::Charts
 {
 
 TreeMap::TreeMap(const std::vector<double> &sizes,
-    const Geom::Point &p0,
-    const Geom::Point &p1)
+    const SpecMarker *parent)
 {
 	markers.reserve(sizes.size());
 
@@ -24,7 +23,11 @@ TreeMap::TreeMap(const std::vector<double> &sizes,
 	while (start != markers.end() && !std::isfinite(start->size()))
 		start++->emplaceRect({0, 0}, {0, 0});
 
-	divide(start, markers.end(), p0, p1);
+	divide(start,
+	    markers.end(),
+	    parent ? parent->rect().pos : Geom::Point{0, 1},
+	    parent ? parent->rect().topRight() : Geom::Point{1, 0});
+
 	std::ranges::sort(markers, SpecMarker::indexOrder);
 }
 
