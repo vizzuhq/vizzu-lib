@@ -2,6 +2,7 @@
 #define MATH_RANGE
 
 #include <algorithm>
+#include <cmath>
 #include <limits>
 #include <string>
 
@@ -48,6 +49,7 @@ public:
 
 	void include(const T &value)
 	{
+		if (!std::isfinite(value)) return;
 		max = std::max(max, value);
 		min = std::min(min, value);
 	}

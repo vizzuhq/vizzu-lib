@@ -42,7 +42,9 @@ void TreeMap::setupVector(const Hierarchy &hierarchy)
 	std::vector<double> sizes(hierarchy.size());
 	for (std::size_t ix{}; const auto &level : hierarchy)
 		for (auto &sum = sizes[ix++]; const auto &item : level)
-			if (item->sizeFactor > 0) sum += item->sizeFactor;
+			if (auto &&size = item->sizeFactor;
+			    std::isfinite(size) && size > 0)
+				sum += size;
 
 	TreeMap chart(sizes);
 

@@ -14,18 +14,17 @@ TreeMap::TreeMap(const std::vector<double> &sizes,
 	markers.reserve(sizes.size());
 
 	for (auto j = 0U; j < sizes.size(); ++j)
-		markers.emplace_back(j, sizes[j]);
+		markers.emplace_back(j,
+		    std::abs(sizes[j]),
+		    std::signbit(sizes[j]));
 
 	std::ranges::sort(markers, SpecMarker::sizeOrder);
 
-	auto it = std::ranges::upper_bound(markers,
-	    SpecMarker{0, 0.0},
-	    SpecMarker::sizeOrder);
+	auto start = markers.begin();
+	while (start != markers.end() && !std::isfinite(start->size()))
+		start++->emplaceRect({0, 0}, {0, 0});
 
-	divide(markers.begin(), it, p0, p1);
-
-	while (it != markers.end()) it++->emplaceRect({0, 0}, {0, 0});
-
+	divide(start, markers.end(), p0, p1);
 	std::ranges::sort(markers, SpecMarker::indexOrder);
 }
 
@@ -35,13 +34,21 @@ void TreeMap::divide(It begin,
     const Geom::Point &p1,
     bool horizontal)
 {
+	while (begin != end && begin->negative)
+		begin++->emplaceRect({0, 0}, {0, 0});
+	while (begin != end && std::prev(end)->negative)
+		(--end)->emplaceRect({0, 0}, {0, 0});
+
+	if (begin == end) return;
+
 	if (begin + 1 == end) {
 		begin->emplaceRect(p0, p1);
 		return;
 	}
 
 	auto sum = 0.0;
-	for (auto it = begin; it != end; ++it) sum += it->size();
+	for (auto it = begin; it != end; ++it)
+		if (!it->negative) sum += it->size();
 
 	if (sum == 0) {
 		for (auto it = begin; it != end; ++it)
@@ -51,8 +58,12 @@ void TreeMap::divide(It begin,
 
 	double factor{};
 	auto it = begin;
-	while (it != end)
-		if (factor += it++->size() / sum; factor > 0.4) break;
+	for (; it != end; ++it)
+		if (!it->negative)
+			if (factor += it->size() / sum; factor > 0.4) {
+				++it;
+				break;
+			}
 
 	auto &&[px, py] = Math::interpolate(p0, p1, factor);
 
