@@ -145,7 +145,7 @@ We welcome contributions to the project, visit our contributing
 
 ## License
 
-Copyright © 2021-2023 [Vizzu Inc.](https://vizzuhq.com)
+Copyright © 2021-2024 [Vizzu Inc.](https://vizzuhq.com)
 
 Released under the
 [Apache 2.0 License](https://lib.vizzuhq.com/latest/LICENSE/).

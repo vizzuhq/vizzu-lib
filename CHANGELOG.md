@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+## [0.11.0] - 2024-05-23
+
 ### Fixed
 
 - next() can be called multiple times from Plugin hooks
