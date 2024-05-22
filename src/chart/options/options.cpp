@@ -115,6 +115,9 @@ void Options::drilldownTo(const Options &other)
 	for (auto &&dim : other.getChannels().getDimensions())
 		if (!getChannels().isSeriesUsed(dim))
 			stackChannel.addSeries(dim);
+	if (stackChannel.isDimension()
+	    && geometry == ShapeType::rectangle)
+		this->align = Base::Align::Type::stretch;
 }
 
 void Options::intersection(const Options &other)
