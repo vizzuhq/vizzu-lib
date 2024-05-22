@@ -22,6 +22,8 @@ private:
 	Data::DataCube dataCube;
 	PlotPtr plot;
 
+	void initDimensionTrackers() const;
+	void resetDimensionTrackers() const;
 	Buckets generateMarkers(std::size_t &mainBucketSize);
 	[[nodiscard]] bool linkMarkers(const Buckets &buckets,
 	    bool main) const;

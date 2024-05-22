@@ -16,30 +16,6 @@
 
 namespace Vizzu::Gen
 {
-
-template <typename Type> struct AbstractAxises
-{
-	Refl::EnumArray<ChannelId, Type> axises;
-
-	[[nodiscard]] const Type &at(ChannelId channelType) const
-	{
-		return axises.at(channelType);
-	}
-
-	Type &at(ChannelId channelType) { return axises.at(channelType); }
-
-	[[nodiscard]] const Type &other(ChannelId channelType) const
-	{
-		return channelType == ChannelId::x ? axises.at(ChannelId::y)
-		     : channelType == ChannelId::y
-		         ? axises.at(ChannelId::x)
-		         : throw std::logic_error("not an axis channel");
-	}
-
-	[[nodiscard]] bool operator==(
-	    const AbstractAxises &other) const = default;
-};
-
 struct CommonAxis
 {
 	::Anim::String title;
@@ -168,9 +144,31 @@ struct Axis
 	DimensionAxis dimension;
 };
 
-struct Axises : AbstractAxises<Axis>
+struct Axises
 {
+	Refl::EnumArray<ChannelId, Axis> axises;
+	[[nodiscard]] const Axis &at(ChannelId channelType) const
+	{
+		return axises.at(channelType);
+	}
+
+	[[nodiscard]] Axis &at(ChannelId channelType)
+	{
+		return axises.at(channelType);
+	}
+
+	[[nodiscard]] const Axis &other(ChannelId channelType) const
+	{
+		return channelType == ChannelId::x ? axises.at(ChannelId::y)
+		     : channelType == ChannelId::y
+		         ? axises.at(ChannelId::x)
+		         : throw std::logic_error("not an axis channel");
+	}
+
 	[[nodiscard]] Geom::Point origo() const;
+
+	[[nodiscard]] bool operator==(
+	    const Axises &other) const = default;
 };
 
 }

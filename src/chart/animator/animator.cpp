@@ -11,10 +11,8 @@ Animator::Animator(const Data::DataTable &dataTable,
     dataTable(dataTable),
     onBegin(onBegin),
     onComplete(onComplete),
-    actAnimation(
-        std::make_shared<Animation>(dataTable, Gen::PlotPtr())),
-    nextAnimation(
-        std::make_shared<Animation>(dataTable, Gen::PlotPtr()))
+    actAnimation(std::make_shared<Animation>()),
+    nextAnimation(std::make_shared<Animation>())
 {}
 
 void Animator::addKeyframe(const Gen::PlotPtr &plot,
@@ -23,7 +21,7 @@ void Animator::addKeyframe(const Gen::PlotPtr &plot,
 	if (running)
 		throw std::logic_error("animation already in progress");
 
-	nextAnimation->addKeyframe(plot, options);
+	nextAnimation->addKeyframe(plot, dataTable, options);
 }
 
 void Animator::setAnimation(const Anim::AnimationPtr &animation)
@@ -40,8 +38,7 @@ void Animator::animate(const ::Anim::Control::Option &options,
 	onThisCompletes.attach(
 	    [this](const Gen::PlotPtr &plot, const bool &)
 	    {
-		    nextAnimation =
-		        std::make_shared<Animation>(dataTable, plot);
+		    nextAnimation = std::make_shared<Animation>(plot);
 		    this->running = false;
 	    });
 

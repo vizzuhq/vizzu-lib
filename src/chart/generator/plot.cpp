@@ -105,7 +105,7 @@ bool Plot::hasMarkerChange(const Plot &source, const Plot &target)
 	return source.markers.size() != target.markers.size()
 	    || source.markersInfo != target.markersInfo;
 }
-void Plot::mergeMarkersWithCellInfo(Plot &source, Plot &target)
+void Plot::mergeMarkersAndCellInfo(Plot &source, Plot &target)
 {
 	auto &&smarkers = source.markers;
 	auto &&tmarkers = target.markers;

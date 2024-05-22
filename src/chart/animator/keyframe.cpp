@@ -54,7 +54,7 @@ void Keyframe::prepareActual()
 	if (Gen::Plot::dimensionMatch(*source, *target)) {
 		if (Gen::Plot::hasMarkerChange(*source, *target))
 			copyTarget();
-		Gen::Plot::mergeMarkersWithCellInfo(*source, *target);
+		Gen::Plot::mergeMarkersAndCellInfo(*source, *target);
 	}
 	else {
 		copyTarget();

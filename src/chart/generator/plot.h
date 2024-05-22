@@ -88,7 +88,7 @@ public:
 	static bool dimensionMatch(const Plot &a, const Plot &b);
 	static bool hasMarkerChange(const Plot &source,
 	    const Plot &target);
-	static void mergeMarkersWithCellInfo(Plot &source, Plot &target);
+	static void mergeMarkersAndCellInfo(Plot &source, Plot &target);
 
 private:
 	PlotOptionsPtr options;

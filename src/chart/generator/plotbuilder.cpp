@@ -15,13 +15,8 @@ PlotBuilder::PlotBuilder(const Data::DataTable &dataTable,
     dataCube(dataTable, *options),
     plot(std::make_shared<Plot>(options, style))
 {
-	for (const Channel &ch :
-	    plot->options->getChannels().getChannels())
-		if (ch.isDimension())
-			plot->axises.at(ch.type).dimension.trackedValues =
-			    std::make_shared<
-			        std::vector<std::optional<Data::SliceIndex>>>(
-			        dataCube.combinedSizeOf(ch.dimensions()).second);
+	initDimensionTrackers();
+
 	std::size_t mainBucketSize{};
 	auto &&subBuckets = generateMarkers(mainBucketSize);
 
@@ -43,10 +38,28 @@ PlotBuilder::PlotBuilder(const Data::DataTable &dataTable,
 		addAlignment(subBuckets);
 	}
 
+	resetDimensionTrackers();
+}
+
+void PlotBuilder::initDimensionTrackers() const
+{
 	for (const Channel &ch :
-	    plot->options->getChannels().getChannels())
-		if (ch.isDimension())
-			plot->axises.at(ch.type).dimension.trackedValues.reset();
+	    plot->options->getChannels().getChannels()) {
+		if (!ch.isDimension()) continue;
+		plot->axises.at(ch.type).dimension.trackedValues =
+		    std::make_shared<
+		        std::vector<std::optional<Data::SliceIndex>>>(
+		        dataCube.combinedSizeOf(ch.dimensions()).second);
+	}
+}
+
+void PlotBuilder::resetDimensionTrackers() const
+{
+	for (const Channel &ch :
+	    plot->options->getChannels().getChannels()) {
+		if (!ch.isDimension()) continue;
+		plot->axises.at(ch.type).dimension.trackedValues.reset();
+	}
 }
 
 Buckets PlotBuilder::generateMarkers(std::size_t &mainBucketSize)
@@ -131,7 +144,16 @@ PlotBuilder::sortedBuckets(const Buckets &buckets, bool main) const
 		}
 
 	if (main && plot->getOptions()->sort == Sort::byValue)
-		std::sort(sorted.begin(), sorted.end());
+		std::sort(sorted.begin(),
+		    sorted.end(),
+		    [](const std::pair<double, std::size_t> &lhs,
+		        const std::pair<double, std::size_t> &rhs)
+		    {
+			    if (auto ord = std::weak_order(lhs.first, rhs.first);
+			        !std::is_eq(ord))
+				    return std::is_lt(ord);
+			    return lhs.second < rhs.second;
+		    });
 
 	if (main && plot->getOptions()->reverse)
 		std::reverse(sorted.begin(), sorted.end());

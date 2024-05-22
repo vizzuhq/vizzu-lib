@@ -173,6 +173,8 @@ struct EnumArray : std::array<V, std::size(enum_names<E>)>
 	{
 		return base_array::at(static_cast<std::size_t>(value));
 	}
+
+	bool operator==(const EnumArray &) const = default;
 };
 
 template <class E, class... Args>
