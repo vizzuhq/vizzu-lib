@@ -129,11 +129,6 @@ Buckets Plot::generateMarkers()
 	for (auto &&[ix, mid] : options->markersInfo)
 		map.emplace(mid, ix);
 
-	bool rectangleSpacing{true};
-	if (auto &&sp = style.plot.marker.rectangleSpacing;
-	    sp && sp->get().has_value())
-		rectangleSpacing = *sp->get() > 0.0;
-
 	for (auto first = map.begin(), last = map.end();
 	     auto &&index : getDataCube()) {
 		auto &&markerId = markers.size();
@@ -144,8 +139,7 @@ Buckets Plot::generateMarkers()
 		    getStats(),
 		    index,
 		    markerId,
-		    needInfo,
-		    rectangleSpacing);
+		    needInfo);
 
 		mainBuckets[marker.mainId.get().seriesId]
 		           [marker.mainId.get().itemId] = &marker;
