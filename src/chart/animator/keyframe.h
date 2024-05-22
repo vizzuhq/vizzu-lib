@@ -14,6 +14,7 @@ class Keyframe : public Planner
 public:
 	Keyframe(Gen::PlotPtr src,
 	    const Gen::PlotPtr &trg,
+	    const Data::DataTable &dataTable,
 	    const Options::Keyframe *options,
 	    bool isInstant);
 
@@ -29,13 +30,10 @@ private:
 	Gen::PlotPtr actual;
 	Gen::PlotPtr targetCopy;
 
-	void init(const Gen::PlotPtr &plot);
+	void init(const Gen::PlotPtr &plot,
+	    const Data::DataTable &dataTable);
 	void prepareActual();
 	void prepareActualMarkersInfo();
-	void addMissingMarkers(const Gen::PlotPtr &source,
-	    const Gen::PlotPtr &target);
-	static void mergeMarkerCellInfo(const Gen::PlotPtr &source,
-	    const Gen::PlotPtr &target);
 	void copyTarget();
 };
 

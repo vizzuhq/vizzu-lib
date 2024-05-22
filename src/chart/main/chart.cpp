@@ -1,5 +1,7 @@
 #include "chart.h"
 
+#include <chart/generator/plotbuilder.h>
+
 #include "chart/generator/plot.h"
 #include "chart/rendering/drawchart.h"
 
@@ -11,7 +13,9 @@ Chart::Chart() :
     stylesheet(Styles::Chart::def(), actStyles),
     computedStyles(stylesheet.getDefaultParams()),
     events(eventDispatcher),
-    animator(*events.animation.begin, *events.animation.complete)
+    animator(table,
+        *events.animation.begin,
+        *events.animation.complete)
 {
 	animator.onDraw.attach(
 	    [this](const Gen::PlotPtr &actPlot)
@@ -108,9 +112,10 @@ Gen::PlotPtr Chart::plot(const Gen::PlotOptionsPtr &options)
 {
 	options->setAutoParameters();
 
-	auto res = std::make_shared<Gen::Plot>(table,
+	auto res = Gen::PlotBuilder{table,
 	    options,
-	    stylesheet.getFullParams(options, layout.boundary.size));
+	    stylesheet.getFullParams(options, layout.boundary.size)}
+	               .build();
 
 	Styles::Sheet::setAfterStyles(*res, layout.boundary.size);
 

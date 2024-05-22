@@ -4,6 +4,7 @@
 
 #include "chart/animator/keyframe.h"
 #include "chart/generator/plot.h"
+#include "chart/generator/plotbuilder.h"
 
 namespace Vizzu::Anim
 {
@@ -36,6 +37,7 @@ Animation::Animation(const Gen::PlotPtr &plot) :
 }
 
 void Animation::addKeyframe(const Gen::PlotPtr &next,
+    const Data::DataTable &dataTable,
     const Options::Keyframe &options)
 {
 	if (isRunning())
@@ -61,9 +63,11 @@ void Animation::addKeyframe(const Gen::PlotPtr &next,
 		{
 			base.drilldownTo(other);
 		};
-		intermediate0 = getIntermediate(target, next, drilldown);
+		intermediate0 =
+		    getIntermediate(target, next, dataTable, drilldown);
 
-		intermediate1 = getIntermediate(next, target, drilldown);
+		intermediate1 =
+		    getIntermediate(next, target, dataTable, drilldown);
 	}
 	else if (strategy == RegroupStrategy::aggregate) {
 		auto &&targetAxisSet =
@@ -98,10 +102,14 @@ void Animation::addKeyframe(const Gen::PlotPtr &next,
 
 		const auto &base = basedOnSource ? target : next;
 		const auto &other = basedOnSource ? next : target;
-		intermediate0 =
-		    getIntermediate(base, other, getModifier(basedOnSource));
-		intermediate1 =
-		    getIntermediate(base, other, getModifier(!basedOnSource));
+		intermediate0 = getIntermediate(base,
+		    other,
+		    dataTable,
+		    getModifier(basedOnSource));
+		intermediate1 = getIntermediate(base,
+		    other,
+		    dataTable,
+		    getModifier(!basedOnSource));
 	}
 
 	auto &&intermediate0Instant = intermediate0
@@ -137,6 +145,7 @@ void Animation::addKeyframe(const Gen::PlotPtr &next,
 	if (intermediate0) {
 		addKeyframe(begin,
 		    intermediate0,
+		    dataTable,
 		    real_options,
 		    intermediate0Instant);
 		begin = intermediate0;
@@ -147,6 +156,7 @@ void Animation::addKeyframe(const Gen::PlotPtr &next,
 	if (intermediate1) {
 		addKeyframe(begin,
 		    intermediate1,
+		    dataTable,
 		    real_options,
 		    intermediate1Instant);
 		begin = intermediate1;
@@ -154,7 +164,7 @@ void Animation::addKeyframe(const Gen::PlotPtr &next,
 		if (!intermediate1Instant)
 			real_options.all.delay = ::Anim::Duration(0);
 	}
-	addKeyframe(begin, next, real_options, nextInstant);
+	addKeyframe(begin, next, dataTable, real_options, nextInstant);
 
 	target = next;
 }
@@ -162,6 +172,7 @@ void Animation::addKeyframe(const Gen::PlotPtr &next,
 template <class Modifier>
 Gen::PlotPtr Animation::getIntermediate(const Gen::PlotPtr &base,
     const Gen::PlotPtr &other,
+    const Data::DataTable &dataTable,
     Modifier &&modifier)
 {
 	Gen::PlotPtr res;
@@ -173,9 +184,9 @@ Gen::PlotPtr Animation::getIntermediate(const Gen::PlotPtr &base,
 
 	if (*extOptions != *other->getOptions()
 	    && *extOptions != *base->getOptions()) {
-		res = std::make_shared<Gen::Plot>(base->getTable(),
-		    extOptions,
-		    base->getStyle());
+		res =
+		    Gen::PlotBuilder{dataTable, extOptions, base->getStyle()}
+		        .build();
 
 		res->keepAspectRatio = base->keepAspectRatio;
 	}
@@ -184,11 +195,13 @@ Gen::PlotPtr Animation::getIntermediate(const Gen::PlotPtr &base,
 
 void Animation::addKeyframe(const Gen::PlotPtr &source,
     const Gen::PlotPtr &target,
+    const Data::DataTable &dataTable,
     const Options::Keyframe &options,
     bool isInstant)
 {
-	::Anim::Sequence::addKeyframe(std::make_shared<Keyframe>(source,
+	Sequence::addKeyframe(std::make_shared<Keyframe>(source,
 	    target,
+	    dataTable,
 	    &options,
 	    isInstant));
 }

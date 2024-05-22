@@ -15,7 +15,8 @@ namespace Vizzu::Anim
 class Animator
 {
 public:
-	Animator(const Util::EventDispatcher::Event &onBegin,
+	Animator(const Data::DataTable &dataTable,
+	    const Util::EventDispatcher::Event &onBegin,
 	    const Util::EventDispatcher::Event &onComplete);
 
 	void addKeyframe(const Gen::PlotPtr &plot,
@@ -26,6 +27,7 @@ public:
 	void animate(const ::Anim::Control::Option &options,
 	    Animation::OnComplete &&onThisCompletes);
 
+	const Data::DataTable &dataTable;
 	Util::Event<const Gen::PlotPtr> onDraw;
 	Util::Event<> onProgress;
 	std::reference_wrapper<const Util::EventDispatcher::Event>

@@ -35,7 +35,7 @@ Geom::Line DrawAxes::getAxis(Gen::ChannelId axisIndex) const
 {
 	auto horizontal = axisIndex == Gen::ChannelId::x;
 
-	auto offset = plot->measureAxises.other(axisIndex).origo();
+	auto offset = plot->axises.other(axisIndex).measure.origo();
 
 	auto direction = Geom::Point::Ident(horizontal);
 
@@ -95,7 +95,7 @@ Geom::Point DrawAxes::getTitleBasePos(Gen::ChannelId axisIndex,
 	case Pos::min_edge: break;
 	case Pos::max_edge: orthogonal = 1.0; break;
 	case Pos::axis:
-		orthogonal = plot->measureAxises.other(axisIndex).origo();
+		orthogonal = plot->axises.other(axisIndex).measure.origo();
 		break;
 	}
 
@@ -156,7 +156,7 @@ Geom::Point DrawAxes::getTitleOffset(Gen::ChannelId axisIndex,
 
 void DrawAxes::drawTitle(Gen::ChannelId axisIndex) const
 {
-	const auto &titleString = plot->commonAxises.at(axisIndex).title;
+	const auto &titleString = plot->axises.at(axisIndex).common.title;
 
 	const auto &titleStyle = rootStyle.plot.getAxis(axisIndex).title;
 
@@ -254,9 +254,9 @@ void DrawAxes::drawDimensionLabels(bool horizontal) const
 	auto textColor = *labelStyle.color;
 	if (textColor.alpha == 0.0) return;
 
-	auto origo = plot->measureAxises.origo();
-	const auto &axises = plot->dimensionAxises;
-	const auto &axis = axises.at(axisIndex);
+	auto origo = plot->axises.origo();
+	const auto &axises = plot->axises;
+	const auto &axis = axises.at(axisIndex).dimension;
 
 	if (axis.enabled) {
 		canvas.setFont(Gfx::Font{labelStyle});

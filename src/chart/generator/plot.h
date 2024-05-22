@@ -10,7 +10,6 @@
 #include "dataframe/old/datatable.h"
 
 #include "axis.h"
-#include "channelstats.h"
 #include "guides.h"
 #include "marker.h"
 #include "plotptr.h"
@@ -30,13 +29,9 @@ class AbstractMorph;
 namespace Gen
 {
 
-class Selector;
-
 class Plot
 {
-	friend class Anim::Keyframe;
-	friend class Anim::Morph::AbstractMorph;
-	friend class Selector;
+	friend class PlotBuilder;
 
 public:
 	using Markers = std::vector<Marker>;
@@ -58,21 +53,14 @@ public:
 	using MarkerInfo = ::Anim::Interpolated<MarkerInfoContent>;
 	using MarkersInfo = std::map<MarkerInfoId, MarkerInfo>;
 
-	static bool dimensionMatch(const Plot &a, const Plot &b);
-
 	Math::FuzzyBool anyAxisSet;
-	CommonAxises commonAxises;
-	MeasureAxises measureAxises;
+	Axises axises;
 	Guides guides;
-	DimensionAxises dimensionAxises;
 	Math::FuzzyBool keepAspectRatio;
 	std::optional<Orientation> markerConnectionOrientation;
 
 	Plot(const Plot &other) = default;
-	Plot(PlotOptionsPtr options, const Plot &other);
-	Plot(const Data::DataTable &dataTable,
-	    PlotOptionsPtr opts,
-	    Styles::Chart style);
+	Plot(PlotOptionsPtr opts, Styles::Chart style);
 	[[nodiscard]] const Markers &getMarkers() const
 	{
 		return markers;
@@ -94,46 +82,19 @@ public:
 		return style;
 	}
 	Styles::Chart &getStyle() { return style; }
-	[[nodiscard]] const Data::DataTable &getTable() const
-	{
-		return dataTable;
-	};
 	void detachOptions();
 	[[nodiscard]] bool isEmpty() const;
 
+	static bool dimensionMatch(const Plot &a, const Plot &b);
+	static bool hasMarkerChange(const Plot &source,
+	    const Plot &target);
+	static void mergeMarkersAndCellInfo(Plot &source, Plot &target);
+
 private:
-	const Data::DataTable &dataTable;
 	PlotOptionsPtr options;
 	Styles::Chart style;
 	Markers markers;
 	MarkersInfo markersInfo;
-
-	Data::DataCube *dataCube{};
-	ChannelsStats *stats{};
-	std::size_t mainBucketSize{};
-
-	[[nodiscard]] const Data::DataCube &getDataCube() const
-	{
-		return *dataCube;
-	}
-
-	[[nodiscard]] ChannelsStats &getStats() { return *stats; }
-	Buckets generateMarkers();
-	[[nodiscard]] bool linkMarkers(const Buckets &buckets,
-	    bool main) const;
-	void normalizeXY();
-	void calcMeasureAxises();
-	void calcMeasureAxis(ChannelId type);
-	void calcDimensionAxises();
-	void calcDimensionAxis(ChannelId type);
-	void addAlignment(const Buckets &subBuckets) const;
-	void addSeparation(const Buckets &subBuckets) const;
-	void normalizeSizes();
-	void normalizeColors();
-	[[nodiscard]] std::vector<std::pair<double, std::size_t>>
-	sortedBuckets(const Buckets &buckets, bool main) const;
-	void clearEmptyBuckets(const Buckets &buckets, bool main) const;
-	void addSpecLayout(Buckets &buckets);
 };
 
 struct PlotParent

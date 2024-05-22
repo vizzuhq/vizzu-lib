@@ -25,7 +25,7 @@ void MarkerRenderer::drawLines(Gfx::ICanvas &canvas,
 
 	canvas.setLineWidth(*style.lineWidth);
 
-	auto origo = plot->measureAxises.origo();
+	auto origo = plot->axises.origo();
 
 	auto baseColor = *style.color * double{plot->anyAxisSet};
 
@@ -178,7 +178,7 @@ void MarkerRenderer::drawMarkers(Gfx::ICanvas &canvas,
 
 void MarkerRenderer::drawLabels(Gfx::ICanvas &canvas) const
 {
-	auto &&axis = plot->measureAxises.at(Gen::ChannelId::label);
+	auto &&axis = plot->axises.at(Gen::ChannelId::label).measure;
 	auto &&keepMeasure = !axis.origMeasureName.interpolates();
 	for (const auto &blended : markers) {
 		if (blended.marker.enabled == false) continue;

@@ -26,8 +26,8 @@ void DrawLegend::draw(Gfx::ICanvas &canvas,
 	    .titleHeight = style.title.getHeight(),
 	    .markerSize = style.marker.size->get(contentRect.size.y,
 	        style.label.calculatedSize()),
-	    .measure = plot->measureAxises.at(channelType),
-	    .dimension = plot->dimensionAxises.at(channelType),
+	    .measure = plot->axises.at(channelType).measure,
+	    .dimension = plot->axises.at(channelType).dimension,
 	};
 
 	DrawBackground{{ctx()}}.draw(canvas,
@@ -52,7 +52,7 @@ void DrawLegend::drawTitle(const Info &info) const
 {
 	auto rect = info.contentRect;
 	rect.size.y = info.titleHeight;
-	plot->commonAxises.at(info.type).title.visit(
+	plot->axises.at(info.type).common.title.visit(
 	    [this,
 	        &info,
 	        &rect,
