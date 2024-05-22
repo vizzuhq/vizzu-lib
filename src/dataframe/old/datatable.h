@@ -84,6 +84,7 @@ public:
 		}
 	};
 	Type::UniqueList<DimensionInfo> dim_reindex;
+	bool has_element{};
 
 	std::map<Gen::ChannelId,
 	    std::shared_ptr<dataframe::dataframe_interface>>

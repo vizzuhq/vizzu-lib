@@ -120,7 +120,7 @@ SeriesIndex::SeriesIndex(std::string const &str,
 
 DataCube::iterator_t DataCube::begin() const
 {
-	if (df->get_record_count() == 0) return {};
+	if (!has_element) return {};
 	iterator_t res{this,
 	    {},
 	    {{}, std::vector<std::size_t>(dim_reindex.size())}};
@@ -201,13 +201,14 @@ DataCube::DataCube(const DataTable &table,
 	}
 
 	df->finalize();
+	has_element = true;
 	for (std::size_t ix{}; const auto &dim : dimensions) {
 		auto &&dimName = dim.getColIndex();
 		auto &&cats = table.getDf().get_categories(dimName);
-		dim_reindex.push_back(DimensionInfo{dimName,
-		    cats,
-		    cats.size() + df->has_na(dimName),
-		    ix++});
+		auto &&size = cats.size() + df->has_na(dimName);
+		dim_reindex.push_back(
+		    DimensionInfo{dimName, cats, size, ix++});
+		has_element &= size > 0;
 	}
 
 	auto stackInhibitingShape =
