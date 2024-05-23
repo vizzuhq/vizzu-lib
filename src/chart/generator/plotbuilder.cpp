@@ -465,6 +465,7 @@ void PlotBuilder::normalizeColors()
 	Math::Range<double> color;
 
 	for (auto &marker : plot->markers) {
+		if (!marker.enabled) continue;
 		auto &&cbase = marker.colorBase.get();
 		if (!cbase.isDiscrete()) color.include(cbase.getPos());
 		lightness.include(cbase.getLightness());
@@ -480,6 +481,7 @@ void PlotBuilder::normalizeColors()
 	                .range.getRange(lightness);
 
 	for (auto &marker : plot->markers) {
+		if (!marker.enabled) continue;
 		auto &&cbase = marker.colorBase->value;
 		cbase.setLightness(lightness.rescale(cbase.getLightness()));
 
