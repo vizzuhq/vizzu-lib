@@ -241,7 +241,7 @@ void PlotBuilder::normalizeXY()
 
 	auto markerIt = plot->markers.begin();
 	while (markerIt != plot->markers.end()
-	       && static_cast<bool>(!markerIt->enabled))
+	       && !static_cast<bool>(markerIt->enabled))
 		++markerIt;
 
 	if (markerIt == plot->markers.end()) {

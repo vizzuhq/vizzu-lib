@@ -81,7 +81,6 @@ bool DimensionAxis::add(const Data::SliceIndex &index,
 	if (merge) {
 		if (auto it = values.find(index); it != values.end()) {
 			it->second.range.include(range);
-			it->second.weight = true;
 			return false;
 		}
 	}
