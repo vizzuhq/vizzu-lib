@@ -5,6 +5,8 @@
 ### Fixed
 
 - Do not calculate disabled markers to the color normalization. 
+- On split charts the first range was not part of the separation calculation.
+- When the first marker was disabled it was calculated as an enabled marker on the XY normalization.
 
 ## [0.11.0] - 2024-05-23
 

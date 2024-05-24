@@ -239,17 +239,21 @@ void PlotBuilder::normalizeXY()
 	    plot->getOptions()->getHorizontalAxis().range;
 	const auto &yrange = plot->getOptions()->getVeritalAxis().range;
 
-	if (plot->markers.empty()) {
+	auto markerIt = plot->markers.begin();
+	while (markerIt != plot->markers.end() && !markerIt->enabled)
+		++markerIt;
+
+	if (markerIt == plot->markers.end()) {
 		getMeasTrackRange(ChannelId::x) = xrange.getRange({0.0, 0.0});
 		getMeasTrackRange(ChannelId::y) = yrange.getRange({0.0, 0.0});
 		return;
 	}
 
-	auto boundRect = plot->markers.front().toRectangle();
+	auto boundRect = markerIt->toRectangle();
 
-	for (auto &marker : plot->markers) {
-		if (!marker.enabled) continue;
-		boundRect = boundRect.boundary(marker.toRectangle());
+	while (++markerIt != plot->markers.end()) {
+		if (!markerIt->enabled) continue;
+		boundRect = boundRect.boundary(markerIt->toRectangle());
 	}
 
 	plot->getOptions()->setAutoRange(
@@ -329,6 +333,8 @@ void PlotBuilder::calcDimensionAxis(ChannelId type)
 	auto &&isTypeAxis = isAxis(type);
 	if (auto merge = scale.labelLevel == 0; isTypeAxis) {
 		for (const auto &marker : plot->markers) {
+			if (!marker.enabled) continue;
+
 			const auto &id =
 			    (type == ChannelId::x)
 			            == plot->getOptions()->isHorizontal()
@@ -339,7 +345,6 @@ void PlotBuilder::calcDimensionAxis(ChannelId type)
 				axis.add(*slice,
 				    static_cast<double>(id.itemId),
 				    marker.getSizeBy(type == ChannelId::x),
-				    static_cast<double>(marker.enabled),
 				    merge);
 		}
 	}
@@ -351,11 +356,7 @@ void PlotBuilder::calcDimensionAxis(ChannelId type)
 		for (auto i = 0U; i < indices.size(); ++i)
 			if (const auto &sliceIndex = indices[i];
 			    sliceIndex
-			    && axis.add(*sliceIndex,
-			        i,
-			        {count, count},
-			        true,
-			        merge))
+			    && axis.add(*sliceIndex, i, {count, count}, merge))
 				count += 1;
 	}
 	auto hasLabel =
@@ -401,7 +402,7 @@ void PlotBuilder::addAlignment(const Buckets &subBuckets) const
 void PlotBuilder::addSeparation(const Buckets &subBuckets,
     const std::size_t &mainBucketSize) const
 {
-	if (static_cast<bool>(plot->getOptions()->split)) {
+	if (plot->getOptions()->split) {
 		auto align =
 		    plot->getOptions()->align == Base::Align::Type::none
 		        ? Base::Align::Type::min
@@ -414,14 +415,16 @@ void PlotBuilder::addSeparation(const Buckets &subBuckets,
 		auto &&vertical = !plot->getOptions()->isHorizontal();
 		for (auto &&bucket : subBuckets)
 			for (auto i = 0U; auto &&marker : bucket) {
-				ranges[i].include(marker->getSizeBy(vertical).size());
-				if (static_cast<double>(marker->enabled) > 0)
+				if (marker->enabled) {
+					ranges[i].include(
+					    marker->getSizeBy(vertical).size());
 					anyEnabled[i] = true;
+				}
 				++i %= ranges.size();
 			}
 
 		auto max = Math::Range(0.0, 0.0);
-		for (auto i = 1U; i < ranges.size(); ++i)
+		for (auto i = 0U; i < ranges.size(); ++i)
 			if (anyEnabled[i]) max = max + ranges[i];
 
 		for (auto i = 1U; i < ranges.size(); ++i)
