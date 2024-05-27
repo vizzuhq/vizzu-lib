@@ -5,6 +5,7 @@
 ### Fixed
 
 - Do not calculate disabled markers to the color normalization. 
+- More precise TS type for transform matrix in event handlers. 
 
 ## [0.11.0] - 2024-05-23
 
