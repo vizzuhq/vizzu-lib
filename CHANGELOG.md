@@ -7,6 +7,10 @@
 - Do not calculate disabled markers to the color normalization. 
 - More precise TS type for transform matrix in event handlers. 
 
+### Added
+
+- The canvas cahange options to the htmlcanvas plugin.
+
 ## [0.11.0] - 2024-05-23
 
 ### Fixed
