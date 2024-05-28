@@ -23,7 +23,7 @@ export interface Line {
 }
 
 /** Object representing an affine transformation 2x3 matrix. */
-export type AffineTransform = number[][]
+export type AffineTransform = [[number, number, number], [number, number, number]]
 
 /** Rectangle transformed by an affine transformation. */
 export interface TransformedRect {
