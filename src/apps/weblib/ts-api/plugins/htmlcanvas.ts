@@ -44,8 +44,8 @@ export class HtmlCanvas implements Plugin, HtmlCanvasAlternative {
 	get api(): HtmlCanvasApi {
 		return {
 			element: this.element,
-			setElement: (element: HTMLCanvasElement): void => { this.element = element },
 			context: this.context,
+			setElement: this._setElement.bind(this),
 			clientToCanvas: this._clientToCanvas.bind(this),
 			canvasToClient: this._canvasToClient.bind(this)
 		}
@@ -117,11 +117,17 @@ export class HtmlCanvas implements Plugin, HtmlCanvasAlternative {
 
 	private _setCanvas(element: HTMLElement): void {
 		this._mainCanvas = this._toCanvasElement(element)
+		this._prevUpdateHash = ''
 		const ctx = this._mainCanvas.getContext('2d')
 		if (!ctx) throw Error('Cannot get rendering context of canvas')
 		this._context = ctx
 		this._calcSize()
 		this._resizeObserver = this._createResizeObserverFor(this._mainCanvas)
+	}
+
+	private _setElement(element: HTMLCanvasElement): void {
+		this.element = element
+	
 	}
 
 	unregister(): void {
