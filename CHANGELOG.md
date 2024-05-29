@@ -9,7 +9,7 @@
 
 ### Added
 
-- The canvas cahange options to the htmlcanvas plugin.
+- The canvas change options to the htmlcanvas plugin.
 
 ## [0.11.0] - 2024-05-23
 

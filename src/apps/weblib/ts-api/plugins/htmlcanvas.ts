@@ -18,9 +18,10 @@ export type Event<T> = Events.Event<T> & {
 export interface HtmlCanvasApi extends PluginApi {
 	/** Returns the underlying canvas element. */
 	get element(): HTMLCanvasElement
+	/** Update the underlying canvas element. */
+	set element(element: HTMLCanvasElement)
 	/** Returns the actual canvas context */
 	get context(): CanvasRenderingContext2D
-	set element(element: HTMLCanvasElement)
 	clientToCanvas(clientPos: Geom.Point): Geom.Point
 	canvasToClient(renderPos: Geom.Point): Geom.Point
 }
@@ -42,10 +43,11 @@ export class HtmlCanvas implements Plugin, HtmlCanvasAlternative {
 	meta = { name: 'htmlCanvas' }
 
 	get api(): HtmlCanvasApi {
+		const self = this
 		return {
-			element: this.element,
+			get element(): HTMLCanvasElement { return self._mainCanvas },
+			set element(newCanvasElement: HTMLCanvasElement) { self._setCanvas(newCanvasElement) },	
 			context: this.context,
-			setElement: this._setElement.bind(this),
 			clientToCanvas: this._clientToCanvas.bind(this),
 			canvasToClient: this._canvasToClient.bind(this)
 		}
@@ -125,11 +127,6 @@ export class HtmlCanvas implements Plugin, HtmlCanvasAlternative {
 		this._resizeObserver = this._createResizeObserverFor(this._mainCanvas)
 	}
 
-	private _setElement(element: HTMLCanvasElement): void {
-		this.element = element
-	
-	}
-
 	unregister(): void {
 		window.removeEventListener('resize', this._resizeHandler)
 		this._resizeObserver.disconnect()
@@ -141,7 +138,6 @@ export class HtmlCanvas implements Plugin, HtmlCanvasAlternative {
 	}
 
 	set element(element: HTMLCanvasElement) {
-		this.unregister()
 		this._setCanvas(element)
 	}
 
