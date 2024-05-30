@@ -45,8 +45,12 @@ export class HtmlCanvas implements Plugin, HtmlCanvasAlternative {
 	get api(): HtmlCanvasApi {
 		const self = this
 		return {
-			get element(): HTMLCanvasElement { return self._mainCanvas },
-			set element(newCanvasElement: HTMLCanvasElement) { self._setCanvas(newCanvasElement) },	
+			get element(): HTMLCanvasElement {
+				return self._mainCanvas
+			},
+			set element(newCanvasElement: HTMLCanvasElement) {
+				self._setCanvas(newCanvasElement)
+			},
 			context: this.context,
 			clientToCanvas: this._clientToCanvas.bind(this),
 			canvasToClient: this._canvasToClient.bind(this)
