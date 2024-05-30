@@ -176,7 +176,9 @@ void Connection::transform(const Marker &source,
 	    target.prevMainMarkerIdx,
 	    factor);
 
-	actual.mainId = interpolate(source.mainId, target.mainId, factor);
+	actual.polarConnection = interpolate(source.polarConnection,
+	    target.polarConnection,
+	    factor);
 }
 
 void Vertical::transform(const Gen::Plot &source,

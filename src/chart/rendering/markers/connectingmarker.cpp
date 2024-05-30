@@ -43,9 +43,8 @@ ConnectingMarker::ConnectingMarker(const DrawingContext &ctx,
 			    enabled && (marker.enabled || prev->enabled);
 			connected =
 			    connected && (prev->enabled || marker.enabled);
-			if (prev->mainId.get_or_first(lineIndex).value.itemId
-			    > marker.mainId.get_or_first(lineIndex)
-			          .value.itemId) {
+			if (marker.polarConnection.get_or_first(lineIndex)
+			        .value) {
 				linear = linear || polar.more();
 				connected = connected && polar.more() && horizontal;
 				enabled = enabled && polar && horizontal;

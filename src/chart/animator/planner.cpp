@@ -292,7 +292,8 @@ void Planner::calcNeeded()
 	        {
 		        return source.prevMainMarkerIdx
 		                != target.prevMainMarkerIdx
-		            || source.mainId != target.mainId;
+		            || source.polarConnection
+		                   != target.polarConnection;
 	        })
 	    || srcOpt->isHorizontal() != trgOpt->isHorizontal();
 }
