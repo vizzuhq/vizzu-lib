@@ -74,17 +74,13 @@ MeasureAxis interpolate(const MeasureAxis &op0,
 bool DimensionAxis::add(const Data::SliceIndex &index,
     double value,
     const Math::Range<double> &range,
-    double enabled,
     bool merge)
 {
-	if (enabled <= 0) return false;
-
 	this->enabled = true;
 
 	if (merge) {
 		if (auto it = values.find(index); it != values.end()) {
 			it->second.range.include(range);
-			it->second.weight = std::max(it->second.weight, enabled);
 			return false;
 		}
 	}
