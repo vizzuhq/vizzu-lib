@@ -43,6 +43,7 @@ export class HtmlCanvas implements Plugin, HtmlCanvasAlternative {
 	meta = { name: 'htmlCanvas' }
 
 	get api(): HtmlCanvasApi {
+		// eslint-disable-next-line @typescript-eslint/no-this-alias
 		const self = this
 		return {
 			get element(): HTMLCanvasElement {
