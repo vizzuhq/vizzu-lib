@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+## [0.11.1] - 2024-05-31
+
 ### Fixed
 
 - Do not calculate disabled markers to the color normalization. 
