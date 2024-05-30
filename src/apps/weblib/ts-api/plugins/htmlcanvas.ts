@@ -18,6 +18,8 @@ export type Event<T> = Events.Event<T> & {
 export interface HtmlCanvasApi extends PluginApi {
 	/** Returns the underlying canvas element. */
 	get element(): HTMLCanvasElement
+	/** Update the underlying canvas element. */
+	set element(element: HTMLCanvasElement)
 	/** Returns the actual canvas context */
 	get context(): CanvasRenderingContext2D
 	clientToCanvas(clientPos: Geom.Point): Geom.Point
@@ -29,9 +31,9 @@ export class HtmlCanvas implements Plugin, HtmlCanvasAlternative {
 	private _container?: HTMLElement
 	private _offscreenCanvas: HTMLCanvasElement
 	private _offscreenContext: CanvasRenderingContext2D
-	private _mainCanvas: HTMLCanvasElement
-	private _context: CanvasRenderingContext2D
-	private _resizeObserver: ResizeObserver
+	private _mainCanvas!: HTMLCanvasElement
+	private _context!: CanvasRenderingContext2D
+	private _resizeObserver!: ResizeObserver
 	private _resizeHandler: () => void
 	private _prevUpdateHash: string = ''
 	private _scaleFactor: number = 1
@@ -41,8 +43,15 @@ export class HtmlCanvas implements Plugin, HtmlCanvasAlternative {
 	meta = { name: 'htmlCanvas' }
 
 	get api(): HtmlCanvasApi {
+		// eslint-disable-next-line @typescript-eslint/no-this-alias
+		const self = this
 		return {
-			element: this.element,
+			get element(): HTMLCanvasElement {
+				return self._mainCanvas
+			},
+			set element(newCanvasElement: HTMLCanvasElement) {
+				self._setCanvas(newCanvasElement)
+			},
 			context: this.context,
 			clientToCanvas: this._clientToCanvas.bind(this),
 			canvasToClient: this._canvasToClient.bind(this)
@@ -102,20 +111,25 @@ export class HtmlCanvas implements Plugin, HtmlCanvasAlternative {
 	}
 
 	constructor(options: CanvasOptions) {
-		this._mainCanvas = this._toCanvasElement(options.element)
 		this._offscreenCanvas = document.createElement<'canvas'>('canvas')
 		const offCtx = this._offscreenCanvas.getContext('2d')
 		if (!offCtx) throw Error('Cannot get rendering context of internal canvas')
 		this._offscreenContext = offCtx
+		this._resizeHandler = (): void => {
+			this._update(true)
+		}
+		this._setCanvas(options.element)
+		window.addEventListener('resize', this._resizeHandler)
+	}
+
+	private _setCanvas(element: HTMLElement): void {
+		this._mainCanvas = this._toCanvasElement(element)
+		this._prevUpdateHash = ''
 		const ctx = this._mainCanvas.getContext('2d')
 		if (!ctx) throw Error('Cannot get rendering context of canvas')
 		this._context = ctx
 		this._calcSize()
 		this._resizeObserver = this._createResizeObserverFor(this._mainCanvas)
-		this._resizeHandler = (): void => {
-			this._update(true)
-		}
-		window.addEventListener('resize', this._resizeHandler)
 	}
 
 	unregister(): void {
@@ -126,6 +140,10 @@ export class HtmlCanvas implements Plugin, HtmlCanvasAlternative {
 
 	get element(): HTMLCanvasElement {
 		return this._mainCanvas
+	}
+
+	set element(element: HTMLCanvasElement) {
+		this._setCanvas(element)
 	}
 
 	get context(): CanvasRenderingContext2D {
