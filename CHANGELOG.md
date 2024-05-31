@@ -6,6 +6,7 @@
 
 ### Fixed
 
+- Remove hardly visible dimension axis guides between animation steps.
 - Do not calculate disabled markers to the color normalization. 
 - More precise TS type for transform matrix in event handlers. 
 - Add missing canvas change function in htmlcanvas plugin. 
