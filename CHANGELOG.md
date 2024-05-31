@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+### Fixed
+
+- First marker alpha was different to other marker's alpha
+
 ## [0.11.1] - 2024-05-31
 
 ### Fixed

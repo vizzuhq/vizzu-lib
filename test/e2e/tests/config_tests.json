@@ -29,7 +29,7 @@
 			"refs": ["f67aea6"]
 		},
 		"geometry/animated_line-rectangle": {
-			"refs": ["d2d80c6"]
+			"refs": ["224ce34"]
 		},
 		"geometry/animated_rectangle-area": {
 			"refs": ["6577fd3"]
@@ -38,7 +38,7 @@
 			"refs": ["12d82f2"]
 		},
 		"geometry/animated_rectangle-line": {
-			"refs": ["5949df4"]
+			"refs": ["f920fb0"]
 		},
 		"dimension_axis_title": {
 			"refs": ["6b8167a"]

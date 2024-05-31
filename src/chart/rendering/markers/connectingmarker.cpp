@@ -130,7 +130,7 @@ const Gen::Marker *ConnectingMarker::getPrev(
 {
 	const auto &prevId =
 	    marker.prevMainMarkerIdx.get_or_first(lineIndex);
-	return (prevId.weight > 0.0) ? &markers[prevId.value] : nullptr;
+	return prevId.weight > 0.0 ? &markers[prevId.value] : nullptr;
 }
 
 }
