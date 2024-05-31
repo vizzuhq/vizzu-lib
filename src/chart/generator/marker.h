@@ -54,14 +54,13 @@ public:
 
 	using Id = Data::MarkerId;
 
-	::Anim::Interpolated<Id> mainId;
+	Id mainId;
 	Id subId;
 	Id sizeId;
 
 	MarkerIndex idx;
 	::Anim::Interpolated<MarkerIndex> prevMainMarkerIdx;
-	::Anim::Interpolated<MarkerIndex> nextMainMarkerIdx;
-	::Anim::Interpolated<MarkerIndex> nextSubMarkerIdx;
+	::Anim::Interpolated<bool> polarConnection;
 
 	void setNextMarker(bool first,
 	    Marker &marker,

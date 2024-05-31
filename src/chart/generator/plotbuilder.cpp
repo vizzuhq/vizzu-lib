@@ -97,8 +97,8 @@ Buckets PlotBuilder::generateMarkers(std::size_t &mainBucketSize)
 		    markerId,
 		    needInfo);
 
-		mainBuckets[marker.mainId.get().seriesId]
-		           [marker.mainId.get().itemId] = &marker;
+		mainBuckets[marker.mainId.seriesId][marker.mainId.itemId] =
+		    &marker;
 		subBuckets[marker.subId.seriesId][marker.subId.itemId] =
 		    &marker;
 
@@ -339,7 +339,7 @@ void PlotBuilder::calcDimensionAxis(ChannelId type)
 			const auto &id =
 			    (type == ChannelId::x)
 			            == plot->getOptions()->isHorizontal()
-			        ? marker.mainId.get()
+			        ? marker.mainId
 			        : marker.subId;
 
 			if (const auto &slice = id.label)

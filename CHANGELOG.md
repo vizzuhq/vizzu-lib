@@ -11,6 +11,7 @@
 - Add missing canvas change function in htmlcanvas plugin. 
 - On split charts the first range was not part of the separation calculation.
 - When the first marker was disabled it was calculated as an enabled marker on the XY normalization.
+- Sorted or reversed marker connections behaved chaotic at coordinate system change. 
 
 ## [0.11.0] - 2024-05-23
 

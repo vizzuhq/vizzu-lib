@@ -73,7 +73,7 @@ Marker::Marker(const Options &options,
 	    data,
 	    stats,
 	    index,
-	    horizontal ? &mainId->value : subAxisId);
+	    horizontal ? &mainId : subAxisId);
 
 	auto yChannelRectDim =
 	    channels.at(ChannelId::y).isDimension()
@@ -93,7 +93,7 @@ Marker::Marker(const Options &options,
 	    data,
 	    stats,
 	    index,
-	    !horizontal ? &mainId->value : subAxisId);
+	    !horizontal ? &mainId : subAxisId);
 
 	auto xChannelRectDim =
 	    channels.at(ChannelId::x).isDimension()
@@ -127,8 +127,6 @@ void Marker::setNextMarker(bool first,
     bool horizontal,
     bool main)
 {
-	(main ? nextMainMarkerIdx : nextSubMarkerIdx) = marker.idx;
-
 	if (main) marker.prevMainMarkerIdx = idx;
 
 	if (!first) {
@@ -136,6 +134,8 @@ void Marker::setNextMarker(bool first,
 		    horizontal ? &Geom::Point::x : &Geom::Point::y;
 		marker.position.*coord += position.*coord;
 	}
+	else if (main && this != &marker)
+		marker.polarConnection = true;
 }
 
 void Marker::resetSize(bool horizontal)
@@ -150,10 +150,6 @@ void Marker::setIdOffset(size_t offset)
 {
 	if (prevMainMarkerIdx.hasOneValue())
 		prevMainMarkerIdx->value += offset;
-	if (nextMainMarkerIdx.hasOneValue())
-		nextMainMarkerIdx->value += offset;
-	if (nextSubMarkerIdx.hasOneValue())
-		nextSubMarkerIdx->value += offset;
 }
 
 Conv::JSONObj &&Marker::appendToJSON(Conv::JSONObj &&jsonObj) const
