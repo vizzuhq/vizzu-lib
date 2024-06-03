@@ -20,25 +20,25 @@
 			"refs": ["3622f0e"]
 		},
 		"geometry/animated_area-rectangle": {
-			"refs": ["82a57d0"]
+			"refs": ["dd49c0a"]
 		},
 		"geometry/animated_line-area": {
-			"refs": ["69de3f9"]
+			"refs": ["ddc3fee"]
 		},
 		"geometry/animated_line-circle": {
 			"refs": ["f67aea6"]
 		},
 		"geometry/animated_line-rectangle": {
-			"refs": ["224ce34"]
+			"refs": ["e020639"]
 		},
 		"geometry/animated_rectangle-area": {
-			"refs": ["6577fd3"]
+			"refs": ["0d58874"]
 		},
 		"geometry/animated_rectangle-circle": {
 			"refs": ["12d82f2"]
 		},
 		"geometry/animated_rectangle-line": {
-			"refs": ["f920fb0"]
+			"refs": ["d5ecf7c"]
 		},
 		"dimension_axis_title": {
 			"refs": ["6b8167a"]

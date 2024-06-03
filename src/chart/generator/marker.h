@@ -65,6 +65,7 @@ public:
 	void setNextMarker(bool first,
 	    Marker &marker,
 	    bool horizontal,
+	    bool polar,
 	    bool main);
 	void resetSize(bool horizontal);
 

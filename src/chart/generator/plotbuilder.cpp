@@ -129,30 +129,30 @@ Buckets PlotBuilder::generateMarkers(std::size_t &mainBucketSize)
 	return subBuckets;
 }
 
-std::vector<std::pair<double, std::size_t>>
+std::vector<PlotBuilder::BucketInfo>
 PlotBuilder::sortedBuckets(const Buckets &buckets, bool main) const
 {
-	std::vector<std::pair<double, std::size_t>> sorted(
-	    buckets.inner_size());
+	std::vector<BucketInfo> sorted(buckets.inner_size());
 
 	for (auto &&bucket : buckets)
 		for (std::size_t ix{}; auto &&marker : bucket) {
-			auto &[s, f] = sorted[ix];
+			auto &[f, s, has] = sorted[ix];
 			f = ix++;
+			if (!marker->enabled) continue;
 			s += marker->size.getCoord(
 			    !plot->getOptions()->isHorizontal());
+			has = true;
 		}
 
 	if (main && plot->getOptions()->sort == Sort::byValue)
 		std::sort(sorted.begin(),
 		    sorted.end(),
-		    [](const std::pair<double, std::size_t> &lhs,
-		        const std::pair<double, std::size_t> &rhs)
+		    [](const BucketInfo &lhs, const BucketInfo &rhs)
 		    {
-			    if (auto ord = std::weak_order(lhs.first, rhs.first);
+			    if (auto ord = std::weak_order(lhs.size, rhs.size);
 			        !std::is_eq(ord))
 				    return std::is_lt(ord);
-			    return lhs.second < rhs.second;
+			    return lhs.index < rhs.index;
 		    });
 
 	if (main && plot->getOptions()->reverse)
@@ -214,18 +214,38 @@ Math::Range<double> &PlotBuilder::getMeasTrackRange(
 
 bool PlotBuilder::linkMarkers(const Buckets &buckets, bool main) const
 {
+	auto &&origSorted = sortedBuckets(buckets, main);
+	auto first = std::find_if(origSorted.begin(),
+	    origSorted.end(),
+	    [](const BucketInfo &i)
+	    {
+		    return i.hasElement;
+	    });
+	auto last = std::find_if(origSorted.rbegin(),
+	    std::reverse_iterator{first},
+	    [](const BucketInfo &i)
+	    {
+		    return i.hasElement;
+	    }).base();
+
+	auto sorted = std::ranges::subrange{first, last};
+
+	auto horizontal = plot->getOptions()->isHorizontal();
+	auto polar =
+	    plot->getOptions()->coordSystem.get() == CoordSystem::polar;
+
 	bool hasConnection{};
-	for (auto &&sorted = sortedBuckets(buckets, main);
-	     const auto &bucket : buckets)
+	for (const auto &bucket : buckets)
 		for (auto i = 0U; i < sorted.size(); ++i) {
-			auto idAct = sorted[i].second;
+			auto idAct = sorted[i].index;
 			auto &act = *bucket[idAct];
 			auto iNext = (i + 1) % sorted.size();
-			auto idNext = sorted[iNext].second;
+			auto idNext = sorted[iNext].index;
 			auto &next = *bucket[idNext];
 			act.setNextMarker(iNext == 0,
 			    next,
-			    plot->getOptions()->isHorizontal() == main,
+			    horizontal,
+			    polar,
 			    main);
 			if (act.enabled && next.enabled && idAct != idNext)
 				hasConnection = true;

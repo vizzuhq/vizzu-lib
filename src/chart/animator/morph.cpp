@@ -72,14 +72,50 @@ void CoordinateSystem::transform(const Gen::Options &source,
 	actual.angle = interpolate(source.angle, target.angle, factor);
 }
 
+void transformMarkerAndPolarity(const Gen::Marker &source,
+    const Gen::Marker &target,
+    Gen::Marker &actual,
+    double factor)
+{
+	actual.prevMainMarkerIdx = interpolate(source.prevMainMarkerIdx,
+	    target.prevMainMarkerIdx,
+	    factor);
+	actual.polarConnection = interpolate(source.polarConnection,
+	    target.polarConnection,
+	    factor);
+	if (factor == 1.0
+	    && source.prevMainMarkerIdx->value
+	           == target.prevMainMarkerIdx->value
+	    && source.polarConnection->value
+	           == target.polarConnection->value) {
+		actual.prevMainMarkerIdx.values[0] =
+		    actual.prevMainMarkerIdx.values[1];
+		actual.prevMainMarkerIdx.has_second = false;
+	}
+	else if (factor == 1.0) {
+		actual.prevMainMarkerIdx.values[0].value =
+		    source.prevMainMarkerIdx->value;
+		actual.polarConnection.values[0].value =
+		    source.polarConnection->value;
+	}
+}
+
 void Show::transform(const Marker &source,
     const Marker &target,
     Marker &actual,
     double factor) const
 {
-	if (!source.enabled && target.enabled)
+	if (!source.enabled && target.enabled) {
 		actual.enabled =
 		    interpolate(source.enabled, target.enabled, factor);
+
+		transformMarkerAndPolarity(source, target, actual, factor);
+	}
+	else if (source.enabled == target.enabled
+	         && !source.prevMainMarkerIdx.hasOneValue()
+	         && target.prevMainMarkerIdx.hasOneValue()
+	         && !target.polarConnection.get())
+		transformMarkerAndPolarity(source, target, actual, factor);
 }
 
 void Hide::transform(const Marker &source,
@@ -87,9 +123,27 @@ void Hide::transform(const Marker &source,
     Marker &actual,
     double factor) const
 {
-	if (source.enabled && !target.enabled)
+	if (source.enabled && !target.enabled) {
 		actual.enabled =
 		    interpolate(source.enabled, target.enabled, factor);
+		transformMarkerAndPolarity(source, target, actual, factor);
+	}
+	else if (source.enabled == target.enabled
+	         && source.prevMainMarkerIdx.hasOneValue()
+	         && !target.prevMainMarkerIdx.hasOneValue()
+	         && !source.polarConnection.get())
+		transformMarkerAndPolarity(source, target, actual, factor);
+	else if (source.enabled && target.enabled
+	         && source.prevMainMarkerIdx.hasOneValue()
+	         && target.prevMainMarkerIdx.hasOneValue()
+	         && !source.polarConnection.get()
+	         && target.polarConnection.get()) {
+		actual.enabled = Math::FuzzyBool{1 - factor};
+
+		transformMarkerAndPolarity(source, target, actual, factor);
+
+		actual.polarConnection.values[1].weight = 0.0;
+	}
 }
 
 void Shape::transform(const Gen::Options &source,
@@ -172,13 +226,51 @@ void Connection::transform(const Marker &source,
     Marker &actual,
     double factor) const
 {
-	actual.prevMainMarkerIdx = interpolate(source.prevMainMarkerIdx,
-	    target.prevMainMarkerIdx,
-	    factor);
-
-	actual.polarConnection = interpolate(source.polarConnection,
-	    target.polarConnection,
-	    factor);
+	if (source.enabled != target.enabled) return;
+	if (source.enabled == target.enabled
+	    && !source.prevMainMarkerIdx.hasOneValue()
+	    && target.prevMainMarkerIdx.hasOneValue()
+	    && !target.polarConnection.get()) {
+		if (factor > 0
+		    && actual.prevMainMarkerIdx.get_or_first(::Anim::second)
+		           != *target.prevMainMarkerIdx)
+			transformMarkerAndPolarity(source,
+			    target,
+			    actual,
+			    factor);
+	}
+	else if (source.enabled == target.enabled
+	         && source.prevMainMarkerIdx.hasOneValue()
+	         && !target.prevMainMarkerIdx.hasOneValue()
+	         && !source.polarConnection.get()) {
+		if (factor > 0
+		    && actual.prevMainMarkerIdx.values[0].weight != 0.0)
+			transformMarkerAndPolarity(source,
+			    target,
+			    actual,
+			    factor);
+	}
+	else if (source.enabled && target.enabled
+	         && source.prevMainMarkerIdx.hasOneValue()
+	         && target.prevMainMarkerIdx.hasOneValue()
+	         && !source.polarConnection.get()
+	         && target.polarConnection.get()) {
+		if (factor > 0
+		    && actual.prevMainMarkerIdx.values[0].weight != 0.0)
+			transformMarkerAndPolarity(source,
+			    target,
+			    actual,
+			    factor);
+		else if (factor > 0) {
+			actual.enabled = Math::FuzzyBool{factor};
+			actual.polarConnection.values[1].weight = factor;
+		}
+	}
+	else {
+		transformMarkerAndPolarity(source, target, actual, factor);
+		actual.enabled =
+		    interpolate(source.enabled, target.enabled, factor);
+	}
 }
 
 void Vertical::transform(const Gen::Plot &source,
@@ -240,7 +332,7 @@ void Vertical::transform(const Marker &source,
 	actual.label = interpolate(source.label, target.label, factor);
 }
 
-void Morph::Color::transform(const Gen::Plot &source,
+void Color::transform(const Gen::Plot &source,
     const Gen::Plot &target,
     Gen::Plot &actual,
     double factor) const
@@ -277,7 +369,7 @@ void Morph::Color::transform(const Gen::Plot &source,
 	        factor);
 }
 
-void Morph::Color::transform(const Marker &source,
+void Color::transform(const Marker &source,
     const Marker &target,
     Marker &actual,
     double factor) const
