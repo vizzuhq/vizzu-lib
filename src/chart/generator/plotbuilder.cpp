@@ -236,18 +236,16 @@ bool PlotBuilder::linkMarkers(const Buckets &buckets, bool main) const
 
 	bool hasConnection{};
 	for (const auto &bucket : buckets)
-		for (auto i = 0U; i < sorted.size(); ++i) {
-			auto idAct = sorted[i].index;
-			auto &act = *bucket[idAct];
-			auto iNext = (i + 1) % sorted.size();
-			auto idNext = sorted[iNext].index;
-			auto &next = *bucket[idNext];
+		for (int i{}, s = static_cast<int>(sorted.size()); i < s;) {
+			auto &act = *bucket[sorted[i++].index];
+			auto iNext = i % s;
+			auto &next = *bucket[sorted[iNext].index];
 			act.setNextMarker(iNext == 0,
 			    next,
 			    horizontal,
 			    polar,
 			    main);
-			if (act.enabled && next.enabled && idAct != idNext)
+			if (act.enabled && next.enabled && &act != &next)
 				hasConnection = true;
 		}
 	return hasConnection;

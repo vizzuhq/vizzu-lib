@@ -5,6 +5,8 @@
 ### Fixed
 
 - First marker alpha was different to other marker's alpha
+- Remove filtered side markers from visibility.
+- Make some transactions more clearer. (rectangle-line first marker)
 
 ## [0.11.1] - 2024-05-31
 
