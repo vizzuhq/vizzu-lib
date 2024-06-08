@@ -66,7 +66,7 @@ export class PointerEvents implements Plugin {
 
 		this._canvas = this._vizzu.feature.htmlCanvas.element
 		for (const [key, value] of Object.entries(this._handlers)) {
-			this._canvas.addEventListener(key, value)
+			this._canvas.addEventListener(key, value, { passive: true })
 		}
 	}
 
