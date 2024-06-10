@@ -43,11 +43,14 @@ ConnectingMarker::ConnectingMarker(const DrawingContext &ctx,
 			    enabled && (marker.enabled || prev->enabled);
 			connected =
 			    connected && (prev->enabled || marker.enabled);
-			if (marker.polarConnection.get_or_first(lineIndex)
-			        .value) {
-				linear = linear || polar.more();
-				connected = connected && polar.more() && horizontal;
-				enabled = enabled && polar && horizontal;
+			if (auto &&p =
+			        marker.polarConnection.get_or_first(lineIndex);
+			    p.value) {
+				auto markerPolar = polar && Math::FuzzyBool{p.weight};
+				linear = linear || markerPolar.more();
+				connected =
+				    connected && markerPolar.more() && horizontal;
+				enabled = enabled && markerPolar && horizontal;
 			}
 			if (isArea) enabled = enabled && connected;
 		}
@@ -130,7 +133,7 @@ const Gen::Marker *ConnectingMarker::getPrev(
 {
 	const auto &prevId =
 	    marker.prevMainMarkerIdx.get_or_first(lineIndex);
-	return (prevId.weight > 0.0) ? &markers[prevId.value] : nullptr;
+	return prevId.weight > 0.0 ? &markers[prevId.value] : nullptr;
 }
 
 }

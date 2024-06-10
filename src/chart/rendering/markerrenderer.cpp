@@ -200,9 +200,14 @@ bool MarkerRenderer::shouldDrawMarkerBody(
 {
 	bool enabled = marker.enabled != false;
 	if (!enabled
-	    && getOptions().geometry.factor<Math::FuzzyBool>(
-	           Gen::ShapeType::area)
-	           != false) {
+	    && (getOptions().geometry.factor<Math::FuzzyBool>(
+	            Gen::ShapeType::area)
+	            != false
+	        || (getOptions().geometry.factor<Math::FuzzyBool>(
+	                Gen::ShapeType::line)
+	                != false
+	            && marker.polarConnection.factor<double>(true)
+	                   == 0.0))) {
 
 		if (const auto *prev0 = ConnectingMarker::getPrev(marker,
 		        plot->getMarkers(),
@@ -419,7 +424,7 @@ std::pair<Gfx::Color, Gfx::Color> MarkerRenderer::getColor(
 
 	const auto &enabled =
 	    label ? abstractMarker.labelEnabled : abstractMarker.enabled;
-	auto alpha = static_cast<double>(enabled) * factor;
+	auto alpha = std::min(static_cast<double>(enabled), factor);
 
 	auto finalBorderColor = actBorderColor * alpha;
 	auto itemColor = selectedColor * alpha * fillAlpha;

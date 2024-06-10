@@ -23,9 +23,9 @@ public:
 	Weighted() noexcept(
 	    std::is_nothrow_default_constructible_v<Type>) = default;
 
-	explicit Weighted(Type value) :
+	explicit Weighted(Type value, double weight = 1.0) :
 	    value(std::move(value)),
-	    weight(1.0)
+	    weight(weight)
 	{}
 
 	bool operator==(const Weighted<Type> &other) const
@@ -141,6 +141,15 @@ public:
 	Weighted<Type> &operator*() { return *operator->(); }
 
 	Weighted<Type> *operator->()
+	{
+		if (!has_second) return values.data();
+
+		throw std::logic_error("Invalid Weigthed Pair dereference");
+	}
+
+	const Weighted<Type> &operator*() const { return *operator->(); }
+
+	const Weighted<Type> *operator->() const
 	{
 		if (!has_second) return values.data();
 

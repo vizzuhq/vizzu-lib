@@ -84,7 +84,10 @@ void Planner::createPlan(const Gen::Plot &source,
 		}
 
 		addMorph(SectionId::connection,
-		    getDuration() - getBaseline());
+		    animNeeded[SectionId::coordSystem]
+		            && getDuration() == getBaseline()
+		        ? step
+		        : getDuration() - getBaseline());
 
 		if (animNeeded[SectionId::style])
 			Morph::StyleMorphFactory(source.getStyle(),

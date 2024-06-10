@@ -23,6 +23,7 @@ Marker::Marker(const Options &options,
         index)),
     idx(idx)
 {
+	prevMainMarkerIdx.values[0].value = ~MarkerIndex{};
 	const auto &channels = options.getChannels();
 	auto color = getValueForChannel(channels,
 	    ChannelId::color,
@@ -125,17 +126,22 @@ Marker::Marker(const Options &options,
 void Marker::setNextMarker(bool first,
     Marker &marker,
     bool horizontal,
+    bool polar,
     bool main)
 {
-	if (main) marker.prevMainMarkerIdx = idx;
+	if (main) {
+		if (!first || this == &marker || (horizontal && polar))
+			marker.prevMainMarkerIdx = idx;
+
+		if (first && this != &marker && horizontal && polar)
+			marker.polarConnection = true;
+	}
 
 	if (!first) {
 		double Geom::Point::*const coord =
-		    horizontal ? &Geom::Point::x : &Geom::Point::y;
+		    horizontal == main ? &Geom::Point::x : &Geom::Point::y;
 		marker.position.*coord += position.*coord;
 	}
-	else if (main && this != &marker)
-		marker.polarConnection = true;
 }
 
 void Marker::resetSize(bool horizontal)
