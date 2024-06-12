@@ -18,14 +18,25 @@ template <typename Item>
 void TableChart::setupVector(std::vector<Item> &items,
     bool singleColumn)
 {
-	if (items.empty()) return;
-
 	auto size = 0;
 	for (auto &item : items)
 		if (item.enabled) ++size;
 
-	auto rowsize =
-	    singleColumn ? 1 : static_cast<ssize_t>(ceil(sqrt(size)));
+	if (size == 0) return;
+
+	ssize_t rowsize{1};
+	if (!singleColumn) {
+		rowsize = static_cast<ssize_t>(ceil(sqrt(size)));
+		auto sq = static_cast<ssize_t>(ceil(sqrt(
+		    16.0 * static_cast<double>(rowsize * rowsize) / 9.0)));
+
+		auto rem = rowsize - 1 - (size - 1) % rowsize;
+		for (auto i = rowsize + 1; rem > 0 && i < sq; ++i)
+			if (auto newRem = i - 1 - (size - 1) % i; newRem < rem) {
+				rowsize = i;
+				rem = newRem;
+			}
+	}
 	auto colsize = ceil(
 	    static_cast<double>(size) / static_cast<double>(rowsize));
 
@@ -37,7 +48,7 @@ void TableChart::setupVector(std::vector<Item> &items,
 		if (item.enabled) {
 			item.spacing = {1, 1};
 			auto div = std::div(cnt++, rowsize);
-			item.position = {(1.0 + static_cast<double>(div.rem))
+			item.position = {static_cast<double>(div.rem + 1)
 			                     / static_cast<double>(rowsize),
 			    1.0 - static_cast<double>(div.quot) / colsize};
 			item.size = markerSize;
