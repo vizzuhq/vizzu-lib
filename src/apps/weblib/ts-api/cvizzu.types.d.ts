@@ -92,8 +92,8 @@ export interface CVizzu {
 	_vizzu_wheel(chart: CChartPtr, canvas: CCanvasPtr, delta: number): void
 	_vizzu_setLogging(enable: boolean): void
 	_vizzu_update(chart: CChartPtr, time: number): void
-	_vizzu_render(chart: CChartPtr, canvas: CCanvasPtr, width: number, height: number): void
-
+	_vizzu_render(chart: CChartPtr, canvas: CCanvasPtr, width: number, height: number,
+                highResolution: boolean): void
 	_vizzu_errorMessage(exceptionPtr: CException, typeinfo: CTypeInfo): CString
 	_vizzu_version(): CString
 	_data_addDimension(

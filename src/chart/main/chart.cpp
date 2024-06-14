@@ -87,8 +87,12 @@ Gen::Config Chart::getConfig()
 	return Gen::Config{getOptions(), table};
 }
 
-void Chart::draw(Gfx::ICanvas &canvas)
+void Chart::draw(Gfx::ICanvas &canvas, bool highResolution)
 {
+	static_cast<Draw::Painter *>(canvas.getPainter())
+	    ->setResMode(highResolution ? Draw::ResolutionMode::High
+	                                : Draw::ResolutionMode::Low);
+
 	renderedChart = Draw::RenderedChart{
 	    actPlot ? Draw::CoordinateSystem{layout.plotArea,
 	        actPlot->getOptions()->angle,

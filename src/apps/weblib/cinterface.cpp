@@ -184,12 +184,14 @@ void vizzu_update(APIHandles::Chart chart, double timeInMSecs)
 void vizzu_render(APIHandles::Chart chart,
     APIHandles::Canvas canvas,
     double width,
-    double height)
+    double height,
+    int highResolution)
 {
 	return Interface::getInstance().render(chart,
 	    canvas,
 	    width,
-	    height);
+	    height,
+	    static_cast<bool>(highResolution));
 }
 
 const char *style_getList() { return Interface::getStyleList(); }

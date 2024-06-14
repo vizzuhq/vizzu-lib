@@ -389,7 +389,8 @@ void Interface::update(ObjectRegistryHandle chart, double timeInMSecs)
 void Interface::render(ObjectRegistryHandle chart,
     ObjectRegistryHandle canvas,
     double width,
-    double height)
+    double height,
+    bool highResolution)
 {
 	auto &&widget = objects.get<UI::ChartWidget>(chart);
 	auto &&ptr = objects.get<Gfx::ICanvas>(canvas);
@@ -398,7 +399,7 @@ void Interface::render(ObjectRegistryHandle chart,
 
 	widget->onUpdateSize({width, height});
 
-	widget->onDraw(ptr);
+	widget->onDraw(ptr, highResolution);
 
 	ptr->frameEnd();
 }

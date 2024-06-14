@@ -54,7 +54,8 @@ public:
 	void render(ObjectRegistryHandle chart,
 	    ObjectRegistryHandle canvas,
 	    double width,
-	    double height);
+	    double height,
+	    bool highResolution);
 
 	ObjectRegistryHandle storeAnim(ObjectRegistryHandle chart);
 	void restoreAnim(ObjectRegistryHandle chart,

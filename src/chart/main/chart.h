@@ -29,7 +29,7 @@ public:
 
 	Chart();
 	Chart(Chart &&) noexcept = delete;
-	void draw(Gfx::ICanvas &canvas);
+	void draw(Gfx::ICanvas &canvas, bool highResolution);
 	void setBoundRect(const Geom::Rect &rect);
 
 	Data::DataTable &getTable() { return table; }
