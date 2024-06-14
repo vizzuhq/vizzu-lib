@@ -184,7 +184,7 @@ void PlotBuilder::addSpecLayout(Buckets &buckets)
 	}
 	else if (auto &&size = plot->getOptions()->getChannels().at(
 	             ChannelId::size);
-	         size.isEmpty()) {
+	         size.isDimension()) {
 		Charts::TableChart::setupVector(markers);
 	}
 	else if (!dataCube.empty()) {

@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+### Fixed
+
+- Only dimension on size (+ color) wrongly displayed as treemap, not tablechart.
+
 ## [0.11.1] - 2024-05-31
 
 ### Fixed
