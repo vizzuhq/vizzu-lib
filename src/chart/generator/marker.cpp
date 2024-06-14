@@ -11,18 +11,20 @@ Marker::Marker(const Options &options,
     const Data::DataCube &data,
     Axises &stats,
     const Data::MultiIndex &index,
-    MarkerIndex idx,
+    MarkerPosition pos,
     bool needMarkerInfo) :
-    enabled(data.empty() || !index.isEmpty()),
+    enabled(true),
     cellInfo(enabled || needMarkerInfo
-                 ? data.cellInfo(index, idx, needMarkerInfo)
+                 ? data.cellInfo(index, needMarkerInfo)
                  : nullptr),
     sizeId(data.getId(options.getChannels()
                           .at(ChannelId::size)
                           .dimensionsWithLevel(),
         index)),
-    idx(idx)
+    idx(index.oldAggr),
+    pos(pos)
 {
+	prevMainMarker.values[0].value.idx = ~MarkerIndex{};
 	const auto &channels = options.getChannels();
 	auto color = getValueForChannel(channels,
 	    ChannelId::color,
@@ -122,34 +124,30 @@ Marker::Marker(const Options &options,
 	}
 }
 
-void Marker::setNextMarker(bool first,
-    Marker &marker,
-    bool horizontal,
-    bool main)
+bool Marker::connectMarkers(bool first,
+    Marker *prev,
+    Marker *next,
+    bool main,
+    bool polarConnection)
 {
-	if (main) marker.prevMainMarkerIdx = idx;
-
-	if (!first) {
-		double Geom::Point::*const coord =
-		    horizontal ? &Geom::Point::x : &Geom::Point::y;
-		marker.position.*coord += position.*coord;
+	if (prev && next && main && (!first || polarConnection)) {
+		next->prevMainMarker = MarkerIndexPosition{prev->idx,
+		    prev->pos,
+		    polarConnection && first};
+		return !first || polarConnection;
 	}
-	else if (main && this != &marker)
-		marker.polarConnection = true;
-}
+	if (next && main) {
+		next->prevMainMarker =
+		    MarkerIndexPosition{next->idx, next->pos, false};
+	}
 
-void Marker::resetSize(bool horizontal)
-{
-	double Geom::Point::*const coord =
-	    horizontal ? &Geom::Point::x : &Geom::Point::y;
-	size.*coord = 0;
-	position.*coord = 0;
+	return false;
 }
 
 void Marker::setIdOffset(size_t offset)
 {
-	if (prevMainMarkerIdx.hasOneValue())
-		prevMainMarkerIdx->value += offset;
+	if (prevMainMarker.hasOneValue())
+		prevMainMarker->value.pos += offset;
 }
 
 Conv::JSONObj &&Marker::appendToJSON(Conv::JSONObj &&jsonObj) const

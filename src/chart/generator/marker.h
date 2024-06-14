@@ -23,12 +23,13 @@ class Marker
 {
 public:
 	using MarkerIndex = Options::MarkerIndex;
+	using MarkerPosition = std::size_t;
 
 	Marker(const Options &options,
 	    const Data::DataCube &data,
 	    Axises &stats,
 	    const Data::MultiIndex &index,
-	    MarkerIndex idx,
+	    MarkerPosition pos,
 	    bool needMarkerInfo);
 
 	::Anim::Interpolated<ColorBase> colorBase;
@@ -59,14 +60,27 @@ public:
 	Id sizeId;
 
 	MarkerIndex idx;
-	::Anim::Interpolated<MarkerIndex> prevMainMarkerIdx;
-	::Anim::Interpolated<bool> polarConnection;
+	MarkerPosition pos;
 
-	void setNextMarker(bool first,
-	    Marker &marker,
-	    bool horizontal,
-	    bool main);
-	void resetSize(bool horizontal);
+	struct MarkerIndexPosition
+	{
+		MarkerIndex idx;
+		MarkerPosition pos;
+		bool polar;
+
+		friend bool operator==(const MarkerIndexPosition &lhs,
+		    const MarkerIndexPosition &rhs)
+		{
+			return lhs.idx == rhs.idx && lhs.polar == rhs.polar;
+		}
+	};
+	::Anim::Interpolated<MarkerIndexPosition> prevMainMarker;
+
+	static bool connectMarkers(bool first,
+	    Marker *prev,
+	    Marker *next,
+	    bool main,
+	    bool polarConnection);
 
 	[[nodiscard]] Geom::Rect toRectangle() const;
 	void fromRectangle(const Geom::Rect &rect);

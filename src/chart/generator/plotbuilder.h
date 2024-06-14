@@ -22,6 +22,13 @@ private:
 	Data::DataCube dataCube;
 	PlotPtr plot;
 
+	struct BucketInfo
+	{
+		std::size_t index{};
+		double size{};
+		bool hasElement{};
+	};
+
 	void initDimensionTrackers() const;
 	void resetDimensionTrackers() const;
 	Buckets generateMarkers(std::size_t &mainBucketSize);
@@ -38,9 +45,8 @@ private:
 	    const std::size_t &mainBucketSize) const;
 	void normalizeSizes();
 	void normalizeColors();
-	[[nodiscard]] std::vector<std::pair<double, std::size_t>>
+	[[nodiscard]] std::vector<BucketInfo>
 	sortedBuckets(const Buckets &buckets, bool main) const;
-	void clearEmptyBuckets(const Buckets &buckets, bool main) const;
 	void addSpecLayout(Buckets &buckets);
 
 	[[nodiscard]] Math::Range<double> &getMeasTrackRange(

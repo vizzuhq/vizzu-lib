@@ -15,7 +15,7 @@ class DataCube;
 
 struct RowWrapper
 {
-	[[nodiscard]] dataframe::cell_value get_value(
+	[[nodiscard]] dataframe::cell_reference get_value(
 	    const std::string_view &i) const
 	{
 		return parent->get_data(recordId, i);
@@ -39,17 +39,22 @@ public:
 		return *aggr;
 	}
 
-	[[nodiscard]] const std::string_view &getColIndex() const;
+	[[nodiscard]] const std::string_view &getColIndex() const
+	{
+		return sid;
+	}
 
-	[[nodiscard]] bool operator==(const SeriesIndex &rhs) const;
-	[[nodiscard]] bool operator<(const SeriesIndex &rhs) const;
+	[[nodiscard]] bool operator==(const SeriesIndex &rhs) const
+	{
+		return sid == rhs.sid && aggr == rhs.aggr;
+	}
 
-	friend bool operator<(const std::string_view &dim,
-	    const SeriesIndex &rhs);
-	friend bool operator<(const SeriesIndex &lhs,
-	    const std::string_view &dim);
+	[[nodiscard]] bool operator<(const SeriesIndex &rhs) const
+	{
+		return sid < rhs.sid || (sid == rhs.sid && aggr < rhs.aggr);
+	}
 
-	[[nodiscard]] bool isDimension() const;
+	[[nodiscard]] bool isDimension() const { return !aggr; }
 
 	[[nodiscard]] const std::string &toString() const
 	{
@@ -87,11 +92,10 @@ public:
 
 	[[nodiscard]] Filter operator&&(const Filter &other) const
 	{
-		auto first =
-		    func1.get() == True ? other.func1.get() : func1.get();
-		auto second =
-		    other.func1.get() == first ? True : other.func1.get();
-		return {first, second};
+		auto &&[min, max] =
+		    std::minmax({func1.get(), other.func1.get()});
+		auto &&first = min == True ? max : min;
+		return {first, max == first ? True : max};
 	}
 
 	[[nodiscard]] auto getFunction() const
@@ -112,7 +116,11 @@ struct SliceIndex
 	std::string_view column;
 	std::string_view value;
 
-	[[nodiscard]] bool operator<(const SliceIndex &) const;
+	[[nodiscard]] bool operator<(const SliceIndex &rhs) const
+	{
+		return column < rhs.column
+		    || (column == rhs.column && value < rhs.value);
+	}
 
 	[[nodiscard]] bool operator==(const SliceIndex &) const = default;
 };
@@ -126,10 +134,9 @@ struct CellInfo
 
 struct MultiIndex
 {
-	std::optional<std::size_t> rid;
+	std::size_t rid;
 	std::vector<std::size_t> old;
-
-	[[nodiscard]] bool isEmpty() const;
+	std::size_t oldAggr;
 };
 
 struct MarkerId
@@ -138,7 +145,10 @@ struct MarkerId
 	std::size_t seriesId{};
 	std::size_t itemId{};
 
-	[[nodiscard]] bool operator==(const MarkerId &) const;
+	[[nodiscard]] bool operator==(const MarkerId &id) const
+	{
+		return itemId == id.itemId && seriesId == id.seriesId;
+	}
 };
 }
 
