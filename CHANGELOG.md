@@ -5,9 +5,6 @@
 ### Fixed
 
 - Only dimension on size (+ color) wrongly displayed as treemap, not tablechart.
-- When markers size is factorisable to 2 numbers product on a tablechart, and the multipliers ratio is less than 16/9,
-  the area fully filled with equal marker rectangles.
-
 
 ## [0.11.1] - 2024-05-31
 
