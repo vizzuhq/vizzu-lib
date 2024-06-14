@@ -94,7 +94,7 @@ void MarkerRenderer::drawMarkers(Gfx::ICanvas &canvas,
 
 			draw(canvas, painter, circle, 1, false);
 
-			blended.marker.prevMainMarkerIdx.visit(
+			blended.marker.prevMainMarker.visit(
 			    [this, &blended, &canvas, &painter](
 			        ::Anim::InterpolateIndex index,
 			        const auto &value)
@@ -114,9 +114,10 @@ void MarkerRenderer::drawMarkers(Gfx::ICanvas &canvas,
 			auto drawMarker =
 			    [this, &blended, &other, &canvas, &painter](
 			        ::Anim::InterpolateIndex index,
-			        const ::Anim::Weighted<Gen::Options::MarkerIndex>
-			            &value = ::Anim::Weighted(
-			                Gen::Options::MarkerIndex{}))
+			        const ::Anim::Weighted<
+			            Gen::Marker::MarkerIndexPosition> &value =
+			            ::Anim::Weighted(
+			                Gen::Marker::MarkerIndexPosition{}))
 			{
 				if (index == ::Anim::second && !other) {
 					other.emplace(
@@ -167,8 +168,7 @@ void MarkerRenderer::drawMarkers(Gfx::ICanvas &canvas,
 					drawMarker(lineIndex);
 				}
 				else
-					blended.marker.prevMainMarkerIdx.visit(
-					    drawMarker);
+					blended.marker.prevMainMarker.visit(drawMarker);
 			}
 			else
 				drawMarker(::Anim::first);
@@ -419,7 +419,7 @@ std::pair<Gfx::Color, Gfx::Color> MarkerRenderer::getColor(
 
 	const auto &enabled =
 	    label ? abstractMarker.labelEnabled : abstractMarker.enabled;
-	auto alpha = static_cast<double>(enabled) * factor;
+	auto alpha = std::min(static_cast<double>(enabled), factor);
 
 	auto finalBorderColor = actBorderColor * alpha;
 	auto itemColor = selectedColor * alpha * fillAlpha;

@@ -338,7 +338,7 @@ void dataframe::add_measure(std::span<const double> measure_values,
 
 void dataframe::add_series_by_other(std::string_view,
     std::string_view,
-    const std::function<cell_value(record_type, cell_value)> &,
+    const std::function<cell_value(record_type, cell_reference)> &,
     std::span<const std::pair<const char *, const char *>>) &
 {
 	if (as_if()) error(error_type::unimplemented, "by oth");
@@ -688,7 +688,7 @@ std::span<const std::string> dataframe::get_categories(
 	}
 }
 
-cell_value dataframe::get_data(record_identifier record_id,
+cell_reference dataframe::get_data(record_identifier record_id,
     const std::string_view &column) const &
 {
 	const auto &s = get_data_source();

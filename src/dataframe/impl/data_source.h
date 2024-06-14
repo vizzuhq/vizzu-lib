@@ -88,7 +88,7 @@ private:
 
 		void add_element(std::string_view const &cat);
 
-		[[nodiscard]] std::string_view get(std::size_t index) const;
+		[[nodiscard]] const std::string *get(std::size_t index) const;
 
 		void set(std::size_t index, std::string_view value);
 
@@ -202,7 +202,7 @@ public:
 
 	void remove_records(std::span<const std::size_t> indices);
 
-	[[nodiscard]] cell_value get_data(std::size_t record_id,
+	[[nodiscard]] cell_reference get_data(std::size_t record_id,
 	    const std::string_view &column) const;
 
 	[[nodiscard]] series_data get_series(const std::string_view &id);

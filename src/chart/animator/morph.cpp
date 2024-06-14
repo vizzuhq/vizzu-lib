@@ -172,13 +172,17 @@ void Connection::transform(const Marker &source,
     Marker &actual,
     double factor) const
 {
-	actual.prevMainMarkerIdx = interpolate(source.prevMainMarkerIdx,
-	    target.prevMainMarkerIdx,
+	actual.prevMainMarker = interpolate(source.prevMainMarker,
+	    target.prevMainMarker,
 	    factor);
 
-	actual.polarConnection = interpolate(source.polarConnection,
-	    target.polarConnection,
-	    factor);
+	if (factor == 1) {
+		actual.prevMainMarker.values[0].value =
+		    source.prevMainMarker.values[0].value;
+
+		if (!target.prevMainMarker.hasOneValue())
+			actual.prevMainMarker.has_second = false;
+	}
 }
 
 void Vertical::transform(const Gen::Plot &source,

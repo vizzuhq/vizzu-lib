@@ -79,7 +79,7 @@ void dataframe_interface::add_measure(
 void dataframe_interface::add_series_by_other(
     std::string_view curr_series,
     std::string_view name,
-    const std::function<cell_value(record_type, cell_value)>
+    const std::function<cell_value(record_type, cell_reference)>
         &value_transform,
     std::span<const std::pair<const char *, const char *>> info) &
 {
@@ -152,7 +152,8 @@ std::span<const std::string> dataframe_interface::get_categories(
 	return as_impl(this).get_categories(dimension);
 }
 
-cell_value dataframe_interface::get_data(record_identifier record_id,
+cell_reference dataframe_interface::get_data(
+    record_identifier record_id,
     const std::string_view &column) const &
 {
 	return as_impl(this).get_data(record_id, column);

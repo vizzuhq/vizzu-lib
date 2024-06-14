@@ -31,30 +31,25 @@ ConnectingMarker::ConnectingMarker(const DrawingContext &ctx,
 	labelEnabled = enabled && marker.enabled;
 
 	auto weight =
-	    marker.prevMainMarkerIdx.get_or_first(lineIndex).weight;
+	    marker.prevMainMarker.get_or_first(lineIndex).weight;
 
 	connected = enabled && Math::FuzzyBool(weight);
 
-	if (weight > 0.0) {
-		const auto *prev =
-		    getPrev(marker, ctx.plot->getMarkers(), lineIndex);
-		if (prev) {
-			labelEnabled =
-			    enabled && (marker.enabled || prev->enabled);
-			connected =
-			    connected && (prev->enabled || marker.enabled);
-			if (marker.polarConnection.get_or_first(lineIndex)
-			        .value) {
-				linear = linear || polar.more();
-				connected = connected && polar.more() && horizontal;
-				enabled = enabled && polar && horizontal;
-			}
-			if (isArea) enabled = enabled && connected;
+	if (const auto *prev =
+	        getPrev(marker, ctx.plot->getMarkers(), lineIndex)) {
+		labelEnabled = enabled && (marker.enabled || prev->enabled);
+		connected = connected && (prev->enabled || marker.enabled);
+		if (marker.prevMainMarker.get_or_first(lineIndex)
+		        .value.polar) {
+			linear = linear || polar.more();
+			connected = connected && polar.more() && horizontal;
+			enabled = enabled && polar && horizontal;
 		}
-		else {
-			enabled = false;
-			connected = false;
-		}
+		if (isArea) enabled = enabled && connected;
+	}
+	else {
+		enabled = false;
+		connected = false;
 	}
 
 	auto spacing = marker.spacing * marker.size / 2;
@@ -80,10 +75,8 @@ ConnectingMarker::ConnectingMarker(const DrawingContext &ctx,
 		                  ? marker.size.yComp() * horizontalFactor
 		                  : marker.size.xComp() * horizontalFactor);
 
-		const auto *prev =
-		    getPrev(marker, ctx.plot->getMarkers(), lineIndex);
-
-		if (prev) {
+		if (const auto *prev =
+		        getPrev(marker, ctx.plot->getMarkers(), lineIndex)) {
 			auto prevSpacing = prev->spacing * prev->size / 2;
 			auto prevPos = prev->position;
 
@@ -129,8 +122,10 @@ const Gen::Marker *ConnectingMarker::getPrev(
     ::Anim::InterpolateIndex lineIndex)
 {
 	const auto &prevId =
-	    marker.prevMainMarkerIdx.get_or_first(lineIndex);
-	return (prevId.weight > 0.0) ? &markers[prevId.value] : nullptr;
+	    marker.prevMainMarker.get_or_first(lineIndex);
+	return prevId.value.idx != ~Gen::Marker::MarkerIndex{}
+	         ? &markers[prevId.value.pos]
+	         : nullptr;
 }
 
 }

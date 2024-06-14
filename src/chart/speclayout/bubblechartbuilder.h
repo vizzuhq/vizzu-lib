@@ -23,15 +23,15 @@ void BubbleChartBuilder::setupVector(double maxRadius,
     const Hierarchy &hierarchy)
 {
 	SizeDependentLayout::setupVector(hierarchy,
-	    [&maxRadius](auto *item, const SpecMarker &marker)
+	    [&maxRadius](auto &item, const SpecMarker &marker)
 	    {
 		    if (const auto &[center, r] = marker.circle();
 		        std::isnan(r))
-			    item->enabled = false;
+			    item.enabled = false;
 		    else {
-			    item->position = center;
-			    item->size = Geom::Size{r, r};
-			    item->sizeFactor = r * r / (maxRadius * maxRadius);
+			    item.position = center;
+			    item.size = Geom::Size{r, r};
+			    item.sizeFactor = r * r / (maxRadius * maxRadius);
 		    }
 	    });
 }

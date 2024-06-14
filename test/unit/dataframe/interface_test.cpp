@@ -1,8 +1,22 @@
 
-#include "../util/test.h"
 #include "dataframe/impl/dataframe.h"
 #include "dataframe/interface.h"
 #include "dataframe/old/datatable.h"
+
+using Vizzu::dataframe::cell_reference;
+using Vizzu::dataframe::cell_value;
+using Vizzu::dataframe::na_position;
+using Vizzu::dataframe::sort_type;
+using interface = Vizzu::dataframe::dataframe_interface;
+using record_type = interface::record_type;
+
+bool operator==(const cell_reference &ref,
+    const std::string_view &str)
+{
+	return *std::get<const std::string *>(ref) == str;
+}
+
+#include "../util/test.h"
 
 using bool_msg = test::expected_bool_t;
 using test::assert;
@@ -13,11 +27,6 @@ using test::skip_error;
 using test::throw_;
 using test::operator"" _suite;
 using test::operator"" _is_true;
-using Vizzu::dataframe::cell_value;
-using Vizzu::dataframe::na_position;
-using Vizzu::dataframe::sort_type;
-using interface = Vizzu::dataframe::dataframe_interface;
-using record_type = interface::record_type;
 
 struct if_setup
 {
@@ -52,13 +61,15 @@ struct if_setup
 
 			for (auto r = 0u; r < data.size(); ++r) {
 				for (auto d = 0u; d < ds; ++d) {
-					auto gdata = std::get<std::string_view>(
+					auto gdata = std::get<const std::string *>(
 					    df->get_data(r, dims[d]));
 					const auto *ptr = data[r][d];
-					if (ptr)
-						skip->*gdata == ptr;
+					if (ptr) {
+						assert->*gdata != nullptr;
+						skip->**gdata == ptr;
+					}
 					else
-						skip->*gdata.data() == nullptr;
+						skip->*gdata == nullptr;
 				}
 
 				for (auto m = 0u; m < meas.size(); ++m) {
@@ -131,9 +142,11 @@ const static auto tests =
 	throw_<&interface::add_series_by_other>(df,
 	    {},
 	    {""},
-	    {[](Vizzu::Data::RowWrapper, cell_value c) -> cell_value
+	    {[](Vizzu::Data::RowWrapper, cell_reference c) -> cell_value
 	        {
-		        return c;
+		        if (c.index() == 0) return std::get<0>(c);
+		        auto *str = std::get<1>(c);
+		        return str ? *str : std::string_view{};
 	        }},
 	    {});
 	throw_<&interface::set_aggregate>(df, {}, {});
@@ -181,7 +194,8 @@ const static auto tests =
 
 	assert->*df->get_record_count() == std::size_t{4};
 
-	auto check_nan = [](cell_value const &cell, std::string &&prefix)
+	auto check_nan =
+	    [](cell_reference const &cell, std::string &&prefix)
 	{
 		auto str = prefix + " is a double";
 		assert->*std::holds_alternative<double>(cell)
@@ -190,13 +204,14 @@ const static auto tests =
 		check->*std::isnan(std::get<double>(cell)) == bool_msg{str};
 	};
 
-	auto check_nav = [](cell_value const &cell, std::string &&prefix)
+	auto check_nav =
+	    [](cell_reference const &cell, std::string &&prefix)
 	{
 		auto str = prefix + " is a string";
-		assert->*std::holds_alternative<std::string_view>(cell)
+		assert->*std::holds_alternative<const std::string *>(cell)
 		    == bool_msg{str};
 		str = prefix + " is nav";
-		check->*(std::get<std::string_view>(cell).data() == nullptr)
+		check->*(std::get<const std::string *>(cell) == nullptr)
 		    == bool_msg{str};
 	};
 
@@ -221,10 +236,9 @@ const static auto tests =
 	check_nav(df->get_data(std::size_t{3}, "d1"), "table_33");
 
 	check
-	            ->*(std::get<std::string_view>(
+	            ->*(std::get<const std::string *>(
 	                    df->get_data(std::size_t{0}, "d1"))
-	                    .data()
-	                == df->get_categories("d1")[0].data())
+	                == df->get_categories("d1").data())
 	    == "Not points to the same memory address"_is_true;
 }
 

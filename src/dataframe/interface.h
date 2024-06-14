@@ -18,6 +18,7 @@ namespace Vizzu::dataframe
 {
 
 using cell_value = std::variant<double, std::string_view>;
+using cell_reference = std::variant<double, const std::string *>;
 
 enum class aggregator_type {
 	sum,
@@ -52,9 +53,9 @@ struct custom_aggregator
 	std::string_view name;
 	using id_type = std::variant<double,
 	    std::pair<double, std::size_t>,
-	    std::set<const char *>>;
+	    std::set<const std::string *>>;
 	id_type (*create)();
-	double (*add)(id_type &, cell_value const &);
+	double (*add)(id_type &, cell_reference const &);
 
 	auto operator<=>(const custom_aggregator &oth) const
 	{
@@ -124,7 +125,7 @@ public:
 
 	void add_series_by_other(std::string_view curr_series,
 	    std::string_view name,
-	    const std::function<cell_value(record_type, cell_value)>
+	    const std::function<cell_value(record_type, cell_reference)>
 	        &value_transform,
 	    std::span<const std::pair<const char *, const char *>> info)
 	    &;
@@ -156,7 +157,7 @@ public:
 	[[nodiscard]] std::span<const std::string> get_categories(
 	    const std::string_view &dimension) const &;
 
-	[[nodiscard]] cell_value get_data(record_identifier record_id,
+	[[nodiscard]] cell_reference get_data(record_identifier record_id,
 	    const std::string_view &column) const &;
 
 	[[nodiscard]] std::size_t get_record_count() const &;

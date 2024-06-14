@@ -22,13 +22,17 @@ struct Buckets
 	{
 		auto &&[i, j] = p;
 		if (k * n < i * j)
-			markers =
-			    std::make_unique_for_overwrite<MarkerPtrArr>(i * j);
+			markers = std::make_unique<MarkerPtrArr>(i * j);
 		k = i;
 		n = j;
 	}
 
-	void clear() { markers.reset(); }
+	void clear()
+	{
+		markers.reset();
+		k = 0;
+		n = 0;
+	}
 
 	[[nodiscard]] std::size_t inner_size() const { return n; }
 
