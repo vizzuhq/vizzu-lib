@@ -2,11 +2,14 @@
 
 ## [Unreleased]
 
+## [0.11.2] - 2024-06-18
+
 ### Fixed
 
 - Only dimension on size (+ color) wrongly displayed as treemap, not tablechart.
 - Allocated memory is immediately freed after calling detach(), CAnimation and Snapshot
   also can be released using their new `free()` method.
+- Canvas pointer event handlers registered as passive.
 
 ## [0.11.1] - 2024-05-31
 
