@@ -1,7 +1,7 @@
-import { CObject } from './cenv.js'
+import { CObject, CManagedObject } from './cenv.js'
 
 /** Stored Animation object. */
-export class CAnimation extends CObject {}
+export class CAnimation extends CManagedObject {}
 
 export class CAnimControl extends CObject {
 	setParam(path: string, value = ''): void {

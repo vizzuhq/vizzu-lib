@@ -5,7 +5,7 @@ import * as Config from '../types/config.js'
 import * as Styles from '../types/styles.js'
 import * as Data from '../types/data.js'
 
-import { CObject, CEnv } from './cenv.js'
+import { CManagedObject, CObject, CEnv } from './cenv.js'
 import { CPointerClosure } from './objregistry.js'
 import { CProxy } from './cproxy.js'
 import { CCanvas } from './ccanvas.js'
@@ -14,7 +14,7 @@ import { CAnimation } from './canimctrl.js'
 import { isIterable } from '../utils.js'
 
 /** Stored Chart object. */
-export class Snapshot extends CObject {}
+export class Snapshot extends CManagedObject {}
 
 export class CEvent extends CObject {
 	preventDefault(): void {
@@ -26,7 +26,7 @@ class CConfig extends CProxy<Config.Chart> {}
 class CStyle extends CProxy<Styles.Chart> {}
 class CAnimOptions extends CProxy<Anim.Options> {}
 
-export class CChart extends CObject {
+export class CChart extends CManagedObject {
 	config: CConfig
 	style: CStyle
 	computedStyle: CStyle

@@ -1,7 +1,6 @@
 import { CPointer } from '../cvizzu.types'
 
 export type FnFree = (rawCPointer: CPointer) => void
-export type FnGetter = () => CPointer
 
 export type CPointerClosure = () => CPointer
 
@@ -14,10 +13,11 @@ export class ObjectRegistry {
 		})
 	}
 
-	get(fnGetter: FnGetter): CPointerClosure {
-		const cPointer = fnGetter()
-		const object = (): CPointer => cPointer
-		this._finalizationRegistry.register(object, cPointer)
-		return object
+	register(objectId: CPointerClosure): void {
+		this._finalizationRegistry.register(objectId, objectId())
+	}
+
+	unregister(objectId: CPointerClosure): void {
+		this._finalizationRegistry.unregister(objectId)
 	}
 }

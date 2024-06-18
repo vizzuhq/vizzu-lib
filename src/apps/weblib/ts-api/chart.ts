@@ -77,6 +77,8 @@ export class Chart implements ChartInterface {
 
 	detach(): void {
 		this._module.unregisterChart(this._cChart)
+		this._cCanvas.free()
+		this._cChart.free()
 	}
 
 	start(): void {
