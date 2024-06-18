@@ -1,7 +1,7 @@
 import { CPointer, CVizzu, CString } from '../cvizzu.types'
 
 import { CError } from './cerror.js'
-import { ObjectRegistry, FnGetter, CPointerClosure } from './objregistry.js'
+import { ObjectRegistry, CPointerClosure } from './objregistry.js'
 
 export class CEnv {
 	protected _wasm: CVizzu
@@ -23,8 +23,9 @@ export class CEnv {
 		return this._wasm.UTF8ToString(str)
 	}
 
-	protected _getStatic(getter: FnGetter): CPointerClosure {
-		return this._objectRegistry.get(this._callStatic(getter))
+	protected _getStatic(getter: () => CPointer): CPointerClosure {
+		const cPointer = this._callStatic(getter)()
+		return (): CPointer => cPointer
 	}
 
 	protected _callStatic<T extends unknown[], R>(f: (...params: T) => R): (...params: T) => R {
@@ -55,12 +56,25 @@ export class CObject extends CEnv {
 	}
 
 	protected _get(getter: (self: CPointer) => CPointer): CPointerClosure {
-		return this._objectRegistry.get(this._call(getter))
+		const cPointer = this._call(getter)()
+		return (): CPointer => cPointer
 	}
 
 	protected _call<T extends unknown[], R>(
 		f: (cSelf: CPointer, ...params: T) => R
 	): (...params: T) => R {
 		return super._callStatic(f).bind(this, this.getId())
+	}
+}
+
+export class CManagedObject extends CObject {
+	constructor(getId: CPointerClosure, cenv: CEnv) {
+		super(getId, cenv)
+		this._objectRegistry.register(this.getId)
+	}
+
+	free(): void {
+		this._objectRegistry.unregister(this.getId)
+		this._wasm._object_free(this.getId())
 	}
 }

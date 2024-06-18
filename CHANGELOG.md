@@ -5,6 +5,8 @@
 ### Fixed
 
 - Only dimension on size (+ color) wrongly displayed as treemap, not tablechart.
+- Allocated memory is immediately freed after calling detach(), CAnimation and Snapshot
+  also can be released using their new `free()` method.
 
 ## [0.11.1] - 2024-05-31
 
