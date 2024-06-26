@@ -1,6 +1,7 @@
 #include "bubblechart.h"
 
 #include <algorithm>
+#include <base/io/log.h>
 #include <cmath>
 
 namespace Vizzu::Charts
@@ -38,11 +39,13 @@ void BubbleChart::generate()
 	auto firstMarkerSize = baseMarker->size();
 	baseMarker->emplaceCircle(Geom::Point{0, 0}, firstMarkerSize);
 
-	auto currMarker = baseMarker + 1;
-	while (currMarker != markers.end() && currMarker->negative)
-		currMarker++->emplaceCircle(Geom::Point{0, 0}, 0);
-	if (currMarker == markers.end()) return;
+	auto nextBaseMarker = baseMarker + 1;
+	while (
+	    nextBaseMarker != markers.end() && nextBaseMarker->negative)
+		nextBaseMarker++->emplaceCircle(Geom::Point{0, 0}, 0);
+	if (nextBaseMarker == markers.end()) return;
 
+	auto currMarker = nextBaseMarker;
 	auto markerSize = currMarker->size();
 	currMarker->emplaceCircle(
 	    Geom::Point{firstMarkerSize + markerSize, 0},
@@ -59,22 +62,28 @@ void BubbleChart::generate()
 		if (markerSize == 0.0) break;
 
 		if (auto &&candidate1 = getTouchingCircle(markerSize,
-		        baseMarker[1],
+		        *nextBaseMarker,
 		        *preMarker);
 		    candidate1
 		    && !candidate1->overlaps(baseMarker->circle(), 0.00001)) {
 			currMarker->emplaceCircle(*candidate1);
-			++baseMarker;
+			baseMarker = nextBaseMarker++;
+			while (nextBaseMarker->negative) ++nextBaseMarker;
 		}
 		else if (auto &&candidate0 = getTouchingCircle(markerSize,
 		             *baseMarker,
 		             *preMarker);
 		         candidate0
-		         && !candidate0->overlaps(baseMarker[1].circle(),
+		         && !candidate0->overlaps(nextBaseMarker->circle(),
 		             0.00001))
 			currMarker->emplaceCircle(*candidate0);
-		else
-			throw std::logic_error("Cannot generate bubble chart");
+		else {
+			IO::log() << "Bubblechart generation failed. "
+			             "Overlapping circles detected. "
+			          << markers.end() - currMarker << " / "
+			          << markers.size() << " marker not placed.";
+			break;
+		}
 		preMarker = currMarker;
 	}
 
