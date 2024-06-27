@@ -120,8 +120,8 @@ Chart Chart::def()
 								}
 							}),
 							.colorPalette = ::Anim::Interpolated<Gfx::ColorPalette>(getDefaultColorPalette()),
-							.minLightness = -0.4,
-							.maxLightness = 0.4,
+							.minLightness = 0.4,
+							.maxLightness = -0.4,
 							.lineMinWidth = 0.001,
 							.lineMaxWidth = 0.01,
 							.circleMinRadius = 0.005,
