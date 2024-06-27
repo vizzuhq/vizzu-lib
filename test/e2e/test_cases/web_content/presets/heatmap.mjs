@@ -9,14 +9,7 @@ const testSteps = [
 				y: 'Country_code',
 				lightness: 'Value 3 (+)',
 				title: 'Heatmap'
-			}),
-			style: {
-				plot: {
-					marker: {
-						rectangleSpacing: 0
-					}
-				}
-			}
+			})
 		})
 ]
 

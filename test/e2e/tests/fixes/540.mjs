@@ -10,13 +10,6 @@ const testSteps = [
 			config: {
 				size: ['Foo'],
 				label: ['Foo']
-			},
-			style: {
-				plot: {
-					marker: {
-						rectangleSpacing: 0
-					}
-				}
 			}
 		})
 ]

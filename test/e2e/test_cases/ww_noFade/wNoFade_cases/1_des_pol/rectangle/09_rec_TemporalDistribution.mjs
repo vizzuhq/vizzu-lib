@@ -35,11 +35,6 @@ const testSteps = [
 					orientation: 'horizontal',
 					align: 'stretch',
 					split: false
-				},
-				style: {
-					plot: {
-						marker: { rectangleSpacing: 0 }
-					}
 				}
 			},
 			{
@@ -76,11 +71,6 @@ const testSteps = [
 					orientation: 'horizontal',
 					align: 'min',
 					legend: null
-				},
-				style: {
-					plot: {
-						marker: { rectangleSpacing: null }
-					}
 				}
 			},
 			{
@@ -170,7 +160,6 @@ const testSteps = [
 				style: {
 					plot: {
 						marker: {
-							rectangleSpacing: null,
 							fillOpacity: null,
 							borderWidth: null
 						}

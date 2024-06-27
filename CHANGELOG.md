@@ -4,11 +4,10 @@
 
 ### Fixed
 
-
+- Add default no rectangle spacing on heatmap and coxcomb.
 - Change bubblechart behavior on failure.
 - Fix reference markers on bubblechart with negative values. 
-- From now lightness channel goes from light (low value) to dark (high value) colors. 
-
+- From now lightness channel goes from light (low value) to dark (high value) colors.
 
 ## [0.11.2] - 2024-06-18
 

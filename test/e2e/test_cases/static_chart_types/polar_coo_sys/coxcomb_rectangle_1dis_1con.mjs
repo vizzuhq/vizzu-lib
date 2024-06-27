@@ -14,13 +14,6 @@ const testSteps = [
 				title: 'Coxcomb Chart',
 				orientation: 'horizontal',
 				coordSystem: 'polar'
-			},
-			style: {
-				plot: {
-					marker: {
-						rectangleSpacing: 0
-					}
-				}
 			}
 		})
 ]

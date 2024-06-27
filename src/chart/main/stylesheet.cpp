@@ -115,6 +115,9 @@ void Sheet::setMarkers()
 	if (!options->getChannels().anyAxisSet()) {
 		defaultParams.plot.marker.borderWidth = 0.5;
 		defaultParams.plot.marker.borderOpacity = 0.7;
+		if (options->geometry == Gen::ShapeType::rectangle
+		    && options->getChannels().getMeasures().empty())
+			defaultParams.plot.marker.rectangleSpacing = 0;
 	}
 	else {
 		if (options->geometry == Gen::ShapeType::circle
@@ -128,9 +131,18 @@ void Sheet::setMarkers()
 		}
 
 		if (options->geometry == Gen::ShapeType::rectangle
-		    && options->coordSystem.get() == Gen::CoordSystem::polar
-		    && options->getVeritalAxis().isEmpty())
-			defaultParams.plot.marker.rectangleSpacing = 0;
+		    && options->coordSystem.get()
+		           == Gen::CoordSystem::polar) {
+			if (options->getHorizontalAxis().isDimension()
+			    && options->getHorizontalAxis().hasDimension()
+			    && options->getVeritalAxis().isMeasure()) {
+				defaultParams.plot.marker.rectangleSpacing = 0;
+				defaultParams.plot.marker.borderWidth = 0.5;
+				defaultParams.plot.marker.borderOpacity = 0.7;
+			}
+			else if (options->getVeritalAxis().isEmpty())
+				defaultParams.plot.marker.rectangleSpacing = 0;
+		}
 	}
 }
 
