@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+### Fixed
+
+- From now lightness channel goes from light (low value) to dark (high value) colors. 
+
 ## [0.11.2] - 2024-06-18
 
 ### Fixed
