@@ -1,10 +1,7 @@
 #ifndef IO_LOG
 #define IO_LOG
 
-#include <functional>
-#include <memory>
 #include <string>
-#include <type_traits>
 
 #include "base/conv/tostring.h"
 
@@ -29,7 +26,7 @@ private:
 
 	bool enabled = true;
 	bool timestamp = true;
-	Log::LogFunc logFunc = [](std::string const &s)
+	LogFunc logFunc = [](const std::string &s)
 	{
 		puts(s.c_str());
 	};
