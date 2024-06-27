@@ -131,14 +131,14 @@ bool Marker::connectMarkers(bool first,
     bool polarConnection)
 {
 	if (prev && next && main && (!first || polarConnection)) {
-		next->prevMainMarker = MarkerIndexPosition{prev->idx,
-		    prev->pos,
-		    polarConnection && first};
+		next->prevMainMarker =
+		    MarkerIndexPosition{prev->idx, prev->pos};
+		next->polarConnection = polarConnection && first;
 		return !first || polarConnection;
 	}
 	if (next && main) {
 		next->prevMainMarker =
-		    MarkerIndexPosition{next->idx, next->pos, false};
+		    MarkerIndexPosition{next->idx, next->pos};
 	}
 
 	return false;

@@ -66,15 +66,15 @@ public:
 	{
 		MarkerIndex idx;
 		MarkerPosition pos;
-		bool polar;
 
 		friend bool operator==(const MarkerIndexPosition &lhs,
 		    const MarkerIndexPosition &rhs)
 		{
-			return lhs.idx == rhs.idx && lhs.polar == rhs.polar;
+			return lhs.idx == rhs.idx;
 		}
 	};
 	::Anim::Interpolated<MarkerIndexPosition> prevMainMarker;
+	::Anim::Interpolated<bool> polarConnection{false};
 
 	static bool connectMarkers(bool first,
 	    Marker *prev,

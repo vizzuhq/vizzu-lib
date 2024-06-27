@@ -176,9 +176,16 @@ void Connection::transform(const Marker &source,
 	    target.prevMainMarker,
 	    factor);
 
+	actual.polarConnection = interpolate(source.polarConnection,
+	    target.polarConnection,
+	    factor);
+
 	if (factor == 1) {
 		actual.prevMainMarker.values[0].value =
 		    source.prevMainMarker.values[0].value;
+
+		actual.polarConnection.values[0].value =
+		    source.polarConnection.values[0].value;
 
 		if (!target.prevMainMarker.hasOneValue())
 			actual.prevMainMarker.has_second = false;

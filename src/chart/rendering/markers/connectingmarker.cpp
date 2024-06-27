@@ -39,11 +39,13 @@ ConnectingMarker::ConnectingMarker(const DrawingContext &ctx,
 	        getPrev(marker, ctx.plot->getMarkers(), lineIndex)) {
 		labelEnabled = enabled && (marker.enabled || prev->enabled);
 		connected = connected && (prev->enabled || marker.enabled);
-		if (marker.prevMainMarker.get_or_first(lineIndex)
-		        .value.polar) {
-			linear = linear || polar.more();
-			connected = connected && polar.more() && horizontal;
-			enabled = enabled && polar && horizontal;
+		if (auto &&pc =
+		        marker.polarConnection.get_or_first(lineIndex);
+		    pc.value) {
+			auto &&newPolar = polar && Math::FuzzyBool{pc.weight};
+			linear = linear || newPolar.more();
+			connected = connected && newPolar.more() && horizontal;
+			enabled = enabled && newPolar && horizontal;
 		}
 		if (isArea) enabled = enabled && connected;
 	}
