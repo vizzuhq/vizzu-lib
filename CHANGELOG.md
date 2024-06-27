@@ -2,6 +2,11 @@
 
 ## [Unreleased]
 
+### Fixed
+
+- Change bubblechart behavior on failure.
+- Fix reference markers on bubblechart with negative values. 
+
 ## [0.11.2] - 2024-06-18
 
 ### Fixed
