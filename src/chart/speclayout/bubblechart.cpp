@@ -1,7 +1,6 @@
 #include "bubblechart.h"
 
 #include <algorithm>
-#include <base/io/log.h>
 #include <cmath>
 
 namespace Vizzu::Charts
@@ -78,10 +77,7 @@ void BubbleChart::generate()
 		             0.00001))
 			currMarker->emplaceCircle(*candidate0);
 		else {
-			IO::log() << "Bubblechart generation failed. "
-			             "Overlapping circles detected. "
-			          << markers.end() - currMarker << " / "
-			          << markers.size() << " marker not placed.";
+			// TODO bubblechart generation failed. It need a fix.
 			break;
 		}
 		preMarker = currMarker;
