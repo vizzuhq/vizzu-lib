@@ -126,11 +126,26 @@ void Sheet::setMarkers()
 			defaultParams.plot.marker.borderWidth = 1;
 			defaultParams.plot.marker.fillOpacity = 0.8;
 		}
-
-		if (options->geometry == Gen::ShapeType::rectangle
-		    && options->coordSystem.get() == Gen::CoordSystem::polar
-		    && options->getVeritalAxis().isEmpty())
-			defaultParams.plot.marker.rectangleSpacing = 0;
+		else if (options->geometry == Gen::ShapeType::rectangle) {
+			const auto &vertical = options->getVeritalAxis();
+			const auto &horizontal = options->getHorizontalAxis();
+			if (auto polar = options->coordSystem.get()
+			              == Gen::CoordSystem::polar;
+			    polar && vertical.isEmpty())
+				defaultParams.plot.marker.rectangleSpacing = 0;
+			else if (auto needRectangleSpacing =
+			             vertical.isMeasure()
+			                 != horizontal.isMeasure()
+			             && (!polar || vertical.isDimension());
+			         !needRectangleSpacing) {
+				defaultParams.plot.marker.rectangleSpacing = 0;
+				if (vertical.isDimension()
+				    || horizontal.isDimension()) {
+					defaultParams.plot.marker.borderWidth = 0.5;
+					defaultParams.plot.marker.borderOpacity = 0.7;
+				}
+			}
+		}
 	}
 }
 

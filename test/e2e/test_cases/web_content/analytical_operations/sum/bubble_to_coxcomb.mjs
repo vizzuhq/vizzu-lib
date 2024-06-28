@@ -44,13 +44,6 @@ const testSteps = [
 
 				geometry: 'rectangle',
 				coordSystem: 'polar'
-			},
-			style: {
-				plot: {
-					marker: {
-						rectangleSpacing: '0em'
-					}
-				}
 			}
 		}),
 

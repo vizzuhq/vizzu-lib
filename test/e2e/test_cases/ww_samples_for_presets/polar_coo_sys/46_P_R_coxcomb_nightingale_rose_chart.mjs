@@ -24,7 +24,6 @@ const testSteps = [
 			style: {
 				plot: {
 					marker: {
-						rectangleSpacing: '0',
 						fillOpacity: 0.5,
 						borderWidth: 0
 					}

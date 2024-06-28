@@ -493,7 +493,6 @@ const static auto tests =
             chart_setup{{{x, "Dim5"}, {y, "Meas1"}, {color, "Dim5"}}})
 {
 	chart.getOptions().coordSystem = polar;
-	chart.getStyles().plot.marker.rectangleSpacing = 0;
 
 	auto &&events = get_events(chart);
 

@@ -460,13 +460,6 @@ const testSteps = [
 					geometry: 'rectangle',
 					legend: null,
 					split: false
-				},
-				style: {
-					plot: {
-						marker: {
-							rectangleSpacing: 0
-						}
-					}
 				}
 			},
 			{
