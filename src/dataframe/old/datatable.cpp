@@ -331,33 +331,11 @@ double DataCube::aggregateAt(const MultiIndex &multiIndex,
 	if (it == cacheImpl.end()) return valueAt(multiIndex, seriesId);
 
 	auto &sub_df = *it->second;
-	const auto &name = getName(seriesId);
 
-	auto &&rrid = df->get_record_id_by_dims(multiIndex.rid,
-	    sub_df.get_dimensions());
-	return std::get<double>(sub_df.get_data(rrid, name));
-	/*
-	    // hack for sunburst.
-	    std::map<std::string_view, std::size_t> index;
-
-	    for (auto &&[dim, ocats, cats, size, ix] : dim_reindex)
-	        index.emplace(dim, multiIndex.old[ix]);
-
-	    std::string res;
-	    for (auto iit = index.begin();
-	         auto &&dim : sub_df.get_dimensions()) {
-	        if (iit->first != dim) ++iit;
-
-	        auto &&cats = df->get_categories(dim);
-	        res += dim;
-	        res += ':';
-	        res += iit->second == cats.size() ? "__null__"
-	                                          : cats[iit->second];
-	        res += ';';
-	    }
-	    auto nanres = std::get<double>(sub_df.get_data(res, name));
-	    return std::isnan(nanres) ? double{} : nanres;
-	    */
+	return std::get<double>(
+	    sub_df.get_data(df->get_record_id_by_dims(multiIndex.rid,
+	                        sub_df.get_dimensions()),
+	        getName(seriesId)));
 }
 
 } // namespace Vizzu::Data

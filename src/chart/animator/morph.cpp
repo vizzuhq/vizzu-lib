@@ -171,10 +171,8 @@ void Connection::transform(const Gen::Options &source,
     Gen::Options &actual,
     double factor) const
 {
-	auto sourceIsConnecting =
-	    Vizzu::Gen::isConnecting(source.geometry.get());
-	auto targetIsConnecting =
-	    Vizzu::Gen::isConnecting(target.geometry.get());
+	auto sourceIsConnecting = isConnecting(source.geometry.get());
+	auto targetIsConnecting = isConnecting(target.geometry.get());
 
 	if (sourceIsConnecting && !targetIsConnecting) {
 		actual.orientation = source.orientation;

@@ -153,7 +153,7 @@ std::span<const std::string> dataframe_interface::get_categories(
 }
 
 cell_reference dataframe_interface::get_data(
-    record_identifier record_id,
+    const record_identifier &record_id,
     const std::string_view &column) const &
 {
 	return as_impl(this).get_data(record_id, column);

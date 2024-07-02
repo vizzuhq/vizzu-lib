@@ -688,7 +688,7 @@ std::span<const std::string> dataframe::get_categories(
 	}
 }
 
-cell_reference dataframe::get_data(record_identifier record_id,
+cell_reference dataframe::get_data(const record_identifier &record_id,
     const std::string_view &column) const &
 {
 	const auto &s = get_data_source();

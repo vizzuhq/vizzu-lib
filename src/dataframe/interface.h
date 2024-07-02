@@ -79,9 +79,7 @@ constexpr std::size_t max_size_impl = 26 * sizeof(std::intptr_t);
 class alignas(align_impl) dataframe_interface
 {
 public:
-	using record_identifier =
-	    std::variant<std::reference_wrapper<const std::string>,
-	        std::size_t>;
+	using record_identifier = std::variant<std::string, std::size_t>;
 
 	using any_aggregator_type = std::optional<aggregator_type>;
 
@@ -157,7 +155,8 @@ public:
 	[[nodiscard]] std::span<const std::string> get_categories(
 	    const std::string_view &dimension) const &;
 
-	[[nodiscard]] cell_reference get_data(record_identifier record_id,
+	[[nodiscard]] cell_reference get_data(
+	    const record_identifier &record_id,
 	    const std::string_view &column) const &;
 
 	[[nodiscard]] std::size_t get_record_count() const &;

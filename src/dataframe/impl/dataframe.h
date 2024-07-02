@@ -130,7 +130,8 @@ public:
 	    const std::string_view &id,
 	    const char *key) const &;
 
-	[[nodiscard]] cell_reference get_data(record_identifier record_id,
+	[[nodiscard]] cell_reference get_data(
+	    const record_identifier &record_id,
 	    const std::string_view &column) const &;
 
 	[[nodiscard]] std::size_t get_record_count() const &

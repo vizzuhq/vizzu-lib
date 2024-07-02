@@ -501,7 +501,7 @@ std::string data_source::get_id(std::size_t record,
 	std::string res;
 	for (std::size_t ix{}; const auto &name : series) {
 		while (dimension_names[ix] != name) ++ix;
-		auto val = dimensions[ix].get(record);
+		const auto *val = dimensions[ix].get(record);
 		res += name;
 		res += ':';
 		res += val == nullptr ? std::string_view{"__null__"} : *val;
