@@ -350,7 +350,7 @@
 			"refs": ["3fb1574"]
 		},
 		"static_chart_types/cartesian_coo_sys/icicle_rectangle_2dis_1con": {
-			"refs": ["9d0d00a"]
+			"refs": ["e176366"]
 		},
 		"static_chart_types/cartesian_coo_sys/line_negative_1dis_1con": {
 			"refs": ["fd3f5de"]
@@ -413,10 +413,10 @@
 			"refs": ["c1d8772"]
 		},
 		"static_chart_types/polar_coo_sys/sunburst_rectangle_2dis_1con": {
-			"refs": ["c249f22"]
+			"refs": ["9a8a937"]
 		},
 		"static_chart_types/polar_coo_sys/sunburst_rectangle_2dis_2con": {
-			"refs": ["bd23994"]
+			"refs": ["f77b4e7"]
 		},
 		"static_chart_types/without_coo_sys/bubble_circle_1dis_2con": {
 			"refs": ["614b122"]
