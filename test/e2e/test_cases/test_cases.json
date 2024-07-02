@@ -1115,7 +1115,7 @@
 			"refs": ["3182235"]
 		},
 		"ww_animTiming/descartes-polar/13_d-p_r-l-r": {
-			"refs": ["534d885"]
+			"refs": ["be5c3db"]
 		},
 		"ww_animTiming/descartes-polar/14_d-p_c-l-c": {
 			"refs": ["1c772ab"]
@@ -1136,7 +1136,7 @@
 			"refs": ["9428a95"]
 		},
 		"ww_animTiming/descartes-polar_orient/04_d-p_o_l-r-l": {
-			"refs": ["dd8b2eb"]
+			"refs": ["e831795"]
 		},
 		"ww_animTiming/descartes-polar_orient/05_d-p_o_r-c-r": {
 			"refs": ["51d4c1c"]
@@ -1169,7 +1169,7 @@
 			"refs": ["23161f2"]
 		},
 		"ww_animTiming/descartes-polar_orient/15_d-p_o_a-l-a": {
-			"refs": ["b847fe1"]
+			"refs": ["386c827"]
 		},
 		"ww_animTiming/descartes-polar_orient/16_d-p_o_l-l-l": {
 			"refs": ["a8a8de3"]
@@ -1211,7 +1211,7 @@
 			"refs": ["c73203c"]
 		},
 		"ww_animTiming/descartes_orientation/04_d-d_o_l-r-l_stacked": {
-			"refs": ["f3206e6"]
+			"refs": ["34a106d"]
 		},
 		"ww_animTiming/descartes_orientation/05_d-d_o_r-c-r": {
 			"refs": ["f6b3bbf"]
@@ -1235,7 +1235,7 @@
 			"refs": ["81cc96f"]
 		},
 		"ww_animTiming/descartes_orientation/12_d-d_o_l-a-l": {
-			"refs": ["8103c42"]
+			"refs": ["40d446e"]
 		},
 		"ww_animTiming/descartes_orientation/13_d-d_o_r-l-r": {
 			"refs": ["4881eda"]
@@ -1244,7 +1244,7 @@
 			"refs": ["1ccf0e5"]
 		},
 		"ww_animTiming/descartes_orientation/15_d-d_o_a-l-a": {
-			"refs": ["4e56ed5"]
+			"refs": ["752d9b9"]
 		},
 		"ww_animTiming/descartes_orientation/16_d-d_o_l-l-l": {
 			"refs": ["7905db2"]
@@ -1256,7 +1256,7 @@
 			"refs": ["644048d"]
 		},
 		"ww_animTiming/polar/04_p-p_l-r-l": {
-			"refs": ["bf52a46"]
+			"refs": ["a1fbaca"]
 		},
 		"ww_animTiming/polar/07_p-p_a-c-a": {
 			"refs": ["e72a90b"]
@@ -1301,7 +1301,7 @@
 			"refs": ["5c7a6c6"]
 		},
 		"ww_animTiming/polar_orientation/12_p-p_o_l-a-l": {
-			"refs": ["47c6b9a"]
+			"refs": ["2afdc8d"]
 		},
 		"ww_animTiming/polar_orientation/13_p-p_o_r-l-r": {
 			"refs": ["be307c5"]
@@ -1310,7 +1310,7 @@
 			"refs": ["71fd79e"]
 		},
 		"ww_animTiming/polar_orientation/15_p-p_o_a-l-a": {
-			"refs": ["684f220"]
+			"refs": ["ece222a"]
 		},
 		"ww_animTiming/polar_orientation/16_p-p_o_l-l-l": {
 			"refs": ["de1b76f"]
@@ -1337,7 +1337,7 @@
 			"refs": ["27a7a22"]
 		},
 		"ww_animTiming/without-descartes/14_w-d_c-l-c": {
-			"refs": ["18795c8"]
+			"refs": ["ff771fa"]
 		},
 		"ww_animTiming/without-descartes_orientation/01_w-d_o_r-r-r": {
 			"refs": ["893cefb"]

@@ -8,6 +8,27 @@ namespace Vizzu::Anim::Morph
 
 using Math::interpolate;
 
+template <class T>
+::Anim::Interpolated<T> safe_interpolate(
+    const ::Anim::Interpolated<T> &source,
+    const ::Anim::Interpolated<T> &target,
+    double factor)
+{
+	::Anim::Interpolated<T> actual =
+	    interpolate(source, target, factor);
+	if (factor == 1.0) {
+		actual.values[0].value = source.values[0].value;
+		if (source.values[0].value == target.values[0].value) {
+			actual.values[0].weight = actual.values[1].weight;
+			actual.has_second = false;
+		}
+	}
+
+	if (!target.hasOneValue()) actual.has_second = false;
+
+	return actual;
+}
+
 AbstractMorph::AbstractMorph(const Gen::Plot &source,
     const Gen::Plot &target,
     Gen::Plot &actual) :
@@ -67,8 +88,9 @@ void CoordinateSystem::transform(const Gen::Options &source,
     Gen::Options &actual,
     double factor) const
 {
-	actual.coordSystem =
-	    interpolate(source.coordSystem, target.coordSystem, factor);
+	actual.coordSystem = safe_interpolate(source.coordSystem,
+	    target.coordSystem,
+	    factor);
 	actual.angle = interpolate(source.angle, target.angle, factor);
 }
 
@@ -98,7 +120,7 @@ void Shape::transform(const Gen::Options &source,
     double factor) const
 {
 	actual.geometry =
-	    interpolate(source.geometry, target.geometry, factor);
+	    safe_interpolate(source.geometry, target.geometry, factor);
 }
 
 void Horizontal::transform(const Gen::Plot &source,
@@ -161,7 +183,7 @@ void Connection::transform(const Gen::Options &source,
 		actual.orientation = target.orientation;
 	}
 	else {
-		actual.orientation = interpolate(source.orientation,
+		actual.orientation = safe_interpolate(source.orientation,
 		    target.orientation,
 		    factor);
 	}
@@ -172,24 +194,13 @@ void Connection::transform(const Marker &source,
     Marker &actual,
     double factor) const
 {
-	actual.prevMainMarker = interpolate(source.prevMainMarker,
+	actual.prevMainMarker = safe_interpolate(source.prevMainMarker,
 	    target.prevMainMarker,
 	    factor);
 
-	actual.polarConnection = interpolate(source.polarConnection,
+	actual.polarConnection = safe_interpolate(source.polarConnection,
 	    target.polarConnection,
 	    factor);
-
-	if (factor == 1) {
-		actual.prevMainMarker.values[0].value =
-		    source.prevMainMarker.values[0].value;
-
-		actual.polarConnection.values[0].value =
-		    source.polarConnection.values[0].value;
-
-		if (!target.prevMainMarker.hasOneValue())
-			actual.prevMainMarker.has_second = false;
-	}
 }
 
 void Vertical::transform(const Gen::Plot &source,
