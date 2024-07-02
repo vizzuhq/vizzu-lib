@@ -232,7 +232,7 @@ Interpolated<Type> interpolate(const Interpolated<Type> &op0,
     double factor)
 {
 	if (factor <= 0.0) return op0;
-	if (factor >= 1.0) return op1.shifted();
+	if (factor > 1.0) factor = 1.0;
 
 	if (op0.has_second || op1.has_second)
 		throw std::logic_error("Cannot interpolate Weigthed Pairs");

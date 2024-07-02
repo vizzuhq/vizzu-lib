@@ -163,8 +163,7 @@ void Sheet::setMarkerLabels()
 			                 ? MarkerLabel::Position::top
 			                 : MarkerLabel::Position::right;
 
-			if (options->geometry == Gen::ShapeType::area
-			    || options->geometry == Gen::ShapeType::line) {
+			if (isConnecting(options->geometry.get())) {
 				def.paddingBottom = Gfx::Length::Emphemeral(8 / 11.0);
 				def.paddingLeft = Gfx::Length::Emphemeral(8 / 11.0);
 				def.paddingTop = Gfx::Length::Emphemeral(8 / 11.0);

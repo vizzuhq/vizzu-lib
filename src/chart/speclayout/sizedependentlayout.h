@@ -17,24 +17,31 @@ template <class ChartType> struct SizeDependentLayout
 
 		std::vector<double> sizes(hierarchy.size());
 		for (std::size_t ix{}; const auto &level : hierarchy)
-			for (auto &sum = sizes[ix++]; const auto &item : level)
+			for (auto &sum = sizes[ix++]; const auto &item : level) {
+				if (!item) continue;
 				if (auto &&size = item->sizeFactor;
 				    std::isfinite(size) && size > 0)
 					sum += size;
+			}
 
 		const ChartType chart(sizes);
 
-		std::vector<double> ssizes(hierarchy.inner_size());
-
 		for (auto it = chart.markers.data();
 		     const auto &level : hierarchy) {
-			for (std::size_t ix{}; const auto &item : level)
-				ssizes[ix++] = item->sizeFactor;
+			std::vector<double> ssizes(level.size());
+			for (std::size_t ix{}; const auto &item : level) {
+				if (item) ssizes[ix] = item->sizeFactor;
+				++ix;
+			}
 
 			const ChartType subChart(ssizes, it++);
 
-			for (std::size_t subCnt{}; const auto &item : level)
-				afterMarkerSetter(item, subChart.markers[subCnt++]);
+			for (std::size_t subCnt{}; const auto &item : level) {
+				if (item)
+					afterMarkerSetter(*item,
+					    subChart.markers[subCnt]);
+				++subCnt;
+			}
 		}
 	}
 };

@@ -34,6 +34,7 @@ namespace Detail
 template <class T> using real_t = std::underlying_type_t<T>;
 
 template <class E, real_t<E> From, real_t<E> To>
+    requires(!std::same_as<bool, real_t<E>>)
 consteval std::pair<real_t<E>, real_t<E>> from_to()
 {
 	if constexpr (std::is_signed_v<real_t<E>>
@@ -46,10 +47,28 @@ consteval std::pair<real_t<E>, real_t<E>> from_to()
 		return {From, To};
 }
 
-template <class E> consteval real_t<E> count()
+template <class E, int, int>
+    requires(std::same_as<bool, real_t<E>>)
+consteval std::pair<real_t<E>, real_t<E>> from_to()
+{
+	return {false, false};
+}
+
+template <class E>
+    requires(!std::same_as<bool, real_t<E>>)
+consteval real_t<E> count()
 {
 	auto [from, to] = from_to<E, 0, 0>();
 	return static_cast<real_t<E>>(to - from);
+}
+
+template <class E>
+    requires(std::same_as<bool, real_t<E>>)
+consteval int count()
+{
+	return Name::name<E, static_cast<E>(false)>().empty()
+	         ? 0
+	         : 1 + !Name::name<E, static_cast<E>(true)>().empty();
 }
 
 template <class E>
@@ -57,9 +76,8 @@ concept UniqueNames = requires {
 	static_cast<std::string_view>(unique_enum_names(E{}));
 };
 
-template <class E, real_t<E>... Ix>
-consteval auto whole_array(
-    std::integer_sequence<real_t<E>, Ix...> = {})
+template <class E, class F = real_t<E>, F... Ix>
+consteval auto whole_array(std::integer_sequence<F, Ix...> = {})
 {
 	if constexpr (UniqueNames<E>) {
 		constexpr std::string_view pre_res = unique_enum_names(E{});
@@ -84,10 +102,15 @@ consteval auto whole_array(
 }
 }
 
-template <class E>
+template <class E, bool = std::same_as<bool, Detail::real_t<E>>>
 constexpr std::array enum_name_holder = Detail::whole_array<E>(
     std::make_integer_sequence<Detail::real_t<E>,
         Detail::count<E>()>{});
+
+template <class E>
+constexpr std::array enum_name_holder<E, true> =
+    Detail::whole_array<E, int>(
+        std::make_integer_sequence<int, Detail::count<E>()>{});
 
 template <class E, std::size_t... Ix>
 consteval auto get_names(std::index_sequence<Ix...> = {})

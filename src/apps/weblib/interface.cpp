@@ -192,7 +192,7 @@ void Interface::setChartFilter(ObjectRegistryHandle chart,
 		getChart(chart)->getOptions().dataFilter = {};
 }
 
-std::variant<double, std::string_view> Interface::getRecordValue(
+std::variant<double, const std::string *> Interface::getRecordValue(
     const Data::RowWrapper &record,
     const char *column)
 {

@@ -8,7 +8,7 @@ const testSteps = [
 				channels: {
 					x: ['Joy factors/Country', 'Value 2 (+)'],
 					y: {
-						set: ['Type', 'index'],
+						set: ['Type'],
 						title: 'Editable title',
 						range: { min: '0%', max: '100%' }
 					},
@@ -21,6 +21,7 @@ const testSteps = [
 			style: {
 				plot: {
 					marker: {
+						rectangleSpacing: 0,
 						label: {
 							orientation: 'vertical',
 							angle: 3.14 * -1

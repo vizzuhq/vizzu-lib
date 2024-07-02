@@ -8,12 +8,11 @@
 namespace Vizzu::dataframe
 {
 
-inline bool is_valid(cell_value const &value)
+inline bool is_valid(cell_reference const &value)
 {
 	const double *d = std::get_if<double>(&value);
 	return d ? !std::isnan(*d)
-	         : std::get_if<std::string_view>(&value)->data()
-	               != nullptr;
+	         : *std::get_if<const std::string *>(&value) != nullptr;
 }
 
 Refl::EnumArray<aggregator_type, custom_aggregator>
@@ -34,7 +33,7 @@ get_aggregators() noexcept
 	return {{{{aggrs[static_cast<std::size_t>(aggregator_type::sum)],
 	              empty_double,
 	              [](custom_aggregator::id_type &id,
-	                  cell_value const &cell) -> double
+	                  cell_reference const &cell) -> double
 	              {
 		              auto &ref = *std::get_if<double>(&id);
 		              const double &value =
@@ -46,7 +45,7 @@ get_aggregators() noexcept
 	    {aggrs[static_cast<std::size_t>(aggregator_type::min)],
 	        init_nan,
 	        [](custom_aggregator::id_type &id,
-	            cell_value const &cell) -> double
+	            cell_reference const &cell) -> double
 	        {
 		        auto &ref = *std::get_if<double>(&id);
 		        const auto &value = *std::get_if<double>(&cell);
@@ -58,7 +57,7 @@ get_aggregators() noexcept
 	    {aggrs[static_cast<std::size_t>(aggregator_type::max)],
 	        init_nan,
 	        [](custom_aggregator::id_type &id,
-	            cell_value const &cell) -> double
+	            cell_reference const &cell) -> double
 	        {
 		        auto &ref = *std::get_if<double>(&id);
 		        const auto &value = *std::get_if<double>(&cell);
@@ -73,7 +72,7 @@ get_aggregators() noexcept
 		        return std::pair<double, std::size_t>{};
 	        },
 	        [](custom_aggregator::id_type &id,
-	            cell_value const &cell) -> double
+	            cell_reference const &cell) -> double
 	        {
 		        auto &[sum, count] =
 		            *std::get_if<std::pair<double, std::size_t>>(&id);
@@ -88,7 +87,7 @@ get_aggregators() noexcept
 	    {aggrs[static_cast<std::size_t>(aggregator_type::count)],
 	        empty_double,
 	        [](custom_aggregator::id_type &id,
-	            cell_value const &cell) -> double
+	            cell_reference const &cell) -> double
 	        {
 		        auto &s = *std::get_if<double>(&id);
 		        if (is_valid(cell)) s += 1;
@@ -97,21 +96,22 @@ get_aggregators() noexcept
 	    {aggrs[static_cast<std::size_t>(aggregator_type::distinct)],
 	        []() -> custom_aggregator::id_type
 	        {
-		        return std::set<const char *>{};
+		        return std::set<const std::string *>{};
 	        },
 	        [](custom_aggregator::id_type &id,
-	            cell_value const &cell) -> double
+	            cell_reference const &cell) -> double
 	        {
-		        auto &set = *std::get_if<std::set<const char *>>(&id);
-		        if (const char *v =
-		                std::get_if<std::string_view>(&cell)->data())
+		        auto &set =
+		            *std::get_if<std::set<const std::string *>>(&id);
+		        if (const std::string *v =
+		                *std::get_if<const std::string *>(&cell))
 			        set.insert(v);
 		        return static_cast<double>(set.size());
 	        }},
 	    {aggrs[static_cast<std::size_t>(aggregator_type::exists)],
 	        empty_double,
 	        [](custom_aggregator::id_type &id,
-	            cell_value const &cell) -> double
+	            cell_reference const &cell) -> double
 	        {
 		        auto &b = *std::get_if<double>(&id);
 		        if (is_valid(cell)) b = 1.0;

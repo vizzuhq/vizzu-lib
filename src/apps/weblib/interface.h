@@ -125,7 +125,7 @@ public:
 	    const char *path,
 	    const char *value);
 
-	static std::variant<double, std::string_view> getRecordValue(
+	static std::variant<double, const std::string *> getRecordValue(
 	    const Data::RowWrapper &record,
 	    const char *column);
 

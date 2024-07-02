@@ -149,10 +149,8 @@ void Connection::transform(const Gen::Options &source,
     Gen::Options &actual,
     double factor) const
 {
-	auto sourceIsConnecting =
-	    Vizzu::Gen::isConnecting(source.geometry.get());
-	auto targetIsConnecting =
-	    Vizzu::Gen::isConnecting(target.geometry.get());
+	auto sourceIsConnecting = isConnecting(source.geometry.get());
+	auto targetIsConnecting = isConnecting(target.geometry.get());
 
 	if (sourceIsConnecting && !targetIsConnecting) {
 		actual.orientation = source.orientation;
@@ -172,8 +170,8 @@ void Connection::transform(const Marker &source,
     Marker &actual,
     double factor) const
 {
-	actual.prevMainMarkerIdx = interpolate(source.prevMainMarkerIdx,
-	    target.prevMainMarkerIdx,
+	actual.prevMainMarker = interpolate(source.prevMainMarker,
+	    target.prevMainMarker,
 	    factor);
 
 	actual.polarConnection = interpolate(source.polarConnection,

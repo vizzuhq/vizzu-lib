@@ -43,7 +43,7 @@ void TestChart::prepareData()
 void TestChart::operator()(Util::EventDispatcher::Params &params,
     const std::string &)
 {
-	std::optional<uint64_t> markerId;
+	std::optional<std::size_t> markerId;
 	using Marker = Vizzu::Events::Targets::Marker;
 	using MarkerChild = Vizzu::Events::Targets::MarkerChild;
 
