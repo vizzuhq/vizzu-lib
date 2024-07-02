@@ -195,25 +195,9 @@ void MarkerRenderer::drawLabels(Gfx::ICanvas &canvas) const
 	}
 }
 
-bool MarkerRenderer::shouldDrawMarkerBody(
-    const Gen::Marker &marker) const
+bool MarkerRenderer::shouldDrawMarkerBody(const Gen::Marker &marker)
 {
-	bool enabled = marker.enabled != false;
-	if (!enabled
-	    && getOptions().geometry.factor<Math::FuzzyBool>(
-	           Gen::ShapeType::area)
-	           != false) {
-
-		if (const auto *prev0 = ConnectingMarker::getPrev(marker,
-		        plot->getMarkers(),
-		        ::Anim::first))
-			enabled |= prev0->enabled != false;
-		if (const auto *prev1 = ConnectingMarker::getPrev(marker,
-		        plot->getMarkers(),
-		        ::Anim::second))
-			enabled |= prev1->enabled != false;
-	}
-	return enabled;
+	return marker.enabled != false;
 }
 
 void MarkerRenderer::draw(Gfx::ICanvas &canvas,
@@ -447,7 +431,7 @@ MarkerRenderer MarkerRenderer::create(const DrawingContext &ctx)
 {
 	MarkerRenderer res{{ctx}, {}};
 	for (auto &marker : res.plot->getMarkers()) {
-		if (!res.shouldDrawMarkerBody(marker)) continue;
+		if (!shouldDrawMarkerBody(marker)) continue;
 
 		res.markers.push_back(AbstractMarker::createInterpolated(ctx,
 		    marker,

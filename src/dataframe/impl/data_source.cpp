@@ -608,7 +608,7 @@ const std::string *data_source::dimension_t::get(
 }
 
 void data_source::dimension_t::set(std::size_t index,
-    std::string_view value)
+    const std::string_view &value)
 {
 	values[index] = get_or_set_cat(value);
 }

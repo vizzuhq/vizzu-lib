@@ -166,8 +166,7 @@ void PlotBuilder::addSpecLayout(Buckets &buckets)
 	auto geometry = plot->getOptions()
 	                    ->geometry.get_or_first(::Anim::first)
 	                    .value;
-	if (auto &markers = plot->markers;
-	    geometry == ShapeType::line || geometry == ShapeType::area) {
+	if (auto &markers = plot->markers; isConnecting(geometry)) {
 		Charts::TableChart::setupVector(markers, true);
 	}
 	else if (auto &&size = plot->getOptions()->getChannels().at(

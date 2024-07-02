@@ -26,28 +26,29 @@ ConnectingMarker::ConnectingMarker(const DrawingContext &ctx,
 
 	lineWidth[0] = lineWidth[1] = 0;
 
-	enabled = ctx.getOptions().geometry.factor<Math::FuzzyBool>(type);
+	enabled = ctx.getOptions().geometry.factor<Math::FuzzyBool>(type)
+	       && marker.enabled;
 
-	labelEnabled = enabled && marker.enabled;
+	labelEnabled = enabled;
+	connected = enabled;
 
-	auto weight =
-	    marker.prevMainMarker.get_or_first(lineIndex).weight;
-
-	connected = enabled && Math::FuzzyBool(weight);
-
-	if (const auto *prev =
-	        getPrev(marker, ctx.plot->getMarkers(), lineIndex)) {
-		labelEnabled = enabled && (marker.enabled || prev->enabled);
-		connected = connected && (prev->enabled || marker.enabled);
+	const auto *prev =
+	    getPrev(marker, ctx.plot->getMarkers(), lineIndex);
+	if (prev) {
+		connected = enabled
+		         && Math::FuzzyBool{marker.prevMainMarker
+		                                .get_or_first(lineIndex)
+		                                .weight}
+		         && prev->enabled;
 		if (auto &&pc =
 		        marker.polarConnection.get_or_first(lineIndex);
 		    pc.value) {
-			auto &&newPolar = polar && Math::FuzzyBool{pc.weight};
-			linear = linear || newPolar.more();
-			connected = connected && newPolar.more() && horizontal;
+			auto &&newPolar =
+			    (polar && Math::FuzzyBool{pc.weight}).more();
+			linear = linear || newPolar;
+			connected = connected && newPolar && horizontal;
 			enabled = enabled && newPolar && horizontal;
 		}
-		if (isArea) enabled = enabled && connected;
 	}
 	else {
 		enabled = false;
@@ -77,8 +78,7 @@ ConnectingMarker::ConnectingMarker(const DrawingContext &ctx,
 		                  ? marker.size.yComp() * horizontalFactor
 		                  : marker.size.xComp() * horizontalFactor);
 
-		if (const auto *prev =
-		        getPrev(marker, ctx.plot->getMarkers(), lineIndex)) {
+		if (prev) {
 			auto prevSpacing = prev->spacing * prev->size / 2;
 			auto prevPos = prev->position;
 

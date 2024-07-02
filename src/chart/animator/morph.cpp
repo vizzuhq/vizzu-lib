@@ -24,8 +24,6 @@ template <class T>
 		}
 	}
 
-	if (!target.hasOneValue()) actual.has_second = false;
-
 	return actual;
 }
 

@@ -11,7 +11,7 @@
 			"refs": ["a491c17"]
 		},
 		"geometry/static_line": {
-			"refs": ["f09edef"]
+			"refs": ["b531fd0"]
 		},
 		"geometry/static_rectangle": {
 			"refs": ["a491c17"]
@@ -23,13 +23,13 @@
 			"refs": ["92e92cd"]
 		},
 		"geometry/animated_line-area": {
-			"refs": ["f82185c"]
+			"refs": ["d594df2"]
 		},
 		"geometry/animated_line-circle": {
-			"refs": ["59ae649"]
+			"refs": ["32b751a"]
 		},
 		"geometry/animated_line-rectangle": {
-			"refs": ["71b03eb"]
+			"refs": ["8853d38"]
 		},
 		"geometry/animated_rectangle-area": {
 			"refs": ["0d58874"]
