@@ -29,11 +29,12 @@ ConnectingMarker::ConnectingMarker(const DrawingContext &ctx,
 	const auto *prev =
 	    getPrev(marker, ctx.plot->getMarkers(), lineIndex);
 
-	enabled = ctx.getOptions().geometry.factor<Math::FuzzyBool>(type)
-	       && marker.enabled
-	       && (prev ? prev->enabled : Math::FuzzyBool{1.0});
+	labelEnabled =
+	    ctx.getOptions().geometry.factor<Math::FuzzyBool>(type)
+	    && marker.enabled;
 
-	labelEnabled = enabled;
+	enabled =
+	    labelEnabled && (prev ? prev->enabled : Math::FuzzyBool{1.0});
 
 	if (prev) {
 		connected =

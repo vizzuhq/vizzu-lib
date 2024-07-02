@@ -251,7 +251,7 @@
 			"refs": ["5bfecc2"]
 		},
 		"operations/filter_tutorial_data/area_filter_x": {
-			"refs": ["b24e447"]
+			"refs": ["023cccc"]
 		},
 		"operations/filter_tutorial_data/area_filter_y": {
 			"refs": ["2b0a97f"]
@@ -266,7 +266,7 @@
 			"refs": ["c572616"]
 		},
 		"operations/filter_tutorial_data/line_filter_x": {
-			"refs": ["5111340"]
+			"refs": ["3f0a4bc"]
 		},
 		"operations/filter_tutorial_data/line_filter_y": {
 			"refs": ["68e06a0"]
@@ -851,13 +851,13 @@
 			"refs": ["8ec8a9b"]
 		},
 		"web_content_removed/animated/zoom_area_polar": {
-			"refs": ["f415237"]
+			"refs": ["33baee2"]
 		},
 		"web_content_removed/animated/zoom_line": {
 			"refs": ["8061939"]
 		},
 		"web_content_removed/animated/zoom_line_polar": {
-			"refs": ["d4c57f3"]
+			"refs": ["a5bb9b7"]
 		},
 		"web_content/infinite": {
 			"refs": ["1911830"]

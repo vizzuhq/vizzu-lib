@@ -118,49 +118,83 @@ void Plot::mergeMarkersAndCellInfo(Plot &source, Plot &target)
 	auto &&tmarkers = target.markers;
 	auto first1 = smarkers.begin();
 	auto first2 = tmarkers.begin();
-	std::size_t add1Pos{};
-	std::size_t add2Pos{};
+	std::vector<Marker::MarkerIndexPosition> source_reindex(
+	    smarkers.size());
+	std::vector<Marker::MarkerIndexPosition> target_reindex(
+	    tmarkers.size());
+	auto reindex1 = source_reindex.begin();
+	auto reindex2 = target_reindex.begin();
+	std::size_t pos{};
 	while (first1 != smarkers.end() && first2 != tmarkers.end()) {
 		if (auto cmp = first1->idx <=> first2->idx; std::is_lt(cmp)) {
-			first1->setIdOffset(add1Pos);
+			*reindex1++ = {first1->idx, pos};
 			first2 = tmarkers.emplace(first2, *first1);
 			first2->enabled = false;
-			++add2Pos;
 		}
 		else if (std::is_gt(cmp)) {
-			first2->setIdOffset(add2Pos);
+			*reindex2++ = {first2->idx, pos};
 			first1 = smarkers.emplace(first1, *first2);
 			first1->enabled = false;
-			++add1Pos;
 		}
 		else {
-			first1->setIdOffset(add1Pos);
-			first2->setIdOffset(add2Pos);
+			*reindex1++ = *reindex2++ = {first1->idx, pos};
 		}
 		++first1;
 		++first2;
+		++pos;
 	}
 
 	if (first2 != tmarkers.end())
 		while (first2 != tmarkers.end()) {
-			first2->setIdOffset(add2Pos);
+			*reindex2++ = {first2->idx, pos++};
 			smarkers.emplace_back(*first2++).enabled = false;
 		}
 	else
 		while (first1 != smarkers.end()) {
-			first1->setIdOffset(add1Pos);
+			*reindex1++ = {first1->idx, pos++};
 			tmarkers.emplace_back(*first1++).enabled = false;
 		}
 
 	const auto markers_size =
 	    std::max(smarkers.size(), tmarkers.size());
-	for (std::size_t ix{}; ix < markers_size; ++ix)
+	for (std::size_t ix{}; ix < markers_size; ++ix) {
+		auto &smarker = smarkers[ix];
+		if (auto &[idx, prePos] =
+		        smarker.prevMainMarker.values[0].value;
+		    idx != ~Marker::MarkerIndex{}) {
+			if (prePos < source_reindex.size()
+			    && source_reindex[prePos].idx == idx)
+				prePos = source_reindex[prePos].pos;
+			else if (prePos < target_reindex.size()
+			         && target_reindex[prePos].idx == idx)
+				prePos = target_reindex[prePos].pos;
+			else
+				throw std::runtime_error(
+				    "Logical error in marker reindex");
+		}
+
+		auto &tmarker = tmarkers[ix];
+		if (auto &[idx, prePos] =
+		        tmarker.prevMainMarker.values[0].value;
+		    idx != ~Marker::MarkerIndex{}) {
+			if (prePos < target_reindex.size()
+			    && target_reindex[prePos].idx == idx)
+				prePos = target_reindex[prePos].pos;
+			else if (prePos < source_reindex.size()
+			         && source_reindex[prePos].idx == idx)
+				prePos = source_reindex[prePos].pos;
+			else
+				throw std::runtime_error(
+				    "Logical error in marker reindex");
+		}
+
 		if (auto &scell = source.markers[ix].cellInfo,
 		    &tcell = target.markers[ix].cellInfo;
 		    scell && !tcell)
 			tcell = scell;
 		else if (!scell && tcell)
 			scell = tcell;
+	}
 }
 
 }
