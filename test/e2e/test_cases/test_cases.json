@@ -620,10 +620,10 @@
 			"refs": ["f826f05"]
 		},
 		"web_content/analytical_operations/filter/stream_1": {
-			"refs": ["f9c6765"]
+			"refs": ["b6e5f5c"]
 		},
 		"web_content/analytical_operations/filter/stream_2": {
-			"refs": ["168ed06"]
+			"refs": ["2adfbcf"]
 		},
 		"web_content/analytical_operations/misc/donut_to_coxcomb": {
 			"refs": ["894e6dd"]
@@ -848,13 +848,13 @@
 			"refs": ["1913066"]
 		},
 		"web_content_removed/animated/zoom_area": {
-			"refs": ["e7ad338"]
+			"refs": ["8ec8a9b"]
 		},
 		"web_content_removed/animated/zoom_area_polar": {
 			"refs": ["f415237"]
 		},
 		"web_content_removed/animated/zoom_line": {
-			"refs": ["cc2aa56"]
+			"refs": ["8061939"]
 		},
 		"web_content_removed/animated/zoom_line_polar": {
 			"refs": ["d4c57f3"]
@@ -923,10 +923,10 @@
 			"refs": ["b5996be"]
 		},
 		"web_content/presets/graph/stream": {
-			"refs": ["bced6d6"]
+			"refs": ["4e887e6"]
 		},
 		"web_content/presets/graph/stream_vertical": {
-			"refs": ["f4db690"]
+			"refs": ["7f24b7f"]
 		},
 		"web_content/presets/graph/violin": {
 			"refs": ["139a372"]
@@ -2051,16 +2051,16 @@
 			"refs": ["d890730"]
 		},
 		"ww_next_steps/next_steps_byOperations/wOld_animated/zoom_area": {
-			"refs": ["58ff641"]
+			"refs": ["5a2fe2c"]
 		},
 		"ww_next_steps/next_steps_byOperations/wOld_animated/zoom_area_polar": {
-			"refs": ["f0c3b9d"]
+			"refs": ["8301215"]
 		},
 		"ww_next_steps/next_steps_byOperations/wOld_animated/zoom_line": {
-			"refs": ["195590d"]
+			"refs": ["3ea6b4e"]
 		},
 		"ww_next_steps/next_steps_byOperations/wOld_animated/zoom_line_polar": {
-			"refs": ["41b096a"]
+			"refs": ["4e2d1d3"]
 		},
 		"ww_next_steps/next_steps_byOperations/wREGIEKBOL/02_cir": {
 			"refs": ["b23583f"]
@@ -3266,13 +3266,13 @@
 			"refs": ["4bdf36b"]
 		},
 		"web_content/cookbook/interactive/mouse_scroll": {
-			"refs": ["56ea530"]
+			"refs": ["00c6b7b"]
 		},
 		"web_content/cookbook/interactive/mouse_wheel_zoom": {
-			"refs": ["83d567b"]
+			"refs": ["94e3a24"]
 		},
 		"web_content/cookbook/interactive/window_zoom": {
-			"refs": ["894a4c1"]
+			"refs": ["ba636cc"]
 		},
 		"web_content/cookbook/interactive/data_selector_combobox": {
 			"refs": ["da8ec16"]
@@ -3281,7 +3281,7 @@
 			"refs": ["cae7314"]
 		},
 		"web_content/cookbook/interactive/range_slider_zoom": {
-			"refs": ["ac9f0c9"]
+			"refs": ["c8a63f6"]
 		},
 		"web_content/cookbook/data_source/csv_load": {
 			"refs": ["370d98a"]

@@ -26,20 +26,20 @@ ConnectingMarker::ConnectingMarker(const DrawingContext &ctx,
 
 	lineWidth[0] = lineWidth[1] = 0;
 
-	enabled = ctx.getOptions().geometry.factor<Math::FuzzyBool>(type)
-	       && marker.enabled;
-
-	labelEnabled = enabled;
-	connected = enabled;
-
 	const auto *prev =
 	    getPrev(marker, ctx.plot->getMarkers(), lineIndex);
+
+	enabled = ctx.getOptions().geometry.factor<Math::FuzzyBool>(type)
+	       && marker.enabled
+	       && (prev ? prev->enabled : Math::FuzzyBool{1.0});
+
+	labelEnabled = enabled;
+
 	if (prev) {
-		connected = enabled
-		         && Math::FuzzyBool{marker.prevMainMarker
-		                                .get_or_first(lineIndex)
-		                                .weight}
-		         && prev->enabled;
+		connected =
+		    enabled
+		    && Math::FuzzyBool{
+		        marker.prevMainMarker.get_or_first(lineIndex).weight};
 		if (auto &&pc =
 		        marker.polarConnection.get_or_first(lineIndex);
 		    pc.value) {
