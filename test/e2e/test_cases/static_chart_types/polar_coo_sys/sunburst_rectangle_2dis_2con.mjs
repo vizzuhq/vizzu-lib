@@ -6,7 +6,10 @@ const testSteps = [
 			data,
 			config: {
 				channels: {
-					x: { set: ['Joy factors/Country', 'Value 2 (+)'], range: { min: '0%', max: '100%' } },
+					x: {
+						set: ['Joy factors/Country', 'Value 2 (+)'],
+						range: { min: '0%', max: '100%' }
+					},
 					y: ['Type'],
 					label: 'Joy factors/Country',
 					color: 'Joy factors/Country',
