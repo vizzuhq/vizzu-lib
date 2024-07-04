@@ -403,7 +403,7 @@ const static auto tests =
 	check->*events.count("plot-axis-draw") == 2u;
 	check->*events.count("plot-axis-label-draw") == 4u + 5u;
 	check->*events.count("plot-marker-label-draw") == 5u;
-	// check->*events.count("plot-marker-draw") == 4u;
+	check->*events.count("plot-marker-draw") == 5u;
 
 	for (auto &&[beg, end] = events.equal_range("plot-marker-draw");
 	     const auto &[v, t, d] : values(subrange(beg, end)))
@@ -481,7 +481,7 @@ const static auto tests =
 
 	check->*events.count("plot-axis-draw") == 2u;
 	check->*events.count("plot-axis-label-draw") == 4u + 5u;
-	// check->*events.count("plot-marker-draw") == 13u;
+	check->*events.count("plot-marker-draw") == 10u;
 
 	for (auto &&[beg, end] = events.equal_range("plot-marker-draw");
 	     const auto &[v, t, d] : values(subrange(beg, end)))
