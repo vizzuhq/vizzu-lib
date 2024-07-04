@@ -23,9 +23,9 @@ public:
 	Weighted() noexcept(
 	    std::is_nothrow_default_constructible_v<Type>) = default;
 
-	explicit Weighted(Type value) :
+	explicit Weighted(Type value, double weight = 1.0) :
 	    value(std::move(value)),
-	    weight(1.0)
+	    weight(weight)
 	{}
 
 	bool operator==(const Weighted<Type> &other) const
@@ -175,12 +175,20 @@ public:
 			branch(second, values[1]);
 	}
 
-	template <class T, class Fun> T combine(Fun &&branch) const
+	template <class U = void,
+	    class Fun,
+	    class T = std::conditional_t<std::is_void_v<U>,
+	        std::invoke_result_t<Fun, Type>,
+	        U>>
+	T combine(Fun &&branch) const
 	{
-		auto res = T{branch(values[0].value)} * values[0].weight;
+		auto res = static_cast<T>(branch(values[0].value))
+		         * values[0].weight;
 		if (has_second)
-			res = res + T{branch(values[1].value)} * values[1].weight;
-		return T{res};
+			res = res
+			    + static_cast<T>(branch(values[1].value))
+			          * values[1].weight;
+		return static_cast<T>(res);
 	}
 
 	[[nodiscard]] bool contains(const Type &value) const

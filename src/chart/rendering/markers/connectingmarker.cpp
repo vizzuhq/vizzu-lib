@@ -33,10 +33,8 @@ ConnectingMarker::ConnectingMarker(const DrawingContext &ctx,
 	    ctx.getOptions().geometry.factor<Math::FuzzyBool>(type)
 	    && marker.enabled;
 
-	enabled =
-	    labelEnabled && (prev ? prev->enabled : Math::FuzzyBool{1.0});
-
 	if (prev) {
+		enabled = labelEnabled && prev->enabled;
 		connected =
 		    enabled
 		    && Math::FuzzyBool{

@@ -16,10 +16,10 @@ auto popRectArea(double height,
     void (Geom::Rect::*set)(double) = nullptr,
     double plus = 0.0)
 {
-	auto pos = interpolated.template combine<double>(
+	auto pos = interpolated.combine(
 	    [&height](const auto &weight)
 	    {
-		    return weight ? 0 : -height;
+		    return weight ? 0.0 : -height;
 	    });
 
 	auto &&res = std::invoke(pop, rect, pos + height);

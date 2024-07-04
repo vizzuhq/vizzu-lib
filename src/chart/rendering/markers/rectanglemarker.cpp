@@ -15,7 +15,7 @@ RectangleMarker::RectangleMarker(const Gen::Marker &marker,
 
 	auto spacing = Geom::Size{
 	    marker.spacing
-	    * style.plot.marker.rectangleSpacing->combine<Geom::Size>(
+	    * style.plot.marker.rectangleSpacing->combine(
 	        [&marker](const auto &rectangleSpacing)
 	        {
 		        if (rectangleSpacing) {

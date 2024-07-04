@@ -20,19 +20,19 @@ Gfx::Color ColorBuilder::render(
 	if (!colorBase.get_or_first(::Anim::first).value.isDiscrete()
 	    && !colorBase.get_or_first(::Anim::second)
 	            .value.isDiscrete()) {
-		auto pos = colorBase.combine<double>(
+		auto pos = colorBase.combine(
 		    [](const Gen::ColorBase &base)
 		    {
 			    return base.getPos();
 		    });
-		auto lightness = colorBase.combine<double>(
+		auto lightness = colorBase.combine(
 		    [](const Gen::ColorBase &base)
 		    {
 			    return base.getLightness();
 		    });
 		return lightnessAdjusted(gradient.get().at(pos), lightness);
 	}
-	return colorBase.combine<Gfx::Color>(
+	return colorBase.combine(
 	    [this](const Gen::ColorBase &base)
 	    {
 		    return lightnessAdjusted(baseColor(base),
@@ -64,7 +64,7 @@ Gfx::Color ColorBuilder::baseColor(
 [[nodiscard]] Gfx::Color ColorBuilder::indexedColor(
     const uint32_t &colorIndex) const
 {
-	return palette.get().combine<Gfx::Color>(
+	return palette.get().combine(
 	    [&colorIndex](const Gfx::ColorPalette &palette)
 	    {
 		    return palette[static_cast<size_t>(colorIndex)];
