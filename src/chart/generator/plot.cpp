@@ -33,7 +33,7 @@ Plot::MarkersInfo interpolate(const Plot::MarkersInfo &op1,
 }
 
 Plot::MarkerInfoContent::MarkerInfoContent(const Marker &marker) :
-    markerId(marker.idx),
+    markerId{std::in_place, marker.idx, marker.pos},
     info{marker.cellInfo, &marker.cellInfo->markerInfo}
 {}
 
@@ -77,6 +77,11 @@ void Plot::prependMarkers(const Plot &plot)
 	for (auto i = markers.begin(); i < it; ++i) i->enabled = false;
 
 	while (it != markers.end()) it++->setIdOffset(size);
+
+	for (MarkerInfo &markerInfo :
+	    std::ranges::views::values(markersInfo))
+		if (auto &id = markerInfo.values[0].value.markerId)
+			id->pos += size;
 }
 
 void Plot::appendMarkers(const Plot &plot)
@@ -195,6 +200,16 @@ void Plot::mergeMarkersAndCellInfo(Plot &source, Plot &target)
 		else if (!scell && tcell)
 			scell = tcell;
 	}
+
+	for (MarkerInfo &markerInfo :
+	    std::ranges::views::values(source.markersInfo))
+		if (auto &id = markerInfo.values[0].value.markerId)
+			id->pos = source_reindex[id->pos].pos;
+
+	for (MarkerInfo &markerInfo :
+	    std::ranges::views::values(target.markersInfo))
+		if (auto &id = markerInfo.values[0].value.markerId)
+			id->pos = target_reindex[id->pos].pos;
 }
 
 }
