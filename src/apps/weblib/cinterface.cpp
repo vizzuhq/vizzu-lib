@@ -121,13 +121,6 @@ APIHandles::Canvas vizzu_createCanvas()
 	return Interface::getInstance().createCanvas();
 }
 
-APIHandles::ResolutionProfile
-vizzu_createResolutionProfile(double dMax, double hMax)
-{
-	return Interface::getInstance().createResolutionProfile(dMax,
-	    hMax);
-}
-
 void vizzu_pointerMove(APIHandles::Chart chart,
     APIHandles::Canvas canvas,
     int pointerId,
@@ -183,24 +176,27 @@ void vizzu_wheel(APIHandles::Chart chart,
 	return Interface::getInstance().wheel(chart, canvas, delta);
 }
 
-const char *vizzu_update(APIHandles::Chart chart, double timeInMSecs)
+void vizzu_update(APIHandles::Chart chart, double timeInMSecs)
 {
-	return Interface::getInstance()
-	    .update(chart, timeInMSecs)
-	    .c_str();
+	Interface::getInstance().update(chart, timeInMSecs);
 }
 
 void vizzu_render(APIHandles::Chart chart,
     APIHandles::Canvas canvas,
     double width,
-    double height,
-    APIHandles::ResolutionProfile profile)
+    double height)
 {
 	return Interface::getInstance().render(chart,
 	    canvas,
 	    width,
-	    height,
-	    profile);
+	    height);
+}
+
+void vizzu_setLineResolution(APIHandles::Canvas canvas,
+    double dMax,
+    double hMax)
+{
+	Interface::getInstance().setLineResolution(canvas, dMax, hMax);
 }
 
 const char *style_getList() { return Interface::getStyleList(); }

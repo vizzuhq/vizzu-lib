@@ -56,10 +56,9 @@ void ChartWidget::onWheel(double delta) const
 	onWheelEvent->invoke(WheelEvent(delta, nullptr));
 }
 
-void ChartWidget::onDraw(const std::shared_ptr<Gfx::ICanvas> &canvas,
-    std::shared_ptr<const Gfx::PathSampler::Options> &&options)
+void ChartWidget::onDraw(const std::shared_ptr<Gfx::ICanvas> &canvas)
 {
-	chart.draw(*canvas, std::move(options));
+	chart.draw(*canvas);
 }
 
 void ChartWidget::onUpdateSize(Geom::Size size)

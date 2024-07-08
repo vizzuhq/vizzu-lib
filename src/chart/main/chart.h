@@ -30,8 +30,7 @@ public:
 
 	Chart();
 	Chart(Chart &&) noexcept = delete;
-	void draw(Gfx::ICanvas &canvas,
-	    std::shared_ptr<const Gfx::PathSampler::Options> &&options);
+	void draw(Gfx::ICanvas &canvas);
 	void setBoundRect(const Geom::Rect &rect);
 
 	Data::DataTable &getTable() { return table; }

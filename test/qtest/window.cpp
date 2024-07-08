@@ -52,8 +52,7 @@ void Window::paintEvent(QPaintEvent *)
 
 	chart.getChart().onUpdateSize(size);
 	canvas.frameBegin();
-	chart.getChart().onDraw({std::shared_ptr<void>{}, &canvas},
-	    nullptr);
+	chart.getChart().onDraw({std::shared_ptr<void>{}, &canvas});
 	canvas.frameEnd();
 }
 

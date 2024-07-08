@@ -366,21 +366,12 @@ ObjectRegistryHandle Interface::createCanvas()
 	    std::make_shared<Vizzu::Main::JScriptCanvas>());
 }
 
-ObjectRegistryHandle Interface::createResolutionProfile(double dMax,
-    double hMax)
-{
-	return objects.reg(
-	    std::make_shared<const Gfx::PathSampler::Options>(dMax,
-	        hMax));
-}
-
 void Interface::setLogging(bool enable)
 {
 	IO::Log::setEnabled(enable);
 }
 
-const std::string &Interface::update(ObjectRegistryHandle chart,
-    double timeInMSecs)
+void Interface::update(ObjectRegistryHandle chart, double timeInMSecs)
 {
 	auto &&widget = objects.get<UI::ChartWidget>(chart);
 
@@ -392,17 +383,13 @@ const std::string &Interface::update(ObjectRegistryHandle chart,
 
 	::Anim::TimePoint time(nanoSecs);
 
-	thread_local std::string res;
-	res = Conv::toString(
-	    widget->getChart().getAnimControl().update(time));
-	return res;
+	widget->getChart().getAnimControl().update(time);
 }
 
 void Interface::render(ObjectRegistryHandle chart,
     ObjectRegistryHandle canvas,
     double width,
-    double height,
-    ObjectRegistryHandle profile)
+    double height)
 {
 	auto &&widget = objects.get<UI::ChartWidget>(chart);
 	auto &&ptr = objects.get<Gfx::ICanvas>(canvas);
@@ -411,12 +398,18 @@ void Interface::render(ObjectRegistryHandle chart,
 
 	widget->onUpdateSize({width, height});
 
-	widget->onDraw(ptr,
-	    profile
-	        ? objects.get<const Gfx::PathSampler::Options>(profile)
-	        : nullptr);
+	widget->onDraw(ptr);
 
 	ptr->frameEnd();
+}
+
+void Interface::setLineResolution(ObjectRegistryHandle canvas,
+    double dMax,
+    double hMax)
+{
+	static_cast<Draw::Painter *>(
+	    objects.get<Gfx::ICanvas>(canvas)->getPainter())
+	    ->setPathSamplerOptions({dMax, hMax});
 }
 
 void Interface::pointerDown(ObjectRegistryHandle chart,

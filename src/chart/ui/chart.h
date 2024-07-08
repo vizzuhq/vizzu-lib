@@ -21,8 +21,7 @@ public:
 	void onPointerUp(const GUI::PointerEvent &event) const;
 	void onPointerLeave(const GUI::PointerEvent &event) const;
 	void onWheel(double delta) const;
-	void onDraw(const std::shared_ptr<Gfx::ICanvas> &,
-	    std::shared_ptr<const Gfx::PathSampler::Options> &&);
+	void onDraw(const std::shared_ptr<Gfx::ICanvas> &);
 	void onUpdateSize(Geom::Size size);
 
 	[[nodiscard]] Chart &getChart() { return chart; }

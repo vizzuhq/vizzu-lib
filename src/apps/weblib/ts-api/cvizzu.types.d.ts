@@ -16,7 +16,6 @@ export type CRecordValue = CPointer
 export type CPointPtr = CPointer
 export type CArrayPtr = CPointer
 export type CColorGradientPtr = CPointer
-export type CResolutionProfilePtr = CPointer;
 
 export type PtrType =
 	| 'i1'
@@ -68,7 +67,6 @@ export interface CVizzu {
 	// exported functions
 	_vizzu_createChart(): CChartPtr
 	_vizzu_createCanvas(): CCanvasPtr
-	_vizzu_createResolutionProfile(dMax: number, hMax: number): CResolutionProfilePtr
 	_vizzu_pointerDown(
 		chart: CChartPtr,
 		canvas: CCanvasPtr,
@@ -94,8 +92,8 @@ export interface CVizzu {
 	_vizzu_wheel(chart: CChartPtr, canvas: CCanvasPtr, delta: number): void
 	_vizzu_setLogging(enable: boolean): void
 	_vizzu_update(chart: CChartPtr, time: number): CString
-	_vizzu_render(chart: CChartPtr, canvas: CCanvasPtr, width: number, height: number,
-								resolutionProfile: CResolutionProfilePtr): void
+	_vizzu_setLineResolution(canvas: CCanvasPtr, dMax: number, hMax: number): void
+	_vizzu_render(chart: CChartPtr, canvas: CCanvasPtr, width: number, height: number): void
 
 	_vizzu_errorMessage(exceptionPtr: CException, typeinfo: CTypeInfo): CString
 	_vizzu_version(): CString

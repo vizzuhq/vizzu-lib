@@ -13,11 +13,6 @@ namespace Vizzu::Draw
 class Painter
 {
 public:
-	static constexpr Gfx::PathSampler::Options
-	    defaultPathSamplerOptionsOnPlay{5.0, 1.5};
-	static constexpr Gfx::PathSampler::Options
-	    defaultPathSamplerOptionsOnPause{1.0, 0.5};
-
 	virtual ~Painter() = default;
 
 	virtual Gfx::ICanvas &getCanvas() = 0;
@@ -45,17 +40,14 @@ public:
 	void drawPolygon(const std::array<Geom::Point, 4> &ps,
 	    bool clip = false);
 
-	void setPathSamplerOptions(
-	    std::reference_wrapper<const Gfx::PathSampler::Options>
-	        &&options)
+	void setPathSamplerOptions(Gfx::PathSampler::Options &&options)
 	{
 		pathSamplerOptions = options;
 	}
 
 private:
 	CoordinateSystem system;
-	std::reference_wrapper<const Gfx::PathSampler::Options>
-	    pathSamplerOptions = defaultPathSamplerOptionsOnPause;
+	Gfx::PathSampler::Options pathSamplerOptions{1.0, 0.5};
 	DrawPolygon::PolygonOptions polygonOptions{};
 };
 

@@ -31,9 +31,7 @@ class DrawChart : public DrawingContext
 	    const Geom::Rect &bounds) const;
 
 public:
-	void draw(Gfx::ICanvas &canvas,
-	    const Layout &layout,
-	    const Gfx::PathSampler::Options &options) const;
+	void draw(Gfx::ICanvas &canvas, const Layout &layout) const;
 };
 
 }

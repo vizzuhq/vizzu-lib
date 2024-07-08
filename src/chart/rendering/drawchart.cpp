@@ -91,13 +91,10 @@ void DrawChart::drawLogo(Gfx::ICanvas &canvas,
 	}
 }
 
-void DrawChart::draw(Gfx::ICanvas &canvas,
-    const Layout &layout,
-    const Gfx::PathSampler::Options &options) const
+void DrawChart::draw(Gfx::ICanvas &canvas, const Layout &layout) const
 {
 	Painter &painter = *static_cast<Painter *>(canvas.getPainter());
 	painter.setCoordSys(coordSys);
-	painter.setPathSamplerOptions(options);
 
 	if (plot && rootEvents.draw.begin->invoke()) {
 

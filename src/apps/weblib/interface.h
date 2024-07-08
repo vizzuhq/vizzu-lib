@@ -1,8 +1,6 @@
 #ifndef LIB_INTERFACE_H
 #define LIB_INTERFACE_H
 
-#include "base/gfx/pathsampler.h"
-
 #include "cinterface.h"
 #include "jsfunctionwrapper.h"
 #include "objectregistry.h"
@@ -30,8 +28,6 @@ public:
 	static const char *version();
 	ObjectRegistryHandle createChart();
 	ObjectRegistryHandle createCanvas();
-	ObjectRegistryHandle createResolutionProfile(double dMax,
-	    double hMax);
 	static void setLogging(bool enable);
 	void pointerMove(ObjectRegistryHandle chart,
 	    ObjectRegistryHandle canvas,
@@ -54,13 +50,14 @@ public:
 	void wheel(ObjectRegistryHandle chart,
 	    ObjectRegistryHandle canvas,
 	    double delta);
-	[[nodiscard]] const std::string &
-	update(ObjectRegistryHandle chart, double timeInMSecs);
+	void update(ObjectRegistryHandle chart, double timeInMSecs);
 	void render(ObjectRegistryHandle chart,
 	    ObjectRegistryHandle canvas,
 	    double width,
-	    double height,
-	    ObjectRegistryHandle profile);
+	    double height);
+	void setLineResolution(ObjectRegistryHandle canvas,
+	    double dMax,
+	    double hMax);
 
 	ObjectRegistryHandle storeAnim(ObjectRegistryHandle chart);
 	void restoreAnim(ObjectRegistryHandle chart,
@@ -141,11 +138,7 @@ private:
 
 	std::shared_ptr<Chart> getChart(ObjectRegistryHandle chart);
 
-	ObjectRegistry<Snapshot,
-	    Animation,
-	    Gfx::ICanvas,
-	    UI::ChartWidget,
-	    const Gfx::PathSampler::Options>
+	ObjectRegistry<Snapshot, Animation, Gfx::ICanvas, UI::ChartWidget>
 	    objects;
 };
 

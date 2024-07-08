@@ -21,7 +21,7 @@ public:
 	virtual ~PathSampler() = default;
 
 protected:
-	const Options &options;
+	Options options;
 
 	virtual void addPoint(const Geom::Point &) = 0;
 	virtual Geom::Point getPoint(double f) = 0;
