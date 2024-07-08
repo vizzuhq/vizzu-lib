@@ -4,7 +4,6 @@
 #include "base/gfx/pathsampler.h"
 
 #include "coordinatesystem.h"
-#include "painteroptions.h"
 
 namespace Vizzu::Draw
 {
@@ -12,13 +11,8 @@ namespace Vizzu::Draw
 class PathSampler : public Gfx::PathSampler
 {
 public:
-	struct Options
+	struct Options : Gfx::PathSampler::Options
 	{
-		explicit Options(const CoordinateSystem &coordSys) :
-		    coordSys(coordSys)
-		{}
-
-		ResolutionMode resolutionMode{ResolutionMode::Low};
 		const CoordinateSystem &coordSys;
 	};
 
@@ -27,7 +21,7 @@ public:
 	    const Options &options);
 
 protected:
-	const Options &drawOptions;
+	const CoordinateSystem &coordSys;
 	Geom::Point p0;
 	Geom::Point p1;
 };

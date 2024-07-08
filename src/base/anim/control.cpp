@@ -97,7 +97,7 @@ void Control::cancel()
 
 void Control::update() { update(actTime); }
 
-void Control::update(const TimePoint &time)
+Control::PlayState Control::update(const TimePoint &time)
 {
 	if (actTime == TimePoint()) actTime = time;
 
@@ -120,6 +120,8 @@ void Control::update(const TimePoint &time)
 	lastPosition = options.position;
 
 	finish(running);
+
+	return options.playState;
 }
 
 void Control::finish(bool preRun)

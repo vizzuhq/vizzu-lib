@@ -87,8 +87,18 @@ Gen::Config Chart::getConfig()
 	return Gen::Config{getOptions(), table};
 }
 
-void Chart::draw(Gfx::ICanvas &canvas)
+void Chart::draw(Gfx::ICanvas &canvas,
+    std::shared_ptr<const Gfx::PathSampler::Options> &&options)
 {
+	if (!options) {
+		auto &&actAnim = animator.getActAnimation();
+		auto running = actAnim && actAnim->isRunning();
+		options = std::shared_ptr<const Gfx::PathSampler::Options>{
+		    std::shared_ptr<void>{},
+		    running
+		        ? &Draw::Painter::defaultPathSamplerOptionsOnPlay
+		        : &Draw::Painter::defaultPathSamplerOptionsOnPause};
+	}
 	renderedChart = Draw::RenderedChart{
 	    actPlot ? Draw::CoordinateSystem{layout.plotArea,
 	        actPlot->getOptions()->angle,
@@ -105,7 +115,7 @@ void Chart::draw(Gfx::ICanvas &canvas)
 	        actPlot ? actPlot->getStyle()
 	                : stylesheet.getDefaultParams(),
 	        events}}
-	    .draw(canvas, layout);
+	    .draw(canvas, layout, *options);
 }
 
 Gen::PlotPtr Chart::plot(const Gen::PlotOptionsPtr &options)

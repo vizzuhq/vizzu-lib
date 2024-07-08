@@ -11,13 +11,17 @@ namespace Gfx
 class PathSampler
 {
 public:
-	PathSampler(double dMax, double hMax) : dMax(dMax), hMax(hMax) {}
+	struct Options
+	{
+		double dMax;
+		double hMax;
+	};
+	explicit PathSampler(const Options &options) : options(options) {}
 
 	virtual ~PathSampler() = default;
 
 protected:
-	double dMax;
-	double hMax;
+	const Options &options;
 
 	virtual void addPoint(const Geom::Point &) = 0;
 	virtual Geom::Point getPoint(double f) = 0;

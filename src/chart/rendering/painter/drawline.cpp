@@ -9,12 +9,9 @@ namespace Vizzu::Draw
 {
 
 DrawLine::DrawLine(const Geom::Line &line,
-    ResolutionMode resolutionMode,
-    CoordinateSystem &coordSys,
+    const PathSampler::Options &options,
     Gfx::ICanvas &canvas)
 {
-	PathSampler::Options options(coordSys);
-	options.resolutionMode = resolutionMode;
 	Path(line.begin, line.end, canvas, options).sample();
 }
 
@@ -51,7 +48,7 @@ DrawLine::DrawLine(const Geom::Line &line,
 DrawLine::Path::Path(const Geom::Point &p0,
     const Geom::Point &p1,
     Gfx::ICanvas &canvas,
-    const PathSampler::Options &options) :
+    const Options &options) :
     PathSampler(p0, p1, options),
     canvas(canvas)
 {}
@@ -74,8 +71,7 @@ void DrawLine::Path::addPoint(const Geom::Point &point)
 
 Geom::Point DrawLine::Path::getPoint(double i)
 {
-	return drawOptions.coordSys.convert(
-	    Math::interpolate<>(p0, p1, i));
+	return coordSys.convert(Math::interpolate<>(p0, p1, i));
 }
 
 }

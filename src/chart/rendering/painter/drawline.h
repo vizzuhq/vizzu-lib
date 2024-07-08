@@ -6,7 +6,6 @@
 #include "base/gfx/color.h"
 
 #include "coordinatesystem.h"
-#include "painteroptions.h"
 #include "pathsampler.h"
 
 namespace Vizzu::Draw
@@ -16,8 +15,7 @@ class DrawLine
 {
 public:
 	DrawLine(const Geom::Line &line,
-	    ResolutionMode resolutionMode,
-	    CoordinateSystem &coordSys,
+	    const PathSampler::Options &options,
 	    Gfx::ICanvas &canvas);
 
 	DrawLine(const Geom::Line &line,

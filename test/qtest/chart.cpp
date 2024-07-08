@@ -85,7 +85,7 @@ void TestChart::run()
 		IO::log() << "step 5";
 		auto &options = chart.getChart().getOptions();
 		options.title = "VIZZU Chart - Phase 5";
-		options.showTooltip(5);
+		options.showTooltip(13);
 		chart.getChart().setKeyframe();
 		chart.getChart().animate({step6});
 	};
@@ -95,7 +95,7 @@ void TestChart::run()
 		IO::log() << "step 4";
 		auto &options = chart.getChart().getOptions();
 		options.title = "VIZZU Chart - Phase 4";
-		options.showTooltip(4);
+		options.showTooltip(12);
 		chart.getChart().setKeyframe();
 		chart.getChart().animate({step5});
 	};
@@ -152,12 +152,12 @@ void TestChart::run()
 			        std::shared_ptr<void>{},
 			        +[](const Vizzu::Data::RowWrapper *row) -> bool
 			        {
-				        return std::get<std::string_view>(
+				        return *std::get<const std::string *>(
 				                   row->get_value("Cat1"))
-				                == "A"
-				            || std::get<std::string_view>(
+				                == std::string_view{"A"}
+				            || *std::get<const std::string *>(
 				                   row->get_value("Cat2"))
-				                   == "b";
+				                   == std::string_view{"b"};
 			        }}};
 			options.title = "VIZZU Chart - Phase 1b";
 			styles.legend.marker.type =

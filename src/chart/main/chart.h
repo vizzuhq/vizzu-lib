@@ -7,6 +7,7 @@
 
 #include "base/anim/control.h"
 #include "base/gfx/canvas.h"
+#include "base/gfx/pathsampler.h"
 #include "base/util/eventdispatcher.h"
 #include "chart/animator/animator.h"
 #include "chart/generator/plotptr.h"
@@ -29,7 +30,8 @@ public:
 
 	Chart();
 	Chart(Chart &&) noexcept = delete;
-	void draw(Gfx::ICanvas &canvas);
+	void draw(Gfx::ICanvas &canvas,
+	    std::shared_ptr<const Gfx::PathSampler::Options> &&options);
 	void setBoundRect(const Geom::Rect &rect);
 
 	Data::DataTable &getTable() { return table; }

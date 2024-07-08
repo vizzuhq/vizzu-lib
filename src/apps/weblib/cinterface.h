@@ -19,6 +19,7 @@ using Event = Util::EventDispatcher::Params *;
 using Animation = const void *;
 using Exception = const void *;
 using Canvas = const void *;
+using ResolutionProfile = const void *;
 }
 
 extern "C" {
@@ -41,6 +42,8 @@ struct alignas(double) Value
 
 extern APIHandles::Chart vizzu_createChart();
 extern APIHandles::Canvas vizzu_createCanvas();
+extern APIHandles::ResolutionProfile
+vizzu_createResolutionProfile(double dMax, double hMax);
 extern void vizzu_pointerDown(APIHandles::Chart chart,
     APIHandles::Canvas canvas,
     int pointerId,
@@ -63,11 +66,13 @@ extern void vizzu_wheel(APIHandles::Chart chart,
     APIHandles::Canvas canvas,
     double delta);
 extern void vizzu_setLogging(bool enable);
-extern void vizzu_update(APIHandles::Chart chart, double timeInMSecs);
+extern const char *vizzu_update(APIHandles::Chart chart,
+    double timeInMSecs);
 extern void vizzu_render(APIHandles::Chart chart,
     APIHandles::Canvas canvas,
     double width,
-    double height);
+    double height,
+    APIHandles::ResolutionProfile profile);
 extern const char *vizzu_errorMessage(
     APIHandles::Exception exceptionPtr,
     const std::type_info *typeinfo);

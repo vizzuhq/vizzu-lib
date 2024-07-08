@@ -26,7 +26,7 @@ public:
 	Control(Control &&) noexcept = default;
 
 	explicit Control(Controllable &controlled);
-	void update(const TimePoint &time);
+	PlayState update(const TimePoint &time);
 
 	void seek(const std::string &value);
 	void seekProgress(double value);
