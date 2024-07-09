@@ -402,7 +402,7 @@ double DataCube::aggregateAt(const MultiIndex &multiIndex,
 	std::string res;
 	for (auto iit = index.begin();
 	     auto &&dim : sub_df.get_dimensions()) {
-		if (iit->first != dim) ++iit;
+		while (iit->first != dim) ++iit;
 
 		auto &&cats = df->get_categories(dim);
 		res += dim;

@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+## Fixed 
+
+- Crash fix on special (meas-meas) area bar mekko charts.
+
 ## [0.11.3] - 2024-06-27
 
 ### Fixed
