@@ -207,23 +207,33 @@ bool PlotBuilder::linkMarkers(const Buckets &buckets, bool main) const
 	std::erase_if(sorted,
 	    std::not_fn(std::mem_fn(&BucketInfo::hasElement)));
 
-	std::vector<double> dimOffset(sorted.size());
+	std::vector<double> dimOffset(sorted.size() + 1);
 
 	auto channelId = main ? plot->getOptions()->mainAxisType()
 	                      : plot->getOptions()->subAxisType();
+	auto subChannelId = main ? plot->getOptions()->subAxisType()
+	                         : plot->getOptions()->mainAxisType();
 	auto &&axis = plot->getOptions()->getChannels().at(channelId);
+	auto &&subAxis =
+	    plot->getOptions()->getChannels().at(subChannelId);
+
 	auto horizontal = plot->getOptions()->isHorizontal();
 	double Geom::Point::*const coord =
 	    horizontal == main ? &Geom::Point::x : &Geom::Point::y;
 
-	if (axis.isDimension()) {
+	auto isAggregatable = axis.isDimension()
+	                   || (main && subAxis.isMeasure()
+	                       && plot->getOptions()->geometry.get()
+	                              == ShapeType::rectangle);
+
+	if (isAggregatable) {
 		for (std::size_t ix{}, max = sorted.size(); ix < max; ++ix) {
 			auto &o = dimOffset[ix];
 			for (const auto &bucket : buckets) {
 				auto *marker = bucket[sorted[ix].index];
 				if (!marker || static_cast<bool>(!marker->enabled))
 					continue;
-				o = std::max(o, marker->size.*coord);
+				o = std::max(o, std::abs(marker->size.*coord));
 			}
 		}
 		std::exclusive_scan(dimOffset.begin(),
@@ -253,9 +263,15 @@ bool PlotBuilder::linkMarkers(const Buckets &buckets, bool main) const
 
 			auto *next = bucket[idNext];
 
-			if (act)
+			if (act) {
 				prevPos = act->position.*coord +=
-				    axis.isDimension() ? dimOffset[i] : prevPos;
+				    isAggregatable ? dimOffset[i] : prevPos;
+
+				if (isAggregatable && act->size.*coord < 0) {
+					act->position.*coord +=
+					    dimOffset[i + 1] - dimOffset[i];
+				}
+			}
 
 			hasConnection |=
 			    Marker::connectMarkers(iNext == 0 && act != next,
