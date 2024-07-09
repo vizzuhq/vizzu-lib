@@ -2,15 +2,17 @@
 
 ## [Unreleased]
 
+## [0.11.4] - 2024-07-09
+
 ## Fixed 
 
+- Add default no rectangle spacing on heatmap and coxcomb.
 - Crash fix on special (meas-meas) area bar mekko charts.
 
 ## [0.11.3] - 2024-06-27
 
 ### Fixed
 
-- Add default no rectangle spacing on heatmap and coxcomb.
 - Change bubblechart behavior on failure.
 - Fix reference markers on bubblechart with negative values. 
 - From now lightness channel goes from light (low value) to dark (high value) colors. 
