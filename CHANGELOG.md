@@ -13,7 +13,7 @@
 
 ## [0.11.4] - 2024-07-09
 
-## Fixed 
+### Fixed 
 
 - Add default no rectangle spacing on heatmap and coxcomb.
 - Crash fix on special (meas-meas) area bar mekko charts.
