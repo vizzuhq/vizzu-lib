@@ -228,7 +228,8 @@ bool PlotBuilder::linkMarkers(const Buckets &buckets, bool main) const
 	                              == ShapeType::rectangle);
 
 	if (isAggregatable) {
-		double pre_neg{}, pre_pos{};
+		double pre_neg{};
+		double pre_pos{};
 		for (std::size_t ix{}, max = sorted.size(); ix < max; ++ix) {
 			auto &o = dimOffset[ix];
 			for (const auto &bucket : buckets) {
