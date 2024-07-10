@@ -207,7 +207,8 @@ bool PlotBuilder::linkMarkers(const Buckets &buckets, bool main) const
 	std::erase_if(sorted,
 	    std::not_fn(std::mem_fn(&BucketInfo::hasElement)));
 
-	std::vector<double> dimOffset(sorted.size() + 1);
+	std::vector dimOffset(sorted.size(),
+	    std::numeric_limits<double>::lowest());
 
 	auto channelId = main ? plot->getOptions()->mainAxisType()
 	                      : plot->getOptions()->subAxisType();
@@ -227,19 +228,22 @@ bool PlotBuilder::linkMarkers(const Buckets &buckets, bool main) const
 	                              == ShapeType::rectangle);
 
 	if (isAggregatable) {
+		double pre_neg{}, pre_pos{};
 		for (std::size_t ix{}, max = sorted.size(); ix < max; ++ix) {
 			auto &o = dimOffset[ix];
 			for (const auto &bucket : buckets) {
 				auto *marker = bucket[sorted[ix].index];
 				if (!marker || static_cast<bool>(!marker->enabled))
 					continue;
-				o = std::max(o, std::abs(marker->size.*coord));
+				o = std::max(o, marker->size.*coord);
 			}
+			if (o == std::numeric_limits<double>::lowest()) o = 0.0;
+
+			if (o < 0)
+				std::swap(o += pre_neg, pre_neg);
+			else
+				std::swap(o += pre_pos, pre_pos);
 		}
-		std::exclusive_scan(dimOffset.begin(),
-		    dimOffset.end(),
-		    dimOffset.begin(),
-		    0.0);
 	}
 
 	bool hasConnection{};
@@ -263,15 +267,9 @@ bool PlotBuilder::linkMarkers(const Buckets &buckets, bool main) const
 
 			auto *next = bucket[idNext];
 
-			if (act) {
+			if (act)
 				prevPos = act->position.*coord +=
 				    isAggregatable ? dimOffset[i] : prevPos;
-
-				if (isAggregatable && act->size.*coord < 0) {
-					act->position.*coord +=
-					    dimOffset[i + 1] - dimOffset[i];
-				}
-			}
 
 			hasConnection |=
 			    Marker::connectMarkers(iNext == 0 && act != next,
