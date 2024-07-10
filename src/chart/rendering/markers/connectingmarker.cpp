@@ -44,7 +44,8 @@ ConnectingMarker::ConnectingMarker(const DrawingContext &ctx,
 		    pc.value) {
 			auto &&newPolar =
 			    (polar && Math::FuzzyBool{pc.weight}).more();
-			linear = linear || newPolar;
+			linear = linear || polar.more()
+			      || Math::FuzzyBool{pc.weight}.more();
 			connected = connected && newPolar && horizontal;
 			enabled = enabled && newPolar && horizontal;
 		}
@@ -81,10 +82,13 @@ ConnectingMarker::ConnectingMarker(const DrawingContext &ctx,
 			auto prevSpacing = prev->spacing * prev->size / 2;
 			auto prevPos = prev->position;
 
-			if (polar != false) {
-				if (horizontal.more() != false) {
-					if (prevPos.x >= 1) prevPos.x -= 1;
-				}
+			if (polar != false
+			    && ctx.getOptions()
+			               .orientation.get_or_first(lineIndex)
+			               .value
+			           == Gen::Orientation::horizontal
+			    && prev != &marker && prevPos.x >= 1) {
+				prevPos.x -= 1;
 			}
 
 			points[3] = prevPos - prevSpacing;
