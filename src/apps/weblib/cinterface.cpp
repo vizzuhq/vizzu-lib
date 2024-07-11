@@ -303,7 +303,7 @@ void data_addMeasure(APIHandles::Chart chart,
 }
 
 void data_addRecord(APIHandles::Chart chart,
-    const char **cells,
+    const char *const *cells,
     std::uint32_t count)
 {
 	return Interface::getInstance().addRecord(chart, cells, count);

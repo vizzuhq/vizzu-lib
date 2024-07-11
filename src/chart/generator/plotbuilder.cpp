@@ -67,16 +67,15 @@ Buckets PlotBuilder::generateMarkers(std::size_t &mainBucketSize)
 {
 	Buckets mainBuckets;
 	Buckets subBuckets;
-	if (!dataCube.empty()) {
-		mainBuckets.resize(dataCube.combinedSizeOf(
-		    plot->getOptions()->mainAxis().dimensions()));
-		mainBucketSize = mainBuckets.size();
 
-		Data::SeriesList subIds(
-		    plot->getOptions()->subAxis().dimensions());
+	const auto &mainIds(plot->getOptions()->mainAxis().dimensions());
+	auto subIds(plot->getOptions()->subAxis().dimensions());
+	if (!dataCube.empty()) {
 		if (plot->getOptions()->geometry == ShapeType::area)
-			subIds.split_by(
-			    plot->getOptions()->mainAxis().dimensions());
+			subIds.split_by(mainIds);
+
+		mainBuckets.resize(dataCube.combinedSizeOf(mainIds));
+		mainBucketSize = mainBuckets.size();
 		subBuckets.resize(dataCube.combinedSizeOf(subIds));
 
 		plot->markers.reserve(dataCube.combinedSizeOf({}).first);
@@ -94,6 +93,8 @@ Buckets PlotBuilder::generateMarkers(std::size_t &mainBucketSize)
 		auto &marker = plot->markers.emplace_back(*plot->getOptions(),
 		    dataCube,
 		    plot->axises,
+		    mainIds,
+		    subIds,
 		    index,
 		    plot->markers.size(),
 		    needInfo);

@@ -10,6 +10,8 @@ namespace Vizzu::Gen
 Marker::Marker(const Options &options,
     const Data::DataCube &data,
     Axises &stats,
+    const Data::SeriesList &mainAxisList,
+    const Data::SeriesList &subAxisList,
     const Data::MultiIndex &index,
     MarkerPosition pos,
     bool needMarkerInfo) :
@@ -49,21 +51,13 @@ Marker::Marker(const Options &options,
 	    index,
 	    &sizeId);
 
-	auto &&mainAxisDims = options.mainAxis().dimensionsWithLevel();
-
-	Data::MarkerId *subAxisId{};
-	if (auto &&subAxis = options.subAxis().dimensionsWithLevel();
-	    options.geometry == ShapeType::area) {
-		Data::SeriesList subIds(subAxis.first);
-		if (subIds.split_by(mainAxisDims.first).empty())
-			subAxisId = &subId;
-		subId = data.getId({subIds, subAxis.second}, index);
-	}
-	else {
-		subId = data.getId(subAxis, index);
-		subAxisId = &subId;
-	}
-	mainId = data.getId(mainAxisDims, index);
+	subId = data.getId({subAxisList, options.subAxis().labelLevel},
+	    index);
+	auto *subAxisId = subAxisList == options.subAxis().dimensions()
+	                    ? &subId
+	                    : nullptr;
+	mainId = data.getId({mainAxisList, options.mainAxis().labelLevel},
+	    index);
 
 	auto horizontal = options.isHorizontal();
 	auto lineOrCircle = options.geometry == ShapeType::line

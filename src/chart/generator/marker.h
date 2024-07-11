@@ -28,6 +28,8 @@ public:
 	Marker(const Options &options,
 	    const Data::DataCube &data,
 	    Axises &stats,
+	    const Data::SeriesList &mainAxisList,
+	    const Data::SeriesList &subAxisList,
 	    const Data::MultiIndex &index,
 	    MarkerPosition pos,
 	    bool needMarkerInfo);

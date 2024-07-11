@@ -34,7 +34,7 @@ void DataTable::addColumn(std::string_view name,
 	    {});
 }
 
-void DataTable::pushRow(const std::span<const char *> &cells)
+void DataTable::pushRow(const std::span<const char *const> &cells)
 {
 	df.add_record(cells);
 }
