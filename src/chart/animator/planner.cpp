@@ -289,12 +289,15 @@ void Planner::calcNeeded()
 	animNeeded[SectionId::x] = needHorizontal();
 
 	animNeeded[SectionId::connection] =
-	    anyMarker(+[](const Gen::Marker &source,
-	                   const Gen::Marker &target) -> bool
-	        {
-		        return source.prevMainMarker != target.prevMainMarker;
-	        })
-	    || srcOpt->isHorizontal() != trgOpt->isHorizontal();
+	    (isConnecting(srcOpt->geometry.get())
+	        || isConnecting(trgOpt->geometry.get()))
+	    && (anyMarker(+[](const Gen::Marker &source,
+	                       const Gen::Marker &target) -> bool
+	            {
+		            return source.prevMainMarker
+		                != target.prevMainMarker;
+	            })
+	        || srcOpt->isHorizontal() != trgOpt->isHorizontal());
 }
 
 bool Planner::anyMarker(

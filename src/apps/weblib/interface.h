@@ -107,7 +107,7 @@ public:
 	    const double *values,
 	    std::uint32_t count);
 	void addRecord(ObjectRegistryHandle chart,
-	    const char **cells,
+	    const char *const *cells,
 	    std::uint32_t count);
 	const char *dataMetaInfo(ObjectRegistryHandle chart);
 	void addEventListener(ObjectRegistryHandle chart,

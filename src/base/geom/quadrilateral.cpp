@@ -7,7 +7,7 @@
 namespace Geom
 {
 
-ConvexQuad::ConvexQuad(const Geom::Rect &rect)
+ConvexQuad::ConvexQuad(const Rect &rect)
 {
 	points[0] = rect.pos;
 	points[1] = rect.pos + Point{rect.size.x, 0.0};
@@ -15,10 +15,7 @@ ConvexQuad::ConvexQuad(const Geom::Rect &rect)
 	points[3] = rect.pos + Point{0.0, rect.size.y};
 }
 
-Rect ConvexQuad::boundary() const
-{
-	return Geom::Rect::Boundary(points);
-}
+Rect ConvexQuad::boundary() const { return Rect::Boundary(points); }
 
 ConvexQuad ConvexQuad::Square(Point p0, Point p2)
 {
@@ -29,12 +26,14 @@ ConvexQuad ConvexQuad::Square(Point p0, Point p2)
 	return ConvexQuad({p0, p1, p2, p3});
 }
 
-ConvexQuad ConvexQuad::Isosceles(Geom::Point base0Middle,
-    Geom::Point base1Middle,
+ConvexQuad ConvexQuad::Isosceles(Point base0Middle,
+    Point base1Middle,
     double base0Length,
     double base1Length)
 {
-	auto dir = (base1Middle - base0Middle).normalized();
+	auto dir = base1Middle == base0Middle
+	             ? Point{0, 1}
+	             : (base1Middle - base0Middle).normalized();
 
 	return ConvexQuad(
 	    {base0Middle + dir.normal(false) * (base0Length / 2),
@@ -45,26 +44,18 @@ ConvexQuad ConvexQuad::Isosceles(Geom::Point base0Middle,
 
 bool ConvexQuad::contains(const Point &p, double tolerance) const
 {
-	auto boundaryArea =
-	    Triangle(std::array<Point, 3>{points[0], points[1], p}).area()
-	    + Triangle(std::array<Point, 3>{points[1], points[2], p})
-	          .area()
-	    + Triangle(std::array<Point, 3>{points[2], points[3], p})
-	          .area()
-	    + Triangle(std::array<Point, 3>{points[3], points[0], p})
-	          .area();
+	auto boundaryArea = Triangle{{points[0], points[1], p}}.area()
+	                  + Triangle{{points[1], points[2], p}}.area()
+	                  + Triangle{{points[2], points[3], p}}.area()
+	                  + Triangle{{points[3], points[0], p}}.area();
 
 	return Math::AddTolerance(boundaryArea, tolerance) <= area();
 }
 
 double ConvexQuad::area() const
 {
-	return Triangle(
-	           std::array<Point, 3>{points[0], points[1], points[2]})
-	           .area()
-	     + Triangle(
-	         std::array<Point, 3>{points[2], points[3], points[0]})
-	           .area();
+	return Triangle{{points[0], points[1], points[2]}}.area()
+	     + Triangle{{points[2], points[3], points[0]}}.area();
 }
 
 }

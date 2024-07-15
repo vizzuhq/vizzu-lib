@@ -635,7 +635,10 @@ void dataframe::finalize() &
 std::string dataframe::as_string() const &
 {
 	const auto *vec = get_if<state_type::modifying>(&state_data);
-	if (!vec || vec->empty())
+	if (!vec
+	    || (vec->empty()
+	        && (!get_dimensions().empty()
+	            || !get_measures().empty())))
 		error(error_type::internal_error, "as str");
 
 	std::string res;

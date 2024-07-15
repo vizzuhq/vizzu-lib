@@ -323,7 +323,7 @@ void Interface::addMeasure(ObjectRegistryHandle chart,
 }
 
 void Interface::addRecord(ObjectRegistryHandle chart,
-    const char **cells,
+    const char *const *cells,
     std::uint32_t count)
 {
 	getChart(chart)->getTable().pushRow({cells, count});

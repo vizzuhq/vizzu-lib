@@ -67,16 +67,15 @@ Buckets PlotBuilder::generateMarkers(std::size_t &mainBucketSize)
 {
 	Buckets mainBuckets;
 	Buckets subBuckets;
-	if (!dataCube.empty()) {
-		mainBuckets.resize(dataCube.combinedSizeOf(
-		    plot->getOptions()->mainAxis().dimensions()));
-		mainBucketSize = mainBuckets.size();
 
-		Data::SeriesList subIds(
-		    plot->getOptions()->subAxis().dimensions());
+	const auto &mainIds(plot->getOptions()->mainAxis().dimensions());
+	auto subIds(plot->getOptions()->subAxis().dimensions());
+	if (!dataCube.empty()) {
 		if (plot->getOptions()->geometry == ShapeType::area)
-			subIds.split_by(
-			    plot->getOptions()->mainAxis().dimensions());
+			subIds.split_by(mainIds);
+
+		mainBuckets.resize(dataCube.combinedSizeOf(mainIds));
+		mainBucketSize = mainBuckets.size();
 		subBuckets.resize(dataCube.combinedSizeOf(subIds));
 
 		plot->markers.reserve(dataCube.combinedSizeOf({}).first);
@@ -94,6 +93,8 @@ Buckets PlotBuilder::generateMarkers(std::size_t &mainBucketSize)
 		auto &marker = plot->markers.emplace_back(*plot->getOptions(),
 		    dataCube,
 		    plot->axises,
+		    mainIds,
+		    subIds,
 		    index,
 		    plot->markers.size(),
 		    needInfo);
@@ -207,16 +208,29 @@ bool PlotBuilder::linkMarkers(const Buckets &buckets, bool main) const
 	std::erase_if(sorted,
 	    std::not_fn(std::mem_fn(&BucketInfo::hasElement)));
 
-	std::vector<double> dimOffset(sorted.size());
+	std::vector dimOffset(sorted.size(),
+	    std::numeric_limits<double>::lowest());
 
 	auto channelId = main ? plot->getOptions()->mainAxisType()
 	                      : plot->getOptions()->subAxisType();
+	auto subChannelId = main ? plot->getOptions()->subAxisType()
+	                         : plot->getOptions()->mainAxisType();
 	auto &&axis = plot->getOptions()->getChannels().at(channelId);
+	auto &&subAxis =
+	    plot->getOptions()->getChannels().at(subChannelId);
+
 	auto horizontal = plot->getOptions()->isHorizontal();
 	double Geom::Point::*const coord =
 	    horizontal == main ? &Geom::Point::x : &Geom::Point::y;
 
-	if (axis.isDimension()) {
+	auto isAggregatable = axis.isDimension()
+	                   || (main && subAxis.isMeasure()
+	                       && plot->getOptions()->geometry.get()
+	                              == ShapeType::rectangle);
+
+	if (isAggregatable) {
+		double pre_neg{};
+		double pre_pos{};
 		for (std::size_t ix{}, max = sorted.size(); ix < max; ++ix) {
 			auto &o = dimOffset[ix];
 			for (const auto &bucket : buckets) {
@@ -225,11 +239,13 @@ bool PlotBuilder::linkMarkers(const Buckets &buckets, bool main) const
 					continue;
 				o = std::max(o, marker->size.*coord);
 			}
+			if (o == std::numeric_limits<double>::lowest()) o = 0.0;
+
+			if (o < 0)
+				std::swap(o += pre_neg, pre_neg);
+			else
+				std::swap(o += pre_pos, pre_pos);
 		}
-		std::exclusive_scan(dimOffset.begin(),
-		    dimOffset.end(),
-		    dimOffset.begin(),
-		    0.0);
 	}
 
 	bool hasConnection{};
@@ -255,7 +271,7 @@ bool PlotBuilder::linkMarkers(const Buckets &buckets, bool main) const
 
 			if (act)
 				prevPos = act->position.*coord +=
-				    axis.isDimension() ? dimOffset[i] : prevPos;
+				    isAggregatable ? dimOffset[i] : prevPos;
 
 			hasConnection |=
 			    Marker::connectMarkers(iNext == 0 && act != next,

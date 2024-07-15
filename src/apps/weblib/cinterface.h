@@ -89,7 +89,7 @@ extern void data_addMeasure(APIHandles::Chart chart,
     const double *values,
     std::uint32_t count);
 extern void data_addRecord(APIHandles::Chart chart,
-    const char **cells,
+    const char *const *cells,
     std::uint32_t count);
 const char *data_metaInfo(APIHandles::Chart chart);
 

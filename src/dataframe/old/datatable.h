@@ -33,7 +33,7 @@ public:
 	    const std::span<const char *const> &categories,
 	    const std::span<const std::uint32_t> &values);
 
-	void pushRow(const std::span<const char *> &cells);
+	void pushRow(const std::span<const char *const> &cells);
 
 	[[nodiscard]] std::string_view getUnit(
 	    std::string_view const &colIx) const;

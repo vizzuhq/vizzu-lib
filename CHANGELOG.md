@@ -4,13 +4,19 @@
 
 ### Fixed
 
-- Add default no rectangle spacing on heatmap and coxcomb.
 - First marker alpha was different to other marker's alpha
 - Make some transactions clearer. (rectangle-line first marker)
 
 ### Added
 
-- New data handling implemented: Not generating big cube 
+- New data handling implemented: Not generating big cube
+
+## [0.11.4] - 2024-07-09
+
+### Fixed 
+
+- Add default no rectangle spacing on heatmap and coxcomb.
+- Crash fix on special (meas-meas) area bar mekko charts.
 
 ## [0.11.3] - 2024-06-27
 
