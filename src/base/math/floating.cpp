@@ -3,16 +3,12 @@
 
 #include <cmath>
 
-namespace Math
+namespace Math::Floating
 {
 
-int Floating::orderOfMagnitude(double base) const
+int orderOfMagnitude(double value, double base)
 {
 	return static_cast<int>(floor(log(std::abs(value)) / log(base)));
 }
-
-bool Floating::isInteger() const { return value == floor(value); }
-
-double Floating::sign() const { return value < 0 ? -1 : 1; }
 
 }

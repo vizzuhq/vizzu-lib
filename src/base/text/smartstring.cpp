@@ -7,7 +7,6 @@
 #include <cstring>
 
 #include "base/conv/numtostr.h"
-#include "base/math/floating.h"
 #include "base/math/normalizednumber.h"
 
 namespace Text::SmartString

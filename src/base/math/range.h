@@ -4,19 +4,22 @@
 #include <algorithm>
 #include <cmath>
 #include <limits>
-#include <string>
+
+#include "floating.h"
 
 namespace Math
 {
 
-template <typename T> struct Range
+template <std::floating_point T> struct Range
 {
-public:
 	struct Transform
 	{
-		double factor;
-		double shift;
+		T factor;
+		T shift;
 	};
+
+	constexpr static auto less = Floating::less;
+	constexpr static auto is_zero = Floating::is_zero;
 
 	static Range<T> Raw(const T &min, const T &max)
 	{
@@ -32,8 +35,8 @@ public:
 	{}
 
 	Range(const T &x, const T &y) :
-	    min(std::min(x, y)),
-	    max(std::max(x, y))
+	    min(std::min(x, y, less)),
+	    max(std::max(x, y, less))
 	{}
 
 	[[nodiscard]] bool isReal() const
@@ -42,16 +45,11 @@ public:
 		    && max != std::numeric_limits<T>::lowest();
 	}
 
-	[[nodiscard]] bool isNull() const
-	{
-		return min == 0.0 && max == 0.0;
-	}
-
 	void include(const T &value)
 	{
 		if (!std::isfinite(value)) return;
-		max = std::max(max, value);
-		min = std::min(min, value);
+		max = std::max(max, value, less);
+		min = std::min(min, value, less);
 	}
 
 	void include(const Range<T> &range)
@@ -62,17 +60,18 @@ public:
 
 	[[nodiscard]] bool includes(const T &value) const
 	{
-		return value >= min && value <= max;
+		return !less(value, min) && !less(max, value);
 	}
 
 	[[nodiscard]] bool includes(const Range<T> &range) const
 	{
-		return range.max >= min && range.min <= max;
+		return !less(range.max, min) && !less(max, range.min);
 	}
 
 	[[nodiscard]] T rescale(const T &value) const
 	{
-		return max == min ? 0.5 : (value - min) / size();
+		auto s = size();
+		return is_zero(s) ? 0.5 : (value - min) / s;
 	}
 
 	[[nodiscard]] Range<T> rescale(const Range<T> &range) const
@@ -92,7 +91,7 @@ public:
 
 	[[nodiscard]] T normalize(const T &value) const
 	{
-		return max == 0 ? 0 : value / max;
+		return is_zero(max) ? 0 : value / max;
 	}
 
 	[[nodiscard]] Range<T> normalize(const Range<T> &range) const
@@ -144,7 +143,7 @@ public:
 
 	[[nodiscard]] T middle() const { return (min + max) / 2; }
 
-	[[nodiscard]] T size() const { return (max - min); }
+	[[nodiscard]] T size() const { return max - min; }
 
 	[[nodiscard]] T getMin() const { return min; }
 	[[nodiscard]] T getMax() const { return max; }

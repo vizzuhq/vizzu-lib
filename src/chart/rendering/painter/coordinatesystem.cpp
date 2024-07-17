@@ -191,8 +191,8 @@ Geom::Size CompoundTransform::rotatedSize() const
 	auto cosAng = cos(getAngle());
 	auto sinAng = sin(getAngle());
 
-	auto cosAbs = cosAng >= 0 ? cosAng : -cosAng;
-	auto sinAbs = sinAng >= 0 ? sinAng : -sinAng;
+	auto cosAbs = std::signbit(cosAng) ? -cosAng : cosAng;
+	auto sinAbs = std::signbit(sinAng) ? -sinAng : sinAng;
 
 	auto x = cosAbs * rect.size.x + sinAbs * rect.size.y;
 	auto y = cosAbs * rect.size.y + sinAbs * rect.size.x;
@@ -202,16 +202,18 @@ Geom::Size CompoundTransform::rotatedSize() const
 
 Geom::Size CompoundTransform::alignedSize() const
 {
-	auto minAspectRatio = std::min(rect.size.aspectRatio(), 1.0);
+	auto aspectRatio = rect.size.aspectRatio();
+	if (Math::Floating::is_zero(aspectRatio)) aspectRatio = 1.0;
 
-	auto factor = static_cast<double>((polar) || keepAspectRatio);
+	auto minAspectRatio = std::min(aspectRatio, 1.0);
+
+	auto factor = static_cast<double>(polar || keepAspectRatio);
 
 	auto aspectRatioVer =
 	    Math::interpolate(1.0, minAspectRatio, factor);
 
-	auto aspectRatioHor = Math::interpolate(1.0,
-	    minAspectRatio / rect.size.aspectRatio(),
-	    factor);
+	auto aspectRatioHor =
+	    Math::interpolate(1.0, minAspectRatio / aspectRatio, factor);
 
 	return {aspectRatioHor, aspectRatioVer};
 }

@@ -22,10 +22,9 @@ NormalizedNumber::NormalizedNumber(double value, double base) :
     base(base)
 {
 	if (value != 0) {
-		auto sign = Floating(value).sign();
-		value *= sign;
-		positive = sign == 1;
-		exponent = Floating(value).orderOfMagnitude(base);
+		positive = !std::signbit(value);
+		if (!positive) value = -value;
+		exponent = Floating::orderOfMagnitude(value, base);
 		coefficient = value / pow(base, exponent);
 		coefficient = std::clamp(coefficient, 1.0, base);
 	}

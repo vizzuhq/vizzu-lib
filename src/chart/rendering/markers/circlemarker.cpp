@@ -9,13 +9,14 @@ CircleMarker::CircleMarker(const Gen::Marker &marker,
     const Styles::Chart &style) :
     SingleDrawMarker(marker, options, Gen::ShapeType::circle)
 {
+	using Math::Floating::less;
 	morphToCircle = true;
 	border = false;
 	auto spacing = marker.spacing * marker.size / 2;
 	auto pos = marker.position - spacing;
 	auto r = *style.plot.marker.circleMaxRadius
-	       * sqrt(std::max(0.0, marker.sizeFactor));
-	r = std::max(r, *style.plot.marker.circleMinRadius);
+	       * sqrt(std::max(0.0, marker.sizeFactor, less));
+	r = std::max(r, *style.plot.marker.circleMinRadius, less);
 	points[0] = pos + Geom::Point{-r, -r};
 	points[1] = pos + Geom::Point{+r, -r};
 	points[2] = pos + Geom::Point{+r, +r};

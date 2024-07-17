@@ -54,7 +54,7 @@ std::weak_ordering NaturalCmp::cmpNum(const char *&s0,
 		if (SC::isDigit(*s0)) v0 = v0 * 10 + SC::toNumber(*s0++);
 		if (SC::isDigit(*s1)) v1 = v1 * 10 + SC::toNumber(*s1++);
 	}
-	return std::weak_order(v0, v1);
+	return std::strong_order(v0, v1);
 }
 
 void NaturalCmp::skipSpaces(const char *&s)

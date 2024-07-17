@@ -1,6 +1,7 @@
 #ifndef GFX_COLOR
 #define GFX_COLOR
 
+#include <base/math/floating.h>
 #include <cmath>
 #include <cstdint>
 #include <ctgmath>
@@ -156,7 +157,7 @@ struct Color
 private:
 	static double fixed(double x)
 	{
-		return std::isnan(x) ? 0 : x > 1 ? 1 : x < 0 ? 0 : x;
+		return std::clamp(x, 0.0, 1.0, Math::Floating::less);
 	}
 
 	static double

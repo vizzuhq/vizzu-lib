@@ -10,7 +10,7 @@ namespace Geom
 Circle::Circle(const Rect &rect, FromRect fromRect)
 {
 	radius = fromRect == FromRect::inscribed
-	           ? std::min(rect.size.x, rect.size.y) / 2.0
+	           ? rect.size.minSize() / 2.0
 	       : fromRect == FromRect::sameWidth  ? rect.size.x / 2.0
 	       : fromRect == FromRect::sameHeight ? rect.size.y / 2.0
 	       : fromRect == FromRect::outscribed
@@ -81,7 +81,9 @@ double Circle::centerDistance(const Circle &c) const
 
 double Circle::distance(const Circle &c) const
 {
-	return std::max(0.0, centerDistance(c) - radius - c.radius);
+	return std::max(0.0,
+	    centerDistance(c) - radius - c.radius,
+	    Math::Floating::less);
 }
 
 double Circle::signedDistance(const Circle &c) const

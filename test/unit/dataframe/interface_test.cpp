@@ -752,7 +752,7 @@ auto &&m1t = df->set_aggregate("m1",
                     (std::get<std::string_view>(rhs.get_value("d2"))[2]
                         - '0')
                     + std::get<double>(rhs.get_value("m1"));
-                return std::weak_order(l, r);
+                return std::strong_order(l, r);
             });
 
         df->finalize();

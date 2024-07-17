@@ -5,7 +5,6 @@
 #include <ranges>
 #include <stdexcept>
 
-#include "floating.h"
 #include "normalizednumber.h"
 
 namespace Math

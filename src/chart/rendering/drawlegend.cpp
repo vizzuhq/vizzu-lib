@@ -116,7 +116,7 @@ Geom::Rect DrawLegend::getItemRect(const Info &info, double index)
 	Geom::Rect res = info.contentRect;
 	res.pos.y += info.titleHeight + index * info.itemHeight;
 	res.size.y = info.itemHeight;
-	if (res.size.x < 0) res.size.x = 0;
+	if (std::signbit(res.size.x)) res.size.x = 0;
 	return res;
 }
 
@@ -134,7 +134,8 @@ Geom::TransformedRect DrawLegend::getLabelRect(const Info &info,
 {
 	Geom::Rect res = itemRect;
 	res.pos.x += info.markerSize;
-	res.size.x = std::max(0.0, res.size.x - info.markerSize);
+	res.size.x -= info.markerSize;
+	if (std::signbit(res.size.x)) res.size.x = 0.0;
 	return Geom::TransformedRect::fromRect(res);
 }
 

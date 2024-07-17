@@ -2,6 +2,8 @@
 
 #include <stdexcept>
 
+#include "base/text/valueunit.h"
+
 namespace Gfx
 {
 

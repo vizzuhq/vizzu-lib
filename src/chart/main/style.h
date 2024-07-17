@@ -334,7 +334,8 @@ struct Legend : Padding, Box, LegendParams
 	    double fontSize) const
 	{
 		return std::min(width->get(refSize, fontSize),
-		    maxWidth->get(refSize, fontSize));
+		    maxWidth->get(refSize, fontSize),
+		    Math::Floating::less);
 	}
 };
 
