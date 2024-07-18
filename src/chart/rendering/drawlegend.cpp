@@ -86,11 +86,13 @@ void DrawLegend::drawDimension(const Info &info) const
 		if (itemRect.y().getMax() >= info.contentRect.y().getMax())
 			continue;
 
-		auto alpha = std::min(value.second.weight, info.weight);
+		const auto alpha{Math::FuzzyBool{value.second.weight}
+		                 && Math::FuzzyBool{info.weight}};
 
 		drawMarker(info,
 		    value.second.categoryValue,
-		    colorBuilder.render(value.second.colorBase) * alpha,
+		    colorBuilder.render(value.second.colorBase)
+		        * double{alpha},
 		    getMarkerRect(info, itemRect));
 
 		value.second.label.visit(
@@ -106,7 +108,8 @@ void DrawLegend::drawDimension(const Info &info) const
 			            value.second.categoryValue,
 			            value.second.categoryValue,
 			            info.type),
-			        {.alpha = std::min(alpha, weighted.weight)});
+			        {.alpha = double{
+			             alpha && Math::FuzzyBool{weighted.weight}}});
 		    });
 	}
 }
