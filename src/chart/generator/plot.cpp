@@ -173,9 +173,10 @@ void Plot::mergeMarkersAndCellInfo(Plot &source, Plot &target)
 			else if (prePos < target_reindex.size()
 			         && target_reindex[prePos].idx == idx)
 				prePos = target_reindex[prePos].pos;
-			else
-				throw std::runtime_error(
-				    "Logical error in marker reindex");
+			else [[unlikely]]
+				throw std::logic_error(
+				    "internal error: "
+				    "Marker reindex not matching idx.");
 		}
 
 		auto &tmarker = tmarkers[ix];
@@ -188,9 +189,10 @@ void Plot::mergeMarkersAndCellInfo(Plot &source, Plot &target)
 			else if (prePos < source_reindex.size()
 			         && source_reindex[prePos].idx == idx)
 				prePos = source_reindex[prePos].pos;
-			else
-				throw std::runtime_error(
-				    "Logical error in marker reindex");
+			else [[unlikely]]
+				throw std::logic_error(
+				    "internal error: "
+				    "Marker reindex not matching idx.");
 		}
 
 		if (auto &scell = source.markers[ix].cellInfo,
