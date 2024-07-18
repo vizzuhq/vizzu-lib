@@ -4,6 +4,7 @@
 #include <cmath>
 #include <ranges>
 #include <stdexcept>
+#include <string>
 
 #include "normalizednumber.h"
 

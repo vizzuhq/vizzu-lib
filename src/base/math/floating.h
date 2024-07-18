@@ -49,9 +49,7 @@ constexpr auto inline is_zero = [](auto value)
 {
 	using F = decltype(value);
 	static_assert(std::floating_point<F>);
-	if constexpr ([[maybe_unused]] auto v =
-	                  can_be_used_as_short_check<F>;
-	              v()) {
+	if constexpr (auto v = can_be_used_as_short_check<F>; v()) {
 		const auto val =
 		    std::bit_cast<typename decltype(v)::value_type>(value);
 		return val + val == 0;
