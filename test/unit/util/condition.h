@@ -34,7 +34,8 @@ public:
 			return *this == static_cast<T>(ref);
 		}
 		else {
-			static_assert(std::is_invocable_v<std::equal_to<>, T, U>,
+			static_assert(
+			    requires { value == ref; },
 			    "Cannot compare types");
 		}
 	}

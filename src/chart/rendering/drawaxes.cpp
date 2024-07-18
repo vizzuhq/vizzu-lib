@@ -132,7 +132,7 @@ Geom::Point DrawAxes::getTitleOffset(Gen::ChannelId axisIndex,
 
 	auto orthogonal =
 	    fades ? calcSide(titleStyle.side->get_or_first(index).value)
-	          : titleStyle.side->combine<double>(calcSide);
+	          : titleStyle.side->combine(calcSide);
 
 	auto calcVSide = [](const auto &side)
 	{
@@ -147,7 +147,7 @@ Geom::Point DrawAxes::getTitleOffset(Gen::ChannelId axisIndex,
 
 	auto parallel =
 	    fades ? calcVSide(titleStyle.vside->get_or_first(index).value)
-	          : titleStyle.vside->combine<double>(calcVSide);
+	          : titleStyle.vside->combine(calcVSide);
 
 	return axisIndex == Gen::ChannelId::x
 	         ? Geom::Point{parallel, -orthogonal}
@@ -218,8 +218,7 @@ void DrawAxes::drawTitle(Gen::ChannelId axisIndex) const
 		    fades == ::Anim::second
 		        ? calcOrientation(
 		            titleStyle.orientation->get_or_first(index).value)
-		        : titleStyle.orientation->combine<Geom::Size>(
-		            calcOrientation);
+		        : titleStyle.orientation->combine(calcOrientation);
 
 		auto center = offset * (orientedSize / 2.0);
 

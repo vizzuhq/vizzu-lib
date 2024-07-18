@@ -26,35 +26,33 @@ ConnectingMarker::ConnectingMarker(const DrawingContext &ctx,
 
 	lineWidth[0] = lineWidth[1] = 0;
 
-	enabled = ctx.getOptions().geometry.factor<Math::FuzzyBool>(type);
+	const auto *prev =
+	    getPrev(marker, ctx.plot->getMarkers(), lineIndex);
 
-	labelEnabled = enabled && marker.enabled;
+	labelEnabled =
+	    ctx.getOptions().geometry.factor<Math::FuzzyBool>(type)
+	    && marker.enabled;
 
-	auto weight =
-	    marker.prevMainMarkerIdx.get_or_first(lineIndex).weight;
-
-	connected = enabled && Math::FuzzyBool(weight);
-
-	if (weight > 0.0) {
-		const auto *prev =
-		    getPrev(marker, ctx.plot->getMarkers(), lineIndex);
-		if (prev) {
-			labelEnabled =
-			    enabled && (marker.enabled || prev->enabled);
-			connected =
-			    connected && (prev->enabled || marker.enabled);
-			if (marker.polarConnection.get_or_first(lineIndex)
-			        .value) {
-				linear = linear || polar.more();
-				connected = connected && polar.more() && horizontal;
-				enabled = enabled && polar && horizontal;
-			}
-			if (isArea) enabled = enabled && connected;
+	if (prev) {
+		enabled = labelEnabled && prev->enabled;
+		connected =
+		    enabled
+		    && Math::FuzzyBool{
+		        marker.prevMainMarker.get_or_first(lineIndex).weight};
+		if (auto &&pc =
+		        marker.polarConnection.get_or_first(lineIndex);
+		    pc.value) {
+			auto &&newPolar =
+			    (polar && Math::FuzzyBool{pc.weight}).more();
+			linear = linear || polar.more()
+			      || Math::FuzzyBool{pc.weight}.more();
+			connected = connected && newPolar && horizontal;
+			enabled = enabled && newPolar && horizontal;
 		}
-		else {
-			enabled = false;
-			connected = false;
-		}
+	}
+	else {
+		enabled = false;
+		connected = false;
 	}
 
 	auto spacing = marker.spacing * marker.size / 2;
@@ -80,17 +78,17 @@ ConnectingMarker::ConnectingMarker(const DrawingContext &ctx,
 		                  ? marker.size.yComp() * horizontalFactor
 		                  : marker.size.xComp() * horizontalFactor);
 
-		const auto *prev =
-		    getPrev(marker, ctx.plot->getMarkers(), lineIndex);
-
 		if (prev) {
 			auto prevSpacing = prev->spacing * prev->size / 2;
 			auto prevPos = prev->position;
 
-			if (polar != false) {
-				if (horizontal.more() != false) {
-					if (prevPos.x >= 1) prevPos.x -= 1;
-				}
+			if (polar != false
+			    && ctx.getOptions()
+			               .orientation.get_or_first(lineIndex)
+			               .value
+			           == Gen::Orientation::horizontal
+			    && prev != &marker && prevPos.x >= 1) {
+				prevPos.x -= 1;
 			}
 
 			points[3] = prevPos - prevSpacing;
@@ -129,8 +127,10 @@ const Gen::Marker *ConnectingMarker::getPrev(
     ::Anim::InterpolateIndex lineIndex)
 {
 	const auto &prevId =
-	    marker.prevMainMarkerIdx.get_or_first(lineIndex);
-	return (prevId.weight > 0.0) ? &markers[prevId.value] : nullptr;
+	    marker.prevMainMarker.get_or_first(lineIndex);
+	return prevId.value.idx != ~Gen::Marker::MarkerIndex{}
+	         ? &markers[prevId.value.pos]
+	         : nullptr;
 }
 
 }

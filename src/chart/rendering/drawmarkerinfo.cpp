@@ -73,7 +73,7 @@ void DrawMarkerInfo::MarkerDC::interpolate(double weight1,
 void DrawMarkerInfo::MarkerDC::loadMarker(Content &cnt)
 {
 	const auto &marker =
-	    parent.plot->getMarkers()[cnt.markerId.value()];
+	    parent.plot->getMarkers()[cnt.markerId.value().pos];
 
 	auto blendedMarker =
 	    Draw::AbstractMarker::createInterpolated(parent.ctx(),

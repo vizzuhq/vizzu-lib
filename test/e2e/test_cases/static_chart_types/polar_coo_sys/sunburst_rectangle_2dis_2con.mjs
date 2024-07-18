@@ -6,8 +6,11 @@ const testSteps = [
 			data,
 			config: {
 				channels: {
-					x: ['Joy factors/Country', 'Value 2 (+)'],
-					y: ['Type', 'index'],
+					x: {
+						set: ['Joy factors/Country', 'Value 2 (+)'],
+						range: { min: '0%', max: '100%' }
+					},
+					y: ['Type'],
 					label: 'Joy factors/Country',
 					color: 'Joy factors/Country',
 					lightness: 'Value 5 (+/-)'
@@ -19,6 +22,7 @@ const testSteps = [
 			style: {
 				plot: {
 					marker: {
+						rectangleSpacing: 0,
 						label: {
 							orientation: 'tangential',
 							angle: 3.14 * -0.5

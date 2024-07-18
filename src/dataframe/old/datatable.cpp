@@ -34,52 +34,12 @@ void DataTable::addColumn(std::string_view name,
 	    {});
 }
 
-void DataTable::pushRow(const std::span<const char *> &cells)
+void DataTable::pushRow(const std::span<const char *const> &cells)
 {
 	df.add_record(cells);
 }
 
 std::string DataTable::getInfos() const { return df.as_string(); }
-
-bool SeriesIndex::isDimension() const { return !aggr; }
-
-const std::string_view &SeriesIndex::getColIndex() const
-{
-	return sid;
-}
-
-bool SeriesIndex::operator==(const SeriesIndex &rhs) const
-{
-	return sid == rhs.sid && aggr == rhs.aggr;
-}
-
-bool SeriesIndex::operator<(const SeriesIndex &rhs) const
-{
-	return sid < rhs.sid || (sid == rhs.sid && aggr < rhs.aggr);
-}
-
-bool operator<(const std::string_view &dim, const SeriesIndex &rhs)
-{
-	return dim < rhs.getColIndex() || !rhs.isDimension();
-}
-
-bool operator<(const SeriesIndex &lhs, const std::string_view &dim)
-{
-	return lhs.getColIndex() < dim && lhs.isDimension();
-}
-
-bool SliceIndex::operator<(SliceIndex const &rhs) const
-{
-	return column < rhs.column
-	    || (column == rhs.column && value < rhs.value);
-}
-
-bool MultiIndex::isEmpty() const { return !rid; }
-
-bool MarkerId::operator==(const MarkerId &id) const
-{
-	return itemId == id.itemId && seriesId == id.seriesId;
-}
 
 bool DataCube::iterator_t::operator!=(const iterator_t &oth) const
 {
@@ -120,10 +80,8 @@ SeriesIndex::SeriesIndex(std::string const &str,
 
 DataCube::iterator_t DataCube::begin() const
 {
-	if (!has_element) return {};
 	iterator_t res{this,
-	    {},
-	    {{}, std::vector<std::size_t>(dim_reindex.size())}};
+	    {{}, std::vector<std::size_t>(dim_reindex.size()), {}}};
 	check(res);
 	return res;
 }
@@ -132,35 +90,27 @@ DataCube::iterator_t DataCube::end() { return {}; }
 
 void DataCube::check(iterator_t &it) const
 {
-	if (it.index.rid) {
-		++it.rid;
-		it.index.rid.reset();
+	if (it.index.rid == df->get_record_count()) {
+		it.parent = nullptr;
+		return;
 	}
 
-	for (auto &&[dim, cats, size, ix] : dim_reindex) {
-		auto str_view =
-		    std::get<std::string_view>(df->get_data(it.rid, dim));
-		if (auto &&old_ix = it.index.old[ix];
-		    old_ix < cats.size() ? cats[old_ix] != str_view
-		                         : str_view.data() != nullptr)
-			return;
+	it.index.oldAggr = 0;
+	for (auto &&[dim, ocats, cats, size, ix] : dim_reindex) {
+		const auto *str_ptr = std::get<const std::string *>(
+		    df->get_data(it.index.rid, dim));
+
+		it.index.old[ix] =
+		    str_ptr == nullptr ? cats.size() : str_ptr - cats.data();
+		it.index.oldAggr *= size;
+		it.index.oldAggr += it.index.old[ix];
 	}
-	it.index.rid.emplace(it.rid);
 }
 
 void DataCube::incr(iterator_t &it) const
 {
-	auto rfirst = dim_reindex.rbegin();
-	const auto rlast = Type::UniqueList<DimensionInfo>::rend();
-	while (rfirst != rlast)
-		if (auto &ref = it.index.old[rfirst->ix];
-		    ++ref >= rfirst++->size)
-			ref = 0;
-		else {
-			check(it);
-			return;
-		}
-	it.parent = nullptr;
+	++it.index.rid;
+	check(it);
 }
 
 DataCube::DataCube(const DataTable &table,
@@ -201,14 +151,14 @@ DataCube::DataCube(const DataTable &table,
 	}
 
 	df->finalize();
-	has_element = true;
 	for (std::size_t ix{}; const auto &dim : dimensions) {
 		auto &&dimName = dim.getColIndex();
 		auto &&cats = table.getDf().get_categories(dimName);
-		auto &&size = cats.size() + df->has_na(dimName);
-		dim_reindex.push_back(
-		    DimensionInfo{dimName, cats, size, ix++});
-		has_element &= size > 0;
+		dim_reindex.push_back(DimensionInfo{dimName,
+		    cats,
+		    df->get_categories(dimName),
+		    cats.size() + df->has_na(dimName),
+		    ix++});
 	}
 
 	auto stackInhibitingShape =
@@ -294,13 +244,13 @@ MarkerId DataCube::getId(
 	std::vector<std::pair<std::size_t, std::size_t>> v(sl.size());
 
 	for (auto &&[val, comm] : dim_reindex.iterate_common(sl)) {
-		auto &&[name, cats, size, ix] = val;
+		auto &&[name, ocats, cats, size, ix] = val;
 		auto &&oldIx = mi.old[ix];
 		if (comm) {
 			if (v[*comm] = {oldIx, size}; *comm == ll)
 				res.label.emplace(name,
-				    oldIx < cats.size() ? cats[oldIx]
-				                        : std::string_view{});
+				    oldIx < ocats.size() ? ocats[oldIx]
+				                         : std::string_view{});
 		}
 		else
 			res.seriesId = res.seriesId * size + oldIx;
@@ -319,10 +269,11 @@ std::string DataCube::joinDimensionValues(const SeriesList &sl,
 	std::vector<std::string_view> resColl(sl.size());
 	for (auto &&[val, comm] : dim_reindex.iterate_common(sl))
 		if (comm) {
-			auto &&[name, cats, size, ix] = val;
+			auto &&[name, ocats, cats, size, ix] = val;
 			auto &&oldIx = index.old[ix];
-			resColl[*comm] = oldIx < cats.size() ? cats[oldIx]
-			                                     : std::string_view{};
+			resColl[*comm] = oldIx < ocats.size()
+			                   ? ocats[oldIx]
+			                   : std::string_view{};
 		}
 
 	for (auto &&sv : resColl) {
@@ -332,10 +283,8 @@ std::string DataCube::joinDimensionValues(const SeriesList &sl,
 	return res;
 }
 
-std::shared_ptr<const CellInfo> DataCube::cellInfo(
-    const MultiIndex &index,
-    std::size_t markerIndex,
-    bool needMarkerInfo) const
+std::shared_ptr<const CellInfo>
+DataCube::cellInfo(const MultiIndex &index, bool needMarkerInfo) const
 {
 	auto my_res = std::make_shared<CellInfo>();
 	if (needMarkerInfo)
@@ -343,12 +292,12 @@ std::shared_ptr<const CellInfo> DataCube::cellInfo(
 		    dim_reindex.size() + df->get_measures().size());
 
 	Conv::JSONObj obj{my_res->json};
-	obj("index", markerIndex);
+	obj("index", index.oldAggr);
 	for (Conv::JSONObj &&dims{obj.nested("categories")};
-	     auto &&[name, cats, size, ix] : dim_reindex) {
+	     auto &&[name, ocats, cats, size, ix] : dim_reindex) {
 		auto &&cix = index.old[ix];
 		auto &&cat =
-		    cix < cats.size() ? cats[cix] : std::string_view{};
+		    cix < ocats.size() ? ocats[cix] : std::string_view{};
 		dims.key<false>(name).primitive(cat);
 		if (needMarkerInfo)
 			my_res->markerInfo.emplace_back(name, cat);
@@ -356,7 +305,7 @@ std::shared_ptr<const CellInfo> DataCube::cellInfo(
 
 	for (Conv::JSONObj &&vals{obj.nested("values")};
 	     auto &&meas : df->get_measures()) {
-		auto val = std::get<double>(df->get_data(*index.rid, meas));
+		auto val = std::get<double>(df->get_data(index.rid, meas));
 		vals.key<false>(meas).primitive(val);
 		if (needMarkerInfo) {
 			thread_local auto conv =
@@ -370,11 +319,8 @@ std::shared_ptr<const CellInfo> DataCube::cellInfo(
 double DataCube::valueAt(const MultiIndex &multiIndex,
     const SeriesIndex &seriesId) const
 {
-	if (multiIndex.rid)
-		return std::get<double>(
-		    df->get_data(*multiIndex.rid, getName(seriesId)));
-
-	return {};
+	return std::get<double>(
+	    df->get_data(multiIndex.rid, getName(seriesId)));
 }
 
 double DataCube::aggregateAt(const MultiIndex &multiIndex,
@@ -385,34 +331,11 @@ double DataCube::aggregateAt(const MultiIndex &multiIndex,
 	if (it == cacheImpl.end()) return valueAt(multiIndex, seriesId);
 
 	auto &sub_df = *it->second;
-	const auto &name = getName(seriesId);
 
-	if (multiIndex.rid) {
-		auto &&rrid = df->get_record_id_by_dims(*multiIndex.rid,
-		    sub_df.get_dimensions());
-		return std::get<double>(sub_df.get_data(rrid, name));
-	}
-
-	// hack for sunburst.
-	std::map<std::string_view, std::size_t> index;
-
-	for (auto &&[dim, cats, size, ix] : dim_reindex)
-		index.emplace(dim, multiIndex.old[ix]);
-
-	std::string res;
-	for (auto iit = index.begin();
-	     auto &&dim : sub_df.get_dimensions()) {
-		while (iit->first != dim) ++iit;
-
-		auto &&cats = df->get_categories(dim);
-		res += dim;
-		res += ':';
-		res += iit->second == cats.size() ? "__null__"
-		                                  : cats[iit->second];
-		res += ';';
-	}
-	auto nanres = std::get<double>(sub_df.get_data(res, name));
-	return std::isnan(nanres) ? double{} : nanres;
+	return std::get<double>(
+	    sub_df.get_data(df->get_record_id_by_dims(multiIndex.rid,
+	                        sub_df.get_dimensions()),
+	        getName(seriesId)));
 }
 
 } // namespace Vizzu::Data

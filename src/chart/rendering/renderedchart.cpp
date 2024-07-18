@@ -50,19 +50,16 @@ bool Marker::bounds(const CoordinateSystem &coordSys,
 		    switch (shapeType) {
 		    case Gen::ShapeType::rectangle:
 		    case Gen::ShapeType::area:
-			    return Math::FuzzyBool{
-			        Geom::ConvexQuad(points).contains(point, 0.01)};
+			    return Geom::ConvexQuad(points).contains(point, 0.01);
 		    case Gen::ShapeType::circle:
-			    return Math::FuzzyBool{
-			        Geom::Circle(Geom::Rect::Boundary(points),
-			            Geom::Circle::FromRect::sameWidth)
-			            .overlaps(Geom::Circle(point, 0.01), 0.1)};
+			    return Geom::Circle(Geom::Rect::Boundary(points),
+			        Geom::Circle::FromRect::sameWidth)
+			        .overlaps(Geom::Circle(point, 0.01), 0.1);
 		    case Gen::ShapeType::line:
-			    return Math::FuzzyBool{
-			        lineToQuad(coordSys, 10.0)
-			            .contains(coordSys.convert(point), 0.1)};
+			    return lineToQuad(coordSys, 10.0)
+			        .contains(coordSys.convert(point), 0.1);
 		    }
-		    return Math::FuzzyBool{false};
+		    return false;
 	    });
 
 	return isInside != false;

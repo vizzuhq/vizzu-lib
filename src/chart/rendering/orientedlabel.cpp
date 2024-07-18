@@ -18,7 +18,7 @@ void OrientedLabel::draw(Gfx::ICanvas &canvas,
 	auto baseAngle = labelPos.getDirection().angle() + M_PI / 2.0;
 
 	auto absAngle =
-	    labelStyle.orientation->combine<double>(
+	    labelStyle.orientation->combine(
 	        [&labelPos](const auto &orientation)
 	        {
 		        using enum Styles::OrientedLabel::Orientation;

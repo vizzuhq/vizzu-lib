@@ -104,7 +104,7 @@ public:
 	    const double *values,
 	    std::uint32_t count);
 	void addRecord(ObjectRegistryHandle chart,
-	    const char **cells,
+	    const char *const *cells,
 	    std::uint32_t count);
 	const char *dataMetaInfo(ObjectRegistryHandle chart);
 	void addEventListener(ObjectRegistryHandle chart,
@@ -125,7 +125,7 @@ public:
 	    const char *path,
 	    const char *value);
 
-	static std::variant<double, std::string_view> getRecordValue(
+	static std::variant<double, const std::string *> getRecordValue(
 	    const Data::RowWrapper &record,
 	    const char *column);
 

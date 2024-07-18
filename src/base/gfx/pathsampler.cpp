@@ -27,7 +27,7 @@ void PathSampler::path(const Geom::Point &pConv0,
 	auto i = (i0 + i1) / 2.0;
 	auto pConv = getPoint(i);
 
-	const Geom::Triangle triangle(pConv0, pConv, pConv1);
+	const Geom::Triangle triangle{{pConv0, pConv, pConv1}};
 	auto area = triangle.area();
 	auto height = 2 * area / (pConv1 - pConv0).abs();
 

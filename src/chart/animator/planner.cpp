@@ -84,7 +84,9 @@ void Planner::createPlan(const Gen::Plot &source,
 		}
 
 		addMorph(SectionId::connection,
-		    getDuration() - getBaseline());
+		    getDuration() == getBaseline()
+		        ? step
+		        : getDuration() - getBaseline());
 
 		if (animNeeded[SectionId::style])
 			Morph::StyleMorphFactory(source.getStyle(),
@@ -287,15 +289,15 @@ void Planner::calcNeeded()
 	animNeeded[SectionId::x] = needHorizontal();
 
 	animNeeded[SectionId::connection] =
-	    anyMarker(+[](const Gen::Marker &source,
-	                   const Gen::Marker &target) -> bool
-	        {
-		        return source.prevMainMarkerIdx
-		                != target.prevMainMarkerIdx
-		            || source.polarConnection
-		                   != target.polarConnection;
-	        })
-	    || srcOpt->isHorizontal() != trgOpt->isHorizontal();
+	    (isConnecting(srcOpt->geometry.get())
+	        || isConnecting(trgOpt->geometry.get()))
+	    && (anyMarker(+[](const Gen::Marker &source,
+	                       const Gen::Marker &target) -> bool
+	            {
+		            return source.prevMainMarker
+		                != target.prevMainMarker;
+	            })
+	        || srcOpt->isHorizontal() != trgOpt->isHorizontal());
 }
 
 bool Planner::anyMarker(

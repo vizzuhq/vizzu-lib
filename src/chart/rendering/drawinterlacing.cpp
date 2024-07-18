@@ -316,7 +316,7 @@ void DrawInterlacing::drawSticks(double tickIntensity,
 		canvas.setLineWidth(*tickStyle.lineWidth);
 
 	typedef Styles::Tick::Position Pos;
-	tickLine = tickStyle.position->combine<Geom::Line>(
+	tickLine = tickStyle.position->combine(
 	    [&tickLine](const auto &position)
 	    {
 		    switch (position) {

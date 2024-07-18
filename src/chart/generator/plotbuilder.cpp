@@ -3,6 +3,7 @@
 #include <chart/speclayout/bubblechartbuilder.h>
 #include <chart/speclayout/tablechart.h>
 #include <chart/speclayout/treemap.h>
+#include <numeric>
 
 #include "plot.h"
 
@@ -66,16 +67,15 @@ Buckets PlotBuilder::generateMarkers(std::size_t &mainBucketSize)
 {
 	Buckets mainBuckets;
 	Buckets subBuckets;
-	if (!dataCube.empty()) {
-		mainBuckets.resize(dataCube.combinedSizeOf(
-		    plot->getOptions()->mainAxis().dimensions()));
-		mainBucketSize = mainBuckets.size();
 
-		Data::SeriesList subIds(
-		    plot->getOptions()->subAxis().dimensions());
+	const auto &mainIds(plot->getOptions()->mainAxis().dimensions());
+	auto subIds(plot->getOptions()->subAxis().dimensions());
+	if (!dataCube.empty()) {
 		if (plot->getOptions()->geometry == ShapeType::area)
-			subIds.split_by(
-			    plot->getOptions()->mainAxis().dimensions());
+			subIds.split_by(mainIds);
+
+		mainBuckets.resize(dataCube.combinedSizeOf(mainIds));
+		mainBucketSize = mainBuckets.size();
 		subBuckets.resize(dataCube.combinedSizeOf(subIds));
 
 		plot->markers.reserve(dataCube.combinedSizeOf({}).first);
@@ -87,14 +87,16 @@ Buckets PlotBuilder::generateMarkers(std::size_t &mainBucketSize)
 
 	for (auto first = map.begin(), last = map.end();
 	     auto &&index : dataCube) {
-		auto &&markerId = plot->markers.size();
+		auto &&markerId = index.oldAggr;
 		auto needInfo = first != last && first->first == markerId;
 
 		auto &marker = plot->markers.emplace_back(*plot->getOptions(),
 		    dataCube,
 		    plot->axises,
+		    mainIds,
+		    subIds,
 		    index,
-		    markerId,
+		    plot->markers.size(),
 		    needInfo);
 
 		mainBuckets[marker.mainId.seriesId][marker.mainId.itemId] =
@@ -108,8 +110,6 @@ Buckets PlotBuilder::generateMarkers(std::size_t &mainBucketSize)
 			needInfo = first != last && first->first == markerId;
 		}
 	}
-	clearEmptyBuckets(mainBuckets, true);
-	clearEmptyBuckets(subBuckets, false);
 	auto &&hasMarkerConnection = linkMarkers(mainBuckets, true);
 	[[maybe_unused]] auto &&_ = linkMarkers(subBuckets, false);
 
@@ -129,30 +129,31 @@ Buckets PlotBuilder::generateMarkers(std::size_t &mainBucketSize)
 	return subBuckets;
 }
 
-std::vector<std::pair<double, std::size_t>>
+std::vector<PlotBuilder::BucketInfo>
 PlotBuilder::sortedBuckets(const Buckets &buckets, bool main) const
 {
-	std::vector<std::pair<double, std::size_t>> sorted(
-	    buckets.inner_size());
+	std::vector<BucketInfo> sorted(buckets.inner_size());
 
 	for (auto &&bucket : buckets)
 		for (std::size_t ix{}; auto &&marker : bucket) {
-			auto &[s, f] = sorted[ix];
+			auto &[f, s, has] = sorted[ix];
 			f = ix++;
+			if (!marker || static_cast<bool>(!marker->enabled))
+				continue;
 			s += marker->size.getCoord(
 			    !plot->getOptions()->isHorizontal());
+			has = true;
 		}
 
 	if (main && plot->getOptions()->sort == Sort::byValue)
 		std::sort(sorted.begin(),
 		    sorted.end(),
-		    [](const std::pair<double, std::size_t> &lhs,
-		        const std::pair<double, std::size_t> &rhs)
+		    [](const BucketInfo &lhs, const BucketInfo &rhs)
 		    {
-			    if (auto ord = std::weak_order(lhs.first, rhs.first);
+			    if (auto ord = std::weak_order(lhs.size, rhs.size);
 			        !std::is_eq(ord))
 				    return std::is_lt(ord);
-			    return lhs.second < rhs.second;
+			    return lhs.index < rhs.index;
 		    });
 
 	if (main && plot->getOptions()->reverse)
@@ -161,25 +162,12 @@ PlotBuilder::sortedBuckets(const Buckets &buckets, bool main) const
 	return sorted;
 }
 
-void PlotBuilder::clearEmptyBuckets(const Buckets &buckets,
-    bool main) const
-{
-	for (auto &&bucket : buckets)
-		if (!std::any_of(bucket.begin(),
-		        bucket.end(),
-		        std::mem_fn(&Marker::enabled)))
-			for (auto &&marker : bucket)
-				marker->resetSize(
-				    plot->getOptions()->isHorizontal() == !main);
-}
-
 void PlotBuilder::addSpecLayout(Buckets &buckets)
 {
 	auto geometry = plot->getOptions()
 	                    ->geometry.get_or_first(::Anim::first)
 	                    .value;
-	if (auto &markers = plot->markers;
-	    geometry == ShapeType::line || geometry == ShapeType::area) {
+	if (auto &markers = plot->markers; isConnecting(geometry)) {
 		Charts::TableChart::setupVector(markers, true);
 	}
 	else if (auto &&size = plot->getOptions()->getChannels().at(
@@ -188,11 +176,13 @@ void PlotBuilder::addSpecLayout(Buckets &buckets)
 		Charts::TableChart::setupVector(markers);
 	}
 	else if (!dataCube.empty()) {
+		buckets.clear();
 		buckets.resize(dataCube.combinedSizeOf(size.dimensions()));
 
 		for (auto &marker : markers)
-			buckets[marker.sizeId.seriesId][marker.sizeId.itemId] =
-			    &marker;
+			if (marker.enabled)
+				buckets[marker.sizeId.seriesId]
+				       [marker.sizeId.itemId] = &marker;
 
 		if (geometry == ShapeType::circle) {
 			Charts::BubbleChartBuilder::setupVector(
@@ -214,22 +204,83 @@ Math::Range<double> &PlotBuilder::getMeasTrackRange(
 
 bool PlotBuilder::linkMarkers(const Buckets &buckets, bool main) const
 {
-	bool hasConnection{};
-	for (auto &&sorted = sortedBuckets(buckets, main);
-	     const auto &bucket : buckets)
-		for (auto i = 0U; i < sorted.size(); ++i) {
-			auto idAct = sorted[i].second;
-			auto &act = *bucket[idAct];
-			auto iNext = (i + 1) % sorted.size();
-			auto idNext = sorted[iNext].second;
-			auto &next = *bucket[idNext];
-			act.setNextMarker(iNext == 0,
-			    next,
-			    plot->getOptions()->isHorizontal() == main,
-			    main);
-			if (act.enabled && next.enabled && idAct != idNext)
-				hasConnection = true;
+	auto &&sorted = sortedBuckets(buckets, main);
+	std::erase_if(sorted,
+	    std::not_fn(std::mem_fn(&BucketInfo::hasElement)));
+
+	std::vector dimOffset(sorted.size(),
+	    std::numeric_limits<double>::lowest());
+
+	auto channelId = main ? plot->getOptions()->mainAxisType()
+	                      : plot->getOptions()->subAxisType();
+	auto subChannelId = main ? plot->getOptions()->subAxisType()
+	                         : plot->getOptions()->mainAxisType();
+	auto &&axis = plot->getOptions()->getChannels().at(channelId);
+	auto &&subAxis =
+	    plot->getOptions()->getChannels().at(subChannelId);
+
+	auto horizontal = plot->getOptions()->isHorizontal();
+	double Geom::Point::*const coord =
+	    horizontal == main ? &Geom::Point::x : &Geom::Point::y;
+
+	auto isAggregatable = axis.isDimension()
+	                   || (main && subAxis.isMeasure()
+	                       && plot->getOptions()->geometry.get()
+	                              == ShapeType::rectangle);
+
+	if (isAggregatable) {
+		double pre_neg{};
+		double pre_pos{};
+		for (std::size_t ix{}, max = sorted.size(); ix < max; ++ix) {
+			auto &o = dimOffset[ix];
+			for (const auto &bucket : buckets) {
+				auto *marker = bucket[sorted[ix].index];
+				if (!marker || static_cast<bool>(!marker->enabled))
+					continue;
+				o = std::max(o, marker->size.*coord);
+			}
+			if (o == std::numeric_limits<double>::lowest()) o = 0.0;
+
+			if (o < 0)
+				std::swap(o += pre_neg, pre_neg);
+			else
+				std::swap(o += pre_pos, pre_pos);
 		}
+	}
+
+	bool hasConnection{};
+
+	auto polar =
+	    plot->getOptions()->coordSystem.get() == CoordSystem::polar;
+	auto connecting =
+	    isConnecting(plot->getOptions()->geometry.get());
+
+	auto needPolarConnection =
+	    polar && connecting && main && horizontal;
+
+	for (const auto &bucket : buckets) {
+		double prevPos{};
+		for (auto i = 0U; i < sorted.size(); ++i) {
+			auto idAct = sorted[i].index;
+			auto *act = bucket[idAct];
+
+			auto iNext = (i + 1) % sorted.size();
+			auto idNext = sorted[iNext].index;
+
+			auto *next = bucket[idNext];
+
+			if (act)
+				prevPos = act->position.*coord +=
+				    isAggregatable ? dimOffset[i] : prevPos;
+
+			hasConnection |=
+			    Marker::connectMarkers(iNext == 0 && act != next,
+			        act,
+			        next,
+			        main,
+			        needPolarConnection);
+		}
+	}
 	return hasConnection;
 }
 
@@ -390,13 +441,15 @@ void PlotBuilder::addAlignment(const Buckets &subBuckets) const
 		Math::Range<double> range;
 
 		for (auto &&marker : bucket)
-			range.include(marker->getSizeBy(vectical));
+			if (marker && static_cast<bool>(marker->enabled))
+				range.include(marker->getSizeBy(vectical));
 
 		auto &&transform = align.getAligned(range) / range;
 
 		for (auto &&marker : bucket)
-			marker->setSizeBy(vectical,
-			    marker->getSizeBy(vectical) * transform);
+			if (marker)
+				marker->setSizeBy(vectical,
+				    marker->getSizeBy(vectical) * transform);
 	}
 }
 
@@ -416,7 +469,7 @@ void PlotBuilder::addSeparation(const Buckets &subBuckets,
 		auto &&vertical = !plot->getOptions()->isHorizontal();
 		for (auto &&bucket : subBuckets)
 			for (auto i = 0U; auto &&marker : bucket) {
-				if (marker->enabled) {
+				if (marker && static_cast<bool>(marker->enabled)) {
 					ranges[i].include(
 					    marker->getSizeBy(vertical).size());
 					anyEnabled[i] = true;
@@ -433,10 +486,13 @@ void PlotBuilder::addSeparation(const Buckets &subBuckets,
 			          + (anyEnabled[i - 1] ? max.getMax() / 15 : 0);
 
 		for (auto &&bucket : subBuckets)
-			for (auto i = 0U; auto &&marker : bucket)
-				marker->setSizeBy(vertical,
-				    Base::Align{align, ranges[(i %= ranges.size())++]}
-				        .getAligned(marker->getSizeBy(vertical)));
+			for (auto i = 0U; auto &&marker : bucket) {
+				if (marker)
+					marker->setSizeBy(vertical,
+					    Base::Align{align, ranges[i]}.getAligned(
+					        marker->getSizeBy(vertical)));
+				++i %= ranges.size();
+			}
 	}
 }
 

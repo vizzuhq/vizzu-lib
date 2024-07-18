@@ -41,11 +41,11 @@ template <typename Hierarchy>
 void TreeMapBuilder::setupVector(const Hierarchy &hierarchy)
 {
 	SizeDependentLayout::setupVector(hierarchy,
-	    [](auto *item, const SpecMarker &marker)
+	    [](auto &item, const SpecMarker &marker)
 	    {
 		    auto &&[spos, ssize] = marker.rect().positive();
-		    item->position = spos + ssize;
-		    item->size = ssize;
+		    item.position = spos + ssize;
+		    item.size = ssize;
 	    });
 }
 

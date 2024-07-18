@@ -13,11 +13,6 @@ class Triangle
 public:
 	std::array<Point, 3> points;
 
-	explicit Triangle(const std::array<Point, 3> &points) :
-	    points(points)
-	{}
-	Triangle(const Point &p0, const Point &p1, const Point &p2);
-
 	[[nodiscard]] double area() const;
 };
 

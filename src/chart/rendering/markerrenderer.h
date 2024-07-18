@@ -20,8 +20,8 @@ public:
 	std::vector<AbstractMarker> markers;
 
 private:
-	[[nodiscard]] bool shouldDrawMarkerBody(
-	    const Gen::Marker &marker) const;
+	[[nodiscard]] static bool shouldDrawMarkerBody(
+	    const Gen::Marker &marker);
 	[[nodiscard]] std::pair<Gfx::Color, Gfx::Color> getColor(
 	    const AbstractMarker &abstractMarker,
 	    double factor,

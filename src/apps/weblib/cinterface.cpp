@@ -264,9 +264,11 @@ const Value *record_getValue(const Vizzu::Data::RowWrapper *record,
 {
 	thread_local Value val{{}, {}};
 	if (auto &&cval = Interface::getRecordValue(*record, column);
-	    (val.dimension = cval.index()))
-		new (&val.dimensionValue) const char *{
-		    std::get_if<std::string_view>(&cval)->data()};
+	    (val.dimension = cval.index())) {
+		auto &&dim = *std::get_if<const std::string *>(&cval);
+		new (&val.dimensionValue)
+		    const char *{dim ? dim->c_str() : nullptr};
+	}
 	else
 		new (&val.measureValue) double{*std::get_if<double>(&cval)};
 	return &val;
@@ -301,7 +303,7 @@ void data_addMeasure(APIHandles::Chart chart,
 }
 
 void data_addRecord(APIHandles::Chart chart,
-    const char **cells,
+    const char *const *cells,
     std::uint32_t count)
 {
 	return Interface::getInstance().addRecord(chart, cells, count);

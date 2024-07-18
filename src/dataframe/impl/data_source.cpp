@@ -206,15 +206,14 @@ std::size_t data_source::change_record_identifier_type(
 	return it != finalized.end() ? it->second : ~std::size_t{};
 }
 
-cell_value data_source::get_data(std::size_t record_id,
+cell_reference data_source::get_data(std::size_t record_id,
     const std::string_view &column) const
 {
 	switch (auto &&series = get_series(column)) {
 		using enum series_type;
 	case dimension: {
 		const auto &dims = unsafe_get<dimension>(series).second;
-		if (record_id >= dims.values.size())
-			return std::string_view{};
+		if (record_id >= dims.values.size()) return nullptr;
 		return dims.get(record_id);
 	}
 	case measure: {
@@ -454,7 +453,7 @@ data_source::data_source(aggregating_type &&aggregating,
 
 		for (std::size_t ix{}; const auto &[name, mea] : meas) {
 			const auto &[data, agg] = mea;
-			cell_value val{};
+			cell_reference val{};
 			switch (data) {
 				using enum series_type;
 			case measure:
@@ -502,10 +501,10 @@ std::string data_source::get_id(std::size_t record,
 	std::string res;
 	for (std::size_t ix{}; const auto &name : series) {
 		while (dimension_names[ix] != name) ++ix;
-		auto val = dimensions[ix].get(record);
+		const auto *val = dimensions[ix].get(record);
 		res += name;
 		res += ':';
-		res += val.data() == nullptr ? "__null__" : val;
+		res += val == nullptr ? std::string_view{"__null__"} : *val;
 		res += ';';
 	}
 	return res;
@@ -589,7 +588,9 @@ void data_source::dimension_t::add_more_data(
 {
 	std::vector<std::uint32_t> remap(new_categories.size());
 	for (auto i = std::size_t{}; i < remap.size(); ++i) {
-		remap[i] = get_or_set_cat(new_categories[i]);
+		remap[i] =
+		    get_or_set_cat(new_categories[i] ? new_categories[i]
+		                                     : std::string_view{});
 	}
 
 	for (const auto val : new_values) values.emplace_back(remap[val]);
@@ -598,18 +599,18 @@ void data_source::dimension_t::add_more_data(
 		contains_nav =
 		    std::any_of(new_values.begin(), new_values.end(), is_nav);
 }
-std::string_view data_source::dimension_t::get(
+const std::string *data_source::dimension_t::get(
     std::size_t index) const
 {
-	return values[index] == nav ? std::string_view{}
-	                            : categories[values[index]];
+	return values[index] == nav
+	         ? nullptr
+	         : std::addressof(categories[values[index]]);
 }
 
 void data_source::dimension_t::set(std::size_t index,
-    std::string_view value)
+    const std::string_view &value)
 {
-	values[index] =
-	    value.data() != nullptr ? get_or_set_cat(value) : nav;
+	values[index] = get_or_set_cat(value);
 }
 void data_source::dimension_t::set_nav(std::string_view value,
     std::size_t to_size)

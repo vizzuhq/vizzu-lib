@@ -33,7 +33,7 @@ public:
 	    const std::span<const char *const> &categories,
 	    const std::span<const std::uint32_t> &values);
 
-	void pushRow(const std::span<const char *> &cells);
+	void pushRow(const std::span<const char *const> &cells);
 
 	[[nodiscard]] std::string_view getUnit(
 	    std::string_view const &colIx) const;
@@ -62,6 +62,7 @@ public:
 	struct DimensionInfo
 	{
 		std::string_view name;
+		std::span<const std::string> orig_categories;
 		std::span<const std::string> categories;
 		std::size_t size{};
 		std::size_t ix{};
@@ -84,7 +85,6 @@ public:
 		}
 	};
 	Type::UniqueList<DimensionInfo> dim_reindex;
-	bool has_element{};
 
 	std::map<Gen::ChannelId,
 	    std::shared_ptr<dataframe::dataframe_interface>>
@@ -97,10 +97,8 @@ public:
 
 	[[nodiscard]] bool empty() const;
 
-	[[nodiscard]] std::shared_ptr<const CellInfo> cellInfo(
-	    const MultiIndex &index,
-	    std::size_t markerIndex,
-	    bool needMarkerInfo) const;
+	[[nodiscard]] std::shared_ptr<const CellInfo>
+	cellInfo(const MultiIndex &index, bool needMarkerInfo) const;
 
 	[[nodiscard]] double aggregateAt(const MultiIndex &multiIndex,
 	    const Gen::ChannelId &channelId,
@@ -127,7 +125,6 @@ private:
 	struct iterator_t
 	{
 		const DataCube *parent{};
-		std::size_t rid{};
 		MultiIndex index;
 
 		[[nodiscard]] bool operator!=(const iterator_t &oth) const;
