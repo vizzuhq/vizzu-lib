@@ -1,12 +1,11 @@
 #ifndef GFX_COLOR
 #define GFX_COLOR
 
-#include <base/math/floating.h>
-#include <cmath>
+#include <algorithm>
 #include <cstdint>
-#include <ctgmath>
 #include <string>
 
+#include "base/math/floating.h"
 #include "base/math/interpolation.h"
 
 namespace Gfx

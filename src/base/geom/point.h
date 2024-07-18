@@ -224,7 +224,7 @@ struct Size : Point
 	[[nodiscard]] double aspectRatio() const
 	{
 		using Math::Floating::is_zero;
-		return is_zero(y) ? x / y : 0;
+		return is_zero(y) ? 0 : x / y;
 	}
 	[[nodiscard]] double minSize() const
 	{

@@ -112,7 +112,7 @@ struct data_source::sorter
 	{
 		using std::strong_order;
 		return std::isnan(lhs) != std::isnan(rhs)
-		         ? na == na_position::last == std::isnan(rhs)
+		         ? (na == na_position::last) == std::isnan(rhs)
 		             ? std::weak_ordering::less
 		             : std::weak_ordering::greater
 		     : sort == sort_type::less ? strong_order(lhs, rhs)

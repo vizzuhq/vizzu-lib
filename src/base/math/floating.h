@@ -52,6 +52,9 @@ constexpr auto inline is_zero = []<std::floating_point F>(F value)
 		    std::bit_cast<typename decltype(v)::value_type>(value);
 		return val + val == 0;
 	}
+	else if constexpr (std::numeric_limits<F>::is_iec559) {
+		return value == F{};
+	}
 	else {
 		return std::is_eq(std::weak_order(F{}, value));
 	}
