@@ -12,8 +12,9 @@ namespace Math::Floating
 
 [[nodiscard]] int orderOfMagnitude(double value, double base = 10);
 
-constexpr auto inline less = []<std::floating_point F>(F a, F b)
+constexpr auto inline less = [](auto a, auto b)
 {
+	static_assert(std::floating_point<decltype(a)>);
 	return std::is_lt(std::strong_order(a, b));
 };
 
@@ -44,10 +45,13 @@ constexpr auto inline can_be_used_as_short_check<F, 8> =
                        + std::bit_cast<std::uint64_t>(F{-0.0})
                    == std::uint64_t{}>{};
 
-constexpr auto inline is_zero = []<std::floating_point F>(F value)
+constexpr auto inline is_zero = [](auto value)
 {
+	using F = decltype(value);
+	static_assert(std::floating_point<F>);
 	if constexpr ([[maybe_unused]] auto v =
-	                  can_be_used_as_short_check<F>) {
+	                  can_be_used_as_short_check<F>;
+	              v()) {
 		const auto val =
 		    std::bit_cast<typename decltype(v)::value_type>(value);
 		return val + val == 0;
