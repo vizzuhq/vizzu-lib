@@ -149,6 +149,13 @@ struct MarkerId
 	{
 		return itemId == id.itemId && seriesId == id.seriesId;
 	}
+
+	[[nodiscard]] auto operator<=>(const MarkerId &id) const
+	{
+		if (auto &&cmp = seriesId <=> id.seriesId; std::is_neq(cmp))
+			return cmp;
+		return itemId <=> id.itemId;
+	}
 };
 }
 
