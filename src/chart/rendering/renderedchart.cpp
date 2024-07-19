@@ -68,6 +68,7 @@ bool Marker::bounds(const CoordinateSystem &coordSys,
 Geom::ConvexQuad Marker::lineToQuad(const CoordinateSystem &coordSys,
     double atLeastWidth) const
 {
+	using Math::Floating::less;
 	auto line = getLine();
 
 	auto pBeg = coordSys.convert(line.begin);
@@ -77,8 +78,8 @@ Geom::ConvexQuad Marker::lineToQuad(const CoordinateSystem &coordSys,
 	auto wEnd = lineWidth[1] * coordSys.getRect().size.minSize();
 	return Geom::ConvexQuad::Isosceles(pBeg,
 	    pEnd,
-	    std::max(atLeastWidth, wBeg * 2),
-	    std::max(atLeastWidth, wEnd * 2));
+	    std::max(atLeastWidth, wBeg * 2, less),
+	    std::max(atLeastWidth, wEnd * 2, less));
 }
 Geom::Line Marker::getLine() const { return {points[3], points[2]}; }
 }

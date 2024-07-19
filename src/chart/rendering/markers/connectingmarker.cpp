@@ -13,6 +13,7 @@ ConnectingMarker::ConnectingMarker(const DrawingContext &ctx,
     Gen::ShapeType type) :
     AbstractMarker(marker, ctx.getOptions())
 {
+	using Math::Floating::less;
 	auto isLine = type == Gen::ShapeType::line;
 	auto isArea = type == Gen::ShapeType::area;
 
@@ -66,7 +67,7 @@ ConnectingMarker::ConnectingMarker(const DrawingContext &ctx,
 		    isLine ? *ctx.rootStyle.plot.marker.lineMaxWidth : 0;
 
 		lineWidth[1] =
-		    std::max(minWidth, maxWidth * marker.sizeFactor);
+		    std::max(minWidth, maxWidth * marker.sizeFactor, less);
 
 		auto horizontalFactor =
 		    isArea ? fabs(2 * static_cast<double>(horizontal) - 1)
@@ -94,7 +95,8 @@ ConnectingMarker::ConnectingMarker(const DrawingContext &ctx,
 			points[3] = prevPos - prevSpacing;
 
 			lineWidth[0] = isLine ? std::max(minWidth,
-			                   maxWidth * prev->sizeFactor)
+			                   maxWidth * prev->sizeFactor,
+			                   less)
 			                      : 0;
 
 			points[0] =

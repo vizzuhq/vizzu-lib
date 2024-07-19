@@ -71,7 +71,7 @@ template <int max> void CircularAngle<max>::sanitize()
 {
 	auto angleInDeg = deg();
 	angleInDeg = fmod(angleInDeg, max);
-	if (angleInDeg < 0) angleInDeg += max;
+	if (std::signbit(angleInDeg)) angleInDeg += max;
 	value = degToRad(angleInDeg);
 }
 

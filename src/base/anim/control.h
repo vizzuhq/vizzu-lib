@@ -31,7 +31,6 @@ public:
 	void seek(const std::string &value);
 	void seekProgress(double value);
 	void seekTime(Duration pos);
-	void setSpeed(double speed);
 	void stop();
 	void cancel();
 

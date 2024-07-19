@@ -6,10 +6,9 @@
 #include <limits>
 #include <stdexcept>
 #include <string>
-#include <tuple>
 
+#include "base/math/floating.h"
 #include "base/math/tolerance.h"
-#include "base/math/trig.h"
 
 namespace Geom
 {
@@ -54,7 +53,7 @@ struct Point
 
 	Point operator/(double divisor) const
 	{
-		if (divisor == 0) return Invalid();
+		if (Math::Floating::is_zero(divisor)) return Invalid();
 		return {x / divisor, y / divisor};
 	}
 
@@ -80,7 +79,8 @@ struct Point
 
 	Point operator/(const Point &other) const
 	{
-		if (other.x == 0 || other.y == 0) return Invalid();
+		using Math::Floating::is_zero;
+		if (is_zero(other.x) || is_zero(other.y)) return Invalid();
 		return {x / other.x, y / other.y};
 	}
 
@@ -104,16 +104,6 @@ struct Point
 		return horizontal ? xComp() : yComp();
 	}
 
-	[[nodiscard]] Point mainComp() const
-	{
-		return fabs(x) >= fabs(y) ? xComp() : yComp();
-	}
-
-	[[nodiscard]] Point subComp() const
-	{
-		return fabs(x) >= fabs(y) ? yComp() : xComp();
-	}
-
 	double &operator[](size_t index)
 	{
 		if (index == 0) return x;
@@ -124,8 +114,9 @@ struct Point
 
 	[[nodiscard]] double abs() const
 	{
-		if (x == 0.0) return fabs(y);
-		if (y == 0.0) return fabs(x);
+		using Math::Floating::is_zero;
+		if (is_zero(x)) return fabs(y);
+		if (is_zero(y)) return fabs(x);
 		return sqrt(x * x + y * y);
 	}
 
@@ -136,15 +127,17 @@ struct Point
 
 	[[nodiscard]] double chebyshev() const
 	{
-		return std::max(::fabs(x), ::fabs(y));
+		return std::max(::fabs(x), ::fabs(y), Math::Floating::less);
 	}
 
 	[[nodiscard]] double sqrAbs() const { return x * x + y * y; }
 
 	[[nodiscard]] double angle() const
 	{
-		if (y == 0) return x >= 0 ? 0.0 : M_PI;
-		if (x == 0) return y >= 0 ? M_PI / 2.0 : -M_PI / 2;
+		using Math::Floating::is_zero;
+		if (is_zero(y)) return std::signbit(x) ? M_PI : 0.0;
+		if (is_zero(x))
+			return std::signbit(y) ? -M_PI / 2.0 : M_PI / 2.0;
 		return atan2f(static_cast<float>(y), static_cast<float>(x));
 	}
 
@@ -155,7 +148,11 @@ struct Point
 		return x == other.x && y == other.y;
 	}
 
-	[[nodiscard]] bool isNull() const { return x == 0 && y == 0; }
+	[[nodiscard]] bool isNull() const
+	{
+		using Math::Floating::is_zero;
+		return is_zero(x) && is_zero(y);
+	}
 
 	[[nodiscard]] bool isValid() const
 	{
@@ -194,34 +191,45 @@ struct Size : Point
 	}
 
 	static Size Identity() { return {1, 1}; }
-	static Size UpperIdentity(double aspectRatio);
-	static Size LowerIdentity(double aspectRatio);
 
 	[[nodiscard]] double area() const { return x * y; }
 
 	[[nodiscard]] bool bounds(const Size &s) const
 	{
-		return s.x <= x && s.y <= y;
+		using Math::Floating::less;
+		return !less(x, s.x) && !less(y, s.y);
 	}
 
 	static Size boundary(const Size &s1, const Size &s2)
 	{
-		return {std::max(s1.x, s2.x), std::max(s1.y, s2.y)};
+		using Math::Floating::less;
+		return {std::max(s1.x, s2.x, less),
+		    std::max(s1.y, s2.y, less)};
 	}
 
 	static Size section(const Size &s1, const Size &s2)
 	{
-		return {std::min(s1.x, s2.x), std::min(s1.y, s2.y)};
+		using Math::Floating::less;
+		return {std::min(s1.x, s2.x, less),
+		    std::min(s1.y, s2.y, less)};
 	}
 
 	[[nodiscard]] bool isSquare(double toleranceFactor = 0.0) const
 	{
-		if (y == 0) return false;
+		using Math::Floating::is_zero;
+		if (is_zero(y)) return false;
 		return Math::AddTolerance(fabs(x / y), toleranceFactor) == 1;
 	}
 
-	[[nodiscard]] double aspectRatio() const { return x / y; }
-	[[nodiscard]] double minSize() const { return std::min(x, y); }
+	[[nodiscard]] double aspectRatio() const
+	{
+		using Math::Floating::is_zero;
+		return is_zero(y) ? 0 : x / y;
+	}
+	[[nodiscard]] double minSize() const
+	{
+		return std::min(x, y, Math::Floating::less);
+	}
 	[[nodiscard]] double diagonal() const { return abs(); }
 	[[nodiscard]] Size rotatedSize(double angle) const;
 
@@ -230,7 +238,7 @@ struct Size : Point
 
 	[[nodiscard]] Size positive() const
 	{
-		return {x >= 0 ? x : 0, y >= 0 ? y : 0};
+		return {std::signbit(x) ? 0 : x, std::signbit(y) ? 0 : y};
 	}
 };
 

@@ -93,7 +93,8 @@ public:
 	[[nodiscard]] Filter operator&&(const Filter &other) const
 	{
 		auto &&[min, max] =
-		    std::minmax({func1.get(), other.func1.get()});
+		    std::minmax({func1.get(), other.func1.get()},
+		        std::less<Fun *>{});
 		auto &&first = min == True ? max : min;
 		return {first, max == first ? True : max};
 	}

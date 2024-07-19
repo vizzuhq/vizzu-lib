@@ -86,11 +86,13 @@ void DrawLegend::drawDimension(const Info &info) const
 		if (itemRect.y().getMax() >= info.contentRect.y().getMax())
 			continue;
 
-		auto alpha = std::min(value.second.weight, info.weight);
+		const auto alpha{Math::FuzzyBool{value.second.weight}
+		                 && Math::FuzzyBool{info.weight}};
 
 		drawMarker(info,
 		    value.second.categoryValue,
-		    colorBuilder.render(value.second.colorBase) * alpha,
+		    colorBuilder.render(value.second.colorBase)
+		        * double{alpha},
 		    getMarkerRect(info, itemRect));
 
 		value.second.label.visit(
@@ -106,7 +108,8 @@ void DrawLegend::drawDimension(const Info &info) const
 			            value.second.categoryValue,
 			            value.second.categoryValue,
 			            info.type),
-			        {.alpha = std::min(alpha, weighted.weight)});
+			        {.alpha = double{
+			             alpha && Math::FuzzyBool{weighted.weight}}});
 		    });
 	}
 }
@@ -116,7 +119,7 @@ Geom::Rect DrawLegend::getItemRect(const Info &info, double index)
 	Geom::Rect res = info.contentRect;
 	res.pos.y += info.titleHeight + index * info.itemHeight;
 	res.size.y = info.itemHeight;
-	if (res.size.x < 0) res.size.x = 0;
+	if (std::signbit(res.size.x)) res.size.x = 0;
 	return res;
 }
 
@@ -134,7 +137,8 @@ Geom::TransformedRect DrawLegend::getLabelRect(const Info &info,
 {
 	Geom::Rect res = itemRect;
 	res.pos.x += info.markerSize;
-	res.size.x = std::max(0.0, res.size.x - info.markerSize);
+	res.size.x -= info.markerSize;
+	if (std::signbit(res.size.x)) res.size.x = 0.0;
 	return Geom::TransformedRect::fromRect(res);
 }
 

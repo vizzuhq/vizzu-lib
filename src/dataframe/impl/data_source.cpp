@@ -110,12 +110,13 @@ struct data_source::sorter
 	[[nodiscard]] static std::weak_ordering
 	cmp_mea(double lhs, double rhs, na_position na, sort_type sort)
 	{
-		using std::weak_order;
-		return std::isnan(lhs) || std::isnan(rhs)
-		         ? na == na_position::last ? weak_order(lhs, rhs)
-		                                   : weak_order(rhs, lhs)
-		     : sort == sort_type::less ? weak_order(lhs, rhs)
-		                               : weak_order(rhs, lhs);
+		using std::strong_order;
+		return std::isnan(lhs) != std::isnan(rhs)
+		         ? (na == na_position::last) == std::isnan(rhs)
+		             ? std::weak_ordering::less
+		             : std::weak_ordering::greater
+		     : sort == sort_type::less ? strong_order(lhs, rhs)
+		                               : strong_order(rhs, lhs);
 	}
 
 	[[nodiscard]] static std::weak_ordering

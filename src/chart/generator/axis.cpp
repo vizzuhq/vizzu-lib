@@ -99,7 +99,7 @@ bool DimensionAxis::operator==(const DimensionAxis &other) const
 bool DimensionAxis::setLabels(double step)
 {
 	bool hasLabel{};
-	step = std::max(step, 1.0);
+	step = std::max(step, 1.0, Math::Floating::less);
 	double currStep = 0.0;
 
 	std::multimap<double, Values::pointer> reorder;

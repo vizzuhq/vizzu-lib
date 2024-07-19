@@ -1,20 +1,65 @@
 #ifndef MATH_FLOATING
 #define MATH_FLOATING
 
-namespace Math
+#include <bit>
+#include <compare>
+#include <concepts>
+#include <cstdint>
+#include <limits>
+
+namespace Math::Floating
 {
 
-class Floating
+[[nodiscard]] int orderOfMagnitude(double value, double base = 10);
+
+constexpr auto inline less = [](auto a, auto b)
 {
-public:
-	explicit Floating(double value) : value(value) {}
+	static_assert(std::floating_point<decltype(a)>);
+	return std::is_lt(std::strong_order(a, b));
+};
 
-	[[nodiscard]] int orderOfMagnitude(double base = 10) const;
-	[[nodiscard]] bool isInteger() const;
-	[[nodiscard]] double sign() const;
+template <std::floating_point F,
+    std::size_t v =
+        std::numeric_limits<F>::is_iec559
+                        &&std::numeric_limits<F>::radix
+                    == 2
+                && std::numeric_limits<unsigned char>::digits == 8
+            ? sizeof(F)
+            : std::size_t{}>
+constexpr auto inline can_be_used_as_short_check =
+    std::bool_constant<false>{};
 
-private:
-	double value;
+template <std::floating_point F>
+constexpr auto inline can_be_used_as_short_check<F, 4> =
+    std::integral_constant<std::uint32_t,
+        std::bit_cast<std::uint32_t>(F{0.0}) == std::uint32_t{}
+            && std::bit_cast<std::uint32_t>(F{-0.0})
+                       + std::bit_cast<std::uint32_t>(F{-0.0})
+                   == std::uint32_t{}>{};
+
+template <std::floating_point F>
+constexpr auto inline can_be_used_as_short_check<F, 8> =
+    std::integral_constant<std::uint64_t,
+        std::bit_cast<std::uint64_t>(F{0.0}) == std::uint64_t{}
+            && std::bit_cast<std::uint64_t>(F{-0.0})
+                       + std::bit_cast<std::uint64_t>(F{-0.0})
+                   == std::uint64_t{}>{};
+
+constexpr auto inline is_zero = [](auto value)
+{
+	using F = decltype(value);
+	static_assert(std::floating_point<F>);
+	if constexpr (auto v = can_be_used_as_short_check<F>; v()) {
+		const auto val =
+		    std::bit_cast<typename decltype(v)::value_type>(value);
+		return val + val == 0;
+	}
+	else if constexpr (std::numeric_limits<F>::is_iec559) {
+		return value == F{};
+	}
+	else {
+		return std::is_eq(std::weak_order(F{}, value));
+	}
 };
 
 }

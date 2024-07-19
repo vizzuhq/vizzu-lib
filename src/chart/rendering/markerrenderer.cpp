@@ -415,7 +415,7 @@ std::pair<Gfx::Color, Gfx::Color> MarkerRenderer::getColor(
 
 	const auto &enabled =
 	    label ? abstractMarker.labelEnabled : abstractMarker.enabled;
-	auto alpha = std::min(static_cast<double>(enabled), factor);
+	const double alpha{enabled && Math::FuzzyBool{factor}};
 
 	auto finalBorderColor = actBorderColor * alpha;
 	auto itemColor = selectedColor * alpha * fillAlpha;

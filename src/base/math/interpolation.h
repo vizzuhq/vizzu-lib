@@ -1,6 +1,8 @@
 #ifndef MATH_INTERPOLATION
 #define MATH_INTERPOLATION
 
+#include <type_traits>
+
 namespace Math
 {
 

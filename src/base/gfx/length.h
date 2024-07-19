@@ -4,7 +4,7 @@
 #include <stdexcept>
 #include <string>
 
-#include "base/text/valueunit.h"
+#include "base/math/floating.h"
 
 namespace Gfx
 {
@@ -31,17 +31,19 @@ public:
 
 	static Length fromString(const std::string &s);
 
+	constexpr static auto is_zero = Math::Floating::is_zero;
+
 	[[nodiscard]] bool isAbsolute() const
 	{
-		return relative == 0.0 && emphemeral == 0.0;
+		return is_zero(relative) && is_zero(emphemeral);
 	}
 	[[nodiscard]] bool isRelative() const
 	{
-		return absolute == 0.0 && emphemeral == 0.0;
+		return is_zero(absolute) && is_zero(emphemeral);
 	}
 	[[nodiscard]] bool isEmphemeral() const
 	{
-		return absolute == 0.0 && relative == 0.0;
+		return is_zero(absolute) && is_zero(relative);
 	}
 
 	[[nodiscard]] double get(double reference, double fontSize) const
