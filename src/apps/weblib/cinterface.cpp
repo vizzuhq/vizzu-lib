@@ -178,7 +178,7 @@ void vizzu_wheel(APIHandles::Chart chart,
 
 void vizzu_update(APIHandles::Chart chart, double timeInMSecs)
 {
-	return Interface::getInstance().update(chart, timeInMSecs);
+	Interface::getInstance().update(chart, timeInMSecs);
 }
 
 void vizzu_render(APIHandles::Chart chart,
@@ -190,6 +190,13 @@ void vizzu_render(APIHandles::Chart chart,
 	    canvas,
 	    width,
 	    height);
+}
+
+void vizzu_setLineResolution(APIHandles::Canvas canvas,
+    double dMax,
+    double hMax)
+{
+	Interface::getInstance().setLineResolution(canvas, dMax, hMax);
 }
 
 const char *style_getList() { return Interface::getStyleList(); }

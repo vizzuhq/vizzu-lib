@@ -2,9 +2,10 @@
 #define PAINTER_H
 
 #include "base/gfx/canvas.h"
+#include "base/gfx/pathsampler.h"
 
 #include "coordinatesystem.h"
-#include "painteroptions.h"
+#include "drawpolygon.h"
 
 namespace Vizzu::Draw
 {
@@ -20,8 +21,6 @@ public:
 	{
 		this->system = system;
 	}
-
-	void setResMode(const ResolutionMode &mode) { this->mode = mode; }
 
 	void drawLine(const Geom::Line &line);
 
@@ -41,16 +40,15 @@ public:
 	void drawPolygon(const std::array<Geom::Point, 4> &ps,
 	    bool clip = false);
 
-private:
-	struct PolygonOptions
+	void setPathSamplerOptions(Gfx::PathSampler::Options &&options)
 	{
-		double toCircleFactor;
-		double straightFactor;
-	};
+		pathSamplerOptions = options;
+	}
 
+private:
 	CoordinateSystem system;
-	ResolutionMode mode{ResolutionMode::Low};
-	PolygonOptions polygonOptions{};
+	Gfx::PathSampler::Options pathSamplerOptions{1.0, 0.5};
+	DrawPolygon::PolygonOptions polygonOptions{};
 };
 
 }

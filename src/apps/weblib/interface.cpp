@@ -403,6 +403,15 @@ void Interface::render(ObjectRegistryHandle chart,
 	ptr->frameEnd();
 }
 
+void Interface::setLineResolution(ObjectRegistryHandle canvas,
+    double dMax,
+    double hMax)
+{
+	static_cast<Draw::Painter *>(
+	    objects.get<Gfx::ICanvas>(canvas)->getPainter())
+	    ->setPathSamplerOptions({dMax, hMax});
+}
+
 void Interface::pointerDown(ObjectRegistryHandle chart,
     ObjectRegistryHandle,
     int pointerId,

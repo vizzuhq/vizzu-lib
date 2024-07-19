@@ -7,6 +7,7 @@
 
 #include "base/anim/control.h"
 #include "base/gfx/canvas.h"
+#include "base/gfx/pathsampler.h"
 #include "base/util/eventdispatcher.h"
 #include "chart/animator/animator.h"
 #include "chart/generator/plotptr.h"
