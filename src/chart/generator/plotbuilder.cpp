@@ -131,7 +131,7 @@ PlotBuilder::sortedBuckets(const Buckets &buckets, bool main) const
 
 	for (auto &&bucket : buckets)
 		for (auto &&[marker, idx] : bucket) {
-			if (static_cast<bool>(!marker.enabled)) continue;
+			if (!marker.enabled) continue;
 
 			auto it = std::ranges::lower_bound(sorted,
 			    idx.itemId,

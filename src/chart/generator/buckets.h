@@ -60,7 +60,7 @@ struct Buckets
 
 	[[nodiscard]] const_iterator end() const
 	{
-		const auto end{markers.data() + markers.size()};
+		const auto *const end{markers.data() + markers.size()};
 		return {{end, end}, this};
 	}
 };
