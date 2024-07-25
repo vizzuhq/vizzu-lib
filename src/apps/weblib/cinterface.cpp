@@ -193,10 +193,12 @@ void vizzu_render(APIHandles::Chart chart,
 }
 
 void vizzu_setLineResolution(APIHandles::Canvas canvas,
-    double dMax,
-    double hMax)
+    double distanceMax,
+    double curveHeightMax)
 {
-	Interface::getInstance().setLineResolution(canvas, dMax, hMax);
+	Interface::getInstance().setLineResolution(canvas,
+	    distanceMax,
+	    curveHeightMax);
 }
 
 const char *style_getList() { return Interface::getStyleList(); }
