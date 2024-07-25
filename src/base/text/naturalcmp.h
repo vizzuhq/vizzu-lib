@@ -11,8 +11,7 @@ class NaturalCmp
 public:
 	explicit NaturalCmp(bool ignoreCase = true,
 	    bool ignoreSpace = true);
-	[[nodiscard]] bool operator()(const std::string &,
-	    const std::string &) const;
+	[[nodiscard]] bool operator()(const char *, const char *) const;
 
 private:
 	bool ignoreCase;

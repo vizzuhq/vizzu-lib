@@ -195,12 +195,12 @@ void BaseCanvas::rectangle(const Geom::Rect &rect)
 	painter.drawRect(toQRect(rect));
 }
 
-void BaseCanvas::text(const Geom::Rect &rect, const std::string &text)
+void BaseCanvas::text(const Geom::Rect &rect, std::string_view text)
 {
 	painter.setPen(textPen);
 	painter.drawText(toQRect(rect),
 	    Qt::AlignLeft,
-	    QString::fromStdString(text));
+	    QString::fromStdString(std::string{text}));
 }
 
 void BaseCanvas::setBrushGradient(const Geom::Line &line,
@@ -227,13 +227,13 @@ QPen BaseCanvas::brushToPen(const QBrush &brush)
 }
 
 Geom::Size Gfx::ICanvas::textBoundary(const Gfx::Font &font,
-    const std::string &text)
+    std::string_view text)
 {
 	auto res =
 	    QFontMetrics{BaseCanvas::fromGfxFont(font)}.boundingRect(
 	        QRect(0, 0, 0, 0),
 	        Qt::AlignLeft,
-	        QString::fromStdString(text));
+	        QString::fromStdString(std::string{text}));
 
 	return {static_cast<double>(res.width()),
 	    static_cast<double>(res.height())};

@@ -1,5 +1,6 @@
 #include "font.h"
 
+#include <base/text/immutable_string.h>
 #include <utility>
 
 #include "base/conv/parse.h"
@@ -44,7 +45,7 @@ bool Font::Weight::operator==(const Font::Weight &other) const
 Font::Font(double size) : style(Gfx::Font::Style::normal), size(size)
 {}
 
-Font::Font(std::string family,
+Font::Font(Text::immutable_string family,
     Style style,
     Weight weight,
     double size) :
@@ -73,7 +74,7 @@ std::string Font::toCSS() const
 		res += static_cast<std::string>(weight) + " ";
 
 	res += std::to_string(size) + "px ";
-	res += family;
+	res += family.view();
 
 	return res;
 }

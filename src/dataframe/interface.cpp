@@ -1,5 +1,6 @@
 #include "interface.h"
 
+#include <base/text/immutable_string.h>
 #include <memory>
 #include <new>
 
@@ -29,14 +30,15 @@ std::shared_ptr<dataframe_interface> dataframe_interface::copy(
 	return as_impl(this).copy(inherit_sorting);
 }
 
-std::string dataframe_interface::set_aggregate(
-    const std::string_view &series,
+Text::immutable_string dataframe_interface::set_aggregate(
+    const Text::immutable_string &series,
     const any_aggregator_type &aggregator) &
 {
 	return as_impl(this).set_aggregate(series, aggregator);
 }
 
-void dataframe_interface::set_sort(const std::string_view &series,
+void dataframe_interface::set_sort(
+    const Text::immutable_string &series,
     any_sort_type sort,
     na_position na_pos) &
 {
@@ -134,19 +136,20 @@ void dataframe_interface::fill_na(std::string_view column,
 
 void dataframe_interface::finalize() & { as_impl(this).finalize(); }
 
-std::span<const std::string>
+std::span<const Text::immutable_string>
 dataframe_interface::get_dimensions() const &
 {
 	return as_impl(this).get_dimensions();
 }
 
-std::span<const std::string>
+std::span<const Text::immutable_string>
 dataframe_interface::get_measures() const &
 {
 	return as_impl(this).get_measures();
 }
 
-std::span<const std::string> dataframe_interface::get_categories(
+std::span<const Text::immutable_string>
+dataframe_interface::get_categories(
     const std::string_view &dimension) const &
 {
 	return as_impl(this).get_categories(dimension);
@@ -164,8 +167,8 @@ std::size_t dataframe_interface::get_record_count() const &
 	return as_impl(this).get_record_count();
 }
 
-std::string_view dataframe_interface::get_series_info(
-    const std::string_view &id,
+Text::immutable_string dataframe_interface::get_series_info(
+    const Text::immutable_string &id,
     const char *key) const &
 {
 	return as_impl(this).get_series_info(id, key);
@@ -176,11 +179,17 @@ bool dataframe_interface::is_removed(std::size_t record_id) const &
 	return as_impl(this).is_removed(record_id);
 }
 
-std::string dataframe_interface::get_record_id_by_dims(
+Text::immutable_string dataframe_interface::get_record_id_by_dims(
     std::size_t my_record,
-    std::span<const std::string> dimensions) const &
+    std::span<const Text::immutable_string> dimensions) const &
 {
 	return as_impl(this).get_record_id_by_dims(my_record, dimensions);
+}
+
+Text::immutable_string dataframe_interface::get_record_id(
+    std::size_t my_record) &
+{
+	return as_impl(this).get_record_id(my_record);
 }
 
 }

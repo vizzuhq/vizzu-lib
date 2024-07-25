@@ -11,6 +11,7 @@
 #include "base/conv/tostring.h"
 #include "base/math/floating.h"
 #include "base/math/interpolation.h"
+#include "base/text/immutable_string.h"
 
 namespace Anim
 {
@@ -83,6 +84,15 @@ public:
 	    requires(!std::is_same_v<Type, std::string>)
 	{
 		values[0] = Weighted<Type>(Conv::parse<Type>(str));
+	}
+
+	template <class T>
+	    requires(std::is_constructible_v<Type, T>
+	             && !std::same_as<Type, T>
+	             && !std::same_as<std::string, T>)
+	explicit Interpolated(T &&value)
+	{
+		values[0] = Weighted<Type>(Type{std::forward<T>(value)});
 	}
 
 	Interpolated &operator=(Type value)
@@ -277,7 +287,7 @@ Interpolated<Type> interpolate(const Interpolated<Type> &op0,
 	return res;
 }
 
-using String = Interpolated<std::string>;
+using String = Interpolated<Text::immutable_string>;
 
 }
 

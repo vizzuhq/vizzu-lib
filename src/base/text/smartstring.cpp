@@ -55,7 +55,7 @@ std::string fromPhysicalValue(double value,
     NumberFormat format,
     size_t maxFractionDigits,
     const NumberScale &numberScale,
-    const std::string &unit)
+    const immutable_string &unit)
 {
 	Conv::NumberToString converter{
 	    static_cast<int>(maxFractionDigits)};
@@ -72,7 +72,7 @@ std::string fromPhysicalValue(double value,
 
 			return converter(num.signedCoef())
 			     + (prefix.empty() && (unit.empty() || unit == "%")
-			             ? unit
+			             ? unit.toString()
 			             : " " + prefix + unit);
 		}
 		break;
@@ -84,7 +84,8 @@ std::string fromPhysicalValue(double value,
 	default: break;
 	}
 	return converter(value)
-	     + (unit.empty() || unit == "%" ? unit : " " + unit);
+	     + (unit.empty() || unit == "%" ? unit.toString()
+	                                    : " " + unit);
 }
 
 }

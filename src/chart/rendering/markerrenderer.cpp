@@ -157,7 +157,7 @@ void MarkerRenderer::drawMarkers(Gfx::ICanvas &canvas,
 			    blended.marker.prevMainMarker.combine<double>(
 			        [](const Gen::Marker::MarkerIndexPosition &pos)
 			        {
-				        return pos.idx != ~Gen::Marker::MarkerIndex{};
+				        return !pos.idx.empty();
 			        });
 			if (containsConnected) {
 				if (containsSingle) {
@@ -287,7 +287,7 @@ void MarkerRenderer::draw(Gfx::ICanvas &canvas,
 
 void MarkerRenderer::drawLabel(Gfx::ICanvas &canvas,
     const AbstractMarker &abstractMarker,
-    const std::string &unit,
+    const Text::immutable_string &unit,
     bool keepMeasure,
     ::Anim::InterpolateIndex index) const
 {
@@ -319,7 +319,7 @@ void MarkerRenderer::drawLabel(Gfx::ICanvas &canvas,
 	    Styles::MarkerLabel::Position::center);
 
 	OrientedLabel{{ctx()}}.draw(canvas,
-	    text,
+	    text.c_str(),
 	    labelPos,
 	    labelStyle,
 	    centered,
@@ -331,7 +331,7 @@ void MarkerRenderer::drawLabel(Gfx::ICanvas &canvas,
 
 std::string MarkerRenderer::getLabelText(
     const ::Anim::Interpolated<Gen::Marker::Label> &label,
-    const std::string &unit,
+    const Text::immutable_string &unit,
     bool keepMeasure,
     ::Anim::InterpolateIndex index) const
 {

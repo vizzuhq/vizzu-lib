@@ -12,7 +12,8 @@ inline bool is_valid(cell_reference const &value)
 {
 	const double *d = std::get_if<double>(&value);
 	return d ? !std::isnan(*d)
-	         : *std::get_if<const std::string *>(&value) != nullptr;
+	         : *std::get_if<const Text::immutable_string *>(&value)
+	               != nullptr;
 }
 
 Refl::EnumArray<aggregator_type, custom_aggregator>
@@ -96,15 +97,16 @@ get_aggregators() noexcept
 	    {aggrs[static_cast<std::size_t>(aggregator_type::distinct)],
 	        []() -> custom_aggregator::id_type
 	        {
-		        return std::set<const std::string *>{};
+		        return std::set<const Text::immutable_string *>{};
 	        },
 	        [](custom_aggregator::id_type &id,
 	            cell_reference const &cell) -> double
 	        {
-		        auto &set =
-		            *std::get_if<std::set<const std::string *>>(&id);
-		        if (const std::string *v =
-		                *std::get_if<const std::string *>(&cell))
+		        auto &set = *std::get_if<
+		            std::set<const Text::immutable_string *>>(&id);
+		        if (const Text::immutable_string *v =
+		                *std::get_if<const Text::immutable_string *>(
+		                    &cell))
 			        set.insert(v);
 		        return static_cast<double>(set.size());
 	        }},

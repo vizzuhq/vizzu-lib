@@ -9,6 +9,8 @@
 #include <string_view>
 #include <variant>
 
+#include "base/text/immutable_string.h"
+
 namespace Vizzu::Data
 {
 struct RowWrapper;
@@ -18,7 +20,8 @@ namespace Vizzu::dataframe
 {
 
 using cell_value = std::variant<double, std::string_view>;
-using cell_reference = std::variant<double, const std::string *>;
+using cell_reference =
+    std::variant<double, const Text::immutable_string *>;
 
 enum class aggregator_type {
 	sum,
@@ -50,10 +53,10 @@ enum class adding_type {
 
 struct custom_aggregator
 {
-	std::string_view name;
+	std::variant<Text::immutable_string, std::string_view> name;
 	using id_type = std::variant<double,
 	    std::pair<double, std::size_t>,
-	    std::set<const std::string *>>;
+	    std::set<const Text::immutable_string *>>;
 	id_type (*create)();
 	double (*add)(id_type &, cell_reference const &);
 
@@ -79,7 +82,8 @@ constexpr std::size_t max_size_impl = 26 * sizeof(std::intptr_t);
 class alignas(align_impl) dataframe_interface
 {
 public:
-	using record_identifier = std::variant<std::string, std::size_t>;
+	using record_identifier =
+	    std::variant<Text::immutable_string, std::size_t>;
 
 	using any_aggregator_type = std::optional<aggregator_type>;
 
@@ -90,16 +94,16 @@ public:
 	[[nodiscard]] std::shared_ptr<dataframe_interface> copy(
 	    bool inherit_sorting) const &;
 
-	[[nodiscard]] std::string set_aggregate(
-	    const std::string_view &series,
+	Text::immutable_string set_aggregate(
+	    const Text::immutable_string &series,
 	    const any_aggregator_type &aggregator) &;
 
-	void aggregate_by(const std::string_view &series)
+	void aggregate_by(const Text::immutable_string &series)
 	{
-		[[maybe_unused]] auto &&_ = set_aggregate(series, {});
+		set_aggregate(series, {});
 	}
 
-	void set_sort(const std::string_view &series,
+	void set_sort(const Text::immutable_string &series,
 	    any_sort_type sort,
 	    na_position na_pos) &;
 
@@ -147,13 +151,14 @@ public:
 
 	void finalize() &;
 
-	[[nodiscard]] std::span<const std::string>
+	[[nodiscard]] std::span<const Text::immutable_string>
 	get_dimensions() const &;
 
-	[[nodiscard]] std::span<const std::string> get_measures() const &;
+	[[nodiscard]] std::span<const Text::immutable_string>
+	get_measures() const &;
 
-	[[nodiscard]] std::span<const std::string> get_categories(
-	    const std::string_view &dimension) const &;
+	[[nodiscard]] std::span<const Text::immutable_string>
+	get_categories(const std::string_view &dimension) const &;
 
 	[[nodiscard]] cell_reference get_data(
 	    const record_identifier &record_id,
@@ -161,15 +166,18 @@ public:
 
 	[[nodiscard]] std::size_t get_record_count() const &;
 
-	[[nodiscard]] std::string_view get_series_info(
-	    const std::string_view &id,
+	[[nodiscard]] Text::immutable_string get_series_info(
+	    const Text::immutable_string &id,
 	    const char *key) const &;
 
 	[[nodiscard]] bool is_removed(std::size_t record_id) const &;
 
-	[[nodiscard]] std::string get_record_id_by_dims(
+	[[nodiscard]] Text::immutable_string get_record_id_by_dims(
 	    std::size_t my_record,
-	    std::span<const std::string> dimensions) const &;
+	    std::span<const Text::immutable_string> dimensions) const &;
+
+	[[nodiscard]] Text::immutable_string get_record_id(
+	    std::size_t my_record) &;
 
 	// NOLINTNEXTLINE(cppcoreguidelines-avoid-c-arrays,modernize-avoid-c-arrays)
 	alignas(align_impl) std::byte data[max_size_impl];

@@ -37,8 +37,8 @@ struct MeasureAxis
 	::Anim::Interpolated<double> step{1.0};
 	MeasureAxis() = default;
 	MeasureAxis(Math::Range<double> interval,
-	    const std::string_view &unit,
-	    const std::string_view &measName,
+	    const Text::immutable_string &unit,
+	    const Text::immutable_string &measName,
 	    std::optional<double> step);
 	bool operator==(const MeasureAxis &other) const;
 	[[nodiscard]] double origo() const;
@@ -65,7 +65,7 @@ struct DimensionAxis
 		double value;
 		::Anim::Interpolated<ColorBase> colorBase;
 		::Anim::String label;
-		std::string categoryValue;
+		Text::immutable_string categoryValue;
 		double weight;
 
 		Item(Math::Range<double> range,
@@ -104,7 +104,7 @@ struct DimensionAxis
 	using Values = std::multimap<Data::SliceIndex, Item>;
 
 	bool enabled{false};
-	std::string category{};
+	Text::immutable_string category{};
 	std::shared_ptr<std::vector<std::optional<Data::SliceIndex>>>
 	    trackedValues;
 

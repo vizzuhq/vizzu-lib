@@ -72,7 +72,7 @@ dataframe::dataframe(std::shared_ptr<const data_source> other,
 	auto &cp = unsafe_get<source_type::copying>(source);
 	if (filtered) cp.pre_remove.emplace(*filtered);
 	if (sorted) cp.sorted_indices.emplace(*sorted);
-	if (!cp.other->finalized.empty())
+	if (!cp.other->finalized.record_ids.empty())
 		state_data.emplace<state_type::finalized>();
 }
 
@@ -105,15 +105,18 @@ void valid_measure_aggregator(
 		error(error_type::aggregator, "measure");
 }
 
-std::string dataframe::set_aggregate(const std::string_view &series,
+Text::immutable_string dataframe::set_aggregate(
+    const Text::immutable_string &series,
     const any_aggregator_type &aggregator) &
 {
 	change_state_to(state_type::aggregating,
 	    state_modification_reason::needs_series_type);
 
-	switch (get_data_source().get_series(series)) {
+	switch (get_data_source().get_series(series.view())) {
 		using enum series_type;
-	default: valid_unexistent_aggregator(series, aggregator); break;
+	default:
+		valid_unexistent_aggregator(series.view(), aggregator);
+		break;
 	case dimension: valid_dimension_aggregator(aggregator); break;
 	case measure: valid_measure_aggregator(aggregator); break;
 	}
@@ -121,7 +124,7 @@ std::string dataframe::set_aggregate(const std::string_view &series,
 	change_state_to(state_type::aggregating,
 	    state_modification_reason::needs_own_state);
 
-	auto &&ser = get_data_source().get_series(series);
+	auto &&ser = get_data_source().get_series(series.view());
 	data_source::aggregating_type &aggs =
 	    unsafe_get<state_type::aggregating>(state_data);
 
@@ -129,28 +132,28 @@ std::string dataframe::set_aggregate(const std::string_view &series,
 		if (!aggs.dims
 		         .emplace(unsafe_get<series_type::dimension>(ser))
 		         .second)
-			error(error_type::duplicated_series, series);
+			error(error_type::duplicated_series, series.view());
 		return {};
 	}
 
 	auto &&[name, uniq] =
 	    aggs.add_aggregated(std::move(ser), aggregator.value());
-	if (!uniq) error(error_type::duplicated_series, series);
+	if (!uniq) error(error_type::duplicated_series, series.view());
 	return name;
 }
 
-void dataframe::set_sort(const std::string_view &series,
+void dataframe::set_sort(const Text::immutable_string &series,
     any_sort_type sort,
     na_position na_pos) &
 {
 	change_state_to(state_type::sorting,
 	    state_modification_reason::needs_series_type);
 
-	auto ser = get_data_source().get_series(series);
+	auto ser = get_data_source().get_series(series.view());
 
 	switch (ser) {
 		using enum series_type;
-	default: error(error_type::series_not_found, series);
+	default: error(error_type::series_not_found, series.view());
 	case dimension: {
 		std::optional<std::vector<std::size_t>> indices;
 		if (const auto &dim = unsafe_get<dimension>(ser).second;
@@ -160,7 +163,7 @@ void dataframe::set_sort(const std::string_view &series,
 		    && (na_pos == dim.na_pos || !dim.contains_nav))
 			break;
 
-		error(error_type::sort, series);
+		error(error_type::sort, series.view());
 	}
 	case measure:
 		switch (sort) {
@@ -170,7 +173,7 @@ void dataframe::set_sort(const std::string_view &series,
 		case sort_type::natural_less:
 		case sort_type::natural_greater:
 		case sort_type::by_categories:
-			error(error_type::sort, series);
+			error(error_type::sort, series.view());
 		}
 		break;
 	}
@@ -668,17 +671,19 @@ std::string dataframe::as_string() const &
 	return res;
 }
 
-std::span<const std::string> dataframe::get_dimensions() const &
+std::span<const Text::immutable_string>
+dataframe::get_dimensions() const &
 {
 	return get_data_source().dimension_names;
 }
 
-std::span<const std::string> dataframe::get_measures() const &
+std::span<const Text::immutable_string>
+dataframe::get_measures() const &
 {
 	return get_data_source().measure_names;
 }
 
-std::span<const std::string> dataframe::get_categories(
+std::span<const Text::immutable_string> dataframe::get_categories(
     const std::string_view &dimension) const &
 {
 	switch (auto &&ser = get_data_source().get_series(dimension)) {
@@ -716,10 +721,23 @@ bool dataframe::is_removed(std::size_t record_id) const &
 	return cp && cp->pre_remove && (*cp->pre_remove)[record_id];
 }
 
-std::string dataframe::get_record_id_by_dims(std::size_t my_record,
-    std::span<const std::string> dimensions) const &
+Text::immutable_string dataframe::get_record_id_by_dims(
+    std::size_t my_record,
+    std::span<const Text::immutable_string> dimensions) const &
 {
 	return get_data_source().get_id(my_record, dimensions);
+}
+
+Text::immutable_string dataframe::get_record_id(
+    std::size_t my_record) &
+{
+	if (state_data != state_type::finalized)
+		error(error_type::record, "get id before finalized");
+
+	const auto &ids = get_data_source().finalized.record_ids;
+	if (my_record >= ids.size()) return {};
+
+	return ids[my_record];
 }
 
 dataframe::series_meta_t dataframe::get_series_meta(
@@ -851,22 +869,24 @@ const data_source &dataframe::get_data_source() const
 	                        : *unsafe_get<copying>(source).other;
 }
 
-std::string_view dataframe::get_series_info(
-    const std::string_view &id,
+Text::immutable_string dataframe::get_series_info(
+    const Text::immutable_string &id,
     const char *key) const &
 {
-	switch (auto &&ser = get_data_source().get_series(id)) {
+	switch (auto &&ser = get_data_source().get_series(id.view())) {
 		using enum series_type;
 	default: return {};
 	case measure: {
 		const auto &info = unsafe_get<measure>(ser).second.info;
 		auto it = info.find(key);
-		return it == info.end() ? std::string_view{} : it->second;
+		return it == info.end() ? Text::immutable_string{}
+		                        : it->second;
 	}
 	case dimension: {
 		const auto &info = unsafe_get<dimension>(ser).second.info;
 		auto it = info.find(key);
-		return it == info.end() ? std::string_view{} : it->second;
+		return it == info.end() ? Text::immutable_string{}
+		                        : it->second;
 	}
 	}
 }

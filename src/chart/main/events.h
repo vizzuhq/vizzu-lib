@@ -149,7 +149,7 @@ public:
 		{
 			std::string tagName;
 
-			explicit Element(std::string name) :
+			explicit Element(std::string &&name) :
 			    tagName(std::move(name))
 			{}
 
@@ -191,12 +191,12 @@ public:
 
 		template <class Base> struct Text : Base
 		{
-			std::string text;
+			std::string_view text;
 
 			template <typename... Args>
-			explicit Text(std::string text, Args &&...args) :
+			explicit Text(std::string_view text, Args &&...args) :
 			    Base(args...),
-			    text(std::move(text))
+			    text(text)
 			{}
 
 			void appendToJSON(Conv::JSONObj &&jsonObj) const override
@@ -365,7 +365,7 @@ public:
 		static auto dimLegendLabel(
 		    const std::string_view &categoryName,
 		    const std::string_view &categoryValue,
-		    const std::string &label,
+		    const std::string_view &label,
 		    Gen::ChannelId channel)
 		{
 			return std::make_unique<CategoryInfo<Text<LegendChild>>>(
@@ -384,7 +384,7 @@ public:
 			    channel);
 		}
 
-		static auto legendTitle(const std::string &title,
+		static auto legendTitle(std::string_view title,
 		    Gen::ChannelId channel)
 		{
 			return std::make_unique<Text<LegendChild>>(title,
@@ -410,7 +410,7 @@ public:
 
 		static auto dimAxisLabel(const std::string_view &categoryName,
 		    const std::string_view &categoryValue,
-		    const std::string &label,
+		    const std::string_view &label,
 		    bool horizontal)
 		{
 			return std::make_unique<CategoryInfo<Text<AxisChild>>>(
@@ -429,7 +429,7 @@ public:
 			    horizontal);
 		}
 
-		static auto axisTitle(const std::string &title,
+		static auto axisTitle(const std::string_view &title,
 		    bool horizontal)
 		{
 			return std::make_unique<Text<AxisChild>>(title,

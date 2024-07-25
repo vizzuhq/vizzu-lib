@@ -2,6 +2,7 @@
 #ifndef DATAFRAME_OLD_TYPES_H
 #define DATAFRAME_OLD_TYPES_H
 
+#include <base/text/immutable_string.h>
 #include <base/type/uniquelist.h>
 #include <set>
 
@@ -28,7 +29,7 @@ struct RowWrapper
 class SeriesIndex
 {
 	std::string orig_name;
-	std::string_view sid;
+	Text::immutable_string sid;
 	std::optional<dataframe::aggregator_type> aggr;
 
 public:
@@ -39,7 +40,7 @@ public:
 		return *aggr;
 	}
 
-	[[nodiscard]] const std::string_view &getColIndex() const
+	[[nodiscard]] const Text::immutable_string &getColIndex() const
 	{
 		return sid;
 	}
@@ -114,8 +115,8 @@ private:
 
 struct SliceIndex
 {
-	std::string_view column;
-	std::string_view value;
+	Text::immutable_string column;
+	Text::immutable_string value;
 
 	[[nodiscard]] bool operator<(const SliceIndex &rhs) const
 	{
@@ -128,7 +129,9 @@ struct SliceIndex
 
 struct CellInfo
 {
-	std::vector<std::pair<std::string, std::string>> markerInfo;
+	std::vector<
+	    std::pair<Text::immutable_string, Text::immutable_string>>
+	    markerInfo;
 
 	std::string json;
 };
@@ -137,7 +140,7 @@ struct MultiIndex
 {
 	std::size_t rid;
 	std::vector<std::size_t> old;
-	std::size_t oldAggr;
+	Text::immutable_string marker_id;
 };
 
 struct MarkerId

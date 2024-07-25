@@ -55,10 +55,13 @@ private:
 
 	struct dimension_t
 	{
-		std::vector<std::string> categories;
+		std::vector<Text::immutable_string> categories;
 		na_position na_pos{na_position::last};
 		std::vector<std::uint32_t> values;
-		std::map<std::string, std::string> info;
+		std::map<Text::immutable_string,
+		    Text::immutable_string,
+		    std::less<>>
+		    info;
 		bool contains_nav{};
 
 		dimension_t() noexcept = default;
@@ -88,7 +91,8 @@ private:
 
 		void add_element(std::string_view const &cat);
 
-		[[nodiscard]] const std::string *get(std::size_t index) const;
+		[[nodiscard]] const Text::immutable_string *get(
+		    std::size_t index) const;
 
 		void set(std::size_t index, const std::string_view &value);
 
@@ -102,7 +106,10 @@ private:
 	struct measure_t
 	{
 		std::vector<double> values;
-		std::map<std::string, std::string> info;
+		std::map<Text::immutable_string,
+		    Text::immutable_string,
+		    std::less<>>
+		    info;
 		bool contains_nan{};
 
 		measure_t() noexcept = default;
@@ -121,26 +128,32 @@ private:
 		[[nodiscard]] std::pair<double, double> get_min_max() const;
 	};
 
-	using final_info = std::map<std::string, std::size_t>;
+	struct final_info
+	{
+		std::map<Text::immutable_string, std::size_t> to_record_ix;
+		std::vector<Text::immutable_string> record_ids;
+	};
 
-	std::string get_id(std::size_t record,
-	    std::span<const std::string> series) const;
+	Text::immutable_string get_id(std::size_t record,
+	    std::span<const Text::immutable_string> series) const;
 
 	using series_data = Refl::EnumVariant<series_type,
 	    std::monostate,
-	    std::pair<std::string_view, dimension_t &>,
-	    std::pair<std::string_view, measure_t &>>;
+	    std::pair<Text::immutable_string, dimension_t &>,
+	    std::pair<Text::immutable_string, measure_t &>>;
 
 	using const_series_data = Refl::EnumVariant<series_type,
 	    std::monostate,
-	    std::pair<std::string_view, const dimension_t &>,
-	    std::pair<std::string_view, const measure_t &>>;
+	    std::pair<Text::immutable_string, const dimension_t &>,
+	    std::pair<Text::immutable_string, const measure_t &>>;
 
 	// replace these to std::flat_map
-	std::vector<std::string> measure_names; // sorted by name
+	std::vector<Text::immutable_string>
+	    measure_names; // sorted by name
 	std::vector<measure_t> measures;
 
-	std::vector<std::string> dimension_names; // sorted by name
+	std::vector<Text::immutable_string>
+	    dimension_names; // sorted by name
 	std::vector<dimension_t> dimensions;
 
 	final_info finalized;
@@ -159,15 +172,15 @@ public:
 
 	struct aggregating_type
 	{
-		std::map<std::string_view,
+		std::map<Text::immutable_string,
 		    std::reference_wrapper<const dimension_t>>
 		    dims;
-		std::map<std::string,
+		std::map<Text::immutable_string,
 		    std::pair<const_series_data, custom_aggregator>,
 		    std::less<>>
 		    meas;
 
-		std::pair<std::string, bool> add_aggregated(
+		std::pair<Text::immutable_string, bool> add_aggregated(
 		    const_series_data &&data,
 		    const aggregator_type &aggregator);
 	};
@@ -193,7 +206,7 @@ public:
 	    const std::string_view &name) const;
 
 	std::size_t change_record_identifier_type(
-	    const std::string &id) const;
+	    const Text::immutable_string &id) const;
 
 	void normalize_sizes();
 
@@ -221,14 +234,14 @@ public:
 	    std::span<const std::pair<const char *, const char *>> info);
 
 	dimension_t &add_new_dimension(dimension_t &&dim,
-	    std::string_view name);
+	    const Text::immutable_string &name);
 
 	measure_t &add_new_measure(std::span<const double> measure_values,
 	    std::string_view name,
 	    std::span<const std::pair<const char *, const char *>> info);
 
 	measure_t &add_new_measure(measure_t &&measure,
-	    std::string_view name);
+	    const Text::immutable_string &name);
 
 	static std::vector<std::size_t> get_sorted_indices(
 	    std::size_t max,

@@ -64,10 +64,11 @@ void DrawLegend::drawTitle(const Info &info) const
 
 		    DrawLabel{{ctx()}}.draw(info.canvas,
 		        Geom::TransformedRect::fromRect(rect),
-		        title.value,
+		        title.value.c_str(),
 		        style.title,
 		        *events.title,
-		        Events::Targets::legendTitle(title.value, info.type),
+		        Events::Targets::legendTitle(title.value.view(),
+		            info.type),
 		        {.alpha = title.weight * info.weight * mul});
 	    });
 }
@@ -90,7 +91,7 @@ void DrawLegend::drawDimension(const Info &info) const
 		                 && Math::FuzzyBool{info.weight}};
 
 		drawMarker(info,
-		    value.second.categoryValue,
+		    value.second.categoryValue.view(),
 		    colorBuilder.render(value.second.colorBase)
 		        * double{alpha},
 		    getMarkerRect(info, itemRect));
@@ -100,13 +101,13 @@ void DrawLegend::drawDimension(const Info &info) const
 		    {
 			    label.draw(info.canvas,
 			        getLabelRect(info, itemRect),
-			        weighted.value,
+			        weighted.value.c_str(),
 			        style.label,
 			        *events.label,
 			        Events::Targets::dimLegendLabel(
-			            info.dimension.category,
-			            value.second.categoryValue,
-			            value.second.categoryValue,
+			            info.dimension.category.view(),
+			            value.second.categoryValue.view(),
+			            value.second.categoryValue.view(),
 			            info.type),
 			        {.alpha = double{
 			             alpha && Math::FuzzyBool{weighted.weight}}});
@@ -158,7 +159,7 @@ void DrawLegend::drawMarker(const Info &info,
 	            * rect.size.minSize() / 2.0;
 
 	auto markerElement =
-	    Events::Targets::legendMarker(info.dimension.category,
+	    Events::Targets::legendMarker(info.dimension.category.view(),
 	        categoryValue,
 	        info.type);
 
@@ -204,7 +205,7 @@ void DrawLegend::drawMeasure(const Info &info) const
 
 void DrawLegend::extremaLabel(const Info &info,
     double value,
-    const std::string &unit,
+    const Text::immutable_string &unit,
     int pos,
     double plusWeight) const
 {
@@ -216,7 +217,7 @@ void DrawLegend::extremaLabel(const Info &info,
 
 	DrawLabel{{ctx()}}.draw(info.canvas,
 	    getLabelRect(info, getItemRect(info, pos)),
-	    text,
+	    text.c_str(),
 	    style.label,
 	    *events.label,
 	    Events::Targets::measLegendLabel(text, info.type),

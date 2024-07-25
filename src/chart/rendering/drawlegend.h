@@ -60,7 +60,7 @@ private:
 
 	void extremaLabel(const Info &info,
 	    double value,
-	    const std::string &unit,
+	    const Text::immutable_string &unit,
 	    int pos,
 	    double plusWeight) const;
 	void colorBar(const Info &info, const Geom::Rect &rect) const;

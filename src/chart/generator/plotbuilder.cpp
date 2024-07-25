@@ -84,10 +84,10 @@ Buckets PlotBuilder::generateMarkers(std::size_t &mainBucketSize)
 	for (auto &&[ix, mid] : plot->getOptions()->markersInfo)
 		map.emplace(mid, ix);
 
-	for (auto first = map.begin(), last = map.end();
-	     auto &&index : dataCube) {
-		auto &&markerId = index.oldAggr;
-		auto needInfo = first != last && first->first == markerId;
+	for (auto &&index : dataCube) {
+		auto &&markerId = index.marker_id;
+		auto &&[first, last] = map.equal_range(markerId);
+		auto needInfo = first != last;
 
 		auto &marker = plot->markers.emplace_back(*plot->getOptions(),
 		    dataCube,
@@ -95,15 +95,18 @@ Buckets PlotBuilder::generateMarkers(std::size_t &mainBucketSize)
 		    mainIds,
 		    subIds,
 		    index,
-		    plot->markers.size(),
 		    needInfo);
 
-		while (needInfo) {
+		while (first != last)
 			plot->markersInfo.insert({first++->second,
 			    Plot::MarkerInfo{Plot::MarkerInfoContent{marker}}});
-			needInfo = first != last && first->first == markerId;
-		}
 	}
+	std::ranges::stable_sort(plot->markers,
+	    std::less{},
+	    std::mem_fn(&Marker::idx));
+	for (Marker::MarkerPosition ix{}; auto &marker : plot->markers)
+		marker.pos = ix++;
+
 	Buckets buckets(plot->markers);
 	auto &&hasMarkerConnection =
 	    linkMarkers(buckets.sort(&Marker::mainId), true);
@@ -368,18 +371,19 @@ void PlotBuilder::calcMeasureAxis(const Data::DataTable &dataTable,
 		plot->axises.at(type).common.title =
 		    scale.title.isAuto() ? dataCube.getName(*meas)
 		    : scale.title        ? *scale.title
-		                         : std::string{};
+		                         : Text::immutable_string{};
 
 		if (type == plot->getOptions()->subAxisType()
 		    && plot->getOptions()->align
 		           == Base::Align::Type::stretch) {
-			axis = {Math::Range<double>::Raw(0, 100),
+			axis = MeasureAxis{Math::Range<double>::Raw(0, 100),
 			    "%",
 			    meas->getColIndex(),
 			    scale.step.getValue()};
 		}
 		else {
-			axis = {range.isReal() ? range
+			axis = MeasureAxis{range.isReal()
+			                       ? range
 			                       : Math::Range<double>::Raw(0, 0),
 			    dataTable.getUnit(meas->getColIndex()),
 			    meas->getColIndex(),
@@ -443,7 +447,7 @@ void PlotBuilder::calcDimensionAxis(ChannelId type)
 	plot->axises.at(type).common.title =
 	    scale.title.isAuto() && !hasLabel ? axis.category
 	    : scale.title                     ? *scale.title
-	                                      : std::string{};
+	                                      : Text::immutable_string{};
 }
 
 void PlotBuilder::addAlignment(const Buckets &subBuckets) const

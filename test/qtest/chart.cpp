@@ -43,7 +43,7 @@ void TestChart::prepareData()
 void TestChart::operator()(Util::EventDispatcher::Params &params,
     const std::string &)
 {
-	std::optional<std::size_t> markerId;
+	std::optional<Vizzu::Gen::Marker::MarkerIndex> markerId;
 	using Marker = Vizzu::Events::Targets::Marker;
 	using MarkerChild = Vizzu::Events::Targets::MarkerChild;
 
@@ -146,19 +146,18 @@ void TestChart::run()
 			IO::log() << "step 1b";
 			auto &options = chart.getChart().getOptions();
 			auto &styles = chart.getChart().getStyles();
-			options.dataFilter =
-			    Vizzu::Data::Filter{std::shared_ptr<bool(
-			        const Vizzu::Data::RowWrapper *)>{
-			        std::shared_ptr<void>{},
-			        +[](const Vizzu::Data::RowWrapper *row) -> bool
-			        {
-				        return *std::get<const std::string *>(
-				                   row->get_value("Cat1"))
-				                == std::string_view{"A"}
-				            || *std::get<const std::string *>(
-				                   row->get_value("Cat2"))
-				                   == std::string_view{"b"};
-			        }}};
+			options.dataFilter = Vizzu::Data::Filter{std::shared_ptr<
+			    bool(const Vizzu::Data::RowWrapper *)>{
+			    std::shared_ptr<void>{},
+			    +[](const Vizzu::Data::RowWrapper *row) -> bool
+			    {
+				    return *std::get<const Text::immutable_string *>(
+				               row->get_value("Cat1"))
+				            == std::string_view{"A"}
+				        || *std::get<const Text::immutable_string *>(
+				               row->get_value("Cat2"))
+				               == std::string_view{"b"};
+			    }}};
 			options.title = "VIZZU Chart - Phase 1b";
 			styles.legend.marker.type =
 			    Vizzu::Styles::Legend::Marker::Type::circle;

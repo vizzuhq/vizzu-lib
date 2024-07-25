@@ -31,7 +31,6 @@ public:
 	    const Data::SeriesList &mainAxisList,
 	    const Data::SeriesList &subAxisList,
 	    const Data::MultiIndex &index,
-	    MarkerPosition pos,
 	    bool needMarkerInfo);
 
 	::Anim::Interpolated<ColorBase> colorBase;

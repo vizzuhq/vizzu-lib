@@ -141,7 +141,7 @@ export interface Marker extends Element {
 	categories: Data.Record
 	values: Data.Record
 	/** Unique index of the marker. */
-	index: number
+	index: string
 }
 
 /** Label element of a marker element. */
