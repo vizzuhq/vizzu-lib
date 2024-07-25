@@ -56,12 +56,6 @@ double Control::positionToProgress(Duration pos) const
 	                            : pos / controlled.getDuration();
 }
 
-void Control::setSpeed(double speed)
-{
-	options.speed = std::max(0.0, speed);
-	update();
-}
-
 bool Control::atStartPosition() const
 {
 	return options.position <= 0.0;

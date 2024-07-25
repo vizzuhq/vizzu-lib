@@ -34,7 +34,7 @@ AffineTransform AffineTransform::inverse() const
 {
 	auto det = m[0][0] * m[1][1] - m[1][0] * m[0][1];
 
-	if (det == 0.0)
+	if (Math::Floating::is_zero(det))
 		throw std::logic_error(
 		    "attempted inversion of singular matrix");
 

@@ -150,7 +150,7 @@ PlotBuilder::sortedBuckets(const Buckets &buckets, bool main) const
 		    sorted.end(),
 		    [](const BucketInfo &lhs, const BucketInfo &rhs)
 		    {
-			    if (auto ord = std::weak_order(lhs.size, rhs.size);
+			    if (auto ord = std::strong_order(lhs.size, rhs.size);
 			        !std::is_eq(ord))
 				    return std::is_lt(ord);
 			    return lhs.index < rhs.index;
@@ -237,11 +237,13 @@ bool PlotBuilder::linkMarkers(const Buckets &buckets, bool main) const
 				auto *marker = bucket[sorted[ix].index];
 				if (!marker || static_cast<bool>(!marker->enabled))
 					continue;
-				o = std::max(o, marker->size.*coord);
+				o = std::max(o,
+				    marker->size.*coord,
+				    Math::Floating::less);
 			}
 			if (o == std::numeric_limits<double>::lowest()) o = 0.0;
 
-			if (o < 0)
+			if (std::signbit(o))
 				std::swap(o += pre_neg, pre_neg);
 			else
 				std::swap(o += pre_pos, pre_pos);
@@ -309,8 +311,8 @@ void PlotBuilder::normalizeXY()
 	}
 
 	plot->getOptions()->setAutoRange(
-	    boundRect.positive().hSize().getMin() >= 0,
-	    boundRect.positive().vSize().getMin() >= 0);
+	    !std::signbit(boundRect.positive().hSize().getMin()),
+	    !std::signbit(boundRect.positive().vSize().getMin()));
 
 	boundRect.setHSize(xrange.getRange(boundRect.hSize()));
 	boundRect.setVSize(yrange.getRange(boundRect.vSize()));
@@ -427,9 +429,9 @@ void PlotBuilder::addAlignment(const Buckets &subBuckets) const
 {
 	if (static_cast<bool>(plot->getOptions()->split)) return;
 
-	if (plot->axises.at(plot->getOptions()->subAxisType())
-	        .measure.range.getMin()
-	    < 0)
+	if (std::signbit(
+	        plot->axises.at(plot->getOptions()->subAxisType())
+	            .measure.range.getMin()))
 		return;
 
 	if (plot->getOptions()->align == Base::Align::Type::none) return;

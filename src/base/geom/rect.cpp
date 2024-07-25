@@ -14,38 +14,42 @@ Rect Rect::CenteredMax()
 
 Rect Rect::boundary(const Rect &rect) const
 {
+	using Math::Floating::less;
 	Rect res = positive();
 	const Rect other = rect.positive();
-	res.setLeft(std::min(res.left(), other.left()));
-	res.setBottom(std::min(res.bottom(), other.bottom()));
-	res.setRight(std::max(res.right(), other.right()));
-	res.setTop(std::max(res.top(), other.top()));
+	res.setLeft(std::min(res.left(), other.left(), less));
+	res.setBottom(std::min(res.bottom(), other.bottom(), less));
+	res.setRight(std::max(res.right(), other.right(), less));
+	res.setTop(std::max(res.top(), other.top(), less));
 	return res;
 }
 
 Rect Rect::boundary(const Point &p) const
 {
+	using Math::Floating::less;
 	Rect res = positive();
-	res.setLeft(std::min(res.left(), p.x));
-	res.setBottom(std::min(res.bottom(), p.y));
-	res.setRight(std::max(res.right(), p.x));
-	res.setTop(std::max(res.top(), p.y));
+	res.setLeft(std::min(res.left(), p.x, less));
+	res.setBottom(std::min(res.bottom(), p.y, less));
+	res.setRight(std::max(res.right(), p.x, less));
+	res.setTop(std::max(res.top(), p.y, less));
 	return res;
 }
 
 Point Rect::normalize(const Point &p) const
 {
+	using Math::Floating::is_zero;
 	Point res;
-	if (size.x != 0) res.x = (p.x - pos.x) / size.x;
-	if (size.y != 0) res.y = (p.y - pos.y) / size.y;
+	if (!is_zero(size.x)) res.x = (p.x - pos.x) / size.x;
+	if (!is_zero(size.y)) res.y = (p.y - pos.y) / size.y;
 	return res;
 }
 
 Size Rect::normalize(const Size &s) const
 {
+	using Math::Floating::is_zero;
 	Size res;
-	if (size.x != 0) res.x = s.x / size.x;
-	if (size.y != 0) res.y = s.y / size.y;
+	if (!is_zero(size.x)) res.x = s.x / size.x;
+	if (!is_zero(size.y)) res.y = s.y / size.y;
 	return res;
 }
 
@@ -57,11 +61,11 @@ Rect Rect::normalize(const Rect &rect) const
 Rect Rect::positive() const
 {
 	Rect res = *this;
-	if (res.size.x < 0) {
+	if (std::signbit(res.size.x)) {
 		res.size.x = -res.size.x;
 		res.pos.x -= res.size.x;
 	}
-	if (res.size.y < 0) {
+	if (std::signbit(res.size.y)) {
 		res.size.y = -res.size.y;
 		res.pos.y -= res.size.y;
 	}
@@ -85,19 +89,23 @@ bool Rect::contains(const Point &p) const
 
 Rect Rect::intersection(const Rect &rect) const
 {
-	auto xLeft = std::max(this->left(), rect.left());
-	auto xRight = std::min(this->right(), rect.right());
-	auto yBottom = std::max(this->bottom(), rect.bottom());
-	auto yTop = std::min(this->top(), rect.top());
-	if (xLeft >= xRight || yBottom >= yTop) { return {}; }
+	using Math::Floating::less;
+	auto xLeft = std::max(this->left(), rect.left(), less);
+	auto xRight = std::min(this->right(), rect.right(), less);
+	auto yBottom = std::max(this->bottom(), rect.bottom(), less);
+	auto yTop = std::min(this->top(), rect.top(), less);
+
+	if (!less(xLeft, xRight) || !less(yBottom, yTop)) { return {}; }
 	return {Point{xLeft, yBottom},
 	    Size{xRight - xLeft, yTop - yBottom}};
 }
 
 bool Rect::intersects(const Rect &r) const
 {
-	auto isOutside = right() < r.left() || r.right() < left()
-	              || top() < r.bottom() || r.top() < bottom();
+	using Math::Floating::less;
+	auto isOutside =
+	    less(right(), r.left()) || less(r.right(), left())
+	    || less(top(), r.bottom()) || less(r.top(), bottom());
 	return !isOutside;
 }
 

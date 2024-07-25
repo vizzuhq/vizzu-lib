@@ -6,6 +6,7 @@
 #include "base/geom/circle.h"
 #include "base/geom/point.h"
 #include "base/geom/rect.h"
+#include "base/math/floating.h"
 
 namespace Vizzu::Charts
 {
@@ -55,7 +56,7 @@ struct SpecMarker
 
 	static bool sizeOrder(const SpecMarker &a, const SpecMarker &b)
 	{
-		return std::is_lt(std::weak_order(b.size(), a.size()));
+		return Math::Floating::less(b.size(), a.size());
 	}
 };
 

@@ -3,8 +3,8 @@
 
 #include <map>
 #include <memory>
+#include <mutex>
 #include <shared_mutex>
-#include <thread>
 #include <variant>
 
 namespace Vizzu

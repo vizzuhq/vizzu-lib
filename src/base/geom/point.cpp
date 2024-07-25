@@ -3,18 +3,6 @@
 namespace Geom
 {
 
-Size Size::UpperIdentity(double aspectRatio)
-{
-	if (aspectRatio >= 1.0) return {aspectRatio, 1.0};
-	return {1.0, 1.0 / aspectRatio};
-}
-
-Size Size::LowerIdentity(double aspectRatio)
-{
-	if (aspectRatio <= 1.0) return {aspectRatio, 1.0};
-	return {1.0, 1.0 / aspectRatio};
-}
-
 Size Size::rotatedSize(double angle) const
 {
 	Size res;
@@ -33,8 +21,9 @@ Point Point::rotated(double angle) const
 
 Point Point::normalized() const
 {
+	using Math::Floating::is_zero;
 	auto length = abs();
-	if (length == 0.0) return {0, 0};
+	if (is_zero(length)) return {0, 0};
 	return *this / length;
 }
 

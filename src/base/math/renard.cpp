@@ -4,8 +4,8 @@
 #include <cmath>
 #include <ranges>
 #include <stdexcept>
+#include <string>
 
-#include "floating.h"
 #include "normalizednumber.h"
 
 namespace Math
