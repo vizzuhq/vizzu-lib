@@ -18,7 +18,7 @@ DrawPolygon::DrawPolygon(const std::array<Geom::Point, 4> &ps,
 	auto linSize = Geom::Size{options.coordSys.verConvert(boundary.x),
 	    options.coordSys.verConvert(boundary.y)};
 
-	if (options.circ == 1.0 && linSize.isSquare(0.005)) {
+	if (options.toCircleFactor == 1.0 && linSize.isSquare(0.005)) {
 		auto centerConv = options.coordSys.convert(center);
 		auto radius = fabs(linSize.x) / 2.0;
 		const Geom::Circle circle(centerConv, radius);
@@ -68,9 +68,10 @@ Geom::Point DrawPolygon::Path::getPoint(double f)
 	auto nonlinP =
 	    options.coordSys.convert(Math::interpolate(p0, p1, f));
 
-	auto mixedP = Math::interpolate(nonlinP, linP, options.linear);
+	auto mixedP =
+	    Math::interpolate(nonlinP, linP, options.straightFactor);
 
-	return intpToElipse(mixedP, options.circ);
+	return intpToElipse(mixedP, options.toCircleFactor);
 }
 
 Geom::Point DrawPolygon::Path::intpToElipse(Geom::Point point,

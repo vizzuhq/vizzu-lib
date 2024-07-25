@@ -16,14 +16,14 @@ namespace Vizzu::Draw
 class DrawPolygon
 {
 public:
-	struct Options : PathSampler::Options
+	struct PolygonOptions
 	{
-		explicit Options(CoordinateSystem &coordSys) :
-		    PathSampler::Options(coordSys)
-		{}
-		double circ{0};
-		double linear{0};
+		double toCircleFactor;
+		double straightFactor;
 	};
+
+	struct Options : PathSampler::Options, PolygonOptions
+	{};
 
 	DrawPolygon(const std::array<Geom::Point, 4> &ps,
 	    const Options &options,

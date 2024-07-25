@@ -68,6 +68,10 @@ extern void vizzu_render(APIHandles::Chart chart,
     APIHandles::Canvas canvas,
     double width,
     double height);
+extern void vizzu_setLineResolution(APIHandles::Canvas canvas,
+    double dMax,
+    double hMax);
+
 extern const char *vizzu_errorMessage(
     APIHandles::Exception exceptionPtr,
     const std::type_info *typeinfo);

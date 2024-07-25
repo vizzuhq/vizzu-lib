@@ -8,7 +8,7 @@ namespace Vizzu::Draw
 
 void Painter::drawLine(const Geom::Line &line)
 {
-	Draw::DrawLine(line, mode, system, getCanvas());
+	DrawLine(line, {pathSamplerOptions, system}, getCanvas());
 }
 
 void Painter::drawStraightLine(const Geom::Line &line,
@@ -21,10 +21,10 @@ void Painter::drawStraightLine(const Geom::Line &line,
 void Painter::drawPolygon(const std::array<Geom::Point, 4> &ps,
     bool clip)
 {
-	Draw::DrawPolygon::Options options(system);
-	options.circ = polygonOptions.toCircleFactor;
-	options.linear = polygonOptions.straightFactor;
-	Draw::DrawPolygon(ps, options, getCanvas(), clip);
+	Draw::DrawPolygon(ps,
+	    {{pathSamplerOptions, system}, polygonOptions},
+	    getCanvas(),
+	    clip);
 }
 
 }

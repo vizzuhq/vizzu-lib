@@ -1,6 +1,7 @@
 #ifndef CHART_UI_CHART_H
 #define CHART_UI_CHART_H
 
+#include "base/gfx/pathsampler.h"
 #include "base/gui/pointer.h"
 #include "base/util/eventdispatcher.h"
 #include "chart/main/chart.h"
