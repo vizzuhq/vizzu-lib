@@ -4,12 +4,26 @@
 
 ### Fixed
 
-- First marker alpha was different to other marker's alpha
-- Make some transactions clearer. (rectangle-line first marker)
+- Make some static charts clearer:
+  - Area/line charts different markers are not connected.
+  - Not existing or disabled markers have no effect.
+- Make some transactions clearer:
+  - Rectangle - Line/Area first marker not fades, but shrinks.
+  - The first marker's alpha was different to the other marker's alpha.
+  - Marker connection rework: Introduce invalid, polar and self connection.
+  - Marker connection animation step necessity and timing fixes.
+  - Slipped animation steps (coordinateSystem - connection/orientation) fixes.
+  - Filtered markers (and their connections):
+    - Disappearing on hide animation phase.
+    - Appearing on show animation phase.
 
 ### Added
 
-- New data handling implemented: Not generating big cube
+- New data handling implemented:
+  - Only existing data generates the chart.
+  - Reduced memory usage.
+  - Bigger data capacity.
+- Canvas line drawing detail can be set (on C++ side).
 
 ## [0.11.4] - 2024-07-09
 
