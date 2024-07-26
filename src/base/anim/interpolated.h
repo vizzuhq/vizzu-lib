@@ -85,15 +85,6 @@ public:
 		values[0] = Weighted<Type>(Conv::parse<Type>(str));
 	}
 
-	template <class T>
-	    requires(std::is_constructible_v<Type, T>
-	             && !std::same_as<Type, T>
-	             && !std::same_as<std::string, T>)
-	explicit Interpolated(T &&value)
-	{
-		values[0] = Weighted<Type>(Type{std::forward<T>(value)});
-	}
-
 	Interpolated &operator=(Type value)
 	{
 		values[0] = Weighted<Type>(std::move(value));

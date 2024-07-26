@@ -162,7 +162,7 @@ public:
 
 	[[nodiscard]] bool isShapeValid(const ShapeType &) const;
 	[[nodiscard]] std::optional<MarkerInfoId> getMarkerInfoId(
-	    MarkerIndex) const;
+	    const MarkerIndex &) const;
 	static MarkerInfoId generateMarkerInfoId();
 
 	void setAutoParameters();

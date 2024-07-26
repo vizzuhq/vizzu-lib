@@ -61,12 +61,12 @@ public:
 	Id sizeId;
 
 	MarkerIndex idx;
-	MarkerPosition pos;
+	MarkerPosition pos{};
 
 	struct MarkerIndexPosition
 	{
 		MarkerIndex idx;
-		MarkerPosition pos;
+		MarkerPosition pos{};
 
 		friend bool operator==(const MarkerIndexPosition &lhs,
 		    const MarkerIndexPosition &rhs)

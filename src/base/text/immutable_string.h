@@ -2,8 +2,10 @@
 #define IMMUTABLE_STRING_H
 
 #include <cstring>
+#include <memory>
 #include <new>
 #include <string_view>
+#include <utility>
 
 namespace Text
 {
@@ -41,13 +43,15 @@ struct immutable_string
 			std::unique_ptr<char, deleter_t> ptr{
 			    new (std::align_val_t{alignof(
 			        impl_t)}) char[sizeof(impl_t) + length + 1]};
-			auto *buffer = ptr.get();
-			std::strncpy(buffer + sizeof(impl_t),
+			std::strncpy(ptr.get() + sizeof(impl_t),
 			    data,
 			    length)[length] = '\0';
+
+			static_assert(std::is_nothrow_constructible_v<impl_t,
+			    std::size_t,
+			    std::size_t>);
 			auto res = std::unique_ptr<impl_t, deleter_t>{
-			    new (buffer) impl_t{1, length}};
-			ptr.release();
+			    new (ptr.release()) impl_t{1, length}};
 			return res.release();
 		}
 	};
@@ -59,17 +63,24 @@ struct immutable_string
 	    impl{}
 	{}
 
-	[[nodiscard]] explicit immutable_string(std::string_view data) :
+	[[nodiscard]] explicit immutable_string(
+	    const std::string_view &data) :
 	    impl(allocator_t{}(data.data(), data.size()))
 	{}
 
 	template <std::size_t N>
-	[[nodiscard]] immutable_string(const char (&data)[N]) :
+	// NOLINTNEXTLINE(cppcoreguidelines-avoid-c-arrays,modernize-avoid-c-arrays)
+	using CCharArr = const char[N];
+
+	template <std::size_t N>
+	// NOLINTNEXTLINE(google-explicit-constructor)
+	[[nodiscard]] immutable_string(CCharArr<N> &data) :
 	    immutable_string(std::string_view{data, N - 1})
 	{}
 
 	template <std::size_t N>
-	[[nodiscard]] immutable_string(const char (&&data)[N]) :
+	// NOLINTNEXTLINE(google-explicit-constructor)
+	[[nodiscard]] immutable_string(CCharArr<N> &&data) :
 	    immutable_string(std::string_view{data, N - 1})
 	{}
 
@@ -117,7 +128,8 @@ struct immutable_string
 
 	void decr()
 	{
-		if (impl && --impl->counter == 0) deleter_t{}(impl);
+		if (impl && --impl->counter == 0)
+			deleter_t{}(std::exchange(impl, nullptr));
 	}
 
 	[[nodiscard]] const char *c_str() const noexcept
@@ -158,12 +170,12 @@ struct immutable_string
 	}
 
 	[[nodiscard]] friend bool operator==(const immutable_string &lhs,
-	    std::string_view rhs) noexcept
+	    const std::string_view &rhs) noexcept
 	{
 		return lhs.view() == rhs;
 	}
 
-	[[nodiscard]] friend bool operator==(std::string_view lhs,
+	[[nodiscard]] friend bool operator==(const std::string_view &lhs,
 	    const immutable_string &rhs) noexcept
 	{
 		return lhs == rhs.view();
@@ -171,13 +183,13 @@ struct immutable_string
 
 	template <std::size_t N>
 	[[nodiscard]] friend bool operator==(const immutable_string &lhs,
-	    const char (&rhs)[N]) noexcept
+	    CCharArr<N> &rhs) noexcept
 	{
 		return lhs == std::string_view{rhs, N - 1};
 	}
 
 	template <std::size_t N>
-	[[nodiscard]] friend bool operator==(const char (&&lhs)[N],
+	[[nodiscard]] friend bool operator==(CCharArr<N> &lhs,
 	    const immutable_string &rhs) noexcept
 	{
 		return std::string_view{lhs, N - 1} == rhs;
@@ -185,25 +197,25 @@ struct immutable_string
 
 	template <std::size_t N>
 	[[nodiscard]] friend bool operator==(const immutable_string &lhs,
-	    const char (&&rhs)[N]) noexcept
+	    CCharArr<N> &&rhs) noexcept
 	{
 		return lhs == std::string_view{rhs, N - 1};
 	}
 
 	template <std::size_t N>
-	[[nodiscard]] friend bool operator==(const char (&lhs)[N],
+	[[nodiscard]] friend bool operator==(CCharArr<N> &&lhs,
 	    const immutable_string &rhs) noexcept
 	{
 		return std::string_view{lhs, N - 1} == rhs;
 	}
 
 	[[nodiscard]] friend auto operator<=>(const immutable_string &lhs,
-	    std::string_view rhs) noexcept
+	    const std::string_view &rhs) noexcept
 	{
 		return lhs.view() <=> rhs;
 	}
 
-	[[nodiscard]] friend auto operator<=>(std::string_view lhs,
+	[[nodiscard]] friend auto operator<=>(const std::string_view &lhs,
 	    const immutable_string &rhs) noexcept
 	{
 		return lhs <=> rhs.view();
@@ -211,13 +223,13 @@ struct immutable_string
 
 	template <std::size_t N>
 	[[nodiscard]] friend auto operator<=>(const immutable_string &lhs,
-	    const char (&rhs)[N]) noexcept
+	    CCharArr<N> &rhs) noexcept
 	{
 		return lhs <=> std::string_view{rhs, N - 1};
 	}
 
 	template <std::size_t N>
-	[[nodiscard]] friend auto operator<=>(const char (&lhs)[N],
+	[[nodiscard]] friend auto operator<=>(CCharArr<N> &lhs,
 	    const immutable_string &rhs) noexcept
 	{
 		return std::string_view{lhs, N - 1} <=> rhs;
@@ -225,13 +237,13 @@ struct immutable_string
 
 	template <std::size_t N>
 	[[nodiscard]] friend auto operator<=>(const immutable_string &lhs,
-	    const char (&&rhs)[N]) noexcept
+	    CCharArr<N> &&rhs) noexcept
 	{
 		return lhs <=> std::string_view{rhs, N - 1};
 	}
 
 	template <std::size_t N>
-	[[nodiscard]] friend auto operator<=>(const char (&&lhs)[N],
+	[[nodiscard]] friend auto operator<=>(CCharArr<N> &&lhs,
 	    const immutable_string &rhs) noexcept
 	{
 		return std::string_view{lhs, N - 1} <=> rhs;

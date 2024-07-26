@@ -22,8 +22,7 @@ Marker::Marker(const Options &options,
                           .at(ChannelId::size)
                           .dimensionsWithLevel(),
         index)),
-    idx(index.marker_id),
-    pos{}
+    idx(index.marker_id)
 {
 	const auto &channels = options.getChannels();
 	auto color = getValueForChannel(channels,

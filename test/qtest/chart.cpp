@@ -85,7 +85,7 @@ void TestChart::run()
 		IO::log() << "step 5";
 		auto &options = chart.getChart().getOptions();
 		options.title = "VIZZU Chart - Phase 5";
-		options.showTooltip(13);
+		options.showTooltip("Cat1:A;Cat2:bíyx;");
 		chart.getChart().setKeyframe();
 		chart.getChart().animate({step6});
 	};
@@ -95,7 +95,7 @@ void TestChart::run()
 		IO::log() << "step 4";
 		auto &options = chart.getChart().getOptions();
 		options.title = "VIZZU Chart - Phase 4";
-		options.showTooltip(12);
+		options.showTooltip("Cat1:A;Cat2:aasd;");
 		chart.getChart().setKeyframe();
 		chart.getChart().animate({step5});
 	};

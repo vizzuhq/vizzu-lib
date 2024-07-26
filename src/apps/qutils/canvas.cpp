@@ -195,12 +195,12 @@ void BaseCanvas::rectangle(const Geom::Rect &rect)
 	painter.drawRect(toQRect(rect));
 }
 
-void BaseCanvas::text(const Geom::Rect &rect, std::string_view text)
+void BaseCanvas::text(const Geom::Rect &rect, const char *text)
 {
 	painter.setPen(textPen);
 	painter.drawText(toQRect(rect),
 	    Qt::AlignLeft,
-	    QString::fromStdString(std::string{text}));
+	    QString::fromStdString(text));
 }
 
 void BaseCanvas::setBrushGradient(const Geom::Line &line,
@@ -227,13 +227,13 @@ QPen BaseCanvas::brushToPen(const QBrush &brush)
 }
 
 Geom::Size Gfx::ICanvas::textBoundary(const Gfx::Font &font,
-    std::string_view text)
+    const char *text)
 {
 	auto res =
 	    QFontMetrics{BaseCanvas::fromGfxFont(font)}.boundingRect(
 	        QRect(0, 0, 0, 0),
 	        Qt::AlignLeft,
-	        QString::fromStdString(std::string{text}));
+	        QString::fromStdString(text));
 
 	return {static_cast<double>(res.width()),
 	    static_cast<double>(res.height())};
@@ -262,7 +262,8 @@ QFont BaseCanvas::fromGfxFont(const Gfx::Font &newFont, QFont font)
 	font.setPixelSize(static_cast<int>(newFont.size));
 
 	if (!newFont.family.empty())
-		font.setFamily(QString::fromStdString(newFont.family));
+		font.setFamily(
+		    QString::fromStdString(newFont.family.toString()));
 
 	font.setWeight(newFont.weight == Gfx::Font::Weight::Bold()
 	                   ? QFont::Bold

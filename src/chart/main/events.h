@@ -194,7 +194,8 @@ public:
 			std::string_view text;
 
 			template <typename... Args>
-			explicit Text(std::string_view text, Args &&...args) :
+			explicit Text(const std::string_view &text,
+			    Args &&...args) :
 			    Base(args...),
 			    text(text)
 			{}
