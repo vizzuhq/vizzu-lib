@@ -35,13 +35,12 @@ public:
 		return value == other.value && weight == other.weight;
 	}
 
-	template <typename Comparator =
-	              std::conditional_t<std::floating_point<Type>,
-	                  decltype(Math::Floating::less),
-	                  std::less<Type>>>
 	bool operator<(const Weighted<Type> &other) const
 	{
-		return Comparator{}(value, other.value);
+		using Less = std::conditional_t<std::floating_point<Type>,
+		    decltype(Math::Floating::less),
+		    std::less<Type>>;
+		return Less{}(value, other.value);
 	}
 
 	[[nodiscard]] bool hasValue() const { return weight > 0.0; }
@@ -234,28 +233,26 @@ public:
 		return res;
 	}
 
-	template <typename T = Type,
-	    typename Cmp = std::conditional_t<std::floating_point<T>,
-	        decltype(Math::Floating::less),
-	        std::less<T>>>
-	[[nodiscard]] T min() const
+	template <typename T = Type> [[nodiscard]] T min() const
 	{
+		using Less = std::conditional_t<std::floating_point<T>,
+		    decltype(Math::Floating::less),
+		    std::less<T>>;
 		return !has_second ? this->values[0].value
 		                   : std::min(this->values[0].value,
 		                       this->values[1].value,
-		                       Cmp{});
+		                       Less{});
 	}
 
-	template <typename T = Type,
-	    typename Cmp = std::conditional_t<std::floating_point<T>,
-	        decltype(Math::Floating::less),
-	        std::less<T>>>
-	[[nodiscard]] T max() const
+	template <typename T = Type> [[nodiscard]] T max() const
 	{
+		using Less = std::conditional_t<std::floating_point<T>,
+		    decltype(Math::Floating::less),
+		    std::less<T>>;
 		return !has_second ? this->values[0].value
 		                   : std::max(this->values[0].value,
 		                       this->values[1].value,
-		                       Cmp{});
+		                       Less{});
 	}
 };
 

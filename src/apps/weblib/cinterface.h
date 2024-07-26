@@ -69,8 +69,8 @@ extern void vizzu_render(APIHandles::Chart chart,
     double width,
     double height);
 extern void vizzu_setLineResolution(APIHandles::Canvas canvas,
-    double dMax,
-    double hMax);
+    double distanceMax,
+    double curveHeightMax);
 
 extern const char *vizzu_errorMessage(
     APIHandles::Exception exceptionPtr,

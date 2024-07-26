@@ -56,8 +56,8 @@ public:
 	    double width,
 	    double height);
 	void setLineResolution(ObjectRegistryHandle canvas,
-	    double dMax,
-	    double hMax);
+	    double distanceMax,
+	    double curveHeightMax);
 
 	ObjectRegistryHandle storeAnim(ObjectRegistryHandle chart);
 	void restoreAnim(ObjectRegistryHandle chart,

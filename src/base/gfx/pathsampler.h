@@ -13,8 +13,8 @@ class PathSampler
 public:
 	struct Options
 	{
-		double dMax;
-		double hMax;
+		double distanceMax;
+		double curveHeightMax;
 	};
 	explicit PathSampler(const Options &options) : options(options) {}
 
