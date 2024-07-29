@@ -126,7 +126,7 @@ void DrawMarkerInfo::MarkerDC::fillTextBox(Content &cnt)
 		if (parent.style.layout == Styles::Tooltip::Layout::multiLine)
 			text << TextBox::Tab();
 
-		text << TextBox::bold << val.c_str();
+		text << TextBox::bold << val.toString();
 
 		if (parent.style.layout == Styles::Tooltip::Layout::multiLine)
 			text << TextBox::NewLine();

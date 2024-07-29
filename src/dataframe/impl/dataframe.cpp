@@ -365,9 +365,7 @@ void dataframe::remove_series(
 			auto ix = &unsafe_get<dimension>(ser).second
 			        - s.dimensions.data();
 			remove_dimensions.insert(
-			    std::lower_bound(remove_dimensions.begin(),
-			        remove_dimensions.end(),
-			        ix),
+			    std::ranges::lower_bound(remove_dimensions, ix),
 			    ix);
 			break;
 		}
@@ -375,9 +373,7 @@ void dataframe::remove_series(
 			auto ix =
 			    &unsafe_get<measure>(ser).second - s.measures.data();
 			remove_measures.insert(
-			    std::lower_bound(remove_measures.begin(),
-			        remove_measures.end(),
-			        ix),
+			    std::ranges::lower_bound(remove_measures, ix),
 			    ix);
 			break;
 		}

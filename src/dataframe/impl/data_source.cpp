@@ -186,14 +186,10 @@ void data_source::sort(std::vector<std::size_t> &&indices)
 std::size_t data_source::change_series_identifier_type(
     const std::string_view &name) const
 {
-	if (auto it = std::lower_bound(dimension_names.begin(),
-	        dimension_names.end(),
-	        name);
+	if (auto it = std::ranges::lower_bound(dimension_names, name);
 	    it != dimension_names.end() && *it == name)
 		return static_cast<std::size_t>(it - dimension_names.begin());
-	if (auto it = std::lower_bound(measure_names.begin(),
-	        measure_names.end(),
-	        name);
+	if (auto it = std::ranges::lower_bound(measure_names, name);
 	    it != measure_names.end() && *it == name)
 		return static_cast<std::size_t>(
 		           std::distance(measure_names.begin(), it))
@@ -339,11 +335,9 @@ data_source::measure_with_name_ref data_source::add_new_measure(
     std::string_view name,
     std::span<const std::pair<const char *, const char *>> info)
 {
-	auto &&it =
-	    measure_names.emplace(std::lower_bound(measure_names.begin(),
-	                              measure_names.end(),
-	                              name),
-	        name);
+	auto &&it = measure_names.emplace(
+	    std::ranges::lower_bound(measure_names, name),
+	    name);
 	auto &ref = *measures.emplace(measures.begin()
 	                                  + (it - measure_names.begin()),
 	    measure_values,
@@ -355,11 +349,9 @@ data_source::measure_with_name_ref data_source::add_new_measure(
     measure_t &&mea,
     const Text::immutable_string &name)
 {
-	auto &&it =
-	    measure_names.emplace(std::lower_bound(measure_names.begin(),
-	                              measure_names.end(),
-	                              name),
-	        name);
+	auto &&it = measure_names.emplace(
+	    std::ranges::lower_bound(measure_names, name),
+	    name);
 	auto &ref = *measures.emplace(measures.begin()
 	                                  + (it - measure_names.begin()),
 	    std::move(mea));
