@@ -113,7 +113,7 @@
 			"refs": ["92f463e"]
 		},
 		"basic_animations/someOtherTests/merge_split_area_stream_2dis_1con": {
-			"refs": ["8a939ae"]
+			"refs": ["75abfe4"]
 		},
 		"basic_animations/someOtherTests/total_time_area_bar": {
 			"refs": ["4439736"]
@@ -506,7 +506,7 @@
 			"refs": ["ce56537"]
 		},
 		"web_content/analytical_operations/compare/stream_stacked": {
-			"refs": ["e0966ff"]
+			"refs": ["7692134"]
 		},
 		"web_content/analytical_operations/compare/waterfall": {
 			"refs": ["16a3b23"]
@@ -620,10 +620,10 @@
 			"refs": ["3bc3a48"]
 		},
 		"web_content/analytical_operations/filter/stream_1": {
-			"refs": ["b6e5f5c"]
+			"refs": ["fe0fc5b"]
 		},
 		"web_content/analytical_operations/filter/stream_2": {
-			"refs": ["2adfbcf"]
+			"refs": ["3e3783f"]
 		},
 		"web_content/analytical_operations/misc/donut_to_coxcomb": {
 			"refs": ["20caa7e"]
@@ -770,7 +770,7 @@
 			"refs": ["b77d3f6"]
 		},
 		"web_content/analytical_operations/sum/stream_stacked": {
-			"refs": ["797580d"]
+			"refs": ["9d75321"]
 		},
 		"web_content/analytical_operations/sum/treemap": {
 			"refs": ["1cb2f0a"]
@@ -923,16 +923,16 @@
 			"refs": ["b5996be"]
 		},
 		"web_content/presets/graph/stream": {
-			"refs": ["4e887e6"]
+			"refs": ["10a6767"]
 		},
 		"web_content/presets/graph/stream_vertical": {
-			"refs": ["7f24b7f"]
+			"refs": ["7a9f85c"]
 		},
 		"web_content/presets/graph/violin": {
-			"refs": ["139a372"]
+			"refs": ["16f0508"]
 		},
 		"web_content/presets/graph/violin_vertical": {
-			"refs": ["78626c7"]
+			"refs": ["0ca98ea"]
 		},
 		"web_content/presets/chart/line": {
 			"refs": ["9b78c6e"]
@@ -1772,7 +1772,7 @@
 			"refs": ["ba7ad4b"]
 		},
 		"ww_next_steps/next_steps/35_C_A_violin": {
-			"refs": ["b1dd1e9"]
+			"refs": ["c001634"]
 		},
 		"ww_next_steps/next_steps/38_C_L_line": {
 			"refs": ["3a9b873"]
@@ -3065,19 +3065,19 @@
 			"refs": ["4635b93"]
 		},
 		"ww_samples_for_presets/cartesian_coo_sys/32_C_A_stream_graph": {
-			"refs": ["10b7209"]
+			"refs": ["a064221"]
 		},
 		"ww_samples_for_presets/cartesian_coo_sys/33_C_A_stream_graph_vert": {
-			"refs": ["25227bf"]
+			"refs": ["f95bc69"]
 		},
 		"ww_samples_for_presets/cartesian_coo_sys/34_C_A_violin_graph": {
-			"refs": ["87266d3"]
+			"refs": ["f6a2b5f"]
 		},
 		"ww_samples_for_presets/cartesian_coo_sys/35_C_A_violin_graph_vert": {
-			"refs": ["07891c6"]
+			"refs": ["cac7dd7"]
 		},
 		"ww_samples_for_presets/cartesian_coo_sys/36_C_A_range_area_chart": {
-			"refs": ["91ba861"]
+			"refs": ["dd7fe0a"]
 		},
 		"ww_samples_for_presets/cartesian_coo_sys/371_C_L_line_chart_nega": {
 			"refs": ["ebadb12"]
@@ -3131,7 +3131,7 @@
 			"refs": ["7054ac4"]
 		},
 		"ww_samples_for_presets/polar_coo_sys/551_P_A_polar_stream_graph": {
-			"refs": ["c2df43f"]
+			"refs": ["45f55a7"]
 		},
 		"ww_samples_for_presets/polar_coo_sys/55_P_A_polar_overlay_area_chart": {
 			"refs": ["852e4a1"]
@@ -3146,7 +3146,7 @@
 			"refs": ["2a0ba0d"]
 		},
 		"ww_samples_for_presets/without_coo_sys/602_W_R_heatmap3": {
-			"refs": ["6db6e71"]
+			"refs": ["b87a477"]
 		},
 		"ww_samples_for_presets/without_coo_sys/60_W_R_heatmap": {
 			"refs": ["972f61d"]
@@ -3230,7 +3230,7 @@
 			"refs": ["ad0cb9b"]
 		},
 		"web_content/cookbook/rendering/sparse_axis_labels": {
-			"refs": ["af76977"]
+			"refs": ["9d3b939"]
 		},
 		"web_content/cookbook/style/d3_color_palette": {
 			"refs": ["bd104b0"]
@@ -3278,7 +3278,7 @@
 			"refs": ["da8ec16"]
 		},
 		"web_content/cookbook/interactive/filter_slider": {
-			"refs": ["cae7314"]
+			"refs": ["77ee90f"]
 		},
 		"web_content/cookbook/interactive/range_slider_zoom": {
 			"refs": ["c8a63f6"]
