@@ -3,4 +3,4 @@
 set -e
 
 source .venv/bin/activate
-pdm lock --no-default -d -p tools/ci
+pdm lock --no-default --no-isolation -d -p tools/ci
