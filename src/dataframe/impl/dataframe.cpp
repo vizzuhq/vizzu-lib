@@ -232,9 +232,9 @@ const Text::immutable_string &dataframe::add_dimension(
 		change_state_to(state_type::modifying,
 		    state_modification_reason::needs_own_state);
 
-		auto &&[nref, dims] = unsafe_get<series_type::dimension>(
-		    unsafe_get<source_type::owning>(source)->get_series(
-		        name));
+		auto &&ser =
+		    unsafe_get<source_type::owning>(source)->get_series(name);
+		auto &[nref, dims] = unsafe_get<series_type::dimension>(ser);
 
 		switch (adding_strategy) {
 		case adding_type::create_or_throw:
@@ -262,7 +262,7 @@ const Text::immutable_string &dataframe::add_dimension(
 			break;
 		}
 		}
-		return nref;
+		return nref.get();
 	}
 	case series_type::measure:
 		error(error_type::duplicated_series, name);
@@ -302,9 +302,9 @@ const Text::immutable_string &dataframe::add_measure(
 		change_state_to(state_type::modifying,
 		    state_modification_reason::needs_own_state);
 
-		auto &&[nref, meas] = unsafe_get<series_type::measure>(
-		    unsafe_get<source_type::owning>(source)->get_series(
-		        name));
+		auto &&ser =
+		    unsafe_get<source_type::owning>(source)->get_series(name);
+		auto &[nref, meas] = unsafe_get<series_type::measure>(ser);
 
 		switch (adding_strategy) {
 		case adding_type::create_or_throw:
@@ -329,7 +329,7 @@ const Text::immutable_string &dataframe::add_measure(
 			break;
 		}
 		}
-		return nref;
+		return nref.get();
 	}
 	case series_type::dimension:
 		error(error_type::duplicated_series, name);
@@ -731,9 +731,8 @@ Text::immutable_string dataframe::get_record_id(
 		error(error_type::record, "get id before finalized");
 
 	const auto &ids = get_data_source().finalized.record_ids;
-	if (my_record >= ids.size()) return {};
-
-	return ids[my_record];
+	return my_record < ids.size() ? ids[my_record]
+	                              : Text::immutable_string{};
 }
 
 dataframe::series_meta_t dataframe::get_series_meta(
