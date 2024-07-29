@@ -11,6 +11,6 @@ test -f ~/.netrc && chmod u+rw,u-x,go-rwx ~/.netrc
 
 python3.10 -m venv --copies ".venv" || python3 -m venv --copies ".venv"
 source .venv/bin/activate
-pip3 install "setuptools<72.0.0"
+pip install "setuptools<72.0.0"
 pip install pdm==2.10.3
 pdm install -p tools/ci --no-isolation
