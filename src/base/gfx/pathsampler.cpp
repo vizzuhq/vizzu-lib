@@ -32,19 +32,19 @@ void PathSampler::path(const Geom::Point &pConv0,
 	auto height = 2 * area / (pConv1 - pConv0).abs();
 
 	auto needMore =
-	    height > options.hMax
+	    height > options.curveHeightMax
 	    || ((pConv1 - pConv0).sqrAbs() < (pConv - pConv0).sqrAbs())
 	    || ((pConv1 - pConv0).sqrAbs() < (pConv - pConv1).sqrAbs());
 
 	if (needMore) {
-		if ((pConv - pConv0).sqrAbs() > options.dMax)
+		if ((pConv - pConv0).sqrAbs() > options.distanceMax)
 			path(pConv0, pConv, i0, i, recurseCnt + 1);
 	}
 
 	addPoint(pConv);
 
 	if (needMore) {
-		if ((pConv - pConv1).sqrAbs() > options.dMax)
+		if ((pConv - pConv1).sqrAbs() > options.distanceMax)
 			path(pConv, pConv1, i, i1, recurseCnt + 1);
 	}
 }

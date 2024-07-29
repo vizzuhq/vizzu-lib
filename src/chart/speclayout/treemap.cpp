@@ -12,12 +12,10 @@ TreeMap::TreeMap(const std::vector<double> &sizes,
 {
 	markers.reserve(sizes.size());
 
-	for (auto j = 0U; j < sizes.size(); ++j)
-		markers.emplace_back(j,
-		    std::abs(sizes[j]),
-		    std::signbit(sizes[j]));
+	for (auto j = 0U; const double &size : sizes)
+		markers.emplace_back(j++, std::abs(size), std::signbit(size));
 
-	std::ranges::sort(markers, SpecMarker::sizeOrder);
+	std::ranges::stable_sort(markers, SpecMarker::sizeOrder);
 
 	auto start = markers.begin();
 	while (start != markers.end() && !std::isfinite(start->size()))
@@ -28,7 +26,7 @@ TreeMap::TreeMap(const std::vector<double> &sizes,
 	    parent ? parent->rect().pos : Geom::Point{0, 1},
 	    parent ? parent->rect().topRight() : Geom::Point{1, 0});
 
-	std::ranges::sort(markers, SpecMarker::indexOrder);
+	std::ranges::stable_sort(markers, SpecMarker::indexOrder);
 }
 
 void TreeMap::divide(It begin,

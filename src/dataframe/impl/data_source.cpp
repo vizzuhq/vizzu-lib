@@ -363,7 +363,7 @@ std::vector<std::size_t> data_source::get_sorted_indices(
 {
 	std::vector<std::size_t> indices(max);
 	std::iota(indices.begin(), indices.end(), std::size_t{});
-	std::sort(indices.begin(), indices.end(), sort);
+	std::ranges::stable_sort(indices, sort);
 	return indices;
 }
 

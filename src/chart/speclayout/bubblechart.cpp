@@ -16,13 +16,13 @@ BubbleChart::BubbleChart(const std::vector<double> &circleAreas,
 		    std::sqrt(std::abs(circleArea)),
 		    std::signbit(circleArea));
 
-	std::sort(markers.begin(), markers.end(), SpecMarker::sizeOrder);
+	std::ranges::stable_sort(markers, SpecMarker::sizeOrder);
 
 	generate();
 	normalize(parent ? parent->circle().boundary()
 	                 : Geom::Rect{{}, Geom::Size{1, 1}});
 
-	std::sort(markers.begin(), markers.end(), SpecMarker::indexOrder);
+	std::ranges::stable_sort(markers, SpecMarker::indexOrder);
 }
 
 void BubbleChart::generate()

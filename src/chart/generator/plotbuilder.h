@@ -9,6 +9,9 @@
 
 namespace Vizzu::Gen
 {
+
+struct Buckets;
+
 class PlotBuilder
 {
 public:
@@ -26,7 +29,6 @@ private:
 	{
 		std::size_t index{};
 		double size{};
-		bool hasElement{};
 	};
 
 	void initDimensionTrackers() const;

@@ -91,8 +91,8 @@ export interface CVizzu {
 	_vizzu_pointerLeave(chart: CChartPtr, canvas: CCanvasPtr, pointerId: number): void
 	_vizzu_wheel(chart: CChartPtr, canvas: CCanvasPtr, delta: number): void
 	_vizzu_setLogging(enable: boolean): void
-	_vizzu_update(chart: CChartPtr, time: number): CString
-	_vizzu_setLineResolution(canvas: CCanvasPtr, dMax: number, hMax: number): void
+	_vizzu_update(chart: CChartPtr, time: number): void
+	_vizzu_setLineResolution(canvas: CCanvasPtr, distanceMax: number, curveHeightMax: number): void
 	_vizzu_render(chart: CChartPtr, canvas: CCanvasPtr, width: number, height: number): void
 
 	_vizzu_errorMessage(exceptionPtr: CException, typeinfo: CTypeInfo): CString

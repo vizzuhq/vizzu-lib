@@ -128,7 +128,7 @@ bool Marker::connectMarkers(bool first,
 		next->prevMainMarker =
 		    MarkerIndexPosition{prev->idx, prev->pos};
 		next->polarConnection = polarConnection && first;
-		return !first || polarConnection;
+		return true;
 	}
 	if (next && main) {
 		next->prevMainMarker =
