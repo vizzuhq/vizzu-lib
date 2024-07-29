@@ -127,11 +127,12 @@ Text::immutable_string dataframe::set_aggregate(
 	    unsafe_get<state_type::aggregating>(state_data);
 
 	if (ser == series_type::dimension && !aggregator) {
-		if (!aggs.dims
-		         .emplace(unsafe_get<series_type::dimension>(ser))
-		         .second)
-			error(error_type::duplicated_series, series);
-		return {};
+		if (auto &&[it, success] = aggs.dims.emplace(
+		        unsafe_get<series_type::dimension>(ser));
+		    success) [[likely]]
+			return it->first;
+
+		error(error_type::duplicated_series, series);
 	}
 
 	auto &&[name, uniq] =

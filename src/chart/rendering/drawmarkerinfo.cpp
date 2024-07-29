@@ -102,7 +102,7 @@ void DrawMarkerInfo::MarkerDC::fillTextBox(Content &cnt)
 			text << static_cast<Gfx::Font>(parent.style)
 			     << static_cast<TextBox::Font>(
 			            parent.style.fontSize->get() * 1.3)
-			     << TextBox::bold << val.toString();
+			     << TextBox::bold << val;
 			if (parent.style.layout
 			    == Styles::Tooltip::Layout::multiLine)
 				text << TextBox::NewLine();
@@ -121,12 +121,12 @@ void DrawMarkerInfo::MarkerDC::fillTextBox(Content &cnt)
 		if (parent.style.layout == Styles::Tooltip::Layout::singleLine
 		    && std::exchange(was_first, true))
 			text << ", ";
-		text << cid.toString() << ": ";
+		text << cid << ": ";
 
 		if (parent.style.layout == Styles::Tooltip::Layout::multiLine)
 			text << TextBox::Tab();
 
-		text << TextBox::bold << val.toString();
+		text << TextBox::bold << val;
 
 		if (parent.style.layout == Styles::Tooltip::Layout::multiLine)
 			text << TextBox::NewLine();

@@ -1,10 +1,10 @@
 #include "font.h"
 
-#include <base/text/immutable_string.h>
-#include <utility>
+#include <string>
 
 #include "base/conv/parse.h"
 #include "base/conv/tostring.h"
+#include "base/text/immutable_string.h"
 
 namespace Gfx
 {

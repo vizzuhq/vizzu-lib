@@ -529,9 +529,9 @@ std::vector<std::size_t> data_source::dimension_t::get_indices(
 		    case sort_type::less: return (*cats)[a] < (*cats)[b];
 		    case sort_type::greater: return (*cats)[b] < (*cats)[a];
 		    case sort_type::natural_less:
-			    return cmp((*cats)[a].c_str(), (*cats)[b].c_str());
+			    return cmp((*cats)[a], (*cats)[b]);
 		    case sort_type::natural_greater:
-			    return cmp((*cats)[b].c_str(), (*cats)[a].c_str());
+			    return cmp((*cats)[b], (*cats)[a]);
 		    }
 	    });
 }

@@ -3,6 +3,8 @@
 
 #include <string>
 
+#include "immutable_string.h"
+
 namespace Text
 {
 
@@ -11,7 +13,8 @@ class NaturalCmp
 public:
 	explicit NaturalCmp(bool ignoreCase = true,
 	    bool ignoreSpace = true);
-	[[nodiscard]] bool operator()(const char *, const char *) const;
+	[[nodiscard]] bool operator()(const immutable_string &,
+	    const immutable_string &) const;
 
 private:
 	bool ignoreCase;
