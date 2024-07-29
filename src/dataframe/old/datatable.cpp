@@ -99,7 +99,7 @@ void DataCube::check(iterator_t &it) const
 	for (auto &&[dim, cats, size, ix] : dim_reindex) {
 		const auto *str_ptr =
 		    std::get<const Text::immutable_string *>(
-		        df->get_data(it.index.rid, dim.view()));
+		        df->get_data(it.index.rid, dim));
 
 		it.index.old[ix] =
 		    str_ptr == nullptr ? cats.size() : str_ptr - cats.data();
@@ -303,8 +303,7 @@ DataCube::cellInfo(const MultiIndex &index, bool needMarkerInfo) const
 
 	for (Conv::JSONObj &&vals{obj.nested("values")};
 	     auto &&meas : df->get_measures()) {
-		auto val =
-		    std::get<double>(df->get_data(index.rid, meas.view()));
+		auto val = std::get<double>(df->get_data(index.rid, meas));
 		vals.key<false>(meas.view()).primitive(val);
 		if (needMarkerInfo) {
 			thread_local auto conv =
@@ -319,7 +318,7 @@ double DataCube::valueAt(const MultiIndex &multiIndex,
     const SeriesIndex &seriesId) const
 {
 	return std::get<double>(
-	    df->get_data(multiIndex.rid, getName(seriesId).view()));
+	    df->get_data(multiIndex.rid, getName(seriesId)));
 }
 
 double DataCube::aggregateAt(const MultiIndex &multiIndex,
@@ -334,7 +333,7 @@ double DataCube::aggregateAt(const MultiIndex &multiIndex,
 	return std::get<double>(
 	    sub_df.get_data(df->get_record_id_by_dims(multiIndex.rid,
 	                        sub_df.get_dimensions()),
-	        getName(seriesId).view()));
+	        getName(seriesId)));
 }
 
 } // namespace Vizzu::Data

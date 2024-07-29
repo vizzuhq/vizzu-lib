@@ -112,11 +112,9 @@ Text::immutable_string dataframe::set_aggregate(
 	change_state_to(state_type::aggregating,
 	    state_modification_reason::needs_series_type);
 
-	switch (get_data_source().get_series(series.view())) {
+	switch (get_data_source().get_series(series)) {
 		using enum series_type;
-	default:
-		valid_unexistent_aggregator(series.view(), aggregator);
-		break;
+	default: valid_unexistent_aggregator(series, aggregator); break;
 	case dimension: valid_dimension_aggregator(aggregator); break;
 	case measure: valid_measure_aggregator(aggregator); break;
 	}
@@ -124,7 +122,7 @@ Text::immutable_string dataframe::set_aggregate(
 	change_state_to(state_type::aggregating,
 	    state_modification_reason::needs_own_state);
 
-	auto &&ser = get_data_source().get_series(series.view());
+	auto &&ser = get_data_source().get_series(series);
 	data_source::aggregating_type &aggs =
 	    unsafe_get<state_type::aggregating>(state_data);
 
@@ -132,13 +130,13 @@ Text::immutable_string dataframe::set_aggregate(
 		if (!aggs.dims
 		         .emplace(unsafe_get<series_type::dimension>(ser))
 		         .second)
-			error(error_type::duplicated_series, series.view());
+			error(error_type::duplicated_series, series);
 		return {};
 	}
 
 	auto &&[name, uniq] =
 	    aggs.add_aggregated(std::move(ser), aggregator.value());
-	if (!uniq) error(error_type::duplicated_series, series.view());
+	if (!uniq) error(error_type::duplicated_series, series);
 	return name;
 }
 
@@ -149,11 +147,11 @@ void dataframe::set_sort(const Text::immutable_string &series,
 	change_state_to(state_type::sorting,
 	    state_modification_reason::needs_series_type);
 
-	auto ser = get_data_source().get_series(series.view());
+	auto ser = get_data_source().get_series(series);
 
 	switch (ser) {
 		using enum series_type;
-	default: error(error_type::series_not_found, series.view());
+	default: error(error_type::series_not_found, series);
 	case dimension: {
 		std::optional<std::vector<std::size_t>> indices;
 		if (const auto &dim = unsafe_get<dimension>(ser).second;
@@ -163,7 +161,7 @@ void dataframe::set_sort(const Text::immutable_string &series,
 		    && (na_pos == dim.na_pos || !dim.contains_nav))
 			break;
 
-		error(error_type::sort, series.view());
+		error(error_type::sort, series);
 	}
 	case measure:
 		switch (sort) {
@@ -173,7 +171,7 @@ void dataframe::set_sort(const Text::immutable_string &series,
 		case sort_type::natural_less:
 		case sort_type::natural_greater:
 		case sort_type::by_categories:
-			error(error_type::sort, series.view());
+			error(error_type::sort, series);
 		}
 		break;
 	}
@@ -197,7 +195,7 @@ void dataframe::set_custom_sort(
 	error(error_type::unimplemented, "cus sort");
 }
 
-void dataframe::add_dimension(
+const Text::immutable_string &dataframe::add_dimension(
     std::span<const char *const> dimension_categories,
     std::span<const std::uint32_t> dimension_values,
     std::string_view name,
@@ -220,12 +218,11 @@ void dataframe::add_dimension(
 		unsafe_get<state_type::modifying>(state_data)
 		    .emplace_back(name);
 
-		unsafe_get<source_type::owning>(source)->add_new_dimension(
-		    dimension_categories,
-		    dimension_values,
-		    name,
-		    info);
-		break;
+		return unsafe_get<source_type::owning>(source)
+		    ->add_new_dimension(dimension_categories,
+		        dimension_values,
+		        name,
+		        info);
 	}
 	case series_type::dimension: {
 		if (adding_strategy == adding_type::create_or_throw)
@@ -234,9 +231,9 @@ void dataframe::add_dimension(
 		change_state_to(state_type::modifying,
 		    state_modification_reason::needs_own_state);
 
-		auto &dims = unsafe_get<series_type::dimension>(
-		    unsafe_get<source_type::owning>(source)->get_series(name))
-		                 .second;
+		auto &&[nref, dims] = unsafe_get<series_type::dimension>(
+		    unsafe_get<source_type::owning>(source)->get_series(
+		        name));
 
 		switch (adding_strategy) {
 		case adding_type::create_or_throw:
@@ -264,14 +261,15 @@ void dataframe::add_dimension(
 			break;
 		}
 		}
-		break;
+		return nref;
 	}
 	case series_type::measure:
 		error(error_type::duplicated_series, name);
 	}
 }
 
-void dataframe::add_measure(std::span<const double> measure_values,
+const Text::immutable_string &dataframe::add_measure(
+    std::span<const double> measure_values,
     std::string_view name,
     adding_type adding_strategy,
     std::span<const std::pair<const char *, const char *>> info) &
@@ -292,11 +290,9 @@ void dataframe::add_measure(std::span<const double> measure_values,
 		unsafe_get<state_type::modifying>(state_data)
 		    .emplace_back(name);
 
-		unsafe_get<source_type::owning>(source)->add_new_measure(
-		    measure_values,
-		    name,
-		    info);
-		break;
+		return unsafe_get<source_type::owning>(source)
+		    ->add_new_measure(measure_values, name, info)
+		    .first;
 	}
 	case series_type::measure: {
 		if (adding_strategy == adding_type::create_or_throw)
@@ -305,9 +301,9 @@ void dataframe::add_measure(std::span<const double> measure_values,
 		change_state_to(state_type::modifying,
 		    state_modification_reason::needs_own_state);
 
-		auto &meas = unsafe_get<series_type::measure>(
-		    unsafe_get<source_type::owning>(source)->get_series(name))
-		                 .second;
+		auto &&[nref, meas] = unsafe_get<series_type::measure>(
+		    unsafe_get<source_type::owning>(source)->get_series(
+		        name));
 
 		switch (adding_strategy) {
 		case adding_type::create_or_throw:
@@ -332,19 +328,22 @@ void dataframe::add_measure(std::span<const double> measure_values,
 			break;
 		}
 		}
-		break;
+		return nref;
 	}
 	case series_type::dimension:
 		error(error_type::duplicated_series, name);
 	}
 }
 
-void dataframe::add_series_by_other(std::string_view,
+const Text::immutable_string &dataframe::add_series_by_other(
+    std::string_view,
     std::string_view,
     const std::function<cell_value(record_type, cell_reference)> &,
     std::span<const std::pair<const char *, const char *>>) &
 {
 	if (as_if()) error(error_type::unimplemented, "by oth");
+	thread_local const Text::immutable_string s{};
+	return s;
 }
 
 void dataframe::remove_series(
@@ -873,7 +872,7 @@ Text::immutable_string dataframe::get_series_info(
     const Text::immutable_string &id,
     const char *key) const &
 {
-	switch (auto &&ser = get_data_source().get_series(id.view())) {
+	switch (auto &&ser = get_data_source().get_series(id)) {
 		using enum series_type;
 	default: return {};
 	case measure: {

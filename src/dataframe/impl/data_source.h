@@ -131,7 +131,9 @@ private:
 	struct final_info
 	{
 		std::map<Text::immutable_string, std::size_t> to_record_ix;
-		std::vector<Text::immutable_string> record_ids;
+		std::vector<
+		    std::reference_wrapper<const Text::immutable_string>>
+		    record_ids;
 	};
 
 	Text::immutable_string get_id(std::size_t record,
@@ -139,13 +141,25 @@ private:
 
 	using series_data = Refl::EnumVariant<series_type,
 	    std::monostate,
-	    std::pair<Text::immutable_string, dimension_t &>,
-	    std::pair<Text::immutable_string, measure_t &>>;
+	    std::pair<
+	        std::reference_wrapper<const Text::immutable_string>,
+	        dimension_t &>,
+	    std::pair<
+	        std::reference_wrapper<const Text::immutable_string>,
+	        measure_t &>>;
+
+	using measure_with_name_ref =
+	    Refl::variant_alternative_t<series_type::measure,
+	        series_data>;
 
 	using const_series_data = Refl::EnumVariant<series_type,
 	    std::monostate,
-	    std::pair<Text::immutable_string, const dimension_t &>,
-	    std::pair<Text::immutable_string, const measure_t &>>;
+	    std::pair<
+	        std::reference_wrapper<const Text::immutable_string>,
+	        const dimension_t &>,
+	    std::pair<
+	        std::reference_wrapper<const Text::immutable_string>,
+	        const measure_t &>>;
 
 	// replace these to std::flat_map
 	std::vector<Text::immutable_string>
@@ -227,20 +241,21 @@ public:
 
 	void finalize();
 
-	dimension_t &add_new_dimension(
+	const Text::immutable_string &add_new_dimension(
 	    std::span<const char *const> dimension_categories,
 	    std::span<const std::uint32_t> dimension_values,
 	    std::string_view name,
 	    std::span<const std::pair<const char *, const char *>> info);
 
-	dimension_t &add_new_dimension(dimension_t &&dim,
+	const Text::immutable_string &add_new_dimension(dimension_t &&dim,
 	    const Text::immutable_string &name);
 
-	measure_t &add_new_measure(std::span<const double> measure_values,
+	measure_with_name_ref add_new_measure(
+	    std::span<const double> measure_values,
 	    std::string_view name,
 	    std::span<const std::pair<const char *, const char *>> info);
 
-	measure_t &add_new_measure(measure_t &&measure,
+	measure_with_name_ref add_new_measure(measure_t &&measure,
 	    const Text::immutable_string &name);
 
 	static std::vector<std::size_t> get_sorted_indices(

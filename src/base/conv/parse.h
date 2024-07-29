@@ -22,7 +22,7 @@ template <typename To> To parse(const std::string &string)
 	else if constexpr (Parsable<To>) {
 		return To::fromString(string);
 	}
-	else if constexpr (Type::isoptional<To>::value) {
+	else if constexpr (Type::is_optional_v<To>) {
 		if (string == "null") return std::nullopt;
 		return parse<typename To::value_type>(string);
 	}

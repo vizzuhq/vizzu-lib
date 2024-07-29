@@ -52,40 +52,40 @@ void dataframe_interface::set_custom_sort(
 	as_impl(this).set_custom_sort(custom_sort);
 }
 
-void dataframe_interface::add_dimension(
+const Text::immutable_string &dataframe_interface::add_dimension(
     std::span<const char *const> dimension_categories,
     std::span<const std::uint32_t> dimension_values,
     std::string_view name,
     adding_type adding_strategy,
     std::span<const std::pair<const char *, const char *>> info) &
 {
-	as_impl(this).add_dimension(dimension_categories,
+	return as_impl(this).add_dimension(dimension_categories,
 	    dimension_values,
 	    name,
 	    adding_strategy,
 	    info);
 }
 
-void dataframe_interface::add_measure(
+const Text::immutable_string &dataframe_interface::add_measure(
     std::span<const double> measure_values,
     std::string_view name,
     adding_type adding_strategy,
     std::span<const std::pair<const char *, const char *>> info) &
 {
-	as_impl(this).add_measure(measure_values,
+	return as_impl(this).add_measure(measure_values,
 	    name,
 	    adding_strategy,
 	    info);
 }
 
-void dataframe_interface::add_series_by_other(
-    std::string_view curr_series,
+const Text::immutable_string &
+dataframe_interface::add_series_by_other(std::string_view curr_series,
     std::string_view name,
     const std::function<cell_value(record_type, cell_reference)>
         &value_transform,
     std::span<const std::pair<const char *, const char *>> info) &
 {
-	as_impl(this).add_series_by_other(curr_series,
+	return as_impl(this).add_series_by_other(curr_series,
 	    name,
 	    value_transform,
 	    info);

@@ -376,14 +376,13 @@ void PlotBuilder::calcMeasureAxis(const Data::DataTable &dataTable,
 		if (type == plot->getOptions()->subAxisType()
 		    && plot->getOptions()->align
 		           == Base::Align::Type::stretch) {
-			axis = MeasureAxis{Math::Range<double>::Raw(0, 100),
+			axis = {Math::Range<double>::Raw(0, 100),
 			    "%",
 			    meas->getColIndex(),
 			    scale.step.getValue()};
 		}
 		else {
-			axis = MeasureAxis{range.isReal()
-			                       ? range
+			axis = {range.isReal() ? range
 			                       : Math::Range<double>::Raw(0, 0),
 			    dataTable.getUnit(meas->getColIndex()),
 			    meas->getColIndex(),

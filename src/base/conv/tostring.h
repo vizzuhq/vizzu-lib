@@ -19,7 +19,7 @@ concept ToStringMember =
 
 template <typename From>
     requires(ToStringMember<From> || std::is_enum_v<From>
-             || Type::isoptional<From>::value
+             || Type::is_optional_v<From>
              || std::is_constructible_v<std::string, From>
              || std::is_arithmetic_v<From>)
 std::string toString(const From &value)
@@ -27,7 +27,7 @@ std::string toString(const From &value)
 	if constexpr (std::is_enum_v<From>) {
 		return Refl::enum_name<std::string>(value);
 	}
-	else if constexpr (Type::isoptional<From>::value) {
+	else if constexpr (Type::is_optional_v<From>) {
 		if (!value) return "null";
 		return toString(*value);
 	}

@@ -138,7 +138,8 @@ struct immutable_string
 		return view().data();
 	}
 
-	[[nodiscard]] explicit operator std::string_view() const noexcept
+	// NOLINTNEXTLINE(google-explicit-constructor)
+	[[nodiscard]] operator std::string_view() const noexcept
 	{
 		if (!impl) return {};
 		return {std::launder<const char>(static_cast<const char *>(
@@ -149,7 +150,7 @@ struct immutable_string
 
 	[[nodiscard]] std::string_view view() const noexcept
 	{
-		return static_cast<std::string_view>(*this);
+		return *this;
 	}
 
 	[[nodiscard]] bool empty() const noexcept

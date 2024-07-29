@@ -74,7 +74,7 @@ std::string Font::toCSS() const
 		res += static_cast<std::string>(weight) + " ";
 
 	res += std::to_string(size) + "px ";
-	res += family.view();
+	res += family;
 
 	return res;
 }

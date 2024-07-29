@@ -158,10 +158,20 @@ struct JSON
 	        && !std::is_same_v<std::remove_cvref_t<T>, std::nullptr_t>
 	        && !std::is_same_v<std::remove_cvref_t<T>, std::nullopt_t>
 	        && !Optional<T> && !StringConvertable<T>
-	        && !SerializableRange<T> && !Tuple<T>)
+	        && !SerializableRange<T> && !Tuple<T>
+	        && !Type::is_reference_wrapper_v<T>)
 	inline void any(const T &val) const
 	{
 		staticObj(val);
+	}
+
+	template <class T>
+	    requires(!JSONSerializable<T> && !SerializableRange<T>
+	             && !StringConvertable<T>
+	             && Type::is_reference_wrapper_v<T>)
+	inline void any(const T &val) const
+	{
+		any(val.get());
 	}
 
 	explicit inline JSON(std::string &json) : json(json) {}

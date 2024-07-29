@@ -191,13 +191,13 @@ public:
 
 		template <class Base> struct Text : Base
 		{
-			std::string_view text;
+			std::string text;
 
 			template <typename... Args>
 			explicit Text(const std::string_view &text,
 			    Args &&...args) :
 			    Base(args...),
-			    text(text)
+			    text{text}
 			{}
 
 			void appendToJSON(Conv::JSONObj &&jsonObj) const override
@@ -385,7 +385,7 @@ public:
 			    channel);
 		}
 
-		static auto legendTitle(std::string_view title,
+		static auto legendTitle(const std::string_view &title,
 		    Gen::ChannelId channel)
 		{
 			return std::make_unique<Text<LegendChild>>(title,

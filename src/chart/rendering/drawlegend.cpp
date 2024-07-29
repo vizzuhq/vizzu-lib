@@ -67,8 +67,7 @@ void DrawLegend::drawTitle(const Info &info) const
 		        title.value.c_str(),
 		        style.title,
 		        *events.title,
-		        Events::Targets::legendTitle(title.value.view(),
-		            info.type),
+		        Events::Targets::legendTitle(title.value, info.type),
 		        {.alpha = title.weight * info.weight * mul});
 	    });
 }
@@ -91,7 +90,7 @@ void DrawLegend::drawDimension(const Info &info) const
 		                 && Math::FuzzyBool{info.weight}};
 
 		drawMarker(info,
-		    value.second.categoryValue.view(),
+		    value.second.categoryValue,
 		    colorBuilder.render(value.second.colorBase)
 		        * double{alpha},
 		    getMarkerRect(info, itemRect));
@@ -105,9 +104,9 @@ void DrawLegend::drawDimension(const Info &info) const
 			        style.label,
 			        *events.label,
 			        Events::Targets::dimLegendLabel(
-			            info.dimension.category.view(),
-			            value.second.categoryValue.view(),
-			            value.second.categoryValue.view(),
+			            info.dimension.category,
+			            value.second.categoryValue,
+			            value.second.categoryValue,
 			            info.type),
 			        {.alpha = double{
 			             alpha && Math::FuzzyBool{weighted.weight}}});
@@ -159,7 +158,7 @@ void DrawLegend::drawMarker(const Info &info,
 	            * rect.size.minSize() / 2.0;
 
 	auto markerElement =
-	    Events::Targets::legendMarker(info.dimension.category.view(),
+	    Events::Targets::legendMarker(info.dimension.category,
 	        categoryValue,
 	        info.type);
 

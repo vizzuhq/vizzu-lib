@@ -293,71 +293,78 @@ void data_source::finalize()
 		normalize_sizes();
 		const auto records = get_record_count();
 		for (std::size_t r{}; r < records; ++r)
-			if (auto &id = finalized.record_ids.emplace_back(
-			        get_id(r, dimension_names));
-			    !finalized.to_record_ix.try_emplace(id, r).second)
+			if (auto &&[it, success] =
+			        finalized.to_record_ix.try_emplace(
+			            get_id(r, dimension_names),
+			            r);
+			    success) [[likely]]
+				finalized.record_ids.emplace_back(it->first);
+			else
 				error(error_type::record, "dup");
 	}
 }
-data_source::dimension_t &data_source::add_new_dimension(
+
+const Text::immutable_string &data_source::add_new_dimension(
     std::span<const char *const> dimension_categories,
     std::span<const std::uint32_t> dimension_values,
     std::string_view name,
     std::span<const std::pair<const char *, const char *>> info)
 {
-	auto it = dimension_names.emplace(
-	    std::lower_bound(dimension_names.begin(),
-	        dimension_names.end(),
-	        name),
+	auto &&it = dimension_names.emplace(
+	    std::ranges::lower_bound(dimension_names, name),
 	    name);
-	return *dimensions.emplace(dimensions.begin()
-	                               + (it - dimension_names.begin()),
+	dimensions.emplace(dimensions.begin()
+	                       + (it - dimension_names.begin()),
 	    dimension_categories,
 	    dimension_values,
 	    info);
+	return *it;
 }
 
-data_source::dimension_t &data_source::add_new_dimension(
+const Text::immutable_string &data_source::add_new_dimension(
     dimension_t &&dim,
     const Text::immutable_string &name)
 {
-	auto it = dimension_names.emplace(
-	    std::lower_bound(dimension_names.begin(),
-	        dimension_names.end(),
-	        name),
+	auto &&it = dimension_names.emplace(
+	    std::ranges::lower_bound(dimension_names, name),
 	    name);
-	return *dimensions.emplace(dimensions.begin()
-	                               + (it - dimension_names.begin()),
+	dimensions.emplace(dimensions.begin()
+	                       + (it - dimension_names.begin()),
 	    std::move(dim));
+	return *it;
 }
 
-data_source::measure_t &data_source::add_new_measure(
+data_source::measure_with_name_ref data_source::add_new_measure(
     std::span<const double> measure_values,
     std::string_view name,
     std::span<const std::pair<const char *, const char *>> info)
 {
-	auto it =
+	auto &&it =
 	    measure_names.emplace(std::lower_bound(measure_names.begin(),
 	                              measure_names.end(),
 	                              name),
 	        name);
-	return *measures.emplace(measures.begin()
-	                             + (it - measure_names.begin()),
+	auto &ref = *measures.emplace(measures.begin()
+	                                  + (it - measure_names.begin()),
 	    measure_values,
 	    info);
+	return {*it, ref};
 }
 
-data_source::measure_t &data_source::add_new_measure(measure_t &&mea,
+data_source::measure_with_name_ref data_source::add_new_measure(
+    measure_t &&mea,
     const Text::immutable_string &name)
 {
-	auto it =
+	auto &&it =
 	    measure_names.emplace(std::lower_bound(measure_names.begin(),
 	                              measure_names.end(),
 	                              name),
 	        name);
-	return *measures.emplace(measures.begin()
-	                             + (it - measure_names.begin()),
+	auto &ref = *measures.emplace(measures.begin()
+	                                  + (it - measure_names.begin()),
 	    std::move(mea));
+
+	return {*it, ref};
 }
 
 std::vector<std::size_t> data_source::get_sorted_indices(
@@ -409,7 +416,7 @@ data_source::data_source(aggregating_type &&aggregating,
 		    name);
 
 	for (const auto &[name, mea] : meas) {
-		measure_t &new_mea = add_new_measure({}, name);
+		measure_t &new_mea = add_new_measure({}, name).second;
 		switch (const auto &ser = std::get<0>(mea)) {
 			using enum series_type;
 		case dimension:
@@ -506,9 +513,9 @@ Text::immutable_string data_source::get_id(std::size_t record,
 	for (std::size_t ix{}; const auto &name : series) {
 		while (dimension_names[ix] != name) ++ix;
 		const auto *val = dimensions[ix].get(record);
-		res += name.view();
+		res += name;
 		res += ':';
-		res += val ? val->view() : std::string_view{"__null__"};
+		res += val ? *val : std::string_view{"__null__"};
 		res += ';';
 	}
 	return Text::immutable_string::fromString(res);

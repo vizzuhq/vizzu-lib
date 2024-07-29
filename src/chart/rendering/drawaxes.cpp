@@ -235,7 +235,7 @@ void DrawAxes::drawTitle(Gen::ChannelId axisIndex) const
 		    title.value.c_str(),
 		    titleStyle,
 		    *rootEvents.draw.plot.axis.title,
-		    Events::Targets::axisTitle(title.value.view(),
+		    Events::Targets::axisTitle(title.value,
 		        axisIndex == Gen::ChannelId::x),
 		    {.alpha = weight, .flip = upsideDown});
 
@@ -261,10 +261,7 @@ void DrawAxes::drawDimensionLabels(bool horizontal) const
 		canvas.setFont(Gfx::Font{labelStyle});
 
 		for (auto it = axis.begin(); it != axis.end(); ++it) {
-			drawDimensionLabel(horizontal,
-			    origo,
-			    it,
-			    axis.category.view());
+			drawDimensionLabel(horizontal, origo, it, axis.category);
 		}
 	}
 }
@@ -346,8 +343,8 @@ void DrawAxes::drawDimensionLabel(bool horizontal,
 			        1.0,
 			        *rootEvents.draw.plot.axis.label,
 			        Events::Targets::dimAxisLabel(category,
-			            categoryVal.view(),
-			            categoryVal.view(),
+			            categoryVal,
+			            categoryVal,
 			            horizontal));
 		    };
 
