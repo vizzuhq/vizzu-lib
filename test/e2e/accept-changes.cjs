@@ -25,8 +25,7 @@ function copyHashes(failHashFile, refHashFile) {
 }
 
 copyHashes('test_report/results/test_cases/test_cases.json', 'test_cases/test_cases.json')
-/*
-copyHashes(
-	"test_report/results/tests/style/style_tests.json",
-	"tests/style_tests.json"
-) */
+copyHashes('test_report/results/tests/style_tests/style_tests.json', 'tests/style_tests.json')
+copyHashes('test_report/results/tests/features/features.json', 'tests/features.json')
+copyHashes('test_report/results/tests/fixes/fixes.json', 'tests/fixes.json')
+copyHashes('test_report/results/tests/config_tests/config_tests.json', 'tests/config_tests.json')

@@ -85,7 +85,8 @@ class TestSuiteResult {
 		if (this.#createHashes !== 'DISABLED') {
 			if (
 				this.#createHashes === 'ALL' ||
-				(this.#createHashes === 'FAILED' &&
+				(this.#createHashes === 'FAILED' && this.#testSuiteResults.FAILED.length !== 0) ||
+				(this.#createHashes === 'FAILURES' &&
 					(this.#testSuiteResults.FAILED.length !== 0 ||
 						this.#testSuiteResults.WARNING.length !== 0))
 			) {
@@ -100,9 +101,15 @@ class TestSuiteResult {
 				})
 				for (const [key] of Object.entries(this.#testSuiteResults.RESULTS)) {
 					if (
-						this.#createHashes === 'FAILED' &&
+						this.#createHashes === 'FAILURES' &&
 						!this.#testSuiteResults.FAILED.includes(key) &&
 						!this.#testSuiteResults.WARNING.includes(key)
+					) {
+						continue
+					}
+					if (
+						this.#createHashes === 'FAILED' &&
+						!this.#testSuiteResults.FAILED.includes(key)
 					) {
 						continue
 					}
