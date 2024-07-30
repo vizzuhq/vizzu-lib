@@ -17,7 +17,6 @@ public:
 
 	ConvexQuad() = default;
 	explicit ConvexQuad(const Points &points) : points(points) {}
-	explicit ConvexQuad(const Rect &rect);
 	[[nodiscard]] static ConvexQuad Square(Point p0, Point p2);
 	[[nodiscard]] static ConvexQuad Isosceles(Point base0Middle,
 	    Point base1Middle,
@@ -26,7 +25,6 @@ public:
 	[[nodiscard]] bool contains(const Point &p,
 	    double tolerance = 0.0) const;
 	[[nodiscard]] double area() const;
-	[[nodiscard]] Rect boundary() const;
 };
 
 }

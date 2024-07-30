@@ -84,28 +84,26 @@ Buckets PlotBuilder::generateMarkers(std::size_t &mainBucketSize)
 	for (auto &&[ix, mid] : plot->getOptions()->markersInfo)
 		map.emplace(mid, ix);
 
-	for (auto &&index : dataCube) {
-		auto &&markerId = index.marker_id;
-		auto &&[first, last] = map.equal_range(markerId);
-		auto needInfo = first != last;
-
-		auto &marker = plot->markers.emplace_back(*plot->getOptions(),
+	for (auto &&index : dataCube)
+		plot->markers.emplace_back(*plot->getOptions(),
 		    dataCube,
 		    plot->axises,
 		    mainIds,
 		    subIds,
 		    index,
-		    needInfo);
+		    map.contains(index.marker_id));
 
-		while (first != last)
-			plot->markersInfo.insert({first++->second,
-			    Plot::MarkerInfo{Plot::MarkerInfoContent{marker}}});
-	}
 	std::ranges::stable_sort(plot->markers,
 	    std::less{},
 	    std::mem_fn(&Marker::idx));
-	for (Marker::MarkerPosition ix{}; auto &marker : plot->markers)
+
+	auto first = map.begin();
+	for (Marker::MarkerPosition ix{}; auto &marker : plot->markers) {
 		marker.pos = ix++;
+		while (first != map.end() && first->first == marker.idx)
+			plot->markersInfo.insert({first++->second,
+			    Plot::MarkerInfo{Plot::MarkerInfoContent{marker}}});
+	}
 
 	Buckets buckets(plot->markers);
 	auto &&hasMarkerConnection =
