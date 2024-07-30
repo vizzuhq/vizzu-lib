@@ -50,7 +50,8 @@ bool Marker::bounds(const CoordinateSystem &coordSys,
 		    switch (shapeType) {
 		    case Gen::ShapeType::rectangle:
 		    case Gen::ShapeType::area:
-			    return Geom::ConvexQuad(points).contains(point, 0.01);
+			    return pointsToQuad(points, 0.1)
+			        .contains(point, 0.01);
 		    case Gen::ShapeType::circle:
 			    return Geom::Circle(Geom::Rect::Boundary(points),
 			        Geom::Circle::FromRect::sameWidth)
@@ -63,6 +64,36 @@ bool Marker::bounds(const CoordinateSystem &coordSys,
 	    });
 
 	return isInside != false;
+}
+
+Geom::ConvexQuad Marker::pointsToQuad(
+    const std::array<Geom::Point, 4> &points,
+    double atLeastWidth) const
+{
+	if (const auto &[p0, p1, p2, p3] = points;
+	    p0 == p1 && p0 == p2 && p0 == p3) {
+		const Geom::Point half{atLeastWidth / 2, atLeastWidth / 2};
+		return Geom::ConvexQuad::Square(p0 - half, p0 + half);
+	}
+	Geom::ConvexQuad res{points};
+
+	for (std::size_t ix{}; ix < 4; ++ix) {
+		const auto nextIx = (ix + 1) % 4;
+		auto &&vector = points[nextIx] - points[ix];
+		if (auto &&diff = vector.abs(); diff < atLeastWidth) {
+			if (Math::Floating::is_zero(diff)) {
+				const auto nextNextIx = (nextIx + 1) % 4;
+				vector = (points[nextNextIx] - points[nextIx])
+				             .normal(false);
+			}
+			auto &&move =
+			    vector.normalized() * ((atLeastWidth - diff) / 2);
+			res.points[ix] -= move;
+			res.points[nextIx] += move;
+		}
+	}
+
+	return res;
 }
 
 Geom::ConvexQuad Marker::lineToQuad(const CoordinateSystem &coordSys,

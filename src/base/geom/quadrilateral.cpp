@@ -7,16 +7,6 @@
 namespace Geom
 {
 
-ConvexQuad::ConvexQuad(const Rect &rect)
-{
-	points[0] = rect.pos;
-	points[1] = rect.pos + Point{rect.size.x, 0.0};
-	points[2] = rect.pos + rect.size;
-	points[3] = rect.pos + Point{0.0, rect.size.y};
-}
-
-Rect ConvexQuad::boundary() const { return Rect::Boundary(points); }
-
 ConvexQuad ConvexQuad::Square(Point p0, Point p2)
 {
 	auto center = (p0 + p2) / 2;
