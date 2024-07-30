@@ -45,6 +45,9 @@
 		},
 		"dimension_axis_density": {
 			"refs": ["9b330fb"]
+		},
+		"geometry/animated_area-circle": {
+			"refs": ["6f40a47"]
 		}
 	}
 }
