@@ -43,9 +43,8 @@ struct immutable_string
 			std::unique_ptr<char, deleter_t> ptr{
 			    new (std::align_val_t{alignof(
 			        impl_t)}) char[sizeof(impl_t) + length + 1]};
-			std::strncpy(ptr.get() + sizeof(impl_t),
-			    data,
-			    length)[length] = '\0';
+			std::memcpy(ptr.get() + sizeof(impl_t), data, length);
+			ptr.get()[sizeof(impl_t) + length] = '\0';
 
 			static_assert(std::is_nothrow_constructible_v<impl_t,
 			    std::size_t,
