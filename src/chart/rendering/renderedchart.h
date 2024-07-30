@@ -45,7 +45,6 @@ public:
 
 private:
 	[[nodiscard]] Geom::ConvexQuad pointsToQuad(
-	    const std::array<Geom::Point, 4> &points,
 	    double atLeastWidthIfDot) const;
 
 	[[nodiscard]] Geom::ConvexQuad lineToQuad(

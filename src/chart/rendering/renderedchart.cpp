@@ -50,8 +50,7 @@ bool Marker::bounds(const CoordinateSystem &coordSys,
 		    switch (shapeType) {
 		    case Gen::ShapeType::rectangle:
 		    case Gen::ShapeType::area:
-			    return pointsToQuad(points, 0.1)
-			        .contains(point, 0.01);
+			    return pointsToQuad(0.1).contains(point, 0.01);
 		    case Gen::ShapeType::circle:
 			    return Geom::Circle(Geom::Rect::Boundary(points),
 			        Geom::Circle::FromRect::sameWidth)
@@ -66,9 +65,7 @@ bool Marker::bounds(const CoordinateSystem &coordSys,
 	return isInside != false;
 }
 
-Geom::ConvexQuad Marker::pointsToQuad(
-    const std::array<Geom::Point, 4> &points,
-    double atLeastWidth) const
+Geom::ConvexQuad Marker::pointsToQuad(double atLeastWidth) const
 {
 	if (const auto &[p0, p1, p2, p3] = points;
 	    p0 == p1 && p0 == p2 && p0 == p3) {
