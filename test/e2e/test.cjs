@@ -93,15 +93,16 @@ Please note that the test require Chrome, ChromeDriver and Selenium Webdriver to
 		)
 		.default('maxFailedImages', null)
 
-		.choices('hashes', ['ALL', 'FAILED', 'DISABLED'])
+		.choices('hashes', ['ALL', 'FAILED', 'FAILURES', 'DISABLED'])
 		.describe(
 			'hashes',
 			'Change the saving behavior of hashes, which are unique identifiers calculated for each test case' +
 				'\n- "ALL": Write hashes into the report file for every test' +
-				'\n- "FAILED": Write hashes into the report file for failed/warning tests only' +
+				'\n- "FAILED": Write hashes into the report file for failed tests only' +
+				'\n- "FAILURES": Write hashes into the report file for failed/warning tests only' +
 				'\n- "DISABLED": Do not create report file'
 		)
-		.default('hashes', 'FAILED')
+		.default('hashes', 'FAILURES')
 
 		.boolean('nologs')
 		.describe('nologs', 'Disable the saving of browser and console logs into a log file')
