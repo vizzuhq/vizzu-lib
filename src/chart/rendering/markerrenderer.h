@@ -33,7 +33,7 @@ private:
 	    bool isLine) const;
 	void drawLabel(Gfx::ICanvas &canvas,
 	    const AbstractMarker &abstractMarker,
-	    const std::string &unit,
+	    const Text::immutable_string &unit,
 	    bool keepMeasure,
 	    ::Anim::InterpolateIndex index) const;
 
@@ -41,7 +41,7 @@ private:
 	getSelectedColor(const Gen::Marker &marker, bool label) const;
 	[[nodiscard]] std::string getLabelText(
 	    const ::Anim::Interpolated<Gen::Marker::Label> &label,
-	    const std::string &unit,
+	    const Text::immutable_string &unit,
 	    bool keepMeasure,
 	    ::Anim::InterpolateIndex index) const;
 };

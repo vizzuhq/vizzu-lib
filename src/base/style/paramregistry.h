@@ -41,9 +41,8 @@ public:
 		using FromString = void(Root &, const std::string &);
 		using ToString = std::string(const Root &);
 		template <class T>
-		    requires(Type::isoptional<
-		                std::remove_cvref_t<std::invoke_result_t<T &&,
-		                    Root &>>>::value)
+		    requires(Type::is_optional_v<std::remove_cvref_t<
+		                    std::invoke_result_t<T &&, Root &>>>)
 		constexpr inline
 		    __attribute__((always_inline)) explicit Accessor(T &&t) :
 		    toString(

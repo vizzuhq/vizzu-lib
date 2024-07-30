@@ -157,15 +157,14 @@ void JScriptCanvas::line(const Geom::Line &line)
 	    line.end.y);
 }
 
-void JScriptCanvas::text(const Geom::Rect &rect,
-    const std::string &text)
+void JScriptCanvas::text(const Geom::Rect &rect, const char *text)
 {
 	::canvas_text(this,
 	    rect.pos.x,
 	    rect.pos.y,
 	    rect.size.x,
 	    rect.size.y,
-	    text.c_str());
+	    text);
 }
 
 void JScriptCanvas::setBrushGradient(const Geom::Line &line,
@@ -236,11 +235,9 @@ void JScriptCanvas::resetStates()
 }
 
 Geom::Size Gfx::ICanvas::textBoundary(const Gfx::Font &font,
-    const std::string &text)
+    const char *text)
 {
-	thread_local std::string fontCache;
-	fontCache = font.toCSS();
 	Geom::Size res;
-	::textBoundary(fontCache.c_str(), text.c_str(), &res.x, &res.y);
+	::textBoundary(font.toCSS().c_str(), text, &res.x, &res.y);
 	return res;
 }

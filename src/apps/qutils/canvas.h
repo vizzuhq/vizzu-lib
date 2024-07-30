@@ -44,8 +44,7 @@ public:
 	void circle(const Geom::Circle &circle) override;
 	void line(const Geom::Line &line) override;
 
-	void text(const Geom::Rect &rect,
-	    const std::string &text) override;
+	void text(const Geom::Rect &rect, const char *text) override;
 
 	void setBrushGradient(const Geom::Line &line,
 	    const Gfx::ColorGradient &gradient) override;

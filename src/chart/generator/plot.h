@@ -40,8 +40,8 @@ public:
 	struct MarkerInfoContent
 	{
 		std::optional<Marker::MarkerIndexPosition> markerId;
-		std::shared_ptr<
-		    const std::vector<std::pair<std::string, std::string>>>
+		std::shared_ptr<const std::vector<std::
+		        pair<Text::immutable_string, Text::immutable_string>>>
 		    info;
 
 		MarkerInfoContent() = default;

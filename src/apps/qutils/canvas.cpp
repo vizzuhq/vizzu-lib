@@ -195,7 +195,7 @@ void BaseCanvas::rectangle(const Geom::Rect &rect)
 	painter.drawRect(toQRect(rect));
 }
 
-void BaseCanvas::text(const Geom::Rect &rect, const std::string &text)
+void BaseCanvas::text(const Geom::Rect &rect, const char *text)
 {
 	painter.setPen(textPen);
 	painter.drawText(toQRect(rect),
@@ -227,7 +227,7 @@ QPen BaseCanvas::brushToPen(const QBrush &brush)
 }
 
 Geom::Size Gfx::ICanvas::textBoundary(const Gfx::Font &font,
-    const std::string &text)
+    const char *text)
 {
 	auto res =
 	    QFontMetrics{BaseCanvas::fromGfxFont(font)}.boundingRect(
@@ -262,7 +262,8 @@ QFont BaseCanvas::fromGfxFont(const Gfx::Font &newFont, QFont font)
 	font.setPixelSize(static_cast<int>(newFont.size));
 
 	if (!newFont.family.empty())
-		font.setFamily(QString::fromStdString(newFont.family));
+		font.setFamily(
+		    QString::fromStdString(newFont.family.toString()));
 
 	font.setWeight(newFont.weight == Gfx::Font::Weight::Bold()
 	                   ? QFont::Bold

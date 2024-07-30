@@ -13,7 +13,7 @@ using record_type = interface::record_type;
 bool operator==(const cell_reference &ref,
     const std::string_view &str)
 {
-	return *std::get<const std::string *>(ref) == str;
+	return *std::get<const Text::immutable_string *>(ref) == str;
 }
 
 #include "../util/test.h"
@@ -30,8 +30,8 @@ using test::operator"" _is_true;
 
 struct if_setup
 {
-	std::vector<const char *> dims{};
-	std::vector<const char *> meas{};
+	std::vector<std::string_view> dims{};
+	std::vector<std::string_view> meas{};
 	std::vector<std::vector<const char *>> data{};
 	bool copied{};
 	std::shared_ptr<interface> _df{
@@ -61,8 +61,9 @@ struct if_setup
 
 			for (auto r = 0u; r < data.size(); ++r) {
 				for (auto d = 0u; d < ds; ++d) {
-					auto gdata = std::get<const std::string *>(
-					    df->get_data(r, dims[d]));
+					auto gdata =
+					    std::get<const Text::immutable_string *>(
+					        df->get_data(r, dims[d]));
 					const auto *ptr = data[r][d];
 					if (ptr) {
 						assert->*gdata != nullptr;
@@ -125,6 +126,8 @@ static inline const auto one_one_empty_copied = input{[]
     },
     "one one empty copied"};
 
+using IL_of_sv = std::initializer_list<std::string_view>;
+
 const static auto tests =
     "DataFrame::interface"_suite
 
@@ -136,7 +139,9 @@ const static auto tests =
 	check->*df->get_measures().size() == std::size_t{};
 	check->*df->get_record_count() == std::size_t{};
 
-	throw_<&interface::get_data>(df, std::size_t{}, {});
+	throw_<&interface::get_data>(df,
+	    std::size_t{},
+	    std::string_view{});
 	throw_<&interface::get_categories>(df, {});
 	// throw_<&interface::get_min_max>(df, {});
 	throw_<&interface::add_series_by_other>(df,
@@ -145,8 +150,7 @@ const static auto tests =
 	    {[](Vizzu::Data::RowWrapper, cell_reference c) -> cell_value
 	        {
 		        if (c.index() == 0) return std::get<0>(c);
-		        auto *str = std::get<1>(c);
-		        return str ? *str : std::string_view{};
+		        return *std::get<1>(c);
 	        }},
 	    {});
 	throw_<&interface::set_aggregate>(df, {}, {});
@@ -173,18 +177,17 @@ const static auto tests =
 	df->add_measure({{0.0, 22.5, nan, 6.0}}, "m1", {}, {});
 	df->add_measure({{1.0}}, "m2", {}, {});
 
-	assert->*df->get_dimensions() == std::array{"d0", "d1"};
-	assert->*df->get_measures() == std::array{"m1", "m2"};
+	assert->*df->get_dimensions() == IL_of_sv{"d0", "d1"};
+	assert->*df->get_measures() == IL_of_sv{"m1", "m2"};
 
 	check->*df->has_na("d0") == "d0 has nav"_is_true;
 	check->*df->has_na("d1") == "d1 has nav"_is_true;
 	check->*df->has_na("m1") == "m1 has nan"_is_true;
 	check->*df->has_na("m2") == "m2 has nan"_is_true;
 
-	check->*df->get_categories("d0") == std::array{"a"};
+	check->*df->get_categories("d0") == IL_of_sv{"a"};
 
-	assert->*df->get_categories("d1")
-	    == std::array{"t2", "t1", "tt3"};
+	assert->*df->get_categories("d1") == IL_of_sv{"t2", "t1", "tt3"};
 
 	// check->*df->get_min_max("m1") == std::pair{0.0, 22.5};
 
@@ -208,10 +211,14 @@ const static auto tests =
 	    [](cell_reference const &cell, std::string &&prefix)
 	{
 		auto str = prefix + " is a string";
-		assert->*std::holds_alternative<const std::string *>(cell)
+		assert
+		            ->*std::holds_alternative<
+		                const Text::immutable_string *>(cell)
 		    == bool_msg{str};
 		str = prefix + " is nav";
-		check->*(std::get<const std::string *>(cell) == nullptr)
+		check
+		            ->*(std::get<const Text::immutable_string *>(cell)
+		                == nullptr)
 		    == bool_msg{str};
 	};
 
@@ -236,7 +243,7 @@ const static auto tests =
 	check_nav(df->get_data(std::size_t{3}, "d1"), "table_33");
 
 	check
-	            ->*(std::get<const std::string *>(
+	            ->*(std::get<const Text::immutable_string *>(
 	                    df->get_data(std::size_t{0}, "d1"))
 	                == df->get_categories("d1").data())
 	    == "Not points to the same memory address"_is_true;
@@ -260,7 +267,7 @@ const static auto tests =
 	assert->*df->get_record_count() == std::size_t{2};
 
 	check->*df->get_categories("test_dim")
-	    == std::array{"test_dim_val", "test_dim_val2"};
+	    == IL_of_sv{"test_dim_val", "test_dim_val2"};
 
 	// check->*df->get_min_max("test_meas") == std::pair{-1.0, 2.0};
 
@@ -292,7 +299,7 @@ const static auto tests =
             },
             {});
 
-        assert->*df->get_measures() == std::array{"m0", "m1"};
+        assert->*df->get_measures() == IL_of_sv{"m0", "m1"};
 
         check->*df->get_data(std::size_t{0}, "m0") == 0.0;
         check->*df->get_data(std::size_t{1}, "m0") == 2.0;
@@ -320,7 +327,7 @@ const static auto tests =
             },
             {});
 
-        assert->*df->get_dimensions() == std::array{"d1", "d15",
+        assert->*df->get_dimensions() == IL_of_sv{"d1", "d15",
     "d2"};
 
         check->*df->get_data(std::size_t{0}, "d15") == "dm15dm2";
@@ -340,8 +347,8 @@ const static auto tests =
 {
 	df->remove_series({{"m1", "d2", "m3"}});
 
-	assert->*df->get_measures() == std::array{"m2"};
-	assert->*df->get_dimensions() == std::array{"d1", "d3"};
+	assert->*df->get_measures() == IL_of_sv{"m2"};
+	assert->*df->get_dimensions() == IL_of_sv{"d1", "d3"};
 	assert->*df->get_record_count() == std::size_t{3};
 
 	check->*df->get_data(std::size_t{2}, "m2") == 1.5;
@@ -371,8 +378,8 @@ const static auto tests =
 		    return !s.contains(r.recordId);
 	    });
 
-	assert->*df->get_measures() == std::array{"m1"};
-	assert->*df->get_dimensions() == std::array{"d1"};
+	assert->*df->get_measures() == IL_of_sv{"m1"};
+	assert->*df->get_dimensions() == IL_of_sv{"d1"};
 	assert->*df->get_record_count() == std::size_t{4};
 
 	check
@@ -516,10 +523,10 @@ auto &&m1t = df->set_aggregate("m1",
 
 	df->finalize();
 
-	assert->*df->get_dimensions() == std::array{"d1"};
+	assert->*df->get_dimensions() == IL_of_sv{"d1"};
 
 	assert->*df->get_measures()
-	    == std::array{
+	    == IL_of_sv{
 	        pure1c,
 	        d1c,
 	        m1c,
@@ -614,8 +621,8 @@ auto &&m1t = df->set_aggregate("m1",
 
 	df->finalize();
 
-	assert->*df->get_dimensions() == std::array{"d1", "d2"};
-	assert->*df->get_measures() == std::array{d3c, d3d};
+	assert->*df->get_dimensions() == IL_of_sv{"d1", "d2"};
+	assert->*df->get_measures() == IL_of_sv{d3c, d3d};
 
 	assert->*df->get_record_count() == std::size_t{6};
 
@@ -681,9 +688,9 @@ auto &&m1t = df->set_aggregate("m1",
         assert->*df->get_record_count() == std::size_t{11};
 
         assert->*df->get_categories("d1")
-            == std::array{"dx0", "dx1", "dx2"};
+            == IL_of_sv{"dx0", "dx1", "dx2"};
         check->*df->get_categories("d2")
-            == std::array{"dm2", "dm0", "dm1"};
+            == IL_of_sv{"dm2", "dm0", "dm1"};
 
         check->*df->get_data(std::size_t{0}, "d1") == "dx0";
         check->*df->get_data(std::size_t{1}, "d1") == "dx0";
@@ -760,9 +767,9 @@ auto &&m1t = df->set_aggregate("m1",
         assert->*df->get_record_count() == std::size_t{11};
 
         assert->*df->get_categories("d1")
-            == std::array{"dx2", "dx1", "dx0"};
+            == IL_of_sv{"dx2", "dx1", "dx0"};
         check->*df->get_categories("d2")
-            == std::array{"dm2", "dm0", "dm1", "dm8"};
+            == IL_of_sv{"dm2", "dm0", "dm1", "dm8"};
 
         check
                     ->*std::get<std::string_view>(

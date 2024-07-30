@@ -233,8 +233,8 @@ definitions:
                 type: boolean
             tooltip:
                 description: |
-                    Index of the marker, the tooltip should be turned on. This parameter is not needed
-                    to set manually, tooltip will be taken care of autamatically when `tooltip` feature
-                    is enabled.
-                type: number
+                    Unique identifier of the marker, the tooltip should be turned on. This parameter is
+                    not needed to set manually, tooltip will be taken care of automatically when
+                    `tooltip` feature is enabled.
+                type: string
                 nullable: true

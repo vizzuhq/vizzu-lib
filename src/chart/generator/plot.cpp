@@ -166,7 +166,7 @@ void Plot::mergeMarkersAndCellInfo(Plot &source, Plot &target)
 		auto &smarker = smarkers[ix];
 		if (auto &[idx, prePos] =
 		        smarker.prevMainMarker.values[0].value;
-		    idx != ~Marker::MarkerIndex{}) {
+		    !idx.empty()) {
 			if (prePos < source_reindex.size()
 			    && source_reindex[prePos].idx == idx)
 				prePos = source_reindex[prePos].pos;
@@ -182,7 +182,7 @@ void Plot::mergeMarkersAndCellInfo(Plot &source, Plot &target)
 		auto &tmarker = tmarkers[ix];
 		if (auto &[idx, prePos] =
 		        tmarker.prevMainMarker.values[0].value;
-		    idx != ~Marker::MarkerIndex{}) {
+		    !idx.empty()) {
 			if (prePos < target_reindex.size()
 			    && target_reindex[prePos].idx == idx)
 				prePos = target_reindex[prePos].pos;

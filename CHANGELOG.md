@@ -2,6 +2,14 @@
 
 ## [Unreleased]
 
+### Fixed
+
+- Markers are the same even if new record added.
+
+### Added
+
+- Changed MarkerId to be a string instead of a number. 
+
 ## [0.12.0] - 2024-07-29
 
 ### Fixed

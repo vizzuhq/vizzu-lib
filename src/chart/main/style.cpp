@@ -8,7 +8,8 @@ namespace Vizzu::Styles
 const Font &Chart::getDefaultFont()
 {
 	static const auto instance =
-	    Font{.fontFamily = ::Anim::String("Roboto, sans-serif"),
+	    Font{.fontFamily = ::Anim::String(
+	             ::Text::immutable_string{"Roboto, sans-serif"}),
 	        .fontStyle = Gfx::Font::Style::normal,
 	        .fontWeight = Gfx::Font::Weight::Normal(),
 	        .fontSize = Gfx::Length{12}};
@@ -70,7 +71,7 @@ Chart Chart::def()
 		},
 		Font
 		{
-			.fontFamily = ::Anim::String("Roboto, sans-serif"),
+			.fontFamily = getDefaultFont().fontFamily,
 			.fontStyle = Gfx::Font::Style::normal,
 			.fontWeight = Gfx::Font::Weight::Normal(),
 			.fontSize = Gfx::Length::Emphemeral(1)
@@ -544,7 +545,7 @@ Chart Chart::def()
 					.dropShadow = 3,
 					.arrowSize = 8,
 					.distance = 2,
-					.seriesName = ::Anim::String("")
+					.seriesName = ::Anim::String()
 				}
 			},
 			.logo = {

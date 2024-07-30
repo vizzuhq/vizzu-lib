@@ -213,7 +213,7 @@ void Sheet::setAfterStyles(Gen::Plot &plot, const Geom::Size &size)
 			if (pair.second.weight == 0) continue;
 
 			auto textBoundary = Gfx::ICanvas::textBoundary(font,
-			    pair.second.label.get());
+			    pair.second.label.get().c_str());
 			auto textXHalfMargin =
 			    xLabel.toInvMargin(textBoundary, font.size)
 			        .getSpace()

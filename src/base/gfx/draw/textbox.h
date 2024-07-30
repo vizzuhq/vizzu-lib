@@ -80,7 +80,7 @@ public:
 	TextBox &operator<<(const LineSpacing &);
 
 	TextBox &operator<<(const char *);
-	TextBox &operator<<(const std::string &);
+	TextBox &operator<<(const Text::immutable_string &);
 	TextBox &operator<<(const Tab &);
 	TextBox &operator<<(const NewLine &);
 	TextBox &operator<<(const Font &);

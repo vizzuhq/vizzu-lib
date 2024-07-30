@@ -8,8 +8,8 @@ export class Tooltip implements Plugin {
 	private _vizzu?: Vizzu
 	private _id = 0
 	private _animating = false
-	private _lastMarkerId: number | null = null
-	private _overedMarkerId: number | null = null
+	private _lastMarkerId: string | null = null
+	private _overedMarkerId: string | null = null
 	private _lastMove = new Date().getTime()
 
 	get hooks(): PluginHooks {
@@ -83,7 +83,7 @@ export class Tooltip implements Plugin {
 		}
 	}
 
-	_getMarkerId(target: Element | null): number | null {
+	_getMarkerId(target: Element | null): string | null {
 		if (target && this._isMarker(target)) {
 			return target.index
 		} else if (target && this._isMarkerLabel(target)) {
@@ -101,7 +101,7 @@ export class Tooltip implements Plugin {
 		return target.tagName === 'plot-marker-label'
 	}
 
-	_in(id: number, markerId: number): void {
+	_in(id: number, markerId: string): void {
 		if (this._id === id) {
 			if (!this._animating) {
 				this._lastMarkerId = markerId

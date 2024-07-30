@@ -35,8 +35,8 @@ public:
 
 	void pushRow(const std::span<const char *const> &cells);
 
-	[[nodiscard]] std::string_view getUnit(
-	    std::string_view const &colIx) const;
+	[[nodiscard]] Text::immutable_string getUnit(
+	    Text::immutable_string const &colIx) const;
 
 	[[nodiscard]] std::string getInfos() const;
 
@@ -55,15 +55,15 @@ class DataCube
 
 public:
 	std::shared_ptr<dataframe::dataframe_interface> df;
-	std::map<std::pair<std::string_view, dataframe::aggregator_type>,
-	    std::string>
+	std::map<
+	    std::pair<Text::immutable_string, dataframe::aggregator_type>,
+	    Text::immutable_string>
 	    measure_names;
 
 	struct DimensionInfo
 	{
-		std::string_view name;
-		std::span<const std::string> orig_categories;
-		std::span<const std::string> categories;
+		Text::immutable_string name;
+		std::span<const Text::immutable_string> categories;
 		std::size_t size{};
 		std::size_t ix{};
 
@@ -115,7 +115,7 @@ public:
 	    const SeriesList &sl,
 	    const MultiIndex &index) const;
 
-	[[nodiscard]] const std::string &getName(
+	[[nodiscard]] Text::immutable_string getName(
 	    const SeriesIndex &seriesId) const;
 
 	[[nodiscard]] iterator_t begin() const;

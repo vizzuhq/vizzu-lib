@@ -1,9 +1,6 @@
 #ifndef GFX_CANVAS
 #define GFX_CANVAS
 
-#include <memory>
-#include <string>
-
 #include "base/geom/affinetransform.h"
 #include "base/geom/circle.h"
 #include "base/geom/line.h"
@@ -11,14 +8,10 @@
 #include "base/geom/rect.h"
 #include "base/gfx/color.h"
 #include "base/gfx/colorgradient.h"
-#include "base/gfx/colortransform.h"
 #include "base/gfx/font.h"
 
 namespace Gfx
 {
-
-struct ICanvas;
-
 struct ICanvas
 {
 	virtual ~ICanvas() = default;
@@ -53,8 +46,7 @@ struct ICanvas
 	virtual void circle(const Geom::Circle &circle) = 0;
 	virtual void line(const Geom::Line &line) = 0;
 
-	virtual void text(const Geom::Rect &rect,
-	    const std::string &text) = 0;
+	virtual void text(const Geom::Rect &rect, const char *text) = 0;
 
 	virtual void setBrushGradient(const Geom::Line &line,
 	    const ColorGradient &gradient) = 0;
@@ -64,8 +56,7 @@ struct ICanvas
 
 	virtual void *getPainter() = 0;
 
-	static Geom::Size textBoundary(const Gfx::Font &,
-	    const std::string &);
+	static Geom::Size textBoundary(const Gfx::Font &, const char *);
 };
 
 }

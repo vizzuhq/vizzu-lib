@@ -176,7 +176,7 @@ void DrawAxes::drawTitle(Gen::ChannelId axisIndex) const
 		const Gfx::Font font(titleStyle);
 		canvas.setFont(font);
 		auto size = titleStyle.extendSize(
-		    Gfx::ICanvas::textBoundary(font, title.value),
+		    Gfx::ICanvas::textBoundary(font, title.value.c_str()),
 		    font.size);
 
 		auto relCenter = getTitleBasePos(axisIndex, index);
@@ -232,7 +232,7 @@ void DrawAxes::drawTitle(Gen::ChannelId axisIndex) const
 
 		DrawLabel{{ctx()}}.draw(canvas,
 		    Geom::TransformedRect{transform, Geom::Size{size}},
-		    title.value,
+		    title.value.c_str(),
 		    titleStyle,
 		    *rootEvents.draw.plot.axis.title,
 		    Events::Targets::axisTitle(title.value,
@@ -329,11 +329,13 @@ void DrawAxes::drawDimensionLabel(bool horizontal,
 
 		    posDir = posDir.extend(sign);
 
-		    auto draw = [&](const ::Anim::Weighted<std::string> &str,
-		                    double plusWeight = 1.0)
+		    auto draw =
+		        [&](const ::Anim::Weighted<Text::immutable_string>
+		                &str,
+		            double plusWeight = 1.0)
 		    {
 			    drawLabel.draw(canvas,
-			        str.value,
+			        str.value.c_str(),
 			        posDir,
 			        labelStyle,
 			        0,

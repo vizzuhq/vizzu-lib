@@ -213,6 +213,10 @@ template <class T,
 struct loophole_type_list;
 
 template <typename T, std::size_t... B, std::size_t... Ix>
+    requires(requires {
+	    T{loophole_ubiq<T, B, true>{}...,
+	        loophole_ubiq<T, sizeof...(B) + Ix>{}...};
+    })
 struct loophole_type_list<T,
     std::index_sequence<B...>,
     std::index_sequence<Ix...>> :
@@ -227,8 +231,8 @@ struct loophole_type_list<T,
 };
 
 template <class T>
-using aggregate_types_t = typename Loophole::loophole_type_list<
-    std::remove_cvref_t<T>>::type;
+using aggregate_types_t =
+    typename loophole_type_list<std::remove_cvref_t<T>>::type;
 }
 
 template <class T>

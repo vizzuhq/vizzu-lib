@@ -1,9 +1,10 @@
 #include "font.h"
 
-#include <utility>
+#include <string>
 
 #include "base/conv/parse.h"
 #include "base/conv/tostring.h"
+#include "base/text/immutable_string.h"
 
 namespace Gfx
 {
@@ -44,7 +45,7 @@ bool Font::Weight::operator==(const Font::Weight &other) const
 Font::Font(double size) : style(Gfx::Font::Style::normal), size(size)
 {}
 
-Font::Font(std::string family,
+Font::Font(Text::immutable_string family,
     Style style,
     Weight weight,
     double size) :

@@ -59,7 +59,7 @@ void DrawChart::drawHeading(Gfx::ICanvas &canvas,
 		        if (weighted.value.has_value()) {
 			        DrawLabel{{ctx()}}.draw(canvas,
 			            Geom::TransformedRect::fromRect(layout),
-			            *weighted.value,
+			            weighted.value->c_str(),
 			            style,
 			            event,
 			            targetGetter(*weighted.value),

@@ -83,7 +83,8 @@ constexpr void index_erase_if<false, false>::operator()(
 
 std::size_t data_source::get_record_count() const
 {
-	if (!finalized.empty()) return finalized.size();
+	if (!finalized.record_ids.empty())
+		return finalized.record_ids.size();
 
 	std::size_t record_count{};
 	for (const auto &dim : dimensions)
@@ -185,14 +186,10 @@ void data_source::sort(std::vector<std::size_t> &&indices)
 std::size_t data_source::change_series_identifier_type(
     const std::string_view &name) const
 {
-	if (auto it = std::lower_bound(dimension_names.begin(),
-	        dimension_names.end(),
-	        name);
+	if (auto it = std::ranges::lower_bound(dimension_names, name);
 	    it != dimension_names.end() && *it == name)
 		return static_cast<std::size_t>(it - dimension_names.begin());
-	if (auto it = std::lower_bound(measure_names.begin(),
-	        measure_names.end(),
-	        name);
+	if (auto it = std::ranges::lower_bound(measure_names, name);
 	    it != measure_names.end() && *it == name)
 		return static_cast<std::size_t>(
 		           std::distance(measure_names.begin(), it))
@@ -201,10 +198,11 @@ std::size_t data_source::change_series_identifier_type(
 }
 
 std::size_t data_source::change_record_identifier_type(
-    const std::string &id) const
+    const Text::immutable_string &id) const
 {
-	auto it = finalized.find(id);
-	return it != finalized.end() ? it->second : ~std::size_t{};
+	auto it = finalized.to_record_ix.find(id);
+	return it != finalized.to_record_ix.end() ? it->second
+	                                          : ~std::size_t{};
 }
 
 cell_reference data_source::get_data(std::size_t record_id,
@@ -287,74 +285,78 @@ void data_source::remove_series(std::span<const std::size_t> dims,
 }
 void data_source::finalize()
 {
-	if (finalized.empty()) {
+	if (finalized.to_record_ix.empty()) {
 		normalize_sizes();
 		const auto records = get_record_count();
 		for (std::size_t r{}; r < records; ++r)
-			if (!finalized.try_emplace(get_id(r, dimension_names), r)
-			         .second)
+			if (auto &&[it, success] =
+			        finalized.to_record_ix.try_emplace(
+			            get_id(r, dimension_names),
+			            r);
+			    success) [[likely]]
+				finalized.record_ids.emplace_back(it->first);
+			else
 				error(error_type::record, "dup");
 	}
 }
-data_source::dimension_t &data_source::add_new_dimension(
+
+const Text::immutable_string &data_source::add_new_dimension(
     std::span<const char *const> dimension_categories,
     std::span<const std::uint32_t> dimension_values,
     std::string_view name,
     std::span<const std::pair<const char *, const char *>> info)
 {
-	auto it = dimension_names.emplace(
-	    std::lower_bound(dimension_names.begin(),
-	        dimension_names.end(),
-	        name),
+	auto &&it = dimension_names.emplace(
+	    std::ranges::lower_bound(dimension_names, name),
 	    name);
-	return *dimensions.emplace(dimensions.begin()
-	                               + (it - dimension_names.begin()),
+	dimensions.emplace(dimensions.begin()
+	                       + (it - dimension_names.begin()),
 	    dimension_categories,
 	    dimension_values,
 	    info);
+	return *it;
 }
 
-data_source::dimension_t &data_source::add_new_dimension(
+const Text::immutable_string &data_source::add_new_dimension(
     dimension_t &&dim,
-    std::string_view name)
+    const Text::immutable_string &name)
 {
-	auto it = dimension_names.emplace(
-	    std::lower_bound(dimension_names.begin(),
-	        dimension_names.end(),
-	        name),
+	auto &&it = dimension_names.emplace(
+	    std::ranges::lower_bound(dimension_names, name),
 	    name);
-	return *dimensions.emplace(dimensions.begin()
-	                               + (it - dimension_names.begin()),
+	dimensions.emplace(dimensions.begin()
+	                       + (it - dimension_names.begin()),
 	    std::move(dim));
+	return *it;
 }
 
-data_source::measure_t &data_source::add_new_measure(
+data_source::measure_with_name_ref data_source::add_new_measure(
     std::span<const double> measure_values,
     std::string_view name,
     std::span<const std::pair<const char *, const char *>> info)
 {
-	auto it =
-	    measure_names.emplace(std::lower_bound(measure_names.begin(),
-	                              measure_names.end(),
-	                              name),
-	        name);
-	return *measures.emplace(measures.begin()
-	                             + (it - measure_names.begin()),
+	auto &&it = measure_names.emplace(
+	    std::ranges::lower_bound(measure_names, name),
+	    name);
+	auto &ref = *measures.emplace(measures.begin()
+	                                  + (it - measure_names.begin()),
 	    measure_values,
 	    info);
+	return {*it, ref};
 }
 
-data_source::measure_t &data_source::add_new_measure(measure_t &&mea,
-    std::string_view name)
+data_source::measure_with_name_ref data_source::add_new_measure(
+    measure_t &&mea,
+    const Text::immutable_string &name)
 {
-	auto it =
-	    measure_names.emplace(std::lower_bound(measure_names.begin(),
-	                              measure_names.end(),
-	                              name),
-	        name);
-	return *measures.emplace(measures.begin()
-	                             + (it - measure_names.begin()),
+	auto &&it = measure_names.emplace(
+	    std::ranges::lower_bound(measure_names, name),
+	    name);
+	auto &ref = *measures.emplace(measures.begin()
+	                                  + (it - measure_names.begin()),
 	    std::move(mea));
+
+	return {*it, ref};
 }
 
 std::vector<std::size_t> data_source::get_sorted_indices(
@@ -406,7 +408,7 @@ data_source::data_source(aggregating_type &&aggregating,
 		    name);
 
 	for (const auto &[name, mea] : meas) {
-		measure_t &new_mea = add_new_measure({}, name);
+		measure_t &new_mea = add_new_measure({}, name).second;
 		switch (const auto &ser = std::get<0>(mea)) {
 			using enum series_type;
 		case dimension:
@@ -496,8 +498,8 @@ data_source::data_source(
 	}
 }
 
-std::string data_source::get_id(std::size_t record,
-    std::span<const std::string> series) const
+Text::immutable_string data_source::get_id(std::size_t record,
+    std::span<const Text::immutable_string> series) const
 {
 	std::string res;
 	for (std::size_t ix{}; const auto &name : series) {
@@ -505,17 +507,17 @@ std::string data_source::get_id(std::size_t record,
 		const auto *val = dimensions[ix].get(record);
 		res += name;
 		res += ':';
-		res += val == nullptr ? std::string_view{"__null__"} : *val;
+		res += val ? *val : std::string_view{"__null__"};
 		res += ';';
 	}
-	return res;
+	return Text::immutable_string::fromString(res);
 }
 
 std::vector<std::size_t> data_source::dimension_t::get_indices(
     const dataframe_interface::any_sort_type &sorter) const
 {
 	thread_local const dataframe_interface::any_sort_type *sorts{};
-	thread_local const std::vector<std::string> *cats{};
+	thread_local const std::vector<Text::immutable_string> *cats{};
 	sorts = &sorter;
 	cats = &categories;
 	return data_source::get_sorted_indices(categories.size(),
@@ -600,7 +602,7 @@ void data_source::dimension_t::add_more_data(
 		contains_nav =
 		    std::any_of(new_values.begin(), new_values.end(), is_nav);
 }
-const std::string *data_source::dimension_t::get(
+const Text::immutable_string *data_source::dimension_t::get(
     std::size_t index) const
 {
 	return values[index] == nav
@@ -685,12 +687,12 @@ std::pair<double, double> data_source::measure_t::get_min_max() const
 	return {mini, maxi};
 }
 
-std::pair<std::string, bool>
+std::pair<Text::immutable_string, bool>
 data_source::aggregating_type::add_aggregated(
     const_series_data &&data,
     const aggregator_type &aggregator)
 {
-	std::string name;
+	Text::immutable_string name;
 	switch (data) {
 		using enum series_type;
 	case dimension: name = unsafe_get<dimension>(data).first; break;
@@ -699,8 +701,9 @@ data_source::aggregating_type::add_aggregated(
 	}
 
 	if (aggregator != aggregator_type::sum)
-		name = std::string{Refl::enum_name(aggregator)} + '(' + name
-		     + ')';
+		name = Text::immutable_string::fromString(
+		    std::string{Refl::enum_name(aggregator)} + '(' + name
+		    + ')');
 
 	auto &&[it, succ] = meas.try_emplace(std::move(name),
 	    std::move(data),

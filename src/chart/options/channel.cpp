@@ -56,7 +56,7 @@ void Channel::reset()
 {
 	measureId = std::nullopt;
 	dimensionIds.clear();
-	title = Base::AutoParam<std::string, true>{};
+	title = Base::AutoParam<Text::immutable_string, true>{};
 	axisLine = Base::AutoBool();
 	axisLabels = Base::AutoBool();
 	ticks = Base::AutoBool();

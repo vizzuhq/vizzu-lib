@@ -50,7 +50,7 @@ public:
 	DimensionIndices dimensionIds{};
 	ChannelRange range{};
 	std::size_t labelLevel{};
-	Base::AutoParam<std::string, true> title{};
+	Base::AutoParam<Text::immutable_string, true> title{};
 	Base::AutoBool axisLine{};
 	Base::AutoBool axisLabels{};
 	Base::AutoBool ticks{};

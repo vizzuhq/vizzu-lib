@@ -6,7 +6,7 @@ namespace Vizzu::Draw
 {
 
 void OrientedLabel::draw(Gfx::ICanvas &canvas,
-    const std::string &text,
+    const char *text,
     const Geom::Line &labelPos,
     const Styles::OrientedLabel &labelStyle,
     double centered,

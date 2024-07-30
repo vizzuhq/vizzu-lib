@@ -128,8 +128,8 @@ public:
 	    const char *path,
 	    const char *value);
 
-	static std::variant<double, const std::string *> getRecordValue(
-	    const Data::RowWrapper &record,
+	static std::variant<double, const Text::immutable_string *>
+	getRecordValue(const Data::RowWrapper &record,
 	    const char *column);
 
 private:

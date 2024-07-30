@@ -8,7 +8,8 @@
 #include <string>
 #include <vector>
 
-#include "base/text/numberscale.h"
+#include "immutable_string.h"
+#include "numberscale.h"
 
 namespace Text
 {
@@ -28,7 +29,7 @@ void trim(std::string &string);
     NumberFormat format,
     size_t maxFractionDigits,
     const NumberScale &numberScale,
-    const std::string &unit);
+    const immutable_string &unit);
 }
 
 }
