@@ -152,10 +152,10 @@ DataCube::DataCube(const DataTable &table,
 	df->finalize();
 	for (std::size_t ix{}; const auto &dim : dimensions) {
 		auto &&dimName = dim.getColIndex();
-		auto &&cats = df->get_categories(dimName.view());
+		auto &&cats = df->get_categories(dimName);
 		dim_reindex.push_back(DimensionInfo{dimName,
 		    cats,
-		    cats.size() + df->has_na(dimName.view()),
+		    cats.size() + df->has_na(dimName),
 		    ix++});
 	}
 
@@ -276,7 +276,7 @@ std::string DataCube::joinDimensionValues(const SeriesList &sl,
 
 	for (auto &&sv : resColl) {
 		if (!res.empty()) res += ", ";
-		res += sv.view();
+		res += sv;
 	}
 	return res;
 }
@@ -296,7 +296,7 @@ DataCube::cellInfo(const MultiIndex &index, bool needMarkerInfo) const
 		auto &&cix = index.old[ix];
 		auto &&cat =
 		    cix < cats.size() ? cats[cix] : Text::immutable_string{};
-		dims.key<false>(name.view()).primitive(cat);
+		dims.key<false>(name).primitive(cat);
 		if (needMarkerInfo)
 			my_res->markerInfo.emplace_back(name, cat);
 	}
@@ -304,7 +304,7 @@ DataCube::cellInfo(const MultiIndex &index, bool needMarkerInfo) const
 	for (Conv::JSONObj &&vals{obj.nested("values")};
 	     auto &&meas : df->get_measures()) {
 		auto val = std::get<double>(df->get_data(index.rid, meas));
-		vals.key<false>(meas.view()).primitive(val);
+		vals.key<false>(meas).primitive(val);
 		if (needMarkerInfo) {
 			thread_local auto conv =
 			    Conv::NumberToString{.fractionDigitCount = 3};

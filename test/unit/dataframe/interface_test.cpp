@@ -150,8 +150,7 @@ const static auto tests =
 	    {[](Vizzu::Data::RowWrapper, cell_reference c) -> cell_value
 	        {
 		        if (c.index() == 0) return std::get<0>(c);
-		        auto *str = std::get<1>(c);
-		        return str ? str->view() : std::string_view{};
+		        return *std::get<1>(c);
 	        }},
 	    {});
 	throw_<&interface::set_aggregate>(df, {}, {});
