@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+## [0.12.0] - 2024-07-29
+
 ### Fixed
 
 - Make some static charts clearer:
