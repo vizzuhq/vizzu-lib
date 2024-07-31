@@ -2,6 +2,7 @@
 #include "numtostr.h"
 
 #include <algorithm>
+#include <cstdint>
 #include <cstdio>
 #include <stdexcept>
 

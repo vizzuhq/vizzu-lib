@@ -20,6 +20,11 @@ public:
 	[[nodiscard]] double verConvert(double length) const;
 	[[nodiscard]] Geom::Point getOriginal(const Geom::Point &p) const;
 
+	[[nodiscard]] const Math::FuzzyBool &getPolar() const
+	{
+		return polar;
+	}
+
 protected:
 	bool zoomOut{};
 	Math::FuzzyBool polar;
@@ -27,15 +32,14 @@ protected:
 	[[nodiscard]] Geom::Size mappedSize() const;
 };
 
-class CompoundTransform : public PolarDescartesTransform
+class CompoundTransform
 {
 public:
 	CompoundTransform() = default;
 	explicit CompoundTransform(const Geom::Rect &rect,
 	    double angle = 0.0,
 	    const ::Anim::Interpolated<Gen::CoordSystem> &coordSystem =
-	        ::Anim::Interpolated<Gen::CoordSystem>{
-	            Gen::CoordSystem::cartesian},
+	        ::Anim::Interpolated{Gen::CoordSystem::cartesian},
 	    Math::FuzzyBool keepAspectRatio = {});
 	[[nodiscard]] Geom::Point convert(const Geom::Point &p) const;
 	[[nodiscard]] double horConvert(double length) const;
@@ -47,6 +51,7 @@ public:
 	[[nodiscard]] double getAngle() const;
 
 private:
+	PolarDescartesTransform polarDescartes;
 	Geom::Rect rect;
 	double angle{};
 	Math::FuzzyBool keepAspectRatio;

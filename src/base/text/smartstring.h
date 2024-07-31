@@ -1,10 +1,6 @@
 #ifndef TEXT_SMARTSTRING
 #define TEXT_SMARTSTRING
 
-#include <cctype>
-#include <functional>
-#include <memory>
-#include <ranges>
 #include <string>
 #include <vector>
 

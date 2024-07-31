@@ -27,7 +27,6 @@ Checks: >
   -cppcoreguidelines-pro-type-vararg,
   -cppcoreguidelines-special-member-functions,
   fuchsia-statically-constructed-objects,
-  fuchsia-trailing-return,
   google-build-using-namespace,
   google-default-arguments,
   google-explicit-constructor,

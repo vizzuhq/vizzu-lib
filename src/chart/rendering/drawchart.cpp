@@ -107,23 +107,23 @@ void DrawChart::draw(Gfx::ICanvas &canvas, const Layout &layout) const
 
 		drawHeading<&Events::Targets::chartTitle>(canvas,
 		    layout,
-		    [](auto &obj) -> decltype((obj.title))
+		    [](auto &obj) -> auto &
 		    {
-			    return (obj.title);
+			    return obj.title;
 		    });
 
 		drawHeading<&Events::Targets::chartSubtitle>(canvas,
 		    layout,
-		    [](auto &obj) -> decltype((obj.subtitle))
+		    [](auto &obj) -> auto &
 		    {
-			    return (obj.subtitle);
+			    return obj.subtitle;
 		    });
 
 		drawHeading<&Events::Targets::chartCaption>(canvas,
 		    layout,
-		    [](auto &obj) -> decltype((obj.caption))
+		    [](auto &obj) -> auto &
 		    {
-			    return (obj.caption);
+			    return obj.caption;
 		    });
 
 		drawMarkerInfo(canvas, layout.boundary);

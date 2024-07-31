@@ -107,8 +107,7 @@ Buckets PlotBuilder::generateMarkers(std::size_t &mainBucketSize)
 	Buckets buckets(plot->markers);
 	auto &&hasMarkerConnection =
 	    linkMarkers(buckets.sort(&Marker::mainId), true);
-	[[maybe_unused]] auto &&_ =
-	    linkMarkers(buckets.sort(&Marker::subId), false);
+	std::ignore = linkMarkers(buckets.sort(&Marker::subId), false);
 
 	if (hasMarkerConnection
 	    && plot->getOptions()->geometry.get() == ShapeType::line

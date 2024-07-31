@@ -194,9 +194,8 @@ DataCube::DataCube(const DataTable &table,
 			else
 				++first;
 
-		[[maybe_unused]] auto &&new_name =
-		    sub_df.set_aggregate(meas->getColIndex(),
-		        meas->getAggr());
+		std::ignore = sub_df.set_aggregate(meas->getColIndex(),
+		    meas->getAggr());
 
 		sub_df.finalize();
 	}

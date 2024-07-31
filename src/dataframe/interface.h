@@ -96,7 +96,7 @@ public:
 
 	void aggregate_by(const std::string_view &series)
 	{
-		[[maybe_unused]] auto &&_ = set_aggregate(series, {});
+		std::ignore = set_aggregate(series, {});
 	}
 
 	void set_sort(const std::string_view &series,

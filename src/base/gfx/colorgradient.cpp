@@ -1,5 +1,7 @@
 #include "colorgradient.h"
 
+#include <stdexcept>
+
 #include "base/math/interpolation.h"
 #include "base/math/range.h"
 #include "base/math/segmentedfunc.tpp"

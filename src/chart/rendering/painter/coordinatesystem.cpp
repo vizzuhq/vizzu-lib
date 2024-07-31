@@ -98,7 +98,7 @@ CompoundTransform::CompoundTransform(const Geom::Rect &rect,
     double angle,
     const Anim::Interpolated<Gen::CoordSystem> &coordSystem,
     Math::FuzzyBool keepAspectRatio) :
-    PolarDescartesTransform(coordSystem),
+    polarDescartes(coordSystem),
     rect(rect),
     keepAspectRatio(keepAspectRatio)
 {
@@ -107,19 +107,21 @@ CompoundTransform::CompoundTransform(const Geom::Rect &rect,
 
 void CompoundTransform::setAngle(double value)
 {
-	angle = value - static_cast<double>(polar) * M_PI;
+	angle =
+	    value - static_cast<double>(polarDescartes.getPolar()) * M_PI;
 	cosAngle = cos(angle);
 	sinAngle = sin(angle);
 }
 
 double CompoundTransform::getAngle() const
 {
-	return angle + static_cast<double>(polar) * M_PI;
+	return angle
+	     + static_cast<double>(polarDescartes.getPolar()) * M_PI;
 }
 
 Geom::Point CompoundTransform::convert(const Geom::Point &p) const
 {
-	auto transformed = PolarDescartesTransform::convert(p);
+	auto transformed = polarDescartes.convert(p);
 	auto rotated = rotate(transformed);
 	auto aligned = align(rotated);
 	return rect.pos
@@ -151,13 +153,13 @@ Geom::Line CompoundTransform::convertDirectionAt(
 double CompoundTransform::horConvert(double length) const
 {
 	return (rotatedSize() * alignedSize()).x
-	     * PolarDescartesTransform::horConvert(length);
+	     * polarDescartes.horConvert(length);
 }
 
 double CompoundTransform::verConvert(double length) const
 {
 	return (rotatedSize() * alignedSize()).y
-	     * PolarDescartesTransform::verConvert(length);
+	     * polarDescartes.verConvert(length);
 }
 
 Geom::Point CompoundTransform::getOriginal(const Geom::Point &p) const
@@ -166,7 +168,7 @@ Geom::Point CompoundTransform::getOriginal(const Geom::Point &p) const
 	relative = Geom::Point{relative.x, 1.0 - relative.y};
 	relative = deAlign(relative);
 	auto rotated = rotate(relative, true);
-	return PolarDescartesTransform::getOriginal(rotated);
+	return polarDescartes.getOriginal(rotated);
 }
 
 Geom::Rect CompoundTransform::getRect() const { return rect; }
@@ -207,7 +209,8 @@ Geom::Size CompoundTransform::alignedSize() const
 
 	auto minAspectRatio = std::min(aspectRatio, 1.0);
 
-	auto factor = static_cast<double>(polar || keepAspectRatio);
+	auto factor = static_cast<double>(
+	    polarDescartes.getPolar() || keepAspectRatio);
 
 	auto aspectRatioVer =
 	    Math::interpolate(1.0, minAspectRatio, factor);

@@ -1,6 +1,7 @@
 
 #include "colortransform.h"
 
+#include <stdexcept>
 #include <utility>
 
 #include "base/text/funcstring.h"

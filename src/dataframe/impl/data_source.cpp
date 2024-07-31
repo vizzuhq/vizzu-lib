@@ -573,7 +573,7 @@ void error(error_type err_t, std::string_view arg)
 	auto &&[data, size] =
 	    Refl::enum_name<std::pair<const char *, int>>(err_t);
 	std::array<char, 64> arr{};
-	[[maybe_unused]] auto &&_ = std::snprintf(arr.data(),
+	std::ignore = std::snprintf(arr.data(),
 	    arr.size(),
 	    "dataframe error: %.*s: %.*s",
 	    size,

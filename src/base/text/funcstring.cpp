@@ -1,5 +1,8 @@
 #include "funcstring.h"
 
+#include <array>
+#include <stdexcept>
+
 #include "smartstring.h"
 
 namespace Text

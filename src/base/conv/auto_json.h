@@ -216,7 +216,7 @@ struct JSONAutoObj : JSON
 	    requires(JSONSerializable<T> || Optional<T>
 	             || StringConvertable<T> || SerializableRange<T>
 	             || Tuple<T>)
-	inline void operator()(const T &val,
+	inline void add(const T &val,
 	    const std::initializer_list<std::string_view> &il)
 	{
 		closeOpenObj(il);
@@ -224,7 +224,7 @@ struct JSONAutoObj : JSON
 	}
 
 	template <class T>
-	inline void operator()(const T &val,
+	inline void add(const T &val,
 	    std::initializer_list<std::string_view> &&il) = delete;
 
 	const std::initializer_list<std::string_view> *cp{};
@@ -238,9 +238,9 @@ template <class J> struct JSONNoBaseAutoObj : JSONAutoObj
 	    requires(!std::is_base_of_v<J, T>)
 	inline auto operator()(const T &val,
 	    const std::initializer_list<std::string_view> &il)
-	    -> decltype(std::declval<JSONAutoObj &>()(val, il))
+	    -> decltype(add(val, il))
 	{
-		return static_cast<JSONAutoObj &>(*this)(val, il);
+		return add(val, il);
 	}
 };
 
