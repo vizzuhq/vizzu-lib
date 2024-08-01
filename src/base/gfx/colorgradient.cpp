@@ -1,11 +1,14 @@
 #include "colorgradient.h"
 
+#include <cmath>
 #include <stdexcept>
+#include <string>
 
-#include "base/math/interpolation.h"
-#include "base/math/range.h"
+#include "base/math/segmentedfunc.h"
 #include "base/math/segmentedfunc.tpp"
 #include "base/text/smartstring.h"
+
+#include "color.h"
 
 template struct Math::SegmentedFunction<Gfx::Color>;
 

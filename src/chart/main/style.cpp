@@ -1,6 +1,16 @@
 #include "style.h"
 
+#include <optional>
+
+#include "base/anim/interpolated.h"
+#include "base/gfx/color.h"
+#include "base/gfx/colorgradient.h"
+#include "base/gfx/colorpalette.h"
+#include "base/gfx/colortransform.h"
+#include "base/gfx/font.h"
+#include "base/gfx/length.h"
 #include "base/refl/auto_struct.h"
+#include "base/text/smartstring.h"
 
 namespace Vizzu::Styles
 {
@@ -572,13 +582,13 @@ struct FontParentSetter
 	Font *parent;
 	template <class T>
 	    requires(std::is_same_v<Font, T>)
-	inline void operator()(T &f) const noexcept
+	void operator()(T &f) const noexcept
 	{
 		f.fontParent = parent;
 	}
 
 	template <class T>
-	inline void operator()(Styles::Param<T> const &) const noexcept
+	void operator()(Param<T> const &) const noexcept
 	{}
 };
 

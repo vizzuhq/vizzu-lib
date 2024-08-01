@@ -1,6 +1,13 @@
 #include "drawmarkerinfo.h"
 
+#include <utility>
+
+#include "base/anim/interpolated.h"
+#include "base/geom/rect.h"
+#include "base/gfx/canvas.h"
+#include "base/gfx/color.h"
 #include "base/gfx/draw/infobubble.h"
+#include "base/gfx/font.h"
 #include "chart/main/style.h"
 #include "chart/rendering/markers/abstractmarker.h"
 

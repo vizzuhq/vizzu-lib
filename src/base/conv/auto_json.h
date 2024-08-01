@@ -2,17 +2,17 @@
 #define BASE_AUTO_JSON_H
 
 #include <cassert>
+#include <cmath>
 #include <initializer_list>
 #include <optional>
 #include <ranges>
-#include <span>
 #include <string>
 #include <string_view>
+#include <utility>
 #include <vector>
 
 #include "base/refl/auto_struct.h"
 #include "base/text/character.h"
-#include "base/text/smartstring.h"
 
 #include "tostring.h"
 
@@ -47,7 +47,7 @@ concept SerializableRange =
 
 struct JSON
 {
-	template <class T> inline void escaped(const T &str) const
+	template <class T> void escaped(const T &str) const
 	{
 		for (auto ch : str) {
 			if (ch >= 0 && ch <= 31) [[unlikely]] {
@@ -64,7 +64,7 @@ struct JSON
 		}
 	}
 
-	template <class T> inline void primitive(const T &val) const
+	template <class T> void primitive(const T &val) const
 	{
 		if constexpr (std::is_floating_point_v<T>) {
 			if (std::isfinite(val))
@@ -92,9 +92,9 @@ struct JSON
 		}
 	}
 
-	template <class T> inline void array(const T &val) const;
+	template <class T> void array(const T &val) const;
 
-	template <class T> inline void tupleObj(const T &val) const;
+	template <class T> void tupleObj(const T &val) const;
 
 	template <class T> void dynamicObj(const T &val) const;
 
@@ -102,7 +102,7 @@ struct JSON
 
 	template <class T>
 	    requires(JSONSerializable<T>)
-	inline void any(const T &val) const
+	void any(const T &val) const
 	{
 		json += val.toJSON();
 	}
@@ -111,14 +111,14 @@ struct JSON
 	    requires(
 	        std::is_same_v<std::remove_cvref_t<T>, std::nullptr_t>
 	        || std::is_same_v<std::remove_cvref_t<T>, std::nullopt_t>)
-	inline void any(const T &) const
+	void any(const T &) const
 	{
 		json += "null";
 	}
 
 	template <class T>
 	    requires(Optional<T>)
-	inline void any(const T &val) const
+	void any(const T &val) const
 	{
 		if (!val)
 			json += "null";
@@ -128,14 +128,14 @@ struct JSON
 
 	template <class T>
 	    requires(StringConvertable<T>)
-	inline void any(const T &val) const
+	void any(const T &val) const
 	{
 		primitive(val);
 	}
 
 	template <class T>
 	    requires(SerializableRange<T>)
-	inline void any(const T &val) const
+	void any(const T &val) const
 	{
 		if constexpr (Pair<std::ranges::range_value_t<T>>) {
 			dynamicObj(val);
@@ -147,7 +147,7 @@ struct JSON
 	template <class T>
 	    requires(
 	        !JSONSerializable<T> && !SerializableRange<T> && Tuple<T>)
-	inline void any(const T &val) const
+	void any(const T &val) const
 	{
 		tupleObj(val);
 	}
@@ -159,12 +159,12 @@ struct JSON
 	        && !std::is_same_v<std::remove_cvref_t<T>, std::nullopt_t>
 	        && !Optional<T> && !StringConvertable<T>
 	        && !SerializableRange<T> && !Tuple<T>)
-	inline void any(const T &val) const
+	void any(const T &val) const
 	{
 		staticObj(val);
 	}
 
-	explicit inline JSON(std::string &json) : json(json) {}
+	explicit JSON(std::string &json) : json(json) {}
 
 	std::string &json;
 };
@@ -173,7 +173,7 @@ struct JSONAutoObj : JSON
 {
 	using JSON::JSON;
 
-	inline ~JSONAutoObj()
+	~JSONAutoObj()
 	{
 		if (cp)
 			json.append(std::size(*cp), '}');
@@ -186,7 +186,7 @@ struct JSONAutoObj : JSON
 	JSONAutoObj &operator=(JSONAutoObj &&) = delete;
 	JSONAutoObj &operator=(const JSONAutoObj &) = delete;
 
-	inline void closeOpenObj(
+	void closeOpenObj(
 	    const std::initializer_list<std::string_view> &il)
 	{
 		const auto *from = std::begin(il);
@@ -216,7 +216,7 @@ struct JSONAutoObj : JSON
 	    requires(JSONSerializable<T> || Optional<T>
 	             || StringConvertable<T> || SerializableRange<T>
 	             || Tuple<T>)
-	inline void add(const T &val,
+	void add(const T &val,
 	    const std::initializer_list<std::string_view> &il)
 	{
 		closeOpenObj(il);
@@ -224,7 +224,7 @@ struct JSONAutoObj : JSON
 	}
 
 	template <class T>
-	inline void add(const T &val,
+	void add(const T &val,
 	    std::initializer_list<std::string_view> &&il) = delete;
 
 	const std::initializer_list<std::string_view> *cp{};
@@ -236,7 +236,7 @@ template <class J> struct JSONNoBaseAutoObj : JSONAutoObj
 
 	template <class T>
 	    requires(!std::is_base_of_v<J, T>)
-	inline auto operator()(const T &val,
+	auto operator()(const T &val,
 	    const std::initializer_list<std::string_view> &il)
 	    -> decltype(add(val, il))
 	{
@@ -253,7 +253,7 @@ template <char open, char close> struct JSONRepeat : JSON
 	JSONRepeat &operator=(const JSONRepeat &) = delete;
 	JSONRepeat &operator=(JSONRepeat &&) = delete;
 
-	inline ~JSONRepeat()
+	~JSONRepeat()
 	{
 		if (!was) json += open;
 		json += close;
@@ -270,8 +270,7 @@ struct JSONObj : protected JSONRepeat<'{', '}'>
 {
 	using JSONRepeat::JSONRepeat;
 
-	template <bool KeyNoEscape = true>
-	inline JSON &key(std::string_view key)
+	template <bool KeyNoEscape = true> JSON &key(std::string_view key)
 	{
 		sep();
 		json += '\"';
@@ -285,17 +284,17 @@ struct JSONObj : protected JSONRepeat<'{', '}'>
 	}
 
 	template <bool KeyNoEscape = true>
-	inline JSONObj nested(std::string_view key)
+	JSONObj nested(std::string_view key)
 	{
 		this->key<KeyNoEscape>(key);
 		return JSONObj{json};
 	}
 
 	template <bool KeyNoEscape = true>
-	inline JSONArr nestedArr(std::string_view key);
+	JSONArr nestedArr(std::string_view key);
 
 	template <bool KeyNoEscape = true>
-	inline JSONObj &raw(std::string_view key, const std::string &str)
+	JSONObj &raw(std::string_view key, const std::string &str)
 	{
 		this->key<KeyNoEscape>(key);
 		json += str;
@@ -303,7 +302,7 @@ struct JSONObj : protected JSONRepeat<'{', '}'>
 	}
 
 	template <bool KeyNoEscape = true, class T>
-	inline JSONObj &operator()(std::string_view key, const T &val) &
+	JSONObj &operator()(std::string_view key, const T &val) &
 	{
 		this->key<KeyNoEscape>(key);
 		any(val);
@@ -311,14 +310,14 @@ struct JSONObj : protected JSONRepeat<'{', '}'>
 	}
 
 	template <bool KeyNoEscape = true, class T>
-	inline JSONObj &&operator()(std::string_view key, const T &val) &&
+	JSONObj &&operator()(std::string_view key, const T &val) &&
 	{
 		this->key<KeyNoEscape>(key);
 		any(val);
 		return std::move(*this);
 	}
 
-	inline JSONObj &&merge(std::string_view jsonObj) &&
+	JSONObj &&merge(std::string_view jsonObj) &&
 	{
 		if (jsonObj.size() > 2) {
 			sep();
@@ -332,33 +331,33 @@ struct JSONArr : protected JSONRepeat<'[', ']'>
 {
 	using JSONRepeat::JSONRepeat;
 
-	template <class T> inline JSONArr &operator<<(const T &obj)
+	template <class T> JSONArr &operator<<(const T &obj)
 	{
 		sep();
 		any(obj);
 		return *this;
 	}
 
-	inline JSONArr nested()
+	JSONArr nested()
 	{
 		sep();
 		return JSONArr{json};
 	}
 
-	inline JSONObj nestedObj()
+	JSONObj nestedObj()
 	{
 		sep();
 		return JSONObj{json};
 	}
 };
 
-template <class T> inline void JSON::array(const T &val) const
+template <class T> void JSON::array(const T &val) const
 {
 	auto arr = JSONArr{json};
 	for (const auto &e : val) arr << e;
 }
 
-template <class T> inline void JSON::tupleObj(const T &val) const
+template <class T> void JSON::tupleObj(const T &val) const
 {
 	std::apply(
 	    [this](const auto &...args)
@@ -368,7 +367,7 @@ template <class T> inline void JSON::tupleObj(const T &val) const
 	    val);
 }
 
-template <class T> inline void JSON::dynamicObj(const T &val) const
+template <class T> void JSON::dynamicObj(const T &val) const
 {
 	auto j = JSONObj{json};
 	for (const auto &[k, v] : val) {
@@ -376,19 +375,19 @@ template <class T> inline void JSON::dynamicObj(const T &val) const
 	}
 }
 
-template <class T> inline void JSON::staticObj(const T &val) const
+template <class T> void JSON::staticObj(const T &val) const
 {
 	Refl::visit(JSONNoBaseAutoObj<T>{json}, val);
 }
 
 template <bool KeyNoEscape>
-inline JSONArr JSONObj::nestedArr(std::string_view key)
+JSONArr JSONObj::nestedArr(std::string_view key)
 {
 	this->key<KeyNoEscape>(key);
 	return JSONArr{json};
 }
 
-template <class T> inline std::string toJSON(const T &v)
+template <class T> std::string toJSON(const T &v)
 {
 	std::string res;
 	JSON{res}.any(v);

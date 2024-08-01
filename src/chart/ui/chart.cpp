@@ -1,5 +1,10 @@
 #include "chart.h"
 
+#include <memory>
+
+#include "base/geom/point.h"
+#include "base/gfx/canvas.h"
+#include "base/gui/pointer.h"
 #include "chart/main/version.h"
 
 #include "events.h"

@@ -1,8 +1,16 @@
 #include "coordinatesystem.h"
 
+#include <algorithm>
 #include <cmath>
+#include <numbers>
 
+#include "base/anim/interpolated.h"
+#include "base/geom/line.h"
+#include "base/geom/point.h"
+#include "base/geom/rect.h"
+#include "base/math/floating.h"
 #include "base/math/interpolation.h"
+#include "chart/options/coordsystem.h"
 
 namespace Vizzu::Draw
 {
@@ -20,14 +28,14 @@ Geom::Point PolarDescartesTransform::convert(
 
 	auto mapped = mappedSize();
 	auto usedAngle = Math::interpolate(0.0,
-	    2.0 * M_PI,
+	    2.0 * std::numbers::pi,
 	    static_cast<double>(polar));
-	auto hEquidist = mapped.area() / M_PI;
+	auto hEquidist = mapped.area() / std::numbers::pi;
 	auto yCircTop = 1.0 - mapped.y;
 	auto radius = mapped.x / usedAngle - hEquidist;
 	const Geom::Point center(0.5, yCircTop - radius);
 
-	auto angle = M_PI / 2.0 + (0.5 - p.x) * usedAngle;
+	auto angle = std::numbers::pi / 2.0 + (0.5 - p.x) * usedAngle;
 
 	auto converted =
 	    center + Geom::Point::Polar(radius + p.y * mapped.y, angle);
@@ -59,11 +67,12 @@ Geom::Point PolarDescartesTransform::getOriginal(
 		const Geom::Point center(0.5, 0.5);
 		auto polar = (p - center).toPolar();
 
-		polar.y = -polar.y + 3 * M_PI / 2;
-		if (polar.y < 0) polar.y += 2 * M_PI;
-		if (polar.y > 2 * M_PI) polar.y -= 2 * M_PI;
+		polar.y = -polar.y + 3 * std::numbers::pi / 2;
+		if (polar.y < 0) polar.y += 2 * std::numbers::pi;
+		if (polar.y > 2 * std::numbers::pi)
+			polar.y -= 2 * std::numbers::pi;
 
-		return {polar.y / (2 * M_PI), 2 * polar.x};
+		return {polar.y / (2 * std::numbers::pi), 2 * polar.x};
 	}
 
 	Geom::Point pZoomed = p;
@@ -75,17 +84,19 @@ Geom::Point PolarDescartesTransform::getOriginal(
 	}
 	auto mapped = mappedSize();
 	auto usedAngle = Math::interpolate(0.0,
-	    2.0 * M_PI,
+	    2.0 * std::numbers::pi,
 	    static_cast<double>(polar));
-	auto hEquidist = mapped.area() / M_PI;
+	auto hEquidist = mapped.area() / std::numbers::pi;
 	auto yCircTop = 1.0 - mapped.y;
 	auto radius = mapped.x / usedAngle - hEquidist;
 	const Geom::Point center(0.5, yCircTop - radius);
 
 	auto polar = (pZoomed - center).toPolar();
-	polar.y = polar.y - M_PI / 2.0;
-	while (polar.y < M_PI) polar.y += 2 * M_PI;
-	while (polar.y > M_PI) polar.y -= 2 * M_PI;
+	polar.y = polar.y - std::numbers::pi / 2.0;
+	while (polar.y < std::numbers::pi)
+		polar.y += 2 * std::numbers::pi;
+	while (polar.y > std::numbers::pi)
+		polar.y -= 2 * std::numbers::pi;
 	return {0.5 - polar.y / usedAngle, (polar.x - radius) / mapped.y};
 }
 
@@ -107,8 +118,9 @@ CompoundTransform::CompoundTransform(const Geom::Rect &rect,
 
 void CompoundTransform::setAngle(double value)
 {
-	angle =
-	    value - static_cast<double>(polarDescartes.getPolar()) * M_PI;
+	angle = value
+	      - static_cast<double>(polarDescartes.getPolar())
+	            * std::numbers::pi;
 	cosAngle = cos(angle);
 	sinAngle = sin(angle);
 }
@@ -116,7 +128,8 @@ void CompoundTransform::setAngle(double value)
 double CompoundTransform::getAngle() const
 {
 	return angle
-	     + static_cast<double>(polarDescartes.getPolar()) * M_PI;
+	     + static_cast<double>(polarDescartes.getPolar())
+	           * std::numbers::pi;
 }
 
 Geom::Point CompoundTransform::convert(const Geom::Point &p) const

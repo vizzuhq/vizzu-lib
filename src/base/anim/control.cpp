@@ -1,8 +1,12 @@
 #include "control.h"
 
+#include <string>
 #include <utility>
 
 #include "base/text/valueunit.h"
+
+#include "controllable.h"
+#include "duration.h"
 
 namespace Anim
 {

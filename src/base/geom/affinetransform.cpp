@@ -1,11 +1,15 @@
 #include "affinetransform.h"
 
-#include "base/conv/auto_json.h"
+#include <cmath>
+#include <stdexcept>
+#include <string>
 
-#include "circle.h"
+#include "base/conv/auto_json.h"
+#include "base/math/floating.h"
+
 #include "line.h"
+#include "point.h"
 #include "polygon.h"
-#include "rect.h"
 
 namespace Geom
 {

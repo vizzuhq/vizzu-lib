@@ -1,5 +1,15 @@
 #include "drawchart.h"
 
+#include <utility>
+
+#include "base/anim/interpolated.h"
+#include "base/geom/point.h"
+#include "base/geom/rect.h"
+#include "base/geom/transformedrect.h"
+#include "base/gfx/canvas.h"
+#include "chart/main/layout.h"
+#include "painter/painter.h"
+
 #include "drawbackground.h"
 #include "drawlabel.h"
 #include "drawlegend.h"

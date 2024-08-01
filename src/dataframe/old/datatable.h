@@ -14,7 +14,7 @@
 namespace Vizzu::Gen
 {
 class Options;
-enum class ChannelId;
+enum class ChannelId : std::uint8_t;
 }
 
 namespace Vizzu::Data

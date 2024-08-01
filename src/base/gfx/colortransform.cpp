@@ -2,10 +2,13 @@
 #include "colortransform.h"
 
 #include <stdexcept>
+#include <string>
 #include <utility>
 
 #include "base/text/funcstring.h"
 #include "base/text/smartstring.h"
+
+#include "color.h"
 
 namespace Gfx
 {

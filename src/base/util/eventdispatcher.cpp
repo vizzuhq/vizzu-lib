@@ -1,5 +1,10 @@
 #include "eventdispatcher.h"
 
+#include <memory>
+#include <string>
+#include <string_view>
+#include <utility>
+
 #include "base/conv/auto_json.h"
 
 namespace Util
@@ -31,7 +36,7 @@ bool EventDispatcher::Event::invoke(Params &&params) const
 
 	operator()(params, params.toJSON());
 
-	return !params.preventDefault;
+	return !std::move(params).preventDefault;
 }
 
 EventDispatcher::~EventDispatcher() = default;

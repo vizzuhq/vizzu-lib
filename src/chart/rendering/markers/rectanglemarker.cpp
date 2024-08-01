@@ -1,5 +1,17 @@
 #include "rectanglemarker.h"
 
+#include <algorithm>
+#include <cmath>
+
+#include "base/geom/point.h"
+#include "chart/generator/marker.h"
+#include "chart/main/style.h"
+#include "chart/options/coordsystem.h"
+#include "chart/options/options.h"
+#include "chart/options/shapetype.h"
+
+#include "abstractmarker.h"
+
 namespace Vizzu::Draw
 {
 

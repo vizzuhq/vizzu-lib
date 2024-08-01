@@ -1,7 +1,7 @@
 #ifndef GEOM_CIRCLE
 #define GEOM_CIRCLE
 
-#include <optional>
+#include <cstdint>
 
 #include "point.h"
 #include "rect.h"
@@ -13,7 +13,7 @@ namespace Geom
 class Circle
 {
 public:
-	enum class FromRect {
+	enum class FromRect : std::uint8_t {
 		inscribed,
 		sameWidth,
 		sameHeight,
@@ -23,7 +23,7 @@ public:
 	Point center;
 	double radius;
 
-	Circle() : radius(0) {}
+	Circle() : radius{} {}
 
 	Circle(Point center, double radius) :
 	    center(center),

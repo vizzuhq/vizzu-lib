@@ -1,7 +1,9 @@
 #include "angle.h"
 
 #include <cmath>
+#include <numbers>
 #include <stdexcept>
+#include <string>
 
 #include "base/text/valueunit.h"
 
@@ -10,12 +12,12 @@ namespace Geom
 
 template <int max> double CircularAngle<max>::degToRad(double deg)
 {
-	return M_PI * deg / 180.0;
+	return std::numbers::pi * deg / 180.0;
 }
 
 template <int max> double CircularAngle<max>::radToDeg(double rad)
 {
-	return 180.0 * rad / M_PI;
+	return 180.0 * rad / std::numbers::pi;
 }
 
 template <int max>
@@ -48,13 +50,13 @@ CircularAngle<max> CircularAngle<max>::Deg(double value)
 template <int max>
 CircularAngle<max> CircularAngle<max>::Grad(double value)
 {
-	return CircularAngle<max>(M_PI * value / 200.0);
+	return CircularAngle<max>(std::numbers::pi * value / 200.0);
 }
 
 template <int max>
 CircularAngle<max> CircularAngle<max>::Turn(double value)
 {
-	return CircularAngle<max>(2.0 * M_PI * value);
+	return CircularAngle<max>(2.0 * std::numbers::pi * value);
 }
 
 template <int max> double CircularAngle<max>::deg() const
@@ -64,7 +66,7 @@ template <int max> double CircularAngle<max>::deg() const
 
 template <int max> double CircularAngle<max>::turn() const
 {
-	return value / (2.0 * M_PI);
+	return value / (2.0 * std::numbers::pi);
 }
 
 template <int max> void CircularAngle<max>::sanitize()

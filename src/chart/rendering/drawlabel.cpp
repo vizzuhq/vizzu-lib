@@ -1,5 +1,19 @@
 #include "drawlabel.h"
 
+#include <memory>
+#include <numbers>
+#include <string>
+#include <utility>
+
+#include "base/geom/point.h"
+#include "base/geom/rect.h"
+#include "base/geom/transformedrect.h"
+#include "base/gfx/canvas.h"
+#include "base/gfx/font.h"
+#include "base/util/eventdispatcher.h"
+#include "chart/main/events.h"
+#include "chart/main/style.h"
+
 namespace Vizzu::Draw
 {
 
@@ -39,8 +53,9 @@ void DrawLabel::draw(Gfx::ICanvas &canvas,
 	auto copyRect = fullRect;
 
 	if (options.flip)
-		copyRect.transform *=
-		    Geom::AffineTransform(fullRect.size, 1.0, -M_PI);
+		copyRect.transform *= Geom::AffineTransform(fullRect.size,
+		    1.0,
+		    -std::numbers::pi);
 
 	if (onDraw.invoke(Events::OnTextDrawEvent{*eventTarget,
 	        copyRect,

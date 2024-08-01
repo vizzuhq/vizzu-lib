@@ -1,16 +1,19 @@
 #include "rect.h"
 
 #include <algorithm>
+#include <array>
+#include <cmath>
+
+#include "base/math/floating.h"
+
+#include "point.h"
 
 namespace Geom
 {
 
-Rect Rect::Ident() { return {Geom::Point(), Geom::Size::Identity()}; }
+Rect Rect::Ident() { return {Point(), Size::Identity()}; }
 
-Rect Rect::CenteredMax()
-{
-	return {Geom::Point::Min() / 2, {Geom::Size::Max()}};
-}
+Rect Rect::CenteredMax() { return {Point::Min() / 2, {Size::Max()}}; }
 
 Rect Rect::boundary(const Rect &rect) const
 {
@@ -77,7 +80,7 @@ Rect Rect::operator*(double factor) const
 	return {pos * factor, {size * factor}};
 }
 
-Rect Rect::operator+(const Geom::Rect &other) const
+Rect Rect::operator+(const Rect &other) const
 {
 	return {pos + other.pos, {size + other.size}};
 }

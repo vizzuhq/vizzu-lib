@@ -1,6 +1,7 @@
 #ifndef VIZZU_DATAFRAME_INTERFACE_H
 #define VIZZU_DATAFRAME_INTERFACE_H
 
+#include <cstdint>
 #include <functional>
 #include <memory>
 #include <optional>
@@ -20,7 +21,7 @@ namespace Vizzu::dataframe
 using cell_value = std::variant<double, std::string_view>;
 using cell_reference = std::variant<double, const std::string *>;
 
-enum class aggregator_type {
+enum class aggregator_type : std::uint8_t {
 	sum,
 	min,
 	max,
@@ -30,7 +31,7 @@ enum class aggregator_type {
 	exists
 };
 
-enum class sort_type {
+enum class sort_type : std::uint8_t {
 	less,
 	greater,
 	natural_less,
@@ -38,9 +39,9 @@ enum class sort_type {
 	by_categories
 };
 
-enum class na_position { last, first };
+enum class na_position : std::uint8_t { last, first };
 
-enum class adding_type {
+enum class adding_type : std::uint8_t {
 	create_or_add,
 	create_or_throw,
 	create_or_override,

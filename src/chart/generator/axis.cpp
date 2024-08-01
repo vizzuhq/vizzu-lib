@@ -1,7 +1,21 @@
 #include "axis.h"
 
+#include <algorithm>
+#include <map>
+#include <optional>
+#include <string>
+#include <string_view>
+#include <tuple>
+#include <utility>
+
+#include "base/anim/interpolated.h"
+#include "base/geom/point.h"
+#include "base/math/floating.h"
 #include "base/math/interpolation.h"
+#include "base/math/range.h"
 #include "base/math/renard.h"
+#include "chart/options/channel.h"
+#include "dataframe/old/types.h"
 
 namespace Vizzu::Gen
 {

@@ -83,8 +83,8 @@ public:
 
 	template <template <class, class...> class PointerType,
 	    class... Types>
-	explicit Filter(PointerType<Fun, Types...> &&wr) :
-	    func1{std::move(wr)}
+	explicit Filter(PointerType<Fun, Types...> wr) :
+	    func1{wr.release(), wr.get_deleter()}
 	{}
 
 	[[nodiscard]] bool operator==(

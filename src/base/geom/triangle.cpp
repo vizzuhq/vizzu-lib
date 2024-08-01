@@ -1,5 +1,7 @@
 #include "triangle.h"
 
+#include <cmath>
+
 namespace Geom
 {
 

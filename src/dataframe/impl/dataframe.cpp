@@ -1,14 +1,29 @@
 #include "dataframe.h"
 
-#include <base/conv/auto_json.h>
+#include <algorithm>
 #include <cmath>
-#include <numeric>
+#include <compare>
+#include <cstddef>
+#include <cstdint>
+#include <cstdlib>
+#include <functional>
+#include <memory>
+#include <new>
 #include <optional>
+#include <span>
+#include <string>
+#include <string_view>
+#include <type_traits>
 #include <utility>
+#include <variant>
+#include <vector>
 
-#include "../old/datatable.h"
+#include "base/conv/auto_json.h"
+#include "base/refl/auto_enum.h"
+#include "dataframe/interface.h"
+#include "dataframe/old/types.h" // NOLINT(misc-include-cleaner)
 
-#include "aggregators.h"
+#include "data_source.h"
 
 namespace Vizzu::dataframe
 {
@@ -513,7 +528,7 @@ void dataframe::remove_unused_categories(std::string_view column) &
 
 	unsafe_get<series_type::dimension>(
 	    unsafe_get<source_type::owning>(source)->get_series(column))
-	    .second.remove_unused_categories(std::move(usage));
+	    .second.remove_unused_categories(usage);
 }
 
 void dataframe::change_data(std::size_t record_id,

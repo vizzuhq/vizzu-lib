@@ -1,6 +1,7 @@
 #ifndef TEXT_SMARTSTRING
 #define TEXT_SMARTSTRING
 
+#include <cstdint>
 #include <string>
 #include <vector>
 
@@ -9,7 +10,7 @@
 namespace Text
 {
 
-enum class NumberFormat { none, grouped, prefixed };
+enum class NumberFormat : std::uint8_t { none, grouped, prefixed };
 
 namespace SmartString
 {

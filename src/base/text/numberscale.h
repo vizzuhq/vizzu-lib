@@ -1,13 +1,14 @@
 #ifndef TEXT_NUMBERSCALE
 #define TEXT_NUMBERSCALE
 
+#include <cstdint>
 #include <string>
 #include <vector>
 
 namespace Text
 {
 
-enum class PrefixType {
+enum class PrefixType : std::uint8_t {
 	SISymbol,
 	shortScaleSymbolUS,
 	shortScaleSymbolUK
