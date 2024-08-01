@@ -2,7 +2,8 @@ const path = require('path')
 const Generator = require('./gen-simple.cjs')
 
 const generator = new Generator({
-	prefix: (_name) => '#ifndef CANVAS_H\n#define CANVAS_H\n\n#include <cstddef>\n\nextern "C" {\n\n',
+	prefix: (_name) => '#ifndef CANVAS_H\n#define CANVAS_H\n\n' +
+		'#include <cstddef>\n\nextern "C" {\n\n',
 	procParams: (params) => [['canvas', 'const void *'], ...params],
 	toParameter: (_param, type) => `${convertToCType(type)}`,
 	toDeclaration: (method, params) => `extern void canvas_${method}(${params});`,
