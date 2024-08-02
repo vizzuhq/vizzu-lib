@@ -549,9 +549,9 @@ template <class T, class U, class... MemberFunctors>
 constexpr static inline auto FuncPtr = +[](const T &t) -> U &
 {
 	using Composite::operator>>;
-	auto &v = (t >> ... >> MemberFunctors{});
-	return const_cast<std::remove_cvref_t<decltype(v)> &>( // NOLINT
-	    v);
+	const auto *v = &(t >> ... >> MemberFunctors{});
+	return const_cast<std::remove_cvref_t<decltype(*v)> &>( // NOLINT
+	    *v);
 };
 
 template <class... MemberFunctors>
