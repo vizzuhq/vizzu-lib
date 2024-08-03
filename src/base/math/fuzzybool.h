@@ -26,6 +26,7 @@ public:
 	                 std::remove_cvref_t<
 	                     decltype(*std::declval<Optional>())>,
 	                 bool>)
+	// NOLINTNEXTLINE(bugprone-forwarding-reference-overload)
 	explicit FuzzyBool(Optional &&opt) :
 	    FuzzyBool(opt && *std::forward<Optional>(opt))
 	{}
