@@ -1,8 +1,11 @@
 #include "easing.h"
 
-#include "base/anim/easingfunc.h"
+#include <stdexcept>
+#include <string>
+
 #include "base/anim/easinggradient.h"
 #include "base/conv/parse.h"
+#include "base/geom/point.h"
 #include "base/text/funcstring.h"
 #include "base/text/smartstring.h"
 

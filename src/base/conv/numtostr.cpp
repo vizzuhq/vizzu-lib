@@ -2,8 +2,13 @@
 #include "numtostr.h"
 
 #include <algorithm>
+#include <cmath>
+#include <cstdint>
 #include <cstdio>
+#include <limits>
 #include <stdexcept>
+#include <string>
+#include <string_view>
 
 namespace Conv
 {

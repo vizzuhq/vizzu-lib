@@ -1,5 +1,10 @@
 #include "sequence.h"
 
+#include <utility>
+
+#include "base/anim/controllable.h"
+#include "base/anim/duration.h"
+
 namespace Anim
 {
 

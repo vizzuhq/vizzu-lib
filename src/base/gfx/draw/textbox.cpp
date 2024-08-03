@@ -1,5 +1,13 @@
 #include "textbox.h"
 
+#include <cstddef>
+#include <utility>
+
+#include "base/geom/point.h"
+#include "base/gfx/canvas.h"
+#include "base/gfx/color.h"
+#include "base/gfx/font.h"
+
 namespace Gfx::Draw
 {
 

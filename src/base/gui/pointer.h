@@ -13,7 +13,7 @@ namespace GUI
 
 struct PointerEvent
 {
-	int pointerId;
+	int pointerId{};
 	Geom::Point position;
 };
 

@@ -1,10 +1,17 @@
 #include "channel.h"
 
-#include <algorithm>
 #include <cmath>
-#include <set>
+#include <cstddef>
+#include <cstdint>
+#include <iterator>
+#include <optional>
+#include <stdexcept>
+#include <string>
+#include <utility>
 
+#include "chart/options/autoparam.h"
 #include "dataframe/old/datatable.h"
+#include "dataframe/old/types.h"
 
 namespace Vizzu::Gen
 {

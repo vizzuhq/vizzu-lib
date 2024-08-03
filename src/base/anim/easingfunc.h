@@ -2,9 +2,7 @@
 #define ANIM_EASINGFUNC
 
 #include <cmath>
-#include <string>
-
-#include "easing.h"
+#include <numbers>
 
 namespace Anim
 {
@@ -37,7 +35,7 @@ struct EaseFunc
 
 	static double sine(double x)
 	{
-		return 1.0 - cos((x * M_PI) / 2.0);
+		return 1.0 - cos(x * std::numbers::pi / 2.0);
 	}
 	static double quad(double x) { return x * x; }
 	static double cubic(double x) { return x * x * x; }
@@ -58,11 +56,10 @@ struct EaseFunc
 
 	static double elastic(double x)
 	{
-		const double c4 = (2.0 * M_PI) / 3.0;
-		return x == 0 ? 0
-		     : x == 1
-		         ? 1
-		         : -pow(2, 10 * x - 10) * sin((x * 10 - 10.75) * c4);
+		const double c4 = 2.0 * std::numbers::pi / 3.0;
+		return 0 < x && x < 1
+		         ? -pow(2, 10 * x - 10) * sin((x * 10 - 10.75) * c4)
+		         : x;
 	}
 };
 }

@@ -133,7 +133,8 @@ public:
 	}
 
 	template <class T>
-	[[nodiscard]] auto get(T &&index) const = delete;
+	// NOLINTNEXTLINE(cppcoreguidelines-missing-std-forward)
+	[[nodiscard]] auto get(T &&) const = delete;
 
 	explicit operator std::string() const
 	{
@@ -176,7 +177,7 @@ public:
 	{
 		if (values[0].hasValue()) branch(first, values[0]);
 		if (has_second && values[1].hasValue())
-			branch(second, values[1]);
+			std::forward<T>(branch)(second, values[1]);
 	}
 
 	template <class U = void,
@@ -190,7 +191,8 @@ public:
 		         * values[0].weight;
 		if (has_second)
 			res = res
-			    + static_cast<T>(branch(values[1].value))
+			    + static_cast<T>(
+			          std::forward<Fun>(branch)(values[1].value))
 			          * values[1].weight;
 		return static_cast<T>(res);
 	}

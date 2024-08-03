@@ -1,5 +1,10 @@
 #include "painter.h"
 
+#include <array>
+
+#include "base/geom/line.h"
+#include "base/geom/point.h"
+
 #include "drawline.h"
 #include "drawpolygon.h"
 

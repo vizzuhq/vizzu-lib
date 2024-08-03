@@ -3,6 +3,7 @@ set(sourceDir ${root}/src)
 
 set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
 
 if (NOT CMAKE_BUILD_TYPE OR CMAKE_BUILD_TYPE STREQUAL "")
     set(CMAKE_BUILD_TYPE "Release" CACHE STRING "" FORCE)
@@ -63,11 +64,11 @@ if (cpplint)
 endif()
 
 if (WIN32)
-	set(CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} /std:c++20 /Zi /GR-")
+	set(CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} /Zi /GR-")
 	add_definitions(-D_USE_MATH_DEFINES)
 	set(CMAKE_SHARED_LINKER_FLAGS "/INCREMENTAL:NO /Debug")
 else()
-	set(CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} -std=c++20 \
+	set(CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} \
 		-Wpedantic \
 		-Wall \
 		-Wextra \

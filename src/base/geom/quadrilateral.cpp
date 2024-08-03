@@ -2,6 +2,8 @@
 
 #include "base/math/tolerance.h"
 
+#include "point.h"
+#include "rect.h"
 #include "triangle.h"
 
 namespace Geom

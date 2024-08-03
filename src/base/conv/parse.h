@@ -33,10 +33,10 @@ template <typename To> To parse(const std::string &string)
 		return string == "true"
 		    || (string != "false" && (throw std::bad_cast(), true));
 	}
-	else if constexpr (std::is_floating_point<To>::value) {
+	else if constexpr (std::is_floating_point_v<To>) {
 		return static_cast<To>(strtod(string.c_str(), nullptr));
 	}
-	else if constexpr (std::is_integral<To>::value) {
+	else if constexpr (std::is_integral_v<To>) {
 		return static_cast<To>(strtoll(string.c_str(), nullptr, 10));
 	}
 	else

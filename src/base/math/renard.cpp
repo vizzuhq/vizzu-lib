@@ -1,7 +1,7 @@
 
 #include "renard.h"
 
-#include <cmath>
+#include <array>
 #include <ranges>
 #include <stdexcept>
 #include <string>

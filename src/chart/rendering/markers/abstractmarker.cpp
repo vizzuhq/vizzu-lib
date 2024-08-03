@@ -4,6 +4,14 @@
 
 #include "abstractmarker.h"
 
+#include "base/anim/interpolated.h"
+#include "base/geom/line.h"
+#include "chart/generator/marker.h"
+#include "chart/main/style.h"
+#include "chart/options/shapetype.h"
+#include "chart/rendering/drawingcontext.h"
+#include "chart/rendering/painter/coordinatesystem.h"
+
 #include "circlemarker.h"
 #include "connectingmarker.h"
 #include "rectanglemarker.h"

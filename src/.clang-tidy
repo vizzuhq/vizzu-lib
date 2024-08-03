@@ -27,7 +27,6 @@ Checks: >
   -cppcoreguidelines-pro-type-vararg,
   -cppcoreguidelines-special-member-functions,
   fuchsia-statically-constructed-objects,
-  fuchsia-trailing-return,
   google-build-using-namespace,
   google-default-arguments,
   google-explicit-constructor,
@@ -48,10 +47,10 @@ Checks: >
   -readability-identifier-length,
   -readability-implicit-bool-conversion,
   -readability-magic-numbers,
-  -readability-named-parameter
+  -readability-named-parameter,
+  -readability-redundant-member-init
 WarningsAsErrors: '*,-readability-function-size,-readability-function-cognitive-complexity,-misc-no-recursion'
 HeaderFilterRegex: '.*'
-AnalyzeTemporaryDtors: false
 FormatStyle:     none
 User:            simon
 CheckOptions:
@@ -375,5 +374,12 @@ CheckOptions:
     value:           '0'
   - key:             readability-simplify-subscript-expr.Types
     value:           '::std::basic_string;::std::basic_string_view;::std::vector;::std::array'
+  - key:             cppcoreguidelines-rvalue-reference-param-not-moved.IgnoreUnnamedParams
+    value:           'true'
+  - key:             cppcoreguidelines-rvalue-reference-param-not-moved.AllowPartialMove
+    value:           'true'
+  - key:             misc-include-cleaner.IgnoreHeaders
+    value:           (.*\.tpp)
+
 ...
 

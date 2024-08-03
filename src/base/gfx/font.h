@@ -1,6 +1,7 @@
 #ifndef GFX_FONT
 #define GFX_FONT
 
+#include <cstdint>
 #include <string>
 
 namespace Gfx
@@ -27,7 +28,7 @@ public:
 		int value;
 	};
 
-	enum class Style { normal, italic, oblique };
+	enum class Style : std::uint8_t { normal, italic, oblique };
 
 	std::string family;
 	Style style;

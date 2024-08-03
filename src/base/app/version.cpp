@@ -1,5 +1,7 @@
 #include "base/app/version.h"
 
+#include <string>
+
 #include "base/app/git.h"
 
 namespace App

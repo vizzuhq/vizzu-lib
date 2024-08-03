@@ -1,9 +1,20 @@
 
 #include "options.h"
 
+#include <array>
 #include <atomic>
+#include <cstddef>
+#include <optional>
 
 #include "base/math/trig.h"
+#include "dataframe/old/types.h"
+
+#include "align.h"
+#include "channel.h"
+#include "channelrange.h"
+#include "coordsystem.h"
+#include "orientation.h"
+#include "shapetype.h"
 
 namespace Vizzu::Gen
 {
@@ -41,10 +52,9 @@ const Channel *Options::subAxisOf(ChannelId id) const
 		return id == mainAxisType() ? &subAxis() : nullptr;
 
 	case ShapeType::area:
-		return id == mainAxisType() ? &subAxis()
-		     : id == subAxisType()  ? &mainAxis()
-		                            : nullptr;
-
+		if (id == mainAxisType()) return &subAxis();
+		if (id == subAxisType()) return &mainAxis();
+		return nullptr;
 	case ShapeType::line:
 		return id == subAxisType()
 		            || (id == ChannelId::size

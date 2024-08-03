@@ -4,6 +4,7 @@
 #include <algorithm>
 #include <cmath>
 #include <limits>
+#include <numbers>
 #include <stdexcept>
 #include <string>
 
@@ -135,9 +136,9 @@ struct Point
 	[[nodiscard]] double angle() const
 	{
 		using Math::Floating::is_zero;
-		if (is_zero(y)) return std::signbit(x) ? M_PI : 0.0;
-		if (is_zero(x))
-			return std::signbit(y) ? -M_PI / 2.0 : M_PI / 2.0;
+		using std::numbers::pi;
+		if (is_zero(y)) return std::signbit(x) ? pi : 0.0;
+		if (is_zero(x)) return std::signbit(y) ? -pi / 2.0 : pi / 2.0;
 		return atan2f(static_cast<float>(y), static_cast<float>(x));
 	}
 

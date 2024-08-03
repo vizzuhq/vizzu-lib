@@ -1,12 +1,24 @@
 #include "drawinterlacing.h"
 
-#include <base/type/booliter.h>
+#include <algorithm>
+#include <cmath>
+#include <cstddef>
+#include <utility>
 
+#include "base/anim/interpolated.h"
+#include "base/geom/point.h"
+#include "base/geom/rect.h"
+#include "base/gfx/font.h"
+#include "base/math/range.h"
 #include "base/math/renard.h"
 #include "base/text/smartstring.h"
-#include "chart/generator/plot.h"
-#include "chart/rendering/drawlabel.h"
-#include "chart/rendering/orientedlabel.h"
+#include "base/type/booliter.h"
+#include "chart/generator/plot.h" // NOLINT(misc-include-cleaner)
+#include "chart/main/events.h"
+#include "chart/options/channel.h"
+
+#include "orientedlabel.h"
+#include "renderedchart.h"
 
 namespace Vizzu::Draw
 {

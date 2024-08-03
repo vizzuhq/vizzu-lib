@@ -1,8 +1,13 @@
 #include "treemap.h"
 
 #include <algorithm>
+#include <cmath>
+#include <iterator>
+#include <vector>
 
 #include "base/math/interpolation.h"
+
+#include "specmarker.h"
 
 namespace Vizzu::Charts
 {

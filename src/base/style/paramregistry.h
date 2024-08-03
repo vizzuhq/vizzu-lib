@@ -44,15 +44,16 @@ public:
 		    requires(Type::isoptional<
 		                std::remove_cvref_t<std::invoke_result_t<T &&,
 		                    Root &>>>::value)
-		constexpr inline
+		constexpr
 		    __attribute__((always_inline)) explicit Accessor(T &&t) :
 		    toString(
-		        [t](const Root &r)
+		        [t = std::forward<T>(t)](const Root &r)
 		        {
 			        return Conv::toString(t(r));
 		        }),
 		    fromString(
-		        [t](Root &r, const std::string &str)
+		        [t = std::forward<T>(t)](Root &r,
+		            const std::string &str)
 		        {
 			        auto &e = t(r);
 			        e = Conv::parse<std::remove_cvref_t<decltype(e)>>(

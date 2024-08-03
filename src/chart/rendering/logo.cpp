@@ -1,6 +1,12 @@
 #include "logo.h"
 
 #include <array>
+#include <cstddef>
+
+#include "base/geom/circle.h"
+#include "base/geom/point.h"
+#include "base/gfx/color.h"
+#include "base/gfx/colortransform.h"
 
 namespace Vizzu::Draw
 {

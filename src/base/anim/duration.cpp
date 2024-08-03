@@ -1,6 +1,9 @@
 #include "duration.h"
 
+#include <cstdint>
+#include <limits>
 #include <stdexcept>
+#include <string>
 
 #include "base/text/valueunit.h"
 
@@ -19,11 +22,13 @@ Duration::Duration(double nanosec) :
 
 Duration::Duration(const Text::ValueUnit &valueUnit) :
     Base((valueUnit.getUnit() == "ms" ? MSec(valueUnit.getValue())
-          : valueUnit.getUnit() == "s" || valueUnit.getUnit().empty()
-              ? Sec(valueUnit.getValue())
-              : throw std::logic_error("invalid time unit"))
+                                      : Sec(valueUnit.getValue()))
              .count())
-{}
+{
+	if (valueUnit.getUnit() != "ms" && valueUnit.getUnit() != "s"
+	    && !valueUnit.getUnit().empty()) [[unlikely]]
+		throw std::logic_error("invalid time unit");
+}
 
 Duration::Duration(const std::string &str) :
     Duration(Text::ValueUnit{str})

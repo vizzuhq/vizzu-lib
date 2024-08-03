@@ -1,6 +1,7 @@
 #ifndef TEXT_CHARACTER
 #define TEXT_CHARACTER
 
+#include <cstdint>
 #include <stdexcept>
 
 namespace Text::Character

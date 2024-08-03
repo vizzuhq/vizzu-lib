@@ -1,9 +1,16 @@
 #include "keyframe.h"
 
-#include <chart/generator/plotbuilder.h>
+#include <memory>
 #include <utility>
 
+#include "base/anim/duration.h"
 #include "chart/generator/plot.h"
+#include "chart/generator/plotbuilder.h"
+#include "chart/generator/plotptr.h"
+#include "chart/options/options.h"
+#include "dataframe/old/datatable.h"
+
+#include "options.h"
 
 namespace Vizzu::Anim
 {

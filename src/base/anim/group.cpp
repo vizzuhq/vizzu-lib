@@ -1,4 +1,10 @@
-#include "base/anim/group.h"
+#include "group.h"
+
+#include <memory>
+#include <utility>
+
+#include "duration.h"
+#include "element.h"
 
 namespace Anim
 {
@@ -10,7 +16,7 @@ void Group::calcDuration(Duration duration)
 		return;
 	}
 
-	setDuration(::Anim::Duration());
+	setDuration(Duration());
 	for (const auto &element : elements)
 		if (element.options.end() > getDuration())
 			setDuration(element.options.end());

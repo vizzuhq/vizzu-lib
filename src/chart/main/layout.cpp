@@ -1,6 +1,8 @@
 #include "layout.h"
 
-#include "chart/rendering/drawlabel.h"
+#include "base/anim/interpolated.h"
+#include "base/geom/rect.h"
+#include "chart/options/options.h"
 #include "chart/rendering/logo.h"
 
 #include "stylesheet.h"

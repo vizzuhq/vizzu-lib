@@ -1,5 +1,9 @@
 #include "color.h"
 
+#include <cstdint>
+#include <stdexcept>
+#include <string>
+
 #include "base/conv/parse.h"
 #include "base/text/character.h"
 #include "base/text/funcstring.h"

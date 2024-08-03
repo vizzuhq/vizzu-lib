@@ -1,9 +1,21 @@
 #include "chart.h"
 
-#include <chart/generator/plotbuilder.h>
+#include <memory>
+#include <utility>
 
+#include "base/geom/rect.h"
+#include "base/gfx/canvas.h"
+#include "base/gfx/length.h"
+#include "chart/animator/animation.h"
 #include "chart/generator/plot.h"
+#include "chart/generator/plotbuilder.h"
+#include "chart/generator/plotptr.h"
+#include "chart/options/config.h"
+#include "chart/options/options.h"
 #include "chart/rendering/drawchart.h"
+#include "chart/rendering/drawingcontext.h"
+
+#include "style.h"
 
 namespace Vizzu
 {

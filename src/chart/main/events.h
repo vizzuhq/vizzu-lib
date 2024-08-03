@@ -162,7 +162,7 @@ public:
 
 			virtual void appendToJSON(Conv::JSONObj &&jsonObj) const
 			{
-				jsonObj("tagName", tagName);
+				std::move(jsonObj)("tagName", tagName);
 			}
 		};
 
@@ -195,7 +195,7 @@ public:
 
 			template <typename... Args>
 			explicit Text(std::string text, Args &&...args) :
-			    Base(args...),
+			    Base(std::forward<Args>(args)...),
 			    text(std::move(text))
 			{}
 

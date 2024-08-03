@@ -1,8 +1,16 @@
 #include "renderedchart.h"
 
+#include <algorithm>
 #include <ranges>
+#include <variant>
 
-#include "chart/rendering/markerrenderer.h"
+#include "base/geom/point.h"
+#include "base/geom/transformedrect.h"
+#include "base/math/floating.h"
+#include "base/math/fuzzybool.h"
+#include "base/util/eventdispatcher.h"
+#include "chart/generator/marker.h" // NOLINT(misc-include-cleaner)
+#include "chart/options/shapetype.h"
 
 namespace Vizzu::Draw
 {

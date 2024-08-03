@@ -1,5 +1,17 @@
 #include "circlemarker.h"
 
+#include <algorithm>
+#include <cmath>
+
+#include "base/math/floating.h"
+#include "chart/generator/marker.h"
+#include "chart/main/style.h"
+#include "chart/options/options.h"
+#include "chart/options/shapetype.h"
+#include "chart/rendering/painter/coordinatesystem.h"
+
+#include "abstractmarker.h"
+
 namespace Vizzu::Draw
 {
 

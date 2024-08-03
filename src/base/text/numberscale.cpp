@@ -1,5 +1,9 @@
 #include "numberscale.h"
 
+#include <cstddef>
+#include <stdexcept>
+#include <string>
+
 #include "base/conv/parse.h"
 #include "base/text/smartstring.h"
 

@@ -1,5 +1,19 @@
 #include "jscriptcanvas.h"
 
+#include <cstddef>
+#include <optional>
+#include <string>
+#include <type_traits>
+
+#include "base/geom/affinetransform.h"
+#include "base/geom/circle.h"
+#include "base/geom/line.h"
+#include "base/geom/rect.h"
+#include "base/gfx/canvas.h"
+#include "base/gfx/color.h"
+#include "base/gfx/colorgradient.h"
+#include "base/gfx/font.h"
+
 #include "canvas.h"
 #include "interfacejs.h"
 
@@ -175,17 +189,15 @@ void JScriptCanvas::setBrushGradient(const Geom::Line &line,
 	static_assert(sizeof(Stop) == sizeof(double) * 5);
 
 	static_assert(offsetof(Stop, pos) == 0);
-	static_assert(std::is_same<decltype(Stop::pos), double>::value);
+	static_assert(std::is_same_v<decltype(Stop::pos), double>);
 
 	static_assert(offsetof(Stop, value) == sizeof(double));
+	static_assert(std::is_same_v<decltype(Stop::value.red), double>);
 	static_assert(
-	    std::is_same<decltype(Stop::value.red), double>::value);
+	    std::is_same_v<decltype(Stop::value.green), double>);
+	static_assert(std::is_same_v<decltype(Stop::value.blue), double>);
 	static_assert(
-	    std::is_same<decltype(Stop::value.green), double>::value);
-	static_assert(
-	    std::is_same<decltype(Stop::value.blue), double>::value);
-	static_assert(
-	    std::is_same<decltype(Stop::value.alpha), double>::value);
+	    std::is_same_v<decltype(Stop::value.alpha), double>);
 
 	::canvas_setBrushGradient(this,
 	    line.begin.x,

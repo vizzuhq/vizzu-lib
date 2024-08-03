@@ -1,22 +1,34 @@
 #include "circle.h"
 
 #include <algorithm>
+#include <cmath>
+#include <numbers>
+#include <optional>
+#include <stdexcept>
 
+#include "base/math/floating.h"
 #include "base/math/tolerance.h"
+
+#include "rect.h"
+#include "solutions.h"
 
 namespace Geom
 {
 
-Circle::Circle(const Rect &rect, FromRect fromRect)
+Circle::Circle(const Rect &rect, FromRect fromRect) :
+    center(rect.pos + rect.size / 2.0)
 {
-	radius = fromRect == FromRect::inscribed
-	           ? rect.size.minSize() / 2.0
-	       : fromRect == FromRect::sameWidth  ? rect.size.x / 2.0
-	       : fromRect == FromRect::sameHeight ? rect.size.y / 2.0
-	       : fromRect == FromRect::outscribed
-	           ? rect.size.diagonal() / 2.0
-	           : throw std::logic_error("invalid circle parameter");
-	center = rect.pos + rect.size / 2.0;
+	switch (fromRect) {
+	case FromRect::inscribed:
+		radius = rect.size.minSize() / 2.0;
+		break;
+	case FromRect::sameWidth: radius = rect.size.x / 2.0; break;
+	case FromRect::sameHeight: radius = rect.size.y / 2.0; break;
+	case FromRect::outscribed:
+		radius = rect.size.diagonal() / 2.0;
+		break;
+	default: throw std::logic_error("invalid circle parameter");
+	}
 }
 
 Circle::Circle(const Circle &c0,
@@ -46,7 +58,10 @@ bool Circle::colateral(const Circle &c, double tolerance) const
 	    == (radius + c.radius);
 }
 
-double Circle::area() const { return M_PI * radius * radius; }
+double Circle::area() const
+{
+	return std::numbers::pi * radius * radius;
+}
 
 bool Circle::overlaps(const Circle &c, double tolerance) const
 {

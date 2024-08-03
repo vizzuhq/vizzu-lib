@@ -1,5 +1,12 @@
 #include "channels.h"
 
+#include <algorithm>
+#include <span>
+
+#include "dataframe/old/types.h"
+
+#include "channel.h"
+
 namespace Vizzu::Gen
 {
 

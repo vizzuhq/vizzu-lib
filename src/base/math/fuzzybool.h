@@ -20,14 +20,15 @@ public:
 
 	explicit FuzzyBool(bool value) : value(value ? 1.0 : 0.0) {}
 
-	template <class Optional,
-	    class = std::enable_if_t<
-	        std::is_convertible_v<bool, Optional>
-	        && std::is_same_v<
-	            std::remove_cvref_t<
-	                decltype(*std::declval<Optional>())>,
-	            bool>>>
-	explicit FuzzyBool(Optional &&opt) : FuzzyBool(opt && *opt)
+	template <class Optional>
+	    requires(std::is_convertible_v<bool, Optional>
+	             && std::is_same_v<
+	                 std::remove_cvref_t<
+	                     decltype(*std::declval<Optional>())>,
+	                 bool>)
+	// NOLINTNEXTLINE(bugprone-forwarding-reference-overload)
+	explicit FuzzyBool(Optional &&opt) :
+	    FuzzyBool(opt && *std::forward<Optional>(opt))
 	{}
 
 	explicit FuzzyBool(double val)

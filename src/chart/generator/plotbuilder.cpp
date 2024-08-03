@@ -1,11 +1,34 @@
 #include "plotbuilder.h"
 
-#include <chart/speclayout/bubblechartbuilder.h>
-#include <chart/speclayout/tablechart.h>
-#include <chart/speclayout/treemap.h>
-#include <numeric>
+#include <algorithm>
+#include <cmath>
+#include <cstddef>
+#include <cstdint>
+#include <functional>
+#include <limits>
+#include <map>
+#include <memory>
+#include <optional>
+#include <ranges>
+#include <tuple>
+#include <utility>
+#include <vector>
 
+#include "base/anim/interpolated.h"
 #include "base/math/floating.h"
+#include "base/math/range.h"
+#include "chart/main/style.h"
+#include "chart/options/align.h"
+#include "chart/options/channel.h"
+#include "chart/options/coordsystem.h"
+#include "chart/options/options.h"
+#include "chart/options/shapetype.h"
+#include "chart/options/sort.h"
+#include "chart/speclayout/bubblechartbuilder.h"
+#include "chart/speclayout/tablechart.h"
+#include "chart/speclayout/treemap.h"
+#include "dataframe/old/datatable.h"
+#include "dataframe/old/types.h"
 
 #include "buckets.h"
 #include "plot.h"
@@ -47,7 +70,7 @@ PlotBuilder::PlotBuilder(const Data::DataTable &dataTable,
 
 void PlotBuilder::initDimensionTrackers() const
 {
-	for (const Channel &ch :
+	for (const auto &ch :
 	    plot->options->getChannels().getChannels()) {
 		if (!ch.isDimension()) continue;
 		plot->axises.at(ch.type).dimension.trackedValues =
@@ -107,8 +130,7 @@ Buckets PlotBuilder::generateMarkers(std::size_t &mainBucketSize)
 	Buckets buckets(plot->markers);
 	auto &&hasMarkerConnection =
 	    linkMarkers(buckets.sort(&Marker::mainId), true);
-	[[maybe_unused]] auto &&_ =
-	    linkMarkers(buckets.sort(&Marker::subId), false);
+	std::ignore = linkMarkers(buckets.sort(&Marker::subId), false);
 
 	if (hasMarkerConnection
 	    && plot->getOptions()->geometry.get() == ShapeType::line
@@ -135,6 +157,7 @@ PlotBuilder::sortedBuckets(const Buckets &buckets, bool main) const
 		for (auto &&[marker, idx] : bucket) {
 			if (!marker.enabled) continue;
 
+			// NOLINTNEXTLINE(misc-include-cleaner)
 			auto it = std::ranges::lower_bound(sorted,
 			    idx.itemId,
 			    std::less{},
@@ -365,10 +388,12 @@ void PlotBuilder::calcMeasureAxis(const Data::DataTable &dataTable,
 	const auto &scale = plot->getOptions()->getChannels().at(type);
 	auto range = getMeasTrackRange(type);
 	if (auto &&meas = scale.measureId) {
-		plot->axises.at(type).common.title =
-		    scale.title.isAuto() ? dataCube.getName(*meas)
-		    : scale.title        ? *scale.title
-		                         : std::string{};
+
+		if (auto &title = plot->axises.at(type).common.title;
+		    scale.title.isAuto())
+			title = dataCube.getName(*meas);
+		else if (scale.title)
+			title = *scale.title;
 
 		if (type == plot->getOptions()->subAxisType()
 		    && plot->getOptions()->align
@@ -440,10 +465,11 @@ void PlotBuilder::calcDimensionAxis(ChannelId type)
 	if (auto &&series = scale.labelSeries())
 		axis.category = series.value().getColIndex();
 
-	plot->axises.at(type).common.title =
-	    scale.title.isAuto() && !hasLabel ? axis.category
-	    : scale.title                     ? *scale.title
-	                                      : std::string{};
+	auto &title = plot->axises.at(type).common.title;
+	if (scale.title.isAuto() && !hasLabel)
+		title = axis.category;
+	else if (scale.title)
+		title = *scale.title;
 }
 
 void PlotBuilder::addAlignment(const Buckets &subBuckets) const

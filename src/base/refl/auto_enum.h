@@ -2,6 +2,7 @@
 #define VIZZU_REFL_AUTO_ENUM_H
 
 #include <algorithm>
+#include <cstdint>
 #include <stdexcept>
 #include <string>
 #include <string_view>

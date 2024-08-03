@@ -158,10 +158,11 @@ struct Axises
 
 	[[nodiscard]] const Axis &other(ChannelId channelType) const
 	{
-		return channelType == ChannelId::x ? axises.at(ChannelId::y)
-		     : channelType == ChannelId::y
-		         ? axises.at(ChannelId::x)
-		         : throw std::logic_error("not an axis channel");
+		switch (channelType) {
+		case ChannelId::x: return axises.at(ChannelId::y);
+		case ChannelId::y: return axises.at(ChannelId::x);
+		default: throw std::logic_error("not an axis channel");
+		}
 	}
 
 	[[nodiscard]] Geom::Point origo() const;

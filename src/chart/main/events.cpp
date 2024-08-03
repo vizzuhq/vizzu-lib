@@ -1,5 +1,7 @@
 #include "events.h"
 
+#include "base/util/eventdispatcher.h"
+
 namespace Vizzu
 {
 

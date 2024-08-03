@@ -1,7 +1,21 @@
 #include "drawlegend.h"
 
+#include <algorithm>
+#include <cmath>
+#include <cstddef>
+#include <string>
+#include <string_view>
+#include <utility>
+
+#include "base/anim/interpolated.h"
+#include "base/geom/rect.h"
+#include "base/geom/transformedrect.h"
+#include "base/gfx/canvas.h"
 #include "base/gfx/draw/roundedrect.h"
-#include "chart/generator/plot.h"
+#include "base/text/smartstring.h"
+#include "chart/generator/plot.h" // NOLINT(misc-include-cleaner)
+#include "chart/main/events.h"
+#include "chart/options/channel.h"
 #include "chart/rendering/colorbuilder.h"
 #include "chart/rendering/drawbackground.h"
 #include "chart/rendering/drawlabel.h"

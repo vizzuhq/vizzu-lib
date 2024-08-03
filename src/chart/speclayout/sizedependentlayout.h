@@ -40,6 +40,8 @@ template <class ChartType> struct SizeDependentLayout
 				    subChart.markers[subCnt++]);
 			}
 		}
+		std::ignore =
+		    std::forward<AfterMarkerSetter>(afterMarkerSetter);
 	}
 };
 }

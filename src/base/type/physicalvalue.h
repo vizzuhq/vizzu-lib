@@ -6,7 +6,7 @@
 namespace Type
 {
 
-enum class SimpleUnit : uint32_t { none, relative, absolute };
+enum class SimpleUnit : std::uint8_t { none, relative, absolute };
 
 template <typename Value, typename Unit = SimpleUnit>
 class PhysicalValue

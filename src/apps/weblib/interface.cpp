@@ -1,17 +1,34 @@
 #include "interface.h"
 
+#include <chrono>
+#include <cstdint>
+#include <functional>
+#include <memory>
+#include <ratio>
 #include <span>
+#include <stdexcept>
+#include <string>
+#include <variant>
 
+#include "base/anim/duration.h"
 #include "base/conv/auto_json.h"
 #include "base/io/log.h"
 #include "base/refl/auto_accessor.h"
+#include "chart/animator/animation.h"
+#include "chart/generator/plotptr.h"
+#include "chart/main/style.h"
+#include "chart/main/stylesheet.h"
 #include "chart/main/version.h"
+#include "chart/options/config.h"
+#include "chart/options/options.h"
 #include "chart/ui/chart.h"
+#include "dataframe/old/types.h"
 
-#include "canvas.h"
+#include "cinterface.h"
 #include "interfacejs.h"
 #include "jscriptcanvas.h"
 #include "jsfunctionwrapper.h"
+#include "objectregistry.h"
 
 namespace Vizzu
 {
@@ -20,7 +37,7 @@ template <class T, class Deleter>
 std::unique_ptr<T, Deleter> create_unique_ptr(T *&&ptr,
     Deleter &&deleter)
 {
-	return {ptr, std::forward<Deleter>(deleter)};
+	return {std::move(ptr), std::forward<Deleter>(deleter)};
 }
 
 struct Interface::Snapshot
@@ -122,8 +139,8 @@ const char *Interface::getStyleValue(ObjectRegistryHandle chart,
 {
 	auto &&chartPtr = getChart(chart);
 	thread_local std::string res;
-	auto &styles = computed ? chartPtr->getComputedStyles()
-	                        : chartPtr->getStyles();
+	const auto &styles = computed ? chartPtr->getComputedStyles()
+	                              : chartPtr->getStyles();
 	res = Styles::Sheet::getParam(styles, path);
 	return res.c_str();
 }
@@ -343,7 +360,7 @@ ObjectRegistryHandle Interface::createChart()
 	auto &openUrl = widget->openUrl;
 	auto &doChange = widget->getChart().onChanged;
 
-	auto handle = objects.reg(std::move(widget));
+	const auto *handle = objects.reg(std::move(widget));
 
 	openUrl.attach(
 	    [handle](const std::string &url)
@@ -375,15 +392,12 @@ void Interface::update(ObjectRegistryHandle chart, double timeInMSecs)
 {
 	auto &&widget = objects.get<UI::ChartWidget>(chart);
 
-	std::chrono::duration<double, std::milli> milliSecs(timeInMSecs);
-
-	auto nanoSecs =
+	auto &&nanoSecs =
 	    std::chrono::duration_cast<std::chrono::nanoseconds>(
-	        milliSecs);
+	        std::chrono::duration<double, std::milli>{timeInMSecs});
 
-	::Anim::TimePoint time(nanoSecs);
-
-	widget->getChart().getAnimControl().update(time);
+	widget->getChart().getAnimControl().update(
+	    ::Anim::TimePoint{nanoSecs});
 }
 
 void Interface::render(ObjectRegistryHandle chart,

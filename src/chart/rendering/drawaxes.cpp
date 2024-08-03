@@ -1,11 +1,26 @@
 #include "drawaxes.h"
 
-#include "base/type/booliter.h"
-#include "chart/generator/plot.h"
-#include "chart/rendering/drawguides.h"
-#include "chart/rendering/orientedlabel.h"
+#include <numbers>
+#include <string>
+#include <string_view>
+#include <utility>
 
+#include "base/anim/interpolated.h"
+#include "base/geom/affinetransform.h"
+#include "base/geom/line.h"
+#include "base/geom/point.h"
+#include "base/geom/transformedrect.h"
+#include "base/gfx/font.h"
+#include "base/type/booliter.h"
+#include "chart/generator/plot.h" // NOLINT(misc-include-cleaner)
+#include "chart/main/events.h"
+#include "chart/main/style.h"
+#include "chart/options/channel.h"
+
+#include "drawguides.h"
 #include "drawlabel.h"
+#include "orientedlabel.h"
+#include "renderedchart.h"
 
 namespace Vizzu::Draw
 {
@@ -206,7 +221,7 @@ void DrawAxes::drawTitle(Gen::ChannelId axisIndex) const
 		};
 
 		auto angle =
-		    -M_PI / 2.0
+		    -std::numbers::pi / 2.0
 		    * (fades == ::Anim::second
 		            ? titleStyle.orientation->get_or_first(index)
 		                      .value
@@ -227,8 +242,8 @@ void DrawAxes::drawTitle(Gen::ChannelId axisIndex) const
 		          * Geom::AffineTransform((orientedSize / -2.0));
 
 		auto realAngle = Geom::Angle(-posAngle + angle).rad();
-		auto upsideDown =
-		    realAngle > M_PI / 2.0 && realAngle < 3 * M_PI / 2.0;
+		auto upsideDown = realAngle > std::numbers::pi / 2.0
+		               && realAngle < 3 * std::numbers::pi / 2.0;
 
 		DrawLabel{{ctx()}}.draw(canvas,
 		    Geom::TransformedRect{transform, Geom::Size{size}},

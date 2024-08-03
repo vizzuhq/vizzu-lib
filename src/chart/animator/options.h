@@ -1,7 +1,7 @@
 #ifndef CHART_ANIM_OPTIONS
 #define CHART_ANIM_OPTIONS
 
-#include <array>
+#include <cstdint>
 #include <optional>
 
 #include "base/anim/control.h"
@@ -11,7 +11,7 @@
 namespace Vizzu::Anim
 {
 
-enum class SectionId {
+enum class SectionId : std::uint8_t {
 	style,
 	title,
 	subtitle,
@@ -28,7 +28,11 @@ enum class SectionId {
 	connection
 };
 
-enum class RegroupStrategy { fade, drilldown, aggregate };
+enum class RegroupStrategy : std::uint8_t {
+	fade,
+	drilldown,
+	aggregate
+};
 
 class Options
 {

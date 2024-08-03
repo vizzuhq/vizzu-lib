@@ -1,14 +1,19 @@
 #include "plot.h"
 
-#include <limits>
-#include <numeric>
+#include <algorithm>
+#include <compare>
+#include <cstddef>
+#include <memory>
+#include <ranges>
+#include <stdexcept>
+#include <utility>
+#include <vector>
 
 #include "base/anim/interpolated.h"
-#include "base/conv/numtostr.h"
-#include "base/math/range.h"
-#include "chart/speclayout/bubblechartbuilder.h"
-#include "chart/speclayout/tablechart.h"
-#include "chart/speclayout/treemap.h"
+#include "chart/main/style.h"
+#include "chart/options/options.h"
+
+#include "marker.h"
 
 namespace Vizzu::Gen
 {

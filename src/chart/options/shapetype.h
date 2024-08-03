@@ -6,7 +6,7 @@
 namespace Vizzu::Gen
 {
 
-enum class ShapeType : uint32_t { rectangle, circle, area, line };
+enum class ShapeType : std::uint8_t { rectangle, circle, area, line };
 
 bool isConnecting(ShapeType type);
 
