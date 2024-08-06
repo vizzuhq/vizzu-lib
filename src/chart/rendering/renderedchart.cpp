@@ -79,8 +79,10 @@ Geom::ConvexQuad Marker::pointsToQuad(double atLeastWidth) const
 		auto &&vector = points[nextIx] - points[ix];
 		if (auto &&diff = vector.abs(); diff < atLeastWidth) {
 			if (Math::Floating::is_zero(diff)) {
+				const auto prevIx = (ix + 3) % 4;
 				const auto nextNextIx = (nextIx + 1) % 4;
-				vector = (points[nextNextIx] - points[nextIx])
+				vector = (points[prevIx] - points[ix]).normal(false)
+				       + (points[nextNextIx] - points[nextIx])
 				             .normal(false);
 			}
 			auto &&move =
