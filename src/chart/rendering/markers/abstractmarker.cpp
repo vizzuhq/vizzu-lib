@@ -7,18 +7,22 @@
 namespace Vizzu::Draw
 {
 
-template<class T, std::size_t I>
+template <class T, std::size_t I>
 std::array<T, I> interpolate(const std::array<T, I> &op0,
-    const std::array<T, I> &op1, double factor)
+    const std::array<T, I> &op1,
+    double factor)
 {
-	return []<std::size_t... Ix>(
-	           const std::array<T, sizeof...(Ix)> &op0,
-	           const std::array<T, sizeof...(Ix)> &op1,
-	           double factor,
-			   std::index_sequence<Ix...>)
+	return
+	    []<std::size_t... Ix>(const std::array<T, sizeof...(Ix)> &op0,
+	        const std::array<T, sizeof...(Ix)> &op1,
+	        double factor,
+	        std::index_sequence<Ix...>)
 	{
 		using Math::interpolate;
-		return std::array<T, sizeof...(Ix)>{interpolate(std::get<Ix>(op0), std::get<Ix>(op1), factor)...};
+		return std::array<T, sizeof...(Ix)>{
+		    interpolate(std::get<Ix>(op0),
+		        std::get<Ix>(op1),
+		        factor)...};
 	}(op0, op1, factor, std::make_index_sequence<I>{});
 }
 

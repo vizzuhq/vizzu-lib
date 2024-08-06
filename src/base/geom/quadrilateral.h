@@ -22,7 +22,7 @@ public:
 	    double base0Length,
 	    double base1Length);
 
-	[[nodiscard]] double distance(const Point& point) const;
+	[[nodiscard]] double distance(const Point &point) const;
 };
 
 }

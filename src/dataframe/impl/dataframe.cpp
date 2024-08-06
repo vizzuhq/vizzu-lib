@@ -32,7 +32,7 @@ std::shared_ptr<dataframe_interface> dataframe::copy(
 	    [newly = ptr_t{new (data) dataframe(
 	                       cp ? cp->other
 	                          : unsafe_get<source_type::owning>(
-	                              source),
+	                                source),
 	                       cp && cp->pre_remove ? &*cp->pre_remove
 	                                            : nullptr,
 	                       cp && inherit_sorting && cp->sorted_indices

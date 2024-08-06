@@ -124,9 +124,10 @@ void DrawInterlacing::draw(
 
 		auto axisBottom = axis.origo() + stripWidth;
 
-		auto iMin = axisBottom > 0 ? static_cast<int>(
-		                std::floor(-axis.origo() / (2 * stripWidth)))
-		                           : 0;
+		auto iMin = axisBottom > 0
+		              ? static_cast<int>(std::floor(
+		                    -axis.origo() / (2 * stripWidth)))
+		              : 0;
 
 		if (stripWidth <= 0) return;
 		auto interlaceCount = 0U;
@@ -256,7 +257,7 @@ void DrawInterlacing::drawDataLabel(
 		               ? labelStyle.side->get_or_first(index).value
 		                     == Styles::AxisLabel::Side::negative
 		               : labelStyle.side->factor<double>(
-		                   Styles::AxisLabel::Side::negative);
+		                     Styles::AxisLabel::Side::negative);
 
 		auto &&posDir =
 		    coordSys.convertDirectionAt({refPos, refPos + normal})

@@ -61,8 +61,7 @@ struct Line
 
 	[[nodiscard]] double distance(const Point &point) const
 	{
-		if (isPoint())
-			return (point - begin).abs();
+		if (isPoint()) return (point - begin).abs();
 
 		auto projection = ((point - begin).dot(getDirection()))
 		                / (length() * length());

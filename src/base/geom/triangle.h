@@ -15,7 +15,7 @@ public:
 
 	[[nodiscard]] double area() const;
 
-	[[nodiscard]] double distance(const Point& point) const;
+	[[nodiscard]] double distance(const Point &point) const;
 };
 
 }

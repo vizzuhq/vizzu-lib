@@ -55,12 +55,14 @@ bool Marker::bounds(const CoordinateSystem &coordSys,
 		    case circle: {
 			    auto &&rect = Geom::Rect::Boundary(points);
 			    return Geom::Circle(rect.pos + rect.size / 2.0,
-			               rect.size.x / 2.0).distance(point)
+			               rect.size.x / 2.0)
+			               .distance(point)
 			         < 0.1;
 		    }
 		    case line:
-			    return lineToQuad(coordSys)
-			        .distance(coordSys.convert(point)) < 0.1;
+			    return lineToQuad(coordSys).distance(
+			               coordSys.convert(point))
+			         < 0.1;
 		    }
 		    return false;
 	    });

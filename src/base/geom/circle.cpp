@@ -34,8 +34,7 @@ bool Circle::overlaps(const Circle &c) const
 {
 	auto d = c.center - center;
 	auto sumRadius = radius + c.radius;
-	return Math::AddTolerance(d.sqrAbs())
-	     < sumRadius * sumRadius;
+	return Math::AddTolerance(d.sqrAbs()) < sumRadius * sumRadius;
 }
 
 Rect Circle::boundary() const
