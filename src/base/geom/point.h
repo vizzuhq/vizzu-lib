@@ -261,7 +261,7 @@ struct Size : Point
 		    std::min(s1.y, s2.y, less)};
 	}
 
-	[[nodiscard]] bool isSquare(double toleranceFactor = 0.0) const
+	[[nodiscard]] bool isSquare(double toleranceFactor) const
 	{
 		using Math::Floating::is_zero;
 		if (is_zero(y)) return false;

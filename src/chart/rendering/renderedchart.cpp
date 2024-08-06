@@ -48,16 +48,19 @@ bool Marker::bounds(const CoordinateSystem &coordSys,
 	    [this, &point, &coordSys](const Gen::ShapeType &shapeType)
 	    {
 		    switch (shapeType) {
-		    case Gen::ShapeType::rectangle:
-		    case Gen::ShapeType::area:
-			    return pointsToQuad(0.1).contains(point, 0.01);
-		    case Gen::ShapeType::circle:
-			    return Geom::Circle(Geom::Rect::Boundary(points),
-			        Geom::Circle::FromRect::sameWidth)
-			        .overlaps(Geom::Circle(point, 0.01), 0.1);
-		    case Gen::ShapeType::line:
-			    return lineToQuad(coordSys, 10.0)
-			        .contains(coordSys.convert(point), 0.1);
+			    using enum Gen::ShapeType;
+		    case rectangle:
+		    case area:
+			    return Geom::ConvexQuad{points}.distance(point) < 0.1;
+		    case circle: {
+			    auto &&rect = Geom::Rect::Boundary(points);
+			    return Geom::Circle(rect.pos + rect.size / 2.0,
+			               rect.size.x / 2.0).distance(point)
+			         < 0.1;
+		    }
+		    case line:
+			    return lineToQuad(coordSys)
+			        .distance(coordSys.convert(point)) < 0.1;
 		    }
 		    return false;
 	    });
@@ -65,38 +68,8 @@ bool Marker::bounds(const CoordinateSystem &coordSys,
 	return isInside != false;
 }
 
-Geom::ConvexQuad Marker::pointsToQuad(double atLeastWidth) const
-{
-	if (const auto &[p0, p1, p2, p3] = points;
-	    p0 == p1 && p0 == p2 && p0 == p3) {
-		const Geom::Point half{atLeastWidth / 2, atLeastWidth / 2};
-		return Geom::ConvexQuad::Square(p0 - half, p0 + half);
-	}
-	Geom::ConvexQuad res{points};
-
-	for (std::size_t ix{}; ix < 4; ++ix) {
-		const auto nextIx = (ix + 1) % 4;
-		auto &&vector = points[nextIx] - points[ix];
-		if (auto &&diff = vector.abs(); diff < atLeastWidth) {
-			if (Math::Floating::is_zero(diff)) {
-				const auto prevIx = (ix + 3) % 4;
-				const auto nextNextIx = (nextIx + 1) % 4;
-				vector = (points[prevIx] - points[ix]).normal(false)
-				       + (points[nextNextIx] - points[nextIx])
-				             .normal(false);
-			}
-			auto &&move =
-			    vector.normalized() * ((atLeastWidth - diff) / 2);
-			res.points[ix] -= move;
-			res.points[nextIx] += move;
-		}
-	}
-
-	return res;
-}
-
-Geom::ConvexQuad Marker::lineToQuad(const CoordinateSystem &coordSys,
-    double atLeastWidth) const
+Geom::ConvexQuad Marker::lineToQuad(
+    const CoordinateSystem &coordSys) const
 {
 	using Math::Floating::less;
 	auto line = getLine();
@@ -108,8 +81,9 @@ Geom::ConvexQuad Marker::lineToQuad(const CoordinateSystem &coordSys,
 	auto wEnd = lineWidth[1] * coordSys.getRect().size.minSize();
 	return Geom::ConvexQuad::Isosceles(pBeg,
 	    pEnd,
-	    std::max(atLeastWidth, wBeg * 2, less),
-	    std::max(atLeastWidth, wEnd * 2, less));
+	    wBeg * 2,
+	    wEnd * 2);
 }
+
 Geom::Line Marker::getLine() const { return {points[3], points[2]}; }
 }

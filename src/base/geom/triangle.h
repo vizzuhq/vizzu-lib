@@ -14,6 +14,8 @@ public:
 	std::array<Point, 3> points;
 
 	[[nodiscard]] double area() const;
+
+	[[nodiscard]] double distance(const Point& point) const;
 };
 
 }

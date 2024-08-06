@@ -17,14 +17,12 @@ public:
 
 	ConvexQuad() = default;
 	explicit ConvexQuad(const Points &points) : points(points) {}
-	[[nodiscard]] static ConvexQuad Square(Point p0, Point p2);
 	[[nodiscard]] static ConvexQuad Isosceles(Point base0Middle,
 	    Point base1Middle,
 	    double base0Length,
 	    double base1Length);
-	[[nodiscard]] bool contains(const Point &p,
-	    double tolerance = 0.0) const;
-	[[nodiscard]] double area() const;
+
+	[[nodiscard]] double distance(const Point& point) const;
 };
 
 }

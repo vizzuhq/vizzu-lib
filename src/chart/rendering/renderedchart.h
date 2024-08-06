@@ -44,12 +44,8 @@ public:
 	    const Geom::Point &point) const;
 
 private:
-	[[nodiscard]] Geom::ConvexQuad pointsToQuad(
-	    double atLeastWidthIfDot) const;
-
 	[[nodiscard]] Geom::ConvexQuad lineToQuad(
-	    const CoordinateSystem &coordSys,
-	    double atLeastWidth) const;
+	    const CoordinateSystem &coordSys) const;
 
 	[[nodiscard]] Geom::Line getLine() const;
 };
