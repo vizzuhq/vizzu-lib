@@ -47,7 +47,8 @@ std::string toString(const From &value)
 		[]<bool flag = false>()
 		{
 			static_assert(flag, "no string conversion");
-		}();
+		}
+	();
 }
 
 }

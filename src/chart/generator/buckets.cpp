@@ -40,14 +40,15 @@ Buckets::const_iterator &Buckets::const_iterator::operator++()
 	    curr_end == real_end
 	        ? curr_end
 	        : std::partition_point(curr_end,
-	              real_end,
-	              [this,
-	                  searched = (*curr_end->*parent->marker_id_get)
-	                                 .seriesId](Marker *lhs) -> bool
-	              {
-		              return (lhs->*parent->marker_id_get).seriesId
-		                  == searched;
-	              })};
+	            real_end,
+	            [this,
+	                searched =
+	                    (*curr_end->*parent->marker_id_get).seriesId](
+	                Marker *lhs) -> bool
+	            {
+		            return (lhs->*parent->marker_id_get).seriesId
+		                == searched;
+	            })};
 	return *this;
 }
 

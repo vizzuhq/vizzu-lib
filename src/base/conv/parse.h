@@ -43,7 +43,8 @@ template <typename To> To parse(const std::string &string)
 		[]<bool flag = false>()
 		{
 			static_assert(flag, "no conversion from string");
-		}();
+		}
+	();
 }
 
 }
