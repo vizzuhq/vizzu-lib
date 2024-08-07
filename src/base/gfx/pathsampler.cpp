@@ -24,19 +24,20 @@ void PathSampler::path(const Geom::Point &pConv0,
 	constexpr static size_t maxRecursion = 20;
 	if (recurseCnt >= maxRecursion) return;
 
-	const auto sqrLength = (pConv1 - pConv0).sqrAbs();
-	if (Math::Floating::is_zero(sqrLength)) return;
-
 	const auto i = (i0 + i1) / 2.0;
 	const auto pConv = getPoint(i);
+
 	const auto area = Geom::Triangle{{pConv0, pConv, pConv1}}.area();
-	const auto height = 2 * area / sqrt(sqrLength);
+	const auto sqrLength = (pConv1 - pConv0).sqrAbs();
+	const auto height = Math::Floating::is_zero(sqrLength)
+	                      ? 0.0
+	                      : 2 * area / sqrt(sqrLength);
 
 	const auto sqrAbs0 = (pConv - pConv0).sqrAbs();
 	const auto sqrAbs1 = (pConv - pConv1).sqrAbs();
 
 	auto needMore = height > options.curveHeightMax
-	             || (sqrLength < sqrAbs0) || (sqrLength < sqrAbs1);
+	             || sqrLength < sqrAbs0 || sqrLength < sqrAbs1;
 
 	if (needMore && sqrAbs0 > options.distanceMax)
 		path(pConv0, pConv, i0, i, recurseCnt + 1);
