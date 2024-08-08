@@ -7,11 +7,6 @@ namespace Geom
 
 Rect Rect::Ident() { return {Geom::Point(), Geom::Size::Identity()}; }
 
-Rect Rect::CenteredMax()
-{
-	return {Geom::Point::Min() / 2, {Geom::Size::Max()}};
-}
-
 Rect Rect::boundary(const Rect &rect) const
 {
 	using Math::Floating::less;
@@ -21,17 +16,6 @@ Rect Rect::boundary(const Rect &rect) const
 	res.setBottom(std::min(res.bottom(), other.bottom(), less));
 	res.setRight(std::max(res.right(), other.right(), less));
 	res.setTop(std::max(res.top(), other.top(), less));
-	return res;
-}
-
-Rect Rect::boundary(const Point &p) const
-{
-	using Math::Floating::less;
-	Rect res = positive();
-	res.setLeft(std::min(res.left(), p.x, less));
-	res.setBottom(std::min(res.bottom(), p.y, less));
-	res.setRight(std::max(res.right(), p.x, less));
-	res.setTop(std::max(res.top(), p.y, less));
 	return res;
 }
 

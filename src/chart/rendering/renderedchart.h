@@ -40,13 +40,12 @@ public:
 	std::array<Geom::Point, 4> points;
 	std::array<double, 2> lineWidth;
 
-	[[nodiscard]] bool bounds(const CoordinateSystem &coordSys,
+	[[nodiscard]] double distance(const CoordinateSystem &coordSys,
 	    const Geom::Point &point) const;
 
 private:
 	[[nodiscard]] Geom::ConvexQuad lineToQuad(
-	    const CoordinateSystem &coordSys,
-	    double atLeastWidth) const;
+	    const CoordinateSystem &coordSys) const;
 
 	[[nodiscard]] Geom::Line getLine() const;
 };

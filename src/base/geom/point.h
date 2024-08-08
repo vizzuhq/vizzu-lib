@@ -18,56 +18,56 @@ struct Point
 	double x{0.0};
 	double y{0.0};
 
-	static Point Invalid() { return {NAN, NAN}; }
+	[[nodiscard]] static Point Invalid() { return {NAN, NAN}; }
 
-	static Point Max()
+	[[nodiscard]] static Point Max()
 	{
 		return {std::numeric_limits<double>::max(),
 		    std::numeric_limits<double>::max()};
 	}
 
-	static Point Min()
+	[[nodiscard]] static Point Min()
 	{
 		return {std::numeric_limits<double>::lowest(),
 		    std::numeric_limits<double>::lowest()};
 	}
 
-	static Point Ident(bool horizontal)
+	[[nodiscard]] static Point Ident(bool horizontal)
 	{
 		return {horizontal ? 1.0 : 0.0, horizontal ? 0.0 : 1.0};
 	}
 
-	static Point Polar(double radius, double angle)
+	[[nodiscard]] static Point Polar(double radius, double angle)
 	{
 		return {radius * cos(angle), radius * sin(angle)};
 	}
 
-	static Point X(double x) { return {x, 0}; }
+	[[nodiscard]] static Point X(double x) { return {x, 0}; }
 
-	static Point Y(double y) { return {0, y}; }
+	[[nodiscard]] static Point Y(double y) { return {0, y}; }
 
-	Point operator*(double factor) const
+	[[nodiscard]] Point operator*(double factor) const
 	{
 		return {x * factor, y * factor};
 	}
 
-	Point operator/(double divisor) const
+	[[nodiscard]] Point operator/(double divisor) const
 	{
 		if (Math::Floating::is_zero(divisor)) return Invalid();
 		return {x / divisor, y / divisor};
 	}
 
-	Point operator+(const Point &other) const
+	[[nodiscard]] Point operator+(const Point &other) const
 	{
 		return {x + other.x, y + other.y};
 	}
 
-	Point operator-(const Point &other) const
+	[[nodiscard]] Point operator-(const Point &other) const
 	{
 		return {x - other.x, y - other.y};
 	}
 
-	Point operator*(const Point &other) const
+	[[nodiscard]] Point operator*(const Point &other) const
 	{
 		return {x * other.x, y * other.y};
 	}
@@ -77,16 +77,63 @@ struct Point
 		return x * other.x + y * other.y;
 	}
 
-	Point operator/(const Point &other) const
+	[[nodiscard]] Point operator/(const Point &other) const
 	{
 		using Math::Floating::is_zero;
 		if (is_zero(other.x) || is_zero(other.y)) return Invalid();
 		return {x / other.x, y / other.y};
 	}
 
-	double operator^(const Point &p) const
+	[[nodiscard]] double operator^(const Point &p) const
 	{
 		return x * p.y - y * p.x;
+	}
+
+	Point &operator+=(const Point &other)
+	{
+		x += other.x;
+		y += other.y;
+		return *this;
+	}
+
+	Point &operator-=(const Point &other)
+	{
+		x -= other.x;
+		y -= other.y;
+		return *this;
+	}
+
+	Point &operator*=(double factor)
+	{
+		x *= factor;
+		y *= factor;
+		return *this;
+	}
+
+	Point &operator/=(double divisor)
+	{
+		if (Math::Floating::is_zero(divisor))
+			return *this = Invalid();
+		x /= divisor;
+		y /= divisor;
+		return *this;
+	}
+
+	Point &operator*=(const Point &other)
+	{
+		x *= other.x;
+		y *= other.y;
+		return *this;
+	}
+
+	Point &operator/=(const Point &other)
+	{
+		using Math::Floating::is_zero;
+		if (is_zero(other.x) || is_zero(other.y))
+			return *this = Invalid();
+		x /= other.x;
+		y /= other.y;
+		return *this;
 	}
 
 	[[nodiscard]] Point flip() const { return {y, x}; }
@@ -214,7 +261,7 @@ struct Size : Point
 		    std::min(s1.y, s2.y, less)};
 	}
 
-	[[nodiscard]] bool isSquare(double toleranceFactor = 0.0) const
+	[[nodiscard]] bool isSquare(double toleranceFactor) const
 	{
 		using Math::Floating::is_zero;
 		if (is_zero(y)) return false;
