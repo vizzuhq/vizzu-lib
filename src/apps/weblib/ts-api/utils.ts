@@ -32,11 +32,7 @@ export function isIterable(value: unknown): value is Record<string, unknown> {
 	return typeof value === 'object' && value !== null
 }
 
-export function iterateObject<T>(
-	obj: T,
-	paramHandler: Visitor,
-	path: string = ''
-): void {
+export function iterateObject<T>(obj: T, paramHandler: Visitor, path: string = ''): void {
 	if (obj && obj !== null && typeof obj === 'object') {
 		Object.keys(obj).forEach((key) => {
 			const newPath = path + (path.length === 0 ? '' : '.') + key

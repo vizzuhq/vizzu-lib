@@ -49,8 +49,10 @@ public:
 		return name;
 	}
 
-	[[nodiscard]] bool operator==(const SeriesIndex &rhs) const = default;
-	[[nodiscard]] auto operator<=>(const SeriesIndex &rhs) const = default;
+	[[nodiscard]] bool operator==(
+	    const SeriesIndex &rhs) const = default;
+	[[nodiscard]] auto operator<=>(
+	    const SeriesIndex &rhs) const = default;
 
 	[[nodiscard]] bool isDimension() const { return !aggregator; }
 
