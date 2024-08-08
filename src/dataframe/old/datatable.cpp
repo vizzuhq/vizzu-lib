@@ -54,28 +54,17 @@ const MultiIndex &DataCube::iterator_t::operator*() const
 }
 
 SeriesIndex::SeriesIndex(std::string const &str,
-    const DataTable &table) :
-    orig_name(str)
+    const DataTable &table)
 {
-	constinit static auto names =
-	    Refl::get_names<dataframe::aggregator_type>();
-	if (const Text::FuncString func(str, false);
-	    !func.isEmpty()
-	    && std::find(names.begin(), names.end(), func.getName())
-	           != names.end()) {
-		aggr = Refl::get_enum<dataframe::aggregator_type>(
-		    func.getName());
-		if (!func.getParams().empty())
-			sid = table.getDf()
-			          .get_series_meta(func.getParams().at(0))
-			          .name;
-	}
-	else {
-		auto &&[s, type] = table.getDf().get_series_meta(str);
-		sid = s;
-		if (type == DataTable::Type::measure)
-			aggr = dataframe::aggregator_type::sum;
-	}
+	auto &&[s, type] = table.getDf().get_series_meta(str);
+	name = s;
+	if (type == DataTable::Type::measure)
+		aggregator = dataframe::aggregator_type::sum;
+}
+
+void SeriesIndex::setAggr(const std::string &aggr)
+{
+	aggregator = Refl::get_enum<dataframe::aggregator_type>(aggr);
 }
 
 DataCube::iterator_t DataCube::begin() const

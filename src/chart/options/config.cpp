@@ -211,8 +211,26 @@ void Config::setChannelParam(const std::string &path,
 		if (parts.size() == 3 && value == "null")
 			channel.reset();
 		else {
-			if (std::stoi(parts.at(3)) == 0) channel.reset();
-			channel.addSeries({value, table});
+			if (auto command = parts.size() == 4 ? "name" : std::string_view{parts.at(4)};
+				command == "name") {
+				if (std::stoi(parts.at(3)) == 0) channel.reset();
+				if (value == "") { channel.measureId.emplace(); }
+				else channel.addSeries({value, table});
+			}
+			else if (command == "aggregator") {
+				if (value != "null") {
+					if (!channel.measureId.has_value())
+						channel.measureId.emplace(
+							channel.dimensionIds.pop_back());
+
+					channel.measureId->setAggr(value);
+				}
+				else if (channel.measureId)
+					channel.measureId->setAggr(
+					    channel.measureId->getColIndex().empty()
+					        ? "count"
+					        : "sum");
+			}
 		}
 		return;
 	}
@@ -239,10 +257,8 @@ std::string Config::getChannelParam(const std::string &path) const
 	if (property == "set") {
 		std::string res;
 		Conv::JSONArr arr{res};
-		if (auto &&measure = channel.measureId)
-			arr << measure->toString();
-		for (auto &&dim : channel.dimensions())
-			arr << dim.getColIndex();
+		if (auto &&measure = channel.measureId) arr << *measure;
+		for (auto &&dim : channel.dimensions()) arr << dim;
 		return res;
 	}
 
