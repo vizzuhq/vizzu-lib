@@ -1,5 +1,7 @@
 #include "triangle.h"
 
+#include <compare>
+
 #include "line.h"
 
 namespace Geom
@@ -14,20 +16,27 @@ double Triangle::area() const
 
 double Triangle::distance(const Point &point) const
 {
-	const auto A = points[2] - points[1];
-	const auto B = points[0] - points[1];
-	const auto C = points[2] - points[0];
-	const auto dA = Geom::Line{points[1], points[2]}.distance(point);
-	const auto dB = Geom::Line{points[0], points[1]}.distance(point);
-	const auto dC = Geom::Line{points[2], points[0]}.distance(point);
-	if (const auto double_area = fabs(A ^ B);
-	    !Math::Floating::is_zero(double_area)
-	    && Math::AddTolerance(
-	           A.abs() * dA + B.abs() * dB + C.abs() * dC)
-	           == double_area) {
+	auto rot_dir = [](const Point &a, const Point &b, const Point &c)
+	{
+		return std::weak_order(0.0,
+		    (b.x - a.x) * (c.y - a.y) - (b.y - a.y) * (c.x - a.x));
+	};
+
+	using std::is_gteq;
+	using std::is_lteq;
+	using std::is_neq;
+	if (auto r1 = rot_dir(points[0], points[1], point),
+	    r2 = rot_dir(points[1], points[2], point),
+	    r3 = rot_dir(points[2], points[0], point);
+	    (is_neq(r1) || is_neq(r2) || is_neq(r3))
+	    && ((is_lteq(r1) && is_lteq(r2) && is_lteq(r3))
+	        || (is_gteq(r1) && is_gteq(r2) && is_gteq(r3))))
 		return 0.0;
-	}
-	return std::min({dA, dB, dC}, Math::Floating::less);
+
+	return std::min({Line{points[0], points[1]}.distance(point),
+	                    Line{points[1], points[2]}.distance(point),
+	                    Line{points[2], points[0]}.distance(point)},
+	    Math::Floating::less);
 }
 
 }
