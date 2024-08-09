@@ -27,12 +27,11 @@ struct RowWrapper
 
 class SeriesIndex
 {
-	std::string_view name;
+	std::string_view name{};
 	std::optional<dataframe::aggregator_type> aggregator;
 
 public:
 	SeriesIndex() :
-	    name(""),
 	    aggregator(dataframe::aggregator_type::count)
 	{}
 	SeriesIndex(std::string const &str, const DataTable &table);
