@@ -29,6 +29,12 @@ enum class error_type {
 	internal_error
 };
 
+struct series_meta_t
+{
+	std::string_view name;
+	series_type type;
+};
+
 [[maybe_unused]] [[noreturn]] void error(error_type err,
     std::string_view arg = {});
 

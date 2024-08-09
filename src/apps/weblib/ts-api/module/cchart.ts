@@ -3,15 +3,12 @@ import { CString, CFunction, CEventPtr } from '../cvizzu.types'
 import * as Anim from '../types/anim.js'
 import * as Config from '../types/config.js'
 import * as Styles from '../types/styles.js'
-import * as Data from '../types/data.js'
 
 import { CManagedObject, CObject, CEnv } from './cenv.js'
 import { CPointerClosure } from './objregistry.js'
 import { CProxy } from './cproxy.js'
 import { CCanvas } from './ccanvas.js'
 import { CAnimation } from './canimctrl.js'
-
-import { isIterable } from '../utils.js'
 
 /** Stored Chart object. */
 export class Snapshot extends CManagedObject {}
@@ -136,40 +133,13 @@ export class CChart extends CManagedObject {
 			this._wasm._chart_getList,
 			this._wasm._chart_getValue,
 			this._wasm._chart_setValue,
-			(value: unknown): value is Record<string, unknown> =>
-				isIterable(value) && !this._isSeriesDescriptor(value),
-			(value: unknown): string => {
-				// workaround: we should be able to pass series descriptor as two string
-				if (this._isSeriesDescriptor(value)) {
-					return value.aggregator ? `${value.aggregator}(${value.name})` : value.name
-				} else {
-					return String(value).toString()
-				}
-			},
 			(path: string, value: string): unknown => {
 				// workaround because channel.*.set returns already json instead of scalars
 				if (path.startsWith('channels.') && path.endsWith('.set')) {
-					return JSON.parse(value).map((v: string) => this._toSeriesDescriptor(v))
+					return JSON.parse(value)
 				} else return value
 			}
 		)
-	}
-
-	private _toSeriesDescriptor(value: string): Data.SeriesDescriptor {
-		const pattern = /^(\w+)\((.*?)\)$/
-		const match = value.match(pattern)
-		if (match) {
-			return {
-				name: match[2]!,
-				aggregator: match[1]! as Data.AggregatorType
-			}
-		} else {
-			return { name: value }
-		}
-	}
-
-	private _isSeriesDescriptor(value: unknown): value is Data.SeriesDescriptor {
-		return typeof value === 'object' && value !== null && 'name' in value
 	}
 
 	private _makeStyle(computed: boolean): CStyle {

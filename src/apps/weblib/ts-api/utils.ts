@@ -27,24 +27,18 @@ export function recursiveCopy<T>(value: T, Ignore?: new (...args: never[]) => un
 }
 
 type Visitor = (path: string, value: unknown) => void
-export type ShouldIterate = (value: unknown) => value is Record<string, unknown>
 
 export function isIterable(value: unknown): value is Record<string, unknown> {
 	return typeof value === 'object' && value !== null
 }
 
-export function iterateObject<T>(
-	obj: T,
-	paramHandler: Visitor,
-	shouldIterate: ShouldIterate = isIterable,
-	path: string = ''
-): void {
+export function iterateObject<T>(obj: T, paramHandler: Visitor, path: string = ''): void {
 	if (obj && obj !== null && typeof obj === 'object') {
 		Object.keys(obj).forEach((key) => {
 			const newPath = path + (path.length === 0 ? '' : '.') + key
 			const value = obj[key as keyof T]
-			if (shouldIterate(value)) {
-				iterateObject(value, paramHandler, shouldIterate, newPath)
+			if (isIterable(value)) {
+				iterateObject(value, paramHandler, newPath)
 			} else {
 				paramHandler(newPath, value)
 			}

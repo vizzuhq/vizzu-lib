@@ -141,6 +141,11 @@ public:
 		return true;
 	}
 
+	[[nodiscard]] T pop_back()
+	{
+		return extract(items.find(last->first)).key();
+	}
+
 	[[nodiscard]] iterator<> begin() const noexcept
 	{
 		return {first};

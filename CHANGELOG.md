@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+### Fixed
+
+- Series whose contained ',' and aggregated were not working properly.
+
 ## [0.12.0] - 2024-07-29
 
 ### Fixed

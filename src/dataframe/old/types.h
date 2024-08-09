@@ -7,6 +7,11 @@
 
 #include "../interface.h"
 
+namespace Vizzu::dataframe
+{
+struct series_meta_t;
+}
+
 namespace Vizzu::Data
 {
 
@@ -27,38 +32,38 @@ struct RowWrapper
 
 class SeriesIndex
 {
-	std::string orig_name;
-	std::string_view sid;
-	std::optional<dataframe::aggregator_type> aggr;
+	std::string_view name{};
+	std::optional<dataframe::aggregator_type> aggregator;
+
+	explicit SeriesIndex(dataframe::series_meta_t const &meta);
 
 public:
+	SeriesIndex() : aggregator(dataframe::aggregator_type::count) {}
 	SeriesIndex(std::string const &str, const DataTable &table);
+
+	void setAggr(const std::string &aggr);
 
 	[[nodiscard]] const dataframe::aggregator_type &getAggr() const
 	{
-		return *aggr;
+		return *aggregator;
 	}
 
 	[[nodiscard]] const std::string_view &getColIndex() const
 	{
-		return sid;
+		return name;
 	}
 
-	[[nodiscard]] bool operator==(const SeriesIndex &rhs) const
-	{
-		return sid == rhs.sid && aggr == rhs.aggr;
-	}
+	[[nodiscard]] bool operator==(
+	    const SeriesIndex &rhs) const = default;
+	[[nodiscard]] auto operator<=>(
+	    const SeriesIndex &rhs) const = default;
 
-	[[nodiscard]] bool operator<(const SeriesIndex &rhs) const
-	{
-		return sid < rhs.sid || (sid == rhs.sid && aggr < rhs.aggr);
-	}
+	[[nodiscard]] bool isDimension() const { return !aggregator; }
 
-	[[nodiscard]] bool isDimension() const { return !aggr; }
-
-	[[nodiscard]] const std::string &toString() const
+	[[nodiscard]] consteval static auto members()
 	{
-		return orig_name;
+		return std::tuple{&SeriesIndex::name,
+		    &SeriesIndex::aggregator};
 	}
 };
 
