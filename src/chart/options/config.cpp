@@ -211,12 +211,12 @@ void Config::setChannelParam(const std::string &path,
 		if (parts.size() == 3 && value == "null")
 			channel.reset();
 		else {
-			if (auto command = parts.size() == 4
-			                     ? "name"
-			                     : std::string_view{parts.at(4)};
+			if (const std::string_view command =
+			        parts.size() == 4 ? std::string_view{"name"}
+			                          : parts.at(4);
 			    command == "name") {
 				if (std::stoi(parts.at(3)) == 0) channel.reset();
-				if (value == "") { channel.measureId.emplace(); }
+				if (value.empty()) { channel.measureId.emplace(); }
 				else
 					channel.addSeries({value, table});
 			}

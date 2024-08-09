@@ -117,12 +117,6 @@ public:
 	[[nodiscard]] std::span<const std::string> get_categories(
 	    const std::string_view &dimension) const &;
 
-	struct series_meta_t
-	{
-		std::string_view name;
-		series_type type;
-	};
-
 	[[nodiscard]] series_meta_t get_series_meta(
 	    const std::string &id) const;
 

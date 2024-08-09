@@ -8,6 +8,7 @@
 #include "base/text/funcstring.h"
 #include "chart/options/options.h"
 #include "dataframe/impl/aggregators.h"
+#include "dataframe/impl/data_source.h"
 #include "dataframe/interface.h"
 
 namespace Vizzu::Data
@@ -53,14 +54,17 @@ const MultiIndex &DataCube::iterator_t::operator*() const
 	return index;
 }
 
-SeriesIndex::SeriesIndex(std::string const &str,
-    const DataTable &table)
+SeriesIndex::SeriesIndex(dataframe::series_meta_t const &meta) :
+    name{meta.name}
 {
-	auto &&[s, type] = table.getDf().get_series_meta(str);
-	name = s;
-	if (type == DataTable::Type::measure)
-		aggregator = dataframe::aggregator_type::sum;
+	if (meta.type == dataframe::series_type::measure)
+		aggregator.emplace(dataframe::aggregator_type::sum);
 }
+
+SeriesIndex::SeriesIndex(std::string const &str,
+    const DataTable &table) :
+    SeriesIndex(table.getDf().get_series_meta(str))
+{}
 
 void SeriesIndex::setAggr(const std::string &aggr)
 {

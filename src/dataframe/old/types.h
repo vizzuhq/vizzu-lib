@@ -7,6 +7,11 @@
 
 #include "../interface.h"
 
+namespace Vizzu::dataframe
+{
+struct series_meta_t;
+}
+
 namespace Vizzu::Data
 {
 
@@ -29,6 +34,8 @@ class SeriesIndex
 {
 	std::string_view name{};
 	std::optional<dataframe::aggregator_type> aggregator;
+
+	explicit SeriesIndex(dataframe::series_meta_t const &meta);
 
 public:
 	SeriesIndex() : aggregator(dataframe::aggregator_type::count) {}
