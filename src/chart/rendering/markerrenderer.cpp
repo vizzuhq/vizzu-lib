@@ -1,15 +1,30 @@
 #include "markerrenderer.h"
 
-#include "base/geom/angle.h"
+#include <cmath>
+#include <cstddef>
+#include <optional>
+#include <string>
+#include <utility>
+
+#include "base/anim/interpolated.h"
+#include "base/geom/line.h"
+#include "base/gfx/canvas.h"
+#include "base/math/interpolation.h"
 #include "base/text/smartstring.h"
-#include "chart/generator/plot.h"
-#include "chart/rendering/colorbuilder.h"
-#include "chart/rendering/drawlabel.h"
-#include "chart/rendering/markers/abstractmarker.h"
-#include "chart/rendering/markers/circlemarker.h"
-#include "chart/rendering/markers/connectingmarker.h"
-#include "chart/rendering/markers/rectanglemarker.h"
-#include "chart/rendering/orientedlabel.h"
+#include "chart/generator/plot.h" // NOLINT(misc-include-cleaner)
+#include "chart/main/events.h"
+#include "chart/options/channel.h"
+#include "chart/options/coordsystem.h"
+#include "chart/options/shapetype.h"
+#include "markers/abstractmarker.h"
+#include "markers/circlemarker.h"
+#include "markers/connectingmarker.h"
+#include "painter/painter.h"
+
+#include "colorbuilder.h"
+#include "drawingcontext.h"
+#include "orientedlabel.h"
+#include "renderedchart.h"
 
 namespace Vizzu::Draw
 {

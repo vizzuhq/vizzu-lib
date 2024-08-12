@@ -1,6 +1,21 @@
 #include "orientedlabel.h"
 
+#include <cmath>
+#include <memory>
+#include <numbers>
+#include <optional>
+#include <string>
+#include <utility>
+
 #include "base/geom/angle.h"
+#include "base/geom/line.h"
+#include "base/geom/point.h"
+#include "base/gfx/canvas.h"
+#include "base/gfx/font.h"
+#include "base/util/eventdispatcher.h"
+#include "chart/main/style.h"
+
+#include "drawlabel.h"
 
 namespace Vizzu::Draw
 {
@@ -15,7 +30,8 @@ void OrientedLabel::draw(Gfx::ICanvas &canvas,
     Util::EventDispatcher::Event &event,
     std::unique_ptr<Util::EventTarget> eventTarget) const
 {
-	auto baseAngle = labelPos.getDirection().angle() + M_PI / 2.0;
+	auto baseAngle =
+	    labelPos.getDirection().angle() + std::numbers::pi / 2.0;
 
 	auto absAngle =
 	    labelStyle.orientation->combine(
@@ -25,21 +41,23 @@ void OrientedLabel::draw(Gfx::ICanvas &canvas,
 		        switch (orientation) {
 		        default:
 		        case horizontal: return 0.0;
-		        case vertical: return M_PI / 2.0;
+		        case vertical: return std::numbers::pi / 2.0;
 		        case normal: return labelPos.getDirection().angle();
 		        case tangential:
 			        return labelPos.getDirection().angle()
-			             + M_PI / 2.0;
+			             + std::numbers::pi / 2.0;
 		        }
 	        })
 	    + labelStyle.angle->rad();
 
 	auto relAngle = Geom::Angle(absAngle - baseAngle).rad();
-	if (relAngle > M_PI) relAngle -= M_PI;
+	if (relAngle > std::numbers::pi) relAngle -= std::numbers::pi;
 
-	auto xOffsetAngle = relAngle < M_PI / 4.0     ? 0
-	                  : relAngle < 3 * M_PI / 4.0 ? M_PI / 2.0
-	                                              : M_PI;
+	auto xOffsetAngle = std::numbers::pi;
+	if (relAngle < std::numbers::pi / 4.0)
+		xOffsetAngle = 0.0;
+	else if (relAngle < 3.0 * std::numbers::pi / 4.0)
+		xOffsetAngle /= 2.0;
 
 	const Gfx::Font font(labelStyle);
 	canvas.setFont(font);
@@ -60,9 +78,12 @@ void OrientedLabel::draw(Gfx::ICanvas &canvas,
 	    * Geom::AffineTransform(paddedSize / -2, 1.0, 0);
 
 	if (auto realAngle = Geom::Angle(baseAngle + relAngle).rad();
-	    realAngle > M_PI / 2.0 && realAngle < 3 * M_PI / 2.0)
-		transform =
-		    transform * Geom::AffineTransform(paddedSize, 1.0, -M_PI);
+	    realAngle > std::numbers::pi / 2.0
+	    && realAngle < 3 * std::numbers::pi / 2.0)
+		transform = transform
+		          * Geom::AffineTransform(paddedSize,
+		              1.0,
+		              -std::numbers::pi);
 
 	DrawLabel::draw(canvas,
 	    {transform, paddedSize},

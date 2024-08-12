@@ -1,7 +1,17 @@
 #include "morph.h"
 
+#include <memory>
+#include <stdexcept>
+
+#include "base/anim/interpolated.h"
 #include "base/math/interpolation.h"
+#include "chart/generator/axis.h"
+#include "chart/generator/guides.h"
 #include "chart/generator/plot.h"
+#include "chart/options/channel.h"
+#include "chart/options/shapetype.h"
+
+#include "options.h"
 
 namespace Vizzu::Anim::Morph
 {

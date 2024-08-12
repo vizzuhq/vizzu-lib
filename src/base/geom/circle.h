@@ -1,7 +1,7 @@
 #ifndef GEOM_CIRCLE
 #define GEOM_CIRCLE
 
-#include <optional>
+#include <cstdint>
 
 #include "point.h"
 #include "rect.h"
@@ -16,7 +16,7 @@ public:
 	Point center;
 	double radius;
 
-	Circle() : radius(0) {}
+	Circle() : radius{} {}
 
 	Circle(Point center, double radius) :
 	    center(center),

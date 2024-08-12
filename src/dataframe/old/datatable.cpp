@@ -1,15 +1,29 @@
 #include "datatable.h"
 
+#include <algorithm>
 #include <cmath>
-#include <numeric>
+#include <cstddef>
+#include <cstdint>
+#include <initializer_list>
+#include <memory>
+#include <span>
+#include <string>
+#include <string_view>
+#include <tuple>
 #include <utility>
+#include <vector>
 
 #include "base/conv/auto_json.h"
+#include "base/conv/numtostr.h"
+#include "base/refl/auto_enum.h"
 #include "base/text/funcstring.h"
 #include "chart/options/options.h"
+#include "chart/options/shapetype.h"
 #include "dataframe/impl/aggregators.h"
 #include "dataframe/impl/data_source.h"
 #include "dataframe/interface.h"
+
+#include "types.h"
 
 namespace Vizzu::Data
 {
@@ -187,9 +201,8 @@ DataCube::DataCube(const DataTable &table,
 			else
 				++first;
 
-		[[maybe_unused]] auto &&new_name =
-		    sub_df.set_aggregate(meas->getColIndex(),
-		        meas->getAggr());
+		std::ignore = sub_df.set_aggregate(meas->getColIndex(),
+		    meas->getAggr());
 
 		sub_df.finalize();
 	}

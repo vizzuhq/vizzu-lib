@@ -1,5 +1,11 @@
 #include "options.h"
 
+#include <stdexcept>
+#include <string>
+
+#include "base/anim/control.h"
+#include "base/anim/duration.h"
+#include "base/anim/easing.h"
 #include "base/conv/parse.h"
 #include "base/text/smartstring.h"
 

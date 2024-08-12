@@ -1,6 +1,10 @@
 #include "channelrange.h"
 
+#include <string>
+
+#include "base/conv/parse.h"
 #include "base/conv/tostring.h"
+#include "base/math/range.h"
 #include "base/text/valueunit.h"
 
 namespace Vizzu::Gen

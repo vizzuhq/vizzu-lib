@@ -1,4 +1,10 @@
-#include "base/gfx/draw/infobubble.h"
+#include "infobubble.h"
+
+#include "base/geom/point.h"
+#include "base/geom/rect.h"
+#include "base/gfx/canvas.h"
+
+#include "roundedrect.h"
 
 namespace Gfx::Draw
 {

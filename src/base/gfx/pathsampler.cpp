@@ -1,5 +1,8 @@
 #include "pathsampler.h"
 
+#include <cstddef>
+
+#include "base/geom/point.h"
 #include "base/geom/triangle.h"
 
 namespace Gfx

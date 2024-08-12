@@ -1,9 +1,21 @@
 #include "config.h"
 
+#include <functional>
+#include <optional>
+#include <stdexcept>
+#include <string>
+#include <string_view>
+#include <type_traits>
+#include <utility>
+
+#include "base/anim/interpolated.h"
 #include "base/conv/auto_json.h"
 #include "base/conv/parse.h"
-#include "base/refl/auto_struct.h"
+#include "base/math/fuzzybool.h"
+#include "base/refl/auto_enum.h"
 #include "base/text/smartstring.h"
+#include "chart/options/channel.h"
+#include "chart/options/options.h"
 
 namespace Vizzu::Gen
 {
@@ -38,7 +50,7 @@ using ExtractType =
         decltype(Refl::Name::getBase(Mptr))>>>;
 
 template <auto Mptr>
-inline constexpr std::pair<std::string_view, Config::Accessor>
+constexpr std::pair<std::string_view, Config::Accessor>
     Config::accessor = {Refl::Name::in_data_name<
                             Refl::Name::name<decltype(Mptr), Mptr>()>,
         {.get =
@@ -57,8 +69,7 @@ inline constexpr std::pair<std::string_view, Config::Accessor>
 
 const Config::Accessors &Config::getAccessors()
 {
-	static const Config::Accessors accessors = {
-	    accessor<&Options::title>,
+	static const Accessors accessors = {accessor<&Options::title>,
 	    accessor<&Options::subtitle>,
 	    accessor<&Options::caption>,
 	    accessor<&Options::legend>,
@@ -242,11 +253,11 @@ void Config::setChannelParam(const std::string &path,
 
 	const auto &accessors = getChannelAccessors();
 	if (auto it = accessors.find(property); it != accessors.end())
-		return it->second.set(channel, value);
-
-	throw std::logic_error(
-	    path + "/" + value
-	    + ": invalid channel parameter: " + property);
+		it->second.set(channel, value);
+	else
+		throw std::logic_error(
+		    path + "/" + value
+		    + ": invalid channel parameter: " + property);
 }
 
 std::string Config::getChannelParam(const std::string &path) const

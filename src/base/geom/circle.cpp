@@ -1,8 +1,16 @@
 #include "circle.h"
 
 #include <algorithm>
+#include <cmath>
+#include <numbers>
+#include <optional>
+#include <stdexcept>
 
+#include "base/math/floating.h"
 #include "base/math/tolerance.h"
+
+#include "rect.h"
+#include "solutions.h"
 
 namespace Geom
 {
@@ -28,7 +36,10 @@ bool Circle::concentric(const Circle &c) const
 	return center == c.center;
 }
 
-double Circle::area() const { return M_PI * radius * radius; }
+double Circle::area() const
+{
+	return std::numbers::pi * radius * radius;
+}
 
 bool Circle::overlaps(const Circle &c) const
 {

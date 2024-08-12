@@ -1,10 +1,16 @@
 #include "drawplot.h"
 
-#include "base/text/smartstring.h"
-#include "chart/rendering/drawaxes.h"
-#include "chart/rendering/drawbackground.h"
+#include <utility>
 
+#include "base/geom/rect.h"
+#include "base/gfx/canvas.h"
+#include "chart/main/style.h"
+#include "painter/painter.h"
+
+#include "drawaxes.h"
+#include "drawbackground.h"
 #include "markerrenderer.h"
+#include "renderedchart.h"
 
 namespace Vizzu::Draw
 {

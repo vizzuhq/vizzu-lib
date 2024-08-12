@@ -2,16 +2,33 @@
 #include "data_source.h"
 
 #include <algorithm>
+#include <array>
 #include <cmath>
+#include <compare>
+#include <cstddef>
+#include <cstdint>
+#include <cstdio>
+#include <initializer_list>
+#include <iterator>
+#include <limits>
+#include <map>
+#include <memory>
 #include <numeric>
+#include <optional>
+#include <ranges>
+#include <span>
+#include <stdexcept>
+#include <string>
+#include <string_view>
+#include <tuple>
 #include <utility>
 #include <vector>
 
-#include "../old/datatable.h"
+#include "base/refl/auto_enum.h"
 #include "base/text/naturalcmp.h"
+#include "dataframe/interface.h"
 
 #include "aggregators.h"
-#include "dataframe.h"
 
 namespace Vizzu::dataframe
 {
@@ -38,7 +55,8 @@ constexpr void index_erase_if<true>::operator()(
 		auto curr = cont.begin() + indices[i];
 		into = std::move(std::exchange(prev, curr + 1), curr, into);
 	}
-	cont.erase(std::move(prev, cont.end(), into), cont.end());
+	std::forward<Cont>(cont).erase(std::move(prev, cont.end(), into),
+	    cont.end());
 }
 
 template <>
@@ -49,7 +67,7 @@ constexpr void index_erase_if<>::operator()(
 	auto from = cont.end();
 	for (auto i : std::ranges::views::reverse(indices))
 		cont[i] = std::move(*--from);
-	cont.erase(from, cont.end());
+	std::forward<Cont>(cont).erase(from, cont.end());
 }
 
 template <>
@@ -57,11 +75,13 @@ template <class Cont>
 constexpr void index_erase_if<true, false>::operator()(
     Cont &&cont) const noexcept
 {
-	std::erase_if(cont,
+	std::erase_if(std::forward<Cont>(cont),
 	    [i = std::size_t{}, c = indices.begin(), e = indices.end()](
 	        const auto &) mutable
 	    {
-		    return c != e && i++ == *c && (++c, true);
+		    auto &&res = c != e && i++ == *c;
+		    if (res) ++c;
+		    return res;
 	    });
 }
 
@@ -79,6 +99,8 @@ constexpr void index_erase_if<false, false>::operator()(
 	     first != last;
 	     cont[*first++] = std::move(cont[from_ix]))
 		while (--from_ix == from[-1]) --from;
+
+	std::ignore = std::forward<Cont>(cont);
 }
 
 std::size_t data_source::get_record_count() const
@@ -111,11 +133,12 @@ struct data_source::sorter
 	cmp_mea(double lhs, double rhs, na_position na, sort_type sort)
 	{
 		using std::strong_order;
-		return std::isnan(lhs) != std::isnan(rhs)
-		         ? (na == na_position::last) == std::isnan(rhs)
-		             ? std::weak_ordering::less
-		             : std::weak_ordering::greater
-		     : sort == sort_type::less ? strong_order(lhs, rhs)
+		if (std::isnan(lhs) != std::isnan(rhs))
+			return (na == na_position::last) == std::isnan(rhs)
+			         ? std::weak_ordering::less
+			         : std::weak_ordering::greater;
+
+		return sort == sort_type::less ? strong_order(lhs, rhs)
 		                               : strong_order(rhs, lhs);
 	}
 
@@ -144,7 +167,7 @@ std::vector<std::size_t> data_source::get_sorted_indices(
 	thread_local const sorting_type *sorters_ptr{};
 	sorters_ptr = &sorters;
 
-	return data_source::get_sorted_indices(get_record_count(),
+	return get_sorted_indices(get_record_count(),
 	    [](std::size_t a, std::size_t b)
 	    {
 		    for (const auto &sorter : *sorters_ptr) {
@@ -155,6 +178,7 @@ std::vector<std::size_t> data_source::get_sorted_indices(
 	    });
 }
 
+// NOLINTNEXTLINE(cppcoreguidelines-rvalue-reference-param-not-moved)
 void data_source::sort(std::vector<std::size_t> &&indices)
 {
 	std::vector<double> tmp_mea(measures.size());
@@ -392,7 +416,7 @@ data_source::data_source(aggregating_type &&aggregating,
     const std::vector<bool> *filtered,
     std::size_t record_count)
 {
-	auto &[dims, meas] = aggregating;
+	auto &&[dims, meas] = std::move(aggregating);
 
 	dimensions.reserve(dims.size());
 	dimension_names.reserve(dims.size());
@@ -485,9 +509,9 @@ data_source::data_source(
     dimension_names(copying->dimension_names),
     dimensions(copying->dimensions)
 {
-	if (sorted) { this->sort(std::move(*sorted)); }
+	if (sorted) { this->sort(*std::move(sorted)); }
 	if (filtered) {
-		const auto &filt = *filtered;
+		const auto &filt = *std::move(filtered);
 		std::vector<std::size_t> remove_ix;
 		remove_ix.reserve(filt.size());
 		for (std::size_t i{}; i < filt.size(); ++i)
@@ -573,7 +597,7 @@ void error(error_type err_t, std::string_view arg)
 	auto &&[data, size] =
 	    Refl::enum_name<std::pair<const char *, int>>(err_t);
 	std::array<char, 64> arr{};
-	[[maybe_unused]] auto &&_ = std::snprintf(arr.data(),
+	std::ignore = std::snprintf(arr.data(),
 	    arr.size(),
 	    "dataframe error: %.*s: %.*s",
 	    size,
@@ -643,7 +667,7 @@ data_source::dimension_t::get_categories_usage() const
 }
 
 void data_source::dimension_t::remove_unused_categories(
-    std::vector<bool> &&used)
+    const std::vector<bool> &used)
 {
 	std::vector<std::uint32_t> remap(categories.size());
 	std::size_t new_size{};

@@ -1,6 +1,7 @@
 #ifndef BASE_ANIM_CONTROL_H
 #define BASE_ANIM_CONTROL_H
 
+#include <cstdint>
 #include <functional>
 
 #include "base/anim/controllable.h"
@@ -12,8 +13,8 @@ namespace Anim
 class Control
 {
 public:
-	enum class PlayState { paused, running };
-	enum class Direction { normal, reverse };
+	enum class PlayState : std::uint8_t { paused, running };
+	enum class Direction : std::uint8_t { normal, reverse };
 
 	struct Option
 	{

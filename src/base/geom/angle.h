@@ -2,6 +2,7 @@
 #define MATH_ANGLE
 
 #include <cmath>
+#include <numbers>
 #include <string>
 
 #include "base/text/valueunit.h"
@@ -54,17 +55,18 @@ CircularAngle<max> interpolate(CircularAngle<max> op0,
 
 	if (factor >= 1.0) return op1;
 
-	if (fabs(op0.rad() - op1.rad()) <= M_PI)
+	if (fabs(op0.rad() - op1.rad()) <= std::numbers::pi)
 		return CircularAngle<max>(
 		    op0.rad() * (1.0 - factor) + op1.rad() * factor);
 
 	if (op0.rad() < op1.rad())
 		return CircularAngle<max>(
-		    (op0.rad() + 2 * M_PI) * (1.0 - factor)
+		    (op0.rad() + 2 * std::numbers::pi) * (1.0 - factor)
 		    + op1.rad() * factor);
 
 	return CircularAngle<max>(
-	    op0.rad() * (1.0 - factor) + (op1.rad() + 2 * M_PI) * factor);
+	    op0.rad() * (1.0 - factor)
+	    + (op1.rad() + 2 * std::numbers::pi) * factor);
 }
 
 using Angle180 = CircularAngle<180>;

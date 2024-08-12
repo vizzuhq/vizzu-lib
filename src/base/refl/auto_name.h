@@ -63,8 +63,7 @@ template <class E, auto v> consteval auto name()
 	        last);
 	if constexpr (constexpr std::string_view res =
 	                  sv.substr(val + 1, last - val);
-	              res.length() > 0
-	              && (res[0] < '0' || res[0] > '9')) {
+	              !res.empty() && (res[0] < '0' || res[0] > '9')) {
 		std::array<char, res.size()> arr{};
 		std::ranges::copy(res, arr.begin());
 		return arr;

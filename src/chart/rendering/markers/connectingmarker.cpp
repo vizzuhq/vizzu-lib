@@ -1,8 +1,20 @@
 #include "connectingmarker.h"
 
 #include <algorithm>
+#include <cmath>
 
+#include "base/anim/interpolated.h"
+#include "base/geom/point.h"
+#include "base/math/floating.h"
+#include "base/math/fuzzybool.h"
+#include "chart/generator/marker.h"
 #include "chart/generator/plot.h"
+#include "chart/options/coordsystem.h"
+#include "chart/options/orientation.h"
+#include "chart/options/shapetype.h"
+#include "chart/rendering/drawingcontext.h"
+
+#include "abstractmarker.h"
 
 namespace Vizzu::Draw
 {

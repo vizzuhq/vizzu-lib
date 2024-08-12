@@ -1,6 +1,7 @@
 #include "naturalcmp.h"
 
-#include <cctype>
+#include <compare>
+#include <string>
 
 #include "character.h"
 

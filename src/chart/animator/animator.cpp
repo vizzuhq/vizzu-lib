@@ -1,6 +1,16 @@
 #include "animator.h"
 
-#include "chart/animator/keyframe.h"
+#include <memory>
+#include <stdexcept>
+#include <utility>
+
+#include "base/anim/control.h"
+#include "base/util/eventdispatcher.h"
+#include "chart/generator/plotptr.h"
+#include "dataframe/old/datatable.h"
+
+#include "animation.h"
+#include "options.h"
 
 namespace Vizzu::Anim
 {

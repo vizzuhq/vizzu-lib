@@ -1,7 +1,7 @@
 #ifndef VIZZU_DATAFRAME_DATAFRAME_H
 #define VIZZU_DATAFRAME_DATAFRAME_H
 
-#include <memory>
+#include <cstdint>
 
 #include "../interface.h"
 
@@ -12,16 +12,16 @@ namespace Vizzu::dataframe
 
 class dataframe
 {
-	enum class state_type {
+	enum class state_type : std::uint8_t {
 		modifying,
 		aggregating,
 		sorting,
 		finalized
 	};
 
-	enum class source_type { owning, copying };
+	enum class source_type : std::uint8_t { owning, copying };
 
-	enum class state_modification_reason {
+	enum class state_modification_reason : std::uint8_t {
 		needs_series_type,
 		needs_record_count,
 		needs_sorted_records,
@@ -148,8 +148,10 @@ private:
 
 	[[nodiscard]] const dataframe_interface *as_if() const
 	{
+		// NOLINTBEGIN(bugprone-casting-through-void)
 		return std::launder(static_cast<const dataframe_interface *>(
 		    static_cast<const void *>(this)));
+		// NOLINTEND(bugprone-casting-through-void)
 	}
 
 	Refl::EnumVariant<source_type,

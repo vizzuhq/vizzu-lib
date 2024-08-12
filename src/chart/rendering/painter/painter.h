@@ -40,7 +40,8 @@ public:
 	void drawPolygon(const std::array<Geom::Point, 4> &ps,
 	    bool clip = false);
 
-	void setPathSamplerOptions(Gfx::PathSampler::Options &&options)
+	void setPathSamplerOptions(
+	    const Gfx::PathSampler::Options &options)
 	{
 		pathSamplerOptions = options;
 	}

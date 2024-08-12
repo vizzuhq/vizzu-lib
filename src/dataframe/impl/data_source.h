@@ -15,9 +15,9 @@
 namespace Vizzu::dataframe
 {
 
-enum class series_type { unknown, dimension, measure };
+enum class series_type : std::uint8_t { unknown, dimension, measure };
 
-enum class error_type {
+enum class error_type : std::uint8_t {
 	series_not_found,
 	duplicated_series,
 	wrong_type,
@@ -79,7 +79,11 @@ private:
 		    contains_nav{std::any_of(this->values.begin(),
 		        this->values.end(),
 		        is_nav)}
-		{}
+		{
+			std::ignore = std::forward<Range1>(categories);
+			std::ignore = std::forward<Range2>(values);
+			std::ignore = std::forward<Range3>(info);
+		}
 
 		void add_more_data(std::span<const char *const> categories,
 		    std::span<const std::uint32_t> values);
@@ -102,7 +106,7 @@ private:
 
 		[[nodiscard]] std::vector<bool> get_categories_usage() const;
 
-		void remove_unused_categories(std::vector<bool> &&used);
+		void remove_unused_categories(const std::vector<bool> &used);
 	};
 
 	struct measure_t
@@ -120,7 +124,10 @@ private:
 		    contains_nan(std::any_of(this->values.begin(),
 		        this->values.end(),
 		        is_nan))
-		{}
+		{
+			std::ignore = std::forward<Range1>(values);
+			std::ignore = std::forward<Range2>(info);
+		}
 
 		[[nodiscard]] const double &get(std::size_t index) const;
 

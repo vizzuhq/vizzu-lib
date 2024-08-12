@@ -1,13 +1,17 @@
 #include "point.h"
 
+#include <cmath>
+
+#include "base/math/floating.h"
+
 namespace Geom
 {
 
 Size Size::rotatedSize(double angle) const
 {
 	Size res;
-	auto c = ::fabs(::cos(angle));
-	auto s = ::fabs(::sin(angle));
+	auto c = fabs(cos(angle));
+	auto s = fabs(sin(angle));
 	res.x = x * c + y * s;
 	res.y = x * s + y * c;
 	return res;

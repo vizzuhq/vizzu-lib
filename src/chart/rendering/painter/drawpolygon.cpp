@@ -1,9 +1,16 @@
 #include "drawpolygon.h"
 
+#include <array>
+#include <cmath>
+
+#include "base/geom/circle.h"
+#include "base/geom/point.h"
 #include "base/geom/rect.h"
-#include "base/geom/triangle.h"
+#include "base/gfx/canvas.h"
 #include "base/math/interpolation.h"
 #include "base/math/statistics.h"
+
+#include "pathsampler.h"
 
 namespace Vizzu::Draw
 {

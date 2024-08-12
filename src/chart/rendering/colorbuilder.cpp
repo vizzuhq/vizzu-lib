@@ -1,7 +1,14 @@
 
-#include "chart/rendering/colorbuilder.h"
+#include "colorbuilder.h"
 
-#include "base/math/interpolation.h"
+#include <cstddef>
+#include <cstdint>
+
+#include "base/anim/interpolated.h"
+#include "base/gfx/color.h"
+#include "base/gfx/colorgradient.h"
+#include "base/gfx/colorpalette.h"
+#include "chart/generator/colorbase.h"
 
 namespace Vizzu::Draw
 {

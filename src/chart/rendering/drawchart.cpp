@@ -1,5 +1,15 @@
 #include "drawchart.h"
 
+#include <utility>
+
+#include "base/anim/interpolated.h"
+#include "base/geom/point.h"
+#include "base/geom/rect.h"
+#include "base/geom/transformedrect.h"
+#include "base/gfx/canvas.h"
+#include "chart/main/layout.h"
+#include "painter/painter.h"
+
 #include "drawbackground.h"
 #include "drawlabel.h"
 #include "drawlegend.h"
@@ -107,23 +117,23 @@ void DrawChart::draw(Gfx::ICanvas &canvas, const Layout &layout) const
 
 		drawHeading<&Events::Targets::chartTitle>(canvas,
 		    layout,
-		    [](auto &obj) -> decltype((obj.title))
+		    [](auto &obj) -> auto &
 		    {
-			    return (obj.title);
+			    return obj.title;
 		    });
 
 		drawHeading<&Events::Targets::chartSubtitle>(canvas,
 		    layout,
-		    [](auto &obj) -> decltype((obj.subtitle))
+		    [](auto &obj) -> auto &
 		    {
-			    return (obj.subtitle);
+			    return obj.subtitle;
 		    });
 
 		drawHeading<&Events::Targets::chartCaption>(canvas,
 		    layout,
-		    [](auto &obj) -> decltype((obj.caption))
+		    [](auto &obj) -> auto &
 		    {
-			    return (obj.caption);
+			    return obj.caption;
 		    });
 
 		drawMarkerInfo(canvas, layout.boundary);

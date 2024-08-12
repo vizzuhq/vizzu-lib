@@ -1,11 +1,17 @@
 #include "colorpalette.h"
 
+#include <cstddef>
+#include <initializer_list>
+#include <string>
+
 #include "base/text/smartstring.h"
+
+#include "color.h"
 
 namespace Gfx
 {
 
-ColorPalette::ColorPalette(std::initializer_list<Gfx::Color> colors) :
+ColorPalette::ColorPalette(std::initializer_list<Color> colors) :
     colors(colors)
 {}
 
@@ -29,13 +35,12 @@ ColorPalette::operator std::string() const
 	return res;
 }
 
-Gfx::Color ColorPalette::operator[](unsigned index) const
+Color ColorPalette::operator[](unsigned index) const
 {
-	return colors.empty() ? Gfx::Color()
-	                      : colors[index % colors.size()];
+	return colors.empty() ? Color() : colors[index % colors.size()];
 }
 
-Gfx::Color &ColorPalette::operator[](unsigned index)
+Color &ColorPalette::operator[](unsigned index)
 {
 	if (index >= colors.size()) colors.resize(index + 1);
 

@@ -1,8 +1,8 @@
 #include "events.h"
 
 #include "base/conv/auto_json.h"
-#include "base/conv/tostring.h"
-#include "base/text/smartstring.h"
+#include "base/gui/pointer.h"
+#include "base/util/eventdispatcher.h"
 
 namespace Vizzu::UI
 {

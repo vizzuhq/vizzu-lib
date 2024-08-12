@@ -1,7 +1,15 @@
 #include "interface.h"
 
+#include <compare>
+#include <cstddef>
+#include <cstdint>
+#include <functional>
 #include <memory>
 #include <new>
+#include <span>
+#include <string>
+#include <string_view>
+#include <utility>
 
 #include "impl/dataframe.h"
 
@@ -13,14 +21,18 @@ static_assert(alignof(dataframe) <= align_impl);
 
 dataframe &as_impl(dataframe_interface *df)
 {
+	// NOLINTBEGIN(bugprone-casting-through-void)
 	return *std::launder(
 	    static_cast<dataframe *>(static_cast<void *>(df->data)));
+	// NOLINTEND(bugprone-casting-through-void)
 }
 
 const dataframe &as_impl(const dataframe_interface *df)
 {
+	// NOLINTBEGIN(bugprone-casting-through-void)
 	return *std::launder(static_cast<const dataframe *>(
 	    static_cast<const void *>(df->data)));
+	// NOLINTEND(bugprone-casting-through-void)
 }
 
 std::shared_ptr<dataframe_interface> dataframe_interface::copy(

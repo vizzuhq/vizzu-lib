@@ -2,6 +2,13 @@
 
 #include <algorithm>
 #include <cmath>
+#include <optional>
+#include <vector>
+
+#include "base/geom/point.h"
+#include "base/geom/rect.h"
+
+#include "specmarker.h"
 
 namespace Vizzu::Charts
 {

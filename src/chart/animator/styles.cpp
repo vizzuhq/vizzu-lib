@@ -1,6 +1,13 @@
-#include "chart/animator/styles.h"
+#include "styles.h"
 
+#include <memory>
+
+#include "base/anim/group.h"
+#include "base/anim/options.h"
 #include "base/refl/auto_struct.h"
+#include "base/text/numberscale.h"
+#include "base/text/smartstring.h"
+#include "chart/main/style.h"
 
 namespace Vizzu::Anim::Morph
 {
