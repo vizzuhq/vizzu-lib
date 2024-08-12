@@ -929,10 +929,10 @@
 			"refs": ["0c56a02"]
 		},
 		"web_content/presets/graph/violin": {
-			"refs": ["139a372"]
+			"refs": ["16f0508"]
 		},
 		"web_content/presets/graph/violin_vertical": {
-			"refs": ["78626c7"]
+			"refs": ["0ca98ea"]
 		},
 		"web_content/presets/chart/line": {
 			"refs": ["9b78c6e"]
@@ -1772,7 +1772,7 @@
 			"refs": ["ba7ad4b"]
 		},
 		"ww_next_steps/next_steps/35_C_A_violin": {
-			"refs": ["b1dd1e9"]
+			"refs": ["c001634"]
 		},
 		"ww_next_steps/next_steps/38_C_L_line": {
 			"refs": ["3a9b873"]
@@ -3071,10 +3071,10 @@
 			"refs": ["0a6090f"]
 		},
 		"ww_samples_for_presets/cartesian_coo_sys/34_C_A_violin_graph": {
-			"refs": ["87266d3"]
+			"refs": ["f6a2b5f"]
 		},
 		"ww_samples_for_presets/cartesian_coo_sys/35_C_A_violin_graph_vert": {
-			"refs": ["07891c6"]
+			"refs": ["cac7dd7"]
 		},
 		"ww_samples_for_presets/cartesian_coo_sys/36_C_A_range_area_chart": {
 			"refs": ["c143145"]
@@ -3230,7 +3230,7 @@
 			"refs": ["ad0cb9b"]
 		},
 		"web_content/cookbook/rendering/sparse_axis_labels": {
-			"refs": ["af76977"]
+			"refs": ["9d3b939"]
 		},
 		"web_content/cookbook/style/d3_color_palette": {
 			"refs": ["bd104b0"]

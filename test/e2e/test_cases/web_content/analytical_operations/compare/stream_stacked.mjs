@@ -21,9 +21,7 @@ const testSteps = [
 
 	(chart) =>
 		chart.animate({
-			data: Object.assign(data, {
-				filter: (record) => record.Year > 1972
-			}),
+			data,
 			config: {
 				channels: {
 					x: 'Year',
