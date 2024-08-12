@@ -1,7 +1,7 @@
 import { CPointer, CString } from '../cvizzu.types'
 
 import { CObject } from './cenv.js'
-import { mirrorObject, iterateObject, isIterable, type ShouldIterate } from '../utils.js'
+import { mirrorObject, iterateObject } from '../utils.js'
 import { Mirrored } from '../tsutils.js'
 import { CPointerClosure } from './objregistry.js'
 
@@ -13,8 +13,6 @@ export class CProxy<T> extends CObject {
 	private _lister: Lister
 	private _getter: Getter
 	private _setter: Setter
-	private _shouldIterate: ShouldIterate
-	private _toString: (value: unknown) => string
 	private _fromString: (path: string, str: string) => unknown
 
 	constructor(
@@ -23,21 +21,17 @@ export class CProxy<T> extends CObject {
 		lister: Lister,
 		getter: Getter,
 		setter: Setter,
-		shouldIterate?: ShouldIterate,
-		toString?: (value: unknown) => string,
 		fromString?: (path: string, str: string) => unknown
 	) {
 		super(getId, cenv)
 		this._lister = lister
 		this._getter = getter
 		this._setter = setter
-		this._shouldIterate = shouldIterate || isIterable
-		this._toString = toString || ((value: unknown): string => String(value).toString())
 		this._fromString = fromString || ((_path: string, str: string): unknown => str)
 	}
 
 	set(value: T): void {
-		iterateObject(value, this.setParam.bind(this), this._shouldIterate)
+		iterateObject(value, this.setParam.bind(this))
 	}
 
 	get(): Mirrored<T> {
@@ -64,7 +58,7 @@ export class CProxy<T> extends CObject {
 
 	setParam(path: string, value: unknown): void {
 		const cpath = this._toCString(path)
-		const cvalue = this._toCString(this._toString(value))
+		const cvalue = this._toCString(String(value).toString())
 		try {
 			this._call(this._setter)(cpath, cvalue)
 		} finally {
