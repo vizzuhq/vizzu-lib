@@ -11,7 +11,7 @@ struct AddTolerance
 	double value;
 	double tolerance;
 
-	explicit AddTolerance(double value, double tolerance = 0.000001) :
+	explicit AddTolerance(double value, double tolerance = 0.00001) :
 	    value(value),
 	    tolerance(tolerance)
 	{}

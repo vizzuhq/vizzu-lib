@@ -2,6 +2,8 @@
 #define GEOM_RECT
 
 #include <array>
+#include <functional>
+#include <ranges>
 #include <tuple>
 #include <vector>
 
@@ -22,10 +24,8 @@ struct Rect
 	static Rect Boundary(const Container &points);
 
 	static Rect Ident();
-	static Rect CenteredMax();
 
 	[[nodiscard]] Rect boundary(const Rect &rect) const;
-	[[nodiscard]] Rect boundary(const Point &p) const;
 	[[nodiscard]] Point normalize(const Point &p) const;
 	[[nodiscard]] Size normalize(const Size &s) const;
 	[[nodiscard]] Rect normalize(const Rect &rect) const;
@@ -157,9 +157,13 @@ struct Rect
 template <class Container>
 Rect Rect::Boundary(const Container &points)
 {
-	Rect boundary{points[0]};
-	for (auto &point : points) boundary = boundary.boundary(point);
-	return boundary;
+	auto &&[minx, maxx] = std::ranges::minmax(
+	    std::ranges::views::transform(points, std::mem_fn(&Point::x)),
+	    Math::Floating::less);
+	auto &&[miny, maxy] = std::ranges::minmax(
+	    std::ranges::views::transform(points, std::mem_fn(&Point::y)),
+	    Math::Floating::less);
+	return Rect{{minx, miny}, {maxx - minx, maxy - miny}};
 }
 
 }
