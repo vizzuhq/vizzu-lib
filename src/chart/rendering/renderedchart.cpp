@@ -20,6 +20,9 @@ const Util::EventTarget *RenderedChart::find(
 {
 	auto original = coordinateSystem.getOriginal(point);
 
+	const Util::EventTarget *closestMarker{};
+	double closestMarkerDistance = std::numeric_limits<double>::max();
+
 	for (const auto &element : std::ranges::reverse_view(elements)) {
 		if (const auto *rect = std::get_if<Geom::TransformedRect>(
 		        &element.geometry)) {
@@ -39,44 +42,57 @@ const Util::EventTarget *RenderedChart::find(
 		}
 		else if (const auto *marker =
 		             std::get_if<Marker>(&element.geometry)) {
-			if (marker->bounds(coordinateSystem, original))
-				return element.target.get();
+			constexpr double MARKER_DISTANCE_THRESHOLD = 0.01;
+			if (const auto dist =
+			        marker->distance(coordinateSystem, original);
+			    dist < MARKER_DISTANCE_THRESHOLD
+			    && dist < closestMarkerDistance) {
+				closestMarker = element.target.get();
+				if (Math::Floating::is_zero(dist)) break;
+				closestMarkerDistance = dist;
+			}
 		}
 	}
-	return nullptr;
+	return closestMarker;
 }
 
-bool Marker::bounds(const CoordinateSystem &coordSys,
+double Marker::distance(const CoordinateSystem &coordSys,
     const Geom::Point &point) const
 {
-	if (!enabled) return false;
+	if (!enabled) return std::numeric_limits<double>::max();
 
 	/** Approximated solution */
-	auto isInside = shapeType.combine<Math::FuzzyBool>(
+	return shapeType.combine(
 	    [this, &point, &coordSys](const Gen::ShapeType &shapeType)
 	    {
 		    switch (shapeType) {
-		    case Gen::ShapeType::rectangle:
-		    case Gen::ShapeType::area:
-			    return Geom::ConvexQuad(points).contains(point, 0.01);
-		    case Gen::ShapeType::circle:
-			    return Geom::Circle(Geom::Rect::Boundary(points),
-			        Geom::Circle::FromRect::sameWidth)
-			        .overlaps(Geom::Circle(point, 0.01), 0.1);
-		    case Gen::ShapeType::line:
-			    return lineToQuad(coordSys, 10.0)
-			        .contains(coordSys.convert(point), 0.1);
+			    using enum Gen::ShapeType;
+		    default:
+		    case rectangle:
+		    case area:
+			    return Geom::ConvexQuad{points}.distance(point);
+		    case circle: {
+			    auto &&rect = Geom::Rect::Boundary(points);
+			    return Geom::Circle(rect.pos + rect.size / 2.0,
+			        rect.size.x / 2.0)
+			        .distance(point);
 		    }
-		    return false;
+		    case line: {
+			    auto rel_to_px = coordSys.getRect().size.minSize();
+			    return lineToQuad(coordSys).distance(
+			               coordSys.convert(point))
+			         / (Math::Floating::is_zero(rel_to_px)
+			                 ? 1.0
+			                 : rel_to_px);
+		    }
+		    }
 	    });
-
-	return isInside != false;
 }
 
-Geom::ConvexQuad Marker::lineToQuad(const CoordinateSystem &coordSys,
-    double atLeastWidth) const
+Geom::ConvexQuad Marker::lineToQuad(
+    const CoordinateSystem &coordSys) const
 {
-	using Math::Floating::less;
+	constexpr double MIN_WIDTH_PX = 10.0;
 	auto line = getLine();
 
 	auto pBeg = coordSys.convert(line.begin);
@@ -84,10 +100,13 @@ Geom::ConvexQuad Marker::lineToQuad(const CoordinateSystem &coordSys,
 
 	auto wBeg = lineWidth[0] * coordSys.getRect().size.minSize();
 	auto wEnd = lineWidth[1] * coordSys.getRect().size.minSize();
+
+	using Math::Floating::less;
 	return Geom::ConvexQuad::Isosceles(pBeg,
 	    pEnd,
-	    std::max(atLeastWidth, wBeg * 2, less),
-	    std::max(atLeastWidth, wEnd * 2, less));
+	    std::max(MIN_WIDTH_PX, wBeg * 2, less),
+	    std::max(MIN_WIDTH_PX, wEnd * 2, less));
 }
+
 Geom::Line Marker::getLine() const { return {points[3], points[2]}; }
 }

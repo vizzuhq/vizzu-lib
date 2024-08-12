@@ -15,22 +15,6 @@
 namespace Geom
 {
 
-Circle::Circle(const Rect &rect, FromRect fromRect) :
-    center(rect.pos + rect.size / 2.0)
-{
-	switch (fromRect) {
-	case FromRect::inscribed:
-		radius = rect.size.minSize() / 2.0;
-		break;
-	case FromRect::sameWidth: radius = rect.size.x / 2.0; break;
-	case FromRect::sameHeight: radius = rect.size.y / 2.0; break;
-	case FromRect::outscribed:
-		radius = rect.size.diagonal() / 2.0;
-		break;
-	default: throw std::logic_error("invalid circle parameter");
-	}
-}
-
 Circle::Circle(const Circle &c0,
     const Circle &c1,
     double radius,
@@ -52,30 +36,16 @@ bool Circle::concentric(const Circle &c) const
 	return center == c.center;
 }
 
-bool Circle::colateral(const Circle &c, double tolerance) const
-{
-	return Math::AddTolerance(centerDistance(c), tolerance)
-	    == (radius + c.radius);
-}
-
 double Circle::area() const
 {
 	return std::numbers::pi * radius * radius;
 }
 
-bool Circle::overlaps(const Circle &c, double tolerance) const
+bool Circle::overlaps(const Circle &c) const
 {
 	auto d = c.center - center;
 	auto sumRadius = radius + c.radius;
-	return Math::AddTolerance(d.sqrAbs(), tolerance)
-	     < sumRadius * sumRadius;
-}
-
-double Circle::overlapFactor(const Circle &c) const
-{
-	auto d = centerDistance(c);
-	auto r = radius + c.radius;
-	return d == 0 ? 0 : r / d;
+	return Math::AddTolerance(d.sqrAbs()) < sumRadius * sumRadius;
 }
 
 Rect Circle::boundary() const
@@ -87,6 +57,13 @@ Rect Circle::boundary() const
 bool Circle::contains(const Point &point) const
 {
 	return (point - center).sqrAbs() <= radius * radius;
+}
+
+double Circle::distance(const Point &point) const
+{
+	return std::max(0.0,
+	    (point - center).abs() - radius,
+	    Math::Floating::less);
 }
 
 double Circle::centerDistance(const Circle &c) const
