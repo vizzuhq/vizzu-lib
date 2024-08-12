@@ -123,14 +123,13 @@ void Planner::createPlan(const Gen::Plot &source,
 		addMorph(SectionId::coordSystem, std::max(step, posDuration));
 
 		const ::Anim::Easing *geomEasing{&inOut5};
-		if (auto &&targetCircle =
-		        trgOpt->geometry == Gen::ShapeType::circle;
-		    srcOpt->geometry == Gen::ShapeType::circle
-		    || (!targetCircle
-		        && srcOpt->geometry == Gen::ShapeType::line))
+		if (srcOpt->geometry == Gen::ShapeType::circle)
 			geomEasing = &in3;
-		else if (targetCircle
-		         || trgOpt->geometry == Gen::ShapeType::line)
+		else if (trgOpt->geometry == Gen::ShapeType::circle)
+			geomEasing = &out3;
+		else if (srcOpt->geometry == Gen::ShapeType::line)
+			geomEasing = &in3;
+		else if (trgOpt->geometry == Gen::ShapeType::line)
 			geomEasing = &out3;
 
 		addMorph(SectionId::geometry,
