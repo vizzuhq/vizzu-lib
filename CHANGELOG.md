@@ -2,9 +2,10 @@
 
 ## [Unreleased]
 
-### Fixed 
+### Fixed
 
 - Area charts with data series started with zero: tooltip fixed.
+- Series whose contained ',' and aggregated were not working properly.
 
 ## [0.12.0] - 2024-07-29
 
