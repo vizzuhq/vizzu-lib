@@ -27,7 +27,8 @@ enum class aggregator_type : std::uint8_t {
 	max,
 	mean,
 	count,
-	distinct
+	distinct,
+	exists
 };
 
 enum class sort_type : std::uint8_t {

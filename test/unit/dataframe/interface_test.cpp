@@ -486,11 +486,13 @@ const static auto tests =
 	auto &&pure1c = df->set_aggregate({}, count);
 	auto &&d1c = df->set_aggregate("d1", count);
 	auto &&d1d = df->set_aggregate("d1", distinct);
+	auto &&d1e = df->set_aggregate("d1", exists);
 	auto &&m1s = df->set_aggregate("m1", sum);
 	auto &&m1mi = df->set_aggregate("m1", min);
 	auto &&m1ma = df->set_aggregate("m1", max);
 	auto &&m1me = df->set_aggregate("m1", mean);
 	auto &&m1c = df->set_aggregate("m1", count);
+	auto &&m1e = df->set_aggregate("m1", exists);
 
 	/*
 auto &&m1t = df->set_aggregate("m1",
@@ -524,6 +526,8 @@ auto &&m1t = df->set_aggregate("m1",
 	        d1c,
 	        m1c,
 	        d1d,
+	        d1e,
+	        m1e,
 	        m1s,
 	        m1ma,
 	        m1me,
@@ -537,6 +541,8 @@ auto &&m1t = df->set_aggregate("m1",
 	check->*df->get_data(std::size_t{0}, d1c) == 5.0;
 	check->*df->get_data(std::size_t{0}, m1c) == 5.0;
 	check->*df->get_data(std::size_t{0}, d1d) == 1.0;
+	check->*df->get_data(std::size_t{0}, d1e) == 1.0;
+	check->*df->get_data(std::size_t{0}, m1e) == 1.0;
 	check->*df->get_data(std::size_t{0}, m1ma) == 88.0;
 	check->*df->get_data(std::size_t{0}, m1me) == 21.85;
 	check->*df->get_data(std::size_t{0}, m1mi) == 2.0;
@@ -547,6 +553,8 @@ auto &&m1t = df->set_aggregate("m1",
 	check->*df->get_data(std::size_t{1}, d1c) == 4.0;
 	check->*df->get_data(std::size_t{1}, m1c) == 3.0;
 	check->*df->get_data(std::size_t{1}, d1d) == 1.0;
+	check->*df->get_data(std::size_t{1}, d1e) == 1.0;
+	check->*df->get_data(std::size_t{1}, m1e) == 1.0;
 	check->*df->get_data(std::size_t{1}, m1ma) == 7.25;
 	check->*df->get_data(std::size_t{1}, m1me) == 5.0;
 	check->*df->get_data(std::size_t{1}, m1mi) == 3.5;
@@ -557,6 +565,8 @@ auto &&m1t = df->set_aggregate("m1",
 	check->*df->get_data(std::size_t{2}, d1c) == 1.0;
 	check->*df->get_data(std::size_t{2}, m1c) == 0.0;
 	check->*df->get_data(std::size_t{2}, d1d) == 1.0;
+	check->*df->get_data(std::size_t{2}, d1e) == 1.0;
+	check->*df->get_data(std::size_t{2}, m1e) == 0.0;
 	check
 	            ->*std::isnan(std::get<double>(
 	                df->get_data(std::size_t{2}, m1ma)))
@@ -577,6 +587,8 @@ auto &&m1t = df->set_aggregate("m1",
 	check->*df->get_data(std::size_t{3}, d1c) == 0.0;
 	check->*df->get_data(std::size_t{3}, m1c) == 1.0;
 	check->*df->get_data(std::size_t{3}, d1d) == 0.0;
+	check->*df->get_data(std::size_t{3}, d1e) == 0.0;
+	check->*df->get_data(std::size_t{3}, m1e) == 1.0;
 }
 
     | "aggregate multiple dim" |
