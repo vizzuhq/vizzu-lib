@@ -6,6 +6,8 @@
 #include <QLinearGradient>
 #include <QScreen>
 
+// NOLINTBEGIN(misc-include-cleaner,readability-avoid-nested-conditional-operator)
+
 QColor toQColor(const Gfx::Color &color)
 {
 	return {color.getRedByte(),
@@ -277,3 +279,5 @@ QFont BaseCanvas::fromGfxFont(const Gfx::Font &newFont, QFont font)
 	                  : QFont::StyleNormal);
 	return font;
 }
+
+// NOLINTEND(misc-include-cleaner,readability-avoid-nested-conditional-operator)

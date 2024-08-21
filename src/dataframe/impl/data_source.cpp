@@ -238,14 +238,11 @@ cell_reference data_source::get_data(std::size_t record_id,
 		using enum series_type;
 	case dimension: {
 		const auto &dims = unsafe_get<dimension>(series).second;
-		if (record_id >= dims.values.size()) return nullptr;
 		return dims.get(record_id);
 	}
 	case measure: {
 		const auto &meas = unsafe_get<measure>(series).second;
-		if (record_id >= meas.values.size()) return nan;
-
-		return meas.values[record_id];
+		return meas.get(record_id);
 	}
 	case unknown:
 	default: error(error_type::series_not_found, column);
@@ -627,9 +624,9 @@ void data_source::dimension_t::add_more_data(
 const std::string *data_source::dimension_t::get(
     std::size_t index) const
 {
-	return values[index] == nav
-	         ? nullptr
-	         : std::addressof(categories[values[index]]);
+	return index < values.size() && values[index] != nav
+	         ? std::addressof(categories[values[index]])
+	         : nullptr;
 }
 
 void data_source::dimension_t::set(std::size_t index,

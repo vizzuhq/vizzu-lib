@@ -114,15 +114,6 @@ get_aggregators() noexcept
 		                *std::get_if<const std::string *>(&cell))
 			        set.insert(v);
 		        return static_cast<double>(set.size());
-	        }},
-	    {aggrs[static_cast<std::size_t>(aggregator_type::exists)],
-	        empty_double,
-	        [](custom_aggregator::id_type &id,
-	            cell_reference const &cell) -> double
-	        {
-		        auto &b = *std::get_if<double>(&id);
-		        if (is_valid(cell)) b = 1.0;
-		        return b;
 	        }}}}};
 }
 

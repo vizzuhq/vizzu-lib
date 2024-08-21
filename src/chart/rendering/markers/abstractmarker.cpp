@@ -1,5 +1,9 @@
 #include "abstractmarker.h"
 
+#include <array>
+#include <cstddef>
+#include <utility>
+
 #include "base/anim/interpolated.h"
 #include "base/geom/line.h"
 #include "chart/generator/marker.h"

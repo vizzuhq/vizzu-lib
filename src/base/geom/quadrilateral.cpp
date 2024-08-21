@@ -1,9 +1,10 @@
 #include "quadrilateral.h"
 
-#include "base/math/tolerance.h"
+#include <algorithm>
+
+#include "base/math/floating.h"
 
 #include "point.h"
-#include "rect.h"
 #include "triangle.h"
 
 namespace Geom

@@ -94,9 +94,7 @@ dataframe::dataframe(std::shared_ptr<const data_source> other,
 void valid_unexistent_aggregator(const std::string_view &series,
     const dataframe::any_aggregator_type &agg)
 {
-	if (!agg
-	    || (*agg != aggregator_type::count
-	        && *agg != aggregator_type::exists))
+	if (!agg || *agg != aggregator_type::count)
 		error(error_type::series_not_found, series);
 }
 

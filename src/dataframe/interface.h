@@ -27,8 +27,7 @@ enum class aggregator_type : std::uint8_t {
 	max,
 	mean,
 	count,
-	distinct,
-	exists
+	distinct
 };
 
 enum class sort_type : std::uint8_t {
@@ -61,11 +60,6 @@ struct custom_aggregator
 	auto operator<=>(const custom_aggregator &oth) const
 	{
 		return name <=> oth.name;
-	}
-
-	auto operator!=(const custom_aggregator &oth) const
-	{
-		return name != oth.name;
 	}
 
 	auto operator==(const custom_aggregator &oth) const

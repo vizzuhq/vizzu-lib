@@ -16,10 +16,8 @@
 #include "base/conv/auto_json.h"
 #include "base/conv/numtostr.h"
 #include "base/refl/auto_enum.h"
-#include "base/text/funcstring.h"
 #include "chart/options/options.h"
 #include "chart/options/shapetype.h"
-#include "dataframe/impl/aggregators.h"
 #include "dataframe/impl/data_source.h"
 #include "dataframe/interface.h"
 
