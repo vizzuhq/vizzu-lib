@@ -1,9 +1,11 @@
 #include "pathsampler.h"
 
+#include <cmath>
 #include <cstddef>
 
 #include "base/geom/point.h"
 #include "base/geom/triangle.h"
+#include "base/math/floating.h"
 
 namespace Gfx
 {

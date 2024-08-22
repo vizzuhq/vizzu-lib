@@ -20,9 +20,8 @@ public:
 
 	template <class U> void operator==(const U &ref) const
 	{
-		if constexpr (requires { ref == value; }) {
+		if constexpr (requires { ref == value; })
 			return evaluate(value == ref, "==", ref);
-		}
 		else if constexpr (std::ranges::range<T>) {
 			auto &&[lhs, rhs] = std::ranges::mismatch(value, ref);
 			return evaluate(lhs == std::end(value)

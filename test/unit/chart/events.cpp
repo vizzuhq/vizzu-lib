@@ -55,6 +55,7 @@ struct MyCanvas final : Gfx::ICanvas, Vizzu::Draw::Painter
 	void frameBegin() final {}
 	void frameEnd() final {}
 	void *getPainter() final { return static_cast<Painter *>(this); }
+	// cppcheck-suppress duplInheritedMember
 	ICanvas &getCanvas() final { return *this; }
 };
 
@@ -333,6 +334,7 @@ std::multimap<std::string, event_as, std::less<>> get_events(
 				        "draw-" + std::string{s.back()});
 			    }
 
+			    // cppcheck-suppress uselessCallsConstructor
 			    if (s.back() == "base") s = {s.begin(), s.end() - 1};
 
 			    std::string name;

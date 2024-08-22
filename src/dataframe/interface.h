@@ -63,11 +63,6 @@ struct custom_aggregator
 		return name <=> oth.name;
 	}
 
-	auto operator!=(const custom_aggregator &oth) const
-	{
-		return name != oth.name;
-	}
-
 	auto operator==(const custom_aggregator &oth) const
 	{
 		return name == oth.name;

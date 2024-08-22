@@ -4,8 +4,8 @@
 #include <cmath>
 #include <numbers>
 #include <optional>
-#include <stdexcept>
 
+#include "base/geom/point.h"
 #include "base/math/floating.h"
 #include "base/math/tolerance.h"
 

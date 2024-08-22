@@ -101,7 +101,7 @@ private:
 		return stats;
 	}
 
-	void print_summary(statistics stats)
+	void print_summary(const statistics &stats)
 	{
 		std::cout << "\n"
 		          << "all tests:    " << cases.size() << "\n"

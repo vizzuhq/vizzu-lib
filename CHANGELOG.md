@@ -6,6 +6,7 @@
 
 - Area charts with data series started with zero: tooltip fixed.
 - Series whose contained ',' and aggregated were not working properly.
+- Dimension columns with non-existent values aggregation was undefined.
 
 ## [0.12.0] - 2024-07-29
 
