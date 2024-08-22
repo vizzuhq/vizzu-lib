@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+## [0.12.1] - 2024-08-22
+
 ### Fixed
 
 - Area charts with data series started with zero: tooltip fixed.
