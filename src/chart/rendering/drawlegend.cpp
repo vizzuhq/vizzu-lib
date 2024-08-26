@@ -12,6 +12,7 @@
 #include "base/geom/transformedrect.h"
 #include "base/gfx/canvas.h"
 #include "base/gfx/draw/roundedrect.h"
+#include "base/math/floating.h"
 #include "base/text/smartstring.h"
 #include "chart/generator/plot.h" // NOLINT(misc-include-cleaner)
 #include "chart/main/events.h"
@@ -64,8 +65,6 @@ void DrawLegend::draw(Gfx::ICanvas &canvas,
 	canvas.setClipRect(contentRect);
 
 	drawTitle(info);
-
-	canvas.setClipRect(markerWindowRect);
 
 	drawDimension(info);
 
@@ -260,7 +259,7 @@ Geom::Rect DrawLegend::getBarRect(const Info &info)
 
 double DrawLegend::markersLegendFullSize(const Info &info)
 {
-	double itemCount{info.measureEnabled ? 6.0 : 0.0};
+	double itemCount{info.measureEnabled <= 0.0 ? 0.0 : 6.0};
 	if (info.dimensionEnabled)
 		for (const auto &value : info.dimension)
 			if (auto itemPos = value.second.range.getMin() + 1;
