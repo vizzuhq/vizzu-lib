@@ -40,6 +40,7 @@ void DrawLegend::draw(Gfx::ICanvas &canvas,
 	    .canvas = canvas,
 	    .titleRect = titleRect,
 	    .markerWindowRect = markerWindowRect,
+	    .yOverflow = {},
 	    .yOffset = {},
 	    .type = channelType,
 	    .weight = weight,
@@ -50,16 +51,17 @@ void DrawLegend::draw(Gfx::ICanvas &canvas,
 	    .dimension = plot->axises.at(channelType).dimension,
 	};
 
-	auto yOverflow =
+	info.yOverflow =
 	    markersLegendFullSize(info) - markerWindowRect.height();
-	if (std::signbit(yOverflow)) yOverflow = 0.0;
-	info.yOffset = style.translateY->get(yOverflow, info.itemHeight);
+	if (std::signbit(info.yOverflow)) info.yOverflow = 0.0;
+	info.yOffset =
+	    style.translateY->get(info.yOverflow, info.itemHeight);
 
 	DrawBackground{{ctx()}}.draw(canvas,
 	    legendLayout,
 	    style,
 	    *events.background,
-	    Events::Targets::legend(channelType));
+	    Events::Targets::legend(channelType, info.yOverflow));
 
 	canvas.save();
 	canvas.setClipRect(contentRect);
@@ -90,7 +92,9 @@ void DrawLegend::drawTitle(const Info &info) const
 		        title.value,
 		        style.title,
 		        *events.title,
-		        Events::Targets::legendTitle(title.value, info.type),
+		        Events::Targets::legendTitle(title.value,
+		            info.type,
+		            info.yOverflow),
 		        {.alpha = title.weight * info.weight * mul});
 	    });
 }
@@ -132,7 +136,8 @@ void DrawLegend::drawDimension(const Info &info) const
 			            info.dimension.category,
 			            value.second.categoryValue,
 			            value.second.categoryValue,
-			            info.type),
+			            info.type,
+			            info.yOverflow),
 			        {.alpha = double{
 			             alpha && Math::FuzzyBool{weighted.weight}}});
 		    });
@@ -185,7 +190,8 @@ void DrawLegend::drawMarker(const Info &info,
 	auto markerElement =
 	    Events::Targets::legendMarker(info.dimension.category,
 	        categoryValue,
-	        info.type);
+	        info.type,
+	        info.yOverflow);
 
 	if (events.marker->invoke(
 	        Events::OnRectDrawEvent(*markerElement, {rect, false}))) {
@@ -244,7 +250,9 @@ void DrawLegend::extremaLabel(const Info &info,
 	    text,
 	    style.label,
 	    *events.label,
-	    Events::Targets::measLegendLabel(text, info.type),
+	    Events::Targets::measLegendLabel(text,
+	        info.type,
+	        info.yOverflow),
 	    {.alpha = info.measureWeight * plusWeight});
 }
 
@@ -282,7 +290,8 @@ void DrawLegend::colorBar(const Info &info,
 	info.canvas.setLineWidth(0);
 
 	auto barElement =
-	    Events::Targets::legendBar(Gen::ChannelId::color);
+	    Events::Targets::legendBar(Gen::ChannelId::color,
+	        info.yOverflow);
 
 	if (events.bar->invoke(
 	        Events::OnRectDrawEvent(*barElement, {rect, false}))) {
@@ -314,7 +323,8 @@ void DrawLegend::lightnessBar(const Info &info,
 	info.canvas.setLineWidth(0);
 
 	auto barElement =
-	    Events::Targets::legendBar(Gen::ChannelId::lightness);
+	    Events::Targets::legendBar(Gen::ChannelId::lightness,
+	        info.yOverflow);
 
 	if (events.bar->invoke(
 	        Events::OnRectDrawEvent(*barElement, {rect, false}))) {
@@ -335,8 +345,8 @@ void DrawLegend::sizeBar(const Info &info,
 	    Gfx::Color::Gray(0.8) * info.measureWeight);
 	info.canvas.setLineWidth(0);
 
-	auto barElement =
-	    Events::Targets::legendBar(Gen::ChannelId::size);
+	auto barElement = Events::Targets::legendBar(Gen::ChannelId::size,
+	    info.yOverflow);
 
 	if (events.bar->invoke(
 	        Events::OnRectDrawEvent(*barElement, {rect, false}))) {

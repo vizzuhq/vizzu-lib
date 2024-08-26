@@ -30,6 +30,7 @@ private:
 		Gfx::ICanvas &canvas;
 		Geom::Rect titleRect;
 		Geom::Rect markerWindowRect;
+		double yOverflow{};
 		double yOffset{};
 		Gen::ChannelId type{};
 		double weight{};
