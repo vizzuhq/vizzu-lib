@@ -31,18 +31,28 @@ void DrawLegend::draw(Gfx::ICanvas &canvas,
 	auto contentRect =
 	    style.contentRect(legendLayout, rootStyle.calculatedSize());
 
+	auto markerWindowRect = contentRect;
+	auto titleRect =
+	    markerWindowRect.popBottom(style.title.getHeight());
+
 	auto &&info = Info{
 	    .canvas = canvas,
-	    .contentRect = contentRect,
+	    .titleRect = titleRect,
+	    .markerWindowRect = markerWindowRect,
+	    .yOffset = {},
 	    .type = channelType,
 	    .weight = weight,
 	    .itemHeight = style.label.getHeight(),
-	    .titleHeight = style.title.getHeight(),
 	    .markerSize = style.marker.size->get(contentRect.size.y,
 	        style.label.calculatedSize()),
 	    .measure = plot->axises.at(channelType).measure,
 	    .dimension = plot->axises.at(channelType).dimension,
 	};
+
+	auto yOverflow =
+	    markersLegendFullSize(info) - markerWindowRect.height();
+	if (std::signbit(yOverflow)) yOverflow = 0.0;
+	info.yOffset = style.translateY->get(yOverflow, info.itemHeight);
 
 	DrawBackground{{ctx()}}.draw(canvas,
 	    legendLayout,
@@ -55,6 +65,8 @@ void DrawLegend::draw(Gfx::ICanvas &canvas,
 
 	drawTitle(info);
 
+	canvas.setClipRect(markerWindowRect);
+
 	drawDimension(info);
 
 	drawMeasure(info);
@@ -64,12 +76,10 @@ void DrawLegend::draw(Gfx::ICanvas &canvas,
 
 void DrawLegend::drawTitle(const Info &info) const
 {
-	auto rect = info.contentRect;
-	rect.size.y = info.titleHeight;
 	plot->axises.at(info.type).common.title.visit(
 	    [this,
 	        &info,
-	        &rect,
+	        &rect = info.titleRect,
 	        mul = std::max<double>(info.measureEnabled,
 	            info.dimensionEnabled)](::Anim::InterpolateIndex,
 	        const auto &title)
@@ -97,7 +107,9 @@ void DrawLegend::drawDimension(const Info &info) const
 		auto itemRect =
 		    getItemRect(info, value.second.range.getMin());
 
-		if (itemRect.y().getMax() >= info.contentRect.y().getMax())
+		if (itemRect.y().getMax() > info.markerWindowRect.y().getMax()
+		    || itemRect.y().getMin()
+		           < info.markerWindowRect.y().getMin())
 			continue;
 
 		const auto alpha{Math::FuzzyBool{value.second.weight}
@@ -130,8 +142,8 @@ void DrawLegend::drawDimension(const Info &info) const
 
 Geom::Rect DrawLegend::getItemRect(const Info &info, double index)
 {
-	Geom::Rect res = info.contentRect;
-	res.pos.y += info.titleHeight + index * info.itemHeight;
+	Geom::Rect res = info.markerWindowRect;
+	res.pos.y += index * info.itemHeight - info.yOffset;
 	res.size.y = info.itemHeight;
 	if (std::signbit(res.size.x)) res.size.x = 0;
 	return res;
@@ -239,11 +251,24 @@ void DrawLegend::extremaLabel(const Info &info,
 
 Geom::Rect DrawLegend::getBarRect(const Info &info)
 {
-	Geom::Rect res = info.contentRect;
-	res.pos.y += info.titleHeight + info.itemHeight / 2.0;
+	Geom::Rect res = info.markerWindowRect;
+	res.pos.y += info.itemHeight / 2.0;
 	res.size.y = 5 * info.itemHeight;
 	res.size.x = info.markerSize;
 	return res;
+}
+
+double DrawLegend::markersLegendFullSize(const Info &info)
+{
+	double itemCount{info.measureEnabled ? 6.0 : 0.0};
+	if (info.dimensionEnabled)
+		for (const auto &value : info.dimension)
+			if (auto itemPos = value.second.range.getMin() + 1;
+			    value.second.weight > 0
+			    && Math::Floating::less(itemCount, itemPos))
+				itemCount = itemPos;
+
+	return itemCount * info.itemHeight;
 }
 
 void DrawLegend::colorBar(const Info &info,

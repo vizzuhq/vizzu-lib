@@ -28,11 +28,12 @@ private:
 	struct Info
 	{
 		Gfx::ICanvas &canvas;
-		Geom::Rect contentRect;
+		Geom::Rect titleRect;
+		Geom::Rect markerWindowRect;
+		double yOffset{};
 		Gen::ChannelId type{};
 		double weight{};
 		double itemHeight{};
-		double titleHeight{};
 		double markerSize{};
 		const Gen::MeasureAxis &measure;
 		const Gen::DimensionAxis &dimension;
@@ -57,6 +58,9 @@ private:
 	[[nodiscard]] static Geom::TransformedRect
 	getLabelRect(const Info &info, const Geom::Rect &itemRect);
 	[[nodiscard]] static Geom::Rect getBarRect(const Info &info);
+
+	[[nodiscard]] static double markersLegendFullSize(
+	    const Info &info);
 
 	void extremaLabel(const Info &info,
 	    double value,

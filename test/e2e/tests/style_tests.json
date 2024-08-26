@@ -1029,6 +1029,9 @@
 		},
 		"plot/xAxis/label/autorotate": {
 			"refs": ["f179c0b"]
+		},
+		"legend/offsetY": {
+			"refs": ["09601ef"]
 		}
 	}
 }

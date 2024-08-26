@@ -1,14 +1,21 @@
 ---
 definitions:
-    Length:
+    LengthUnit:
         description: |
-            Length can be set in pixels or in percentage of the element or the element's
+            LengthUnit can be set in pixels or in percentage of the element or the element's
             font size. Pixel is the default unit.
         oneOf:
             - { type: string, mask: /:number:px/ }
             - { type: string, mask: /:number:%/ }
             - { type: string, mask: /:number:em/ }
             - type: number
+    Length:
+        description: |
+            Length can be LengthUnit or addition of LengthUnits.
+        oneOf:
+            - { type: string, mask: /:LengthUnit:/ }
+            - { type: string, mask: '/:LengthUnit:+:LengthUnit:/' }
+            - { type: string, mask: '/:LengthUnit:+:LengthUnit:+:LengthUnit:/' }
 
     Angle:
         description: |
@@ -32,7 +39,7 @@ definitions:
 
     NumberScale:
         description: |
-            Number scale for human readable big number formats.
+            Number scale for human-readable big number formats.
             There are built in formats:
             - SI Symbols: k, M, G, ...
             - Short scale with US abbreviations: K, M, B, T
@@ -523,6 +530,10 @@ definitions:
                 nullable: true
             marker:
                 $ref: LegendMarker
+                nullable: true
+            translateY:
+                description: Vertical translation of the marker list.
+                $ref: Length
                 nullable: true
 
     ColorStop:

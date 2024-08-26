@@ -453,7 +453,8 @@ Chart Chart::def()
 					.marker = {
 						.type = ::Anim::Interpolated<Legend::Marker::Type>(Legend::Marker::Type::circle),
 						.size = Gfx::Length::Emphemeral(18.0 / 14.0)
-					}
+					},
+					.translateY = Gfx::Length{}
 				}
 			},
 			.title = {
