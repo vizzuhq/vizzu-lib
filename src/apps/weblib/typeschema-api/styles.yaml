@@ -1,21 +1,14 @@
 ---
 definitions:
-    LengthUnit:
+    Length:
         description: |
-            LengthUnit can be set in pixels or in percentage of the element or the element's
+            Length can be set in pixels or in percentage of the element or the element's
             font size. Pixel is the default unit.
         oneOf:
             - { type: string, mask: /:number:px/ }
             - { type: string, mask: /:number:%/ }
             - { type: string, mask: /:number:em/ }
             - type: number
-    Length:
-        description: |
-            Length can be LengthUnit or addition of LengthUnits.
-        oneOf:
-            - { type: string, mask: /:LengthUnit:/ }
-            - { type: string, mask: '/:LengthUnit:+:LengthUnit:/' }
-            - { type: string, mask: '/:LengthUnit:+:LengthUnit:+:LengthUnit:/' }
 
     Angle:
         description: |
