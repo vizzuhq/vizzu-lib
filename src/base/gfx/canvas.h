@@ -28,7 +28,6 @@ struct ICanvas
 	virtual void setClipPolygon() = 0;
 	virtual void setBrushColor(const Gfx::Color &color) = 0;
 	virtual void setLineColor(const Gfx::Color &color) = 0;
-	virtual void setTextColor(const Gfx::Color &color) = 0;
 	virtual void setLineWidth(double width) = 0;
 	virtual void setFont(const Gfx::Font &font) = 0;
 

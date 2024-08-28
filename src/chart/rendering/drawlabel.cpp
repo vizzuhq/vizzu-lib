@@ -30,8 +30,12 @@ void DrawLabel::draw(Gfx::ICanvas &canvas,
 	if (!style.backgroundColor->isTransparent()) {
 		canvas.save();
 		auto bgColor = *style.backgroundColor * options.bgAlpha;
-		canvas.setBrushColor(bgColor);
-		canvas.setLineColor(bgColor);
+		if (options.gradient)
+			options.gradient(canvas,
+			    fullRect.transform.inverse(),
+			    bgColor);
+		else
+			canvas.setBrushColor(bgColor);
 		canvas.transform(fullRect.transform);
 		canvas.rectangle(relativeRect);
 		canvas.restore();
@@ -47,8 +51,6 @@ void DrawLabel::draw(Gfx::ICanvas &canvas,
 	canvas.save();
 
 	canvas.setFont(font);
-	if (options.alpha)
-		canvas.setTextColor(*style.color * *options.alpha);
 
 	auto copyRect = fullRect;
 
@@ -57,15 +59,25 @@ void DrawLabel::draw(Gfx::ICanvas &canvas,
 		    1.0,
 		    -std::numbers::pi);
 
+	auto textTransform =
+	    copyRect.transform
+	    * Geom::AffineTransform(alignRect.bottomLeft());
+
+	if (options.alpha) {
+		if (auto textColor = *style.color * *options.alpha;
+		    options.gradient)
+			options.gradient(canvas,
+			    textTransform.inverse(),
+			    textColor);
+		else
+			canvas.setBrushColor(textColor);
+	}
+
 	if (onDraw.invoke(Events::OnTextDrawEvent{*eventTarget,
 	        copyRect,
 	        paddedRect,
 	        alignConstant,
 	        text})) {
-
-		auto textTransform =
-		    copyRect.transform
-		    * Geom::AffineTransform(alignRect.bottomLeft());
 
 		canvas.transform(textTransform);
 

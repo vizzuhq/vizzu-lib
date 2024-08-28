@@ -25,11 +25,23 @@ public:
 	    *rootStyle.plot.marker.colorGradient};
 
 private:
+	struct ColorGradientSetter
+	{
+		Geom::Line line;
+		Gfx::ColorGradient gradient;
+		std::span<Gfx::ColorGradient::Stop> modifiableStops =
+		    gradient.stops;
+
+		void operator()(Gfx::ICanvas &,
+		    const Geom::AffineTransform &,
+		    const Gfx::Color &) const;
+	};
 	struct Info
 	{
 		Gfx::ICanvas &canvas;
 		Geom::Rect titleRect;
 		Geom::Rect markerWindowRect;
+		double fadeHeight{};
 		double yOverflow{};
 		double yOffset{};
 		Gen::ChannelId type{};
@@ -41,6 +53,7 @@ private:
 		double measureEnabled = measure.enabled.calculate<double>();
 		bool dimensionEnabled = dimension.enabled;
 		double measureWeight = weight * measureEnabled;
+		ColorGradientSetter colorGradientSetter;
 	};
 
 	void drawTitle(const Info &info) const;

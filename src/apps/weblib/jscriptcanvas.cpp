@@ -85,18 +85,6 @@ void JScriptCanvas::setFont(const Gfx::Font &font)
 	}
 }
 
-void JScriptCanvas::setTextColor(const Gfx::Color &color)
-{
-	if (color != brushColor) {
-		brushColor = color;
-		::canvas_setBrushColor(this,
-		    color.red,
-		    color.green,
-		    color.blue,
-		    color.alpha);
-	}
-}
-
 void JScriptCanvas::beginDropShadow()
 {
 	::canvas_beginDropShadow(this);
@@ -186,6 +174,7 @@ void JScriptCanvas::setBrushGradient(const Geom::Line &line,
     const Gfx::ColorGradient &gradient)
 {
 	typedef decltype(gradient.stops)::value_type Stop;
+	static_assert(sizeof(double) == 8);
 	static_assert(sizeof(Stop) == sizeof(double) * 5);
 
 	static_assert(offsetof(Stop, pos) == 0);

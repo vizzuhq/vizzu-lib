@@ -27,7 +27,6 @@ struct MyCanvas final : Gfx::ICanvas, Vizzu::Draw::Painter
 	void setClipPolygon() final {}
 	void setBrushColor(const Gfx::Color &) final {}
 	void setLineColor(const Gfx::Color &) final {}
-	void setTextColor(const Gfx::Color &) final {}
 	void setLineWidth(double) final {}
 	void setFont(const Gfx::Font &) final {}
 	void transform(const Geom::AffineTransform &) final {}
