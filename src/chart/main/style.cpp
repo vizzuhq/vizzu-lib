@@ -405,7 +405,7 @@ Chart Chart::def()
 						{
 							.paddingTop = Gfx::Length::Emphemeral(12 / 14.0),
 							.paddingRight = Gfx::Length::Emphemeral(5 / 14.0),
-							.paddingBottom = Gfx::Length::Emphemeral(5 / 14.0),
+							.paddingBottom = Gfx::Length::Emphemeral(15 / 14.0),
 							.paddingLeft = Gfx::Length::Emphemeral(5 / 14.0)
 						},
 						Font
