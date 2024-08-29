@@ -77,10 +77,10 @@
 			"refs": ["041cc6e"]
 		},
 		"basic_animations/legend_transitions/color_off_on_series_anim": {
-			"refs": ["ea45913"]
+			"refs": ["801f840"]
 		},
 		"basic_animations/legend_transitions/lightness_2discrete_anim": {
-			"refs": ["219235d"]
+			"refs": ["bd84d4f"]
 		},
 		"basic_animations/legend_transitions/lightness_conti_anim": {
 			"refs": ["828148b"]
@@ -221,7 +221,7 @@
 			"refs": ["984f6a4"]
 		},
 		"operations/all_operations": {
-			"refs": ["87763e6"]
+			"refs": ["0479b15"]
 		},
 		"operations/all_operations_sizeing": {
 			"refs": ["713b086"]
@@ -578,7 +578,7 @@
 			"refs": ["fc9d14b"]
 		},
 		"web_content/analytical_operations/drilldown/column_3": {
-			"refs": ["2c51570"]
+			"refs": ["f7917f4"]
 		},
 		"web_content/analytical_operations/drilldown/column_4": {
 			"refs": ["198e5f2"]
@@ -704,7 +704,7 @@
 			"refs": ["47754fa"]
 		},
 		"web_content/analytical_operations/sum/bubbleplot_1": {
-			"refs": ["34557ae"]
+			"refs": ["f65d95d"]
 		},
 		"web_content/analytical_operations/sum/bubbleplot_2": {
 			"refs": ["18e6318"]
@@ -719,10 +719,10 @@
 			"refs": ["f981033"]
 		},
 		"web_content/analytical_operations/sum/column_2": {
-			"refs": ["ee6e53a"]
+			"refs": ["f064ea6"]
 		},
 		"web_content/analytical_operations/sum/column_to_bar": {
-			"refs": ["5cdbbca"]
+			"refs": ["b5690e0"]
 		},
 		"web_content/analytical_operations/sum/column_to_waterfall": {
 			"refs": ["623babf"]
@@ -737,13 +737,13 @@
 			"refs": ["155f675"]
 		},
 		"web_content/analytical_operations/sum/column_stacked_2": {
-			"refs": ["60788e5"]
+			"refs": ["77927ba"]
 		},
 		"web_content/analytical_operations/sum/coxcomb_1": {
 			"refs": ["0a8ea50"]
 		},
 		"web_content/analytical_operations/sum/coxcomb_2": {
-			"refs": ["b17fcd8"]
+			"refs": ["9ad562c"]
 		},
 		"web_content/analytical_operations/sum/coxcomb_split": {
 			"refs": ["38c5f24"]
@@ -767,7 +767,7 @@
 			"refs": ["342860d"]
 		},
 		"web_content/analytical_operations/sum/scatterplot": {
-			"refs": ["a09c882"]
+			"refs": ["bbf6383"]
 		},
 		"web_content/analytical_operations/sum/stream_stacked": {
 			"refs": ["a59f246"]
@@ -818,7 +818,7 @@
 			"refs": ["549404c"]
 		},
 		"web_content_removed/animated/orientation_rectangle": {
-			"refs": ["ed644fc"]
+			"refs": ["388ca5e"]
 		},
 		"web_content_removed/animated/pie_donut2_rectangle_1dis_1con": {
 			"refs": ["2543753"]
@@ -1778,16 +1778,16 @@
 			"refs": ["26b2686"]
 		},
 		"ww_next_steps/next_steps_Tests/02_C_R": {
-			"refs": ["07a3161"]
+			"refs": ["7fa6b9d"]
 		},
 		"ww_next_steps/next_steps_Tests/02_C_R_water_comparison_sum": {
 			"refs": ["e4126f6"]
 		},
 		"ww_next_steps/next_steps_Tests/03_C_R": {
-			"refs": ["2f85528"]
+			"refs": ["f3bbd9a"]
 		},
 		"ww_next_steps/next_steps_Tests/04_C_R": {
-			"refs": ["87b761e"]
+			"refs": ["6d92828"]
 		},
 		"ww_next_steps/next_steps_Tests/05_C_R": {
 			"refs": ["533ff4f"]
@@ -1880,7 +1880,7 @@
 			"refs": ["c159fb6"]
 		},
 		"ww_next_steps/next_steps_byOperations/drilldown/drilldown_01": {
-			"refs": ["1cd042b"]
+			"refs": ["d2ba645"]
 		},
 		"ww_next_steps/next_steps_byOperations/drilldown/drilldown_02": {
 			"refs": ["3d6557e"]
@@ -1955,22 +1955,22 @@
 			"refs": ["a3fffec"]
 		},
 		"ww_next_steps/next_steps_byOperations/sum_aggregate/sum_aggregate_03": {
-			"refs": ["6604dfd"]
+			"refs": ["b80a546"]
 		},
 		"ww_next_steps/next_steps_byOperations/sum_aggregate/sum_aggregate_04": {
 			"refs": ["4004cf9"]
 		},
 		"ww_next_steps/next_steps_byOperations/sum_aggregate/sum_aggregate_05": {
-			"refs": ["3cb73b6"]
+			"refs": ["6a30f78"]
 		},
 		"ww_next_steps/next_steps_byOperations/sum_aggregate/sum_aggregate_06": {
 			"refs": ["2f12434"]
 		},
 		"ww_next_steps/next_steps_byOperations/sum_aggregate/sum_aggregate_07": {
-			"refs": ["e3cb0b7"]
+			"refs": ["94d8521"]
 		},
 		"ww_next_steps/next_steps_byOperations/sum_aggregate/sum_aggregate_08": {
-			"refs": ["f9db953"]
+			"refs": ["d507686"]
 		},
 		"ww_next_steps/next_steps_byOperations/sum_aggregate/sum_aggregate_09": {
 			"refs": ["e02a016"]
@@ -1985,10 +1985,10 @@
 			"refs": ["ef2f675"]
 		},
 		"ww_next_steps/next_steps_byOperations/sum_aggregate/sum_aggregate_13": {
-			"refs": ["9c8a8c1"]
+			"refs": ["580ad13"]
 		},
 		"ww_next_steps/next_steps_byOperations/sum_aggregate/sum_aggregate_14": {
-			"refs": ["d3d3d1d"]
+			"refs": ["2e729bf"]
 		},
 		"ww_next_steps/next_steps_byOperations/sum_aggregate/sum_aggregate_16": {
 			"refs": ["d8a5a32"]
@@ -2012,16 +2012,16 @@
 			"refs": ["d200cb1"]
 		},
 		"ww_next_steps/next_steps_byOperations/total/total_01": {
-			"refs": ["6a0650c"]
+			"refs": ["272a929"]
 		},
 		"ww_next_steps/next_steps_byOperations/total/total_02": {
-			"refs": ["d0e74b5"]
+			"refs": ["5f5e11c"]
 		},
 		"ww_next_steps/next_steps_byOperations/total/total_03": {
-			"refs": ["bbb180d"]
+			"refs": ["084e492"]
 		},
 		"ww_next_steps/next_steps_byOperations/total/total_04": {
-			"refs": ["13cc929"]
+			"refs": ["814e87a"]
 		},
 		"ww_next_steps/next_steps_byOperations/total/total_05": {
 			"refs": ["550ee57"]
@@ -2099,13 +2099,13 @@
 			"refs": ["30fc050"]
 		},
 		"ww_next_steps/next_steps_byOperations/wREGIEKBOL/NoFade_Promobol/4a_06b_rec_1c": {
-			"refs": ["c6cf6ae"]
+			"refs": ["f392fdb"]
 		},
 		"ww_next_steps/next_steps_byOperations/wREGIEKBOL/NoFade_Promobol/5_04a_rec_1c": {
-			"refs": ["453be51"]
+			"refs": ["14bedf4"]
 		},
 		"ww_next_steps/next_steps_byOperations/wREGIEKBOL/NoFade_Promobol/6_04a_cir_1c": {
-			"refs": ["e78cbf1"]
+			"refs": ["c91dfd2"]
 		},
 		"ww_next_steps/next_steps_byOperations/wREGIEKBOL/NoFade_Promobol/7_05_cir_2c": {
 			"refs": ["9498382"]
@@ -2171,7 +2171,7 @@
 			"refs": ["a3c9ce4"]
 		},
 		"ww_noFade/wNoFade_Tests/1_des_pol/circle/04a_cir_1c": {
-			"refs": ["6eef1b5"]
+			"refs": ["e79abc9"]
 		},
 		"ww_noFade/wNoFade_Tests/1_des_pol/circle/04b_cir_1c": {
 			"refs": ["8fab0a6"]
@@ -2465,7 +2465,7 @@
 			"refs": ["3961fff"]
 		},
 		"ww_noFade/wNoFade_Tests/Marker_transition_problem/line_drilldown_aggregate_x": {
-			"refs": ["cba228a"]
+			"refs": ["eec3413"]
 		},
 		"ww_noFade/wNoFade_Tests/Marker_transition_problem/line_orientation": {
 			"refs": ["626756e"]
@@ -3164,22 +3164,22 @@
 			"refs": ["40ed193"]
 		},
 		"www_new_analytical_operations/operations/02_sum/Column_Groupped_Column_1": {
-			"refs": ["d24a0be"]
+			"refs": ["72b2bbf"]
 		},
 		"www_new_analytical_operations/operations/02_sum/Column_Groupped_Column_2": {
-			"refs": ["f801afa"]
+			"refs": ["c76ede1"]
 		},
 		"www_new_analytical_operations/operations/02_sum/Column_Groupped_Column_to_Bar": {
-			"refs": ["0a93730"]
+			"refs": ["d65644e"]
 		},
 		"www_new_analytical_operations/operations/02_sum/Column_Stacked_Column_1": {
-			"refs": ["a9e28ef"]
+			"refs": ["76f46b7"]
 		},
 		"www_new_analytical_operations/operations/02_sum/Column_Stacked_Column_2": {
-			"refs": ["bb3cea0"]
+			"refs": ["a306f12"]
 		},
 		"www_new_analytical_operations/operations/02_sum/Coxcomb_Coxcomb_to_Donut": {
-			"refs": ["c707f14"]
+			"refs": ["60d7166"]
 		},
 		"www_new_analytical_operations/operations/02_sum/Line_Line_3": {
 			"refs": ["ea115f0"]

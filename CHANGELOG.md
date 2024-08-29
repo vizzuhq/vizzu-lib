@@ -5,6 +5,7 @@
 ### Fixed
 
 - Legend title bottomPadding extended.
+- Remove marker labels at intermediate steps.
 
 ### Added
 

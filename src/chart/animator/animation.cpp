@@ -194,6 +194,17 @@ Gen::PlotPtr Animation::getIntermediate(const Gen::PlotPtr &base,
 
 	if (*extOptions != *other->getOptions()
 	    && *extOptions != *base->getOptions()) {
+
+		auto &labelChannel =
+		    extOptions->getChannels().at(Gen::ChannelId::label);
+
+		for (const auto &series : labelChannel.dimensions())
+			extOptions->getChannels()
+			    .at(Gen::ChannelId::noop)
+			    .dimensionIds.push_back(series);
+
+		labelChannel.reset();
+
 		res =
 		    Gen::PlotBuilder{dataTable, extOptions, base->getStyle()}
 		        .build();
