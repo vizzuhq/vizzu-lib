@@ -8,7 +8,7 @@ const testSteps = [
 				config: {
 					x: 'Joy factors',
 					y: ['Country', 'Value 1 (+)'],
-					color: {set: 'Country', title: 'offset test'}
+					color: { set: 'Country', title: 'offset test' }
 				},
 				style: {
 					plot: {
@@ -21,7 +21,7 @@ const testSteps = [
 	(chart) =>
 		chart.animate({
 			config: {
-				color: {title: '1em'}
+				color: { title: '1em' }
 			},
 			style: {
 				legend: {
@@ -32,7 +32,7 @@ const testSteps = [
 	(chart) =>
 		chart.animate({
 			config: {
-				color: {title: '2em'}
+				color: { title: '2em' }
 			},
 			style: {
 				legend: {
@@ -43,7 +43,7 @@ const testSteps = [
 	(chart) =>
 		chart.animate({
 			config: {
-				color: {title: '-2em'}
+				color: { title: '-2em' }
 			},
 			style: {
 				legend: {
@@ -54,7 +54,7 @@ const testSteps = [
 	(chart) =>
 		chart.animate({
 			config: {
-				color: {title: '100%'}
+				color: { title: '100%' }
 			},
 			style: {
 				legend: {
@@ -65,7 +65,7 @@ const testSteps = [
 	(chart) =>
 		chart.animate({
 			config: {
-				color: {title: '100%-2em'}
+				color: { title: '100%-2em' }
 			},
 			style: {
 				legend: {
@@ -76,7 +76,7 @@ const testSteps = [
 	(chart) =>
 		chart.animate({
 			config: {
-				color: {title: null}
+				color: { title: null }
 			},
 			style: {
 				legend: {
@@ -87,7 +87,7 @@ const testSteps = [
 	(chart) =>
 		chart.animate({
 			config: {
-				color: {title: '17px'}
+				color: { title: '17px' }
 			},
 			style: {
 				legend: {

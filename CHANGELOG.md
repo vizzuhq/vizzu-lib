@@ -2,6 +2,14 @@
 
 ## [Unreleased]
 
+### Fixed
+
+- Legend title bottomPadding extended.
+
+### Added
+
+- New style parameter for the legend scrolling.
+
 ## [0.12.1] - 2024-08-22
 
 ### Fixed
