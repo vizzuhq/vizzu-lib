@@ -64,7 +64,8 @@ private:
 	void drawMarker(const Info &info,
 	    std::string_view categoryValue,
 	    const Gfx::Color &color,
-	    const Geom::Rect &rect) const;
+	    const Geom::Rect &rect,
+	    bool needGradient) const;
 	[[nodiscard]] static Geom::Rect getItemRect(const Info &info,
 	    double index);
 	[[nodiscard]] static Geom::Rect getMarkerRect(const Info &info,

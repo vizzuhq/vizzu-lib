@@ -157,6 +157,13 @@ void DrawLegend::drawDimension(const Info &info) const
 		           < info.markerWindowRect.y().getMin())
 			continue;
 
+		const auto needGradient =
+		    itemRect.y().getMax()
+		        > info.markerWindowRect.y().getMax() - info.fadeHeight
+		    || itemRect.y().getMin()
+		           < info.markerWindowRect.y().getMin()
+		                 + info.fadeHeight;
+
 		const auto alpha{Math::FuzzyBool{value.second.weight}
 		                 && Math::FuzzyBool{info.weight}};
 
@@ -164,7 +171,8 @@ void DrawLegend::drawDimension(const Info &info) const
 		    value.second.categoryValue,
 		    colorBuilder.render(value.second.colorBase)
 		        * double{alpha},
-		    getMarkerRect(info, itemRect));
+		    getMarkerRect(info, itemRect),
+		    needGradient);
 
 		value.second.label.visit(
 		    [&](::Anim::InterpolateIndex, const auto &weighted)
@@ -185,7 +193,10 @@ void DrawLegend::drawDimension(const Info &info) const
 			                    alpha
 			                    && Math::FuzzyBool{weighted.weight}},
 			            .gradient =
-			                std::ref(info.colorGradientSetter)});
+			                needGradient
+			                    ? std::ref(info.colorGradientSetter)
+			                    : decltype(DrawLabel::Options::
+			                            gradient){}});
 		    });
 	}
 }
@@ -222,11 +233,16 @@ Geom::TransformedRect DrawLegend::getLabelRect(const Info &info,
 void DrawLegend::drawMarker(const Info &info,
     std::string_view categoryValue,
     const Gfx::Color &color,
-    const Geom::Rect &rect) const
+    const Geom::Rect &rect,
+    bool needGradient) const
 {
 	info.canvas.save();
 
-	info.colorGradientSetter(info.canvas, {}, color);
+	if (needGradient)
+		info.colorGradientSetter(info.canvas, {}, color);
+	else
+		info.canvas.setBrushColor(color);
+
 	info.canvas.setLineColor(color);
 	info.canvas.setLineWidth(0);
 
