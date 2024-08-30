@@ -22,55 +22,51 @@ Color::operator std::string() const
 	return res;
 }
 
-Color::Color(const std::string &string)
+Color Color::fromString(const std::string &string)
 {
-	if (string.empty()) { *this = Transparent(); }
-	else if (string[0] == '#' && string.size() == 9) {
-		red = Text::Character::hex(&string[1]) / 255.0;
-		green = Text::Character::hex(&string[3]) / 255.0;
-		blue = Text::Character::hex(&string[5]) / 255.0;
-		alpha = Text::Character::hex(&string[7]) / 255.0;
+	if (string.empty()) return Transparent();
+	if (string[0] == '#' && string.size() == 9) {
+		return {Text::Character::hex(&string[1]) / 255.0,
+		    Text::Character::hex(&string[3]) / 255.0,
+		    Text::Character::hex(&string[5]) / 255.0,
+		    Text::Character::hex(&string[7]) / 255.0};
 	}
-	else if (string[0] == '#' && string.size() == 7) {
-		red = Text::Character::hex(&string[1]) / 255.0;
-		green = Text::Character::hex(&string[3]) / 255.0;
-		blue = Text::Character::hex(&string[5]) / 255.0;
-		alpha = 1.0;
+	if (string[0] == '#' && string.size() == 7) {
+		return {Text::Character::hex(&string[1]) / 255.0,
+		    Text::Character::hex(&string[3]) / 255.0,
+		    Text::Character::hex(&string[5]) / 255.0};
 	}
-	else if (string[0] == '#' && string.size() == 4) {
+	if (string[0] == '#' && string.size() == 4) {
 		auto r = Text::Character::fromHex(string[1]);
 		auto g = Text::Character::fromHex(string[2]);
 		auto b = Text::Character::fromHex(string[3]);
-		red = ((r << 4U) + r) / 255.0;
-		green = ((g << 4U) + g) / 255.0;
-		blue = ((b << 4U) + b) / 255.0;
-		alpha = 1.0;
+		return {((r << 4U) + r) / 255.0,
+		    ((g << 4U) + g) / 255.0,
+		    ((b << 4U) + b) / 255.0};
 	}
-	else if (const Text::FuncString f(string, false); !f.isEmpty()) {
+	if (const Text::FuncString f(string, false); !f.isEmpty()) {
 		using Conv::parse;
 
 		if (f.getName() == "rgb") {
 			auto ps = f.getParams();
 			if (ps.size() != 3)
 				throw std::logic_error("invalid color string");
-			*this = RGBA(parse<uint32_t>(ps.at(0)),
+			return RGBA(parse<uint32_t>(ps.at(0)),
 			    parse<uint32_t>(ps.at(1)),
 			    parse<uint32_t>(ps.at(2)));
 		}
-		else if (f.getName() == "rgba") {
+		if (f.getName() == "rgba") {
 			auto ps = f.getParams();
 			if (ps.size() != 4)
 				throw std::logic_error("invalid color string");
-			*this = RGBA(parse<uint32_t>(ps.at(0)),
+			return RGBA(parse<uint32_t>(ps.at(0)),
 			    parse<uint32_t>(ps.at(1)),
 			    parse<uint32_t>(ps.at(2)),
 			    static_cast<uint8_t>(parse<double>(ps.at(3)) * 255));
 		}
-		else
-			throw std::logic_error("invalid color string");
-	}
-	else
 		throw std::logic_error("invalid color string");
+	}
+	throw std::logic_error("invalid color string");
 }
 
 Color Color::RGB(uint32_t rgb)

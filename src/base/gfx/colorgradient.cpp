@@ -23,7 +23,7 @@ ColorGradient::ColorGradient(const std::string &stoplist)
 		auto parts = Text::SmartString::split(stopString, ' ', true);
 		if (parts.size() == 2) {
 			pos = std::stod(parts[1]);
-			stops.emplace_back(pos, Color(parts[0]));
+			stops.emplace_back(pos, Color::fromString(parts[0]));
 		}
 		else
 			throw std::logic_error(

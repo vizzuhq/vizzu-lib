@@ -22,7 +22,10 @@ FuncString::FuncString(std::string code, bool throwOnError)
 	}
 
 	if (parts[1].empty() || parts[1].back() != ')') {
-		if (!throwOnError) return;
+		if (!throwOnError) {
+			name = std::move(code);
+			return;
+		}
 
 		throw std::logic_error("invalid function format");
 	}
@@ -30,7 +33,7 @@ FuncString::FuncString(std::string code, bool throwOnError)
 	parts[1].pop_back();
 	SmartString::trim(parts[1]);
 
-	name = parts[0];
+	name = std::move(parts[0]);
 	params = SmartString::split(parts[1], ',');
 
 	SmartString::trim(name);

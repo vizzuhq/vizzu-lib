@@ -13,12 +13,12 @@ namespace Gfx
 
 struct Color
 {
-	double red;
-	double green;
-	double blue;
-	double alpha;
+	double red{};
+	double green{};
+	double blue{};
+	double alpha{};
 
-	Color() { red = green = blue = alpha = 0.0; }
+	Color() = default;
 
 	Color(double red,
 	    double green,
@@ -33,7 +33,7 @@ struct Color
 	Color(const Color &) = default;
 	Color &operator=(const Color &) = default;
 
-	explicit Color(const std::string &string);
+	static Color fromString(const std::string &string);
 
 	static Color RGB(uint32_t rgb);
 	static Color RGBA(uint32_t rgba);

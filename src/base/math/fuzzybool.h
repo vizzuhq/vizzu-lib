@@ -66,7 +66,10 @@ public:
 		return FuzzyBool(value + v.value);
 	}
 
-	void operator+=(const FuzzyBool &v) { *this = *this + v; }
+	void operator+=(const FuzzyBool &v)
+	{
+		value = FuzzyBool(value + v.value).value;
+	}
 
 	bool operator==(const FuzzyBool &v) const
 	{

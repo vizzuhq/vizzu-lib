@@ -11,16 +11,17 @@ namespace Gfx
 class ColorTransform
 {
 public:
-	explicit ColorTransform(const std::string &code = std::string());
+	ColorTransform() = default;
+	static ColorTransform fromString(const std::string &);
 	explicit operator std::string() const;
 
-	static ColorTransform OverrideColor(Gfx::Color overrideColor);
+	static ColorTransform OverrideColor(Color overrideColor);
 	static ColorTransform Grayscale(double factor);
 	static ColorTransform Lightness(double factor);
 	static ColorTransform Opacity(double factor);
 	static ColorTransform None();
 
-	Gfx::Color operator()(const Gfx::Color &color) const;
+	Color operator()(const Color &color) const;
 
 	ColorTransform operator*(double value) const;
 	ColorTransform operator+(const ColorTransform &other) const;
@@ -28,7 +29,7 @@ public:
 	bool operator==(const ColorTransform &other) const;
 
 private:
-	using Convert = std::function<Gfx::Color(const Gfx::Color &)>;
+	using Convert = std::function<Color(const Color &)>;
 	std::string code;
 	Convert convert;
 
