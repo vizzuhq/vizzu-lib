@@ -53,11 +53,10 @@ public:
 	[[nodiscard]] static std::shared_ptr<dataframe_interface>
 	create_new();
 
-	[[nodiscard]] Text::immutable_string set_aggregate(
-	    const Text::immutable_string &series,
+	[[nodiscard]] std::string set_aggregate(const std::string &series,
 	    const any_aggregator_type &aggregator) &;
 
-	void set_sort(const Text::immutable_string &series,
+	void set_sort(const std::string &series,
 	    any_sort_type sort,
 	    na_position na_pos) &;
 
@@ -65,7 +64,7 @@ public:
 	    const std::function<std::weak_ordering(record_type,
 	        record_type)> &custom_sort) &;
 
-	const Text::immutable_string &add_dimension(
+	const std::string &add_dimension(
 	    std::span<const char *const> dimension_categories,
 	    std::span<const std::uint32_t> dimension_values,
 	    std::string_view name,
@@ -73,14 +72,14 @@ public:
 	    std::span<const std::pair<const char *, const char *>> info)
 	    &;
 
-	const Text::immutable_string &add_measure(
+	const std::string &add_measure(
 	    std::span<const double> measure_values,
 	    std::string_view name,
 	    adding_type adding_strategy,
 	    std::span<const std::pair<const char *, const char *>> info)
 	    &;
 
-	const Text::immutable_string &add_series_by_other(
+	const std::string &add_series_by_other(
 	    std::string_view curr_series,
 	    std::string_view name,
 	    const std::function<cell_value(record_type, cell_reference)>
@@ -111,20 +110,18 @@ public:
 
 	[[nodiscard]] std::string as_string() const &;
 
-	[[nodiscard]] std::span<const Text::immutable_string>
+	[[nodiscard]] std::span<const std::string>
 	get_dimensions() const &;
 
-	[[nodiscard]] std::span<const Text::immutable_string>
-	get_measures() const &;
+	[[nodiscard]] std::span<const std::string> get_measures() const &;
 
-	[[nodiscard]] std::span<const Text::immutable_string>
-	get_categories(const std::string_view &dimension) const &;
+	[[nodiscard]] std::span<const std::string> get_categories(
+	    const std::string_view &dimension) const &;
 
 	[[nodiscard]] series_meta_t get_series_meta(
 	    const std::string &id) const;
 
-	[[nodiscard]] Text::immutable_string get_series_info(
-	    const Text::immutable_string &id,
+	[[nodiscard]] std::string get_series_info(const std::string &id,
 	    const char *key) const &;
 
 	[[nodiscard]] cell_reference get_data(
@@ -138,12 +135,11 @@ public:
 
 	[[nodiscard]] bool is_removed(std::size_t record_id) const &;
 
-	[[nodiscard]] Text::immutable_string get_record_id_by_dims(
+	[[nodiscard]] std::string get_record_id_by_dims(
 	    std::size_t my_record,
-	    std::span<const Text::immutable_string> dimensions) const &;
+	    std::span<const std::string> dimensions) const &;
 
-	[[nodiscard]] Text::immutable_string get_record_id(
-	    std::size_t my_record) &;
+	[[nodiscard]] std::string get_record_id(std::size_t my_record) &;
 
 private:
 	void migrate_data();

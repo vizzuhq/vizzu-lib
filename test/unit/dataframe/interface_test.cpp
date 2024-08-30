@@ -13,7 +13,7 @@ using record_type = interface::record_type;
 bool operator==(const cell_reference &ref,
     const std::string_view &str)
 {
-	return *std::get<const Text::immutable_string *>(ref) == str;
+	return *std::get<const std::string *>(ref) == str;
 }
 
 #include "../util/test.h"
@@ -62,9 +62,8 @@ struct if_setup
 
 			for (auto r = 0u; r < data.size(); ++r) {
 				for (auto d = 0u; d < ds; ++d) {
-					auto gdata =
-					    std::get<const Text::immutable_string *>(
-					        df->get_data(r, dims[d]));
+					auto gdata = std::get<const std::string *>(
+					    df->get_data(r, dims[d]));
 					const auto *ptr = data[r][d];
 					if (ptr) {
 						assert->*gdata != nullptr;
@@ -213,14 +212,10 @@ const static auto tests =
 	    [](cell_reference const &cell, std::string &&prefix)
 	{
 		auto str = prefix + " is a string";
-		assert
-		            ->*std::holds_alternative<
-		                const Text::immutable_string *>(cell)
+		assert->*std::holds_alternative<const std::string *>(cell)
 		    == bool_msg{str};
 		str = prefix + " is nav";
-		check
-		            ->*(std::get<const Text::immutable_string *>(cell)
-		                == nullptr)
+		check->*(std::get<const std::string *>(cell) == nullptr)
 		    == bool_msg{str};
 	};
 
@@ -245,7 +240,7 @@ const static auto tests =
 	check_nav(df->get_data(std::size_t{3}, "d1"), "table_33");
 
 	check
-	            ->*(std::get<const Text::immutable_string *>(
+	            ->*(std::get<const std::string *>(
 	                    df->get_data(std::size_t{0}, "d1"))
 	                == df->get_categories("d1").data())
 	    == "Not points to the same memory address"_is_true;

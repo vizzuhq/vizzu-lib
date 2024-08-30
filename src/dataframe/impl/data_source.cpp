@@ -222,7 +222,7 @@ std::size_t data_source::change_series_identifier_type(
 }
 
 std::size_t data_source::change_record_identifier_type(
-    const Text::immutable_string &id) const
+    const std::string &id) const
 {
 	auto it = finalized.to_record_ix.find(id);
 	return it != finalized.to_record_ix.end() ? it->second
@@ -321,7 +321,7 @@ void data_source::finalize()
 	}
 }
 
-const Text::immutable_string &data_source::add_new_dimension(
+const std::string &data_source::add_new_dimension(
     std::span<const char *const> dimension_categories,
     std::span<const std::uint32_t> dimension_values,
     std::string_view name,
@@ -338,9 +338,8 @@ const Text::immutable_string &data_source::add_new_dimension(
 	return *it;
 }
 
-const Text::immutable_string &data_source::add_new_dimension(
-    dimension_t &&dim,
-    const Text::immutable_string &name)
+const std::string &data_source::add_new_dimension(dimension_t &&dim,
+    const std::string &name)
 {
 	auto &&it = dimension_names.emplace(
 	    std::ranges::lower_bound(dimension_names, name),
@@ -366,9 +365,8 @@ data_source::measure_with_name_ref data_source::add_new_measure(
 	return {*it, ref};
 }
 
-data_source::measure_with_name_ref data_source::add_new_measure(
-    measure_t &&mea,
-    const Text::immutable_string &name)
+data_source::measure_with_name_ref
+data_source::add_new_measure(measure_t &&mea, const std::string &name)
 {
 	auto &&it = measure_names.emplace(
 	    std::ranges::lower_bound(measure_names, name),
@@ -519,8 +517,8 @@ data_source::data_source(
 	}
 }
 
-Text::immutable_string data_source::get_id(std::size_t record,
-    std::span<const Text::immutable_string> series) const
+std::string data_source::get_id(std::size_t record,
+    std::span<const std::string> series) const
 {
 	std::string res;
 	for (std::size_t ix{}; const auto &name : series) {
@@ -531,14 +529,14 @@ Text::immutable_string data_source::get_id(std::size_t record,
 		res += val ? *val : std::string_view{"__null__"};
 		res += ';';
 	}
-	return Text::immutable_string::fromString(res);
+	return res;
 }
 
 std::vector<std::size_t> data_source::dimension_t::get_indices(
     const dataframe_interface::any_sort_type &sorter) const
 {
 	thread_local const dataframe_interface::any_sort_type *sorts{};
-	thread_local const std::vector<Text::immutable_string> *cats{};
+	thread_local const std::vector<std::string> *cats{};
 	sorts = &sorter;
 	cats = &categories;
 	return data_source::get_sorted_indices(categories.size(),
@@ -623,7 +621,7 @@ void data_source::dimension_t::add_more_data(
 		contains_nav =
 		    std::any_of(new_values.begin(), new_values.end(), is_nav);
 }
-const Text::immutable_string *data_source::dimension_t::get(
+const std::string *data_source::dimension_t::get(
     std::size_t index) const
 {
 	return index < values.size() && values[index] != nav
@@ -708,12 +706,12 @@ std::pair<double, double> data_source::measure_t::get_min_max() const
 	return {mini, maxi};
 }
 
-std::pair<Text::immutable_string, bool>
+std::pair<std::string, bool>
 data_source::aggregating_type::add_aggregated(
     const_series_data &&data,
     const aggregator_type &aggregator)
 {
-	Text::immutable_string name;
+	std::string name;
 	switch (data) {
 		using enum series_type;
 	case dimension: name = unsafe_get<dimension>(data).first; break;
@@ -722,9 +720,8 @@ data_source::aggregating_type::add_aggregated(
 	}
 
 	if (aggregator != aggregator_type::sum)
-		name = Text::immutable_string::fromString(
-		    std::string{Refl::enum_name(aggregator)} + '(' + name
-		    + ')');
+		name = std::string{Refl::enum_name(aggregator)} + '(' + name
+		     + ')';
 
 	auto &&[it, succ] = meas.try_emplace(std::move(name),
 	    std::move(data),

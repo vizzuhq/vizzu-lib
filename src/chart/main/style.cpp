@@ -18,8 +18,8 @@ namespace Vizzu::Styles
 const Font &Chart::getDefaultFont()
 {
 	static const auto instance =
-	    Font{.fontFamily = ::Anim::String(
-	             ::Text::immutable_string{"Roboto, sans-serif"}),
+	    Font{.fontFamily =
+	             ::Anim::String(::std::string{"Roboto, sans-serif"}),
 	        .fontStyle = Gfx::Font::Style::normal,
 	        .fontWeight = Gfx::Font::Weight::Normal(),
 	        .fontSize = Gfx::Length{12}};

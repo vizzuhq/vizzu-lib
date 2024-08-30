@@ -259,8 +259,7 @@ QFont BaseCanvas::fromGfxFont(const Gfx::Font &newFont, QFont font)
 	font.setPixelSize(static_cast<int>(newFont.size));
 
 	if (!newFont.family.empty())
-		font.setFamily(
-		    QString::fromStdString(newFont.family.toString()));
+		font.setFamily(QString::fromStdString(newFont.family));
 
 	font.setWeight(newFont.weight == Gfx::Font::Weight::Bold()
 	                   ? QFont::Bold

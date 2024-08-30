@@ -281,8 +281,7 @@ const Value *record_getValue(const Vizzu::Data::RowWrapper *record,
 	if (auto &&cval = Interface::getRecordValue(*record, column);
 	    cval.index()) {
 		val.dimension = true;
-		auto &&dim =
-		    *std::get_if<const Text::immutable_string *>(&cval);
+		auto &&dim = *std::get_if<const std::string *>(&cval);
 		new (
 		    &val.dimensionValue) // NOLINT(bugprone-multi-level-implicit-pointer-conversion)
 		    const char *{dim ? dim->c_str() : nullptr};

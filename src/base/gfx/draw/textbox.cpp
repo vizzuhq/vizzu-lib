@@ -73,7 +73,7 @@ TextBox &TextBox::operator<<(const char *str)
 	return *this;
 }
 
-TextBox &TextBox::operator<<(const Text::immutable_string &str)
+TextBox &TextBox::operator<<(const std::string &str)
 {
 	size.x = size.y = 0;
 	currentTextRun.content += str;

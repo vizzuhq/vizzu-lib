@@ -103,7 +103,7 @@ struct Font
 		throw std::logic_error("internal error: no font parent set");
 	}
 
-	[[nodiscard]] Text::immutable_string calculatedFamily() const
+	[[nodiscard]] std::string calculatedFamily() const
 	{
 		if (fontFamily.has_value())
 			if (auto &&ff =

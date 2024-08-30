@@ -15,8 +15,8 @@ NaturalCmp::NaturalCmp(bool ignoreCase, bool ignoreSpace) :
     ignoreSpace(ignoreSpace)
 {}
 
-bool NaturalCmp::operator()(const immutable_string &op0,
-    const immutable_string &op1) const
+bool NaturalCmp::operator()(const std::string &op0,
+    const std::string &op1) const
 {
 	return std::is_lt(cmp(op0.c_str(), op1.c_str()));
 }

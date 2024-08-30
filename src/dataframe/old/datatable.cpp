@@ -102,9 +102,8 @@ void DataCube::check(iterator_t &it) const
 
 	it.index.marker_id = df->get_record_id(it.index.rid);
 	for (auto &&[dim, cats, size, ix] : dim_reindex) {
-		const auto *str_ptr =
-		    std::get<const Text::immutable_string *>(
-		        df->get_data(it.index.rid, dim));
+		const auto *str_ptr = std::get<const std::string *>(
+		    df->get_data(it.index.rid, dim));
 
 		it.index.old[ix] =
 		    str_ptr == nullptr ? cats.size() : str_ptr - cats.data();
@@ -224,15 +223,13 @@ bool DataCube::empty() const
 	return df->get_measures().empty() && df->get_dimensions().empty();
 }
 
-Text::immutable_string DataCube::getName(
-    const SeriesIndex &seriesId) const
+std::string DataCube::getName(const SeriesIndex &seriesId) const
 {
 	return measure_names.at(
 	    {seriesId.getColIndex(), seriesId.getAggr()});
 }
 
-Text::immutable_string DataTable::getUnit(
-    Text::immutable_string const &colIx) const
+std::string DataTable::getUnit(std::string const &colIx) const
 {
 	return df.get_series_info(colIx, "unit");
 }
@@ -252,7 +249,7 @@ MarkerId DataCube::getId(
 			if (v[*comm] = {oldIx, size}; *comm == ll)
 				res.label.emplace(name,
 				    oldIx < cats.size() ? cats[oldIx]
-				                        : Text::immutable_string{});
+				                        : std::string{});
 		}
 		else
 			res.seriesId = res.seriesId * size + oldIx;
@@ -268,14 +265,13 @@ std::string DataCube::joinDimensionValues(const SeriesList &sl,
     const MultiIndex &index) const
 {
 	std::string res;
-	std::vector<Text::immutable_string> resColl(sl.size());
+	std::vector<std::string> resColl(sl.size());
 	for (auto &&[val, comm] : dim_reindex.iterate_common(sl))
 		if (comm) {
 			auto &&[name, cats, size, ix] = val;
 			auto &&oldIx = index.old[ix];
-			resColl[*comm] = oldIx < cats.size()
-			                   ? cats[oldIx]
-			                   : Text::immutable_string{};
+			resColl[*comm] =
+			    oldIx < cats.size() ? cats[oldIx] : std::string{};
 		}
 
 	for (auto &&sv : resColl) {
@@ -298,8 +294,7 @@ DataCube::cellInfo(const MultiIndex &index, bool needMarkerInfo) const
 	for (Conv::JSONObj &&dims{obj.nested("categories")};
 	     auto &&[name, cats, size, ix] : dim_reindex) {
 		auto &&cix = index.old[ix];
-		auto &&cat =
-		    cix < cats.size() ? cats[cix] : Text::immutable_string{};
+		auto &&cat = cix < cats.size() ? cats[cix] : std::string{};
 		dims.key<false>(name).primitive(cat);
 		if (needMarkerInfo)
 			my_res->markerInfo.emplace_back(name, cat);

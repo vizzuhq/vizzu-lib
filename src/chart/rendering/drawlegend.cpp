@@ -298,7 +298,7 @@ void DrawLegend::drawMeasure(const Info &info) const
 
 void DrawLegend::extremaLabel(const Info &info,
     double value,
-    const Text::immutable_string &unit,
+    const std::string &unit,
     int pos,
     double plusWeight) const
 {

@@ -11,7 +11,6 @@
 #include "base/conv/tostring.h"
 #include "base/math/floating.h"
 #include "base/math/interpolation.h"
-#include "base/text/immutable_string.h"
 
 namespace Anim
 {
@@ -277,7 +276,7 @@ Interpolated<Type> interpolate(const Interpolated<Type> &op0,
 	return res;
 }
 
-using String = Interpolated<Text::immutable_string>;
+using String = Interpolated<std::string>;
 
 }
 

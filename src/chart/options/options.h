@@ -11,7 +11,6 @@
 #include "base/geom/rect.h"
 #include "base/math/fuzzybool.h"
 #include "base/math/range.h"
-#include "base/text/immutable_string.h"
 #include "dataframe/old/types.h"
 
 #include "align.h"
@@ -46,7 +45,7 @@ public:
 		            Refl::get_enum<ChannelId>(name));
 	    }));
 
-	using MarkerIndex = Text::immutable_string;
+	using MarkerIndex = std::string;
 	using MarkerInfoId = std::uint32_t;
 	using Heading = ::Anim::Interpolated<std::optional<std::string>>;
 	using LegendType = Base::AutoParam<LegendId, true>;

@@ -120,8 +120,7 @@ void valid_measure_aggregator(
 		error(error_type::aggregator, "measure");
 }
 
-Text::immutable_string dataframe::set_aggregate(
-    const Text::immutable_string &series,
+std::string dataframe::set_aggregate(const std::string &series,
     const any_aggregator_type &aggregator) &
 {
 	change_state_to(state_type::aggregating,
@@ -156,7 +155,7 @@ Text::immutable_string dataframe::set_aggregate(
 	return name;
 }
 
-void dataframe::set_sort(const Text::immutable_string &series,
+void dataframe::set_sort(const std::string &series,
     any_sort_type sort,
     na_position na_pos) &
 {
@@ -211,7 +210,7 @@ void dataframe::set_custom_sort(
 	error(error_type::unimplemented, "cus sort");
 }
 
-const Text::immutable_string &dataframe::add_dimension(
+const std::string &dataframe::add_dimension(
     std::span<const char *const> dimension_categories,
     std::span<const std::uint32_t> dimension_values,
     std::string_view name,
@@ -284,7 +283,7 @@ const Text::immutable_string &dataframe::add_dimension(
 	}
 }
 
-const Text::immutable_string &dataframe::add_measure(
+const std::string &dataframe::add_measure(
     std::span<const double> measure_values,
     std::string_view name,
     adding_type adding_strategy,
@@ -351,14 +350,13 @@ const Text::immutable_string &dataframe::add_measure(
 	}
 }
 
-const Text::immutable_string &dataframe::add_series_by_other(
-    std::string_view,
+const std::string &dataframe::add_series_by_other(std::string_view,
     std::string_view,
     const std::function<cell_value(record_type, cell_reference)> &,
     std::span<const std::pair<const char *, const char *>>) &
 {
 	if (as_if()) error(error_type::unimplemented, "by oth");
-	thread_local const Text::immutable_string s{};
+	thread_local const std::string s{};
 	return s;
 }
 
@@ -682,19 +680,17 @@ std::string dataframe::as_string() const &
 	return res;
 }
 
-std::span<const Text::immutable_string>
-dataframe::get_dimensions() const &
+std::span<const std::string> dataframe::get_dimensions() const &
 {
 	return get_data_source().dimension_names;
 }
 
-std::span<const Text::immutable_string>
-dataframe::get_measures() const &
+std::span<const std::string> dataframe::get_measures() const &
 {
 	return get_data_source().measure_names;
 }
 
-std::span<const Text::immutable_string> dataframe::get_categories(
+std::span<const std::string> dataframe::get_categories(
     const std::string_view &dimension) const &
 {
 	switch (auto &&ser = get_data_source().get_series(dimension)) {
@@ -732,22 +728,19 @@ bool dataframe::is_removed(std::size_t record_id) const &
 	return cp && cp->pre_remove && (*cp->pre_remove)[record_id];
 }
 
-Text::immutable_string dataframe::get_record_id_by_dims(
-    std::size_t my_record,
-    std::span<const Text::immutable_string> dimensions) const &
+std::string dataframe::get_record_id_by_dims(std::size_t my_record,
+    std::span<const std::string> dimensions) const &
 {
 	return get_data_source().get_id(my_record, dimensions);
 }
 
-Text::immutable_string dataframe::get_record_id(
-    std::size_t my_record) &
+std::string dataframe::get_record_id(std::size_t my_record) &
 {
 	if (state_data != state_type::finalized)
 		error(error_type::record, "get id before finalized");
 
 	const auto &ids = get_data_source().finalized.record_ids;
-	return my_record < ids.size() ? ids[my_record]
-	                              : Text::immutable_string{};
+	return my_record < ids.size() ? ids[my_record] : std::string{};
 }
 
 series_meta_t dataframe::get_series_meta(const std::string &id) const
@@ -878,8 +871,7 @@ const data_source &dataframe::get_data_source() const
 	                        : *unsafe_get<copying>(source).other;
 }
 
-Text::immutable_string dataframe::get_series_info(
-    const Text::immutable_string &id,
+std::string dataframe::get_series_info(const std::string &id,
     const char *key) const &
 {
 	switch (auto &&ser = get_data_source().get_series(id)) {
@@ -888,14 +880,12 @@ Text::immutable_string dataframe::get_series_info(
 	case measure: {
 		const auto &info = unsafe_get<measure>(ser).second.info;
 		auto it = info.find(key);
-		return it == info.end() ? Text::immutable_string{}
-		                        : it->second;
+		return it == info.end() ? std::string{} : it->second;
 	}
 	case dimension: {
 		const auto &info = unsafe_get<dimension>(ser).second.info;
 		auto it = info.find(key);
-		return it == info.end() ? Text::immutable_string{}
-		                        : it->second;
+		return it == info.end() ? std::string{} : it->second;
 	}
 	}
 }

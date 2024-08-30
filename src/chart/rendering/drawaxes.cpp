@@ -344,10 +344,8 @@ void DrawAxes::drawDimensionLabel(bool horizontal,
 
 		    posDir = posDir.extend(sign);
 
-		    auto draw =
-		        [&](const ::Anim::Weighted<Text::immutable_string>
-		                &str,
-		            double plusWeight = 1.0)
+		    auto draw = [&](const ::Anim::Weighted<std::string> &str,
+		                    double plusWeight = 1.0)
 		    {
 			    drawLabel.draw(canvas,
 			        str.value.c_str(),

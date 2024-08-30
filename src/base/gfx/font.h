@@ -4,8 +4,6 @@
 #include <cstdint>
 #include <string>
 
-#include "base/text/immutable_string.h"
-
 namespace Gfx
 {
 
@@ -32,16 +30,13 @@ public:
 
 	enum class Style : std::uint8_t { normal, italic, oblique };
 
-	Text::immutable_string family;
+	std::string family;
 	Style style;
 	Weight weight;
 	double size;
 
 	explicit Font(double size = 0);
-	Font(Text::immutable_string family,
-	    Style style,
-	    Weight weight,
-	    double size);
+	Font(std::string family, Style style, Weight weight, double size);
 	Font(const Font &) = default;
 	Font(Font &&) = default;
 	Font &operator=(const Font &) = default;

@@ -34,8 +34,8 @@ Geom::Point Axises::origo() const
 }
 
 MeasureAxis::MeasureAxis(Math::Range<double> interval,
-    const Text::immutable_string &unit,
-    const Text::immutable_string &measName,
+    const std::string &unit,
+    const std::string &measName,
     std::optional<double> step) :
     enabled(true),
     range(interval),

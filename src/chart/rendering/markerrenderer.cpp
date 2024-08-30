@@ -302,7 +302,7 @@ void MarkerRenderer::draw(Gfx::ICanvas &canvas,
 
 void MarkerRenderer::drawLabel(Gfx::ICanvas &canvas,
     const AbstractMarker &abstractMarker,
-    const Text::immutable_string &unit,
+    const std::string &unit,
     bool keepMeasure,
     ::Anim::InterpolateIndex index) const
 {
@@ -346,7 +346,7 @@ void MarkerRenderer::drawLabel(Gfx::ICanvas &canvas,
 
 std::string MarkerRenderer::getLabelText(
     const ::Anim::Interpolated<Gen::Marker::Label> &label,
-    const Text::immutable_string &unit,
+    const std::string &unit,
     bool keepMeasure,
     ::Anim::InterpolateIndex index) const
 {

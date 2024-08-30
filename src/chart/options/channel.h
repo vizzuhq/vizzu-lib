@@ -3,8 +3,9 @@
 
 #include <cstdint>
 #include <optional>
-#include <string>
+#include <set>
 
+#include "dataframe/old/datatable.h"
 #include "dataframe/old/types.h"
 
 #include "autoparam.h"
@@ -58,7 +59,7 @@ public:
 	DimensionIndices dimensionIds{};
 	ChannelRange range{};
 	std::size_t labelLevel{};
-	Base::AutoParam<Text::immutable_string, true> title{};
+	Base::AutoParam<std::string, true> title{};
 	Base::AutoBool axisLine{};
 	Base::AutoBool axisLabels{};
 	Base::AutoBool ticks{};
