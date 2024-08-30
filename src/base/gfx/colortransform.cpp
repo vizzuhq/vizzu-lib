@@ -6,7 +6,6 @@
 #include <utility>
 
 #include "base/text/funcstring.h"
-#include "base/text/smartstring.h"
 
 #include "color.h"
 

@@ -3,6 +3,7 @@
 #include <array>
 #include <stdexcept>
 #include <string>
+#include <utility>
 
 #include "smartstring.h"
 
