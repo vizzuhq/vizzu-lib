@@ -57,6 +57,7 @@ struct if_setup
 
 			skip->*df->get_dimensions() == dims;
 			skip->*df->get_measures() == meas;
+			// cppcheck-suppress ignoredReturnValue
 			skip->*df->get_record_count() == data.size();
 
 			for (auto r = 0u; r < data.size(); ++r) {
@@ -78,6 +79,7 @@ struct if_setup
 					    std::get<double>(df->get_data(r, meas[m]));
 					auto &&nData = data[r][m + ds];
 					if (nData && std::isnan(gdata)) continue;
+					// cppcheck-suppress ignoredReturnValue
 					skip->*gdata == std::stod(data[r][m + ds]);
 				}
 			}

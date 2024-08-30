@@ -2,11 +2,10 @@
 #define VIZZU_REFL_AUTO_STRUCT_H
 
 #include <cstddef>
+#include <cstdint>
 #include <functional>
-#include <limits>
 #include <tuple>
 #include <type_traits>
-#include <utility>
 
 #include "auto_name.h"
 
@@ -48,9 +47,9 @@ template <class T> struct ubiq_base
 
 template <class T,
     std::size_t... I,
-    class = typename std::enable_if<
-        std::is_copy_constructible<T>::value>::type>
-consteval typename std::add_pointer<decltype(T{ubiq{I}...})>::type
+    class =
+        typename std::enable_if_t<std::is_copy_constructible_v<T>>>
+consteval std::add_pointer_t<decltype(T{ubiq{I}...})>
     enable_if_constructible(std::index_sequence<I...>) noexcept;
 
 #ifdef __clang__
@@ -58,8 +57,8 @@ consteval typename std::add_pointer<decltype(T{ubiq{I}...})>::type
 #endif
 
 template <class T, std::size_t... B, std::size_t... I>
-consteval typename std::add_pointer<decltype(T(ubiq_base<T>{B}...,
-    ubiq{I}...))>::type
+consteval std::add_pointer_t<decltype(T(ubiq_base<T>{B}...,
+    ubiq{I}...))>
     enable_if_constructible_base(std::index_sequence<B...>,
         std::index_sequence<I...>) noexcept;
 
@@ -261,7 +260,11 @@ constexpr inline bool same_as_decomposed<T, U, Members, 1> =
         U>;
 }
 
-enum class structure_bindable { no, through_base, through_members };
+enum class structure_bindable : std::uint8_t {
+	no,
+	through_base,
+	through_members
+};
 
 template <class T,
     class = bases_t<T>,
@@ -550,9 +553,9 @@ template <class T, class U, class... MemberFunctors>
 constexpr static inline auto FuncPtr = +[](const T &t) -> U &
 {
 	using Composite::operator>>;
-	auto &v = (t >> ... >> MemberFunctors{});
-	return const_cast<std::remove_cvref_t<decltype(v)> &>( // NOLINT
-	    v);
+	const auto *v = &(t >> ... >> MemberFunctors{});
+	return const_cast<std::remove_cvref_t<decltype(*v)> &>( // NOLINT
+	    *v);
 };
 
 template <class... MemberFunctors>
@@ -566,7 +569,7 @@ template <class T, class Visitor> struct Applier
 	             && std::is_invocable_v<Visitor &,
 	                 U &(*)(const T &),
 	                 const std::initializer_list<std::string_view> &>)
-	constexpr static inline __attribute__((always_inline)) void apply(
+	constexpr static __attribute__((always_inline)) void apply(
 	    Visitor &v) noexcept
 	{
 		v(FuncPtr<T, U, MemberFunctors...>,
@@ -579,14 +582,14 @@ template <class T, class Visitor> struct Applier
 	             && !std::is_invocable_v<Visitor &,
 	                 U &(*)(const T &),
 	                 const std::initializer_list<std::string_view> &>)
-	constexpr static inline __attribute__((always_inline)) void apply(
+	constexpr static __attribute__((always_inline)) void apply(
 	    Visitor &v) noexcept
 	{
 		v(FuncPtr<T, U, MemberFunctors...>);
 	}
 
 	template <class U, class... MemberFunctors>
-	constexpr static inline __attribute__((always_inline)) void apply(
+	constexpr static __attribute__((always_inline)) void apply(
 	    [[maybe_unused]] Visitor &v) noexcept
 	{
 		if constexpr (!std::is_empty_v<U>) {
@@ -632,17 +635,17 @@ struct GetterVisitor<Visitor,
     std::tuple<Ts...>,
     std::index_sequence<Ix...>>
 {
-	Visitor &visitor;
+	Visitor &&visitor;
 	std::tuple<Ts...> ts;
 
-	constexpr inline GetterVisitor(Visitor &p_visitor,
+	constexpr GetterVisitor(Visitor &&p_visitor,
 	    std::tuple<Ts...> t) :
-	    visitor(p_visitor),
+	    visitor(std::forward<Visitor>(p_visitor)),
 	    ts(std::move(t))
 	{}
 
 	template <class Getter>
-	constexpr inline std::invoke_result_t<Visitor &,
+	constexpr std::invoke_result_t<Visitor &,
 	    std::invoke_result_t<Getter, Ts>...>
 	operator()(Getter &&getter) const noexcept
 	{
@@ -651,7 +654,7 @@ struct GetterVisitor<Visitor,
 	}
 
 	template <class Getter>
-	constexpr inline std::invoke_result_t<Visitor &,
+	constexpr std::invoke_result_t<Visitor &,
 	    std::invoke_result_t<Getter, Ts>...,
 	    const std::initializer_list<std::string_view> &>
 	operator()(Getter &&getter,
@@ -668,11 +671,12 @@ struct GetterVisitor<Visitor,
 #endif
 
 template <class T, class Visitor>
-constexpr inline __attribute__((always_inline)) auto visit(
-    [[maybe_unused]] Visitor &&visitor)
+constexpr __attribute__((always_inline)) auto visit(Visitor &&visitor)
 {
 #ifndef __clang_analyzer__
 	return Functors::Applier<T, Visitor>::template apply<T>(visitor);
+#else
+	std::ignore = std::forward<Visitor>(visitor);
 #endif
 }
 
@@ -680,16 +684,19 @@ template <class Visitor, class T, class... Ts>
     requires((std::is_same_v<std::remove_cvref_t<T>,
                   std::remove_cvref_t<Ts>>
               && ...))
-constexpr inline void visit([[maybe_unused]] Visitor &&visitor,
-    [[maybe_unused]] T &visitable,
-    [[maybe_unused]] Ts &&...ts)
+constexpr void
+visit(Visitor &&visitor, [[maybe_unused]] T &visitable, Ts &&...ts)
 {
 #ifndef __clang_analyzer__
 	using TT = std::remove_cvref_t<T>;
 	visit<TT>(
-	    Functors::GetterVisitor<Visitor, std::tuple<T &, Ts &...>>{
-	        visitor,
-	        {visitable, ts...}});
+	    Functors::GetterVisitor<Visitor, std::tuple<T &, Ts &&...>>{
+	        std::forward<Visitor>(visitor),
+	        {visitable, std::forward<Ts>(ts)...}});
+#else
+	std::ignore = std::forward<Visitor>(visitor);
+	std::ignore =
+	    std::forward_as_tuple<Ts...>(std::forward<Ts>(ts)...);
 #endif
 }
 

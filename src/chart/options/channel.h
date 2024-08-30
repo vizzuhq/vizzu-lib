@@ -13,7 +13,15 @@
 namespace Vizzu::Gen
 {
 
-enum class ChannelId { color, lightness, size, label, x, y, noop };
+enum class ChannelId : std::uint8_t {
+	color,
+	lightness,
+	size,
+	label,
+	x,
+	y,
+	noop
+};
 
 class Channel
 {

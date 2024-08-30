@@ -3,11 +3,15 @@
 
 #include <algorithm>
 #include <cctype>
-#include <cmath>
-#include <cstring>
+#include <cstddef>
+#include <string>
+#include <utility>
+#include <vector>
 
 #include "base/conv/numtostr.h"
 #include "base/math/normalizednumber.h"
+
+#include "numberscale.h"
 
 namespace Text::SmartString
 {

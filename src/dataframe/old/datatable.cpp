@@ -1,14 +1,27 @@
 #include "datatable.h"
 
+#include <algorithm>
 #include <cmath>
-#include <numeric>
+#include <cstddef>
+#include <cstdint>
+#include <initializer_list>
+#include <memory>
+#include <span>
+#include <string>
+#include <string_view>
+#include <tuple>
 #include <utility>
+#include <vector>
 
 #include "base/conv/auto_json.h"
-#include "base/text/funcstring.h"
+#include "base/conv/numtostr.h"
+#include "base/refl/auto_enum.h"
 #include "chart/options/options.h"
-#include "dataframe/impl/aggregators.h"
+#include "chart/options/shapetype.h"
+#include "dataframe/impl/data_source.h"
 #include "dataframe/interface.h"
+
+#include "types.h"
 
 namespace Vizzu::Data
 {
@@ -53,29 +66,21 @@ const MultiIndex &DataCube::iterator_t::operator*() const
 	return index;
 }
 
+SeriesIndex::SeriesIndex(dataframe::series_meta_t const &meta) :
+    name{meta.name}
+{
+	if (meta.type == dataframe::series_type::measure)
+		aggregator.emplace(dataframe::aggregator_type::sum);
+}
+
 SeriesIndex::SeriesIndex(std::string const &str,
     const DataTable &table) :
-    orig_name(str)
+    SeriesIndex(table.getDf().get_series_meta(str))
+{}
+
+void SeriesIndex::setAggr(const std::string &aggr)
 {
-	constinit static auto names =
-	    Refl::get_names<dataframe::aggregator_type>();
-	if (const Text::FuncString func(str, false);
-	    !func.isEmpty()
-	    && std::find(names.begin(), names.end(), func.getName())
-	           != names.end()) {
-		aggr = Refl::get_enum<dataframe::aggregator_type>(
-		    func.getName());
-		if (!func.getParams().empty())
-			sid = table.getDf()
-			          .get_series_meta(func.getParams().at(0))
-			          .name;
-	}
-	else {
-		auto &&[s, type] = table.getDf().get_series_meta(str);
-		sid = s;
-		if (type == DataTable::Type::measure)
-			aggr = dataframe::aggregator_type::sum;
-	}
+	aggregator = Refl::get_enum<dataframe::aggregator_type>(aggr);
 }
 
 DataCube::iterator_t DataCube::begin() const
@@ -192,9 +197,8 @@ DataCube::DataCube(const DataTable &table,
 			else
 				++first;
 
-		[[maybe_unused]] auto &&new_name =
-		    sub_df.set_aggregate(meas->getColIndex(),
-		        meas->getAggr());
+		std::ignore = sub_df.set_aggregate(meas->getColIndex(),
+		    meas->getAggr());
 
 		sub_df.finalize();
 	}

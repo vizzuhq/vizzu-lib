@@ -1,7 +1,7 @@
 #ifndef GEOM_CIRCLE
 #define GEOM_CIRCLE
 
-#include <optional>
+#include <cstdint>
 
 #include "point.h"
 #include "rect.h"
@@ -13,24 +13,15 @@ namespace Geom
 class Circle
 {
 public:
-	enum class FromRect {
-		inscribed,
-		sameWidth,
-		sameHeight,
-		outscribed
-	};
-
 	Point center;
 	double radius;
 
-	Circle() : radius(0) {}
+	Circle() : radius{} {}
 
 	Circle(Point center, double radius) :
 	    center(center),
 	    radius(radius)
 	{}
-
-	Circle(const Rect &rect, FromRect fromRect);
 
 	Circle(const Circle &c0,
 	    const Circle &c1,
@@ -48,13 +39,10 @@ public:
 	}
 
 	[[nodiscard]] double area() const;
-	[[nodiscard]] bool overlaps(const Circle &c,
-	    double tolerance) const;
-	[[nodiscard]] double overlapFactor(const Circle &c) const;
-	[[nodiscard]] bool colateral(const Circle &c,
-	    double tolerance) const;
+	[[nodiscard]] bool overlaps(const Circle &c) const;
 	[[nodiscard]] Rect boundary() const;
 	[[nodiscard]] bool contains(const Point &point) const;
+	[[nodiscard]] double distance(const Point &point) const;
 	[[nodiscard]] double distance(const Circle &c) const;
 	[[nodiscard]] Solutions<Point, 2> intersection(
 	    const Circle &c) const;

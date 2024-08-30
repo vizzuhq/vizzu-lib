@@ -1,5 +1,9 @@
 #include "base/gfx/draw/roundedrect.h"
 
+#include "base/geom/point.h"
+#include "base/geom/rect.h"
+#include "base/gfx/canvas.h"
+
 namespace Gfx::Draw
 {
 

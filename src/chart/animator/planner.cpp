@@ -1,9 +1,25 @@
 #include "planner.h"
 
+#include <algorithm>
+#include <array>
+#include <cstddef>
+#include <functional>
+#include <memory>
+#include <optional>
+#include <utility>
+
+#include "base/anim/duration.h"
+#include "base/anim/easing.h"
 #include "base/anim/easingfunc.h"
+#include "base/anim/element.h"
+#include "base/anim/group.h"
 #include "chart/generator/plot.h"
+#include "chart/options/channel.h"
+#include "chart/options/orientation.h"
+#include "chart/options/shapetype.h"
 
 #include "morph.h"
+#include "options.h"
 #include "styles.h"
 
 namespace Vizzu::Anim
@@ -106,17 +122,21 @@ void Planner::createPlan(const Gen::Plot &source,
 		addMorph(SectionId::color, step);
 		addMorph(SectionId::coordSystem, std::max(step, posDuration));
 
-		const auto &geomEasing =
-		    srcOpt->geometry == Gen::ShapeType::circle   ? in3
-		    : trgOpt->geometry == Gen::ShapeType::circle ? out3
-		    : srcOpt->geometry == Gen::ShapeType::line   ? in3
-		    : trgOpt->geometry == Gen::ShapeType::line   ? out3
-		                                                 : inOut5;
+		const ::Anim::Easing *geomEasing{&inOut5};
+		if (auto &&targetCircle =
+		        trgOpt->geometry == Gen::ShapeType::circle;
+		    srcOpt->geometry == Gen::ShapeType::circle
+		    || (!targetCircle
+		        && srcOpt->geometry == Gen::ShapeType::line))
+			geomEasing = &in3;
+		else if (targetCircle
+		         || trgOpt->geometry == Gen::ShapeType::line)
+			geomEasing = &out3;
 
 		addMorph(SectionId::geometry,
 		    std::max(step, posDuration),
 		    0ms,
-		    geomEasing);
+		    *geomEasing);
 
 		setBaseline();
 

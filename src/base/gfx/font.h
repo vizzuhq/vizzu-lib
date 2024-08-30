@@ -1,6 +1,7 @@
 #ifndef GFX_FONT
 #define GFX_FONT
 
+#include <cstdint>
 #include <string>
 
 #include "base/text/immutable_string.h"
@@ -29,7 +30,7 @@ public:
 		int value;
 	};
 
-	enum class Style { normal, italic, oblique };
+	enum class Style : std::uint8_t { normal, italic, oblique };
 
 	Text::immutable_string family;
 	Style style;

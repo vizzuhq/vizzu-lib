@@ -1,5 +1,15 @@
 #include "drawbackground.h"
 
+#include <memory>
+#include <utility>
+
+#include "base/geom/rect.h"
+#include "base/geom/transformedrect.h"
+#include "base/gfx/canvas.h"
+#include "base/util/eventdispatcher.h"
+#include "chart/main/events.h"
+#include "chart/main/style.h"
+
 namespace Vizzu::Draw
 {
 

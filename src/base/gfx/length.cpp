@@ -1,7 +1,9 @@
 #include "length.h"
 
 #include <stdexcept>
+#include <string>
 
+#include "base/text/smartstring.h"
 #include "base/text/valueunit.h"
 
 namespace Gfx
@@ -10,18 +12,20 @@ namespace Gfx
 Length Length::fromString(const std::string &s)
 {
 	Length res{};
-	const Text::ValueUnit parser(s);
-	if (const auto &unit = parser.getUnit(); unit == "%") {
-		res.relative = parser.getValue() / 100.0;
+	for (auto &&part : Text::SmartString::split(s, '+', true)) {
+		const Text::ValueUnit parser(part);
+		if (const auto &unit = parser.getUnit(); unit == "%") {
+			res.relative += parser.getValue() / 100.0;
+		}
+		else if (unit == "em") {
+			res.emphemeral += parser.getValue();
+		}
+		else if (unit == "px" || unit.empty()) {
+			res.absolute += parser.getValue();
+		}
+		else
+			throw std::logic_error("invalid length unit: " + unit);
 	}
-	else if (unit == "em") {
-		res.emphemeral = parser.getValue();
-	}
-	else if (unit == "px" || unit.empty()) {
-		res.absolute = parser.getValue();
-	}
-	else
-		throw std::logic_error("invalid length unit: " + unit);
 
 	return res;
 }

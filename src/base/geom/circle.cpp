@@ -1,23 +1,19 @@
 #include "circle.h"
 
 #include <algorithm>
+#include <cmath>
+#include <numbers>
+#include <optional>
 
+#include "base/geom/point.h"
+#include "base/math/floating.h"
 #include "base/math/tolerance.h"
+
+#include "rect.h"
+#include "solutions.h"
 
 namespace Geom
 {
-
-Circle::Circle(const Rect &rect, FromRect fromRect)
-{
-	radius = fromRect == FromRect::inscribed
-	           ? rect.size.minSize() / 2.0
-	       : fromRect == FromRect::sameWidth  ? rect.size.x / 2.0
-	       : fromRect == FromRect::sameHeight ? rect.size.y / 2.0
-	       : fromRect == FromRect::outscribed
-	           ? rect.size.diagonal() / 2.0
-	           : throw std::logic_error("invalid circle parameter");
-	center = rect.pos + rect.size / 2.0;
-}
 
 Circle::Circle(const Circle &c0,
     const Circle &c1,
@@ -40,27 +36,16 @@ bool Circle::concentric(const Circle &c) const
 	return center == c.center;
 }
 
-bool Circle::colateral(const Circle &c, double tolerance) const
+double Circle::area() const
 {
-	return Math::AddTolerance(centerDistance(c), tolerance)
-	    == (radius + c.radius);
+	return std::numbers::pi * radius * radius;
 }
 
-double Circle::area() const { return M_PI * radius * radius; }
-
-bool Circle::overlaps(const Circle &c, double tolerance) const
+bool Circle::overlaps(const Circle &c) const
 {
 	auto d = c.center - center;
 	auto sumRadius = radius + c.radius;
-	return Math::AddTolerance(d.sqrAbs(), tolerance)
-	     < sumRadius * sumRadius;
-}
-
-double Circle::overlapFactor(const Circle &c) const
-{
-	auto d = centerDistance(c);
-	auto r = radius + c.radius;
-	return d == 0 ? 0 : r / d;
+	return Math::AddTolerance(d.sqrAbs()) < sumRadius * sumRadius;
 }
 
 Rect Circle::boundary() const
@@ -72,6 +57,13 @@ Rect Circle::boundary() const
 bool Circle::contains(const Point &point) const
 {
 	return (point - center).sqrAbs() <= radius * radius;
+}
+
+double Circle::distance(const Point &point) const
+{
+	return std::max(0.0,
+	    (point - center).abs() - radius,
+	    Math::Floating::less);
 }
 
 double Circle::centerDistance(const Circle &c) const

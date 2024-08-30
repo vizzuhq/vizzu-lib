@@ -23,7 +23,6 @@ public:
 	void setLineColor(const Gfx::Color &color) override;
 	void setLineWidth(double width) override;
 	void setFont(const Gfx::Font &font) override;
-	void setTextColor(const Gfx::Color &color) override;
 
 	void beginDropShadow() override;
 	void setDropShadowBlur(double radius) override;

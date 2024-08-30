@@ -1,9 +1,22 @@
 #include "stylesheet.h"
 
+#include <algorithm>
 #include <cmath>
+#include <numbers>
+#include <vector>
 
+#include "base/geom/point.h"
+#include "base/gfx/canvas.h"
+#include "base/gfx/colortransform.h"
+#include "base/gfx/font.h"
+#include "base/gfx/length.h"
+#include "base/math/range.h"
 #include "base/style/impl.tpp"
 #include "chart/generator/plot.h"
+#include "chart/options/channel.h"
+#include "chart/options/coordsystem.h"
+#include "chart/options/options.h"
+#include "chart/options/shapetype.h"
 
 #include "layout.h"
 
@@ -240,7 +253,7 @@ void Sheet::setAfterStyles(Gen::Plot &plot, const Geom::Size &size)
 			ranges.push_back(next_range);
 		}
 
-		xLabel.angle.emplace(has_collision * M_PI / 4);
+		xLabel.angle.emplace(has_collision * std::numbers::pi / 4);
 	}
 }
 

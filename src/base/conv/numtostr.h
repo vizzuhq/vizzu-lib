@@ -2,9 +2,7 @@
 #define CONV_NUMTOSTR
 
 #include <array>
-#include <cmath>
 #include <string>
-#include <type_traits>
 
 namespace Conv
 {
@@ -16,7 +14,7 @@ struct NumberToString
 	char integerGgrouping = '\0';
 	char fractionGgrouping = '\0';
 	char decimalPointChar = '.';
-	constexpr static inline auto MAX_BUFFER_SIZE = 430;
+	constexpr static auto MAX_BUFFER_SIZE = 430;
 	std::array<char, MAX_BUFFER_SIZE> buffer = {};
 
 	[[nodiscard]] std::string convert(double number);

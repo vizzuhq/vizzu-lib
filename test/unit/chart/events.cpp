@@ -27,7 +27,6 @@ struct MyCanvas final : Gfx::ICanvas, Vizzu::Draw::Painter
 	void setClipPolygon() final {}
 	void setBrushColor(const Gfx::Color &) final {}
 	void setLineColor(const Gfx::Color &) final {}
-	void setTextColor(const Gfx::Color &) final {}
 	void setLineWidth(double) final {}
 	void setFont(const Gfx::Font &) final {}
 	void transform(const Geom::AffineTransform &) final {}
@@ -55,6 +54,7 @@ struct MyCanvas final : Gfx::ICanvas, Vizzu::Draw::Painter
 	void frameBegin() final {}
 	void frameEnd() final {}
 	void *getPainter() final { return static_cast<Painter *>(this); }
+	// cppcheck-suppress duplInheritedMember
 	ICanvas &getCanvas() final { return *this; }
 };
 
@@ -254,8 +254,13 @@ break)",
 
 struct chart_setup
 {
-	std::vector<std::pair<Vizzu::Gen::ChannelId, const char *>>
-	    series;
+	struct series_t
+	{
+		Vizzu::Gen::ChannelId channel;
+		const char *name;
+		const char *aggr{};
+	};
+	std::vector<series_t> series;
 	std::function<void(Vizzu::Data::DataTable &)> testcase =
 	    testcase_1;
 	bool is_emscripten{[]
@@ -276,8 +281,15 @@ struct chart_setup
 		auto &table = chart.getTable();
 		testcase(table);
 		auto &channels = chart.getOptions().getChannels();
-		for (auto &&[ch, name] : series)
+		for (auto &&[ch, name, aggr] : series) {
 			channels.at(ch).addSeries({name, std::ref(table)});
+			if (aggr) {
+				if (!channels.at(ch).measureId)
+					channels.at(ch).measureId =
+					    channels.at(ch).dimensionIds.pop_back();
+				channels.at(ch).measureId->setAggr(aggr);
+			}
+		}
 		chart.setBoundRect(Geom::Rect(Geom::Point{}, {{640, 480}}));
 		return chart;
 	}
@@ -321,6 +333,7 @@ std::multimap<std::string, event_as, std::less<>> get_events(
 				        "draw-" + std::string{s.back()});
 			    }
 
+			    // cppcheck-suppress uselessCallsConstructor
 			    if (s.back() == "base") s = {s.begin(), s.end() - 1};
 
 			    std::string name;
@@ -559,7 +572,7 @@ const static auto tests =
     | "53978116" |
     [](Vizzu::Chart &chart = chart_setup{{{color, "Dim3"},
            {x, "Dim5"},
-           {y, "min(Meas1)"},
+           {y, "Meas1", "min"},
            {y, "Dim3"}}})
 {
 	auto &&events = get_events(chart);
@@ -574,8 +587,8 @@ const static auto tests =
 
     | "aggregators step1" |
     [](Vizzu::Chart &chart = chart_setup{{{x, "Dim3"},
-           {y, "min(Meas1)"},
-           {label, "min(Meas1)"}}})
+           {y, "Meas1", "min"},
+           {label, "Meas1", "min"}}})
 {
 	auto &&events = get_events(chart);
 

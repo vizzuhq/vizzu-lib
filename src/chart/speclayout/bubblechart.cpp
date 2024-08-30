@@ -2,6 +2,13 @@
 
 #include <algorithm>
 #include <cmath>
+#include <optional>
+#include <vector>
+
+#include "base/geom/point.h"
+#include "base/geom/rect.h"
+
+#include "specmarker.h"
 
 namespace Vizzu::Charts
 {
@@ -64,7 +71,7 @@ void BubbleChart::generate()
 		        *nextBaseMarker,
 		        *preMarker);
 		    candidate1
-		    && !candidate1->overlaps(baseMarker->circle(), 0.00001)) {
+		    && !candidate1->overlaps(baseMarker->circle())) {
 			currMarker->emplaceCircle(*candidate1);
 			baseMarker = nextBaseMarker++;
 			while (nextBaseMarker->negative) ++nextBaseMarker;
@@ -73,8 +80,7 @@ void BubbleChart::generate()
 		             *baseMarker,
 		             *preMarker);
 		         candidate0
-		         && !candidate0->overlaps(nextBaseMarker->circle(),
-		             0.00001))
+		         && !candidate0->overlaps(nextBaseMarker->circle()))
 			currMarker->emplaceCircle(*candidate0);
 		else {
 			// TODO bubblechart generation failed. It need a fix.

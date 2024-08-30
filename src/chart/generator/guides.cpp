@@ -1,5 +1,14 @@
 #include "guides.h"
 
+#include <stdexcept>
+
+#include "base/math/interpolation.h"
+#include "chart/options/align.h"
+#include "chart/options/channel.h"
+#include "chart/options/coordsystem.h"
+#include "chart/options/options.h"
+#include "chart/options/shapetype.h"
+
 namespace Vizzu::Gen
 {
 

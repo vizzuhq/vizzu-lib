@@ -124,6 +124,8 @@ export interface Caption extends TextElement {
 export interface Legend extends Element {
 	tagName: 'legend'
 	channel: string
+	/** Marker labels y overflow by pixel */
+	yOverflow: number
 }
 
 /** Logo element of the chart. */

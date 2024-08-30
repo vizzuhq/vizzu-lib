@@ -11,7 +11,13 @@ namespace Vizzu::Base
 struct Align : private Math::Range<double>
 {
 public:
-	enum class Type : uint32_t { none, min, center, max, stretch };
+	enum class Type : std::uint8_t {
+		none,
+		min,
+		center,
+		max,
+		stretch
+	};
 
 	Align(Type type, const Range<double> &range) :
 	    Range<double>(range),

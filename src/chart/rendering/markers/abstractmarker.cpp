@@ -1,8 +1,16 @@
-// clang-format off
-#include "base/math/arrayoperators.h" // NOLINT
-// clang-format on
-
 #include "abstractmarker.h"
+
+#include <array>
+#include <cstddef>
+#include <utility>
+
+#include "base/anim/interpolated.h"
+#include "base/geom/line.h"
+#include "chart/generator/marker.h"
+#include "chart/main/style.h"
+#include "chart/options/shapetype.h"
+#include "chart/rendering/drawingcontext.h"
+#include "chart/rendering/painter/coordinatesystem.h"
 
 #include "circlemarker.h"
 #include "connectingmarker.h"
@@ -10,6 +18,25 @@
 
 namespace Vizzu::Draw
 {
+
+template <class T, std::size_t I>
+std::array<T, I> interpolate(const std::array<T, I> &op0,
+    const std::array<T, I> &op1,
+    double factor)
+{
+	return
+	    []<std::size_t... Ix>(const std::array<T, sizeof...(Ix)> &op0,
+	        const std::array<T, sizeof...(Ix)> &op1,
+	        double factor,
+	        std::index_sequence<Ix...>)
+	{
+		using Math::interpolate;
+		return std::array<T, sizeof...(Ix)>{
+		    interpolate(std::get<Ix>(op0),
+		        std::get<Ix>(op1),
+		        factor)...};
+	}(op0, op1, factor, std::make_index_sequence<I>{});
+}
 
 AbstractMarker AbstractMarker::create(const DrawingContext &ctx,
     const Gen::Marker &marker,
@@ -61,6 +88,7 @@ AbstractMarker AbstractMarker::createInterpolated(
 	    static_cast<double>(fromMarker.enabled + toMarker.enabled);
 
 	using Math::interpolate;
+	using Vizzu::Draw::interpolate;
 	if (sum > 0.0) {
 		auto factor = static_cast<double>(toMarker.enabled) / sum;
 		aMarker.morphToCircle = interpolate(fromMarker.morphToCircle,

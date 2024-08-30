@@ -1,7 +1,12 @@
 
 #include "easinggradient.h"
 
+#include <cstddef>
+#include <stdexcept>
+
 #include "base/geom/bezier.h"
+#include "base/geom/point.h"
+#include "base/math/segmentedfunc.h"
 #include "base/math/segmentedfunc.tpp"
 
 template struct Math::SegmentedFunction<double>;
@@ -11,7 +16,7 @@ namespace Anim
 
 EasingGradient EasingGradient::Bezier(const Geom::Point &p1,
     const Geom::Point &p2,
-    size_t stepCount)
+    std::size_t stepCount)
 {
 	if (stepCount < 2)
 		throw std::logic_error("not enough bezier steps");

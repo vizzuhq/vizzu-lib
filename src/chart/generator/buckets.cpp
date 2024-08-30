@@ -1,7 +1,10 @@
 
 #include "buckets.h"
 
+#include <algorithm>
+#include <compare>
 #include <numeric>
+#include <span>
 
 #include "dataframe/old/types.h"
 

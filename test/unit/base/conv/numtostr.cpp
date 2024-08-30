@@ -1,5 +1,7 @@
 #include "base/conv/numtostr.h"
 
+#include <cmath>
+
 #include "../../util/test.h"
 
 using Conv::NumberToString;

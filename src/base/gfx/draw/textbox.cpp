@@ -1,5 +1,13 @@
 #include "textbox.h"
 
+#include <cstddef>
+#include <utility>
+
+#include "base/geom/point.h"
+#include "base/gfx/canvas.h"
+#include "base/gfx/color.h"
+#include "base/gfx/font.h"
+
 namespace Gfx::Draw
 {
 
@@ -148,7 +156,7 @@ void TextBox::draw(ICanvas &canvas, double opacity)
 			canvas.setLineColor(background);
 			canvas.rectangle(
 			    {{xpos, ypos}, {text.width, line.height}});
-			canvas.setTextColor(foreground);
+			canvas.setBrushColor(foreground);
 			canvas.text({{xpos, ypos}, {10000, 10000}},
 			    text.content.c_str());
 			xpos += text.width;

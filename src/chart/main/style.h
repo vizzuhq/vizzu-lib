@@ -1,6 +1,8 @@
 #ifndef STYLE_H
 #define STYLE_H
 
+#include <cstdint>
+
 #include "base/anim/interpolated.h"
 #include "base/geom/angle.h"
 #include "base/geom/rect.h"
@@ -12,7 +14,6 @@
 #include "base/gfx/font.h"
 #include "base/gfx/length.h"
 #include "base/gui/accessories.h"
-#include "base/math/fuzzybool.h"
 #include "base/style/param.h"
 #include "base/text/numberscale.h"
 #include "base/text/smartstring.h"
@@ -23,8 +24,8 @@ namespace Vizzu::Styles
 
 using ::Style::Param;
 
-enum class Visibility { hidden, visible };
-enum class Overflow { hidden, visible };
+enum class Visibility : std::uint8_t { hidden, visible };
+enum class Overflow : std::uint8_t { hidden, visible };
 
 struct Padding
 {
@@ -160,7 +161,7 @@ struct Label : Padding, Font, Text
 
 struct Tick
 {
-	enum class Position { outside, inside, center };
+	enum class Position : std::uint8_t { outside, inside, center };
 
 	Param<Gfx::Color> color;
 	Param<double> lineWidth;
@@ -181,7 +182,7 @@ struct Interlacing
 
 struct OrientedLabelParams
 {
-	enum class Orientation {
+	enum class Orientation : std::uint8_t {
 		normal,
 		tangential,
 		horizontal,
@@ -197,9 +198,9 @@ struct OrientedLabel : Label, OrientedLabelParams
 
 struct AxisLabelParams
 {
-	enum class Position { axis, min_edge, max_edge };
+	enum class Position : std::uint8_t { axis, min_edge, max_edge };
 
-	enum class Side { positive, negative };
+	enum class Side : std::uint8_t { positive, negative };
 
 	Param<::Anim::Interpolated<Position>> position;
 	Param<::Anim::Interpolated<Side>> side;
@@ -215,12 +216,12 @@ consteval auto unique_enum_names(AxisLabelParams::Position)
 
 struct AxisTitleParams
 {
-	enum class Position { axis, min_edge, max_edge };
+	enum class Position : std::uint8_t { axis, min_edge, max_edge };
 
-	enum class Side { positive, upon, negative };
-	enum class VPosition { begin, middle, end };
-	enum class VSide { positive, upon, negative };
-	enum class Orientation { horizontal, vertical };
+	enum class Side : std::uint8_t { positive, upon, negative };
+	enum class VPosition : std::uint8_t { begin, middle, end };
+	enum class VSide : std::uint8_t { positive, upon, negative };
+	enum class Orientation : std::uint8_t { horizontal, vertical };
 
 	Param<::Anim::Interpolated<Position>> position;
 	Param<::Anim::Interpolated<Side>> side;
@@ -249,8 +250,17 @@ struct Axis
 
 struct MarkerLabelParams
 {
-	enum class Position { center, left, right, top, bottom };
-	enum class Format { measureFirst, dimensionsFirst };
+	enum class Position : std::uint8_t {
+		center,
+		left,
+		right,
+		top,
+		bottom
+	};
+	enum class Format : std::uint8_t {
+		measureFirst,
+		dimensionsFirst
+	};
 
 	Param<::Anim::Interpolated<Position>> position;
 	Param<Gfx::ColorTransform> filter;
@@ -262,7 +272,7 @@ struct MarkerLabel : OrientedLabel, MarkerLabelParams
 
 struct TooltipParams
 {
-	enum class Layout { singleLine, multiLine };
+	enum class Layout : std::uint8_t { singleLine, multiLine };
 
 	Param<::Anim::Interpolated<Layout>> layout;
 	Param<Gfx::Color> color;
@@ -298,7 +308,10 @@ struct DataPoint
 
 struct MarkerParams
 {
-	enum class BorderOpacityMode { straight, premultiplied };
+	enum class BorderOpacityMode : std::uint8_t {
+		straight,
+		premultiplied
+	};
 
 	Param<double> borderWidth;
 	Param<double> borderOpacity;
@@ -315,7 +328,7 @@ struct LegendParams
 {
 	struct Marker
 	{
-		enum class Type { circle, square };
+		enum class Type : std::uint8_t { circle, square };
 
 		Param<::Anim::Interpolated<Type>> type;
 		Param<Gfx::Length> size;
@@ -326,6 +339,7 @@ struct LegendParams
 	Label title;
 	Label label;
 	Marker marker;
+	Param<Gfx::Length> translateY;
 };
 
 struct Legend : Padding, Box, LegendParams

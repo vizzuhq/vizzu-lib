@@ -38,7 +38,7 @@ template <typename T> std::string toString(T v)
 {
 	return Refl::enum_name<std::string>(v);
 }
-template <typename T> T parse(std::string s)
+template <typename T> T parse(const std::string &s)
 {
 	return Refl::get_enum<T>(s);
 }
@@ -120,7 +120,8 @@ const static auto tests =
             {
 	            throws<std::logic_error>() << []
 	            {
-		            return Refl::enum_name(Foo::fobar{2});
+		            return Refl::enum_name(
+		                std::bit_cast<Foo::fobar>(2));
 	            };
             })
 

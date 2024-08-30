@@ -1,5 +1,8 @@
 #include "valueunit.h"
 
+#include <cstddef>
+#include <string>
+
 #include "base/text/smartstring.h"
 
 namespace Text

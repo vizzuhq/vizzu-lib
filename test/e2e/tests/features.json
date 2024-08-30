@@ -5,7 +5,7 @@
 			"refs": ["bd61770"]
 		},
 		"aggregators/aggregators_together": {
-			"refs": ["0e6a340"]
+			"refs": ["5d9a4d9"]
 		},
 		"axis_title_positioning": {
 			"refs": ["d7c6dee"]
@@ -14,7 +14,7 @@
 			"refs": ["3a584a1"]
 		},
 		"events/drawing_events": {
-			"refs": ["49abe43"]
+			"refs": ["a92ae15"]
 		},
 		"subtitle_caption": {
 			"refs": ["5c04f20"]
@@ -26,13 +26,13 @@
 			"refs": ["7b07504"]
 		},
 		"presets": {
-			"refs": ["2d98b7c"]
+			"refs": ["f154a71"]
 		},
 		"detach": {
 			"refs": ["e3b0c44"]
 		},
 		"data_input/category_indexed": {
-			"refs": ["f978aac"]
+			"refs": ["ac40c83"]
 		}
 	}
 }

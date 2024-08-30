@@ -1,16 +1,17 @@
 #include "rect.h"
 
 #include <algorithm>
+#include <array>
+#include <cmath>
+
+#include "base/math/floating.h"
+
+#include "point.h"
 
 namespace Geom
 {
 
-Rect Rect::Ident() { return {Geom::Point(), Geom::Size::Identity()}; }
-
-Rect Rect::CenteredMax()
-{
-	return {Geom::Point::Min() / 2, {Geom::Size::Max()}};
-}
+Rect Rect::Ident() { return {Point(), Size::Identity()}; }
 
 Rect Rect::boundary(const Rect &rect) const
 {
@@ -21,17 +22,6 @@ Rect Rect::boundary(const Rect &rect) const
 	res.setBottom(std::min(res.bottom(), other.bottom(), less));
 	res.setRight(std::max(res.right(), other.right(), less));
 	res.setTop(std::max(res.top(), other.top(), less));
-	return res;
-}
-
-Rect Rect::boundary(const Point &p) const
-{
-	using Math::Floating::less;
-	Rect res = positive();
-	res.setLeft(std::min(res.left(), p.x, less));
-	res.setBottom(std::min(res.bottom(), p.y, less));
-	res.setRight(std::max(res.right(), p.x, less));
-	res.setTop(std::max(res.top(), p.y, less));
 	return res;
 }
 
@@ -77,7 +67,7 @@ Rect Rect::operator*(double factor) const
 	return {pos * factor, {size * factor}};
 }
 
-Rect Rect::operator+(const Geom::Rect &other) const
+Rect Rect::operator+(const Rect &other) const
 {
 	return {pos + other.pos, {size + other.size}};
 }

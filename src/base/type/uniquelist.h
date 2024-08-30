@@ -141,6 +141,11 @@ public:
 		return true;
 	}
 
+	[[nodiscard]] T pop_back()
+	{
+		return extract(items.find(last->first)).key();
+	}
+
 	[[nodiscard]] iterator<> begin() const noexcept
 	{
 		return {first};
@@ -216,8 +221,7 @@ public:
 	}
 
 	template <class It, class Sentinel = It>
-	[[nodiscard]] bool contains_any(It &&first1,
-	    Sentinel &&last1) const
+	[[nodiscard]] bool contains_any(It first1, Sentinel last1) const
 	{
 		for (auto first2 = items.begin(), last2 = items.end();
 		     first1 != last1 && first2 != last2;)

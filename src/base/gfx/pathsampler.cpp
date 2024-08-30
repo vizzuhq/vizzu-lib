@@ -1,6 +1,11 @@
 #include "pathsampler.h"
 
+#include <cmath>
+#include <cstddef>
+
+#include "base/geom/point.h"
 #include "base/geom/triangle.h"
+#include "base/math/floating.h"
 
 namespace Gfx
 {
@@ -21,32 +26,31 @@ void PathSampler::path(const Geom::Point &pConv0,
     double i1,
     size_t recurseCnt)
 {
-	const size_t maxRecursion = 20;
+	constexpr static size_t maxRecursion = 20;
 	if (recurseCnt >= maxRecursion) return;
 
-	auto i = (i0 + i1) / 2.0;
-	auto pConv = getPoint(i);
+	const auto i = (i0 + i1) / 2.0;
+	const auto pConv = getPoint(i);
 
-	const Geom::Triangle triangle{{pConv0, pConv, pConv1}};
-	auto area = triangle.area();
-	auto height = 2 * area / (pConv1 - pConv0).abs();
+	const auto area = Geom::Triangle{{pConv0, pConv, pConv1}}.area();
+	const auto sqrLength = (pConv1 - pConv0).sqrAbs();
+	const auto height = Math::Floating::is_zero(sqrLength)
+	                      ? 0.0
+	                      : 2 * area / sqrt(sqrLength);
 
-	auto needMore =
-	    height > options.curveHeightMax
-	    || ((pConv1 - pConv0).sqrAbs() < (pConv - pConv0).sqrAbs())
-	    || ((pConv1 - pConv0).sqrAbs() < (pConv - pConv1).sqrAbs());
+	const auto sqrAbs0 = (pConv - pConv0).sqrAbs();
+	const auto sqrAbs1 = (pConv - pConv1).sqrAbs();
 
-	if (needMore) {
-		if ((pConv - pConv0).sqrAbs() > options.distanceMax)
-			path(pConv0, pConv, i0, i, recurseCnt + 1);
-	}
+	auto needMore = height > options.curveHeightMax
+	             || sqrLength < sqrAbs0 || sqrLength < sqrAbs1;
+
+	if (needMore && sqrAbs0 > options.distanceMax)
+		path(pConv0, pConv, i0, i, recurseCnt + 1);
 
 	addPoint(pConv);
 
-	if (needMore) {
-		if ((pConv - pConv1).sqrAbs() > options.distanceMax)
-			path(pConv, pConv1, i, i1, recurseCnt + 1);
-	}
+	if (needMore && sqrAbs1 > options.distanceMax)
+		path(pConv, pConv1, i, i1, recurseCnt + 1);
 }
 
 }

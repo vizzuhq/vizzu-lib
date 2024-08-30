@@ -4,11 +4,22 @@
 
 ### Fixed
 
+- Legend title bottomPadding extended.
+- Remove marker labels at intermediate steps.
 - Markers are the same even if new record added.
 
 ### Added
 
-- Changed MarkerId to be a string instead of a number. 
+- New style parameter for the legend scrolling.
+- Changed MarkerId to be a string instead of a number.
+
+## [0.12.1] - 2024-08-22
+
+### Fixed
+
+- Area charts with data series started with zero: tooltip fixed.
+- Series whose contained ',' and aggregated were not working properly.
+- Dimension columns with non-existent values aggregation was undefined.
 
 ## [0.12.0] - 2024-07-29
 

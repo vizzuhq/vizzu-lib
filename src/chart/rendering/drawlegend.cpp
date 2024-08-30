@@ -1,7 +1,25 @@
 #include "drawlegend.h"
 
+#include <algorithm>
+#include <cmath>
+#include <cstddef>
+#include <functional>
+#include <string>
+#include <string_view>
+#include <utility>
+
+#include "base/anim/interpolated.h"
+#include "base/geom/affinetransform.h"
+#include "base/geom/rect.h"
+#include "base/geom/transformedrect.h"
+#include "base/gfx/canvas.h"
+#include "base/gfx/color.h"
 #include "base/gfx/draw/roundedrect.h"
-#include "chart/generator/plot.h"
+#include "base/math/floating.h"
+#include "base/text/smartstring.h"
+#include "chart/generator/plot.h" // NOLINT(misc-include-cleaner)
+#include "chart/main/events.h"
+#include "chart/options/channel.h"
 #include "chart/rendering/colorbuilder.h"
 #include "chart/rendering/drawbackground.h"
 #include "chart/rendering/drawlabel.h"
@@ -14,48 +32,97 @@ void DrawLegend::draw(Gfx::ICanvas &canvas,
     Gen::ChannelId channelType,
     double weight) const
 {
-	auto contentRect =
+	auto markerWindowRect =
 	    style.contentRect(legendLayout, rootStyle.calculatedSize());
 
-	auto &&info = Info{
-	    .canvas = canvas,
-	    .contentRect = contentRect,
+	auto titleRect =
+	    markerWindowRect.popBottom(style.title.getHeight());
+	auto markerWindowHeight = markerWindowRect.height();
+	auto itemHeight = style.label.getHeight();
+	auto markerSize = style.marker.size->get(itemHeight,
+	    style.label.calculatedSize());
+
+	auto fadeHeight = markerSize;
+	markerWindowRect =
+	    markerWindowRect
+	    + Geom::Rect{{0, -fadeHeight}, {0, 2 * fadeHeight}};
+
+	auto fadeElementPercent = fadeHeight / markerWindowRect.height();
+
+	auto &&info = Info{.canvas = canvas,
+	    .titleRect = titleRect,
+	    .markerWindowRect = markerWindowRect,
+	    .fadeHeight = fadeHeight,
+	    .yOverflow = {},
+	    .yOffset = {},
 	    .type = channelType,
 	    .weight = weight,
-	    .itemHeight = style.label.getHeight(),
-	    .titleHeight = style.title.getHeight(),
-	    .markerSize = style.marker.size->get(contentRect.size.y,
-	        style.label.calculatedSize()),
+	    .itemHeight = itemHeight,
+	    .markerSize = markerSize,
 	    .measure = plot->axises.at(channelType).measure,
 	    .dimension = plot->axises.at(channelType).dimension,
-	};
+	    .colorGradientSetter = {markerWindowRect.leftSide(),
+	        Gfx::ColorGradient{{
+	            {0.0, {}},
+	            {fadeElementPercent / 2.0, {}},
+	            {fadeElementPercent, {}},
+	            {1.0 - fadeElementPercent, {}},
+	            {1.0 - fadeElementPercent / 2.0, {}},
+	            {1.0, {}},
+	        }}}};
+
+	info.yOverflow = markersLegendFullSize(info) - markerWindowHeight;
+	if (std::signbit(info.yOverflow)) info.yOverflow = 0.0;
+	info.yOffset =
+	    style.translateY->get(info.yOverflow, info.itemHeight);
 
 	DrawBackground{{ctx()}}.draw(canvas,
 	    legendLayout,
 	    style,
 	    *events.background,
-	    Events::Targets::legend(channelType));
+	    Events::Targets::legend(channelType, info.yOverflow));
 
 	canvas.save();
-	canvas.setClipRect(contentRect);
 
-	drawTitle(info);
+	canvas.setClipRect(markerWindowRect);
 
 	drawDimension(info);
 
 	drawMeasure(info);
 
 	canvas.restore();
+
+	canvas.save();
+
+	canvas.setClipRect(titleRect);
+
+	drawTitle(info);
+
+	canvas.restore();
+}
+
+void DrawLegend::ColorGradientSetter::operator()(Gfx::ICanvas &canvas,
+    const Geom::AffineTransform &transform,
+    const Gfx::Color &color) const
+{
+	for (auto &stop : modifiableStops) stop.value = color;
+
+	modifiableStops[0].value.alpha = 0.0;
+	modifiableStops[1].value.alpha *= 0.27;
+	modifiableStops[4].value.alpha *= 0.27;
+	modifiableStops[5].value.alpha = 0.0;
+
+	canvas.setBrushGradient(
+	    {transform(line.begin), transform(line.end)},
+	    gradient);
 }
 
 void DrawLegend::drawTitle(const Info &info) const
 {
-	auto rect = info.contentRect;
-	rect.size.y = info.titleHeight;
 	plot->axises.at(info.type).common.title.visit(
 	    [this,
 	        &info,
-	        &rect,
+	        &rect = info.titleRect,
 	        mul = std::max<double>(info.measureEnabled,
 	            info.dimensionEnabled)](::Anim::InterpolateIndex,
 	        const auto &title)
@@ -67,7 +134,9 @@ void DrawLegend::drawTitle(const Info &info) const
 		        title.value.c_str(),
 		        style.title,
 		        *events.title,
-		        Events::Targets::legendTitle(title.value, info.type),
+		        Events::Targets::legendTitle(title.value,
+		            info.type,
+		            info.yOverflow),
 		        {.alpha = title.weight * info.weight * mul});
 	    });
 }
@@ -83,8 +152,17 @@ void DrawLegend::drawDimension(const Info &info) const
 		auto itemRect =
 		    getItemRect(info, value.second.range.getMin());
 
-		if (itemRect.y().getMax() >= info.contentRect.y().getMax())
+		if (itemRect.y().getMin() > info.markerWindowRect.y().getMax()
+		    || itemRect.y().getMax()
+		           < info.markerWindowRect.y().getMin())
 			continue;
+
+		const auto needGradient =
+		    itemRect.y().getMax()
+		        > info.markerWindowRect.y().getMax() - info.fadeHeight
+		    || itemRect.y().getMin()
+		           < info.markerWindowRect.y().getMin()
+		                 + info.fadeHeight;
 
 		const auto alpha{Math::FuzzyBool{value.second.weight}
 		                 && Math::FuzzyBool{info.weight}};
@@ -93,7 +171,8 @@ void DrawLegend::drawDimension(const Info &info) const
 		    value.second.categoryValue,
 		    colorBuilder.render(value.second.colorBase)
 		        * double{alpha},
-		    getMarkerRect(info, itemRect));
+		    getMarkerRect(info, itemRect),
+		    needGradient);
 
 		value.second.label.visit(
 		    [&](::Anim::InterpolateIndex, const auto &weighted)
@@ -107,17 +186,26 @@ void DrawLegend::drawDimension(const Info &info) const
 			            info.dimension.category,
 			            value.second.categoryValue,
 			            value.second.categoryValue,
-			            info.type),
-			        {.alpha = double{
-			             alpha && Math::FuzzyBool{weighted.weight}}});
+			            info.type,
+			            info.yOverflow),
+			        {.alpha =
+			                double{
+			                    alpha
+			                    && Math::FuzzyBool{weighted.weight}},
+			            .gradient =
+			                needGradient
+			                    ? std::ref(info.colorGradientSetter)
+			                    : decltype(DrawLabel::Options::
+			                            gradient){}});
 		    });
 	}
 }
 
 Geom::Rect DrawLegend::getItemRect(const Info &info, double index)
 {
-	Geom::Rect res = info.contentRect;
-	res.pos.y += info.titleHeight + index * info.itemHeight;
+	Geom::Rect res = info.markerWindowRect;
+	res.pos.y +=
+	    info.fadeHeight + index * info.itemHeight - info.yOffset;
 	res.size.y = info.itemHeight;
 	if (std::signbit(res.size.x)) res.size.x = 0;
 	return res;
@@ -145,11 +233,16 @@ Geom::TransformedRect DrawLegend::getLabelRect(const Info &info,
 void DrawLegend::drawMarker(const Info &info,
     std::string_view categoryValue,
     const Gfx::Color &color,
-    const Geom::Rect &rect) const
+    const Geom::Rect &rect,
+    bool needGradient) const
 {
 	info.canvas.save();
 
-	info.canvas.setBrushColor(color);
+	if (needGradient)
+		info.colorGradientSetter(info.canvas, {}, color);
+	else
+		info.canvas.setBrushColor(color);
+
 	info.canvas.setLineColor(color);
 	info.canvas.setLineWidth(0);
 
@@ -160,7 +253,8 @@ void DrawLegend::drawMarker(const Info &info,
 	auto markerElement =
 	    Events::Targets::legendMarker(info.dimension.category,
 	        categoryValue,
-	        info.type);
+	        info.type,
+	        info.yOverflow);
 
 	if (events.marker->invoke(
 	        Events::OnRectDrawEvent(*markerElement, {rect, false}))) {
@@ -219,17 +313,32 @@ void DrawLegend::extremaLabel(const Info &info,
 	    text.c_str(),
 	    style.label,
 	    *events.label,
-	    Events::Targets::measLegendLabel(text, info.type),
+	    Events::Targets::measLegendLabel(text,
+	        info.type,
+	        info.yOverflow),
 	    {.alpha = info.measureWeight * plusWeight});
 }
 
 Geom::Rect DrawLegend::getBarRect(const Info &info)
 {
-	Geom::Rect res = info.contentRect;
-	res.pos.y += info.titleHeight + info.itemHeight / 2.0;
+	Geom::Rect res = info.markerWindowRect;
+	res.pos.y += info.fadeHeight + info.itemHeight / 2.0;
 	res.size.y = 5 * info.itemHeight;
 	res.size.x = info.markerSize;
 	return res;
+}
+
+double DrawLegend::markersLegendFullSize(const Info &info)
+{
+	double itemCount{info.measureEnabled <= 0.0 ? 0.0 : 6.0};
+	if (info.dimensionEnabled)
+		for (const auto &value : info.dimension)
+			if (auto itemPos = value.second.range.getMin() + 1;
+			    value.second.weight > 0
+			    && Math::Floating::less(itemCount, itemPos))
+				itemCount = itemPos;
+
+	return itemCount * info.itemHeight;
 }
 
 void DrawLegend::colorBar(const Info &info,
@@ -244,7 +353,8 @@ void DrawLegend::colorBar(const Info &info,
 	info.canvas.setLineWidth(0);
 
 	auto barElement =
-	    Events::Targets::legendBar(Gen::ChannelId::color);
+	    Events::Targets::legendBar(Gen::ChannelId::color,
+	        info.yOverflow);
 
 	if (events.bar->invoke(
 	        Events::OnRectDrawEvent(*barElement, {rect, false}))) {
@@ -276,7 +386,8 @@ void DrawLegend::lightnessBar(const Info &info,
 	info.canvas.setLineWidth(0);
 
 	auto barElement =
-	    Events::Targets::legendBar(Gen::ChannelId::lightness);
+	    Events::Targets::legendBar(Gen::ChannelId::lightness,
+	        info.yOverflow);
 
 	if (events.bar->invoke(
 	        Events::OnRectDrawEvent(*barElement, {rect, false}))) {
@@ -297,8 +408,8 @@ void DrawLegend::sizeBar(const Info &info,
 	    Gfx::Color::Gray(0.8) * info.measureWeight);
 	info.canvas.setLineWidth(0);
 
-	auto barElement =
-	    Events::Targets::legendBar(Gen::ChannelId::size);
+	auto barElement = Events::Targets::legendBar(Gen::ChannelId::size,
+	    info.yOverflow);
 
 	if (events.bar->invoke(
 	        Events::OnRectDrawEvent(*barElement, {rect, false}))) {

@@ -1,7 +1,7 @@
 #ifndef CHANNELRANGE_H
 #define CHANNELRANGE_H
 
-#include <optional>
+#include <cstdint>
 
 #include "base/math/range.h"
 #include "base/type/physicalvalue.h"
@@ -11,7 +11,7 @@
 namespace Vizzu::Gen
 {
 
-enum class ChannelExtremaType {
+enum class ChannelExtremaType : std::uint8_t {
 	absolute,
 	relative,
 	minOffset,

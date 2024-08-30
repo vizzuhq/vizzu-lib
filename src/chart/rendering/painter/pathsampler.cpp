@@ -1,6 +1,9 @@
 
 #include "pathsampler.h"
 
+#include "base/geom/point.h"
+#include "base/gfx/pathsampler.h"
+
 namespace Vizzu::Draw
 {
 

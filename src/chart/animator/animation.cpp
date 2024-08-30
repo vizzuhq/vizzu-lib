@@ -1,24 +1,34 @@
 #include "animation.h"
 
+#include <functional>
+#include <memory>
+#include <stdexcept>
 #include <utility>
 
+#include "base/anim/control.h"
+#include "base/anim/controllable.h"
+#include "base/anim/sequence.h"
 #include "chart/animator/keyframe.h"
 #include "chart/generator/plot.h"
 #include "chart/generator/plotbuilder.h"
+#include "chart/generator/plotptr.h"
+#include "dataframe/old/datatable.h"
+
+#include "options.h"
 
 namespace Vizzu::Anim
 {
 
 Animation::Animation(const Gen::PlotPtr &plot) :
-    ::Anim::Control(static_cast<Controllable &>(*this)),
+    Control(static_cast<Controllable &>(*this)),
     source(plot),
     target(plot)
 {
 	onChange.attach(
 	    [this]
 	    {
-		    if (!::Anim::Sequence::actual) return;
-		    auto plot = ::Anim::Sequence::actual->data();
+		    if (!actual) return;
+		    auto plot = actual->data();
 		    if (!plot) return;
 		    onPlotChanged(
 		        std::static_pointer_cast<Gen::Plot>(std::move(plot)));
@@ -54,12 +64,12 @@ void Animation::addKeyframe(const Gen::PlotPtr &next,
 		strategy = RegroupStrategy::fade;
 	}
 
-	Vizzu::Gen::PlotPtr intermediate0;
-	Vizzu::Gen::PlotPtr intermediate1;
+	Gen::PlotPtr intermediate0;
+	Gen::PlotPtr intermediate1;
 
 	if (strategy == RegroupStrategy::drilldown) {
-		auto drilldown = +[](Vizzu::Gen::Options &base,
-		                      const Vizzu::Gen::Options &other)
+		auto drilldown =
+		    +[](Gen::Options &base, const Gen::Options &other)
 		{
 			base.drilldownTo(other);
 		};
@@ -89,9 +99,8 @@ void Animation::addKeyframe(const Gen::PlotPtr &next,
 		              && next->getOptions()->dataFilter](
 		        bool drilldownToBase)
 		{
-			return [&andFilter,
-			           drilldownToBase](Vizzu::Gen::Options &base,
-			           const Vizzu::Gen::Options &target)
+			return [&andFilter, drilldownToBase](Gen::Options &base,
+			           const Gen::Options &target)
 			{
 				auto baseCopy = base;
 				base.intersection(target);
@@ -180,10 +189,22 @@ Gen::PlotPtr Animation::getIntermediate(const Gen::PlotPtr &base,
 	auto extOptions =
 	    std::make_shared<Gen::Options>(*base->getOptions());
 
-	modifier(*extOptions, *other->getOptions());
+	std::forward<Modifier>(
+	    modifier)(*extOptions, *other->getOptions());
 
 	if (*extOptions != *other->getOptions()
 	    && *extOptions != *base->getOptions()) {
+
+		auto &labelChannel =
+		    extOptions->getChannels().at(Gen::ChannelId::label);
+
+		for (const auto &series : labelChannel.dimensions())
+			extOptions->getChannels()
+			    .at(Gen::ChannelId::noop)
+			    .dimensionIds.push_back(series);
+
+		labelChannel.reset();
+
 		res =
 		    Gen::PlotBuilder{dataTable, extOptions, base->getStyle()}
 		        .build();
@@ -206,14 +227,14 @@ void Animation::addKeyframe(const Gen::PlotPtr &source,
 	    isInstant));
 }
 
-void Animation::animate(const ::Anim::Control::Option &options,
+void Animation::animate(const Option &options,
     OnComplete &&onThisCompletes)
 {
 	if (isRunning())
 		throw std::logic_error("animation already in progress");
 
 	completionCallback = std::move(onThisCompletes);
-	::Anim::Control::reset();
+	reset();
 	this->options = options;
 	onBegin();
 }

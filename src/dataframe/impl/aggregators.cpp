@@ -2,8 +2,15 @@
 #include "aggregators.h"
 
 #include <cmath>
+#include <cstddef>
 #include <limits>
 #include <set>
+#include <string>
+#include <utility>
+#include <variant>
+
+#include "base/refl/auto_enum.h"
+#include "dataframe/interface.h"
 
 namespace Vizzu::dataframe
 {

@@ -1,9 +1,14 @@
 #include "drawline.h"
 
+#include <array>
+
+#include "base/geom/line.h"
 #include "base/geom/quadrilateral.h"
+#include "base/gfx/canvas.h"
 #include "base/math/interpolation.h"
 
-#include "drawpolygon.h"
+#include "coordinatesystem.h"
+#include "pathsampler.h"
 
 namespace Vizzu::Draw
 {

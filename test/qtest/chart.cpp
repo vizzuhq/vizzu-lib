@@ -146,9 +146,9 @@ void TestChart::run()
 			IO::log() << "step 1b";
 			auto &options = chart.getChart().getOptions();
 			auto &styles = chart.getChart().getStyles();
-			options.dataFilter = Vizzu::Data::Filter{std::shared_ptr<
-			    bool(const Vizzu::Data::RowWrapper *)>{
-			    std::shared_ptr<void>{},
+			options.dataFilter = Vizzu::Data::Filter{std::unique_ptr<
+			    bool(const Vizzu::Data::RowWrapper *),
+			    void (*)(bool(const Vizzu::Data::RowWrapper *))>{
 			    +[](const Vizzu::Data::RowWrapper *row) -> bool
 			    {
 				    return *std::get<const Text::immutable_string *>(
@@ -157,6 +157,9 @@ void TestChart::run()
 				        || *std::get<const Text::immutable_string *>(
 				               row->get_value("Cat2"))
 				               == std::string_view{"b"};
+			    },
+			    +[](bool(const Vizzu::Data::RowWrapper *))
+			    {
 			    }}};
 			options.title = "VIZZU Chart - Phase 1b";
 			styles.legend.marker.type =

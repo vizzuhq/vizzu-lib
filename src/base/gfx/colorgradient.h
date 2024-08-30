@@ -10,16 +10,15 @@
 namespace Gfx
 {
 
-struct ColorGradient : Math::SegmentedFunction<Gfx::Color>
+struct ColorGradient : Math::SegmentedFunction<Color>
 {
 	static ColorGradient HeatMap5Color();
 	static ColorGradient HeatMap7Color();
 
-	using Math::SegmentedFunction<Gfx::Color>::SegmentedFunction;
+	using SegmentedFunction::SegmentedFunction;
 
-	explicit ColorGradient(
-	    Math::SegmentedFunction<Gfx::Color> gradient) :
-	    Math::SegmentedFunction<Gfx::Color>(std::move(gradient))
+	explicit ColorGradient(SegmentedFunction gradient) :
+	    SegmentedFunction(std::move(gradient))
 	{}
 
 	explicit ColorGradient(
@@ -27,7 +26,7 @@ struct ColorGradient : Math::SegmentedFunction<Gfx::Color>
 
 	explicit operator std::string() const;
 
-	using Math::SegmentedFunction<Gfx::Color>::at;
+	using SegmentedFunction::at;
 };
 
 }
