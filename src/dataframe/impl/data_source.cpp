@@ -525,10 +525,12 @@ std::string data_source::get_id(std::size_t record,
 		while (dimension_names[ix] != name) ++ix;
 		const auto *val = dimensions[ix].get(record);
 		res += name;
-		res += ':';
-		res += val ? *val : std::string_view{"__null__"};
-		res += ';';
+		res += '\37';
+		res += val ? *val : std::string_view{"␀"};
+		res += '\36';
 	}
+	if (series.empty()) res = "␀";
+
 	return res;
 }
 

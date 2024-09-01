@@ -85,7 +85,7 @@ void TestChart::run()
 		IO::log() << "step 5";
 		auto &options = chart.getChart().getOptions();
 		options.title = "VIZZU Chart - Phase 5";
-		options.showTooltip("Cat1:A;Cat2:bíyx;");
+		options.showTooltip("Cat1\37A\36Cat2\37bíyx\36");
 		chart.getChart().setKeyframe();
 		chart.getChart().animate({step6});
 	};
@@ -95,7 +95,7 @@ void TestChart::run()
 		IO::log() << "step 4";
 		auto &options = chart.getChart().getOptions();
 		options.title = "VIZZU Chart - Phase 4";
-		options.showTooltip("Cat1:A;Cat2:aasd;");
+		options.showTooltip("Cat1\37A\36Cat2\37aasd\36");
 		chart.getChart().setKeyframe();
 		chart.getChart().animate({step5});
 	};
@@ -182,7 +182,9 @@ void TestChart::run()
 		auto &table = chart.getChart().getTable();
 		auto &channels = options.getChannels();
 		channels.at(ChannelId::x).addSeries({"Cat1", table});
-		channels.at(ChannelId::x).addSeries({"exists()", table});
+		channels.at(ChannelId::x)
+		    .measureId.emplace()
+		    .setAggr("exists");
 		channels.at(ChannelId::y).addSeries({"Val", table});
 		channels.at(ChannelId::label).addSeries({"Val", table});
 		channels.at(ChannelId::x).addSeries({"Val", table});
