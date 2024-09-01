@@ -325,6 +325,25 @@ struct JSONObj : protected JSONRepeat<'{', '}'>
 		}
 		return std::move(*this);
 	}
+
+	template <class T> JSONObj &&mergeObj(T &&obj) &&
+	{
+		if (was) json.pop_back();
+		auto pre_size = json.size();
+
+		staticObj(obj);
+
+		json.pop_back();
+
+		if (pre_size + 1 == json.size())
+			json.pop_back();
+		else if (was)
+			json[pre_size] = ',';
+		else
+			was = true;
+
+		return std::move(*this);
+	}
 };
 
 struct JSONArr : protected JSONRepeat<'[', ']'>

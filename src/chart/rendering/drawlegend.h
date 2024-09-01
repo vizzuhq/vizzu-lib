@@ -42,8 +42,6 @@ private:
 		Geom::Rect titleRect;
 		Geom::Rect markerWindowRect;
 		double fadeHeight{};
-		double yOverflow{};
-		double yOffset{};
 		Gen::ChannelId type{};
 		double weight{};
 		double itemHeight{};
@@ -53,6 +51,7 @@ private:
 		double measureEnabled = measure.enabled.calculate<double>();
 		bool dimensionEnabled = dimension.enabled;
 		double measureWeight = weight * measureEnabled;
+		Events::Targets::LegendProperties properties{};
 		ColorGradientSetter colorGradientSetter;
 	};
 
