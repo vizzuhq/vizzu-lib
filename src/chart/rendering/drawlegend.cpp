@@ -53,12 +53,12 @@ void DrawLegend::draw(Gfx::ICanvas &canvas,
 	    .titleRect = titleRect,
 	    .markerWindowRect = markerWindowRect,
 	    .fadeHeight = fadeHeight,
-	    .type = channelType,
 	    .weight = weight,
 	    .itemHeight = itemHeight,
 	    .markerSize = markerSize,
 	    .measure = plot->axises.at(channelType).measure,
 	    .dimension = plot->axises.at(channelType).dimension,
+	    .properties = {.channel = channelType},
 	    .colorGradientSetter = {markerWindowRect.leftSide(),
 	        Gfx::ColorGradient{{
 	            {0.0, {}},
@@ -78,7 +78,7 @@ void DrawLegend::draw(Gfx::ICanvas &canvas,
 	    legendLayout,
 	    style,
 	    *events.background,
-	    Events::Targets::legend(channelType, info.properties));
+	    Events::Targets::legend(info.properties));
 
 	canvas.save();
 
@@ -113,26 +113,26 @@ void DrawLegend::ColorGradientSetter::operator()(Gfx::ICanvas &canvas,
 
 void DrawLegend::drawTitle(const Info &info) const
 {
-	plot->axises.at(info.type).common.title.visit(
-	    [this,
-	        &info,
-	        &rect = info.titleRect,
-	        mul = std::max<double>(info.measureEnabled,
-	            info.dimensionEnabled)](::Anim::InterpolateIndex,
-	        const auto &title)
-	    {
-		    if (title.weight <= 0) return;
+	plot->axises.at(info.properties.channel)
+	    .common.title.visit(
+	        [this,
+	            &info,
+	            &rect = info.titleRect,
+	            mul = std::max<double>(info.measureEnabled,
+	                info.dimensionEnabled)](::Anim::InterpolateIndex,
+	            const auto &title)
+	        {
+		        if (title.weight <= 0) return;
 
-		    DrawLabel{{ctx()}}.draw(info.canvas,
-		        Geom::TransformedRect::fromRect(rect),
-		        title.value,
-		        style.title,
-		        *events.title,
-		        Events::Targets::legendTitle(title.value,
-		            info.type,
-		            info.properties),
-		        {.alpha = title.weight * info.weight * mul});
-	    });
+		        DrawLabel{{ctx()}}.draw(info.canvas,
+		            Geom::TransformedRect::fromRect(rect),
+		            title.value,
+		            style.title,
+		            *events.title,
+		            Events::Targets::legendTitle(title.value,
+		                info.properties),
+		            {.alpha = title.weight * info.weight * mul});
+	        });
 }
 
 void DrawLegend::drawDimension(const Info &info) const
@@ -180,7 +180,7 @@ void DrawLegend::drawDimension(const Info &info) const
 			            info.dimension.category,
 			            value.second.categoryValue,
 			            value.second.categoryValue,
-			            info.type,
+
 			            info.properties),
 			        {.alpha =
 			                double{
@@ -247,7 +247,7 @@ void DrawLegend::drawMarker(const Info &info,
 	auto markerElement =
 	    Events::Targets::legendMarker(info.dimension.category,
 	        categoryValue,
-	        info.type,
+
 	        info.properties);
 
 	if (events.marker->invoke(
@@ -282,7 +282,7 @@ void DrawLegend::drawMeasure(const Info &info) const
 	auto bar = getBarRect(info);
 
 	using ST = Gen::ChannelId;
-	switch (info.type) {
+	switch (info.properties.channel) {
 	case ST::color: colorBar(info, bar); break;
 	case ST::lightness: lightnessBar(info, bar); break;
 	case ST::size: sizeBar(info, bar); break;
@@ -308,7 +308,7 @@ void DrawLegend::extremaLabel(const Info &info,
 	    style.label,
 	    *events.label,
 	    Events::Targets::measLegendLabel(text,
-	        info.type,
+
 	        info.properties),
 	    {.alpha = info.measureWeight * plusWeight});
 }
@@ -346,9 +346,7 @@ void DrawLegend::colorBar(const Info &info,
 	info.canvas.setLineColor(Gfx::Color::Transparent());
 	info.canvas.setLineWidth(0);
 
-	auto barElement =
-	    Events::Targets::legendBar(Gen::ChannelId::color,
-	        info.properties);
+	auto barElement = Events::Targets::legendBar(info.properties);
 
 	if (events.bar->invoke(
 	        Events::OnRectDrawEvent(*barElement, {rect, false}))) {
@@ -379,9 +377,7 @@ void DrawLegend::lightnessBar(const Info &info,
 	info.canvas.setLineColor(Gfx::Color::Transparent());
 	info.canvas.setLineWidth(0);
 
-	auto barElement =
-	    Events::Targets::legendBar(Gen::ChannelId::lightness,
-	        info.properties);
+	auto barElement = Events::Targets::legendBar(info.properties);
 
 	if (events.bar->invoke(
 	        Events::OnRectDrawEvent(*barElement, {rect, false}))) {
@@ -402,8 +398,7 @@ void DrawLegend::sizeBar(const Info &info,
 	    Gfx::Color::Gray(0.8) * info.measureWeight);
 	info.canvas.setLineWidth(0);
 
-	auto barElement = Events::Targets::legendBar(Gen::ChannelId::size,
-	    info.properties);
+	auto barElement = Events::Targets::legendBar(info.properties);
 
 	if (events.bar->invoke(
 	        Events::OnRectDrawEvent(*barElement, {rect, false}))) {

@@ -207,27 +207,24 @@ public:
 
 		struct LegendProperties
 		{
-			double scrollTop;
-			double scrollHeight;
+			Gen::ChannelId channel;
+			double scrollTop{};
+			double scrollHeight{};
 		};
 
 		struct Legend : Element
 		{
-			Gen::ChannelId channel;
 			LegendProperties properties;
 
-			explicit Legend(Gen::ChannelId channel,
-			    const LegendProperties &properties) :
+			explicit Legend(const LegendProperties &properties) :
 			    Element("legend"),
-			    channel(channel),
 			    properties(properties)
 			{}
 
 			void appendToJSON(Conv::JSONObj &&jsonObj) const override
 			{
 				Element::appendToJSON(
-				    std::move(jsonObj)("channel", channel)
-				        .mergeObj(properties));
+				    std::move(jsonObj).mergeObj(properties));
 			}
 		};
 
@@ -311,10 +308,9 @@ public:
 			return std::make_unique<Axis>(horizontal);
 		}
 
-		static auto legend(Gen::ChannelId channel,
-		    const LegendProperties &properties)
+		static auto legend(const LegendProperties &properties)
 		{
-			return std::make_unique<Legend>(channel, properties);
+			return std::make_unique<Legend>(properties);
 		}
 
 		static auto marker(const Gen::Marker &marker)
@@ -377,7 +373,7 @@ public:
 		    const std::string_view &categoryName,
 		    const std::string_view &categoryValue,
 		    const std::string &label,
-		    Gen::ChannelId channel,
+
 		    const LegendProperties &properties)
 		{
 			return std::make_unique<CategoryInfo<Text<LegendChild>>>(
@@ -385,48 +381,47 @@ public:
 			    categoryValue,
 			    label,
 			    "label",
-			    channel,
+
 			    properties);
 		}
 
 		static auto measLegendLabel(const std::string &label,
-		    Gen::ChannelId channel,
+
 		    const LegendProperties &properties)
 		{
 			return std::make_unique<Text<LegendChild>>(label,
 			    "label",
-			    channel,
+
 			    properties);
 		}
 
 		static auto legendTitle(const std::string &title,
-		    Gen::ChannelId channel,
+
 		    const LegendProperties &properties)
 		{
 			return std::make_unique<Text<LegendChild>>(title,
 			    "title",
-			    channel,
+
 			    properties);
 		}
 
 		static auto legendMarker(const std::string_view &categoryName,
 		    const std::string_view &categoryValue,
-		    Gen::ChannelId channel,
+
 		    const LegendProperties &properties)
 		{
 			return std::make_unique<CategoryInfo<LegendChild>>(
 			    categoryName,
 			    categoryValue,
 			    "marker",
-			    channel,
+
 			    properties);
 		}
 
-		static auto legendBar(Gen::ChannelId channel,
-		    const LegendProperties &properties)
+		static auto legendBar(const LegendProperties &properties)
 		{
 			return std::make_unique<LegendChild>("bar",
-			    channel,
+
 			    properties);
 		}
 
