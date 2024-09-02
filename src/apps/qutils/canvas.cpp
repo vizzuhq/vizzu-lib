@@ -199,14 +199,12 @@ void BaseCanvas::text(const Geom::Rect &rect, const std::string &text)
 	    QString::fromStdString(text));
 }
 
-void BaseCanvas::setBrushGradient(const Geom::Line &line,
-    const Gfx::ColorGradient &gradient)
+void BaseCanvas::setBrushGradient(const Gfx::LinearGradient &gradient)
 {
-	QLinearGradient qGradient(toQPoint(line.begin),
-	    toQPoint(line.end));
-	for (auto stop : gradient.stops) {
-		qGradient.setColorAt(stop.pos, toQColor(stop.value));
-	}
+	QLinearGradient qGradient(toQPoint(gradient.line.begin),
+	    toQPoint(gradient.line.end));
+	for (auto &&[pos, value] : gradient.colors.stops)
+		qGradient.setColorAt(pos, toQColor(value));
 	painter.setBrush(QBrush(qGradient));
 	painter.setPen(brushToPen(painter.brush()));
 }

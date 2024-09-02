@@ -326,7 +326,7 @@ struct JSONObj : protected JSONRepeat<'{', '}'>
 		return std::move(*this);
 	}
 
-	template <class T> JSONObj &&mergeObj(T &&obj) &&
+	template <class T> JSONObj &&mergeObj(const T &obj) &&
 	{
 		auto pre_size = json.size();
 
