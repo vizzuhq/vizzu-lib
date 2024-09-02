@@ -9,7 +9,7 @@
 #include "base/math/segmentedfunc.h"
 #include "base/math/segmentedfunc.tpp"
 
-template struct Math::SegmentedFunction<double>;
+template struct Math::SegmentedFunction<double, Anim::EasingGradient>;
 
 namespace Anim
 {

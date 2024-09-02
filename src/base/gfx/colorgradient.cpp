@@ -10,15 +10,8 @@
 
 #include "color.h"
 
-template struct Math::SegmentedFunction<Gfx::Color>;
-template Gfx::ColorGradient
-Math::SegmentedFunction<Gfx::Color>::operator*<Gfx::ColorGradient>(
-    this const Gfx::ColorGradient &,
-    double value);
-template Gfx::ColorGradient
-Math::SegmentedFunction<Gfx::Color>::operator+<Gfx::ColorGradient>(
-    this const Gfx::ColorGradient &,
-    const Gfx::ColorGradient &);
+template struct Math::SegmentedFunction<Gfx::Color,
+    Gfx::ColorGradient>;
 
 namespace Gfx
 {

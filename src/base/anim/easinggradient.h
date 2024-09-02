@@ -9,7 +9,8 @@
 namespace Anim
 {
 
-class EasingGradient : protected Math::SegmentedFunction<double>
+class EasingGradient :
+    protected Math::SegmentedFunction<double, EasingGradient>
 {
 public:
 	friend struct SegmentedFunction;

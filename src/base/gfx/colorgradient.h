@@ -10,7 +10,7 @@
 namespace Gfx
 {
 
-struct ColorGradient : Math::SegmentedFunction<Color>
+struct ColorGradient : Math::SegmentedFunction<Color, ColorGradient>
 {
 	static ColorGradient HeatMap5Color();
 	static ColorGradient HeatMap7Color();
