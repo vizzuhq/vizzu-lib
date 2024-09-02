@@ -13,10 +13,10 @@
 namespace Vizzu::Draw
 {
 
-ColorBuilder::ColorBuilder(const LighnessRange &lighnessRange,
+ColorBuilder::ColorBuilder(const LightnessRange &lightnessRange,
     const Anim::Interpolated<Gfx::ColorPalette> &palette,
     const Gfx::ColorGradient &gradient) :
-    lighnessRange(lighnessRange),
+    lightnessRange(lightnessRange),
     gradient(gradient),
     palette(palette)
 {}
@@ -37,7 +37,7 @@ Gfx::Color ColorBuilder::render(
 		    {
 			    return base.getLightness();
 		    });
-		return lightnessAdjusted(gradient.get().at(pos), lightness);
+		return lightnessAdjusted(gradient(pos), lightness);
 	}
 	return colorBase.combine(
 	    [this](const Gen::ColorBase &base)
@@ -56,16 +56,15 @@ Gfx::Color ColorBuilder::render(const Gen::ColorBase &colorBase) const
 Gfx::Color ColorBuilder::lightnessAdjusted(const Gfx::Color &color,
     double lightness) const
 {
-	auto factor = lighnessRange.scale(lightness);
+	auto factor = lightnessRange.scale(lightness);
 	return color.lightnessScaled(factor);
 }
 
 Gfx::Color ColorBuilder::baseColor(
     const Gen::ColorBase &colorBase) const
 {
-	return colorBase.isDiscrete()
-	         ? indexedColor(colorBase.getIndex())
-	         : gradient.get().at(colorBase.getPos());
+	return colorBase.isDiscrete() ? indexedColor(colorBase.getIndex())
+	                              : gradient(colorBase.getPos());
 }
 
 [[nodiscard]] Gfx::Color ColorBuilder::indexedColor(

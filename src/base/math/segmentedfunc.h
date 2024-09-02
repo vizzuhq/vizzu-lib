@@ -26,11 +26,16 @@ template <typename T> struct SegmentedFunction
 	    stops(std::move(stops))
 	{}
 
-	SegmentedFunction operator*(double value) const;
-	SegmentedFunction operator+(const SegmentedFunction &other) const;
-	bool operator==(const SegmentedFunction &other) const;
+	template <class Self>
+	[[nodiscard]] Self operator*(this const Self &, double);
 
-	[[nodiscard]] T at(double pos) const;
+	template <class Self>
+	[[nodiscard]] Self operator+(this const Self &, const Self &);
+
+	[[nodiscard]] bool operator==(
+	    const SegmentedFunction &other) const = default;
+
+	[[nodiscard]] T operator()(double pos) const;
 };
 
 }

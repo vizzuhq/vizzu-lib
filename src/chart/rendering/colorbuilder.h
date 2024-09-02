@@ -13,9 +13,9 @@ namespace Vizzu::Draw
 
 struct ColorBuilder
 {
-	using LighnessRange = Math::Range<double>;
+	using LightnessRange = Math::Range<double>;
 
-	ColorBuilder(const LighnessRange &lighnessRange,
+	ColorBuilder(const LightnessRange &lightnessRange,
 	    const ::Anim::Interpolated<Gfx::ColorPalette> &palette,
 	    const Gfx::ColorGradient &gradient);
 
@@ -26,7 +26,7 @@ struct ColorBuilder
 	    const Gen::ColorBase &colorBase) const;
 
 private:
-	LighnessRange lighnessRange;
+	LightnessRange lightnessRange;
 
 	std::reference_wrapper<const Gfx::ColorGradient> gradient;
 	std::reference_wrapper<

@@ -341,8 +341,7 @@ void DrawLegend::colorBar(const Info &info,
 	info.canvas.save();
 
 	info.canvas.setBrushGradient({rect.leftSide(),
-	    Gfx::ColorGradient{*rootStyle.plot.marker.colorGradient
-	                       * info.measureWeight}});
+	    *rootStyle.plot.marker.colorGradient * info.measureWeight});
 	info.canvas.setLineColor(Gfx::Color::Transparent());
 	info.canvas.setLineWidth(0);
 
@@ -372,8 +371,8 @@ void DrawLegend::lightnessBar(const Info &info,
 
 	info.canvas.save();
 
-	info.canvas.setBrushGradient({rect.leftSide(),
-	    Gfx::ColorGradient{gradient * info.measureWeight}});
+	info.canvas.setBrushGradient(
+	    {rect.leftSide(), gradient * info.measureWeight});
 	info.canvas.setLineColor(Gfx::Color::Transparent());
 	info.canvas.setLineWidth(0);
 
