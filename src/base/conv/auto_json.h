@@ -328,7 +328,6 @@ struct JSONObj : protected JSONRepeat<'{', '}'>
 
 	template <class T> JSONObj &&mergeObj(T &&obj) &&
 	{
-		if (was) json.pop_back();
 		auto pre_size = json.size();
 
 		staticObj(obj);

@@ -106,7 +106,7 @@ void DrawLegend::ColorGradientSetter::operator()(Gfx::ICanvas &canvas,
 	for (auto &stop : modifiableStops) stop.value = color;
 
 	modifiableStops[0].value.alpha = 0.0;
-	modifiableStops[5].value.alpha = 0.0;
+	modifiableStops[3].value.alpha = 0.0;
 
 	canvas.setBrushGradient(transform(line), gradient);
 }
