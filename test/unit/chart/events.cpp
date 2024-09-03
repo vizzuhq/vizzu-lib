@@ -27,7 +27,6 @@ struct MyCanvas final : Gfx::ICanvas, Vizzu::Draw::Painter
 	void setClipPolygon() final {}
 	void setBrushColor(const Gfx::Color &) final {}
 	void setLineColor(const Gfx::Color &) final {}
-	void setTextColor(const Gfx::Color &) final {}
 	void setLineWidth(double) final {}
 	void setFont(const Gfx::Font &) final {}
 	void transform(const Geom::AffineTransform &) final {}
@@ -49,9 +48,7 @@ struct MyCanvas final : Gfx::ICanvas, Vizzu::Draw::Painter
 	void circle(const Geom::Circle &) final {}
 	void line(const Geom::Line &) final {}
 	void text(const Geom::Rect &, const std::string &) final {}
-	void setBrushGradient(const Geom::Line &,
-	    const Gfx::ColorGradient &) final
-	{}
+	void setBrushGradient(const Gfx::LinearGradient &) final {}
 	void frameBegin() final {}
 	void frameEnd() final {}
 	void *getPainter() final { return static_cast<Painter *>(this); }

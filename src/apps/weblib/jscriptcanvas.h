@@ -23,7 +23,6 @@ public:
 	void setLineColor(const Gfx::Color &color) override;
 	void setLineWidth(double width) override;
 	void setFont(const Gfx::Font &font) override;
-	void setTextColor(const Gfx::Color &color) override;
 
 	void beginDropShadow() override;
 	void setDropShadowBlur(double radius) override;
@@ -45,8 +44,8 @@ public:
 	void text(const Geom::Rect &rect,
 	    const std::string &text) override;
 
-	void setBrushGradient(const Geom::Line &line,
-	    const Gfx::ColorGradient &gradient) override;
+	void setBrushGradient(
+	    const Gfx::LinearGradient &gradient) override;
 
 	void frameBegin() override;
 	void frameEnd() override;

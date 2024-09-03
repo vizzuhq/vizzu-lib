@@ -156,7 +156,7 @@ void TextBox::draw(ICanvas &canvas, double opacity)
 			canvas.setLineColor(background);
 			canvas.rectangle(
 			    {{xpos, ypos}, {text.width, line.height}});
-			canvas.setTextColor(foreground);
+			canvas.setBrushColor(foreground);
 			canvas.text({{xpos, ypos}, {10000, 10000}}, text.content);
 			xpos += text.width;
 		}

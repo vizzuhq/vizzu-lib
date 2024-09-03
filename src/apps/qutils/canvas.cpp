@@ -92,8 +92,8 @@ void BaseCanvas::init(QPaintDevice *device)
 
 void BaseCanvas::setBrushColor(const Gfx::Color &color)
 {
-	brush = QBrush(toQColor(color));
-	painter.setBrush(brush);
+	painter.setBrush(toQColor(color));
+	painter.setPen(brushToPen(painter.brush()));
 }
 
 void BaseCanvas::setLineColor(const Gfx::Color &color)
@@ -162,12 +162,6 @@ void BaseCanvas::setFont(const Gfx::Font &newFont)
 	painter.setFont(fromGfxFont(newFont, painter.font()));
 }
 
-void BaseCanvas::setTextColor(const Gfx::Color &color)
-{
-	textPen = colorToPen(color);
-	painter.setPen(textPen);
-}
-
 void BaseCanvas::beginDropShadow() {}
 
 void BaseCanvas::setDropShadowBlur(double) {}
@@ -199,29 +193,28 @@ void BaseCanvas::rectangle(const Geom::Rect &rect)
 
 void BaseCanvas::text(const Geom::Rect &rect, const std::string &text)
 {
-	painter.setPen(textPen);
+	painter.setPen(brushToPen(painter.brush()));
 	painter.drawText(toQRect(rect),
 	    Qt::AlignLeft,
 	    QString::fromStdString(text));
 }
 
-void BaseCanvas::setBrushGradient(const Geom::Line &line,
-    const Gfx::ColorGradient &gradient)
+void BaseCanvas::setBrushGradient(const Gfx::LinearGradient &gradient)
 {
-	QLinearGradient qGradient(toQPoint(line.begin),
-	    toQPoint(line.end));
-	for (auto stop : gradient.stops) {
-		qGradient.setColorAt(stop.pos, toQColor(stop.value));
-	}
+	QLinearGradient qGradient(toQPoint(gradient.line.begin),
+	    toQPoint(gradient.line.end));
+	for (auto &&[pos, value] : gradient.colors.stops)
+		qGradient.setColorAt(pos, toQColor(value));
 	painter.setBrush(QBrush(qGradient));
+	painter.setPen(brushToPen(painter.brush()));
 }
 
-QPen BaseCanvas::colorToPen(const Gfx::Color &color)
+QPen BaseCanvas::colorToPen(const Gfx::Color &color) const
 {
 	return brushToPen(QBrush(toQColor(color)));
 }
 
-QPen BaseCanvas::brushToPen(const QBrush &brush)
+QPen BaseCanvas::brushToPen(const QBrush &brush) const
 {
 	auto pen = painter.pen();
 	pen.setBrush(brush);

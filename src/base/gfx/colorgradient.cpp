@@ -10,7 +10,8 @@
 
 #include "color.h"
 
-template struct Math::SegmentedFunction<Gfx::Color>;
+template struct Math::SegmentedFunction<Gfx::Color,
+    Gfx::ColorGradient>;
 
 namespace Gfx
 {

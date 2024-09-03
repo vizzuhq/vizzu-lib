@@ -328,7 +328,7 @@ void MarkerRenderer::drawLabel(Gfx::ICanvas &canvas,
 		    return abstractMarker.getLabelPos(position, coordSys);
 	    });
 
-	canvas.setTextColor((*labelStyle.filter)(color)*weight);
+	canvas.setBrushColor((*labelStyle.filter)(color)*weight);
 
 	auto centered = labelStyle.position->factor<double>(
 	    Styles::MarkerLabel::Position::center);

@@ -26,7 +26,6 @@ public:
 	void setLineColor(const Gfx::Color &color) override;
 	void setLineWidth(double width) override;
 	void setFont(const Gfx::Font &newFont) override;
-	void setTextColor(const Gfx::Color &color) override;
 
 	void beginDropShadow() override;
 	void setDropShadowBlur(double radius) override;
@@ -47,8 +46,8 @@ public:
 	void text(const Geom::Rect &rect,
 	    const std::string &text) override;
 
-	void setBrushGradient(const Geom::Line &line,
-	    const Gfx::ColorGradient &gradient) override;
+	void setBrushGradient(
+	    const Gfx::LinearGradient &gradient) override;
 
 	void frameBegin() override {}
 	void frameEnd() override {}
@@ -70,11 +69,9 @@ protected:
 	QFont font;
 	QPainterPath polygon;
 	QPen linePen;
-	QPen textPen;
-	QBrush brush;
 
-	QPen colorToPen(const Gfx::Color &color);
-	QPen brushToPen(const QBrush &brush);
+	[[nodiscard]] QPen colorToPen(const Gfx::Color &color) const;
+	[[nodiscard]] QPen brushToPen(const QBrush &brush) const;
 };
 
 using Canvas = BaseCanvas;
