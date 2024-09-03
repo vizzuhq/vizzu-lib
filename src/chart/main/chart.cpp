@@ -103,9 +103,9 @@ void Chart::draw(Gfx::ICanvas &canvas)
 {
 	renderedChart = Draw::RenderedChart{
 	    actPlot ? Draw::CoordinateSystem{layout.plotArea,
-	        actPlot->getOptions()->angle,
-	        actPlot->getOptions()->coordSystem,
-	        actPlot->keepAspectRatio}
+	                  actPlot->getOptions()->angle,
+	                  actPlot->getOptions()->coordSystem,
+	                  actPlot->keepAspectRatio}
 	            : Draw::CoordinateSystem{layout.plotArea},
 	    actPlot};
 

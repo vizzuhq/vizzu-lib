@@ -9,8 +9,8 @@ JOBS="$1"
 if [ -z "$1" ]; then
     JOBS=$DEFAULT_JOBS
 fi
-export CC=/usr/bin/gcc-12
-export CXX=/usr/bin/g++-12
+export CC=/usr/bin/gcc
+export CXX=/usr/bin/g++
 mkdir -p build/cmake-desktop-gcc
 pushd build/cmake-desktop-gcc
 cmake -Dclangformat:BOOL="ON" ../../project/cmake/

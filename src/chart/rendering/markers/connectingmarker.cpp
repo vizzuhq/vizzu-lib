@@ -107,8 +107,8 @@ ConnectingMarker::ConnectingMarker(const DrawingContext &ctx,
 			points[3] = prevPos - prevSpacing;
 
 			lineWidth[0] = isLine ? std::max(minWidth,
-			                   maxWidth * prev->sizeFactor,
-			                   less)
+			                            maxWidth * prev->sizeFactor,
+			                            less)
 			                      : 0;
 
 			points[0] =

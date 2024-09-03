@@ -232,8 +232,8 @@ public:
 		    std::less<T>>;
 		return !has_second ? this->values[0].value
 		                   : std::min(this->values[0].value,
-		                       this->values[1].value,
-		                       Less{});
+		                         this->values[1].value,
+		                         Less{});
 	}
 
 	template <typename T = Type> [[nodiscard]] T max() const
@@ -243,8 +243,8 @@ public:
 		    std::less<T>>;
 		return !has_second ? this->values[0].value
 		                   : std::max(this->values[0].value,
-		                       this->values[1].value,
-		                       Less{});
+		                         this->values[1].value,
+		                         Less{});
 	}
 };
 

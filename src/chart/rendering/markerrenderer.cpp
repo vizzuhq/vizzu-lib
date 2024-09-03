@@ -357,12 +357,13 @@ std::string MarkerRenderer::getLabelText(
 
 	std::string valueStr;
 	if (labelValue.hasValue()) {
-		auto value = needsInterpolation ? label.combine(
-		                 [](const auto &value)
-		                 {
-			                 return value.value.value_or(0.0);
-		                 })
-		                                : labelValue.value.value();
+		auto value = needsInterpolation
+		               ? label.combine(
+		                     [](const auto &value)
+		                     {
+			                     return value.value.value_or(0.0);
+		                     })
+		               : labelValue.value.value();
 		valueStr = Text::SmartString::fromPhysicalValue(value,
 		    *labelStyle.numberFormat,
 		    static_cast<size_t>(*labelStyle.maxFractionDigits),
@@ -448,8 +449,9 @@ Gfx::Color MarkerRenderer::getSelectedColor(const Gen::Marker &marker,
 	auto markerColor = colorBuilder.render(marker.colorBase);
 
 	return label ? Math::interpolate(markerColor,
-	           rootStyle.plot.marker.label.color->transparent(1.0),
-	           rootStyle.plot.marker.label.color->alpha)
+	                   rootStyle.plot.marker.label.color->transparent(
+	                       1.0),
+	                   rootStyle.plot.marker.label.color->alpha)
 	             : markerColor;
 }
 
