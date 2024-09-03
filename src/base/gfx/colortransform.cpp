@@ -6,6 +6,7 @@
 #include <utility>
 
 #include "base/text/funcstring.h"
+#include "base/text/smartstring.h"
 
 #include "color.h"
 
@@ -14,10 +15,9 @@ namespace Gfx
 
 ColorTransform ColorTransform::fromString(const std::string &code)
 {
-	const Text::FuncString func(code, false);
+	if (Text::SmartString::trim_view(code) == "none") return None();
 
-	if (func.getName() == "none" && func.getParams().empty())
-		return None();
+	const Text::FuncString func(code);
 
 	if (func.isEmpty()) return {};
 

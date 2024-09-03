@@ -44,7 +44,7 @@ Color Color::fromString(const std::string &string)
 		    ((g << 4U) + g) / 255.0,
 		    ((b << 4U) + b) / 255.0};
 	}
-	if (const Text::FuncString f(string, false); !f.isEmpty()) {
+	if (const Text::FuncString f(string); !f.isEmpty()) {
 		using Conv::parse;
 
 		if (f.getName() == "rgb") {

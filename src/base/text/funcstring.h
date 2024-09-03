@@ -12,7 +12,14 @@ class FuncString
 public:
 	using Params = std::vector<std::string>;
 
-	explicit FuncString(std::string code, bool throwOnError = true);
+	[[nodiscard]] static FuncString fromString(
+	    const std::string &code)
+	{
+		return FuncString{code, true};
+	}
+
+	explicit FuncString(std::string code, bool throwOnError = false);
+
 	[[nodiscard]] bool isEmpty() const { return name.empty(); }
 	[[nodiscard]] const std::string &getName() const { return name; }
 	[[nodiscard]] const Params &getParams() const { return params; }

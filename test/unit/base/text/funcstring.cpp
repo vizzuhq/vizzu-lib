@@ -1,6 +1,7 @@
 #include "base/text/funcstring.h"
 
 #include "../../util/test.h"
+#include "base/conv/parse.h"
 
 using test::check;
 using test::collection;
@@ -101,7 +102,7 @@ const static auto tests =
             {
 	            throws<std::exception>() << []
 	            {
-		            FuncString("foo");
+		            Conv::parse<FuncString>("foo");
 	            };
             })
 

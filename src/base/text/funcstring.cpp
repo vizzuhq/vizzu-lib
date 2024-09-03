@@ -23,10 +23,7 @@ FuncString::FuncString(std::string code, bool throwOnError)
 	}
 
 	if (parts[1].empty() || parts[1].back() != ')') {
-		if (!throwOnError) {
-			name = std::move(code);
-			return;
-		}
+		if (!throwOnError) return;
 
 		throw std::logic_error("invalid function format");
 	}
