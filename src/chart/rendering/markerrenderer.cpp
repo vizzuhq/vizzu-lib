@@ -328,8 +328,6 @@ void MarkerRenderer::drawLabel(Gfx::ICanvas &canvas,
 		    return abstractMarker.getLabelPos(position, coordSys);
 	    });
 
-	canvas.setBrushColor((*labelStyle.filter)(color)*weight);
-
 	auto centered = labelStyle.position->factor<double>(
 	    Styles::MarkerLabel::Position::center);
 
@@ -338,8 +336,8 @@ void MarkerRenderer::drawLabel(Gfx::ICanvas &canvas,
 	    labelPos,
 	    labelStyle,
 	    centered,
-	    {},
-	    weight,
+	    Gfx::ColorTransform::OverrideColor(
+	        (*labelStyle.filter)(color)*weight),
 	    *rootEvents.draw.plot.marker.label,
 	    Events::Targets::markerLabel(text, marker));
 }

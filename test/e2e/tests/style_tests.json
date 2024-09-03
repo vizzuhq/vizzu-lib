@@ -463,24 +463,6 @@
 		"plot/xAxis/label/angle/turn/static_1.375": {
 			"refs": ["bcd1e8a"]
 		},
-		"plot/xAxis/label/backgroundColor/hexa/animated_yellowCustom_0.25-blueCustom_0.75": {
-			"refs": ["110172a"]
-		},
-		"plot/xAxis/label/backgroundColor/hexa/animated_yellowCustom_0.75-blueCustom_0.25": {
-			"refs": ["6f47a1e"]
-		},
-		"plot/xAxis/label/backgroundColor/hexa/static_blueCustom_0.25": {
-			"refs": ["0946d59"]
-		},
-		"plot/xAxis/label/backgroundColor/hexa/static_blueCustom_0.75": {
-			"refs": ["764bd8e"]
-		},
-		"plot/xAxis/label/backgroundColor/hexa/static_yellowCustom_0.25": {
-			"refs": ["a4a941d"]
-		},
-		"plot/xAxis/label/backgroundColor/hexa/static_yellowCustom_0.75": {
-			"refs": ["9217094"]
-		},
 		"plot/xAxis/label/color/hexa/animated_yellowCustom_0.25-blueCustom_0.75": {
 			"refs": ["e3c5b88"]
 		},

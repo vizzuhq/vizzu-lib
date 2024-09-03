@@ -25,8 +25,7 @@ void OrientedLabel::draw(Gfx::ICanvas &canvas,
     const Geom::Line &labelPos,
     const Styles::OrientedLabel &labelStyle,
     double centered,
-    std::optional<double> textAlpha,
-    double bgAlpha,
+    const Gfx::ColorTransform &colorTransform,
     Util::EventDispatcher::Event &event,
     std::unique_ptr<Util::EventTarget> eventTarget) const
 {
@@ -91,7 +90,7 @@ void OrientedLabel::draw(Gfx::ICanvas &canvas,
 	    labelStyle,
 	    event,
 	    std::move(eventTarget),
-	    {.alpha = textAlpha, .bgAlpha = bgAlpha});
+	    {.colorTransform = colorTransform});
 }
 
 }

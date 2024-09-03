@@ -16,12 +16,10 @@ class DrawLabel : public DrawingContext
 public:
 	struct Options
 	{
-		std::optional<double> alpha{1.0};
-		double bgAlpha{1.0};
+		Gfx::ColorTransform colorTransform{};
 		bool flip{false};
-		std::function<void(Gfx::ICanvas &,
-		    const Geom::AffineTransform &,
-		    const Gfx::Color &)>
+		std::function<const Gfx::LinearGradient &(const Gfx::Color &,
+		    const Geom::AffineTransform &)>
 		    gradient{};
 	};
 

@@ -17,10 +17,14 @@ struct ColorGradient : Math::SegmentedFunction<Color, ColorGradient>
 
 	using SegmentedFunction::SegmentedFunction;
 
-	explicit ColorGradient(
-	    const std::string &stoplist = std::string());
+	[[nodiscard]] static ColorGradient fromString(
+	    const std::string &stoplist);
 
 	explicit operator std::string() const;
+
+private:
+	friend struct SegmentedFunction;
+	ColorGradient() = default;
 };
 
 }

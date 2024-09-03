@@ -73,8 +73,10 @@ void DrawChart::drawHeading(Gfx::ICanvas &canvas,
 			            style,
 			            event,
 			            targetGetter(*weighted.value),
-			            {.alpha = std::max(weighted.weight * 2 - 1,
-			                 0.0)});
+			            {.colorTransform =
+			                    Gfx::ColorTransform::None()
+			                    * std::max(weighted.weight * 2 - 1,
+			                        0.0)});
 		        }
 	        });
 }

@@ -25,16 +25,14 @@ public:
 	    *rootStyle.plot.marker.colorGradient};
 
 private:
-	struct ColorGradientSetter
+	struct FadeBarGradient
 	{
-		Geom::Line line;
-		Gfx::ColorGradient gradient;
-		std::span<Gfx::ColorGradient::Stop> modifiableStops =
-		    gradient.stops;
+		Geom::Line origLine;
+		Gfx::LinearGradient gradient;
 
-		void operator()(Gfx::ICanvas &,
-		    const Geom::AffineTransform &,
-		    const Gfx::Color &) const;
+		[[nodiscard]] const Gfx::LinearGradient &operator()(
+		    const Gfx::Color &,
+		    const Geom::AffineTransform & = {});
 	};
 	struct Info
 	{
@@ -51,15 +49,15 @@ private:
 		bool dimensionEnabled = dimension.enabled;
 		double measureWeight = weight * measureEnabled;
 		Events::Targets::LegendProperties properties;
-		ColorGradientSetter colorGradientSetter;
+		FadeBarGradient fadeBarGradient;
 	};
 
 	void drawTitle(const Info &info) const;
 
-	void drawDimension(const Info &info) const;
+	void drawDimension(Info &info) const;
 	void drawMeasure(const Info &info) const;
 
-	void drawMarker(const Info &info,
+	void drawMarker(Info &info,
 	    std::string_view categoryValue,
 	    const Gfx::Color &color,
 	    const Geom::Rect &rect,

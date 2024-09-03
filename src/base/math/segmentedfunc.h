@@ -1,6 +1,7 @@
 #ifndef MATH_SEGMENTEDFUNC
 #define MATH_SEGMENTEDFUNC
 
+#include <initializer_list>
 #include <vector>
 
 #include "interpolation.h"
@@ -24,10 +25,8 @@ template <typename T, class CRTP> struct SegmentedFunction
 	std::vector<Stop> stops;
 
 	SegmentedFunction() noexcept = default;
-	explicit SegmentedFunction(std::size_t init) : stops(init) {}
-	explicit SegmentedFunction(std::vector<Stop> &&stops) noexcept :
-	    stops(std::move(stops))
-	{}
+
+	SegmentedFunction(std::initializer_list<Stop> il) : stops(il) {}
 
 	[[nodiscard]] friend CRTP operator*(const CRTP &self,
 	    double value)
@@ -84,6 +83,9 @@ template <typename T, class CRTP> struct SegmentedFunction
 		    std::next(it)->value,
 		    Range{it->pos, std::next(it)->pos}.rescale(pos));
 	}
+
+protected:
+	explicit SegmentedFunction(std::size_t init) : stops(init) {}
 };
 
 }
