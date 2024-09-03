@@ -73,18 +73,16 @@ template <typename T, class CRTP> struct SegmentedFunction
 		if (stops.empty()) return T();
 		if (stops.size() == 1 || pos < stops.front().pos)
 			return stops.front().value;
+		if (pos > stops.back().pos) return stops.back().value;
 
-		if (auto it = std::ranges::adjacent_find(stops,
-		        [pos](auto &&cur, auto &&next)
-		        {
-			        return cur.pos <= pos && pos <= next.pos;
-		        });
-		    it != stops.end())
-			return interpolate(it->value,
-			    std::next(it)->value,
-			    Range{it->pos, std::next(it)->pos}.rescale(pos));
-
-		return stops.back().value;
+		auto it = std::ranges::adjacent_find(stops,
+		    [pos](auto &&cur, auto &&next)
+		    {
+			    return cur.pos <= pos && pos <= next.pos;
+		    });
+		return interpolate(it->value,
+		    std::next(it)->value,
+		    Range{it->pos, std::next(it)->pos}.rescale(pos));
 	}
 };
 

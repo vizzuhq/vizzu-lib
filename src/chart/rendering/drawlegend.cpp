@@ -180,7 +180,6 @@ void DrawLegend::drawDimension(const Info &info) const
 			            info.dimension.category,
 			            value.second.categoryValue,
 			            value.second.categoryValue,
-
 			            info.properties),
 			        {.alpha =
 			                double{
@@ -247,7 +246,6 @@ void DrawLegend::drawMarker(const Info &info,
 	auto markerElement =
 	    Events::Targets::legendMarker(info.dimension.category,
 	        categoryValue,
-
 	        info.properties);
 
 	if (events.marker->invoke(
@@ -307,9 +305,7 @@ void DrawLegend::extremaLabel(const Info &info,
 	    text,
 	    style.label,
 	    *events.label,
-	    Events::Targets::measLegendLabel(text,
-
-	        info.properties),
+	    Events::Targets::measLegendLabel(text, info.properties),
 	    {.alpha = info.measureWeight * plusWeight});
 }
 

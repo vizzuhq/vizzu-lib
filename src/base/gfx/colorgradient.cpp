@@ -14,15 +14,19 @@ namespace Gfx
 ColorGradient::ColorGradient(const std::string &stoplist)
 {
 	for (const auto &stopString :
-	    Text::SmartString::split(stoplist, ',', true))
+	    Text::SmartString::split(stoplist, ',', true)) {
 		if (auto &&parts =
 		        Text::SmartString::split(stopString, ' ', true);
 		    parts.size() == 2)
-			stops.emplace_back(std::stod(parts[1]),
-			    Color::fromString(parts[0]));
-		else
-			throw std::logic_error(
-			    "invalid gradient stop: " + stopString);
+			if (auto pos = std::stod(parts[1]);
+			    std::isfinite(pos)
+			    && (stops.empty() || pos >= stops.back().pos)) {
+				stops.emplace_back(pos, Color::fromString(parts[0]));
+				continue;
+			}
+		throw std::logic_error(
+		    "invalid gradient stop: " + stopString);
+	}
 }
 
 ColorGradient::operator std::string() const
