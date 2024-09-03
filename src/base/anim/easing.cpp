@@ -16,10 +16,10 @@ Easing::Easing(const std::string &name)
 {
 	if (name.empty()) return;
 
-	auto nameCopy = name;
-	Text::SmartString::trim(nameCopy);
-
-	if (nameCopy == "none") { func = &Easing::none; }
+	if (auto nameCopy = Text::SmartString::trim_view(name);
+	    nameCopy == "none") {
+		func = &Easing::none;
+	}
 	else if (nameCopy == "linear") {
 		func = &Easing::linear;
 	}
@@ -45,7 +45,7 @@ Easing::Easing(const std::string &name)
 		func = EasingGradient::Bezier(Geom::Point{0.42, 0},
 		    Geom::Point{0.58, 1});
 	}
-	else if (const Text::FuncString f(nameCopy);
+	else if (const Text::FuncString f(name);
 	         f.getName() == "cubic-bezier") {
 		if (f.getParams().size() != 4)
 			throw std::logic_error("parameter count missmatch");

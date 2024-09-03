@@ -4,32 +4,25 @@
 #include <stdexcept>
 #include <string>
 
-#include "base/math/segmentedfunc.h"
-#include "base/math/segmentedfunc.tpp"
 #include "base/text/smartstring.h"
 
 #include "color.h"
-
-template struct Math::SegmentedFunction<Gfx::Color,
-    Gfx::ColorGradient>;
 
 namespace Gfx
 {
 
 ColorGradient::ColorGradient(const std::string &stoplist)
 {
-	auto stopStrings = Text::SmartString::split(stoplist, ',', true);
-	auto pos = 0.0;
-	for (auto &stopString : stopStrings) {
-		auto parts = Text::SmartString::split(stopString, ' ', true);
-		if (parts.size() == 2) {
-			pos = std::stod(parts[1]);
-			stops.emplace_back(pos, Color::fromString(parts[0]));
-		}
+	for (const auto &stopString :
+	    Text::SmartString::split(stoplist, ',', true))
+		if (auto &&parts =
+		        Text::SmartString::split(stopString, ' ', true);
+		    parts.size() == 2)
+			stops.emplace_back(std::stod(parts[1]),
+			    Color::fromString(parts[0]));
 		else
 			throw std::logic_error(
 			    "invalid gradient stop: " + stopString);
-	}
 }
 
 ColorGradient::operator std::string() const

@@ -47,24 +47,18 @@ Color Color::fromString(const std::string &string)
 	if (const Text::FuncString f(string); !f.isEmpty()) {
 		using Conv::parse;
 
-		if (f.getName() == "rgb") {
-			auto ps = f.getParams();
-			if (ps.size() != 3)
-				throw std::logic_error("invalid color string");
+		auto &&ps = f.getParams();
+		if (f.getName() == "rgb" && ps.size() == 3) {
 			return RGBA(parse<uint32_t>(ps.at(0)),
 			    parse<uint32_t>(ps.at(1)),
 			    parse<uint32_t>(ps.at(2)));
 		}
-		if (f.getName() == "rgba") {
-			auto ps = f.getParams();
-			if (ps.size() != 4)
-				throw std::logic_error("invalid color string");
+		if (f.getName() == "rgba" && ps.size() == 4) {
 			return RGBA(parse<uint32_t>(ps.at(0)),
 			    parse<uint32_t>(ps.at(1)),
 			    parse<uint32_t>(ps.at(2)),
 			    static_cast<uint8_t>(parse<double>(ps.at(3)) * 255));
 		}
-		throw std::logic_error("invalid color string");
 	}
 	throw std::logic_error("invalid color string");
 }
