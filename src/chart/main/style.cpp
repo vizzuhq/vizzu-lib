@@ -4,7 +4,6 @@
 
 #include "base/anim/interpolated.h"
 #include "base/gfx/color.h"
-#include "base/gfx/colorgradient.h"
 #include "base/gfx/colorpalette.h"
 #include "base/gfx/colortransform.h"
 #include "base/gfx/font.h"

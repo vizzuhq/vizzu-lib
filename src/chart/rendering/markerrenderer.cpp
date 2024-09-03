@@ -9,6 +9,7 @@
 #include "base/anim/interpolated.h"
 #include "base/geom/line.h"
 #include "base/gfx/canvas.h"
+#include "base/gfx/colortransform.h"
 #include "base/math/interpolation.h"
 #include "base/text/smartstring.h"
 #include "chart/generator/plot.h" // NOLINT(misc-include-cleaner)

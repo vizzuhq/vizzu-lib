@@ -14,7 +14,9 @@
 #include "base/geom/transformedrect.h"
 #include "base/gfx/canvas.h"
 #include "base/gfx/color.h"
+#include "base/gfx/colortransform.h"
 #include "base/gfx/draw/roundedrect.h"
+#include "base/gfx/lineargradient.h"
 #include "base/math/floating.h"
 #include "base/text/smartstring.h"
 #include "chart/generator/plot.h" // NOLINT(misc-include-cleaner)

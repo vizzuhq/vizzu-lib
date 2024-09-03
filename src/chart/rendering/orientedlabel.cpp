@@ -3,7 +3,6 @@
 #include <cmath>
 #include <memory>
 #include <numbers>
-#include <optional>
 #include <string>
 #include <utility>
 
@@ -11,6 +10,7 @@
 #include "base/geom/line.h"
 #include "base/geom/point.h"
 #include "base/gfx/canvas.h"
+#include "base/gfx/colortransform.h"
 #include "base/gfx/font.h"
 #include "base/util/eventdispatcher.h"
 #include "chart/main/style.h"

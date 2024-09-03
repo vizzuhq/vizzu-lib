@@ -23,7 +23,7 @@ void DrawLabel::draw(Gfx::ICanvas &canvas,
     const Styles::Label &style,
     Util::EventDispatcher::Event &onDraw,
     std::unique_ptr<Util::EventTarget> eventTarget,
-    Options options) const
+    const Options &options) const
 {
 	auto relativeRect = Geom::Rect{{}, fullRect.size};
 

@@ -29,7 +29,7 @@ public:
 	    const Styles::Label &style,
 	    Util::EventDispatcher::Event &onDraw,
 	    std::unique_ptr<Util::EventTarget> eventTarget,
-	    Options options) const;
+	    const Options &options) const;
 
 private:
 	[[nodiscard]] static std::pair<Geom::Rect, double> alignText(
