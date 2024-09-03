@@ -30,11 +30,7 @@ std::string to_debug_string(const from &value)
 		return std::string(value);
 	}
 	else if constexpr (requires {
-		                   std::visit(
-		                       [](const auto &)
-		                       {
-		                       },
-		                       value);
+		                   std::visit([](const auto &) {}, value);
 	                   }) {
 		return std::visit(
 		    [](const auto &v)
