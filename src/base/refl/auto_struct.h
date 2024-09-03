@@ -538,8 +538,8 @@ namespace Functors
 namespace Composite
 {
 template <class T, class U>
-constexpr inline auto operator>>(U &&arg, const T &)
-    -> decltype(T::get(std::forward<U &&>(arg)))
+constexpr inline auto operator>>(U &&arg,
+    const T &) -> decltype(T::get(std::forward<U &&>(arg)))
 {
 	return T::get(std::forward<U &&>(arg));
 }

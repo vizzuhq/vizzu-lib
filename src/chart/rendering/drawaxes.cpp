@@ -227,12 +227,13 @@ void DrawAxes::drawTitle(Gen::ChannelId axisIndex) const
 		                      .value
 		                  == Styles::AxisTitle::Orientation::vertical
 		            : titleStyle.orientation->factor<double>(
-		                Styles::AxisTitle::Orientation::vertical));
+		                  Styles::AxisTitle::Orientation::vertical));
 
 		auto orientedSize =
 		    fades == ::Anim::second
 		        ? calcOrientation(
-		            titleStyle.orientation->get_or_first(index).value)
+		              titleStyle.orientation->get_or_first(index)
+		                  .value)
 		        : titleStyle.orientation->combine(calcOrientation);
 
 		auto center = offset * (orientedSize / 2.0);
@@ -335,7 +336,7 @@ void DrawAxes::drawDimensionLabel(bool horizontal,
 		            ? labelStyle.side->get_or_first(index).value
 		                  == Styles::AxisLabel::Side::negative
 		            : labelStyle.side->factor<double>(
-		                Styles::AxisLabel::Side::negative);
+		                  Styles::AxisLabel::Side::negative);
 
 		    auto sign = 1 - 2 * under;
 
