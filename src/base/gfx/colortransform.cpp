@@ -13,44 +13,31 @@
 namespace Gfx
 {
 
-ColorTransform::ColorTransform(const std::string &code) : code(code)
+ColorTransform ColorTransform::fromString(const std::string &code)
 {
-	Text::SmartString::trim(this->code);
-
-	if (code == "none") {
-		*this = None();
-		return;
-	}
+	if (Text::SmartString::trim_view(code) == "none") return None();
 
 	const Text::FuncString func(code);
 
-	if (func.isEmpty()) return;
+	if (func.isEmpty()) return {};
 
 	if (func.getParams().size() != 1)
 		throw std::logic_error(
 		    "invalid color transform parameter count");
 
-	if (func.getName() == "color") {
-		auto color = Color(func.getParams().at(0));
-		*this = OverrideColor(color);
-	}
-	else if (func.getName() == "lightness") {
-		auto factor = std::stod(func.getParams().at(0));
-		*this = Lightness(factor);
-	}
-	else if (func.getName() == "grayscale") {
-		auto factor = std::stod(func.getParams().at(0));
-		*this = Grayscale(factor);
-	}
-	else if (func.getName() == "opacity") {
-		auto factor = std::stod(func.getParams().at(0));
-		*this = Opacity(factor);
-	}
-	else
-		throw std::logic_error("invalid color transform string");
+	if (func.getName() == "color")
+		return OverrideColor(
+		    Color::fromString(func.getParams().at(0)));
+	if (func.getName() == "lightness")
+		return Lightness(std::stod(func.getParams().at(0)));
+	if (func.getName() == "grayscale")
+		return Grayscale(std::stod(func.getParams().at(0)));
+	if (func.getName() == "opacity")
+		return Opacity(std::stod(func.getParams().at(0)));
+	throw std::logic_error("invalid color transform string");
 }
 
-ColorTransform ColorTransform::OverrideColor(Gfx::Color overrideColor)
+ColorTransform ColorTransform::OverrideColor(Color overrideColor)
 {
 	return {[=](const Color &)
 	    {
@@ -124,7 +111,7 @@ ColorTransform ColorTransform::operator+(
 	    ""};
 }
 
-Gfx::Color ColorTransform::operator()(const Gfx::Color &color) const
+Color ColorTransform::operator()(const Color &color) const
 {
 	return convert ? convert(color) : color;
 }

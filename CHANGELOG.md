@@ -5,6 +5,7 @@
 ### Fixed
 
 - Legend title bottomPadding extended.
+- ColorGradient fromString not increasing position prohibited.
 
 ### Added
 

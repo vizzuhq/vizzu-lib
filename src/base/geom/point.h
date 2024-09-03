@@ -113,8 +113,11 @@ struct Point
 
 	Point &operator/=(double divisor)
 	{
-		if (Math::Floating::is_zero(divisor))
-			return *this = Invalid();
+		if (Math::Floating::is_zero(divisor)) {
+			x = NAN;
+			y = NAN;
+			return *this;
+		}
 		x /= divisor;
 		y /= divisor;
 		return *this;
@@ -130,8 +133,11 @@ struct Point
 	Point &operator/=(const Point &other)
 	{
 		using Math::Floating::is_zero;
-		if (is_zero(other.x) || is_zero(other.y))
-			return *this = Invalid();
+		if (is_zero(other.x) || is_zero(other.y)) {
+			x = NAN;
+			y = NAN;
+			return *this;
+		}
 		x /= other.x;
 		y /= other.y;
 		return *this;

@@ -373,7 +373,6 @@ public:
 		    const std::string_view &categoryName,
 		    const std::string_view &categoryValue,
 		    const std::string &label,
-
 		    const LegendProperties &properties)
 		{
 			return std::make_unique<CategoryInfo<Text<LegendChild>>>(
@@ -381,48 +380,39 @@ public:
 			    categoryValue,
 			    label,
 			    "label",
-
 			    properties);
 		}
 
 		static auto measLegendLabel(const std::string &label,
-
 		    const LegendProperties &properties)
 		{
 			return std::make_unique<Text<LegendChild>>(label,
 			    "label",
-
 			    properties);
 		}
 
 		static auto legendTitle(const std::string &title,
-
 		    const LegendProperties &properties)
 		{
 			return std::make_unique<Text<LegendChild>>(title,
 			    "title",
-
 			    properties);
 		}
 
 		static auto legendMarker(const std::string_view &categoryName,
 		    const std::string_view &categoryValue,
-
 		    const LegendProperties &properties)
 		{
 			return std::make_unique<CategoryInfo<LegendChild>>(
 			    categoryName,
 			    categoryValue,
 			    "marker",
-
 			    properties);
 		}
 
 		static auto legendBar(const LegendProperties &properties)
 		{
-			return std::make_unique<LegendChild>("bar",
-
-			    properties);
+			return std::make_unique<LegendChild>("bar", properties);
 		}
 
 		static auto dimAxisLabel(const std::string_view &categoryName,
