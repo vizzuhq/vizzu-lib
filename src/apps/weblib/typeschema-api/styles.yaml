@@ -32,7 +32,7 @@ definitions:
 
     NumberScale:
         description: |
-            Number scale for human readable big number formats.
+            Number scale for human-readable big number formats.
             There are built in formats:
             - SI Symbols: k, M, G, ...
             - Short scale with US abbreviations: K, M, B, T
@@ -523,6 +523,10 @@ definitions:
                 nullable: true
             marker:
                 $ref: LegendMarker
+                nullable: true
+            translateY:
+                description: Vertical translation of the marker list.
+                $ref: Length
                 nullable: true
 
     ColorStop:

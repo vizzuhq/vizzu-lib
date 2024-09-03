@@ -19,6 +19,10 @@ public:
 		std::optional<double> alpha{1.0};
 		double bgAlpha{1.0};
 		bool flip{false};
+		std::function<void(Gfx::ICanvas &,
+		    const Geom::AffineTransform &,
+		    const Gfx::Color &)>
+		    gradient{};
 	};
 
 	void draw(Gfx::ICanvas &canvas,

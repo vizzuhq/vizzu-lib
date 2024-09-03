@@ -10,9 +10,9 @@
 #include "base/geom/point.h"
 #include "base/geom/rect.h"
 #include "base/gfx/color.h"
-#include "base/gfx/colorgradient.h"
 #include "base/gfx/colortransform.h"
 #include "base/gfx/font.h"
+#include "base/gfx/lineargradient.h"
 
 namespace Gfx
 {
@@ -28,7 +28,6 @@ struct ICanvas
 	virtual void setClipPolygon() = 0;
 	virtual void setBrushColor(const Gfx::Color &color) = 0;
 	virtual void setLineColor(const Gfx::Color &color) = 0;
-	virtual void setTextColor(const Gfx::Color &color) = 0;
 	virtual void setLineWidth(double width) = 0;
 	virtual void setFont(const Gfx::Font &font) = 0;
 
@@ -56,8 +55,7 @@ struct ICanvas
 	virtual void text(const Geom::Rect &rect,
 	    const std::string &text) = 0;
 
-	virtual void setBrushGradient(const Geom::Line &line,
-	    const ColorGradient &gradient) = 0;
+	virtual void setBrushGradient(const LinearGradient &gradient) = 0;
 
 	virtual void frameBegin() = 0;
 	virtual void frameEnd() = 0;

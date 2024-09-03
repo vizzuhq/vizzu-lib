@@ -25,20 +25,33 @@ public:
 	    *rootStyle.plot.marker.colorGradient};
 
 private:
+	struct ColorGradientSetter
+	{
+		Geom::Line line;
+		Gfx::ColorGradient gradient;
+		std::span<Gfx::ColorGradient::Stop> modifiableStops =
+		    gradient.stops;
+
+		void operator()(Gfx::ICanvas &,
+		    const Geom::AffineTransform &,
+		    const Gfx::Color &) const;
+	};
 	struct Info
 	{
 		Gfx::ICanvas &canvas;
-		Geom::Rect contentRect;
-		Gen::ChannelId type{};
+		Geom::Rect titleRect;
+		Geom::Rect markerWindowRect;
+		double fadeHeight{};
 		double weight{};
 		double itemHeight{};
-		double titleHeight{};
 		double markerSize{};
 		const Gen::MeasureAxis &measure;
 		const Gen::DimensionAxis &dimension;
 		double measureEnabled = measure.enabled.calculate<double>();
 		bool dimensionEnabled = dimension.enabled;
 		double measureWeight = weight * measureEnabled;
+		Events::Targets::LegendProperties properties;
+		ColorGradientSetter colorGradientSetter;
 	};
 
 	void drawTitle(const Info &info) const;
@@ -49,7 +62,8 @@ private:
 	void drawMarker(const Info &info,
 	    std::string_view categoryValue,
 	    const Gfx::Color &color,
-	    const Geom::Rect &rect) const;
+	    const Geom::Rect &rect,
+	    bool needGradient) const;
 	[[nodiscard]] static Geom::Rect getItemRect(const Info &info,
 	    double index);
 	[[nodiscard]] static Geom::Rect getMarkerRect(const Info &info,
@@ -57,6 +71,9 @@ private:
 	[[nodiscard]] static Geom::TransformedRect
 	getLabelRect(const Info &info, const Geom::Rect &itemRect);
 	[[nodiscard]] static Geom::Rect getBarRect(const Info &info);
+
+	[[nodiscard]] static double markersLegendFullSize(
+	    const Info &info);
 
 	void extremaLabel(const Info &info,
 	    double value,

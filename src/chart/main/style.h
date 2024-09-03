@@ -339,6 +339,7 @@ struct LegendParams
 	Label title;
 	Label label;
 	Marker marker;
+	Param<Gfx::Length> translateY;
 };
 
 struct Legend : Padding, Box, LegendParams
