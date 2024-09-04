@@ -1,6 +1,5 @@
 #include "drawlegend.h"
 
-#include <algorithm>
 #include <cmath>
 #include <cstddef>
 #include <functional>
@@ -18,6 +17,7 @@
 #include "base/gfx/draw/roundedrect.h"
 #include "base/gfx/lineargradient.h"
 #include "base/math/floating.h"
+#include "base/math/fuzzybool.h"
 #include "base/text/smartstring.h"
 #include "chart/generator/plot.h" // NOLINT(misc-include-cleaner)
 #include "chart/main/events.h"

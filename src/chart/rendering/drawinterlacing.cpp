@@ -8,6 +8,7 @@
 #include "base/anim/interpolated.h"
 #include "base/geom/point.h"
 #include "base/geom/rect.h"
+#include "base/gfx/colortransform.h"
 #include "base/gfx/font.h"
 #include "base/math/range.h"
 #include "base/math/renard.h"
@@ -78,9 +79,10 @@ void DrawInterlacing::draw(bool horizontal, bool text) const
 	}
 	else {
 		auto highWeight =
-		    Math::Range(stepLow, stepHigh).rescale(step) * enabled;
+		    Math::Range(stepLow, stepHigh).rescale(step);
 
 		auto lowWeight = (1.0 - highWeight) * enabled;
+		highWeight *= enabled;
 
 		draw(axis.enabled,
 		    horizontal,
@@ -120,15 +122,16 @@ void DrawInterlacing::draw(
 	if (static_cast<double>(enabled.interlacings || enabled.axisSticks
 	                        || enabled.labels)
 	    > 0) {
-		auto interlaceIntensity =
-		    weight * static_cast<double>(enabled.interlacings);
+		auto interlaceIntensity = Math::FuzzyBool::And<double>(weight,
+		    enabled.interlacings);
 		auto interlaceColor =
 		    *axisStyle.interlacing.color * interlaceIntensity;
 
 		auto tickIntensity =
-		    weight * static_cast<double>(enabled.axisSticks);
+		    Math::FuzzyBool::And<double>(weight, enabled.axisSticks);
 
-		auto textAlpha = weight * static_cast<double>(enabled.labels);
+		auto textAlpha =
+		    Math::FuzzyBool::And<double>(weight, enabled.labels);
 
 		if (rangeSize <= 0) return;
 

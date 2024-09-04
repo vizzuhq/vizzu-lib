@@ -18,7 +18,7 @@ struct OrientedLabel : DrawLabel
 	    const Geom::Line &labelPos,
 	    const Styles::OrientedLabel &labelStyle,
 	    double centered,
-	    const Gfx::ColorTransform &colorTransform,
+	    Gfx::ColorTransform &&colorTransform,
 	    Util::EventDispatcher::Event &event,
 	    std::unique_ptr<Util::EventTarget> eventTarget) const;
 };

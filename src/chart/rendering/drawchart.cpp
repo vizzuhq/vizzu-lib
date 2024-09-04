@@ -8,6 +8,7 @@
 #include "base/geom/transformedrect.h"
 #include "base/gfx/canvas.h"
 #include "base/gfx/colortransform.h"
+#include "base/math/fuzzybool.h"
 #include "chart/main/layout.h"
 #include "painter/painter.h"
 

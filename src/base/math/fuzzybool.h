@@ -124,6 +124,11 @@ public:
 		return FuzzyBool(std::max(0.0, 1 - 2 * value));
 	}
 
+	[[nodiscard]] FuzzyBool lessAndMore() const
+	{
+		return FuzzyBool(std::abs(2 * value - 1));
+	}
+
 	[[nodiscard]] FuzzyBool very() const
 	{
 		return FuzzyBool(value * value);

@@ -6,6 +6,11 @@
 
 - Legend title bottomPadding extended.
 - ColorGradient fromString not increasing position prohibited.
+- Remove background settings for all text, including title, subtitle and caption.
+- Fix alpha settings to linear by default:
+  - Axis: line, title, labels, guides, interlacing, ticks
+  - Legend: title, dimension markers, measure extrema labels
+  - Marker: line with connections
 
 ### Added
 
