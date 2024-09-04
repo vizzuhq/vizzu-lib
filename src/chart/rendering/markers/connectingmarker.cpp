@@ -48,17 +48,15 @@ ConnectingMarker::ConnectingMarker(const DrawingContext &ctx,
 
 	if (prev) {
 		enabled = labelEnabled && prev->enabled;
-		connected =
-		    enabled
-		    && Math::FuzzyBool{
-		        marker.prevMainMarker.get_or_first(lineIndex).weight};
+		connected = Math::FuzzyBool::And(enabled,
+		    marker.prevMainMarker.get_or_first(lineIndex).weight);
 		if (auto &&pc =
 		        marker.polarConnection.get_or_first(lineIndex);
 		    pc.value) {
 			auto &&newPolar =
-			    (polar && Math::FuzzyBool{pc.weight}).more();
-			linear = linear || polar.more()
-			      || Math::FuzzyBool{pc.weight}.more();
+			    Math::FuzzyBool::And(polar, pc.weight).more();
+			linear = linear
+			      || Math::FuzzyBool::Or(polar, pc.weight).more();
 			connected = connected && newPolar && horizontal;
 			enabled = enabled && newPolar && horizontal;
 		}

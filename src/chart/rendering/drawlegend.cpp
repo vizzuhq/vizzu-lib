@@ -123,7 +123,7 @@ void DrawLegend::drawTitle(const Info &info) const
 	        [this,
 	            &info,
 	            &rect = info.titleRect,
-	            mul = std::max<double>(info.measureEnabled,
+	            mul = Math::FuzzyBool::Or(info.measureEnabled,
 	                info.dimensionEnabled)](::Anim::InterpolateIndex,
 	            const auto &title)
 	        {
@@ -136,9 +136,10 @@ void DrawLegend::drawTitle(const Info &info) const
 		            *events.title,
 		            Events::Targets::legendTitle(title.value,
 		                info.properties),
-		            {.colorTransform =
-		                    Gfx::ColorTransform::None()
-		                    * (title.weight * info.weight * mul)});
+		            {.colorTransform = Gfx::ColorTransform::Fade(
+		                 Math::FuzzyBool::And(title.weight,
+		                     info.weight,
+		                     mul))});
 	        });
 }
 
@@ -165,13 +166,12 @@ void DrawLegend::drawDimension(Info &info) const
 		           < info.markerWindowRect.y().getMin()
 		                 + info.fadeHeight;
 
-		const auto alpha{Math::FuzzyBool{value.second.weight}
-		                 && Math::FuzzyBool{info.weight}};
+		const auto alpha =
+		    Math::FuzzyBool::And(value.second.weight, info.weight);
 
 		drawMarker(info,
 		    value.second.categoryValue,
-		    colorBuilder.render(value.second.colorBase)
-		        * double{alpha},
+		    colorBuilder.render(value.second.colorBase) * alpha,
 		    getMarkerRect(info, itemRect),
 		    needGradient);
 
@@ -188,11 +188,9 @@ void DrawLegend::drawDimension(Info &info) const
 			            value.second.categoryValue,
 			            value.second.categoryValue,
 			            info.properties),
-			        {.colorTransform =
-			                Gfx::ColorTransform::None()
-			                * double{alpha
-			                         && Math::FuzzyBool{weighted
-			                                                .weight}},
+			        {.colorTransform = Gfx::ColorTransform::Fade(
+			             Math::FuzzyBool::And(alpha,
+			                 weighted.weight)),
 			            .gradient = needGradient
 			                          ? std::ref(info.fadeBarGradient)
 			                          : decltype(DrawLabel::Options::
@@ -313,8 +311,8 @@ void DrawLegend::extremaLabel(const Info &info,
 	    style.label,
 	    *events.label,
 	    Events::Targets::measLegendLabel(text, info.properties),
-	    {.colorTransform = Gfx::ColorTransform::None()
-	                     * (info.measureWeight * plusWeight)});
+	    {.colorTransform = Gfx::ColorTransform::Fade(
+	         Math::FuzzyBool::And(info.measureWeight, plusWeight))});
 }
 
 Geom::Rect DrawLegend::getBarRect(const Info &info)

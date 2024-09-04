@@ -252,7 +252,7 @@ void DrawAxes::drawTitle(Gen::ChannelId axisIndex) const
 		    *rootEvents.draw.plot.axis.title,
 		    Events::Targets::axisTitle(title.value,
 		        axisIndex == Gen::ChannelId::x),
-		    {.colorTransform = Gfx::ColorTransform::None() * weight,
+		    {.colorTransform = Gfx::ColorTransform::Fade(weight),
 		        .flip = upsideDown});
 
 		canvas.restore();
@@ -353,8 +353,10 @@ void DrawAxes::drawDimensionLabel(bool horizontal,
 			        posDir,
 			        labelStyle,
 			        0,
-			        Gfx::ColorTransform::None()
-			            * (weight * str.weight * plusWeight),
+			        Gfx::ColorTransform::Fade(
+			            Math::FuzzyBool::And(weight,
+			                str.weight,
+			                plusWeight)),
 			        *rootEvents.draw.plot.axis.label,
 			        Events::Targets::dimAxisLabel(category,
 			            categoryVal,

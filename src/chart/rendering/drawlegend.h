@@ -47,7 +47,8 @@ private:
 		const Gen::DimensionAxis &dimension;
 		double measureEnabled = measure.enabled.calculate<double>();
 		bool dimensionEnabled = dimension.enabled;
-		double measureWeight = weight * measureEnabled;
+		double measureWeight =
+		    Math::FuzzyBool::And(weight, measureEnabled);
 		Events::Targets::LegendProperties properties;
 		FadeBarGradient fadeBarGradient;
 	};

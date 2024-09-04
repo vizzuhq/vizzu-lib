@@ -285,8 +285,9 @@ void DrawInterlacing::drawDataLabel(
 		    posDir,
 		    labelStyle,
 		    0,
-		    Gfx::ColorTransform::None()
-		        * (alpha * position.weight * wUnit.weight),
+		    Gfx::ColorTransform::Fade(Math::FuzzyBool::And(alpha,
+		        position.weight,
+		        wUnit.weight)),
 		    *rootEvents.draw.plot.axis.label,
 		    Events::Targets::measAxisLabel(str, !horizontal));
 	}

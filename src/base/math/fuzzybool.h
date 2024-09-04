@@ -134,6 +134,44 @@ public:
 		return FuzzyBool(sqrt(value));
 	}
 
+	template <class, class...>
+	struct CommonOrFuzzyImpl : std::type_identity<FuzzyBool>
+	{};
+
+	template <class T, class... Args>
+	    requires(requires { typename T::type; })
+	struct CommonOrFuzzyImpl<T, Args...> : T
+	{};
+
+	template <class Res, class... Args>
+	using CommonOrFuzzy = std::conditional_t<std::is_void_v<Res>,
+	    typename CommonOrFuzzyImpl<std::common_type<Args...>,
+	        Args...>::type,
+	    Res>;
+
+	template <class Res = void, class Arg, class... Args>
+	[[nodiscard]] static CommonOrFuzzy<Res, Arg, Args...>
+	And(Arg &&arg, Args &&...args)
+	{
+		return static_cast<CommonOrFuzzy<Res, Arg, Args...>>(
+		    (FuzzyBool{std::forward<Arg>(arg)} && ...
+		        && FuzzyBool{std::forward<Args>(args)}));
+	}
+
+	template <class Res = void, class Arg, class... Args>
+	[[nodiscard]] static CommonOrFuzzy<Res, Arg, Args...>
+	Or(Arg &&arg, Args &&...args)
+	{
+		return static_cast<CommonOrFuzzy<Res, Arg, Args...>>(
+		    (FuzzyBool{std::forward<Arg>(arg)} || ...
+		        || FuzzyBool{std::forward<Args>(args)}));
+	}
+
+	template <class T> [[nodiscard]] static T more(const T &v)
+	{
+		return static_cast<T>(FuzzyBool{v}.more());
+	}
+
 private:
 	double value{0.0};
 };
