@@ -21,10 +21,6 @@ struct ColorGradient : Math::SegmentedFunction<Color, ColorGradient>
 	    const std::string &stoplist);
 
 	explicit operator std::string() const;
-
-private:
-	friend struct SegmentedFunction;
-	ColorGradient() = default;
 };
 
 }
