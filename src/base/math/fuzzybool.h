@@ -139,19 +139,18 @@ public:
 		return FuzzyBool(sqrt(value));
 	}
 
-	template <class, class...>
+	template <class>
 	struct CommonOrFuzzyImpl : std::type_identity<FuzzyBool>
 	{};
 
-	template <class T, class... Args>
+	template <class T>
 	    requires(requires { typename T::type; })
-	struct CommonOrFuzzyImpl<T, Args...> : T
+	struct CommonOrFuzzyImpl<T> : T
 	{};
 
 	template <class Res, class... Args>
 	using CommonOrFuzzy = std::conditional_t<std::is_void_v<Res>,
-	    typename CommonOrFuzzyImpl<std::common_type<Args...>,
-	        Args...>::type,
+	    typename CommonOrFuzzyImpl<std::common_type<Args...>>::type,
 	    Res>;
 
 	template <class Res = void, class Arg, class... Args>
