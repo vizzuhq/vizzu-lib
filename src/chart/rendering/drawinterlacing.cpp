@@ -10,6 +10,7 @@
 #include "base/geom/rect.h"
 #include "base/gfx/colortransform.h"
 #include "base/gfx/font.h"
+#include "base/math/floating.h"
 #include "base/math/range.h"
 #include "base/math/renard.h"
 #include "base/text/smartstring.h"
@@ -140,9 +141,11 @@ void DrawInterlacing::draw(
 
 		auto axisBottom = axis.origo() + stripWidth;
 
-		auto iMin = axisBottom > 0 ? static_cast<int>(
-		                std::floor(-axis.origo() / (2 * stripWidth)))
-		                           : 0;
+		auto iMin =
+		    axisBottom > 0 ? static_cast<int>(
+		        std::floor(-axis.origo() / (2 * stripWidth)))
+		                   : static_cast<int>(
+		                       (axis.range.getMin() - stepSize) / 2);
 
 		if (stripWidth <= 0) return;
 		auto interlaceCount = 0U;

@@ -10,6 +10,10 @@
   - Axis: line, title, labels, guides, interlacing, ticks
   - Legend: title, dimension markers, measure extrema labels
   - Marker: line with connections
+- Fix negative ranges on x, y, color (measure) and lightness.
+- Fix axis step parameter if not match with the range sign (neg/pos).
+- Fix axis interpolation. From now the axis and axis labels are following the markers.
+- Fix measure axis labels when the range started after the 2000th step value from origo. 
 
 ### Added
 
