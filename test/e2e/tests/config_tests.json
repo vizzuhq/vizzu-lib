@@ -2,52 +2,52 @@
 	"suite": "/test/e2e/tests/config_tests",
 	"test": {
 		"geometry/static_area": {
-			"refs": ["a10fd56"]
+			"refs": ["dcaccf5"]
 		},
 		"geometry/static_circle": {
-			"refs": ["8d44ab6"]
+			"refs": ["b114235"]
 		},
 		"geometry/static_default": {
-			"refs": ["a491c17"]
+			"refs": ["d487d60"]
 		},
 		"geometry/static_line": {
-			"refs": ["b531fd0"]
+			"refs": ["482976a"]
 		},
 		"geometry/static_rectangle": {
-			"refs": ["a491c17"]
+			"refs": ["d487d60"]
 		},
 		"geometry/animated_area-line": {
-			"refs": ["454cb97"]
+			"refs": ["0ce1e7a"]
 		},
 		"geometry/animated_area-rectangle": {
-			"refs": ["92e92cd"]
+			"refs": ["abb3c41"]
 		},
 		"geometry/animated_line-area": {
-			"refs": ["d594df2"]
+			"refs": ["0fd0dc2"]
 		},
 		"geometry/animated_line-circle": {
-			"refs": ["32b751a"]
+			"refs": ["a4f616a"]
 		},
 		"geometry/animated_line-rectangle": {
-			"refs": ["8853d38"]
+			"refs": ["b5bc6b4"]
 		},
 		"geometry/animated_rectangle-area": {
-			"refs": ["0d58874"]
+			"refs": ["2de661f"]
 		},
 		"geometry/animated_rectangle-circle": {
-			"refs": ["c9a3d8e"]
+			"refs": ["4707c43"]
 		},
 		"geometry/animated_rectangle-line": {
-			"refs": ["5401ce0"]
+			"refs": ["2ac83c5"]
 		},
 		"dimension_axis_title": {
-			"refs": ["99d74b1"]
+			"refs": ["33278a6"]
 		},
 		"dimension_axis_density": {
 			"refs": ["0de86a3"]
 		},
 		"geometry/animated_area-circle": {
-			"refs": ["6f40a47"]
+			"refs": ["d037f4d"]
 		}
 	}
 }

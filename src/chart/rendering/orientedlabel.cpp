@@ -3,7 +3,6 @@
 #include <cmath>
 #include <memory>
 #include <numbers>
-#include <optional>
 #include <string>
 #include <utility>
 
@@ -11,6 +10,7 @@
 #include "base/geom/line.h"
 #include "base/geom/point.h"
 #include "base/gfx/canvas.h"
+#include "base/gfx/colortransform.h"
 #include "base/gfx/font.h"
 #include "base/util/eventdispatcher.h"
 #include "chart/main/style.h"
@@ -25,8 +25,7 @@ void OrientedLabel::draw(Gfx::ICanvas &canvas,
     const Geom::Line &labelPos,
     const Styles::OrientedLabel &labelStyle,
     double centered,
-    std::optional<double> textAlpha,
-    double bgAlpha,
+    Gfx::ColorTransform &&colorTransform,
     Util::EventDispatcher::Event &event,
     std::unique_ptr<Util::EventTarget> eventTarget) const
 {
@@ -91,7 +90,7 @@ void OrientedLabel::draw(Gfx::ICanvas &canvas,
 	    labelStyle,
 	    event,
 	    std::move(eventTarget),
-	    {.alpha = textAlpha, .bgAlpha = bgAlpha});
+	    {.colorTransform = std::move(colorTransform)});
 }
 
 }

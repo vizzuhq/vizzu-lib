@@ -182,7 +182,9 @@ void TestChart::run()
 		auto &table = chart.getChart().getTable();
 		auto &channels = options.getChannels();
 		channels.at(ChannelId::x).addSeries({"Cat1", table});
-		channels.at(ChannelId::x).addSeries({"exists()", table});
+		channels.at(ChannelId::x)
+		    .measureId.emplace()
+		    .setAggr("exists");
 		channels.at(ChannelId::y).addSeries({"Val", table});
 		channels.at(ChannelId::label).addSeries({"Val", table});
 		channels.at(ChannelId::x).addSeries({"Val", table});

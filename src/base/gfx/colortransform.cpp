@@ -68,7 +68,7 @@ ColorTransform ColorTransform::Opacity(double factor)
 {
 	return {[=](const Color &color)
 	    {
-		    return color.transparent(factor);
+		    return color * factor;
 	    },
 	    "opacity(" + std::to_string(factor) + ")"};
 }

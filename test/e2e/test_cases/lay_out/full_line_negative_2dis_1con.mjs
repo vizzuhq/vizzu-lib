@@ -14,7 +14,7 @@ const testSteps = [
 				geometry: 'line'
 			},
 			style: {
-				title: { backgroundColor: 'rgb(200,200,200 )' },
+				backgroundColor: 'rgb(200,200,200 )',
 				legend: { backgroundColor: 'rgb(230,230,230 )' },
 				plot: {
 					backgroundColor: 'rgb(215,215,215 )',

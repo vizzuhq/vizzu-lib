@@ -135,7 +135,6 @@ struct Text
 
 	Param<Gfx::Color> color;
 	Param<::Anim::Interpolated<TextAlign>> textAlign;
-	Param<Gfx::Color> backgroundColor;
 	Param<::Text::NumberFormat> numberFormat;
 	Param<double> maxFractionDigits;
 	Param<::Text::NumberScale> numberScale;

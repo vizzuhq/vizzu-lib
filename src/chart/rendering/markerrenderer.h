@@ -24,7 +24,6 @@ private:
 	    const Gen::Marker &marker);
 	[[nodiscard]] std::pair<Gfx::Color, Gfx::Color> getColor(
 	    const AbstractMarker &abstractMarker,
-	    double factor,
 	    bool label = false) const;
 	void draw(Gfx::ICanvas &canvas,
 	    Painter &painter,

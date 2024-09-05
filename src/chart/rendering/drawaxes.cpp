@@ -10,7 +10,9 @@
 #include "base/geom/line.h"
 #include "base/geom/point.h"
 #include "base/geom/transformedrect.h"
+#include "base/gfx/colortransform.h"
 #include "base/gfx/font.h"
+#include "base/math/fuzzybool.h"
 #include "base/type/booliter.h"
 #include "chart/generator/plot.h" // NOLINT(misc-include-cleaner)
 #include "chart/main/events.h"
@@ -66,17 +68,17 @@ void DrawAxes::drawAxis(Gen::ChannelId axisIndex) const
 	auto eventTarget =
 	    Events::Targets::axis(axisIndex == Gen::ChannelId::x);
 
-	auto lineBaseColor = *rootStyle.plot.getAxis(axisIndex).color
-	                   * static_cast<double>(plot->anyAxisSet);
+	auto lineBaseColor = *rootStyle.plot.getAxis(axisIndex).color;
 
-	if (lineBaseColor.alpha <= 0) return;
+	if (lineBaseColor.alpha <= 0 || plot->anyAxisSet == false) return;
 
 	auto line = getAxis(axisIndex);
 
 	if (!line.isPoint()) {
 		auto lineColor =
 		    lineBaseColor
-		    * static_cast<double>(plot->guides.at(axisIndex).axis);
+		    * Math::FuzzyBool::And<double>(plot->anyAxisSet,
+		        plot->guides.at(axisIndex).axis);
 
 		canvas.save();
 
@@ -183,10 +185,9 @@ void DrawAxes::drawTitle(Gen::ChannelId axisIndex) const
 		auto title = titleString.get_or_first(index);
 		if (title.value.empty()) continue;
 
-		auto weight =
-		    title.weight
-		    * titleStyle.position->get_or_first(index).weight
-		    * titleStyle.vposition->get_or_first(index).weight;
+		auto weight = Math::FuzzyBool::And(title.weight,
+		    titleStyle.position->get_or_first(index).weight,
+		    titleStyle.vposition->get_or_first(index).weight);
 
 		const Gfx::Font font(titleStyle);
 		canvas.setFont(font);
@@ -252,7 +253,8 @@ void DrawAxes::drawTitle(Gen::ChannelId axisIndex) const
 		    *rootEvents.draw.plot.axis.title,
 		    Events::Targets::axisTitle(title.value,
 		        axisIndex == Gen::ChannelId::x),
-		    {.alpha = weight, .flip = upsideDown});
+		    {.colorTransform = Gfx::ColorTransform::Opacity(weight),
+		        .flip = upsideDown});
 
 		canvas.restore();
 	}
@@ -289,8 +291,8 @@ void DrawAxes::drawDimensionLabel(bool horizontal,
 	const auto &enabled =
 	    horizontal ? plot->guides.x : plot->guides.y;
 
-	auto weight =
-	    it->second.weight * static_cast<double>(enabled.labels);
+	auto weight = Math::FuzzyBool::And<double>(it->second.weight,
+	    enabled.labels);
 	if (weight == 0) return;
 
 	auto axisIndex =
@@ -352,8 +354,10 @@ void DrawAxes::drawDimensionLabel(bool horizontal,
 			        posDir,
 			        labelStyle,
 			        0,
-			        weight * str.weight * plusWeight,
-			        1.0,
+			        Gfx::ColorTransform::Opacity(
+			            Math::FuzzyBool::And(weight,
+			                str.weight,
+			                plusWeight)),
 			        *rootEvents.draw.plot.axis.label,
 			        Events::Targets::dimAxisLabel(category,
 			            categoryVal,
