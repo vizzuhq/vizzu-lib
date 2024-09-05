@@ -19,7 +19,6 @@ public:
 	static ColorTransform Grayscale(double factor);
 	static ColorTransform Lightness(double factor);
 	static ColorTransform Opacity(double factor);
-	static ColorTransform Fade(double factor);
 	static ColorTransform None();
 
 	Color operator()(const Color &color) const;

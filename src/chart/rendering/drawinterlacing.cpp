@@ -288,7 +288,7 @@ void DrawInterlacing::drawDataLabel(
 		    posDir,
 		    labelStyle,
 		    0,
-		    Gfx::ColorTransform::Fade(Math::FuzzyBool::And(alpha,
+		    Gfx::ColorTransform::Opacity(Math::FuzzyBool::And(alpha,
 		        position.weight,
 		        wUnit.weight)),
 		    *rootEvents.draw.plot.axis.label,

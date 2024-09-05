@@ -75,9 +75,10 @@ void DrawChart::drawHeading(Gfx::ICanvas &canvas,
 			            style,
 			            event,
 			            targetGetter(*weighted.value),
-			            {.colorTransform = Gfx::ColorTransform::Fade(
-			                 Math::FuzzyBool::more(
-			                     weighted.weight))});
+			            {.colorTransform =
+			                    Gfx::ColorTransform::Opacity(
+			                        Math::FuzzyBool::more(
+			                            weighted.weight))});
 		        }
 	        });
 }

@@ -68,18 +68,9 @@ ColorTransform ColorTransform::Opacity(double factor)
 {
 	return {[=](const Color &color)
 	    {
-		    return color.transparent(factor);
-	    },
-	    "opacity(" + std::to_string(factor) + ")"};
-}
-
-ColorTransform ColorTransform::Fade(double factor)
-{
-	return {[=](const Color &color)
-	    {
 		    return color * factor;
 	    },
-	    "fade(" + std::to_string(factor) + ")"};
+	    "opacity(" + std::to_string(factor) + ")"};
 }
 
 ColorTransform ColorTransform::None()
