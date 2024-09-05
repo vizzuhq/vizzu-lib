@@ -80,8 +80,7 @@ ConnectingMarker::ConnectingMarker(const DrawingContext &ctx,
 		    std::max(minWidth, maxWidth * marker.sizeFactor, less);
 
 		auto horizontalFactor =
-		    isArea ? static_cast<double>(horizontal.lessAndMore())
-		           : 1;
+		    isArea ? static_cast<double>(horizontal.moreOrLess()) : 1;
 
 		points[2] = pos;
 		points[1] = pos

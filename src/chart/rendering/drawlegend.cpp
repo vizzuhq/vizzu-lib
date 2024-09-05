@@ -136,7 +136,7 @@ void DrawLegend::drawTitle(const Info &info) const
 		            *events.title,
 		            Events::Targets::legendTitle(title.value,
 		                info.properties),
-		            {.colorTransform = Gfx::ColorTransform::Fade(
+		            {.colorTransform = Gfx::ColorTransform::Opacity(
 		                 Math::FuzzyBool::And(title.weight,
 		                     info.weight,
 		                     mul))});
@@ -188,7 +188,7 @@ void DrawLegend::drawDimension(Info &info) const
 			            value.second.categoryValue,
 			            value.second.categoryValue,
 			            info.properties),
-			        {.colorTransform = Gfx::ColorTransform::Fade(
+			        {.colorTransform = Gfx::ColorTransform::Opacity(
 			             Math::FuzzyBool::And(alpha,
 			                 weighted.weight)),
 			            .gradient = needGradient
@@ -311,7 +311,7 @@ void DrawLegend::extremaLabel(const Info &info,
 	    style.label,
 	    *events.label,
 	    Events::Targets::measLegendLabel(text, info.properties),
-	    {.colorTransform = Gfx::ColorTransform::Fade(
+	    {.colorTransform = Gfx::ColorTransform::Opacity(
 	         Math::FuzzyBool::And(info.measureWeight, plusWeight))});
 }
 
