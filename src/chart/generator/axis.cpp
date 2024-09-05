@@ -42,7 +42,10 @@ MeasureAxis::MeasureAxis(Math::Range<double> interval,
     unit(std::string{unit}),
     origMeasureName(std::string{measName}),
     step(step ? *step : Math::Renard::R5().ceil(range.size() / 5.0))
-{}
+{
+	if (std::signbit(this->step->value) != std::signbit(range.size()))
+		this->step->value *= -1;
+}
 
 bool MeasureAxis::operator==(const MeasureAxis &other) const
 {
@@ -68,8 +71,53 @@ MeasureAxis interpolate(const MeasureAxis &op0,
 	    interpolate(op0.origMeasureName, op1.origMeasureName, factor);
 
 	if (op0.enabled.get() && op1.enabled.get()) {
-		res.range = Math::interpolate(op0.range, op1.range, factor);
-		res.step = interpolate(op0.step, op1.step, factor);
+		constexpr auto MAX = std::numeric_limits<double>::max() / 2;
+		using Math::Floating::is_zero;
+
+		const auto s0 = op0.range.size();
+		const auto s1 = op1.range.size();
+
+		const auto s0Inv = is_zero(s0) ? MAX : 1 / s0;
+		const auto s1Inv = is_zero(s1) ? MAX : 1 / s1;
+
+		const auto interp = Math::interpolate(s0Inv, s1Inv, factor);
+
+		const auto s = is_zero(interp) ? MAX : 1 / interp;
+
+		res.range = Math::Range<double>::Raw(
+		    Math::interpolate(op0.range.getMin() * s0Inv,
+		        op1.range.getMin() * s1Inv,
+		        factor)
+		        * s,
+		    Math::interpolate(op0.range.getMax() * s0Inv,
+		        op1.range.getMax() * s1Inv,
+		        factor)
+		        * s);
+
+		auto step = Math::interpolate(op0.step.get() * s0Inv,
+		                op1.step.get() * s1Inv,
+		                factor)
+		          * s;
+
+		if (auto op0sign = std::signbit(op0.step.get());
+		    op0sign == std::signbit(op1.step.get()))
+			res.step = interpolate(op0.step,
+			    op1.step,
+			    Math::Range<double>::Raw(op0.step.get(),
+			        op1.step.get())
+			        .rescale(step));
+		else if (auto max = std::copysign(MAX, step);
+		         op0sign == std::signbit(step))
+			res.step = interpolate(op0.step,
+			    Anim::Interpolated{max},
+			    Math::Range<double>::Raw(op0.step.get(), max)
+			        .rescale(step));
+		else
+			res.step = interpolate(op1.step,
+			    Anim::Interpolated{max},
+			    Math::Range<double>::Raw(op1.step.get(), max)
+			        .rescale(step));
+
 		res.unit = interpolate(op0.unit, op1.unit, factor);
 	}
 	else if (op0.enabled.get()) {

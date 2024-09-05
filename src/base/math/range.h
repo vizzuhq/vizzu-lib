@@ -74,11 +74,6 @@ template <std::floating_point T> struct Range
 		return is_zero(s) ? 0.5 : (value - min) / s;
 	}
 
-	[[nodiscard]] Range<T> rescale(const Range<T> &range) const
-	{
-		return Range<T>(rescale(range.min), rescale(range.max));
-	}
-
 	[[nodiscard]] T scale(const T &value) const
 	{
 		return value * size() + min;

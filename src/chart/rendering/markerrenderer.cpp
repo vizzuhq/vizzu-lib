@@ -75,7 +75,7 @@ void MarkerRenderer::drawLines(Gfx::ICanvas &canvas,
 			auto center = Geom::Point{blended.center};
 			center.x = Math::interpolate(center.x,
 			    1.0,
-			    getOptions().coordSystem.factor<double>(
+			    getOptions().coordSystem.factor(
 			        Gen::CoordSystem::polar));
 			canvas.setLineColor(yLineColor);
 			auto axisPoint = center.yComp() + origo.xComp();
@@ -142,9 +142,8 @@ void MarkerRenderer::drawMarkers(Gfx::ICanvas &canvas,
 				const auto &blended0 =
 				    index == ::Anim::second ? *other : blended;
 
-				auto lineFactor =
-				    getOptions().geometry.factor<double>(
-				        Gen::ShapeType::line);
+				auto lineFactor = getOptions().geometry.factor(
+				    Gen::ShapeType::line);
 
 				draw(canvas,
 				    painter,
@@ -335,7 +334,7 @@ void MarkerRenderer::drawLabel(Gfx::ICanvas &canvas,
 		    return abstractMarker.getLabelPos(position, coordSys);
 	    });
 
-	auto centered = labelStyle.position->factor<double>(
+	auto centered = labelStyle.position->factor(
 	    Styles::MarkerLabel::Position::center);
 
 	OrientedLabel{{ctx()}}.draw(canvas,

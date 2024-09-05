@@ -244,7 +244,7 @@ void DrawLegend::drawMarker(Info &info,
 	info.canvas.setLineColor(color);
 	info.canvas.setLineWidth(0);
 
-	auto radius = rootStyle.legend.marker.type->factor<double>(
+	auto radius = rootStyle.legend.marker.type->factor(
 	                  Styles::Legend::Marker::Type::circle)
 	            * rect.size.minSize() / 2.0;
 
