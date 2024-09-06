@@ -223,13 +223,15 @@ bool DataCube::empty() const
 	return df->get_measures().empty() && df->get_dimensions().empty();
 }
 
-std::string DataCube::getName(const SeriesIndex &seriesId) const
+const std::string &DataCube::getName(
+    const SeriesIndex &seriesId) const
 {
 	return measure_names.at(
 	    {seriesId.getColIndex(), seriesId.getAggr()});
 }
 
-std::string DataTable::getUnit(std::string const &colIx) const
+std::string_view DataTable::getUnit(
+    std::string_view const &colIx) const
 {
 	return df.get_series_info(colIx, "unit");
 }

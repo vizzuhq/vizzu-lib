@@ -19,7 +19,7 @@ namespace Vizzu::Draw
 
 void DrawLabel::draw(Gfx::ICanvas &canvas,
     const Geom::TransformedRect &fullRect,
-    const char *text,
+    const std::string &text,
     const Styles::Label &style,
     Util::EventDispatcher::Event &onDraw,
     std::unique_ptr<Util::EventTarget> eventTarget,

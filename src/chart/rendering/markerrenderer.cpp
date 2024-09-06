@@ -338,7 +338,7 @@ void MarkerRenderer::drawLabel(Gfx::ICanvas &canvas,
 	    Styles::MarkerLabel::Position::center);
 
 	OrientedLabel{{ctx()}}.draw(canvas,
-	    text.c_str(),
+	    text,
 	    labelPos,
 	    labelStyle,
 	    centered,

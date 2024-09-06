@@ -194,10 +194,9 @@ public:
 			std::string text;
 
 			template <typename... Args>
-			explicit Text(const std::string_view &text,
-			    Args &&...args) :
+			explicit Text(std::string text, Args &&...args) :
 			    Base(std::forward<Args>(args)...),
-			    text{text}
+			    text(std::move(text))
 			{}
 
 			void appendToJSON(Conv::JSONObj &&jsonObj) const override
@@ -373,7 +372,7 @@ public:
 		static auto dimLegendLabel(
 		    const std::string_view &categoryName,
 		    const std::string_view &categoryValue,
-		    const std::string_view &label,
+		    const std::string &label,
 		    const LegendProperties &properties)
 		{
 			return std::make_unique<CategoryInfo<Text<LegendChild>>>(
@@ -392,7 +391,7 @@ public:
 			    properties);
 		}
 
-		static auto legendTitle(const std::string_view &title,
+		static auto legendTitle(const std::string &title,
 		    const LegendProperties &properties)
 		{
 			return std::make_unique<Text<LegendChild>>(title,
@@ -418,7 +417,7 @@ public:
 
 		static auto dimAxisLabel(const std::string_view &categoryName,
 		    const std::string_view &categoryValue,
-		    const std::string_view &label,
+		    const std::string &label,
 		    bool horizontal)
 		{
 			return std::make_unique<CategoryInfo<Text<AxisChild>>>(
@@ -437,7 +436,7 @@ public:
 			    horizontal);
 		}
 
-		static auto axisTitle(const std::string_view &title,
+		static auto axisTitle(const std::string &title,
 		    bool horizontal)
 		{
 			return std::make_unique<Text<AxisChild>>(title,

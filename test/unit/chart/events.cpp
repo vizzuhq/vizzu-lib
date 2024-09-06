@@ -12,9 +12,9 @@ using test::operator""_is_true;
 using test::operator""_is_false;
 
 Geom::Size Gfx::ICanvas::textBoundary(const Font &font,
-    const char *text)
+    const std::string &text)
 {
-	return {static_cast<double>(std::strlen(text)) * font.size / 2.0,
+	return {static_cast<double>(text.size()) * font.size / 2.0,
 	    font.size};
 }
 
@@ -47,7 +47,7 @@ struct MyCanvas final : Gfx::ICanvas, Vizzu::Draw::Painter
 	void rectangle(const Geom::Rect &) final {}
 	void circle(const Geom::Circle &) final {}
 	void line(const Geom::Line &) final {}
-	void text(const Geom::Rect &, const char *) final {}
+	void text(const Geom::Rect &, const std::string &) final {}
 	void setBrushGradient(const Gfx::LinearGradient &) final {}
 	void frameBegin() final {}
 	void frameEnd() final {}

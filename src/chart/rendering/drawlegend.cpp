@@ -131,7 +131,7 @@ void DrawLegend::drawTitle(const Info &info) const
 
 		        DrawLabel{{ctx()}}.draw(info.canvas,
 		            Geom::TransformedRect::fromRect(rect),
-		            title.value.c_str(),
+		            title.value,
 		            style.title,
 		            *events.title,
 		            Events::Targets::legendTitle(title.value,
@@ -180,7 +180,7 @@ void DrawLegend::drawDimension(Info &info) const
 		    {
 			    label.draw(info.canvas,
 			        getLabelRect(info, itemRect),
-			        weighted.value.c_str(),
+			        weighted.value,
 			        style.label,
 			        *events.label,
 			        Events::Targets::dimLegendLabel(
@@ -307,7 +307,7 @@ void DrawLegend::extremaLabel(const Info &info,
 
 	DrawLabel{{ctx()}}.draw(info.canvas,
 	    getLabelRect(info, getItemRect(info, pos)),
-	    text.c_str(),
+	    text,
 	    style.label,
 	    *events.label,
 	    Events::Targets::measLegendLabel(text, info.properties),

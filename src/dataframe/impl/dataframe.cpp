@@ -120,7 +120,7 @@ void valid_measure_aggregator(
 		error(error_type::aggregator, "measure");
 }
 
-std::string dataframe::set_aggregate(const std::string &series,
+std::string dataframe::set_aggregate(const std::string_view &series,
     const any_aggregator_type &aggregator) &
 {
 	change_state_to(state_type::aggregating,
@@ -155,7 +155,7 @@ std::string dataframe::set_aggregate(const std::string &series,
 	return name;
 }
 
-void dataframe::set_sort(const std::string &series,
+void dataframe::set_sort(const std::string_view &series,
     any_sort_type sort,
     na_position na_pos) &
 {
@@ -210,7 +210,7 @@ void dataframe::set_custom_sort(
 	error(error_type::unimplemented, "cus sort");
 }
 
-const std::string &dataframe::add_dimension(
+void dataframe::add_dimension(
     std::span<const char *const> dimension_categories,
     std::span<const std::uint32_t> dimension_values,
     std::string_view name,
@@ -233,11 +233,12 @@ const std::string &dataframe::add_dimension(
 		unsafe_get<state_type::modifying>(state_data)
 		    .emplace_back(name);
 
-		return unsafe_get<source_type::owning>(source)
-		    ->add_new_dimension(dimension_categories,
-		        dimension_values,
-		        name,
-		        info);
+		unsafe_get<source_type::owning>(source)->add_new_dimension(
+		    dimension_categories,
+		    dimension_values,
+		    name,
+		    info);
+		break;
 	}
 	case series_type::dimension: {
 		if (adding_strategy == adding_type::create_or_throw)
@@ -246,9 +247,9 @@ const std::string &dataframe::add_dimension(
 		change_state_to(state_type::modifying,
 		    state_modification_reason::needs_own_state);
 
-		auto &&ser =
-		    unsafe_get<source_type::owning>(source)->get_series(name);
-		auto &[nref, dims] = unsafe_get<series_type::dimension>(ser);
+		auto &dims = unsafe_get<series_type::dimension>(
+		    unsafe_get<source_type::owning>(source)->get_series(name))
+		                 .second;
 
 		switch (adding_strategy) {
 		case adding_type::create_or_throw:
@@ -276,15 +277,14 @@ const std::string &dataframe::add_dimension(
 			break;
 		}
 		}
-		return nref.get();
+		break;
 	}
 	case series_type::measure:
 		error(error_type::duplicated_series, name);
 	}
 }
 
-const std::string &dataframe::add_measure(
-    std::span<const double> measure_values,
+void dataframe::add_measure(std::span<const double> measure_values,
     std::string_view name,
     adding_type adding_strategy,
     std::span<const std::pair<const char *, const char *>> info) &
@@ -305,9 +305,11 @@ const std::string &dataframe::add_measure(
 		unsafe_get<state_type::modifying>(state_data)
 		    .emplace_back(name);
 
-		return unsafe_get<source_type::owning>(source)
-		    ->add_new_measure(measure_values, name, info)
-		    .first;
+		unsafe_get<source_type::owning>(source)->add_new_measure(
+		    measure_values,
+		    name,
+		    info);
+		break;
 	}
 	case series_type::measure: {
 		if (adding_strategy == adding_type::create_or_throw)
@@ -316,9 +318,9 @@ const std::string &dataframe::add_measure(
 		change_state_to(state_type::modifying,
 		    state_modification_reason::needs_own_state);
 
-		auto &&ser =
-		    unsafe_get<source_type::owning>(source)->get_series(name);
-		auto &[nref, meas] = unsafe_get<series_type::measure>(ser);
+		auto &meas = unsafe_get<series_type::measure>(
+		    unsafe_get<source_type::owning>(source)->get_series(name))
+		                 .second;
 
 		switch (adding_strategy) {
 		case adding_type::create_or_throw:
@@ -343,21 +345,19 @@ const std::string &dataframe::add_measure(
 			break;
 		}
 		}
-		return nref.get();
+		break;
 	}
 	case series_type::dimension:
 		error(error_type::duplicated_series, name);
 	}
 }
 
-const std::string &dataframe::add_series_by_other(std::string_view,
+void dataframe::add_series_by_other(std::string_view,
     std::string_view,
     const std::function<cell_value(record_type, cell_reference)> &,
     std::span<const std::pair<const char *, const char *>>) &
 {
 	if (as_if()) error(error_type::unimplemented, "by oth");
-	thread_local const std::string s{};
-	return s;
 }
 
 void dataframe::remove_series(
@@ -379,7 +379,9 @@ void dataframe::remove_series(
 			auto ix = &unsafe_get<dimension>(ser).second
 			        - s.dimensions.data();
 			remove_dimensions.insert(
-			    std::ranges::lower_bound(remove_dimensions, ix),
+			    std::lower_bound(remove_dimensions.begin(),
+			        remove_dimensions.end(),
+			        ix),
 			    ix);
 			break;
 		}
@@ -387,7 +389,9 @@ void dataframe::remove_series(
 			auto ix =
 			    &unsafe_get<measure>(ser).second - s.measures.data();
 			remove_measures.insert(
-			    std::ranges::lower_bound(remove_measures, ix),
+			    std::lower_bound(remove_measures.begin(),
+			        remove_measures.end(),
+			        ix),
 			    ix);
 			break;
 		}
@@ -871,7 +875,8 @@ const data_source &dataframe::get_data_source() const
 	                        : *unsafe_get<copying>(source).other;
 }
 
-std::string dataframe::get_series_info(const std::string &id,
+std::string_view dataframe::get_series_info(
+    const std::string_view &id,
     const char *key) const &
 {
 	switch (auto &&ser = get_data_source().get_series(id)) {
@@ -880,12 +885,12 @@ std::string dataframe::get_series_info(const std::string &id,
 	case measure: {
 		const auto &info = unsafe_get<measure>(ser).second.info;
 		auto it = info.find(key);
-		return it == info.end() ? std::string{} : it->second;
+		return it == info.end() ? std::string_view{} : it->second;
 	}
 	case dimension: {
 		const auto &info = unsafe_get<dimension>(ser).second.info;
 		auto it = info.find(key);
-		return it == info.end() ? std::string{} : it->second;
+		return it == info.end() ? std::string_view{} : it->second;
 	}
 	}
 }

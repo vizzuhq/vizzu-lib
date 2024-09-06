@@ -35,7 +35,8 @@ public:
 
 	void pushRow(const std::span<const char *const> &cells);
 
-	[[nodiscard]] std::string getUnit(std::string const &colIx) const;
+	[[nodiscard]] std::string_view getUnit(
+	    std::string_view const &colIx) const;
 
 	[[nodiscard]] std::string getInfos() const;
 
@@ -113,7 +114,7 @@ public:
 	    const SeriesList &sl,
 	    const MultiIndex &index) const;
 
-	[[nodiscard]] std::string getName(
+	[[nodiscard]] const std::string &getName(
 	    const SeriesIndex &seriesId) const;
 
 	[[nodiscard]] iterator_t begin() const;

@@ -157,8 +157,7 @@ void TextBox::draw(ICanvas &canvas, double opacity)
 			canvas.rectangle(
 			    {{xpos, ypos}, {text.width, line.height}});
 			canvas.setBrushColor(foreground);
-			canvas.text({{xpos, ypos}, {10000, 10000}},
-			    text.content.c_str());
+			canvas.text({{xpos, ypos}, {10000, 10000}}, text.content);
 			xpos += text.width;
 		}
 		ypos += line.height * line.spacing;
@@ -177,8 +176,8 @@ Geom::Size TextBox::measure(ICanvas &canvas)
 			line.height = 0;
 			for (auto &text : line.texts) {
 				canvas.setFont(text.font);
-				auto size = ICanvas::textBoundary(text.font,
-				    text.content.c_str());
+				auto size =
+				    ICanvas::textBoundary(text.font, text.content);
 				text.width = size.x;
 				line.width += size.x;
 				if (size.y > line.height) line.height = size.y;

@@ -210,10 +210,14 @@ void data_source::sort(std::vector<std::size_t> &&indices)
 std::size_t data_source::change_series_identifier_type(
     const std::string_view &name) const
 {
-	if (auto it = std::ranges::lower_bound(dimension_names, name);
+	if (auto it = std::lower_bound(dimension_names.begin(),
+	        dimension_names.end(),
+	        name);
 	    it != dimension_names.end() && *it == name)
 		return static_cast<std::size_t>(it - dimension_names.begin());
-	if (auto it = std::ranges::lower_bound(measure_names, name);
+	if (auto it = std::lower_bound(measure_names.begin(),
+	        measure_names.end(),
+	        name);
 	    it != measure_names.end() && *it == name)
 		return static_cast<std::size_t>(
 		           std::distance(measure_names.begin(), it))
@@ -320,62 +324,65 @@ void data_source::finalize()
 				error(error_type::record, "dup");
 	}
 }
-
-const std::string &data_source::add_new_dimension(
+data_source::dimension_t &data_source::add_new_dimension(
     std::span<const char *const> dimension_categories,
     std::span<const std::uint32_t> dimension_values,
     std::string_view name,
     std::span<const std::pair<const char *, const char *>> info)
 {
-	auto &&it = dimension_names.emplace(
-	    std::ranges::lower_bound(dimension_names, name),
+	auto it = dimension_names.emplace(
+	    std::lower_bound(dimension_names.begin(),
+	        dimension_names.end(),
+	        name),
 	    name);
-	dimensions.emplace(dimensions.begin()
-	                       + (it - dimension_names.begin()),
+	return *dimensions.emplace(dimensions.begin()
+	                               + (it - dimension_names.begin()),
 	    dimension_categories,
 	    dimension_values,
 	    info);
-	return *it;
 }
 
-const std::string &data_source::add_new_dimension(dimension_t &&dim,
-    const std::string &name)
+data_source::dimension_t &data_source::add_new_dimension(
+    dimension_t &&dim,
+    std::string_view name)
 {
-	auto &&it = dimension_names.emplace(
-	    std::ranges::lower_bound(dimension_names, name),
+	auto it = dimension_names.emplace(
+	    std::lower_bound(dimension_names.begin(),
+	        dimension_names.end(),
+	        name),
 	    name);
-	dimensions.emplace(dimensions.begin()
-	                       + (it - dimension_names.begin()),
+	return *dimensions.emplace(dimensions.begin()
+	                               + (it - dimension_names.begin()),
 	    std::move(dim));
-	return *it;
 }
 
-data_source::measure_with_name_ref data_source::add_new_measure(
+data_source::measure_t &data_source::add_new_measure(
     std::span<const double> measure_values,
     std::string_view name,
     std::span<const std::pair<const char *, const char *>> info)
 {
-	auto &&it = measure_names.emplace(
-	    std::ranges::lower_bound(measure_names, name),
-	    name);
-	auto &ref = *measures.emplace(measures.begin()
-	                                  + (it - measure_names.begin()),
+	auto it =
+	    measure_names.emplace(std::lower_bound(measure_names.begin(),
+	                              measure_names.end(),
+	                              name),
+	        name);
+	return *measures.emplace(measures.begin()
+	                             + (it - measure_names.begin()),
 	    measure_values,
 	    info);
-	return {*it, ref};
 }
 
-data_source::measure_with_name_ref
-data_source::add_new_measure(measure_t &&mea, const std::string &name)
+data_source::measure_t &data_source::add_new_measure(measure_t &&mea,
+    std::string_view name)
 {
-	auto &&it = measure_names.emplace(
-	    std::ranges::lower_bound(measure_names, name),
-	    name);
-	auto &ref = *measures.emplace(measures.begin()
-	                                  + (it - measure_names.begin()),
+	auto it =
+	    measure_names.emplace(std::lower_bound(measure_names.begin(),
+	                              measure_names.end(),
+	                              name),
+	        name);
+	return *measures.emplace(measures.begin()
+	                             + (it - measure_names.begin()),
 	    std::move(mea));
-
-	return {*it, ref};
 }
 
 std::vector<std::size_t> data_source::get_sorted_indices(
@@ -427,7 +434,7 @@ data_source::data_source(aggregating_type &&aggregating,
 		    name);
 
 	for (const auto &[name, mea] : meas) {
-		measure_t &new_mea = add_new_measure({}, name).second;
+		measure_t &new_mea = add_new_measure({}, name);
 		switch (const auto &ser = std::get<0>(mea)) {
 			using enum series_type;
 		case dimension:

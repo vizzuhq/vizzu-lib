@@ -42,13 +42,13 @@ std::shared_ptr<dataframe_interface> dataframe_interface::copy(
 }
 
 std::string dataframe_interface::set_aggregate(
-    const std::string &series,
+    const std::string_view &series,
     const any_aggregator_type &aggregator) &
 {
 	return as_impl(this).set_aggregate(series, aggregator);
 }
 
-void dataframe_interface::set_sort(const std::string &series,
+void dataframe_interface::set_sort(const std::string_view &series,
     any_sort_type sort,
     na_position na_pos) &
 {
@@ -62,40 +62,40 @@ void dataframe_interface::set_custom_sort(
 	as_impl(this).set_custom_sort(custom_sort);
 }
 
-const std::string &dataframe_interface::add_dimension(
+void dataframe_interface::add_dimension(
     std::span<const char *const> dimension_categories,
     std::span<const std::uint32_t> dimension_values,
     std::string_view name,
     adding_type adding_strategy,
     std::span<const std::pair<const char *, const char *>> info) &
 {
-	return as_impl(this).add_dimension(dimension_categories,
+	as_impl(this).add_dimension(dimension_categories,
 	    dimension_values,
 	    name,
 	    adding_strategy,
 	    info);
 }
 
-const std::string &dataframe_interface::add_measure(
+void dataframe_interface::add_measure(
     std::span<const double> measure_values,
     std::string_view name,
     adding_type adding_strategy,
     std::span<const std::pair<const char *, const char *>> info) &
 {
-	return as_impl(this).add_measure(measure_values,
+	as_impl(this).add_measure(measure_values,
 	    name,
 	    adding_strategy,
 	    info);
 }
 
-const std::string &dataframe_interface::add_series_by_other(
+void dataframe_interface::add_series_by_other(
     std::string_view curr_series,
     std::string_view name,
     const std::function<cell_value(record_type, cell_reference)>
         &value_transform,
     std::span<const std::pair<const char *, const char *>> info) &
 {
-	return as_impl(this).add_series_by_other(curr_series,
+	as_impl(this).add_series_by_other(curr_series,
 	    name,
 	    value_transform,
 	    info);
@@ -176,8 +176,8 @@ std::size_t dataframe_interface::get_record_count() const &
 	return as_impl(this).get_record_count();
 }
 
-std::string dataframe_interface::get_series_info(
-    const std::string &id,
+std::string_view dataframe_interface::get_series_info(
+    const std::string_view &id,
     const char *key) const &
 {
 	return as_impl(this).get_series_info(id, key);

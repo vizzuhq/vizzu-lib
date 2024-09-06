@@ -288,7 +288,7 @@ void DrawInterlacing::drawDataLabel(
 		    *labelStyle.numberScale,
 		    wUnit.value);
 		drawLabel.draw(canvas,
-		    str.c_str(),
+		    str,
 		    posDir,
 		    labelStyle,
 		    0,

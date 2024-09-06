@@ -37,8 +37,8 @@ struct MeasureAxis
 	::Anim::Interpolated<double> step{1.0};
 	MeasureAxis() = default;
 	MeasureAxis(Math::Range<double> interval,
-	    const std::string &unit,
-	    const std::string &measName,
+	    const std::string_view &unit,
+	    const std::string_view &measName,
 	    std::optional<double> step);
 	bool operator==(const MeasureAxis &other) const;
 	[[nodiscard]] double origo() const;

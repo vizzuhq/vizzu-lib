@@ -240,22 +240,21 @@ public:
 
 	void finalize();
 
-	const std::string &add_new_dimension(
+	dimension_t &add_new_dimension(
 	    std::span<const char *const> dimension_categories,
 	    std::span<const std::uint32_t> dimension_values,
 	    std::string_view name,
 	    std::span<const std::pair<const char *, const char *>> info);
 
-	const std::string &add_new_dimension(dimension_t &&dim,
-	    const std::string &name);
+	dimension_t &add_new_dimension(dimension_t &&dim,
+	    std::string_view name);
 
-	measure_with_name_ref add_new_measure(
-	    std::span<const double> measure_values,
+	measure_t &add_new_measure(std::span<const double> measure_values,
 	    std::string_view name,
 	    std::span<const std::pair<const char *, const char *>> info);
 
-	measure_with_name_ref add_new_measure(measure_t &&measure,
-	    const std::string &name);
+	measure_t &add_new_measure(measure_t &&measure,
+	    std::string_view name);
 
 	static std::vector<std::size_t> get_sorted_indices(
 	    std::size_t max,

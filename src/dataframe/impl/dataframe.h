@@ -53,10 +53,11 @@ public:
 	[[nodiscard]] static std::shared_ptr<dataframe_interface>
 	create_new();
 
-	[[nodiscard]] std::string set_aggregate(const std::string &series,
+	[[nodiscard]] std::string set_aggregate(
+	    const std::string_view &series,
 	    const any_aggregator_type &aggregator) &;
 
-	void set_sort(const std::string &series,
+	void set_sort(const std::string_view &series,
 	    any_sort_type sort,
 	    na_position na_pos) &;
 
@@ -64,7 +65,7 @@ public:
 	    const std::function<std::weak_ordering(record_type,
 	        record_type)> &custom_sort) &;
 
-	const std::string &add_dimension(
+	void add_dimension(
 	    std::span<const char *const> dimension_categories,
 	    std::span<const std::uint32_t> dimension_values,
 	    std::string_view name,
@@ -72,15 +73,13 @@ public:
 	    std::span<const std::pair<const char *, const char *>> info)
 	    &;
 
-	const std::string &add_measure(
-	    std::span<const double> measure_values,
+	void add_measure(std::span<const double> measure_values,
 	    std::string_view name,
 	    adding_type adding_strategy,
 	    std::span<const std::pair<const char *, const char *>> info)
 	    &;
 
-	const std::string &add_series_by_other(
-	    std::string_view curr_series,
+	void add_series_by_other(std::string_view curr_series,
 	    std::string_view name,
 	    const std::function<cell_value(record_type, cell_reference)>
 	        &value_transform,
@@ -121,7 +120,8 @@ public:
 	[[nodiscard]] series_meta_t get_series_meta(
 	    const std::string &id) const;
 
-	[[nodiscard]] std::string get_series_info(const std::string &id,
+	[[nodiscard]] std::string_view get_series_info(
+	    const std::string_view &id,
 	    const char *key) const &;
 
 	[[nodiscard]] cell_reference get_data(
