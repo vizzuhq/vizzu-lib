@@ -63,13 +63,13 @@ double Duration::sec() const { return msec() / 1000.0; }
 
 Duration &Duration::operator+=(const Duration &other)
 {
-	*this = *this + other;
+	static_cast<Base &>(*this) += other;
 	return *this;
 }
 
 Duration &Duration::operator-=(const Duration &other)
 {
-	*this = *this - other;
+	static_cast<Base &>(*this) -= other;
 	return *this;
 }
 

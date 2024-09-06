@@ -2,37 +2,37 @@
 	"suite": "/test/e2e/tests/features",
 	"test": {
 		"aggregators/aggregators": {
-			"refs": ["bd61770"]
+			"refs": ["463ca59"]
 		},
 		"aggregators/aggregators_together": {
-			"refs": ["5d9a4d9"]
+			"refs": ["e2abafe"]
 		},
 		"axis_title_positioning": {
-			"refs": ["d7c6dee"]
+			"refs": ["ffc403c"]
 		},
 		"data_input/object_records": {
-			"refs": ["9d5443f"]
+			"refs": ["7c8b0bb"]
 		},
 		"events/drawing_events": {
-			"refs": ["a92ae15"]
+			"refs": ["6496e1d"]
 		},
 		"subtitle_caption": {
-			"refs": ["5c04f20"]
+			"refs": ["f6dabf0"]
 		},
 		"cssproperties": {
-			"refs": ["f3212ba"]
+			"refs": ["b1a2535"]
 		},
 		"anim/speed": {
-			"refs": ["7b07504"]
+			"refs": ["b6c8e6a"]
 		},
 		"presets": {
-			"refs": ["f154a71"]
+			"refs": ["d530bbd"]
 		},
 		"detach": {
 			"refs": ["e3b0c44"]
 		},
 		"data_input/category_indexed": {
-			"refs": ["ac40c83"]
+			"refs": ["72a8149"]
 		}
 	}
 }

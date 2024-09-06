@@ -108,7 +108,7 @@ function setupEvents(chart) {
 		})
 	})
 	chart.on('draw-complete', (e) => {
-		const reference = -912155869
+		const reference = 764260241
 		receivedEvents.push(e)
 		const result = JSON.stringify(receivedEvents, null, 2)
 		const hash = (str) =>
@@ -119,8 +119,10 @@ function setupEvents(chart) {
 				console.log('Actual hash: ' + hash(result))
 				isErrorLogged = true
 			}
+			e.renderingContext.fillStyle = 'red'
 			e.renderingContext.fillText('FAILED', 10, 20)
 		} else {
+			e.renderingContext.fillStyle = 'green'
 			e.renderingContext.fillText('PASSED', 10, 20)
 		}
 	})
@@ -137,19 +139,22 @@ const data = {
 const testSteps = [
 	(chart) => {
 		setupEvents(chart)
-		return chart.animate({
-			data,
-			config: {
-				color: 'Foo',
-				x: { set: 'Foo', guides: true, ticks: true },
-				y: { set: 'Bar', guides: true, ticks: true },
-				size: 'Baz',
-				label: 'Baz',
-				title: 'My Chart',
-				legend: 'size',
-				geometry: 'circle'
-			}
-		})
+		return chart.animate(
+			{
+				data,
+				config: {
+					color: 'Foo',
+					x: { set: 'Foo', guides: true, ticks: true },
+					y: { set: 'Bar', guides: true, ticks: true },
+					size: 'Baz',
+					label: 'Baz',
+					title: 'My Chart',
+					legend: 'size',
+					geometry: 'circle'
+				}
+			},
+			0
+		)
 	}
 ]
 

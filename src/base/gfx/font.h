@@ -17,7 +17,7 @@ public:
 		static Weight Bold() { return Weight{700}; }
 		Weight() : value(Normal().value) {}
 		explicit Weight(int value) : value(value) {}
-		explicit Weight(const std::string &str);
+		static Weight fromString(const std::string &str);
 		explicit operator int() const { return value; };
 		explicit operator std::string() const;
 		Weight operator*(double factor) const;

@@ -123,10 +123,6 @@ definitions:
                 type: string
                 enum: [center, left, right]
                 nullable: true
-            backgroundColor:
-                description: The background color of the displayed text.
-                $ref: Color
-                nullable: true
             numberFormat:
                 description: |
                     The format of the number. Only applicable for texts showing numerical

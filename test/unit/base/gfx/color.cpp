@@ -11,11 +11,21 @@ const static auto tests =
         .add_case("Convertable from hex string",
             []
             {
-	            const Gfx::Color color("#12345678");
+	            auto color = Gfx::Color::fromString("#12345678");
 	            check() << color.red == 0x12 / 255.0;
 	            check() << color.green == 0x34 / 255.0;
 	            check() << color.blue == 0x56 / 255.0;
 	            check() << color.alpha == 0x78 / 255.0;
+            })
+
+        .add_case("Convertable from RGB",
+            []
+            {
+	            auto color = Gfx::Color::RGB(0x123456);
+	            check() << color.red == 0x12 / 255.0;
+	            check() << color.green == 0x34 / 255.0;
+	            check() << color.blue == 0x56 / 255.0;
+	            check() << color.alpha == 1.0;
             })
 
         .add_case("Convertable to hex string",

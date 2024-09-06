@@ -3,6 +3,7 @@
 #include <array>
 #include <stdexcept>
 #include <string>
+#include <utility>
 
 #include "smartstring.h"
 
@@ -30,7 +31,7 @@ FuncString::FuncString(std::string code, bool throwOnError)
 	parts[1].pop_back();
 	SmartString::trim(parts[1]);
 
-	name = parts[0];
+	name = std::move(parts[0]);
 	params = SmartString::split(parts[1], ',');
 
 	SmartString::trim(name);

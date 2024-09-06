@@ -204,7 +204,7 @@ public:
 		return false;
 	}
 
-	template <class T, class U>
+	template <class T = double, class U>
 	[[nodiscard]] T factor(const U &value) const
 	{
 		double res{};
