@@ -5,12 +5,22 @@
 ### Fixed
 
 - Legend title bottomPadding extended.
+- ColorGradient fromString not increasing position prohibited.
+- Fix alpha settings to linear by default:
+  - Axis: line, title, labels, guides, interlacing, ticks
+  - Legend: title, dimension markers, measure extrema labels
+  - Marker: line with connections
+- Fix negative ranges on x, y, color (measure) and lightness.
+- Fix axis step parameter if not match with the range sign (neg/pos).
+- Fix axis interpolation. From now the axis and axis labels are following the markers.
+- Fix measure axis labels when the range started after the 2000th step value from origo. 
 - Remove marker labels at intermediate steps.
 - Markers are the same even if new record added.
 
 ### Added
 
 - New style parameter for the legend scrolling.
+- Remove background settings for all text, including title, subtitle and caption.
 - Changed MarkerId to be a string instead of a number.
 
 ## [0.12.1] - 2024-08-22

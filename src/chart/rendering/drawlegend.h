@@ -25,16 +25,14 @@ public:
 	    *rootStyle.plot.marker.colorGradient};
 
 private:
-	struct ColorGradientSetter
+	struct FadeBarGradient
 	{
-		Geom::Line line;
-		Gfx::ColorGradient gradient;
-		std::span<Gfx::ColorGradient::Stop> modifiableStops =
-		    gradient.stops;
+		Geom::Line origLine;
+		Gfx::LinearGradient gradient;
 
-		void operator()(Gfx::ICanvas &,
-		    const Geom::AffineTransform &,
-		    const Gfx::Color &) const;
+		[[nodiscard]] const Gfx::LinearGradient &operator()(
+		    const Gfx::Color &,
+		    const Geom::AffineTransform & = {});
 	};
 	struct Info
 	{
@@ -42,9 +40,6 @@ private:
 		Geom::Rect titleRect;
 		Geom::Rect markerWindowRect;
 		double fadeHeight{};
-		double yOverflow{};
-		double yOffset{};
-		Gen::ChannelId type{};
 		double weight{};
 		double itemHeight{};
 		double markerSize{};
@@ -52,16 +47,18 @@ private:
 		const Gen::DimensionAxis &dimension;
 		double measureEnabled = measure.enabled.calculate<double>();
 		bool dimensionEnabled = dimension.enabled;
-		double measureWeight = weight * measureEnabled;
-		ColorGradientSetter colorGradientSetter;
+		double measureWeight =
+		    Math::FuzzyBool::And(weight, measureEnabled);
+		Events::Targets::LegendProperties properties;
+		FadeBarGradient fadeBarGradient;
 	};
 
 	void drawTitle(const Info &info) const;
 
-	void drawDimension(const Info &info) const;
+	void drawDimension(Info &info) const;
 	void drawMeasure(const Info &info) const;
 
-	void drawMarker(const Info &info,
+	void drawMarker(Info &info,
 	    std::string_view categoryValue,
 	    const Gfx::Color &color,
 	    const Geom::Rect &rect,

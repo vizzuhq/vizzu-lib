@@ -45,8 +45,8 @@ public:
 
 	void text(const Geom::Rect &rect, const char *text) override;
 
-	void setBrushGradient(const Geom::Line &line,
-	    const Gfx::ColorGradient &gradient) override;
+	void setBrushGradient(
+	    const Gfx::LinearGradient &gradient) override;
 
 	void frameBegin() override {}
 	void frameEnd() override {}

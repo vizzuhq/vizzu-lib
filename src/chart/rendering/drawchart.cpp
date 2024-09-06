@@ -7,6 +7,8 @@
 #include "base/geom/rect.h"
 #include "base/geom/transformedrect.h"
 #include "base/gfx/canvas.h"
+#include "base/gfx/colortransform.h"
+#include "base/math/fuzzybool.h"
 #include "chart/main/layout.h"
 #include "painter/painter.h"
 
@@ -73,8 +75,10 @@ void DrawChart::drawHeading(Gfx::ICanvas &canvas,
 			            style,
 			            event,
 			            targetGetter(*weighted.value),
-			            {.alpha = std::max(weighted.weight * 2 - 1,
-			                 0.0)});
+			            {.colorTransform =
+			                    Gfx::ColorTransform::Opacity(
+			                        Math::FuzzyBool::more(
+			                            weighted.weight))});
 		        }
 	        });
 }

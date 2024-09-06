@@ -9,6 +9,7 @@
 #include "base/anim/interpolated.h"
 #include "base/geom/line.h"
 #include "base/gfx/canvas.h"
+#include "base/gfx/colortransform.h"
 #include "base/math/interpolation.h"
 #include "base/text/smartstring.h"
 #include "chart/generator/plot.h" // NOLINT(misc-include-cleaner)
@@ -42,19 +43,19 @@ void MarkerRenderer::drawLines(Gfx::ICanvas &canvas,
 
 	auto origo = plot->axises.origo();
 
-	auto baseColor = *style.color * double{plot->anyAxisSet};
-
-	auto xMarkerGuides = double{plot->guides.x.markerGuides};
-	auto yMarkerGuides = double{plot->guides.y.markerGuides};
-	auto xLineColor = baseColor * xMarkerGuides;
-	auto yLineColor = baseColor * yMarkerGuides;
+	auto xLineColor = *style.color
+	                * Math::FuzzyBool::And<double>(plot->anyAxisSet,
+	                    plot->guides.x.markerGuides);
+	auto yLineColor = *style.color
+	                * Math::FuzzyBool::And<double>(plot->anyAxisSet,
+	                    plot->guides.y.markerGuides);
 
 	for (const auto &blended : markers) {
 		if (blended.marker.enabled == false
 		    || blended.enabled == false)
 			continue;
 
-		if (xMarkerGuides > 0) {
+		if (plot->guides.x.markerGuides != false) {
 			canvas.setLineColor(xLineColor);
 			auto axisPoint = blended.center.xComp() + origo.yComp();
 			const Geom::Line line(axisPoint, blended.center);
@@ -70,11 +71,11 @@ void MarkerRenderer::drawLines(Gfx::ICanvas &canvas,
 				    std::move(guideElement));
 			}
 		}
-		if (yMarkerGuides > 0) {
+		if (plot->guides.y.markerGuides != false) {
 			auto center = Geom::Point{blended.center};
 			center.x = Math::interpolate(center.x,
 			    1.0,
-			    getOptions().coordSystem.factor<double>(
+			    getOptions().coordSystem.factor(
 			        Gen::CoordSystem::polar));
 			canvas.setLineColor(yLineColor);
 			auto axisPoint = center.yComp() + origo.xComp();
@@ -141,9 +142,8 @@ void MarkerRenderer::drawMarkers(Gfx::ICanvas &canvas,
 				const auto &blended0 =
 				    index == ::Anim::second ? *other : blended;
 
-				auto lineFactor =
-				    getOptions().geometry.factor<double>(
-				        Gen::ShapeType::line);
+				auto lineFactor = getOptions().geometry.factor(
+				    Gen::ShapeType::line);
 
 				draw(canvas,
 				    painter,
@@ -241,18 +241,17 @@ void MarkerRenderer::draw(Gfx::ICanvas &canvas,
 	painter.setPolygonStraightFactor(
 	    static_cast<double>(abstractMarker.linear));
 
-	auto colors = getColor(abstractMarker, factor);
+	auto colors = getColor(abstractMarker);
 
 	canvas.save();
 
-	canvas.setLineColor(colors.first);
 	canvas.setLineWidth(*rootStyle.plot.marker.borderWidth);
-	canvas.setBrushColor(colors.second);
-
-	auto boundary = abstractMarker.getBoundary();
 
 	auto markerElement =
 	    Events::Targets::marker(abstractMarker.marker);
+
+	auto colorAlpha =
+	    Math::FuzzyBool::And<double>(abstractMarker.enabled, factor);
 
 	if (isLine) {
 		auto line = abstractMarker.getLine();
@@ -260,12 +259,11 @@ void MarkerRenderer::draw(Gfx::ICanvas &canvas,
 		auto p0 = coordSys.convert(line.begin);
 		auto p1 = coordSys.convert(line.end);
 
-		canvas.setBrushColor(
-		    colors.second
-		    * static_cast<double>(abstractMarker.connected));
-		canvas.setLineColor(
-		    colors.second
-		    * static_cast<double>(abstractMarker.connected));
+		colorAlpha = Math::FuzzyBool::And<double>(colorAlpha,
+		    abstractMarker.connected);
+
+		canvas.setBrushColor(colors.second * colorAlpha);
+		canvas.setLineColor(colors.second * colorAlpha);
 
 		if (rootEvents.draw.plot.marker.base->invoke(
 		        Events::OnLineDrawEvent(*markerElement,
@@ -283,6 +281,10 @@ void MarkerRenderer::draw(Gfx::ICanvas &canvas,
 		}
 	}
 	else {
+		auto boundary = abstractMarker.getBoundary();
+		canvas.setLineColor(colors.first * colorAlpha);
+		canvas.setBrushColor(colors.second * colorAlpha);
+
 		if (rootEvents.draw.plot.marker.base->invoke(
 		        Events::OnRectDrawEvent(*markerElement,
 		            {boundary, true}))) {
@@ -315,7 +317,11 @@ void MarkerRenderer::drawLabel(Gfx::ICanvas &canvas,
 	        : 0.0;
 	if (weight == 0.0) return;
 
-	auto color = getColor(abstractMarker, 1, true).second;
+	auto color = getColor(abstractMarker, true).second;
+
+	auto colorAlpha =
+	    Math::FuzzyBool::And<double>(abstractMarker.labelEnabled,
+	        weight);
 
 	auto text = getLabelText(marker.label, unit, keepMeasure, index);
 	if (text.empty()) return;
@@ -328,9 +334,7 @@ void MarkerRenderer::drawLabel(Gfx::ICanvas &canvas,
 		    return abstractMarker.getLabelPos(position, coordSys);
 	    });
 
-	canvas.setBrushColor((*labelStyle.filter)(color)*weight);
-
-	auto centered = labelStyle.position->factor<double>(
+	auto centered = labelStyle.position->factor(
 	    Styles::MarkerLabel::Position::center);
 
 	OrientedLabel{{ctx()}}.draw(canvas,
@@ -338,8 +342,8 @@ void MarkerRenderer::drawLabel(Gfx::ICanvas &canvas,
 	    labelPos,
 	    labelStyle,
 	    centered,
-	    {},
-	    weight,
+	    Gfx::ColorTransform::OverrideColor(
+	        (*labelStyle.filter)(color)*colorAlpha),
 	    *rootEvents.draw.plot.marker.label,
 	    Events::Targets::markerLabel(text, marker));
 }
@@ -397,7 +401,6 @@ std::string MarkerRenderer::getLabelText(
 
 std::pair<Gfx::Color, Gfx::Color> MarkerRenderer::getColor(
     const AbstractMarker &abstractMarker,
-    double factor,
     bool label) const
 {
 	auto selectedColor =
@@ -427,14 +430,9 @@ std::pair<Gfx::Color, Gfx::Color> MarkerRenderer::getColor(
 	    borderColor,
 	    static_cast<double>(abstractMarker.border));
 
-	const auto &enabled =
-	    label ? abstractMarker.labelEnabled : abstractMarker.enabled;
-	const double alpha{enabled && Math::FuzzyBool{factor}};
+	auto actItemColor = selectedColor * fillAlpha;
 
-	auto finalBorderColor = actBorderColor * alpha;
-	auto itemColor = selectedColor * alpha * fillAlpha;
-
-	return std::make_pair(finalBorderColor, itemColor);
+	return std::make_pair(actBorderColor, actItemColor);
 }
 
 Gfx::Color MarkerRenderer::getSelectedColor(const Gen::Marker &marker,

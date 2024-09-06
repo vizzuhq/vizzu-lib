@@ -21,7 +21,7 @@ ColorPalette::ColorPalette(const std::string &string)
 	    Text::SmartString::split(string, ' ', true, "()");
 	colors.reserve(colorList.size());
 	for (const auto &color : colorList) {
-		colors.emplace_back(color);
+		colors.emplace_back(Color::fromString(color));
 	}
 }
 

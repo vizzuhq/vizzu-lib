@@ -169,10 +169,10 @@ void JScriptCanvas::text(const Geom::Rect &rect, const char *text)
 	    text);
 }
 
-void JScriptCanvas::setBrushGradient(const Geom::Line &line,
-    const Gfx::ColorGradient &gradient)
+void JScriptCanvas::setBrushGradient(
+    const Gfx::LinearGradient &gradient)
 {
-	typedef decltype(gradient.stops)::value_type Stop;
+	typedef decltype(gradient.colors.stops)::value_type Stop;
 	static_assert(sizeof(double) == 8);
 	static_assert(sizeof(Stop) == sizeof(double) * 5);
 
@@ -188,12 +188,12 @@ void JScriptCanvas::setBrushGradient(const Geom::Line &line,
 	    std::is_same_v<decltype(Stop::value.alpha), double>);
 
 	::canvas_setBrushGradient(this,
-	    line.begin.x,
-	    line.begin.y,
-	    line.end.x,
-	    line.end.y,
-	    gradient.stops.size(),
-	    gradient.stops.data());
+	    gradient.line.begin.x,
+	    gradient.line.begin.y,
+	    gradient.line.end.x,
+	    gradient.line.end.y,
+	    gradient.colors.stops.size(),
+	    gradient.colors.stops.data());
 }
 
 void JScriptCanvas::frameEnd() { ::canvas_frameEnd(this); }

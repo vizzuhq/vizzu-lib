@@ -8,15 +8,12 @@
 namespace Gfx
 {
 
-Font::Weight::Weight(const std::string &str)
+Font::Weight Font::Weight::fromString(const std::string &str)
 {
-	if (str == "normal")
-		*this = Normal();
-	else if (str == "bold")
-		*this = Bold();
-	else {
-		value = static_cast<int>(Conv::parse<double>(str));
-	}
+	if (str == "normal") return Normal();
+	if (str == "bold") return Bold();
+
+	return Weight{static_cast<int>(Conv::parse<double>(str))};
 }
 
 Font::Weight::operator std::string() const

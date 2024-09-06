@@ -19,6 +19,8 @@ namespace SmartString
     bool ignoreEmpty = false,
     const char *parens = nullptr);
 
+std::string_view trim_view(const std::string_view &string);
+
 void trim(std::string &string);
 
 [[nodiscard]] std::string fromPhysicalValue(double value,

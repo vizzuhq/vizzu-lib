@@ -9,6 +9,7 @@
 #include "base/gfx/color.h"
 #include "base/gfx/colorgradient.h"
 #include "base/gfx/font.h"
+#include "base/gfx/lineargradient.h"
 
 namespace Gfx
 {
@@ -47,8 +48,7 @@ struct ICanvas
 
 	virtual void text(const Geom::Rect &rect, const char *text) = 0;
 
-	virtual void setBrushGradient(const Geom::Line &line,
-	    const ColorGradient &gradient) = 0;
+	virtual void setBrushGradient(const LinearGradient &gradient) = 0;
 
 	virtual void frameBegin() = 0;
 	virtual void frameEnd() = 0;

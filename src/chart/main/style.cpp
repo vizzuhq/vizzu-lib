@@ -4,7 +4,6 @@
 
 #include "base/anim/interpolated.h"
 #include "base/gfx/color.h"
-#include "base/gfx/colorgradient.h"
 #include "base/gfx/colorpalette.h"
 #include "base/gfx/colortransform.h"
 #include "base/gfx/font.h"
@@ -107,7 +106,7 @@ Chart Chart::def()
 					.marker = {
 						DataPoint
 						{
-							.colorGradient = Gfx::ColorGradient(
+							.colorGradient = {
 							{
 								{
 									0.0,
@@ -129,7 +128,7 @@ Chart Chart::def()
 									1.0,
 									Gfx::Color::RGB(0xf3f239)
 								}
-							}),
+							}},
 							.colorPalette = ::Anim::Interpolated<Gfx::ColorPalette>(getDefaultColorPalette()),
 							.minLightness = 0.4,
 							.maxLightness = -0.4,
@@ -172,7 +171,6 @@ Chart Chart::def()
 										{
 											.color = Gfx::Color(),
 											.textAlign = Anim::Interpolated<Text::TextAlign>(Text::TextAlign::center),
-											.backgroundColor = Gfx::Color(),
 											.numberFormat = ::Text::NumberFormat::grouped,
 											.maxFractionDigits = 3,
 											.numberScale = ::Text::NumberScale{}
@@ -216,7 +214,6 @@ Chart Chart::def()
 								{
 									.color = Gfx::Color::Gray(0.6),
 									.textAlign = Anim::Interpolated<Text::TextAlign>(Text::TextAlign::left),
-									.backgroundColor = Gfx::Color(),
 									.numberFormat = ::Text::NumberFormat::prefixed,
 									.maxFractionDigits = 3,
 									.numberScale = ::Text::NumberScale{}
@@ -254,7 +251,6 @@ Chart Chart::def()
 									{
 										.color = Gfx::Color::Gray(0.6),
 										.textAlign = Anim::Interpolated<Text::TextAlign>(Text::TextAlign::left),
-										.backgroundColor = Gfx::Color(),
 										.numberFormat = ::Text::NumberFormat::prefixed,
 										.maxFractionDigits = 3,
 										.numberScale = ::Text::NumberScale{}
@@ -309,7 +305,6 @@ Chart Chart::def()
 								{
 									.color = Gfx::Color::Gray(0.6),
 									.textAlign = Anim::Interpolated<Text::TextAlign>(Text::TextAlign::left),
-									.backgroundColor = Gfx::Color(),
 									.numberFormat = ::Text::NumberFormat::prefixed,
 									.maxFractionDigits = 3,
 									.numberScale = ::Text::NumberScale{}
@@ -347,7 +342,6 @@ Chart Chart::def()
 									{
 										.color = Gfx::Color::Gray(0.6),
 										.textAlign = Anim::Interpolated<Text::TextAlign>(Text::TextAlign::left),
-										.backgroundColor = Gfx::Color(),
 										.numberFormat = ::Text::NumberFormat::prefixed,
 										.maxFractionDigits = 3,
 										.numberScale = ::Text::NumberScale{}
@@ -420,7 +414,6 @@ Chart Chart::def()
 						{
 							.color = Gfx::Color::Gray(0.6),
 							.textAlign = Anim::Interpolated<Text::TextAlign>(Text::TextAlign::left),
-							.backgroundColor = Gfx::Color(),
 							.numberFormat = ::Text::NumberFormat::prefixed,
 							.maxFractionDigits = 3,
 							.numberScale = ::Text::NumberScale{}
@@ -445,7 +438,6 @@ Chart Chart::def()
 						{
 							.color = Gfx::Color::Gray(0.6),
 							.textAlign = Anim::Interpolated<Text::TextAlign>(Text::TextAlign::left),
-							.backgroundColor = Gfx::Color(),
 							.numberFormat = ::Text::NumberFormat::prefixed,
 							.maxFractionDigits = 3,
 							.numberScale = ::Text::NumberScale{}
@@ -477,7 +469,6 @@ Chart Chart::def()
 				{
 					.color = Gfx::Color::RGB(0x494949),
 					.textAlign = Anim::Interpolated<Text::TextAlign>(Text::TextAlign::center),
-					.backgroundColor = Gfx::Color(),
 					.numberFormat = ::Text::NumberFormat::prefixed,
 					.maxFractionDigits = 3,
 					.numberScale = ::Text::NumberScale{}
@@ -502,7 +493,6 @@ Chart Chart::def()
 				{
 					.color = Gfx::Color::RGB(0x494949),
 					.textAlign = Anim::Interpolated<Text::TextAlign>(Text::TextAlign::center),
-					.backgroundColor = Gfx::Color(),
 					.numberFormat = ::Text::NumberFormat::prefixed,
 					.maxFractionDigits = 3,
 					.numberScale = ::Text::NumberScale{}
@@ -527,7 +517,6 @@ Chart Chart::def()
 				{
 					.color = Gfx::Color::Gray(0.65),
 					.textAlign = Anim::Interpolated<Text::TextAlign>(Text::TextAlign::left),
-					.backgroundColor = Gfx::Color(),
 					.numberFormat = ::Text::NumberFormat::prefixed,
 					.maxFractionDigits = 3,
 					.numberScale = ::Text::NumberScale{}

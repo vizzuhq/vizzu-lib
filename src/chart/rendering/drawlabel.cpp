@@ -23,23 +23,9 @@ void DrawLabel::draw(Gfx::ICanvas &canvas,
     const Styles::Label &style,
     Util::EventDispatcher::Event &onDraw,
     std::unique_ptr<Util::EventTarget> eventTarget,
-    Options options) const
+    const Options &options) const
 {
 	auto relativeRect = Geom::Rect{{}, fullRect.size};
-
-	if (!style.backgroundColor->isTransparent()) {
-		canvas.save();
-		auto bgColor = *style.backgroundColor * options.bgAlpha;
-		if (options.gradient)
-			options.gradient(canvas,
-			    fullRect.transform.inverse(),
-			    bgColor);
-		else
-			canvas.setBrushColor(bgColor);
-		canvas.transform(fullRect.transform);
-		canvas.rectangle(relativeRect);
-		canvas.restore();
-	}
 
 	auto font = Gfx::Font{style};
 	auto paddedRect =
@@ -63,15 +49,12 @@ void DrawLabel::draw(Gfx::ICanvas &canvas,
 	    copyRect.transform
 	    * Geom::AffineTransform(alignRect.bottomLeft());
 
-	if (options.alpha) {
-		if (auto textColor = *style.color * *options.alpha;
-		    options.gradient)
-			options.gradient(canvas,
-			    textTransform.inverse(),
-			    textColor);
-		else
-			canvas.setBrushColor(textColor);
-	}
+	if (auto &&textColor = options.colorTransform(*style.color);
+	    options.gradient)
+		canvas.setBrushGradient(
+		    options.gradient(textColor, textTransform.inverse()));
+	else
+		canvas.setBrushColor(textColor);
 
 	if (onDraw.invoke(Events::OnTextDrawEvent{*eventTarget,
 	        copyRect,

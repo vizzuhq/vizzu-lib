@@ -4,31 +4,33 @@
 #include <stdexcept>
 #include <string>
 
-#include "base/math/segmentedfunc.h"
-#include "base/math/segmentedfunc.tpp"
 #include "base/text/smartstring.h"
 
 #include "color.h"
 
-template struct Math::SegmentedFunction<Gfx::Color>;
-
 namespace Gfx
 {
 
-ColorGradient::ColorGradient(const std::string &stoplist)
+ColorGradient ColorGradient::fromString(const std::string &stoplist)
 {
-	auto stopStrings = Text::SmartString::split(stoplist, ',', true);
-	auto pos = 0.0;
-	for (auto &stopString : stopStrings) {
-		auto parts = Text::SmartString::split(stopString, ' ', true);
-		if (parts.size() == 2) {
-			pos = std::stod(parts[1]);
-			stops.emplace_back(pos, Color(parts[0]));
-		}
-		else
-			throw std::logic_error(
-			    "invalid gradient stop: " + stopString);
+	ColorGradient res;
+	for (const auto &stopString :
+	    Text::SmartString::split(stoplist, ',', true)) {
+		if (auto &&parts =
+		        Text::SmartString::split(stopString, ' ', true);
+		    parts.size() == 2)
+			if (auto pos = std::stod(parts[1]);
+			    std::isfinite(pos)
+			    && (res.stops.empty()
+			        || pos >= res.stops.back().pos)) {
+				res.stops.emplace_back(pos,
+				    Color::fromString(parts[0]));
+				continue;
+			}
+		throw std::logic_error(
+		    "invalid gradient stop: " + stopString);
 	}
+	return res;
 }
 
 ColorGradient::operator std::string() const
@@ -44,26 +46,22 @@ ColorGradient::operator std::string() const
 
 ColorGradient ColorGradient::HeatMap5Color()
 {
-	ColorGradient res;
-	res.stops.emplace_back(0.0 / 4.0, Gfx::Color(0.0, 0.0, 1.0));
-	res.stops.emplace_back(1.0 / 4.0, Gfx::Color(0.0, 1.0, 1.0));
-	res.stops.emplace_back(2.0 / 4.0, Gfx::Color(0.0, 1.0, 0.0));
-	res.stops.emplace_back(3.0 / 4.0, Gfx::Color(1.0, 1.0, 0.0));
-	res.stops.emplace_back(4.0 / 4.0, Gfx::Color(1.0, 0.0, 0.0));
-	return res;
+	return {{0.0 / 4.0, Color(0.0, 0.0, 1.0)},
+	    {1.0 / 4.0, Color(0.0, 1.0, 1.0)},
+	    {2.0 / 4.0, Color(0.0, 1.0, 0.0)},
+	    {3.0 / 4.0, Color(1.0, 1.0, 0.0)},
+	    {4.0 / 4.0, Color(1.0, 0.0, 0.0)}};
 }
 
 ColorGradient ColorGradient::HeatMap7Color()
 {
-	ColorGradient res;
-	res.stops.emplace_back(0.0 / 6.0, Gfx::Color(0.0, 0.0, 0.0));
-	res.stops.emplace_back(1.0 / 6.0, Gfx::Color(0.0, 0.0, 1.0));
-	res.stops.emplace_back(2.0 / 6.0, Gfx::Color(0.0, 1.0, 1.0));
-	res.stops.emplace_back(3.0 / 6.0, Gfx::Color(0.0, 1.0, 0.0));
-	res.stops.emplace_back(4.0 / 6.0, Gfx::Color(1.0, 1.0, 0.0));
-	res.stops.emplace_back(5.0 / 6.0, Gfx::Color(1.0, 0.0, 0.0));
-	res.stops.emplace_back(6.0 / 6.0, Gfx::Color(1.0, 1.0, 1.0));
-	return res;
+	return {{0.0 / 6.0, Color(0.0, 0.0, 0.0)},
+	    {1.0 / 6.0, Color(0.0, 0.0, 1.0)},
+	    {2.0 / 6.0, Color(0.0, 1.0, 1.0)},
+	    {3.0 / 6.0, Color(0.0, 1.0, 0.0)},
+	    {4.0 / 6.0, Color(1.0, 1.0, 0.0)},
+	    {5.0 / 6.0, Color(1.0, 0.0, 0.0)},
+	    {6.0 / 6.0, Color(1.0, 1.0, 1.0)}};
 }
 
 }

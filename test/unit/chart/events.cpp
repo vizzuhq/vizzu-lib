@@ -48,9 +48,7 @@ struct MyCanvas final : Gfx::ICanvas, Vizzu::Draw::Painter
 	void circle(const Geom::Circle &) final {}
 	void line(const Geom::Line &) final {}
 	void text(const Geom::Rect &, const char *) final {}
-	void setBrushGradient(const Geom::Line &,
-	    const Gfx::ColorGradient &) final
-	{}
+	void setBrushGradient(const Gfx::LinearGradient &) final {}
 	void frameBegin() final {}
 	void frameEnd() final {}
 	void *getPainter() final { return static_cast<Painter *>(this); }

@@ -20,9 +20,7 @@ RectangleMarker::RectangleMarker(const Gen::Marker &marker,
     const Styles::Chart &style) :
     SingleDrawMarker(marker, options, Gen::ShapeType::rectangle)
 {
-	linear =
-	    options.coordSystem.factor<double>(Gen::CoordSystem::polar)
-	    == 0;
+	linear = options.coordSystem.factor(Gen::CoordSystem::polar) == 0;
 	border = Math::FuzzyBool(true);
 
 	auto spacing = Geom::Size{

@@ -89,10 +89,10 @@ void Logo::draw(Geom::Point pos,
 	canvas.endPolygon();
 
 	static const std::array<Gfx::Color, 4> circleColors{
-	    {Gfx::Color("#dd4d3e"),
-	        Gfx::Color("#e0cf4b"),
-	        Gfx::Color("#0085c5"),
-	        Gfx::Color("#4e9285")}};
+	    {Gfx::Color::RGB(0xdd4d3e),
+	        Gfx::Color::RGB(0xe0cf4b),
+	        Gfx::Color::RGB(0x0085c5),
+	        Gfx::Color::RGB(0x4e9285)}};
 
 	for (auto i = 0U; i < 4; ++i)
 		popCircle(colorTransform(circleColors[i]));

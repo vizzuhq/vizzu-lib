@@ -18,7 +18,7 @@ namespace Vizzu::Draw
 PolarDescartesTransform::PolarDescartesTransform(
     const Anim::Interpolated<Gen::CoordSystem> &coordSystem) :
     zoomOut{true},
-    polar(coordSystem.factor<double>(Gen::CoordSystem::polar))
+    polar(coordSystem.factor(Gen::CoordSystem::polar))
 {}
 
 Geom::Point PolarDescartesTransform::convert(
