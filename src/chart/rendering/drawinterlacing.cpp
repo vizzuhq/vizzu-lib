@@ -10,6 +10,7 @@
 #include "base/geom/rect.h"
 #include "base/gfx/colortransform.h"
 #include "base/gfx/font.h"
+#include "base/math/floating.h"
 #include "base/math/range.h"
 #include "base/math/renard.h"
 #include "base/text/smartstring.h"
@@ -79,7 +80,7 @@ void DrawInterlacing::draw(bool horizontal, bool text) const
 	}
 	else {
 		auto highWeight =
-		    Math::Range(stepLow, stepHigh).rescale(step);
+		    Math::Range<double>::Raw(stepLow, stepHigh).rescale(step);
 
 		auto lowWeight = (1.0 - highWeight) * enabled;
 		highWeight *= enabled;
@@ -119,9 +120,8 @@ void DrawInterlacing::draw(
 
 	const auto origo = plot->axises.origo();
 
-	if (static_cast<double>(enabled.interlacings || enabled.axisSticks
-	                        || enabled.labels)
-	    > 0) {
+	if ((enabled.interlacings || enabled.axisSticks || enabled.labels)
+	    != false) {
 		auto interlaceIntensity = Math::FuzzyBool::And<double>(weight,
 		    enabled.interlacings);
 		auto interlaceColor =
@@ -133,15 +133,19 @@ void DrawInterlacing::draw(
 		auto textAlpha =
 		    Math::FuzzyBool::And<double>(weight, enabled.labels);
 
-		if (rangeSize <= 0) return;
+		if (std::signbit(rangeSize) != std::signbit(stepSize)
+		    || Math::Floating::is_zero(rangeSize))
+			return;
 
 		auto stripWidth = stepSize / rangeSize;
 
 		auto axisBottom = axis.origo() + stripWidth;
 
-		auto iMin = axisBottom > 0 ? static_cast<int>(
-		                std::floor(-axis.origo() / (2 * stripWidth)))
-		                           : 0;
+		auto iMin =
+		    axisBottom > 0 ? static_cast<int>(
+		        std::floor(-axis.origo() / (2 * stripWidth)))
+		                   : static_cast<int>(
+		                       (axis.range.getMin() - stepSize) / 2);
 
 		if (stripWidth <= 0) return;
 		auto interlaceCount = 0U;
@@ -270,7 +274,7 @@ void DrawInterlacing::drawDataLabel(
 		auto under = labelStyle.position->interpolates()
 		               ? labelStyle.side->get_or_first(index).value
 		                     == Styles::AxisLabel::Side::negative
-		               : labelStyle.side->factor<double>(
+		               : labelStyle.side->factor(
 		                   Styles::AxisLabel::Side::negative);
 
 		auto &&posDir =

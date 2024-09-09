@@ -34,8 +34,7 @@ void DrawGuides::draw(bool horizontal)
 	const auto &axis = axises.at(axisId).dimension;
 
 	if (axis.enabled && *guideStyle.lineWidth > 0
-	    && (static_cast<double>(plot->guides.at(axisId).axisGuides)
-	        > 0)) {
+	    && plot->guides.at(axisId).axisGuides != false) {
 		canvas.setLineWidth(*guideStyle.lineWidth);
 
 		for (auto it = axis.begin(); it != axis.end(); ++it) {

@@ -2,16 +2,16 @@
 	"suite": "/test/e2e/tests/features",
 	"test": {
 		"aggregators/aggregators": {
-			"refs": ["f3c28cb"]
+			"refs": ["463ca59"]
 		},
 		"aggregators/aggregators_together": {
 			"refs": ["e2abafe"]
 		},
 		"axis_title_positioning": {
-			"refs": ["bcd3444"]
+			"refs": ["ffc403c"]
 		},
 		"data_input/object_records": {
-			"refs": ["fdf611d"]
+			"refs": ["7c8b0bb"]
 		},
 		"events/drawing_events": {
 			"refs": ["6496e1d"]

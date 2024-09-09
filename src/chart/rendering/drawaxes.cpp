@@ -227,7 +227,7 @@ void DrawAxes::drawTitle(Gen::ChannelId axisIndex) const
 		            ? titleStyle.orientation->get_or_first(index)
 		                      .value
 		                  == Styles::AxisTitle::Orientation::vertical
-		            : titleStyle.orientation->factor<double>(
+		            : titleStyle.orientation->factor(
 		                Styles::AxisTitle::Orientation::vertical));
 
 		auto orientedSize =
@@ -336,7 +336,7 @@ void DrawAxes::drawDimensionLabel(bool horizontal,
 		        labelStyle.position->interpolates()
 		            ? labelStyle.side->get_or_first(index).value
 		                  == Styles::AxisLabel::Side::negative
-		            : labelStyle.side->factor<double>(
+		            : labelStyle.side->factor(
 		                Styles::AxisLabel::Side::negative);
 
 		    auto sign = 1 - 2 * under;

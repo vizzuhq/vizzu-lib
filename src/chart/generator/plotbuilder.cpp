@@ -355,14 +355,15 @@ void PlotBuilder::normalizeXY()
 	}
 
 	plot->getOptions()->setAutoRange(
-	    !std::signbit(boundRect.positive().hSize().getMin()),
-	    !std::signbit(boundRect.positive().vSize().getMin()));
+	    !std::signbit(boundRect.hSize().getMin()),
+	    !std::signbit(boundRect.vSize().getMin()));
 
 	boundRect.setHSize(xrange.getRange(boundRect.hSize()));
 	boundRect.setVSize(yrange.getRange(boundRect.vSize()));
 
 	for (auto &marker : plot->markers) {
-		if (!boundRect.intersects(marker.toRectangle().positive()))
+		if (!boundRect.positive().intersects(
+		        marker.toRectangle().positive()))
 			marker.enabled = false;
 
 		auto rect = marker.toRectangle();
@@ -370,8 +371,10 @@ void PlotBuilder::normalizeXY()
 		marker.fromRectangle(newRect);
 	}
 
-	getMeasTrackRange(ChannelId::x) = boundRect.hSize();
-	getMeasTrackRange(ChannelId::y) = boundRect.vSize();
+	getMeasTrackRange(ChannelId::x) =
+	    Math::Range<double>::Raw(boundRect.left(), boundRect.right());
+	getMeasTrackRange(ChannelId::y) =
+	    Math::Range<double>::Raw(boundRect.bottom(), boundRect.top());
 }
 
 void PlotBuilder::calcMeasureAxises(const Data::DataTable &dataTable)
@@ -478,7 +481,10 @@ void PlotBuilder::addAlignment(const Buckets &subBuckets) const
 
 	if (std::signbit(
 	        plot->axises.at(plot->getOptions()->subAxisType())
-	            .measure.range.getMin()))
+	            .measure.range.getMin())
+	    || std::signbit(
+	        plot->axises.at(plot->getOptions()->subAxisType())
+	            .measure.range.getMax()))
 		return;
 
 	if (plot->getOptions()->align == Base::Align::Type::none) return;
