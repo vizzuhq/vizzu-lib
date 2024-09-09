@@ -68,14 +68,12 @@ struct DimensionAxis
 		std::string categoryValue;
 		double weight;
 
-		Item(Math::Range<double> range,
-		    double value,
-		    double enabled) :
+		Item(Math::Range<double> range, double value) :
 		    start(true),
 		    end(true),
 		    range(range),
 		    value(value),
-		    weight(enabled)
+		    weight(1.0)
 		{}
 
 		Item(const Item &item, bool starter, double factor) :
@@ -86,12 +84,12 @@ struct DimensionAxis
 		    colorBase(item.colorBase),
 		    label(item.label),
 		    categoryValue(item.categoryValue),
-		    weight(item.weight * factor)
+		    weight(Math::FuzzyBool::And(item.weight, factor))
 		{}
 
 		bool operator==(const Item &other) const
 		{
-			return range == other.range;
+			return range == other.range && weight == other.weight;
 		}
 
 		[[nodiscard]] bool presentAt(

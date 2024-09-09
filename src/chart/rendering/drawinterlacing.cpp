@@ -133,32 +133,34 @@ void DrawInterlacing::draw(
 		auto textAlpha =
 		    Math::FuzzyBool::And<double>(weight, enabled.labels);
 
-		if (std::signbit(rangeSize) != std::signbit(stepSize)
-		    || Math::Floating::is_zero(rangeSize))
-			return;
+		if (std::signbit(rangeSize) != std::signbit(stepSize)) return;
 
-		auto stripWidth = stepSize / rangeSize;
+		auto singleLabelRange = Math::Floating::is_zero(rangeSize);
+
+		double stripWidth{};
+		if (singleLabelRange)
+			stepSize = 1.0;
+		else
+			stripWidth = stepSize / rangeSize;
 
 		auto axisBottom = axis.origo() + stripWidth;
 
-		auto iMin =
-		    axisBottom > 0 ? static_cast<int>(
-		        std::floor(-axis.origo() / (2 * stripWidth)))
-		                   : static_cast<int>(
-		                       (axis.range.getMin() - stepSize) / 2);
+		auto iMin = axisBottom > 0
+		              ? std::floor(-axis.origo() / (2 * stripWidth))
+		              : (axis.range.getMin() - stepSize) / 2;
 
-		if (stripWidth <= 0) return;
+		if (stripWidth < 0) return;
 		auto interlaceCount = 0U;
 		const auto maxInterlaceCount = 1000U;
-		for (int i = iMin; ++interlaceCount <= maxInterlaceCount;
-		     ++i) {
+		for (double i = iMin; ++interlaceCount <= maxInterlaceCount;
+		     i += 1) {
 			auto bottom = axisBottom + i * 2 * stripWidth;
-			if (bottom >= 1.0) break;
+			if (bottom > 1.0) break;
 			auto clippedBottom = bottom;
 			auto top = bottom + stripWidth;
 			auto clipTop = top > 1.0;
 			auto clipBottom = bottom < 0.0;
-			auto topUnderflow = top <= 0.0;
+			auto topUnderflow = top < 0.0;
 			if (clipTop) top = 1.0;
 			if (clipBottom) clippedBottom = 0.0;
 
@@ -192,6 +194,7 @@ void DrawInterlacing::draw(
 							    horizontal,
 							    tickPos);
 					}
+					if (singleLabelRange) break;
 					if (!clipTop) {
 						auto value = (i * 2 + 2) * stepSize;
 						auto tickPos =
@@ -212,7 +215,7 @@ void DrawInterlacing::draw(
 							    tickPos);
 					}
 				}
-				else {
+				else if (!singleLabelRange) {
 					canvas.save();
 
 					canvas.setLineColor(Gfx::Color::Transparent());

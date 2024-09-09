@@ -581,11 +581,18 @@ void PlotBuilder::normalizeColors()
 	Math::Range<double> lightness;
 	Math::Range<double> color;
 
+	bool wasValidMarker{};
 	for (auto &marker : plot->markers) {
 		if (!marker.enabled) continue;
 		auto &&cbase = marker.colorBase.get();
 		if (!cbase.isDiscrete()) color.include(cbase.getPos());
 		lightness.include(cbase.getLightness());
+		wasValidMarker = true;
+	}
+
+	if (!wasValidMarker) {
+		lightness.include(0.5);
+		color.include(0);
 	}
 
 	color = plot->getOptions()

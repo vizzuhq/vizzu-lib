@@ -70,12 +70,14 @@ void DrawLegend::draw(Gfx::ICanvas &canvas,
 	                {1.0, {}},
 	            }}}}};
 
-	info.properties.scrollHeight = markersLegendFullSize(info);
+	auto &&range = markersLegendRange(info);
+	info.properties.scrollHeight = range.size();
 	auto yOverflow =
 	    info.properties.scrollHeight - markerWindowHeight;
 	if (std::signbit(yOverflow)) yOverflow = 0.0;
 	info.properties.scrollTop =
-	    style.translateY->get(yOverflow, info.itemHeight);
+	    style.translateY->get(yOverflow, info.itemHeight)
+	    + range.getMin();
 
 	DrawBackground{{ctx()}}.draw(canvas,
 	    legendLayout,
@@ -324,17 +326,21 @@ Geom::Rect DrawLegend::getBarRect(const Info &info)
 	return res;
 }
 
-double DrawLegend::markersLegendFullSize(const Info &info)
+Math::Range<double> DrawLegend::markersLegendRange(const Info &info)
 {
-	double itemCount{info.measureEnabled <= 0.0 ? 0.0 : 6.0};
+	Math::Range<double> res;
+	if (info.measureEnabled > 0.0) {
+		res.include(0.0);
+		res.include(6.0 * info.itemHeight);
+	}
+
 	if (info.dimensionEnabled)
 		for (const auto &value : info.dimension)
-			if (auto itemPos = value.second.range.getMin() + 1;
-			    value.second.weight > 0
-			    && Math::Floating::less(itemCount, itemPos))
-				itemCount = itemPos;
+			res.include({value.second.range.getMin()
+			                 * info.itemHeight,
+			    (value.second.range.getMax() + 1) * info.itemHeight});
 
-	return itemCount * info.itemHeight;
+	return res;
 }
 
 void DrawLegend::colorBar(const Info &info,
