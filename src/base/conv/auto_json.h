@@ -169,7 +169,7 @@ struct JSON
 	    requires(!JSONSerializable<T> && !SerializableRange<T>
 	             && !StringConvertable<T>
 	             && Type::is_reference_wrapper_v<T>)
-	inline void any(const T &val) const
+	void any(const T &val) const
 	{
 		any(val.get());
 	}
