@@ -148,7 +148,7 @@ void DrawInterlacing::draw(
 		auto iMin =
 		    axisBottom > 0
 		        ? std::floor(-axis.origo() / (2 * stripWidth)) * 2
-		        : axis.range.getMin() - stepSize;
+		        : std::round(axis.range.getMin() - stepSize);
 
 		auto interlaceCount = 0U;
 		const auto maxInterlaceCount = 1000U;
