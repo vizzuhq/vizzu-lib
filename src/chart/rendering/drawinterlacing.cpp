@@ -133,15 +133,15 @@ void DrawInterlacing::draw(
 		auto textAlpha =
 		    Math::FuzzyBool::And<double>(weight, enabled.labels);
 
-		if (std::signbit(rangeSize) != std::signbit(stepSize)) return;
-
 		auto singleLabelRange = Math::Floating::is_zero(rangeSize);
 
 		double stripWidth{};
 		if (singleLabelRange)
 			stepSize = 1.0;
-		else
+		else {
 			stripWidth = stepSize / rangeSize;
+			if (stripWidth <= 0) return;
+		}
 
 		auto axisBottom = axis.origo() + stripWidth;
 
@@ -149,7 +149,6 @@ void DrawInterlacing::draw(
 		              ? std::floor(-axis.origo() / (2 * stripWidth))
 		              : (axis.range.getMin() - stepSize) / 2;
 
-		if (stripWidth < 0) return;
 		auto interlaceCount = 0U;
 		const auto maxInterlaceCount = 1000U;
 		for (double i = iMin; ++interlaceCount <= maxInterlaceCount;

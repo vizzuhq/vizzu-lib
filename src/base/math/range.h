@@ -89,7 +89,10 @@ template <std::floating_point T> struct Range
 		return is_zero(max) ? 0 : value / max;
 	}
 
-	[[nodiscard]] Range<T> positive() const { return {min, max}; }
+	[[nodiscard]] Range<T> normalize(const Range<T> &range) const
+	{
+		return Range<T>(normalize(range.min), normalize(range.max));
+	}
 
 	bool operator==(const Range<T> &other) const
 	{
