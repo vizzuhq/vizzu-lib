@@ -41,13 +41,25 @@
 			"refs": ["2ac83c5"]
 		},
 		"dimension_axis_title": {
-			"refs": ["3b54a82"]
+			"refs": ["33278a6"]
 		},
 		"dimension_axis_density": {
 			"refs": ["0de86a3"]
 		},
 		"geometry/animated_area-circle": {
 			"refs": ["d037f4d"]
+		},
+		"channel_ranges/dim_axis": {
+			"refs": ["0e9a9fd"]
+		},
+		"channel_ranges/dim_color": {
+			"refs": ["c5b912f"]
+		},
+		"channel_ranges/dim_lightness": {
+			"refs": ["b26b94f"]
+		},
+		"channel_ranges/meas_axis": {
+			"refs": ["7e9e5ba"]
 		}
 	}
 }

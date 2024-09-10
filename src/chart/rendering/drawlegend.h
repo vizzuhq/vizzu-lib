@@ -71,7 +71,7 @@ private:
 	getLabelRect(const Info &info, const Geom::Rect &itemRect);
 	[[nodiscard]] static Geom::Rect getBarRect(const Info &info);
 
-	[[nodiscard]] static double markersLegendFullSize(
+	[[nodiscard]] static Math::Range<double> markersLegendRange(
 	    const Info &info);
 
 	void extremaLabel(const Info &info,
