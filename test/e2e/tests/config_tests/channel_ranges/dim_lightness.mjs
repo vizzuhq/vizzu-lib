@@ -17,17 +17,17 @@ const testSteps = [
 		}),
 	(chart) =>
 		chart.animate({
-			lightness: { range: { min: '100%', max: '0%'} }
+			lightness: { range: { min: '100%', max: '0%' } }
 		}),
 	(chart) =>
 		chart.animate({
-			lightness: {range: { min: '0', max: '0' } },
+			lightness: { range: { min: '0', max: '0' } },
 			label: 'Foo'
 		}),
 	(chart) =>
 		chart.animate({
 			x: { attach: 'Baz' },
-			lightness: { range: { min: '-25%', max: '125%'} },
+			lightness: { range: { min: '-25%', max: '125%' } },
 			y: 'Foo'
 		}),
 	(chart) =>

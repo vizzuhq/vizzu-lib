@@ -17,17 +17,17 @@ const testSteps = [
 		}),
 	(chart) =>
 		chart.animate({
-			color: { range: { min: '100%', max: '0%'} }
+			color: { range: { min: '100%', max: '0%' } }
 		}),
 	(chart) =>
 		chart.animate({
-			color: {range: { min: '0', max: '0' } },
+			color: { range: { min: '0', max: '0' } },
 			label: 'Foo'
 		}),
 	(chart) =>
 		chart.animate({
 			x: { attach: 'Baz' },
-			color: { range: { min: '-25%', max: '125%'} },
+			color: { range: { min: '-25%', max: '125%' } },
 			y: 'Foo'
 		}),
 	(chart) =>

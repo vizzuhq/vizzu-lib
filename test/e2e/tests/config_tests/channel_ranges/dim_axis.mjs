@@ -17,23 +17,23 @@ const testSteps = [
 		}),
 	(chart) =>
 		chart.animate({
-			x: { range: { min: '100%', max: '0%'} },
-			y: { range: { min: '100%', max: '0%'} }
+			x: { range: { min: '100%', max: '0%' } },
+			y: { range: { min: '100%', max: '0%' } }
 		}),
 	(chart) =>
 		chart.animate({
-			x: { attach: 'Baz',  range: { min: 'auto', max: 'auto' } },
-			y: { range: { min: '-100%', max: '110%'} },
+			x: { attach: 'Baz', range: { min: 'auto', max: 'auto' } },
+			y: { range: { min: '-100%', max: '110%' } },
 			label: 'Foo',
 			color: 'Foo'
 		}),
 	(chart) =>
 		chart.animate({
-			y: {range: { min: '1', max: '1' } }
+			y: { range: { min: '1', max: '1' } }
 		}),
 	(chart) =>
 		chart.animate({
-			y: {range: { min: '100%', max: '-100%' } }
+			y: { range: { min: '100%', max: '-100%' } }
 		})
 ]
 
