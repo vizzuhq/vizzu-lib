@@ -27,6 +27,7 @@ Window::Window(QWidget *parent) :
 	chart.run();
 	animStep();
 	installEventFilter(this);
+	setlocale(LC_NUMERIC, "C");
 }
 
 void Window::animStep()

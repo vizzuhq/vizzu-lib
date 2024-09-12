@@ -5,9 +5,8 @@
 #ifndef DATAFRAME_OLD2_DATATABLE_H
 #define DATAFRAME_OLD2_DATATABLE_H
 
-#include <chart/options/channel.h>
-
 #include "../impl/dataframe.h"
+#include "chart/options/channel.h"
 
 #include "types.h"
 

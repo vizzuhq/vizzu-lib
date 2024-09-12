@@ -36,20 +36,22 @@ std::string NumberToString::convert(double number)
 	        ("%." + std::to_string(fractionDigitCount) + "f").c_str(),
 	        number));
 
-	auto decimalPoint =
-	    std::min(number_view.find('.'), number_view.size());
+	auto decimalPoint = std::min(number_view.find(decimalPointChar),
+	    number_view.size());
 	if (decimalPoint != number_view.size()) {
 		if (!fillFractionWithZero) {
 			number_view = number_view.substr(0,
 			    number_view.find_last_not_of('0') + 1);
 		}
-		if (number_view.ends_with('.')) {
+		if (number_view.ends_with(decimalPointChar)) {
 			number_view.remove_suffix(1);
 		}
 	}
 
 	if (number_view.starts_with('-')
-	    && number_view.find_last_not_of("0.") == 0) {
+	    && number_view.find_last_not_of(std::string_view{
+	           std::initializer_list{'0', decimalPointChar, '\0'}})
+	           == 0) {
 		number_view.remove_prefix(1);
 		++begin;
 		--decimalPoint;
