@@ -82,7 +82,8 @@ MeasureAxis interpolate(const MeasureAxis &op0,
 		const auto s0 = op0.range.size();
 		const auto s1 = op1.range.size();
 
-		if (auto s0Zero = is_zero(s0); s0Zero || is_zero(s1)) {
+		if (auto s0Zero = is_zero(s0), s1Zero = is_zero(s1);
+		    s0Zero && s1Zero) {
 			res.range = Math::Range<double>::Raw(
 			    Math::interpolate(op0.range.getMin(),
 			        op1.range.getMin(),
@@ -90,7 +91,48 @@ MeasureAxis interpolate(const MeasureAxis &op0,
 			    Math::interpolate(op0.range.getMax(),
 			        op1.range.getMax(),
 			        factor));
-			res.step = s0Zero ? op1.step : op0.step;
+			res.step = interpolate(op0.step, op1.step, factor);
+		}
+		else if (s1Zero) {
+			auto size = factor == 1.0 ? MAX : s0 / (1 - factor);
+
+			auto middleAt = Math::interpolate(
+			    op0.range.rescale(op1.range.middle()),
+			    0.0,
+			    factor);
+
+			res.range = Math::Range<double>::Raw(
+			    op1.range.middle() - middleAt * size,
+			    op1.range.middle()
+			        + (factor == 1.0 ? 0.0 : (1 - middleAt) * size));
+
+			auto step = op0.step.get() / s0 * size;
+			auto max = std::copysign(MAX, step);
+
+			res.step = interpolate(op0.step,
+			    Anim::Interpolated{max},
+			    Math::Range<double>::Raw(op0.step.get(), max)
+			        .rescale(step));
+		}
+		else if (s0Zero) {
+			auto size = factor == 0.0 ? MAX : s1 / factor;
+
+			auto middleAt = Math::interpolate(0.0,
+			    op1.range.rescale(op0.range.middle()),
+			    factor);
+
+			res.range = Math::Range<double>::Raw(
+			    op0.range.middle() - middleAt * size,
+			    op0.range.middle()
+			        + (factor == 0.0 ? 0.0 : (1 - middleAt) * size));
+
+			auto step = op1.step.get() / s1 * size;
+			auto max = std::copysign(MAX, step);
+
+			res.step = interpolate(op1.step,
+			    Anim::Interpolated{max},
+			    Math::Range<double>::Raw(op1.step.get(), max)
+			        .rescale(step));
 		}
 		else {
 			auto s0Inv = 1 / s0;
@@ -99,22 +141,22 @@ MeasureAxis interpolate(const MeasureAxis &op0,
 			const auto interp =
 			    Math::interpolate(s0Inv, s1Inv, factor);
 
-			const auto s = is_zero(interp) ? MAX : 1 / interp;
+			const auto size = is_zero(interp) ? MAX : 1 / interp;
 
 			res.range = Math::Range<double>::Raw(
 			    Math::interpolate(op0.range.getMin() * s0Inv,
 			        op1.range.getMin() * s1Inv,
 			        factor)
-			        * s,
+			        * size,
 			    Math::interpolate(op0.range.getMax() * s0Inv,
 			        op1.range.getMax() * s1Inv,
 			        factor)
-			        * s);
+			        * size);
 
 			auto step = Math::interpolate(op0.step.get() * s0Inv,
 			                op1.step.get() * s1Inv,
 			                factor)
-			          * s;
+			          * size;
 
 			if (auto op0sign = std::signbit(op0.step.get());
 			    op0sign == std::signbit(op1.step.get()))
@@ -166,7 +208,7 @@ bool DimensionAxis::add(const Data::SliceIndex &index,
 	}
 	values.emplace(std::piecewise_construct,
 	    std::tuple{index},
-	    std::tuple{range, value, enabled});
+	    std::tuple{range, value});
 
 	return true;
 }

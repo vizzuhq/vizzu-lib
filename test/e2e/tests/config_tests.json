@@ -48,6 +48,18 @@
 		},
 		"geometry/animated_area-circle": {
 			"refs": ["d037f4d"]
+		},
+		"channel_ranges/dim_axis": {
+			"refs": ["0e9a9fd"]
+		},
+		"channel_ranges/dim_color": {
+			"refs": ["c5b912f"]
+		},
+		"channel_ranges/dim_lightness": {
+			"refs": ["b26b94f"]
+		},
+		"channel_ranges/meas_axis": {
+			"refs": ["7e9e5ba"]
 		}
 	}
 }
