@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+## [0.13.0] - 2024-09-13
+
 ### Fixed
 
 - Legend title bottomPadding extended.

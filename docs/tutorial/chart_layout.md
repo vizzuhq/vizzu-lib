@@ -23,9 +23,7 @@ are aligned.
 ```javascript
 chart.animate({
     style: {
-        title: {
-            backgroundColor: '#A0A0A0'
-        },
+        backgroundColor: '#A0A0A0',
         plot: {
             backgroundColor: '#D2D2D2'
         },
