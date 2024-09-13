@@ -51,7 +51,7 @@ enum class adding_type : std::uint8_t {
 
 struct custom_aggregator
 {
-	std::string_view name;
+	std::variant<std::string, std::string_view> name;
 	using id_type = std::variant<double,
 	    std::pair<double, std::size_t>,
 	    std::set<const std::string *>>;
@@ -86,13 +86,12 @@ public:
 	[[nodiscard]] std::shared_ptr<dataframe_interface> copy(
 	    bool inherit_sorting) const &;
 
-	[[nodiscard]] std::string set_aggregate(
-	    const std::string_view &series,
+	std::string set_aggregate(const std::string_view &series,
 	    const any_aggregator_type &aggregator) &;
 
 	void aggregate_by(const std::string_view &series)
 	{
-		std::ignore = set_aggregate(series, {});
+		set_aggregate(series, {});
 	}
 
 	void set_sort(const std::string_view &series,
@@ -166,6 +165,8 @@ public:
 	[[nodiscard]] std::string get_record_id_by_dims(
 	    std::size_t my_record,
 	    std::span<const std::string> dimensions) const &;
+
+	[[nodiscard]] std::string get_record_id(std::size_t my_record) &;
 
 	// NOLINTNEXTLINE(cppcoreguidelines-avoid-c-arrays,modernize-avoid-c-arrays)
 	alignas(align_impl) std::byte data[max_size_impl];

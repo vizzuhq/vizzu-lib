@@ -31,7 +31,7 @@ enum class error_type : std::uint8_t {
 
 struct series_meta_t
 {
-	std::string_view name;
+	std::string name;
 	series_type type;
 };
 
@@ -64,7 +64,7 @@ private:
 		std::vector<std::string> categories;
 		na_position na_pos{na_position::last};
 		std::vector<std::uint32_t> values;
-		std::map<std::string, std::string> info;
+		std::map<std::string, std::string, std::less<>> info;
 		bool contains_nav{};
 
 		dimension_t() noexcept = default;
@@ -112,7 +112,7 @@ private:
 	struct measure_t
 	{
 		std::vector<double> values;
-		std::map<std::string, std::string> info;
+		std::map<std::string, std::string, std::less<>> info;
 		bool contains_nan{};
 
 		measure_t() noexcept = default;
@@ -134,20 +134,33 @@ private:
 		[[nodiscard]] std::pair<double, double> get_min_max() const;
 	};
 
-	using final_info = std::map<std::string, std::size_t>;
+	struct final_info
+	{
+		std::map<std::string, std::size_t> to_record_ix;
+		std::vector<std::reference_wrapper<const std::string>>
+		    record_ids;
+	};
 
 	std::string get_id(std::size_t record,
 	    std::span<const std::string> series) const;
 
 	using series_data = Refl::EnumVariant<series_type,
 	    std::monostate,
-	    std::pair<std::string_view, dimension_t &>,
-	    std::pair<std::string_view, measure_t &>>;
+	    std::pair<std::reference_wrapper<const std::string>,
+	        dimension_t &>,
+	    std::pair<std::reference_wrapper<const std::string>,
+	        measure_t &>>;
+
+	using measure_with_name_ref =
+	    Refl::variant_alternative_t<series_type::measure,
+	        series_data>;
 
 	using const_series_data = Refl::EnumVariant<series_type,
 	    std::monostate,
-	    std::pair<std::string_view, const dimension_t &>,
-	    std::pair<std::string_view, const measure_t &>>;
+	    std::pair<std::reference_wrapper<const std::string>,
+	        const dimension_t &>,
+	    std::pair<std::reference_wrapper<const std::string>,
+	        const measure_t &>>;
 
 	// replace these to std::flat_map
 	std::vector<std::string> measure_names; // sorted by name
@@ -172,7 +185,7 @@ public:
 
 	struct aggregating_type
 	{
-		std::map<std::string_view,
+		std::map<std::string,
 		    std::reference_wrapper<const dimension_t>>
 		    dims;
 		std::map<std::string,

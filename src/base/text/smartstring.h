@@ -5,7 +5,7 @@
 #include <string>
 #include <vector>
 
-#include "base/text/numberscale.h"
+#include "numberscale.h"
 
 namespace Text
 {

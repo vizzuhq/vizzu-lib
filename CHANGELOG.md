@@ -18,11 +18,13 @@
 - Fix measure axis labels when the range started after the 2000th step value from origo. 
 - Remove marker labels at intermediate steps.
 - Fix single value range interpolation and show.
+- Markers are the same even if new record added.
 
 ### Added
 
 - New style parameter for the legend scrolling.
 - Remove background settings for all text, including title, subtitle and caption.
+- Changed MarkerId to be a string instead of a number.
 
 ## [0.12.1] - 2024-08-22
 

@@ -195,4 +195,10 @@ std::string dataframe_interface::get_record_id_by_dims(
 	return as_impl(this).get_record_id_by_dims(my_record, dimensions);
 }
 
+std::string dataframe_interface::get_record_id(
+    std::size_t my_record) &
+{
+	return as_impl(this).get_record_id(my_record);
+}
+
 }

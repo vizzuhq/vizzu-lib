@@ -43,7 +43,7 @@ void TestChart::prepareData()
 void TestChart::operator()(Util::EventDispatcher::Params &params,
     const std::string &)
 {
-	std::optional<std::size_t> markerId;
+	std::optional<Vizzu::Gen::Marker::MarkerIndex> markerId;
 	using Marker = Vizzu::Events::Targets::Marker;
 	using MarkerChild = Vizzu::Events::Targets::MarkerChild;
 
@@ -85,7 +85,7 @@ void TestChart::run()
 		IO::log() << "step 5";
 		auto &options = chart.getChart().getOptions();
 		options.title = "VIZZU Chart - Phase 5";
-		options.showTooltip(13);
+		options.showTooltip("Cat1\37A\36Cat2\37bíyx\36");
 		chart.getChart().setKeyframe();
 		chart.getChart().animate({step6});
 	};
@@ -95,7 +95,7 @@ void TestChart::run()
 		IO::log() << "step 4";
 		auto &options = chart.getChart().getOptions();
 		options.title = "VIZZU Chart - Phase 4";
-		options.showTooltip(12);
+		options.showTooltip("Cat1\37A\36Cat2\37aasd\36");
 		chart.getChart().setKeyframe();
 		chart.getChart().animate({step5});
 	};

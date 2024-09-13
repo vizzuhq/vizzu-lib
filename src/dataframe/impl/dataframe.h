@@ -139,6 +139,8 @@ public:
 	    std::size_t my_record,
 	    std::span<const std::string> dimensions) const &;
 
+	[[nodiscard]] std::string get_record_id(std::size_t my_record) &;
+
 private:
 	void migrate_data();
 	void change_state_to(state_type new_state,

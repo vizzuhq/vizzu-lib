@@ -1,7 +1,6 @@
 #ifndef GFX_CANVAS
 #define GFX_CANVAS
 
-#include <memory>
 #include <string>
 
 #include "base/geom/affinetransform.h"
@@ -10,15 +9,11 @@
 #include "base/geom/point.h"
 #include "base/geom/rect.h"
 #include "base/gfx/color.h"
-#include "base/gfx/colortransform.h"
 #include "base/gfx/font.h"
 #include "base/gfx/lineargradient.h"
 
 namespace Gfx
 {
-
-struct ICanvas;
-
 struct ICanvas
 {
 	virtual ~ICanvas() = default;

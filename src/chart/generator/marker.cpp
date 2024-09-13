@@ -26,7 +26,6 @@ Marker::Marker(const Options &options,
     const Data::SeriesList &mainAxisList,
     const Data::SeriesList &subAxisList,
     const Data::MultiIndex &index,
-    MarkerPosition pos,
     bool needMarkerInfo) :
     enabled(true),
     cellInfo(enabled || needMarkerInfo
@@ -36,10 +35,8 @@ Marker::Marker(const Options &options,
                           .at(ChannelId::size)
                           .dimensionsWithLevel(),
         index)),
-    idx(index.oldAggr),
-    pos(pos)
+    idx(index.marker_id)
 {
-	prevMainMarker.values[0].value.idx = ~MarkerIndex{};
 	const auto &channels = options.getChannels();
 	auto color = getValueForChannel(channels,
 	    ChannelId::color,

@@ -3,6 +3,7 @@
 
 #include <cstdint>
 #include <optional>
+#include <set>
 #include <string>
 
 #include "dataframe/old/types.h"
