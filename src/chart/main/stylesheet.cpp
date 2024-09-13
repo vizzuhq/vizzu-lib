@@ -128,6 +128,12 @@ void Sheet::setMarkers()
 	if (!options->getChannels().anyAxisSet()) {
 		defaultParams.plot.marker.borderWidth = 0.5;
 		defaultParams.plot.marker.borderOpacity = 0.7;
+
+		if (options->geometry == Gen::ShapeType::rectangle
+		    && options->getChannels()
+		           .at(Gen::ChannelId::size)
+		           .isMeasure())
+			defaultParams.plot.marker.rectangleSpacing = 0;
 	}
 	else {
 		if (options->geometry == Gen::ShapeType::circle
