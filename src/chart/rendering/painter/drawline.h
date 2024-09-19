@@ -14,14 +14,21 @@ namespace Vizzu::Draw
 class DrawLine
 {
 public:
+	struct LineOptions
+	{
+		double straightFactor;
+	};
+
+	struct Options : PathSampler::Options, LineOptions
+	{};
+
 	DrawLine(const Geom::Line &line,
 	    const PathSampler::Options &options,
 	    Gfx::ICanvas &canvas);
 
 	DrawLine(const Geom::Line &line,
 	    std::array<double, 2> widths,
-	    double straightFactor,
-	    CoordinateSystem &coordSys,
+	    const Options &options,
 	    Gfx::ICanvas &canvas);
 
 private:

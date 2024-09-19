@@ -20,7 +20,10 @@ void Painter::drawStraightLine(const Geom::Line &line,
     std::array<double, 2> widths,
     double straightFactor)
 {
-	Draw::DrawLine(line, widths, straightFactor, system, getCanvas());
+	DrawLine(line,
+	    widths,
+	    {{pathSamplerOptions, system}, {straightFactor}},
+	    getCanvas());
 }
 
 void Painter::drawPolygon(const std::array<Geom::Point, 4> &ps,

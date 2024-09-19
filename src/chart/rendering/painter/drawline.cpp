@@ -8,6 +8,7 @@
 #include "base/math/interpolation.h"
 
 #include "coordinatesystem.h"
+#include "drawpolygon.h"
 #include "pathsampler.h"
 
 namespace Vizzu::Draw
@@ -22,15 +23,14 @@ DrawLine::DrawLine(const Geom::Line &line,
 
 DrawLine::DrawLine(const Geom::Line &line,
     std::array<double, 2> widths,
-    [[maybe_unused]] double straightFactor,
-    CoordinateSystem &coordSys,
+    const Options &options,
     Gfx::ICanvas &canvas)
 {
-	auto pBeg = coordSys.convert(line.begin);
-	auto pEnd = coordSys.convert(line.end);
+	auto pBeg = options.coordSys.convert(line.begin);
+	auto pEnd = options.coordSys.convert(line.end);
 
-	auto wBeg = widths[0] * coordSys.getRect().size.minSize();
-	auto wEnd = widths[1] * coordSys.getRect().size.minSize();
+	auto wBeg = widths[0] * options.coordSys.getRect().size.minSize();
+	auto wEnd = widths[1] * options.coordSys.getRect().size.minSize();
 
 	const auto &[p0, p1, p2, p3] =
 	    Geom::ConvexQuad::Isosceles(pBeg, pEnd, wBeg * 2, wEnd * 2)
@@ -41,12 +41,25 @@ DrawLine::DrawLine(const Geom::Line &line,
 	if (pBeg != pEnd) {
 		canvas.circle(Geom::Circle(pEnd, wEnd));
 
-		canvas.beginPolygon();
-		canvas.addPoint(p0);
-		canvas.addPoint(p1);
-		canvas.addPoint(p2);
-		canvas.addPoint(p3);
-		canvas.endPolygon();
+		if (options.straightFactor == 1.0) {
+			canvas.beginPolygon();
+			canvas.addPoint(p0);
+			canvas.addPoint(p1);
+			canvas.addPoint(p2);
+			canvas.addPoint(p3);
+			canvas.endPolygon();
+		}
+		else {
+			DrawPolygon({options.coordSys.getOriginal(p0),
+			                options.coordSys.getOriginal(p1),
+			                options.coordSys.getOriginal(p2),
+			                options.coordSys.getOriginal(p3)},
+			    {static_cast<PathSampler::Options>(options),
+			        {.toCircleFactor = 0,
+			            .straightFactor = options.straightFactor}},
+			    canvas,
+			    false);
+		}
 	}
 }
 

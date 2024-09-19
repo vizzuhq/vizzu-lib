@@ -67,8 +67,7 @@ AbstractMarker AbstractMarker::createInterpolated(
 {
 	const auto &options = ctx.getOptions();
 
-	auto fromShapeType =
-	    options.geometry.get_or_first(::Anim::first).value;
+	auto fromShapeType = options.geometry.values[0].value;
 
 	auto fromMarker = create(ctx, marker, fromShapeType, lineIndex);
 

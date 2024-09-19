@@ -24,7 +24,7 @@ ColorBuilder::ColorBuilder(const LightnessRange &lightnessRange,
 Gfx::Color ColorBuilder::render(
     const Anim::Interpolated<Gen::ColorBase> &colorBase) const
 {
-	if (!colorBase.get_or_first(::Anim::first).value.isDiscrete()
+	if (!colorBase.values[0].value.isDiscrete()
 	    && !colorBase.get_or_first(::Anim::second)
 	            .value.isDiscrete()) {
 		auto pos = colorBase.combine(

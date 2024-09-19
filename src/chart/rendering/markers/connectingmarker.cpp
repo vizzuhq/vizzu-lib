@@ -29,6 +29,18 @@ ConnectingMarker::ConnectingMarker(const DrawingContext &ctx,
 	auto isLine = type == Gen::ShapeType::line;
 	auto isArea = type == Gen::ShapeType::area;
 
+	auto needConnection =
+	    !ctx.getOptions().geometry.interpolates()
+	    || isConnecting(
+	        ctx.getOptions().geometry.get_or_first(lineIndex).value);
+
+	auto otherNeedConnection = isConnecting(
+	    ctx.getOptions()
+	        .geometry
+	        .get_or_first(lineIndex == ::Anim::first ? ::Anim::second
+	                                                 : ::Anim::first)
+	        .value);
+
 	auto polar = ctx.getOptions().coordSystem.factor<Math::FuzzyBool>(
 	    Gen::CoordSystem::polar);
 	auto horizontal =
@@ -36,6 +48,14 @@ ConnectingMarker::ConnectingMarker(const DrawingContext &ctx,
 	        Gen::Orientation::horizontal);
 
 	linear = !polar || horizontal;
+
+	auto &&isHorizontal =
+	    ctx.getOptions().orientation.get_or_first(lineIndex).value
+	    == Gen::Orientation::horizontal;
+
+	auto &&isPolar =
+	    ctx.getOptions().coordSystem.get_or_first(lineIndex).value
+	    == Gen::CoordSystem::polar;
 
 	lineWidth[0] = lineWidth[1] = 0;
 
@@ -49,7 +69,8 @@ ConnectingMarker::ConnectingMarker(const DrawingContext &ctx,
 	if (prev) {
 		enabled = labelEnabled && prev->enabled;
 		connected = Math::FuzzyBool::And(enabled,
-		    marker.prevMainMarker.get_or_first(lineIndex).weight);
+		    marker.prevMainMarker.get_or_first(lineIndex).weight,
+		    needConnection);
 		if (auto &&pc =
 		        marker.polarConnection.get_or_first(lineIndex);
 		    pc.value) {
@@ -59,6 +80,9 @@ ConnectingMarker::ConnectingMarker(const DrawingContext &ctx,
 			      || Math::FuzzyBool::Or(polar, pc.weight).more();
 			connected = connected && newPolar && horizontal;
 			enabled = enabled && newPolar && horizontal;
+
+			if (polar != false && prev != &marker)
+				linear = linear || Math::FuzzyBool{isHorizontal};
 		}
 	}
 	else {
@@ -92,13 +116,16 @@ ConnectingMarker::ConnectingMarker(const DrawingContext &ctx,
 			auto prevSpacing = prev->spacing * prev->size / 2;
 			auto prevPos = prev->position;
 
-			if (polar != false
-			    && ctx.getOptions()
-			               .orientation.get_or_first(lineIndex)
-			               .value
-			           == Gen::Orientation::horizontal
-			    && prev != &marker && prevPos.x >= 1) {
-				prevPos.x -= 1;
+			if (polar != false && isHorizontal && prev != &marker) {
+				if (prevPos.x >= 1)
+					prevPos.x -= 1;
+				else if (needConnection && !otherNeedConnection
+				         && isPolar
+				         && marker.polarConnection
+				                .get_or_first(lineIndex)
+				                .value) {
+					prevPos.x -= 1;
+				}
 			}
 
 			points[3] = prevPos - prevSpacing;
