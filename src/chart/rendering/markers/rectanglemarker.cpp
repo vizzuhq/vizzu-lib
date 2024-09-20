@@ -20,12 +20,15 @@ RectangleMarker::RectangleMarker(const Gen::Marker &marker,
     const Styles::Chart &style) :
     SingleDrawMarker(marker, options, Gen::ShapeType::rectangle)
 {
-	if (marker.polarConnection.contains(true)) {
-		enabled = enabled.more();
-		labelEnabled = labelEnabled.more();
+	linear = options.coordSystem.factor(Gen::CoordSystem::polar) == 0;
+
+	if (marker.polarConnection.interpolates()
+	    && options.geometry.contains(Gen::ShapeType::line)) {
+		linear = linear
+		      || !marker.polarConnection.factor<Math::FuzzyBool>(true)
+		              .less();
 	}
 
-	linear = options.coordSystem.factor(Gen::CoordSystem::polar) == 0;
 	border = Math::FuzzyBool(true);
 
 	auto spacing = Geom::Size{

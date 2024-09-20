@@ -53,10 +53,6 @@ ConnectingMarker::ConnectingMarker(const DrawingContext &ctx,
 	    ctx.getOptions().orientation.get_or_first(lineIndex).value
 	    == Gen::Orientation::horizontal;
 
-	auto &&isPolar =
-	    ctx.getOptions().coordSystem.get_or_first(lineIndex).value
-	    == Gen::CoordSystem::polar;
-
 	lineWidth[0] = lineWidth[1] = 0;
 
 	const auto *prev =
@@ -117,15 +113,12 @@ ConnectingMarker::ConnectingMarker(const DrawingContext &ctx,
 			auto prevPos = prev->position;
 
 			if (polar != false && isHorizontal && prev != &marker) {
-				if (prevPos.x >= 1)
+				if (!otherNeedConnection
+				    && marker.polarConnection.get_or_first(lineIndex)
+				           .value)
+					prevPos.x = 0;
+				else if (prevPos.x >= 1)
 					prevPos.x -= 1;
-				else if (needConnection && !otherNeedConnection
-				         && isPolar
-				         && marker.polarConnection
-				                .get_or_first(lineIndex)
-				                .value) {
-					prevPos.x -= 1;
-				}
 			}
 
 			points[3] = prevPos - prevSpacing;

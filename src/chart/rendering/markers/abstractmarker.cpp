@@ -83,12 +83,25 @@ AbstractMarker AbstractMarker::createInterpolated(
 	aMarker.labelEnabled =
 	    fromMarker.labelEnabled + toMarker.labelEnabled;
 
-	auto sum = static_cast<double>(aMarker.enabled);
+	auto enableFactorBase = static_cast<double>(toMarker.enabled);
+	auto labelEnableFactorBase =
+	    static_cast<double>(toMarker.labelEnabled);
+	auto enableSum = static_cast<double>(aMarker.enabled);
+	auto labelEnableSum = static_cast<double>(aMarker.labelEnabled);
+
+	if (marker.polarConnection.interpolates()) {
+		auto firstWeight = options.geometry.values[0].weight;
+		auto secondWeight = options.geometry.values[1].weight;
+		enableSum = firstWeight + secondWeight;
+		enableFactorBase = secondWeight;
+		labelEnableSum = firstWeight + secondWeight;
+		labelEnableFactorBase = secondWeight;
+	}
 
 	using Math::interpolate;
 	using Vizzu::Draw::interpolate;
-	if (sum > 0.0) {
-		auto factor = static_cast<double>(toMarker.enabled) / sum;
+	if (!Math::Floating::is_zero(enableSum)) {
+		auto factor = enableFactorBase / enableSum;
 		aMarker.morphToCircle = interpolate(fromMarker.morphToCircle,
 		    toMarker.morphToCircle,
 		    factor);
@@ -107,11 +120,8 @@ AbstractMarker AbstractMarker::createInterpolated(
 		aMarker.center =
 		    interpolate(fromMarker.center, toMarker.center, factor);
 	}
-	sum = static_cast<double>(
-	    fromMarker.labelEnabled + toMarker.labelEnabled);
-	if (sum > 0.0) {
-		auto factor =
-		    static_cast<double>(toMarker.labelEnabled) / sum;
+	if (!Math::Floating::is_zero(labelEnableSum)) {
+		auto factor = labelEnableFactorBase / labelEnableSum;
 		aMarker.dataRect = interpolate(fromMarker.dataRect,
 		    toMarker.dataRect,
 		    factor);
