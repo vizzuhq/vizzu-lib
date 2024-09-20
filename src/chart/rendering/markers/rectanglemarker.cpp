@@ -20,6 +20,11 @@ RectangleMarker::RectangleMarker(const Gen::Marker &marker,
     const Styles::Chart &style) :
     SingleDrawMarker(marker, options, Gen::ShapeType::rectangle)
 {
+	if (marker.polarConnection.contains(true)) {
+		enabled = enabled.more();
+		labelEnabled = labelEnabled.more();
+	}
+
 	linear = options.coordSystem.factor(Gen::CoordSystem::polar) == 0;
 	border = Math::FuzzyBool(true);
 

@@ -83,8 +83,7 @@ AbstractMarker AbstractMarker::createInterpolated(
 	aMarker.labelEnabled =
 	    fromMarker.labelEnabled + toMarker.labelEnabled;
 
-	auto sum =
-	    static_cast<double>(fromMarker.enabled + toMarker.enabled);
+	auto sum = static_cast<double>(aMarker.enabled);
 
 	using Math::interpolate;
 	using Vizzu::Draw::interpolate;
