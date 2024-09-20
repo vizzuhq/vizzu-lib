@@ -47,11 +47,18 @@ ConnectingMarker::ConnectingMarker(const DrawingContext &ctx,
 	    ctx.getOptions().orientation.factor<Math::FuzzyBool>(
 	        Gen::Orientation::horizontal);
 
-	linear = !polar || horizontal;
-
 	auto &&isHorizontal =
 	    ctx.getOptions().orientation.get_or_first(lineIndex).value
 	    == Gen::Orientation::horizontal;
+
+	linear = !polar || horizontal
+	      || Math::FuzzyBool::And(
+	          !isHorizontal
+	              && ctx.plot->axises.at(Gen::Channel::Type::x)
+	                     .dimension.enabled,
+	          ctx.plot->axises.at(Gen::Channel::Type::x)
+	              .measure.enabled.factor(false),
+	          !horizontal);
 
 	lineWidth[0] = lineWidth[1] = 0;
 
