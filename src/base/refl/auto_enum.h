@@ -53,7 +53,9 @@ consteval std::pair<real_t<E>, real_t<E>> from_to()
 	return res;
 }
 
-template <class E, real_t<E> From = {}, real_t<E> To = {}>
+template <class E,
+    real_t<E> From = real_t<E>{},
+    real_t<E> To = real_t<E>{}>
     requires(!UniqueRange<E> && !std::same_as<bool, real_t<E>>)
 consteval std::pair<real_t<E>, real_t<E>> from_to()
 {

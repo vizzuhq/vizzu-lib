@@ -6,7 +6,6 @@
 
 #include "base/anim/interpolated.h"
 #include "base/geom/line.h"
-#include "base/math/floating.h"
 #include "chart/generator/marker.h"
 #include "chart/main/style.h"
 #include "chart/options/shapetype.h"
