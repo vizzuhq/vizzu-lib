@@ -109,7 +109,7 @@ public:
 		return channels.at(stackChannelType());
 	}
 
-	const Channel &stackChannel() const
+	[[nodiscard]] const Channel &stackChannel() const
 	{
 		return channels.at(stackChannelType());
 	}
