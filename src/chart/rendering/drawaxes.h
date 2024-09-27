@@ -21,15 +21,14 @@ public:
 	DrawInterlacing interlacing;
 
 private:
-	[[nodiscard]] Geom::Line getAxis(Gen::ChannelId axisIndex) const;
-	[[nodiscard]] Geom::Point getTitleBasePos(
-	    Gen::ChannelId axisIndex,
+	[[nodiscard]] Geom::Line getAxis(Gen::AxisId axisIndex) const;
+	[[nodiscard]] Geom::Point getTitleBasePos(Gen::AxisId axisIndex,
 	    ::Anim::InterpolateIndex index) const;
-	[[nodiscard]] Geom::Point getTitleOffset(Gen::ChannelId axisIndex,
+	[[nodiscard]] Geom::Point getTitleOffset(Gen::AxisId axisIndex,
 	    ::Anim::InterpolateIndex index,
 	    bool fades) const;
-	void drawAxis(Gen::ChannelId axisIndex) const;
-	void drawTitle(Gen::ChannelId axisIndex) const;
+	void drawAxis(Gen::AxisId axisIndex) const;
+	void drawTitle(Gen::AxisId axisIndex) const;
 	void drawDimensionLabels(bool horizontal) const;
 	void drawDimensionLabel(bool horizontal,
 	    const Geom::Point &origo,

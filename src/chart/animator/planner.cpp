@@ -425,8 +425,8 @@ bool Planner::needVertical() const
 	           != target->axises.at(Gen::ChannelId::y).measure
 	    || source->axises.at(Gen::ChannelId::y).dimension
 	           != target->axises.at(Gen::ChannelId::y).dimension
-	    || source->guides.at(Gen::ChannelId::y)
-	           != target->guides.at(Gen::ChannelId::y)
+	    || source->guides.at(Gen::AxisId::y)
+	           != target->guides.at(Gen::AxisId::y)
 	    || (isAnyLegend(Gen::ChannelId::size)
 	        && (source->axises.at(Gen::ChannelId::size).common
 	                != target->axises.at(Gen::ChannelId::size).common
@@ -472,8 +472,8 @@ bool Planner::needHorizontal() const
 	           != target->axises.at(Gen::ChannelId::x).measure
 	    || source->axises.at(Gen::ChannelId::x).dimension
 	           != target->axises.at(Gen::ChannelId::x).dimension
-	    || source->guides.at(Gen::ChannelId::x)
-	           != target->guides.at(Gen::ChannelId::x)
+	    || source->guides.at(Gen::AxisId::x)
+	           != target->guides.at(Gen::AxisId::x)
 	    || source->anyAxisSet != target->anyAxisSet
 	    || source->keepAspectRatio != target->keepAspectRatio
 	    || (source->markerConnectionOrientation

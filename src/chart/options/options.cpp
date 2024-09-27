@@ -66,7 +66,7 @@ const Channel *Options::subAxisOf(ChannelId id) const
 		if (id == ChannelId::size && channels.anyAxisSet()) {
 			return &channels.at(ChannelId::size);
 		}
-		if (isAxis(id)) {
+		if (asAxis(id)) {
 			if (channels.at(id).isDimension() && id == mainAxisType())
 				return &subAxis();
 			return &channels.at(ChannelId::size);

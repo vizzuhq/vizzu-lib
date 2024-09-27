@@ -16,9 +16,17 @@
 namespace Vizzu::Gen
 {
 
-bool isAxis(ChannelId type)
+std::optional<AxisId> asAxis(ChannelId type)
 {
-	return type == ChannelId::x || type == ChannelId::y;
+	return type == ChannelId::x || type == ChannelId::y
+	         ? std::make_optional(static_cast<AxisId>(
+	             static_cast<ChannelIdType>(type)))
+	         : std::nullopt;
+}
+
+ChannelId asChannel(AxisId type)
+{
+	return static_cast<ChannelId>(static_cast<ChannelIdType>(type));
 }
 
 Channel Channel::makeChannel(Type id)
