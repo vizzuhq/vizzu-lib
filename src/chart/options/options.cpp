@@ -129,7 +129,7 @@ void Options::drilldownTo(const Options &other)
 {
 	auto &stackChannel = this->stackChannel();
 
-	if (this->split && !isStacked()) this->split = false;
+	if (this->split && !isSplit()) this->split = false;
 
 	for (auto &&dim : other.getChannels().getDimensions())
 		if (!getChannels().isSeriesUsed(dim))
