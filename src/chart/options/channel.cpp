@@ -29,6 +29,11 @@ ChannelId asChannel(AxisId type)
 	return static_cast<ChannelId>(static_cast<ChannelIdType>(type));
 }
 
+bool operator==(const AxisId &axis, const ChannelId &channel)
+{
+	return asChannel(axis) == channel;
+}
+
 Channel Channel::makeChannel(Type id)
 {
 	switch (id) {

@@ -93,6 +93,9 @@ public:
 std::optional<AxisId> asAxis(ChannelId type);
 ChannelId asChannel(AxisId type);
 
+[[nodiscard]] bool operator==(const AxisId &axis,
+    const ChannelId &channel);
+
 }
 
 #endif
