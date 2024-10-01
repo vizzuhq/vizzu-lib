@@ -42,7 +42,7 @@ const testSteps = [
 					noop: null,
 					size: { set: ['Year', 'Country'] }
 				},
-				title: 'Stack Discs',
+				title: 'Stack Discs'
 			}
 		}),
 
