@@ -43,7 +43,6 @@ const testSteps = [
 					size: { set: ['Year', 'Country'] }
 				},
 				title: 'Stack Discs',
-				align: 'center'
 			}
 		}),
 
