@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+### Fixed 
+
+- Fix drilldown regroup strategy on fake-split charts.
+
 ## [0.13.0] - 2024-09-13
 
 ### Fixed

@@ -109,6 +109,18 @@ public:
 		return channels.at(stackChannelType());
 	}
 
+	[[nodiscard]] const Channel &stackChannel() const
+	{
+		return channels.at(stackChannelType());
+	}
+
+	[[nodiscard]] bool isStacked() const;
+	[[nodiscard]] bool isSplit() const
+	{
+		return split
+		    && (stackChannelType() != subAxisType() || isStacked());
+	}
+
 	Heading title{std::nullopt};
 	Heading subtitle{std::nullopt};
 	Heading caption{std::nullopt};
