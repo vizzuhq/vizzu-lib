@@ -1,7 +1,5 @@
 #include "guides.h"
 
-#include <stdexcept>
-
 #include "base/math/interpolation.h"
 #include "chart/options/align.h"
 #include "chart/options/channel.h"
@@ -92,18 +90,22 @@ Guides::Guides(const Options &options)
 	        || (!yIsMeasure && !yOpt.isEmpty())));
 }
 
-GuidesByAxis &Guides::at(ChannelId channel)
+GuidesByAxis &Guides::at(AxisId channel)
 {
-	if (channel == ChannelId::x) return x;
-	if (channel == ChannelId::y) return y;
-	throw std::out_of_range("guides index out of range");
+	switch (channel) {
+	default:
+	case AxisId::x: return x;
+	case AxisId::y: return y;
+	}
 }
 
-const GuidesByAxis &Guides::at(ChannelId channel) const
+const GuidesByAxis &Guides::at(AxisId channel) const
 {
-	if (channel == ChannelId::x) return x;
-	if (channel == ChannelId::y) return y;
-	throw std::out_of_range("guides index out of range");
+	switch (channel) {
+	default:
+	case AxisId::x: return x;
+	case AxisId::y: return y;
+	}
 }
 
 bool Guides::hasAnyGuides() const

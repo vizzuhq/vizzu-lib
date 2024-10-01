@@ -39,8 +39,7 @@ void DrawInterlacing::drawTexts() const
 
 void DrawInterlacing::draw(bool horizontal, bool text) const
 {
-	auto axisIndex =
-	    horizontal ? Gen::ChannelId::y : Gen::ChannelId::x;
+	auto axisIndex = horizontal ? Gen::AxisId::y : Gen::AxisId::x;
 
 	auto interlacingColor =
 	    *rootStyle.plot.getAxis(axisIndex).interlacing.color;
@@ -111,8 +110,7 @@ void DrawInterlacing::draw(
 	const auto &enabled =
 	    horizontal ? plot->guides.y : plot->guides.x;
 
-	auto axisIndex =
-	    horizontal ? Gen::ChannelId::y : Gen::ChannelId::x;
+	auto axisIndex = horizontal ? Gen::AxisId::y : Gen::AxisId::x;
 
 	const auto &axisStyle = rootStyle.plot.getAxis(axisIndex);
 
@@ -251,8 +249,7 @@ void DrawInterlacing::drawDataLabel(
     const ::Anim::String &unit,
     double alpha) const
 {
-	auto axisIndex =
-	    horizontal ? Gen::ChannelId::y : Gen::ChannelId::x;
+	auto axisIndex = horizontal ? Gen::AxisId::y : Gen::AxisId::x;
 	const auto &labelStyle = rootStyle.plot.getAxis(axisIndex).label;
 
 	auto drawLabel = OrientedLabel{{ctx()}};
@@ -308,8 +305,7 @@ void DrawInterlacing::drawSticks(double tickIntensity,
     bool horizontal,
     const Geom::Point &tickPos) const
 {
-	auto axisIndex =
-	    horizontal ? Gen::ChannelId::y : Gen::ChannelId::x;
+	auto axisIndex = horizontal ? Gen::AxisId::y : Gen::AxisId::x;
 	const auto &axisStyle = rootStyle.plot.getAxis(axisIndex);
 	const auto &tickStyle = axisStyle.ticks;
 

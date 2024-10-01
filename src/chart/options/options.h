@@ -26,8 +26,6 @@ namespace Vizzu::Gen
 
 class Options
 {
-	using ChannelIdType = std::underlying_type_t<ChannelId>;
-
 public:
 	enum class LegendId : ChannelIdType {
 		color = static_cast<ChannelIdType>(ChannelId::color),

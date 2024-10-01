@@ -32,8 +32,8 @@ struct Guides
 	GuidesByAxis y;
 
 	explicit Guides(const Options &options);
-	[[nodiscard]] const GuidesByAxis &at(ChannelId channel) const;
-	GuidesByAxis &at(ChannelId channel);
+	[[nodiscard]] const GuidesByAxis &at(AxisId channel) const;
+	GuidesByAxis &at(AxisId channel);
 	[[nodiscard]] bool hasAnyGuides() const;
 };
 

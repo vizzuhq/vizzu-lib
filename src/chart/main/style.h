@@ -363,9 +363,9 @@ struct PlotParams
 
 struct Plot : Padding, Box, PlotParams
 {
-	[[nodiscard]] const Axis &getAxis(Gen::ChannelId id) const
+	[[nodiscard]] const Axis &getAxis(Gen::AxisId id) const
 	{
-		return id == Gen::ChannelId::x ? xAxis : yAxis;
+		return id == Gen::AxisId::x ? xAxis : yAxis;
 	}
 };
 

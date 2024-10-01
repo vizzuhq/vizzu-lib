@@ -23,7 +23,7 @@ void DrawGuides::draw()
 
 void DrawGuides::draw(bool horizontal)
 {
-	auto axisId = horizontal ? Gen::ChannelId::x : Gen::ChannelId::y;
+	auto axisId = horizontal ? Gen::AxisId::x : Gen::AxisId::y;
 
 	const auto &guideStyle = rootStyle.plot.getAxis(axisId).guides;
 

@@ -154,12 +154,22 @@ struct Axises
 		return axises.at(channelType);
 	}
 
-	[[nodiscard]] const Axis &other(ChannelId channelType) const
+	[[nodiscard]] const Axis &at(AxisId axisType) const
 	{
-		switch (channelType) {
-		case ChannelId::x: return axises.at(ChannelId::y);
-		case ChannelId::y: return axises.at(ChannelId::x);
-		default: throw std::logic_error("not an axis channel");
+		return axises.at(asChannel(axisType));
+	}
+
+	[[nodiscard]] Axis &at(AxisId axisType)
+	{
+		return axises.at(asChannel(axisType));
+	}
+
+	[[nodiscard]] const Axis &other(AxisId axisType) const
+	{
+		switch (axisType) {
+		default:
+		case AxisId::x: return at(AxisId::y);
+		case AxisId::y: return at(AxisId::x);
 		}
 	}
 

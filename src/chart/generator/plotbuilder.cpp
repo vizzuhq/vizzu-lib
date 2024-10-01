@@ -433,7 +433,7 @@ void PlotBuilder::calcDimensionAxis(ChannelId type)
 
 	if (scale.isMeasure() || !scale.hasDimension()) return;
 
-	auto &&isTypeAxis = isAxis(type);
+	auto &&isTypeAxis = asAxis(type).has_value();
 	if (auto merge = scale.labelLevel == 0; isTypeAxis) {
 		for (const auto &marker : plot->markers) {
 			if (!marker.enabled) continue;
