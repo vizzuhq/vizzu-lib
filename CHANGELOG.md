@@ -6,6 +6,12 @@
 
 - Fix again measure axis labels when the axis range and step set too.
 - Fix drilldown regroup strategy on fake-split charts.
+- From now vertical line connections are curved lines.
+- Remove duplicated circles on line-circle transition.
+- Fix area-circle polar connection transition.
+- Fix line-rectangle polar connection linearity.
+- Fix all polar connection interpolation (except fading).
+- Remove unwanted line connections from line-circle + orientation changed anim.
 
 ## [0.13.0] - 2024-09-13
 

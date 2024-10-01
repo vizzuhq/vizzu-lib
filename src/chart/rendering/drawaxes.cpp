@@ -368,12 +368,11 @@ void DrawAxes::drawDimensionLabel(bool horizontal,
 			    draw(text.get_or_first(index), position.weight);
 		    if (!labelStyle.position->interpolates()
 		        && !text.interpolates())
-			    draw(text.get_or_first(::Anim::first));
+			    draw(text.values[0]);
 		    else if (labelStyle.position->interpolates())
-			    draw(text.get_or_first(::Anim::first),
-			        position.weight);
+			    draw(text.values[0], position.weight);
 		    else if (text.interpolates()) {
-			    draw(text.get_or_first(::Anim::first));
+			    draw(text.values[0]);
 			    draw(text.get_or_first(::Anim::second));
 		    }
 	    });
