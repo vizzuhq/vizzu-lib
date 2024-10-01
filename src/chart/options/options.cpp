@@ -98,6 +98,13 @@ std::optional<ChannelId> Options::secondaryStackType() const
 	return std::nullopt;
 }
 
+bool Options::isStacked() const
+{
+	auto dims = stackChannel().dimensions();
+	dims.split_by(mainAxis().dimensions());
+	return !dims.empty();
+}
+
 Channels Options::shadowChannels() const
 {
 	auto shadow = channels.shadow();
@@ -122,12 +129,11 @@ void Options::drilldownTo(const Options &other)
 {
 	auto &stackChannel = this->stackChannel();
 
+	if (this->split && !isSplit()) this->split = false;
+
 	for (auto &&dim : other.getChannels().getDimensions())
 		if (!getChannels().isSeriesUsed(dim))
 			stackChannel.addSeries(dim);
-	if (stackChannel.isDimension()
-	    && geometry == ShapeType::rectangle)
-		this->align = Base::Align::Type::stretch;
 }
 
 void Options::intersection(const Options &other)
@@ -192,9 +198,9 @@ bool Options::sameShadowAttribs(const Options &other) const
 
 	return shape == shapeOther && coordSystem == other.coordSystem
 	    && angle == other.angle && orientation == other.orientation
-	    && split == other.split && dataFilter == other.dataFilter
-	    && align == other.align && sort == other.sort
-	    && reverse == other.reverse;
+	    && isSplit() == other.isSplit()
+	    && dataFilter == other.dataFilter && align == other.align
+	    && sort == other.sort && reverse == other.reverse;
 }
 
 bool Options::sameAttributes(const Options &other) const
