@@ -113,7 +113,7 @@
 			"refs": ["69db5d4"]
 		},
 		"basic_animations/someOtherTests/merge_split_area_stream_2dis_1con": {
-			"refs": ["b1e67de"]
+			"refs": ["e331f23"]
 		},
 		"basic_animations/someOtherTests/total_time_area_bar": {
 			"refs": ["d908ab5"]
@@ -506,7 +506,7 @@
 			"refs": ["08e742c"]
 		},
 		"web_content/analytical_operations/compare/stream_stacked": {
-			"refs": ["8200148"]
+			"refs": ["845f43a"]
 		},
 		"web_content/analytical_operations/compare/waterfall": {
 			"refs": ["6c43732"]
@@ -620,10 +620,10 @@
 			"refs": ["dcff220"]
 		},
 		"web_content/analytical_operations/filter/stream_1": {
-			"refs": ["2710f78"]
+			"refs": ["4f827d6"]
 		},
 		"web_content/analytical_operations/filter/stream_2": {
-			"refs": ["75719ee"]
+			"refs": ["9793ec1"]
 		},
 		"web_content/analytical_operations/misc/donut_to_coxcomb": {
 			"refs": ["76f76c6"]
@@ -770,7 +770,7 @@
 			"refs": ["4e1f1e8"]
 		},
 		"web_content/analytical_operations/sum/stream_stacked": {
-			"refs": ["9f4e0b4"]
+			"refs": ["9d0aeee"]
 		},
 		"web_content/analytical_operations/sum/treemap": {
 			"refs": ["d8a8b1c"]
@@ -800,7 +800,7 @@
 			"refs": ["bf2c4b9"]
 		},
 		"web_content_removed/animated/merge_split_area_stream_3dis_1con": {
-			"refs": ["305f396"]
+			"refs": ["c9c9175"]
 		},
 		"web_content_removed/animated/merge_split_bar": {
 			"refs": ["cf60e63"]
@@ -923,10 +923,10 @@
 			"refs": ["4bebc47"]
 		},
 		"web_content/presets/graph/stream": {
-			"refs": ["1be4e97"]
+			"refs": ["83e8724"]
 		},
 		"web_content/presets/graph/stream_vertical": {
-			"refs": ["cc443a6"]
+			"refs": ["15b5f83"]
 		},
 		"web_content/presets/graph/violin": {
 			"refs": ["683b150"]
@@ -1037,7 +1037,7 @@
 			"refs": ["c1a8d39"]
 		},
 		"web_content/static/graph/stream_stacked": {
-			"refs": ["843591b"]
+			"refs": ["3ab1f0c"]
 		},
 		"web_content/static/chart/waterfall": {
 			"refs": ["2aeab23"]
@@ -3065,10 +3065,10 @@
 			"refs": ["52a2da9"]
 		},
 		"ww_samples_for_presets/cartesian_coo_sys/32_C_A_stream_graph": {
-			"refs": ["9d218d6"]
+			"refs": ["dd86c4e"]
 		},
 		"ww_samples_for_presets/cartesian_coo_sys/33_C_A_stream_graph_vert": {
-			"refs": ["14a0296"]
+			"refs": ["bd982e1"]
 		},
 		"ww_samples_for_presets/cartesian_coo_sys/34_C_A_violin_graph": {
 			"refs": ["0cddf74"]
