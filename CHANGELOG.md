@@ -14,6 +14,12 @@
 - Remove unwanted line connections from line-circle + orientation changed anim.
 - Move axis to the center on align: center charts.
 
+### Changed
+
+- Removed the 'align: max' property from the API. That function can be achieved 
+  by setting the axis range to: {min: '100%', max: '0%'}.
+
+
 ## [0.13.0] - 2024-09-13
 
 ### Fixed
