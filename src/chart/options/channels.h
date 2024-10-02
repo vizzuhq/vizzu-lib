@@ -31,7 +31,16 @@ public:
 	    const std::span<const ChannelId> &channelTypes) const;
 
 	[[nodiscard]] const Channel &at(const ChannelId &id) const;
-	Channel &at(const ChannelId &id);
+	[[nodiscard]] Channel &at(const ChannelId &id);
+
+	[[nodiscard]] const Channel &at(const AxisId &id) const
+	{
+		return at(asChannel(id));
+	}
+	[[nodiscard]] Channel &at(const AxisId &id)
+	{
+		return at(asChannel(id));
+	}
 
 	void removeSeries(const Data::SeriesIndex &index);
 

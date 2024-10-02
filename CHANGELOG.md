@@ -12,6 +12,7 @@
 - Fix line-rectangle polar connection linearity.
 - Fix all polar connection interpolation (except fading).
 - Remove unwanted line connections from line-circle + orientation changed anim.
+- Move axis to the center on align: center charts.
 
 ## [0.13.0] - 2024-09-13
 

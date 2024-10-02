@@ -50,7 +50,7 @@ private:
 	[[nodiscard]] bool positionMorphNeeded() const;
 	[[nodiscard]] bool verticalBeforeHorizontal() const;
 	static size_t dimensionCount(const Gen::Plot *plot,
-	    Gen::ChannelId type);
+	    Gen::AxisId type);
 
 	[[nodiscard]] bool isAnyLegend(Gen::ChannelId type) const;
 

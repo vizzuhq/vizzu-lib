@@ -66,9 +66,9 @@ public:
 
 	void reset();
 
-	[[nodiscard]] ChannelId mainAxisType() const
+	[[nodiscard]] AxisId mainAxisType() const
 	{
-		return isHorizontal() ? ChannelId::x : ChannelId::y;
+		return isHorizontal() ? AxisId::x : AxisId::y;
 	}
 
 	[[nodiscard]] bool isHorizontal() const
@@ -79,9 +79,9 @@ public:
 		    == Gen::Orientation::horizontal;
 	}
 
-	[[nodiscard]] ChannelId subAxisType() const
+	[[nodiscard]] AxisId subAxisType() const
 	{
-		return isHorizontal() ? ChannelId::y : ChannelId::x;
+		return isHorizontal() ? AxisId::y : AxisId::x;
 	}
 
 	[[nodiscard]] const Channel &mainAxis() const
@@ -116,7 +116,7 @@ public:
 	[[nodiscard]] bool isSplit() const
 	{
 		return split
-		    && (stackChannelType() != subAxisType() || isStacked());
+		    && (subAxisType() != stackChannelType() || isStacked());
 	}
 
 	Heading title{std::nullopt};
