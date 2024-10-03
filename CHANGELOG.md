@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+## [0.14.0] - 2024-10-03
+
 ### Fixed 
 
 - Fix again measure axis labels when the axis range and step set too.
