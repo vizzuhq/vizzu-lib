@@ -309,7 +309,7 @@ const testSteps = [
 					geometry: 'rectangle',
 					split: false,
 					legend: 'color',
-					align: 'min'
+					align: 'none'
 				}
 			},
 			{
@@ -331,7 +331,7 @@ const testSteps = [
 					geometry: 'circle',
 					split: false,
 					legend: 'color',
-					align: 'min'
+					align: 'none'
 				}
 			},
 			{
@@ -356,7 +356,7 @@ const testSteps = [
 					geometry: 'rectangle',
 					split: false,
 					legend: 'color',
-					align: 'min'
+					align: 'none'
 				}
 			},
 			{

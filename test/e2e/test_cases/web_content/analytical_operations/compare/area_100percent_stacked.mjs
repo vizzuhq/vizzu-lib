@@ -29,7 +29,7 @@ const testSteps = [
 				},
 
 				geometry: 'line',
-				align: 'min'
+				align: 'none'
 			}
 		}),
 	(chart) => {

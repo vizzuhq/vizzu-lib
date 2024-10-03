@@ -516,10 +516,7 @@ void PlotBuilder::addSeparation(const Buckets &subBuckets,
     const std::size_t &mainBucketSize) const
 {
 	if (plot->getOptions()->split) {
-		auto align =
-		    plot->getOptions()->align == Base::Align::Type::none
-		        ? Base::Align::Type::min
-		        : plot->getOptions()->align;
+		auto align = plot->getOptions()->align;
 
 		std::vector ranges{mainBucketSize,
 		    Math::Range<double>::Raw({}, {})};

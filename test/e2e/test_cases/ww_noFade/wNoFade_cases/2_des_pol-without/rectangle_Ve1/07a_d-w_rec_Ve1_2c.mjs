@@ -74,7 +74,7 @@ const testSteps = [
 					color: { set: 'Joy factors' }
 				},
 				title: 'Group new Disc & Add new Disc Color & Stretch off & axisLabel on',
-				align: 'min'
+				align: 'none'
 			},
 			style: {
 				plot: {

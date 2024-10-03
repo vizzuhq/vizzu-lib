@@ -69,7 +69,7 @@ const testSteps = [
 					title: 'Stacked Area Chart',
 					geometry: 'area',
 					orientation: 'horizontal',
-					align: 'min',
+					align: 'none',
 					legend: null
 				}
 			},
@@ -107,7 +107,7 @@ const testSteps = [
 					title: 'Overlay Area Chart',
 					geometry: 'area',
 					orientation: 'horizontal',
-					align: 'min',
+					align: 'none',
 					legend: null
 				},
 				style: {
@@ -153,7 +153,7 @@ const testSteps = [
 					title: 'Splitted Area Chart',
 					geometry: 'area',
 					orientation: 'horizontal',
-					align: 'min',
+					align: 'none',
 					split: true,
 					legend: null
 				},
@@ -199,7 +199,7 @@ const testSteps = [
 					title: 'Line Chart',
 					geometry: 'line',
 					orientation: 'horizontal',
-					align: 'min',
+					align: 'none',
 					split: false,
 					legend: null
 				}

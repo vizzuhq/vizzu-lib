@@ -22,7 +22,7 @@ const testSteps = [
 	(chart) =>
 		chart.animate({
 			config: {
-				align: 'min'
+				align: 'none'
 			}
 		}),
 	(chart) => {

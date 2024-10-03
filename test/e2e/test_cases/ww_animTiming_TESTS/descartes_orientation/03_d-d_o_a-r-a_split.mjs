@@ -54,7 +54,7 @@ const testSteps = [
 				},
 				title: 'Bar Chart',
 				geometry: 'rectangle',
-				align: 'min',
+				align: 'none',
 				split: false
 			}
 		}),
@@ -82,7 +82,7 @@ const testSteps = [
 				title: 'Stacked Area Chart',
 				geometry: 'area',
 				legend: null,
-				align: 'min',
+				align: 'none',
 				split: false
 			}
 		})
