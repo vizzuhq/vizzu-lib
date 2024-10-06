@@ -167,7 +167,7 @@ const testSteps = [
 					title: '9 Splitted Column / Components(?), Part-to-whole(?), Split(?)',
 					geometry: 'rectangle',
 					orientation: 'horizontal',
-					align: 'min',
+					align: 'none',
 					split: true
 				}
 			},
@@ -188,7 +188,7 @@ const testSteps = [
 				title: '10 Scatter plot / + Continuous(?)',
 				geometry: 'circle',
 				orientation: 'horizontal',
-				align: 'min',
+				align: 'none',
 				split: false
 			}
 		}),
@@ -207,7 +207,7 @@ const testSteps = [
 				title: '11 Splitted Column / - Continuous(?), Components(?), Part-to-whole(?), Split(?)',
 				geometry: 'rectangle',
 				orientation: 'horizontal',
-				align: 'min',
+				align: 'none',
 				split: true
 			},
 			style: {

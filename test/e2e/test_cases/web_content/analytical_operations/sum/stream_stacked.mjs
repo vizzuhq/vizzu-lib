@@ -65,7 +65,7 @@ const testSteps = [
 				},
 
 				geometry: 'rectangle',
-				align: 'min',
+				align: 'none',
 				split: false,
 				sort: 'byValue',
 				reverse: true

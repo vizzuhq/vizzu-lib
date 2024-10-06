@@ -21,7 +21,7 @@ const testSteps = [
 		chart.animate({
 			config: {
 				title: 'Align min to See Sum instead of Ratio of Components',
-				align: 'min'
+				align: 'none'
 			}
 		}),
 	(chart) => {

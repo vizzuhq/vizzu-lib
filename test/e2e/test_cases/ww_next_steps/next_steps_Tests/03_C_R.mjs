@@ -125,7 +125,7 @@ const testSteps = [
 						color: { set: 'Country' }
 					},
 					title: '9 Groupped Column / Comparison(?), Group(?)',
-					align: 'min'
+					align: 'none'
 				}
 			},
 			{
@@ -145,7 +145,7 @@ const testSteps = [
 						label: { set: 'Value 2 (+)' }
 					},
 					title: '11 Column / Total(?) Aggregate(?) - Discrete(?)',
-					align: 'min',
+					align: 'none',
 					legend: null
 				}
 			},
@@ -166,7 +166,7 @@ const testSteps = [
 						label: null
 					},
 					title: '13 Groupped Column / Comparison(?), Group(?)',
-					align: 'min',
+					align: 'none',
 					legend: 'color'
 				}
 			},
@@ -187,7 +187,7 @@ const testSteps = [
 						label: { set: 'Value 2 (+)' }
 					},
 					title: '15 Stacked Bar / Sum(?)',
-					align: 'min'
+					align: 'none'
 				},
 				style: {
 					plot: {

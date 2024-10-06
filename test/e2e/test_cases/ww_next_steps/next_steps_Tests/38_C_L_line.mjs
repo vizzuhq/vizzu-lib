@@ -120,7 +120,7 @@ const testSteps = [
 					},
 					title: '7 Line / Comparison(?), Components(?)',
 					geometry: 'line',
-					align: 'min'
+					align: 'none'
 				}
 			},
 			{
@@ -140,7 +140,7 @@ const testSteps = [
 					},
 					title: '8 Line / Aggregate(?), - Discrete(?)',
 					geometry: 'line',
-					align: 'min'
+					align: 'none'
 				}
 			},
 			{
@@ -160,7 +160,7 @@ const testSteps = [
 					},
 					title: '9 Line / Drill down(?), + Discrete(?)',
 					geometry: 'line',
-					align: 'min'
+					align: 'none'
 				}
 			},
 			{
@@ -178,7 +178,7 @@ const testSteps = [
 				},
 				title: '10 Bar / Sum(?)',
 				geometry: 'rectangle',
-				align: 'min',
+				align: 'none',
 				legend: null
 			}
 		}),
@@ -195,7 +195,7 @@ const testSteps = [
 					},
 					title: '11 Bar / Sum(?)',
 					geometry: 'rectangle',
-					align: 'min',
+					align: 'none',
 					legend: null
 				}
 			},
@@ -216,7 +216,7 @@ const testSteps = [
 					},
 					title: '12 Bar / Sum(?)',
 					geometry: 'rectangle',
-					align: 'min',
+					align: 'none',
 					legend: null
 				}
 			},
@@ -236,7 +236,7 @@ const testSteps = [
 				},
 				title: '13 Line / Drill down timeseries(?), + Discrete(?)',
 				geometry: 'line',
-				align: 'min',
+				align: 'none',
 				legend: 'color'
 			}
 		}),
@@ -251,7 +251,7 @@ const testSteps = [
 				},
 				title: '14 Stacked Column / Sum(?), Stack(?)',
 				geometry: 'rectangle',
-				align: 'min',
+				align: 'none',
 				legend: 'color'
 			}
 		}),
@@ -266,7 +266,7 @@ const testSteps = [
 				},
 				title: '15 Line / Comparison(?), + Components(?)',
 				geometry: 'line',
-				align: 'min'
+				align: 'none'
 			}
 		}),
 

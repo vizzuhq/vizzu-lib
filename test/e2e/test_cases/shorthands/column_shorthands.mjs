@@ -25,7 +25,7 @@ const testSteps = [
 		}),
 	(chart) =>
 		chart.animate({
-			align: 'min'
+			align: 'none'
 		}),
 	(chart) =>
 		chart.animate({

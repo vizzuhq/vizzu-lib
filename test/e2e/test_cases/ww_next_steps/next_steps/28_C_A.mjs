@@ -160,7 +160,7 @@ const testSteps = [
 					},
 					title: 'Stacked Area / Ratio off(?)',
 					geometry: 'area',
-					align: 'min',
+					align: 'none',
 					split: false
 				}
 			},
@@ -183,7 +183,7 @@ const testSteps = [
 					},
 					title: 'Bar / Sum(?)',
 					geometry: 'area',
-					align: 'min',
+					align: 'none',
 					split: true
 				}
 			},
@@ -204,7 +204,7 @@ const testSteps = [
 					},
 					title: 'Bar / Sum(?)',
 					geometry: 'rectangle',
-					align: 'min',
+					align: 'none',
 					split: false
 				}
 			},
@@ -243,7 +243,7 @@ const testSteps = [
 					},
 					title: 'Bar / Sum(?)',
 					geometry: 'rectangle',
-					align: 'min',
+					align: 'none',
 					split: false
 				}
 			},
@@ -265,7 +265,7 @@ const testSteps = [
 					},
 					title: 'Bar / Sum(?)',
 					geometry: 'rectangle',
-					align: 'min',
+					align: 'none',
 					split: false
 				}
 			},
@@ -306,7 +306,7 @@ const testSteps = [
 					},
 					title: 'Area / Time distribution(?)',
 					geometry: 'area',
-					align: 'min',
+					align: 'none',
 					split: true
 				}
 			},
@@ -327,7 +327,7 @@ const testSteps = [
 					},
 					title: 'Stacked Area / Time distribution(?)',
 					geometry: 'area',
-					align: 'min',
+					align: 'none',
 					split: false
 				}
 			},
@@ -347,7 +347,7 @@ const testSteps = [
 					},
 					title: 'Area / Total timeseries(?)',
 					geometry: 'area',
-					align: 'min',
+					align: 'none',
 					split: false
 				}
 			},
@@ -367,7 +367,7 @@ const testSteps = [
 					},
 					title: 'Stacked Area / Time distribution(?)',
 					geometry: 'area',
-					align: 'min',
+					align: 'none',
 					split: false
 				}
 			},
@@ -387,7 +387,7 @@ const testSteps = [
 					},
 					title: '16 Lollipop / Distribution(?)',
 					geometry: 'circle',
-					align: 'min',
+					align: 'none',
 					split: false
 				}
 			},
@@ -425,7 +425,7 @@ const testSteps = [
 					},
 					title: 'Stacked Area / Sum(?), Sum timeseries(?)',
 					geometry: 'area',
-					align: 'min',
+					align: 'none',
 					split: false
 				}
 			},

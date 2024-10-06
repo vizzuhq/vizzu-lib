@@ -648,7 +648,7 @@ const testSteps = [
             },
             title: '28',
             geometry: 'circle',
-            align: 'min',
+            align: 'none',
             split: false
         },
         style: {
@@ -676,7 +676,7 @@ const testSteps = [
 					},
 					title: '29',
 					geometry: 'circle',
-					align: 'min',
+					align: 'none',
 					split: false
 				},
 				style: {
@@ -706,7 +706,7 @@ const testSteps = [
 					},
 					title: '30',
 					geometry: 'circle',
-					align: 'min',
+					align: 'none',
 					split: false
 				},
 				style: {

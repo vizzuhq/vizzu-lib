@@ -36,7 +36,7 @@ const testSteps = [
 					}
 				},
 				title: 'Split Area Chart',
-				align: 'min',
+				align: 'none',
 				split: true
 			}
 		})

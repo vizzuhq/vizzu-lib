@@ -20,7 +20,7 @@ const testSteps = [
 		chart.animate({
 			config: {
 				title: 'Align min to Sum of the Values(Components?)',
-				align: 'min'
+				align: 'none'
 			}
 		}),
 	(chart) => {

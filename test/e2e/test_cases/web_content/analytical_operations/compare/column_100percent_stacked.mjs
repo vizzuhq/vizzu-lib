@@ -27,7 +27,7 @@ const testSteps = [
 					y: 'Value 2 (+)'
 				},
 
-				align: 'min'
+				align: 'none'
 			}
 		}),
 	(chart) => {

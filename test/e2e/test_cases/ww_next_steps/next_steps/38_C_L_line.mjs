@@ -167,7 +167,7 @@ const testSteps = [
 					},
 					title: 'Line / Comparison(?), Components(?)',
 					geometry: 'line',
-					align: 'min'
+					align: 'none'
 				}
 			},
 			{
@@ -187,7 +187,7 @@ const testSteps = [
 					},
 					title: 'Line / Aggregate(?), - Discrete(?)',
 					geometry: 'area',
-					align: 'min',
+					align: 'none',
 					legend: null
 				}
 			},
@@ -207,7 +207,7 @@ const testSteps = [
 				},
 				title: '2222 Line / Aggregate(?), - Discrete(?)',
 				geometry: 'line',
-				align: 'min'
+				align: 'none'
 			}
 		}),
 
@@ -223,7 +223,7 @@ const testSteps = [
 					},
 					title: 'Line / Drill down(?), + Discrete(?)',
 					geometry: 'line',
-					align: 'min'
+					align: 'none'
 				}
 			},
 			{
@@ -242,7 +242,7 @@ const testSteps = [
 					},
 					title: 'Bar / Sum(?)',
 					geometry: 'rectangle',
-					align: 'min',
+					align: 'none',
 					legend: null
 				}
 			},
@@ -277,7 +277,7 @@ const testSteps = [
 					},
 					title: 'Bar / Sum(?)',
 					geometry: 'rectangle',
-					align: 'min',
+					align: 'none',
 					legend: null
 				}
 			},
@@ -298,7 +298,7 @@ const testSteps = [
 					},
 					title: 'Bar / Sum(?)',
 					geometry: 'rectangle',
-					align: 'min',
+					align: 'none',
 					legend: null
 				}
 			},
@@ -319,7 +319,7 @@ const testSteps = [
 					},
 					title: 'Line / Drill down timeseries(?), + Discrete(?)',
 					geometry: 'line',
-					align: 'min',
+					align: 'none',
 					legend: 'color'
 				}
 			},
@@ -354,7 +354,7 @@ const testSteps = [
 					},
 					title: 'Stacked Column / Sum(?), Stack(?)',
 					geometry: 'rectangle',
-					align: 'min',
+					align: 'none',
 					legend: 'color'
 				}
 			},
@@ -389,7 +389,7 @@ const testSteps = [
 					},
 					title: 'Line / Comparison(?), + Components(?)',
 					geometry: 'line',
-					align: 'min'
+					align: 'none'
 				}
 			},
 			{

@@ -30,7 +30,7 @@ const testSteps = [
 				},
 				title: 'Split Area Chart',
 				split: true,
-				align: 'min'
+				align: 'none'
 			}
 		})
 ]

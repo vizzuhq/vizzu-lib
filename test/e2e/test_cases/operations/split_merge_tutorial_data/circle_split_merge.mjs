@@ -25,7 +25,7 @@ const testSteps = [
 				title: 'Operations: Circle - Splitted.',
 				orientation: 'horizontal',
 				split: true,
-				align: 'min'
+				align: 'none'
 			}
 		}),
 	(chart) =>

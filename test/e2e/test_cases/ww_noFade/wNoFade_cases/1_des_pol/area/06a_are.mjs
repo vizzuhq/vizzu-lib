@@ -51,7 +51,7 @@ const testSteps = [
 					y: ['Joy factors', 'Value 3 (+)']
 				},
 				title: 'Add Conti',
-				align: 'min'
+				align: 'none'
 			}
 		})
 ]

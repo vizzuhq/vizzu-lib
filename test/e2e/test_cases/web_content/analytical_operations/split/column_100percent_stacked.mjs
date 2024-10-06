@@ -26,7 +26,7 @@ const testSteps = [
 					label: 'Value 2 (+)'
 				},
 
-				align: 'min',
+				align: 'none',
 				split: true
 			},
 			style: {

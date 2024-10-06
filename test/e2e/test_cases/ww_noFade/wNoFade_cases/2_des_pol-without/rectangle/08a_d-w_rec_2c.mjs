@@ -82,7 +82,7 @@ const testSteps = [
 					lightness: { set: 'Value 1 (+)' }
 				},
 				title: 'Change CoordSys',
-				align: 'min'
+				align: 'none'
 			}
 		})
 ]
