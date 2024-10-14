@@ -66,7 +66,7 @@ const Channel *Options::subAxisOf(ChannelId id) const
 		if (id == ChannelId::size && channels.anyAxisSet()) {
 			return &channels.at(ChannelId::size);
 		}
-		if (isAxis(id)) {
+		if (asAxis(id)) {
 			if (channels.at(id).isDimension() && id == mainAxisType())
 				return &subAxis();
 			return &channels.at(ChannelId::size);
@@ -81,7 +81,7 @@ ChannelId Options::stackChannelType() const
 	if (channels.anyAxisSet()) {
 		switch (geometry.get()) {
 		case ShapeType::area:
-		case ShapeType::rectangle: return subAxisType();
+		case ShapeType::rectangle: return asChannel(subAxisType());
 		default:
 		case ShapeType::circle:
 		case ShapeType::line: return ChannelId::size;
@@ -93,9 +93,16 @@ ChannelId Options::stackChannelType() const
 std::optional<ChannelId> Options::secondaryStackType() const
 {
 	if (channels.anyAxisSet() && geometry == ShapeType::line)
-		return subAxisType();
+		return asChannel(subAxisType());
 
 	return std::nullopt;
+}
+
+bool Options::isStacked() const
+{
+	auto dims = stackChannel().dimensions();
+	dims.split_by(mainAxis().dimensions());
+	return !dims.empty();
 }
 
 Channels Options::shadowChannels() const
@@ -122,12 +129,11 @@ void Options::drilldownTo(const Options &other)
 {
 	auto &stackChannel = this->stackChannel();
 
+	if (this->split && !isSplit()) this->split = false;
+
 	for (auto &&dim : other.getChannels().getDimensions())
 		if (!getChannels().isSeriesUsed(dim))
 			stackChannel.addSeries(dim);
-	if (stackChannel.isDimension()
-	    && geometry == ShapeType::rectangle)
-		this->align = Base::Align::Type::stretch;
 }
 
 void Options::intersection(const Options &other)
@@ -192,9 +198,9 @@ bool Options::sameShadowAttribs(const Options &other) const
 
 	return shape == shapeOther && coordSystem == other.coordSystem
 	    && angle == other.angle && orientation == other.orientation
-	    && split == other.split && dataFilter == other.dataFilter
-	    && align == other.align && sort == other.sort
-	    && reverse == other.reverse;
+	    && isSplit() == other.isSplit()
+	    && dataFilter == other.dataFilter && align == other.align
+	    && sort == other.sort && reverse == other.reverse;
 }
 
 bool Options::sameAttributes(const Options &other) const

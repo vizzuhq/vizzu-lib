@@ -223,7 +223,7 @@ definitions:
                     on where the measure is. In case both axes have measures on them, this is determined 
                     by the `orientation` of the chart.
                 type: string
-                enum: [none, min, center, max, stretch]
+                enum: [none, min, center, stretch]
             split:
                 description: |
                     If set to true, markers will be split by the dimension(s) along the axis.

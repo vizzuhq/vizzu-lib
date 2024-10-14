@@ -383,7 +383,7 @@ bool Planner::needColor() const
 }
 
 size_t Planner::dimensionCount(const Gen::Plot *plot,
-    Gen::ChannelId type)
+    Gen::AxisId type)
 {
 	return plot->getOptions()
 	    ->getChannels()
@@ -401,15 +401,15 @@ bool Planner::verticalBeforeHorizontal() const
 	    || !srcOpt->getChannels().anyAxisSet()
 	    || !trgOpt->getChannels().anyAxisSet()) {
 		if (srcOpt->getChannels().anyAxisSet())
-			return srcOpt->subAxisType() == Gen::ChannelId::y;
+			return srcOpt->subAxisType() == Gen::AxisId::y;
 		if (trgOpt->getChannels().anyAxisSet())
-			return trgOpt->mainAxisType() == Gen::ChannelId::y;
+			return trgOpt->mainAxisType() == Gen::AxisId::y;
 	}
 
-	auto srcXcnt = dimensionCount(source, Gen::ChannelId::x);
-	auto srcYcnt = dimensionCount(source, Gen::ChannelId::y);
-	auto trgXcnt = dimensionCount(target, Gen::ChannelId::x);
-	auto trgYcnt = dimensionCount(target, Gen::ChannelId::y);
+	auto srcXcnt = dimensionCount(source, Gen::AxisId::x);
+	auto srcYcnt = dimensionCount(source, Gen::AxisId::y);
+	auto trgXcnt = dimensionCount(target, Gen::AxisId::x);
+	auto trgYcnt = dimensionCount(target, Gen::AxisId::y);
 
 	if ((trgYcnt != srcYcnt) || (trgXcnt != srcXcnt)) {
 		return (trgYcnt > srcYcnt) || (trgXcnt < srcXcnt);
@@ -425,8 +425,8 @@ bool Planner::needVertical() const
 	           != target->axises.at(Gen::ChannelId::y).measure
 	    || source->axises.at(Gen::ChannelId::y).dimension
 	           != target->axises.at(Gen::ChannelId::y).dimension
-	    || source->guides.at(Gen::ChannelId::y)
-	           != target->guides.at(Gen::ChannelId::y)
+	    || source->guides.at(Gen::AxisId::y)
+	           != target->guides.at(Gen::AxisId::y)
 	    || (isAnyLegend(Gen::ChannelId::size)
 	        && (source->axises.at(Gen::ChannelId::size).common
 	                != target->axises.at(Gen::ChannelId::size).common
@@ -472,8 +472,8 @@ bool Planner::needHorizontal() const
 	           != target->axises.at(Gen::ChannelId::x).measure
 	    || source->axises.at(Gen::ChannelId::x).dimension
 	           != target->axises.at(Gen::ChannelId::x).dimension
-	    || source->guides.at(Gen::ChannelId::x)
-	           != target->guides.at(Gen::ChannelId::x)
+	    || source->guides.at(Gen::AxisId::x)
+	           != target->guides.at(Gen::AxisId::x)
 	    || source->anyAxisSet != target->anyAxisSet
 	    || source->keepAspectRatio != target->keepAspectRatio
 	    || (source->markerConnectionOrientation

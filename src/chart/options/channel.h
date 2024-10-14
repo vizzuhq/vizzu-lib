@@ -23,6 +23,28 @@ enum class ChannelId : std::uint8_t {
 	y,
 	noop
 };
+using ChannelIdType = std::underlying_type_t<ChannelId>;
+
+enum class AxisId : ChannelIdType {
+	x = static_cast<ChannelIdType>(ChannelId::x),
+	y = static_cast<ChannelIdType>(ChannelId::y)
+};
+
+consteval auto unique_from_to(AxisId)
+{
+	return std::pair{static_cast<ChannelIdType>(AxisId::x),
+	    static_cast<ChannelIdType>(AxisId::y)};
+}
+
+static_assert(Refl::enum_names<AxisId>.size() == 2);
+static_assert(std::ranges::all_of(Refl::enum_names<AxisId>,
+    [](std::string_view name)
+    {
+	    return static_cast<ChannelIdType>(
+	               Refl::get_enum<AxisId>(name))
+	        == static_cast<ChannelIdType>(
+	            Refl::get_enum<ChannelId>(name));
+    }));
 
 class Channel
 {
@@ -69,7 +91,11 @@ public:
 	Base::AutoParam<double> step{};
 };
 
-bool isAxis(ChannelId type);
+std::optional<AxisId> asAxis(ChannelId type);
+ChannelId asChannel(AxisId type);
+
+[[nodiscard]] bool operator==(const AxisId &axis,
+    const ChannelId &channel);
 
 }
 

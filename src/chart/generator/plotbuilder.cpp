@@ -185,9 +185,7 @@ PlotBuilder::sortedBuckets(const Buckets &buckets, bool main) const
 
 void PlotBuilder::addSpecLayout(Buckets &buckets)
 {
-	auto geometry = plot->getOptions()
-	                    ->geometry.get_or_first(::Anim::first)
-	                    .value;
+	auto geometry = plot->getOptions()->geometry.values[0].value;
 	if (auto &markers = plot->markers; isConnecting(geometry)) {
 		Charts::TableChart::setupVector(markers, true);
 	}
@@ -434,7 +432,7 @@ void PlotBuilder::calcDimensionAxis(ChannelId type)
 
 	if (scale.isMeasure() || !scale.hasDimension()) return;
 
-	auto &&isTypeAxis = isAxis(type);
+	auto &&isTypeAxis = asAxis(type).has_value();
 	if (auto merge = scale.labelLevel == 0; isTypeAxis) {
 		for (const auto &marker : plot->markers) {
 			if (!marker.enabled) continue;
@@ -480,15 +478,22 @@ void PlotBuilder::addAlignment(const Buckets &subBuckets) const
 {
 	if (static_cast<bool>(plot->getOptions()->split)) return;
 
-	if (std::signbit(
-	        plot->axises.at(plot->getOptions()->subAxisType())
-	            .measure.range.getMin())
-	    || std::signbit(
-	        plot->axises.at(plot->getOptions()->subAxisType())
-	            .measure.range.getMax()))
+	auto &subAxisRange =
+	    plot->axises.at(plot->getOptions()->subAxisType())
+	        .measure.range;
+	if (std::signbit(subAxisRange.getMin())
+	    || std::signbit(subAxisRange.getMax()))
 		return;
 
 	if (plot->getOptions()->align == Base::Align::Type::none) return;
+
+	if (plot->getOptions()->align == Base::Align::Type::center) {
+		auto &&halfSize = subAxisRange.size() / 2.0;
+		if (!Math::Floating::is_zero(halfSize))
+			subAxisRange = Math::Range<double>::Raw(
+			    subAxisRange.getMin() - halfSize,
+			    subAxisRange.getMax() - halfSize);
+	}
 
 	auto &&vectical = !plot->getOptions()->isHorizontal();
 	const Base::Align align{plot->getOptions()->align,

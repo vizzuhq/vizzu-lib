@@ -34,8 +34,29 @@ namespace Detail
 {
 template <class T> using real_t = std::underlying_type_t<T>;
 
-template <class E, real_t<E> From, real_t<E> To>
-    requires(!std::same_as<bool, real_t<E>>)
+template <class E>
+concept UniqueNames = requires {
+	static_cast<std::string_view>(unique_enum_names(E{}));
+};
+
+template <class E>
+concept UniqueRange = requires {
+	static_cast<std::pair<real_t<E>, real_t<E>>>(unique_from_to(E{}));
+};
+
+template <class E>
+    requires(UniqueRange<E>)
+consteval std::pair<real_t<E>, real_t<E>> from_to()
+{
+	constexpr auto res = unique_from_to(E{});
+	static_assert(res.first <= res.second, "Invalid range");
+	return res;
+}
+
+template <class E,
+    real_t<E> From = real_t<E>{},
+    real_t<E> To = real_t<E>{}>
+    requires(!UniqueRange<E> && !std::same_as<bool, real_t<E>>)
 consteval std::pair<real_t<E>, real_t<E>> from_to()
 {
 	if constexpr (std::is_signed_v<real_t<E>>
@@ -44,38 +65,39 @@ consteval std::pair<real_t<E>, real_t<E>> from_to()
 		return from_to<E, From - 1, To>();
 	else if constexpr (!Name::name<E, static_cast<E>(To)>().empty())
 		return from_to<E, From, To + 1>();
-	else
-		return {From, To};
+	else {
+		static_assert(From != To, "Not found any enum string");
+		return {From, To - 1};
+	}
 }
 
 template <class E, int, int>
-    requires(std::same_as<bool, real_t<E>>)
+    requires(!UniqueRange<E> && std::same_as<bool, real_t<E>>)
 consteval std::pair<real_t<E>, real_t<E>> from_to()
 {
-	return {false, false};
+	constexpr auto has_false =
+	    !Name::name<E, static_cast<E>(false)>().empty();
+	constexpr auto has_true =
+	    !Name::name<E, static_cast<E>(true)>().empty();
+	static_assert(has_false || has_true, "Not found any enum string");
+	return {!has_false, has_true};
 }
 
 template <class E>
     requires(!std::same_as<bool, real_t<E>>)
 consteval real_t<E> count()
 {
-	auto [from, to] = from_to<E, 0, 0>();
-	return static_cast<real_t<E>>(to - from);
+	auto [from, to] = from_to<E>();
+	return static_cast<real_t<E>>(to - from + 1);
 }
 
 template <class E>
     requires(std::same_as<bool, real_t<E>>)
 consteval int count()
 {
-	return Name::name<E, static_cast<E>(false)>().empty()
-	         ? 0
-	         : 1 + !Name::name<E, static_cast<E>(true)>().empty();
+	auto [from, to] = from_to<E>();
+	return to - from + 1;
 }
-
-template <class E>
-concept UniqueNames = requires {
-	static_cast<std::string_view>(unique_enum_names(E{}));
-};
 
 template <class E, class F = real_t<E>, F... Ix>
 consteval auto whole_array(std::integer_sequence<F, Ix...> = {})
@@ -87,7 +109,7 @@ consteval auto whole_array(std::integer_sequence<F, Ix...> = {})
 		return res;
 	}
 	else {
-		constexpr auto first = Detail::from_to<E, 0, 0>().first;
+		constexpr auto first = Detail::from_to<E>().first;
 		std::array<char,
 		    (Name::name<E, static_cast<E>(Ix + first)>().size() + ...
 		        + (sizeof...(Ix) - 1))>
@@ -109,7 +131,7 @@ constexpr std::array enum_name_holder = Detail::whole_array<E>(
         Detail::count<E>()>{});
 
 template <class E>
-constexpr std::array enum_name_holder<E, true> =
+constinit const std::array enum_name_holder<E, true> =
     Detail::whole_array<E, int>(
         std::make_integer_sequence<int, Detail::count<E>()>{});
 
@@ -143,7 +165,7 @@ template <class E> constexpr std::array enum_names = get_names<E>();
 template <class Type = std::string_view, class E>
 Type enum_name(E name)
 {
-	constexpr auto first = Detail::from_to<E, 0, 0>().first;
+	constexpr auto first = Detail::from_to<E>().first;
 	constexpr auto n = std::size(enum_names<E>);
 	if (static_cast<std::size_t>(
 	        static_cast<Detail::real_t<E>>(name) - first)
@@ -159,7 +181,7 @@ Type enum_name(E name)
 
 template <class E> constexpr E get_enum(const std::string_view &data)
 {
-	constexpr auto first = Detail::from_to<E, 0, 0>().first;
+	constexpr auto first = Detail::from_to<E>().first;
 	Detail::real_t<E> ix{};
 	for (auto v : enum_names<E>) {
 		if (v == data) break;
@@ -204,7 +226,7 @@ struct EnumArray : std::array<V, std::size(enum_names<E>)>
 template <class E, class... Args>
     requires(std::is_enum_v<E>
              && sizeof...(Args) == Detail::count<E>()
-             && Detail::from_to<E, 0, 0>().first == 0)
+             && Detail::from_to<E>().first == 0)
 struct EnumVariant : std::variant<Args...>
 {
 	using base_variant = std::variant<Args...>;

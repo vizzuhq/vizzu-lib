@@ -2,6 +2,28 @@
 
 ## [Unreleased]
 
+## [0.14.0] - 2024-10-03
+
+### Fixed 
+
+- Fix again measure axis labels when the axis range and step set too.
+- Fix drilldown regroup strategy on fake-split charts.
+- From now vertical line connections are curved lines.
+- Remove duplicated circles on line-circle transition.
+- Fix area-circle polar connection transition.
+- Fix line-rectangle polar connection linearity.
+- Fix all polar connection interpolation (except fading).
+- Remove unwanted line connections from line-circle + orientation changed anim.
+- Move axis to the center on align: center charts.
+
+### Changed
+
+- Removed the 'align: max' property from the API. That function can be achieved 
+  by setting the axis range to: {min: '100%', max: '0%'}.
+
+
+## [0.13.0] - 2024-09-13
+
 ### Fixed
 
 - Legend title bottomPadding extended.

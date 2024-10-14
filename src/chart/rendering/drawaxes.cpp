@@ -31,8 +31,8 @@ void DrawAxes::drawGeometries() const
 {
 	interlacing.drawGeometries();
 
-	drawAxis(Gen::ChannelId::x);
-	drawAxis(Gen::ChannelId::y);
+	drawAxis(Gen::AxisId::x);
+	drawAxis(Gen::AxisId::y);
 
 	DrawGuides{{ctx()}, canvas, painter}.draw();
 }
@@ -44,13 +44,13 @@ void DrawAxes::drawLabels() const
 	drawDimensionLabels(true);
 	drawDimensionLabels(false);
 
-	drawTitle(Gen::ChannelId::x);
-	drawTitle(Gen::ChannelId::y);
+	drawTitle(Gen::AxisId::x);
+	drawTitle(Gen::AxisId::y);
 }
 
-Geom::Line DrawAxes::getAxis(Gen::ChannelId axisIndex) const
+Geom::Line DrawAxes::getAxis(Gen::AxisId axisIndex) const
 {
-	auto horizontal = axisIndex == Gen::ChannelId::x;
+	auto horizontal = axisIndex == Gen::AxisId::x;
 
 	auto offset = plot->axises.other(axisIndex).measure.origo();
 
@@ -63,10 +63,10 @@ Geom::Line DrawAxes::getAxis(Gen::ChannelId axisIndex) const
 	return {};
 }
 
-void DrawAxes::drawAxis(Gen::ChannelId axisIndex) const
+void DrawAxes::drawAxis(Gen::AxisId axisIndex) const
 {
 	auto eventTarget =
-	    Events::Targets::axis(axisIndex == Gen::ChannelId::x);
+	    Events::Targets::axis(axisIndex == Gen::AxisId::x);
 
 	auto lineBaseColor = *rootStyle.plot.getAxis(axisIndex).color;
 
@@ -97,7 +97,7 @@ void DrawAxes::drawAxis(Gen::ChannelId axisIndex) const
 	}
 }
 
-Geom::Point DrawAxes::getTitleBasePos(Gen::ChannelId axisIndex,
+Geom::Point DrawAxes::getTitleBasePos(Gen::AxisId axisIndex,
     ::Anim::InterpolateIndex index) const
 {
 	typedef Styles::AxisTitle::Position Pos;
@@ -125,12 +125,12 @@ Geom::Point DrawAxes::getTitleBasePos(Gen::ChannelId axisIndex,
 	case VPos::begin: break;
 	}
 
-	return axisIndex == Gen::ChannelId::x
+	return axisIndex == Gen::AxisId::x
 	         ? Geom::Point{parallel, orthogonal}
 	         : Geom::Point{orthogonal, parallel};
 }
 
-Geom::Point DrawAxes::getTitleOffset(Gen::ChannelId axisIndex,
+Geom::Point DrawAxes::getTitleOffset(Gen::AxisId axisIndex,
     ::Anim::InterpolateIndex index,
     bool fades) const
 {
@@ -166,12 +166,12 @@ Geom::Point DrawAxes::getTitleOffset(Gen::ChannelId axisIndex,
 	    fades ? calcVSide(titleStyle.vside->get_or_first(index).value)
 	          : titleStyle.vside->combine(calcVSide);
 
-	return axisIndex == Gen::ChannelId::x
+	return axisIndex == Gen::AxisId::x
 	         ? Geom::Point{parallel, -orthogonal}
 	         : Geom::Point{orthogonal, -parallel};
 }
 
-void DrawAxes::drawTitle(Gen::ChannelId axisIndex) const
+void DrawAxes::drawTitle(Gen::AxisId axisIndex) const
 {
 	const auto &titleString = plot->axises.at(axisIndex).common.title;
 
@@ -252,7 +252,7 @@ void DrawAxes::drawTitle(Gen::ChannelId axisIndex) const
 		    titleStyle,
 		    *rootEvents.draw.plot.axis.title,
 		    Events::Targets::axisTitle(title.value,
-		        axisIndex == Gen::ChannelId::x),
+		        axisIndex == Gen::AxisId::x),
 		    {.colorTransform = Gfx::ColorTransform::Opacity(weight),
 		        .flip = upsideDown});
 
@@ -262,8 +262,7 @@ void DrawAxes::drawTitle(Gen::ChannelId axisIndex) const
 
 void DrawAxes::drawDimensionLabels(bool horizontal) const
 {
-	auto axisIndex =
-	    horizontal ? Gen::ChannelId::x : Gen::ChannelId::y;
+	auto axisIndex = horizontal ? Gen::AxisId::x : Gen::AxisId::y;
 
 	const auto &labelStyle = rootStyle.plot.getAxis(axisIndex).label;
 
@@ -295,8 +294,7 @@ void DrawAxes::drawDimensionLabel(bool horizontal,
 	    enabled.labels);
 	if (weight == 0) return;
 
-	auto axisIndex =
-	    horizontal ? Gen::ChannelId::x : Gen::ChannelId::y;
+	auto axisIndex = horizontal ? Gen::AxisId::x : Gen::AxisId::y;
 	const auto &labelStyle = rootStyle.plot.getAxis(axisIndex).label;
 
 	auto drawLabel = OrientedLabel{{ctx()}};
@@ -370,12 +368,11 @@ void DrawAxes::drawDimensionLabel(bool horizontal,
 			    draw(text.get_or_first(index), position.weight);
 		    if (!labelStyle.position->interpolates()
 		        && !text.interpolates())
-			    draw(text.get_or_first(::Anim::first));
+			    draw(text.values[0]);
 		    else if (labelStyle.position->interpolates())
-			    draw(text.get_or_first(::Anim::first),
-			        position.weight);
+			    draw(text.values[0], position.weight);
 		    else if (text.interpolates()) {
-			    draw(text.get_or_first(::Anim::first));
+			    draw(text.values[0]);
 			    draw(text.get_or_first(::Anim::second));
 		    }
 	    });

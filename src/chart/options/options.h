@@ -26,8 +26,6 @@ namespace Vizzu::Gen
 
 class Options
 {
-	using ChannelIdType = std::underlying_type_t<ChannelId>;
-
 public:
 	enum class LegendId : ChannelIdType {
 		color = static_cast<ChannelIdType>(ChannelId::color),
@@ -68,9 +66,9 @@ public:
 
 	void reset();
 
-	[[nodiscard]] ChannelId mainAxisType() const
+	[[nodiscard]] AxisId mainAxisType() const
 	{
-		return isHorizontal() ? ChannelId::x : ChannelId::y;
+		return isHorizontal() ? AxisId::x : AxisId::y;
 	}
 
 	[[nodiscard]] bool isHorizontal() const
@@ -81,9 +79,9 @@ public:
 		    == Gen::Orientation::horizontal;
 	}
 
-	[[nodiscard]] ChannelId subAxisType() const
+	[[nodiscard]] AxisId subAxisType() const
 	{
-		return isHorizontal() ? ChannelId::y : ChannelId::x;
+		return isHorizontal() ? AxisId::y : AxisId::x;
 	}
 
 	[[nodiscard]] const Channel &mainAxis() const
@@ -107,6 +105,18 @@ public:
 	Channel &stackChannel()
 	{
 		return channels.at(stackChannelType());
+	}
+
+	[[nodiscard]] const Channel &stackChannel() const
+	{
+		return channels.at(stackChannelType());
+	}
+
+	[[nodiscard]] bool isStacked() const;
+	[[nodiscard]] bool isSplit() const
+	{
+		return split
+		    && (subAxisType() != stackChannelType() || isStacked());
 	}
 
 	Heading title{std::nullopt};

@@ -110,20 +110,31 @@ void MarkerRenderer::drawMarkers(Gfx::ICanvas &canvas,
 
 			draw(canvas, painter, circle, 1, false);
 
-			blended.marker.prevMainMarker.visit(
-			    [this, &blended, &canvas, &painter](
-			        ::Anim::InterpolateIndex index,
-			        const auto &value)
-			    {
-				    draw(canvas,
-				        painter,
-				        ConnectingMarker{ctx(),
-				            blended.marker,
-				            index,
-				            Gen::ShapeType::line},
-				        value.weight,
-				        true);
-			    });
+			auto drawMarker = [this, &blended, &canvas, &painter](
+			                      ::Anim::InterpolateIndex index,
+			                      const auto &value)
+			{
+				draw(canvas,
+				    painter,
+				    ConnectingMarker{ctx(),
+				        blended.marker,
+				        index,
+				        Gen::ShapeType::line},
+				    value.weight,
+				    true);
+			};
+
+			if (blended.marker.prevMainMarker.interpolates())
+				blended.marker.prevMainMarker.visit(drawMarker);
+			else {
+				auto index =
+				    getOptions()
+				        .geometry.get_index(Gen::ShapeType::line)
+				        .value();
+				drawMarker(index,
+				    blended.marker.prevMainMarker.get_or_first(
+				        index));
+			}
 		}
 		else {
 			std::optional<AbstractMarker> other;
@@ -178,9 +189,7 @@ void MarkerRenderer::drawMarkers(Gfx::ICanvas &canvas,
 				if (containsSingle) {
 					auto lineIndex =
 					    isConnecting(
-					        getOptions()
-					            .geometry.get_or_first(::Anim::first)
-					            .value)
+					        getOptions().geometry.values[0].value)
 					        ? ::Anim::first
 					        : ::Anim::second;
 
@@ -195,9 +204,8 @@ void MarkerRenderer::drawMarkers(Gfx::ICanvas &canvas,
 			}
 			else
 				drawMarker(::Anim::first,
-				    ::Anim::Weighted{blended.marker.prevMainMarker
-				                         .get_or_first(::Anim::first)
-				                         .value,
+				    ::Anim::Weighted{
+				        blended.marker.prevMainMarker.values[0].value,
 				        sum_weight});
 		}
 	}
@@ -211,7 +219,7 @@ void MarkerRenderer::drawLabels(Gfx::ICanvas &canvas) const
 		if (blended.marker.enabled == false) continue;
 		drawLabel(canvas,
 		    blended,
-		    axis.unit.get_or_first(::Anim::first).value,
+		    axis.unit.values[0].value,
 		    keepMeasure,
 		    ::Anim::first);
 		drawLabel(canvas,
@@ -270,7 +278,11 @@ void MarkerRenderer::draw(Gfx::ICanvas &canvas,
 		            {Geom::Line(p0, p1), false}))) {
 			painter.drawStraightLine(line,
 			    abstractMarker.lineWidth,
-			    static_cast<double>(abstractMarker.linear));
+			    getOptions().coordSystem.factor(
+			        Gen::CoordSystem::cartesian)
+			            == 1.0
+			        ? 1.0
+			        : static_cast<double>(abstractMarker.linear));
 
 			renderedChart.emplace(
 			    Draw::Marker{abstractMarker.marker.enabled != false,
