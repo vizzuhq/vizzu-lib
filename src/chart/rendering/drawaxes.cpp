@@ -70,15 +70,14 @@ void DrawAxes::drawAxis(Gen::AxisId axisIndex) const
 
 	auto lineBaseColor = *rootStyle.plot.getAxis(axisIndex).color;
 
-	if (lineBaseColor.alpha <= 0 || plot->anyAxisSet == false) return;
+	if (lineBaseColor.alpha <= 0) return;
 
-	auto line = getAxis(axisIndex);
-
-	if (!line.isPoint()) {
+	if (auto line = getAxis(axisIndex); !line.isPoint()) {
 		auto lineColor =
 		    lineBaseColor
-		    * Math::FuzzyBool::And<double>(plot->anyAxisSet,
-		        plot->guides.at(axisIndex).axis);
+		    * static_cast<double>(plot->guides.at(axisIndex).axis);
+
+		if (lineColor.isTransparent()) return;
 
 		canvas.save();
 

@@ -50,18 +50,18 @@ PlotBuilder::PlotBuilder(const Data::DataTable &dataTable,
 	if (!plot->options->getChannels().anyAxisSet()) {
 		addSpecLayout(subBuckets);
 		calcDimensionAxises();
-		normalizeColors();
+		calcMeasureAxises(dataTable);
 		if (plot->options->geometry != ShapeType::circle)
 			normalizeSizes();
-		calcMeasureAxises(dataTable);
+		normalizeColors();
 	}
 	else {
 		addSeparation(subBuckets, mainBucketSize);
 		normalizeXY();
 		calcDimensionAxises();
+		calcMeasureAxises(dataTable);
 		normalizeSizes();
 		normalizeColors();
-		calcMeasureAxises(dataTable);
 		addAlignment(subBuckets);
 	}
 
@@ -93,14 +93,12 @@ Buckets PlotBuilder::generateMarkers(std::size_t &mainBucketSize)
 {
 	const auto &mainIds(plot->getOptions()->mainAxis().dimensions());
 	auto subIds(plot->getOptions()->subAxis().dimensions());
-
-	auto all_marker = dataCube.df->get_record_count();
 	if (!dataCube.empty()) {
 		if (plot->getOptions()->geometry == ShapeType::area)
 			subIds.split_by(mainIds);
 
 		mainBucketSize = dataCube.combinedSizeOf(mainIds).first;
-		plot->markers.reserve(all_marker);
+		plot->markers.reserve(dataCube.df->get_record_count());
 	}
 
 	std::multimap<Marker::MarkerIndex, Options::MarkerInfoId> map;
@@ -185,18 +183,16 @@ PlotBuilder::sortedBuckets(const Buckets &buckets, bool main) const
 void PlotBuilder::addSpecLayout(Buckets &buckets)
 {
 	auto geometry = plot->getOptions()->geometry.values[0].value;
-	if (auto &markers = plot->markers; isConnecting(geometry)) {
+	if (auto &markers = plot->markers; isConnecting(geometry))
 		Charts::TableChart::setupVector(markers, true);
-	}
-	else if (auto &&size = plot->getOptions()->getChannels().at(
-	             ChannelId::size);
-	         size.isDimension()) {
+	else if (plot->getOptions()
+	             ->getChannels()
+	             .at(ChannelId::size)
+	             .isDimension())
 		Charts::TableChart::setupVector(markers);
-	}
 	else if (!dataCube.empty()) {
-		buckets.sort(&Marker::sizeId);
-
-		if (geometry == ShapeType::circle) {
+		if (buckets.sort(&Marker::sizeId);
+		    geometry == ShapeType::circle) {
 			Charts::BubbleChartBuilder::setupVector(
 			    *plot->getStyle().plot.marker.circleMaxRadius,
 			    buckets);
@@ -618,8 +614,10 @@ void PlotBuilder::normalizeColors()
 			cbase.setPos(color.rescale(cbase.getPos()));
 	}
 
-	getMeasTrackRange(ChannelId::color) = color;
-	getMeasTrackRange(ChannelId::lightness) = lightness;
+	plot->axises.at(ChannelId::color).measure.range =
+	    getMeasTrackRange(ChannelId::color) = color;
+	plot->axises.at(ChannelId::lightness).measure.range =
+	    getMeasTrackRange(ChannelId::lightness) = lightness;
 
 	for (auto &value : plot->axises.at(ChannelId::color).dimension)
 		value.second.colorBase =
