@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+### Changed
+
+- Removed 'min' align property from the API which equivalent with the 'none'.
+
 ## [0.14.0] - 2024-10-03
 
 ### Fixed 
