@@ -411,7 +411,7 @@ const static auto tests =
 
 	auto &&events = get_events(chart);
 
-	check->*events.count("plot-axis-draw") == 2u;
+	check->*events.count("plot-axis-draw") == 1u;
 	check->*events.count("plot-axis-label-draw") == 4u + 5u;
 	check->*events.count("plot-marker-label-draw") == 5u;
 	check->*events.count("plot-marker-draw") == 5u;
@@ -427,7 +427,7 @@ const static auto tests =
 {
 	auto &&events = get_events(chart);
 
-	check->*events.count("plot-axis-draw") == 2u;
+	check->*events.count("plot-axis-draw") == 1u;
 	check->*events.count("plot-axis-label-draw") == 3u + 3u;
 	check->*events.count("plot-marker-draw") == 10u;
 
@@ -455,7 +455,7 @@ const static auto tests =
 	chart.getOptions().geometry = circle;
 	auto &&events = get_events(chart);
 
-	check->*events.count("plot-axis-draw") == 2u;
+	check->*events.count("plot-axis-draw") == 1u;
 	check->*events.count("plot-marker-draw") == 5u;
 	check->*events.count("plot-marker-guide-draw") == 5u;
 
@@ -490,7 +490,7 @@ const static auto tests =
 
 	auto &&events = get_events(chart);
 
-	check->*events.count("plot-axis-draw") == 2u;
+	check->*events.count("plot-axis-draw") == 1u;
 	check->*events.count("plot-axis-label-draw") == 4u + 5u;
 	check->*events.count("plot-marker-draw") == 10u;
 
@@ -507,7 +507,7 @@ const static auto tests =
 
 	auto &&events = get_events(chart);
 
-	check->*events.count("plot-axis-draw") == 2u;
+	check->*events.count("plot-axis-draw") == 1u;
 	check->*events.count("plot-axis-label-draw") == 4u + 5u;
 	check->*events.count("plot-marker-draw") == 5u;
 
@@ -575,7 +575,7 @@ const static auto tests =
 {
 	auto &&events = get_events(chart);
 
-	check->*events.count("plot-axis-draw") == 2u;
+	check->*events.count("plot-axis-draw") == 1u;
 	check->*events.count("plot-marker-draw") == 10u;
 
 	for (auto &&[beg, end] = events.equal_range("plot-marker-draw");
@@ -590,7 +590,7 @@ const static auto tests =
 {
 	auto &&events = get_events(chart);
 
-	check->*events.count("plot-axis-draw") == 2u;
+	check->*events.count("plot-axis-draw") == 1u;
 	check->*events.count("plot-marker-draw") == 3u;
 
 	for (auto &&[beg, end] = events.equal_range("plot-marker-draw");
@@ -614,7 +614,7 @@ const static auto tests =
 	    Vizzu::Base::AutoParam{Vizzu::Gen::ChannelExtrema("0%")};
 	auto &&events = get_events(chart);
 
-	check->*events.count("plot-axis-draw") == 2u;
+	check->*events.count("plot-axis-draw") == 1u;
 	check->*events.count("plot-marker-draw") == 28u;
 
 	for (auto &&[beg, end] = events.equal_range("plot-marker-draw");
@@ -650,7 +650,7 @@ const static auto tests =
 {
 	auto &&events = get_events(chart);
 
-	check->*events.count("plot-axis-draw") == 2u;
+	check->*events.count("plot-axis-draw") == 1u;
 	check->*events.count("plot-axis-label-draw") == 1u;
 	check->*events.count("plot-axis-title-draw") == 2u;
 	check->*events.count("plot-marker-draw") == 0u;
