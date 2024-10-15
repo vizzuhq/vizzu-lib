@@ -39,8 +39,6 @@ void MarkerRenderer::drawLines(Gfx::ICanvas &canvas,
 	    || !plot->guides.hasAnyGuides())
 		return;
 
-	auto origo = plot->axises.origo();
-
 	auto xLineColor =
 	    *style.color
 	    * static_cast<double>(plot->guides.x.markerGuides);
@@ -55,6 +53,8 @@ void MarkerRenderer::drawLines(Gfx::ICanvas &canvas,
 	if (xLineInvisible && yLineInvisible) return;
 
 	canvas.setLineWidth(*style.lineWidth);
+
+	auto origo = plot->axises.origo();
 
 	for (const auto &blended : markers) {
 		if (blended.marker.enabled == false
