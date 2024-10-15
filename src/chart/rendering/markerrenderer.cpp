@@ -39,8 +39,6 @@ void MarkerRenderer::drawLines(Gfx::ICanvas &canvas,
 	    || !plot->guides.hasAnyGuides())
 		return;
 
-	canvas.setLineWidth(*style.lineWidth);
-
 	auto origo = plot->axises.origo();
 
 	auto xLineColor =
@@ -55,6 +53,8 @@ void MarkerRenderer::drawLines(Gfx::ICanvas &canvas,
 	auto yLineInvisible = yLineColor.isTransparent();
 
 	if (xLineInvisible && yLineInvisible) return;
+
+	canvas.setLineWidth(*style.lineWidth);
 
 	for (const auto &blended : markers) {
 		if (blended.marker.enabled == false

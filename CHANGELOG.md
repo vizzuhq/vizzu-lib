@@ -2,6 +2,11 @@
 
 ## [Unreleased]
 
+### Fixes
+
+- Axis line hide/show at same time with axis labels/ticks/title.
+- Do not draw invisible axis line.
+
 ## [0.14.0] - 2024-10-03
 
 ### Fixed 

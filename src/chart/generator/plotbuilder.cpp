@@ -51,9 +51,9 @@ PlotBuilder::PlotBuilder(const Data::DataTable &dataTable,
 		addSpecLayout(subBuckets);
 		calcDimensionAxises();
 		calcMeasureAxises(dataTable);
+		normalizeColors();
 		if (plot->options->geometry != ShapeType::circle)
 			normalizeSizes();
-		normalizeColors();
 	}
 	else {
 		addSeparation(subBuckets, mainBucketSize);
