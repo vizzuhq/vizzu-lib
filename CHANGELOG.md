@@ -2,10 +2,17 @@
 
 ## [Unreleased]
 
-### Fixes
+### Fixed
 
+- Markers are the same even if new record added.
 - Axis line hide/show at same time with axis labels/ticks/title.
 - Do not draw invisible axis line.
+
+
+### Changed
+
+- Changed MarkerId to be a string instead of a number.
+
 
 ## [0.14.0] - 2024-10-03
 

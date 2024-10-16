@@ -87,7 +87,7 @@ dataframe::dataframe(std::shared_ptr<const data_source> other,
 	auto &cp = unsafe_get<source_type::copying>(source);
 	if (filtered) cp.pre_remove.emplace(*filtered);
 	if (sorted) cp.sorted_indices.emplace(*sorted);
-	if (!cp.other->finalized.empty())
+	if (!cp.other->finalized.record_ids.empty())
 		state_data.emplace<state_type::finalized>();
 }
 
@@ -141,11 +141,12 @@ std::string dataframe::set_aggregate(const std::string_view &series,
 	    unsafe_get<state_type::aggregating>(state_data);
 
 	if (ser == series_type::dimension && !aggregator) {
-		if (!aggs.dims
-		         .emplace(unsafe_get<series_type::dimension>(ser))
-		         .second)
-			error(error_type::duplicated_series, series);
-		return {};
+		if (auto &&[it, success] = aggs.dims.emplace(
+		        unsafe_get<series_type::dimension>(ser));
+		    success) [[likely]]
+			return it->first;
+
+		error(error_type::duplicated_series, series);
 	}
 
 	auto &&[name, uniq] =
@@ -735,6 +736,15 @@ std::string dataframe::get_record_id_by_dims(std::size_t my_record,
     std::span<const std::string> dimensions) const &
 {
 	return get_data_source().get_id(my_record, dimensions);
+}
+
+std::string dataframe::get_record_id(std::size_t my_record) &
+{
+	if (state_data != state_type::finalized)
+		error(error_type::record, "get id before finalized");
+
+	const auto &ids = get_data_source().finalized.record_ids;
+	return my_record < ids.size() ? ids[my_record] : std::string{};
 }
 
 series_meta_t dataframe::get_series_meta(const std::string &id) const

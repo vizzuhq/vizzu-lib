@@ -189,7 +189,7 @@ void MarkerRenderer::drawMarkers(Gfx::ICanvas &canvas,
 			    blended.marker.prevMainMarker.combine<double>(
 			        [](const Gen::Marker::MarkerIndexPosition &pos)
 			        {
-				        return pos.idx != ~Gen::Marker::MarkerIndex{};
+				        return !pos.idx.empty();
 			        });
 			if (containsConnected) {
 				if (containsSingle) {

@@ -2,10 +2,10 @@
 #ifndef DATAFRAME_OLD_TYPES_H
 #define DATAFRAME_OLD_TYPES_H
 
-#include <base/type/uniquelist.h>
 #include <set>
 
 #include "../interface.h"
+#include "base/type/uniquelist.h"
 
 namespace Vizzu::dataframe
 {
@@ -32,7 +32,7 @@ struct RowWrapper
 
 class SeriesIndex
 {
-	std::string_view name{};
+	std::string name{};
 	std::optional<dataframe::aggregator_type> aggregator;
 
 	explicit SeriesIndex(dataframe::series_meta_t const &meta);
@@ -48,7 +48,7 @@ public:
 		return *aggregator;
 	}
 
-	[[nodiscard]] const std::string_view &getColIndex() const
+	[[nodiscard]] const std::string &getColIndex() const
 	{
 		return name;
 	}
@@ -119,8 +119,8 @@ private:
 
 struct SliceIndex
 {
-	std::string_view column;
-	std::string_view value;
+	std::string column;
+	std::string value;
 
 	[[nodiscard]] bool operator<(const SliceIndex &rhs) const
 	{
@@ -142,7 +142,7 @@ struct MultiIndex
 {
 	std::size_t rid;
 	std::vector<std::size_t> old;
-	std::size_t oldAggr;
+	std::string marker_id;
 };
 
 struct MarkerId

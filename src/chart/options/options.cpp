@@ -231,7 +231,7 @@ bool Options::isShapeValid(const ShapeType &shapeType) const
 }
 
 std::optional<Options::MarkerInfoId> Options::getMarkerInfoId(
-    MarkerIndex id) const
+    const MarkerIndex &id) const
 {
 	for (auto &&[gid, mkid] : markersInfo)
 		if (mkid == id) return gid;

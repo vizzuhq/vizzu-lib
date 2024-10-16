@@ -149,7 +149,7 @@ public:
 		{
 			std::string tagName;
 
-			explicit Element(std::string name) :
+			explicit Element(std::string &&name) :
 			    tagName(std::move(name))
 			{}
 
