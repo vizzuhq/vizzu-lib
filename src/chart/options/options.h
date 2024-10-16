@@ -43,7 +43,7 @@ public:
 		            Refl::get_enum<ChannelId>(name));
 	    }));
 
-	using MarkerIndex = std::size_t;
+	using MarkerIndex = std::string;
 	using MarkerInfoId = std::uint32_t;
 	using Heading = ::Anim::Interpolated<std::optional<std::string>>;
 	using LegendType = Base::AutoParam<LegendId, true>;
@@ -171,7 +171,7 @@ public:
 
 	[[nodiscard]] bool isShapeValid(const ShapeType &) const;
 	[[nodiscard]] std::optional<MarkerInfoId> getMarkerInfoId(
-	    MarkerIndex) const;
+	    const MarkerIndex &) const;
 	static MarkerInfoId generateMarkerInfoId();
 
 	void setAutoParameters();

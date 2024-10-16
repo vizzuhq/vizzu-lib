@@ -231,6 +231,7 @@ struct EnumVariant : std::variant<Args...>
 {
 	using base_variant = std::variant<Args...>;
 	using base_variant::base_variant;
+	using enum_type = E;
 
 	[[nodiscard]] constexpr operator E() const noexcept // NOLINT
 	{
@@ -286,6 +287,12 @@ constexpr decltype(auto) get_if(EnumVariant<decltype(E), Args...> *e)
 {
 	return std::get_if<static_cast<std::size_t>(E)>(e);
 }
+
+template <auto E, class Variant>
+    requires std::same_as<decltype(E), typename Variant::enum_type>
+using variant_alternative_t =
+    std::variant_alternative_t<static_cast<std::size_t>(E),
+        typename Variant::base_variant>;
 
 }
 

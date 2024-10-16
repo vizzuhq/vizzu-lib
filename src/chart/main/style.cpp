@@ -79,7 +79,7 @@ Chart Chart::def()
 		},
 		Font
 		{
-			.fontFamily = ::Anim::String("Roboto, sans-serif"),
+			.fontFamily = getDefaultFont().fontFamily,
 			.fontStyle = Gfx::Font::Style::normal,
 			.fontWeight = Gfx::Font::Weight::Normal(),
 			.fontSize = Gfx::Length::Emphemeral(1)

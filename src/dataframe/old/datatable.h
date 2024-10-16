@@ -5,9 +5,8 @@
 #ifndef DATAFRAME_OLD2_DATATABLE_H
 #define DATAFRAME_OLD2_DATATABLE_H
 
-#include <chart/options/channel.h>
-
 #include "../impl/dataframe.h"
+#include "chart/options/channel.h"
 
 #include "types.h"
 
@@ -55,14 +54,13 @@ class DataCube
 
 public:
 	std::shared_ptr<dataframe::dataframe_interface> df;
-	std::map<std::pair<std::string_view, dataframe::aggregator_type>,
+	std::map<std::pair<std::string, dataframe::aggregator_type>,
 	    std::string>
 	    measure_names;
 
 	struct DimensionInfo
 	{
-		std::string_view name;
-		std::span<const std::string> orig_categories;
+		std::string name;
 		std::span<const std::string> categories;
 		std::size_t size{};
 		std::size_t ix{};
