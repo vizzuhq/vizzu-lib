@@ -105,7 +105,8 @@ constexpr void index_erase_if<false, false>::operator()(
 
 std::size_t data_source::get_record_count() const
 {
-	if (!finalized.empty()) return finalized.size();
+	if (!finalized.record_ids.empty())
+		return finalized.record_ids.size();
 
 	std::size_t record_count{};
 	for (const auto &dim : dimensions)
@@ -227,8 +228,9 @@ std::size_t data_source::change_series_identifier_type(
 std::size_t data_source::change_record_identifier_type(
     const std::string &id) const
 {
-	auto it = finalized.find(id);
-	return it != finalized.end() ? it->second : ~std::size_t{};
+	auto it = finalized.to_record_ix.find(id);
+	return it != finalized.to_record_ix.end() ? it->second
+	                                          : ~std::size_t{};
 }
 
 cell_reference data_source::get_data(std::size_t record_id,
@@ -308,12 +310,17 @@ void data_source::remove_series(std::span<const std::size_t> dims,
 }
 void data_source::finalize()
 {
-	if (finalized.empty()) {
+	if (finalized.to_record_ix.empty()) {
 		normalize_sizes();
 		const auto records = get_record_count();
 		for (std::size_t r{}; r < records; ++r)
-			if (!finalized.try_emplace(get_id(r, dimension_names), r)
-			         .second)
+			if (auto &&[it, success] =
+			        finalized.to_record_ix.try_emplace(
+			            get_id(r, dimension_names),
+			            r);
+			    success) [[likely]]
+				finalized.record_ids.emplace_back(it->first);
+			else
 				error(error_type::record, "dup");
 	}
 }
@@ -525,10 +532,12 @@ std::string data_source::get_id(std::size_t record,
 		while (dimension_names[ix] != name) ++ix;
 		const auto *val = dimensions[ix].get(record);
 		res += name;
-		res += ':';
-		res += val == nullptr ? std::string_view{"__null__"} : *val;
-		res += ';';
+		res += '\37';
+		res += val ? *val : std::string_view{"␀"};
+		res += '\36';
 	}
+	if (series.empty()) res = "␀";
+
 	return res;
 }
 

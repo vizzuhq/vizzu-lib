@@ -18,7 +18,7 @@ template <typename T, typename = void> class StyleMorph;
 
 template <class T>
 class StyleMorph<T,
-    std::void_t<std::enable_if_t<Type::isoptional<T>::value>,
+    std::void_t<std::enable_if_t<Type::is_optional_v<T>>,
         decltype(interpolate(*std::declval<const T &>(),
             *std::declval<const T &>(),
             double{}))>> : public ::Anim::IElement

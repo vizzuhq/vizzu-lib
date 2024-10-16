@@ -239,9 +239,10 @@ void JScriptCanvas::resetStates()
 Geom::Size Gfx::ICanvas::textBoundary(const Gfx::Font &font,
     const std::string &text)
 {
-	thread_local std::string fontCache;
-	fontCache = font.toCSS();
 	Geom::Size res;
-	::textBoundary(fontCache.c_str(), text.c_str(), &res.x, &res.y);
+	::textBoundary(font.toCSS().c_str(),
+	    text.c_str(),
+	    &res.x,
+	    &res.y);
 	return res;
 }
