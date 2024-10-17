@@ -17,19 +17,19 @@
 namespace Vizzu::Anim::Morph
 {
 
+template <class T>
+concept interpolatable = []
+{
+	using Math::interpolate;
+	return requires(const T &a, const T &b, double factor) {
+		{
+			interpolate(a, b, factor)
+		} -> std::same_as<T>;
+	};
+}();
+
 struct interpolate_t
 {
-	template <class T>
-	constexpr static bool interpolatable = []
-	{
-		using Math::interpolate;
-		return requires(const T &a, const T &b, double factor) {
-			{
-				interpolate(a, b, factor)
-			} -> std::same_as<T>;
-		};
-	}();
-
 	template <class T>
 	constexpr T
 	operator()(const T &a, const T &b, double factor) const
