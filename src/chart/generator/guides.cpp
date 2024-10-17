@@ -39,13 +39,15 @@ bool GuidesByAxis::operator==(const GuidesByAxis &other) const
 
 Guides::Guides(const Options &options)
 {
-	auto isCircle = options.geometry.get() == ShapeType::circle;
-	auto isHorizontal = options.isHorizontal();
 	const auto &channelX = options.getChannels().at(ChannelId::x);
 	const auto &channelY = options.getChannels().at(ChannelId::y);
+	if (channelX.isEmpty() && channelY.isEmpty()) return;
+
 	auto xIsMeasure = channelX.isMeasure();
 	auto yIsMeasure = channelY.isMeasure();
 	auto isPolar = options.coordSystem.get() == CoordSystem::polar;
+	auto isCircle = options.geometry.get() == ShapeType::circle;
+	auto isHorizontal = options.isHorizontal();
 
 	const auto &xOpt = options.getChannels().at(ChannelId::x);
 	const auto &yOpt = options.getChannels().at(ChannelId::y);

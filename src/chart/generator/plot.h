@@ -53,7 +53,6 @@ public:
 	using MarkerInfo = ::Anim::Interpolated<MarkerInfoContent>;
 	using MarkersInfo = std::map<MarkerInfoId, MarkerInfo>;
 
-	Math::FuzzyBool anyAxisSet;
 	Axises axises;
 	Guides guides;
 	Math::FuzzyBool keepAspectRatio;

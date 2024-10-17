@@ -6,6 +6,9 @@
 
 - Removed 'min' align property from the API which equivalent with the 'none'.
 - Markers are the same even if new record added.
+- Axis line hide/show at same time with axis labels/ticks/title.
+- Do not draw invisible axis line.
+
 
 ### Changed
 

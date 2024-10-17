@@ -36,26 +36,32 @@ void MarkerRenderer::drawLines(Gfx::ICanvas &canvas,
 	const auto &style = rootStyle.plot.marker.guides;
 
 	if (style.color->isTransparent() || *style.lineWidth <= 0
-	    || plot->anyAxisSet == false || !plot->guides.hasAnyGuides())
+	    || !plot->guides.hasAnyGuides())
 		return;
+
+	auto xLineColor =
+	    *style.color
+	    * static_cast<double>(plot->guides.x.markerGuides);
+
+	auto yLineColor =
+	    *style.color
+	    * static_cast<double>(plot->guides.y.markerGuides);
+
+	auto xLineInvisible = xLineColor.isTransparent();
+	auto yLineInvisible = yLineColor.isTransparent();
+
+	if (xLineInvisible && yLineInvisible) return;
 
 	canvas.setLineWidth(*style.lineWidth);
 
 	auto origo = plot->axises.origo();
-
-	auto xLineColor = *style.color
-	                * Math::FuzzyBool::And<double>(plot->anyAxisSet,
-	                    plot->guides.x.markerGuides);
-	auto yLineColor = *style.color
-	                * Math::FuzzyBool::And<double>(plot->anyAxisSet,
-	                    plot->guides.y.markerGuides);
 
 	for (const auto &blended : markers) {
 		if (blended.marker.enabled == false
 		    || blended.enabled == false)
 			continue;
 
-		if (plot->guides.x.markerGuides != false) {
+		if (!xLineInvisible) {
 			canvas.setLineColor(xLineColor);
 			auto axisPoint = blended.center.xComp() + origo.yComp();
 			const Geom::Line line(axisPoint, blended.center);
@@ -71,7 +77,7 @@ void MarkerRenderer::drawLines(Gfx::ICanvas &canvas,
 				    std::move(guideElement));
 			}
 		}
-		if (plot->guides.y.markerGuides != false) {
+		if (!yLineInvisible) {
 			auto center = Geom::Point{blended.center};
 			center.x = Math::interpolate(center.x,
 			    1.0,

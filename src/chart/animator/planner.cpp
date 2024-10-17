@@ -436,7 +436,6 @@ bool Planner::needVertical() const
 	            || source->axises.at(Gen::ChannelId::size).dimension
 	                   != target->axises.at(Gen::ChannelId::size)
 	                          .dimension))
-	    || source->anyAxisSet != target->anyAxisSet
 	    || (source->markerConnectionOrientation
 	            != target->markerConnectionOrientation
 	        && (source->markerConnectionOrientation.value_or(
@@ -474,7 +473,6 @@ bool Planner::needHorizontal() const
 	           != target->axises.at(Gen::ChannelId::x).dimension
 	    || source->guides.at(Gen::AxisId::x)
 	           != target->guides.at(Gen::AxisId::x)
-	    || source->anyAxisSet != target->anyAxisSet
 	    || source->keepAspectRatio != target->keepAspectRatio
 	    || (source->markerConnectionOrientation
 	            != target->markerConnectionOrientation

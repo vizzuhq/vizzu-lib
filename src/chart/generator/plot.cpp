@@ -54,7 +54,6 @@ bool Plot::MarkerInfoContent::operator==(
 }
 
 Plot::Plot(PlotOptionsPtr opts, Styles::Chart style) :
-    anyAxisSet(opts->getChannels().anyAxisSet()),
     guides(*opts),
     options(std::move(opts)),
     style(std::move(style))
