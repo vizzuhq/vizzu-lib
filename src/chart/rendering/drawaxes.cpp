@@ -65,27 +65,22 @@ Geom::Line DrawAxes::getAxis(Gen::AxisId axisIndex) const
 
 void DrawAxes::drawAxis(Gen::AxisId axisIndex) const
 {
-	auto eventTarget =
-	    Events::Targets::axis(axisIndex == Gen::AxisId::x);
-
-	auto lineBaseColor = *rootStyle.plot.getAxis(axisIndex).color;
-
-	if (lineBaseColor.alpha <= 0 || plot->anyAxisSet == false) return;
-
-	auto line = getAxis(axisIndex);
-
-	if (!line.isPoint()) {
+	if (auto line = getAxis(axisIndex); !line.isPoint()) {
 		auto lineColor =
-		    lineBaseColor
-		    * Math::FuzzyBool::And<double>(plot->anyAxisSet,
-		        plot->guides.at(axisIndex).axis);
+		    *rootStyle.plot.getAxis(axisIndex).color
+		    * static_cast<double>(plot->guides.at(axisIndex).axis);
+
+		if (lineColor.isTransparent()) return;
 
 		canvas.save();
 
 		canvas.setLineColor(lineColor);
 		canvas.setLineWidth(1.0);
 
-		if (rootEvents.draw.plot.axis.base->invoke(
+		if (auto &&eventTarget =
+		        Events::Targets::axis(axisIndex == Gen::AxisId::x);
+
+		    rootEvents.draw.plot.axis.base->invoke(
 		        Events::OnLineDrawEvent(*eventTarget,
 		            {line, true}))) {
 			painter.drawLine(line);

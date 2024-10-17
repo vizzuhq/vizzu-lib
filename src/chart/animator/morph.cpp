@@ -135,9 +135,6 @@ void Horizontal::transform(const Gen::Plot &source,
 	    target.keepAspectRatio,
 	    factor);
 
-	actual.anyAxisSet =
-	    interpolate(source.anyAxisSet, target.anyAxisSet, factor);
-
 	actual.guides.x =
 	    interpolate(source.guides.x, target.guides.x, factor);
 }

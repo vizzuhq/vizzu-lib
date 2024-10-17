@@ -8,7 +8,7 @@
 			"refs": ["c5c0df5"]
 		},
 		"basic_animations/anim_order/rectangle_without_2_carte_bar": {
-			"refs": ["929dbd0"]
+			"refs": ["2a487b0"]
 		},
 		"basic_animations/anim_order/rectangle_without_2_carte_column": {
 			"refs": ["e88e517"]
@@ -1340,28 +1340,28 @@
 			"refs": ["4d42242"]
 		},
 		"ww_animTiming/without-descartes_orientation/01_w-d_o_r-r-r": {
-			"refs": ["dd2956b"]
+			"refs": ["5b50b91"]
 		},
 		"ww_animTiming/without-descartes_orientation/02_w-d_o_c-r-c": {
-			"refs": ["d1f7bc4"]
+			"refs": ["be7a91f"]
 		},
 		"ww_animTiming/without-descartes_orientation/05_w-d_o_r-c-r": {
-			"refs": ["c1148ec"]
+			"refs": ["88424cf"]
 		},
 		"ww_animTiming/without-descartes_orientation/06_w-d_o_c-c-c": {
-			"refs": ["2068c64"]
+			"refs": ["2e3894f"]
 		},
 		"ww_animTiming/without-descartes_orientation/09_w-d_o_r-a-r": {
-			"refs": ["1764f6a"]
+			"refs": ["cd724c7"]
 		},
 		"ww_animTiming/without-descartes_orientation/10_w-d_o_c-a-c": {
-			"refs": ["a5256c7"]
+			"refs": ["7165dfa"]
 		},
 		"ww_animTiming/without-descartes_orientation/13_w-d_o_r-l-r": {
-			"refs": ["12843e9"]
+			"refs": ["750bd0f"]
 		},
 		"ww_animTiming/without-descartes_orientation/14_w-d_o_c-l-c": {
-			"refs": ["37b2c36"]
+			"refs": ["b86538c"]
 		},
 		"ww_animTiming/without-polar/01_w-p_r-r-r": {
 			"refs": ["0093ba5"]
@@ -1673,7 +1673,7 @@
 			"refs": ["e955812"]
 		},
 		"ww_animTiming_TESTS/without-descartes_orientation/01_w-d_o_r-r-r": {
-			"refs": ["cdf5fa6"]
+			"refs": ["037dda9"]
 		},
 		"ww_animTiming_TESTS/without-descartes_orientation/02_w-d_o_c-r-c": {
 			"refs": ["4568887"]
@@ -1685,13 +1685,13 @@
 			"refs": ["4210956"]
 		},
 		"ww_animTiming_TESTS/without-descartes_orientation/09_w-d_o_r-a-r": {
-			"refs": ["f45ac5b"]
+			"refs": ["5867a1b"]
 		},
 		"ww_animTiming_TESTS/without-descartes_orientation/10_w-d_o_c-a-c": {
 			"refs": ["aa0fb41"]
 		},
 		"ww_animTiming_TESTS/without-descartes_orientation/13_w-d_o_r-l-r": {
-			"refs": ["42f1324"]
+			"refs": ["17c98c5"]
 		},
 		"ww_animTiming_TESTS/without-descartes_orientation/14_w-d_o_c-l-c": {
 			"refs": ["fa9e4f7"]
@@ -2891,7 +2891,7 @@
 			"refs": ["d05bc27"]
 		},
 		"ww_noFade/wNoFade_cases/2_des_pol-without/rectangle_V1/04a_d-w_rec_Ve1_2c_V1": {
-			"refs": ["4597f5f"]
+			"refs": ["b8b060e"]
 		},
 		"ww_noFade/wNoFade_cases/2_des_pol-without/rectangle_V1/04b_d-w_rec_1c_V1": {
 			"refs": ["3711f84"]
@@ -2903,10 +2903,10 @@
 			"refs": ["6aa98f4"]
 		},
 		"ww_noFade/wNoFade_cases/2_des_pol-without/rectangle_V1/07a_d-w_rec_Ve1_2c_V1": {
-			"refs": ["7d74510"]
+			"refs": ["8d00b71"]
 		},
 		"ww_noFade/wNoFade_cases/2_des_pol-without/rectangle_V1/08a_d-w_rec_Ve1_2c_V1": {
-			"refs": ["715db19"]
+			"refs": ["44c0c9e"]
 		},
 		"ww_noFade/wNoFade_cases/2_des_pol-without/rectangle_Ve1/04a_d-w_rec_Ve1_1c": {
 			"refs": ["e8b9827"]
