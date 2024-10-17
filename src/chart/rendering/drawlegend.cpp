@@ -121,7 +121,7 @@ const Gfx::LinearGradient &DrawLegend::FadeBarGradient::operator()(
 void DrawLegend::drawTitle(const Info &info) const
 {
 	plot->axises.at(info.properties.channel)
-	    .common.title.visit(
+	    .title.visit(
 	        [this,
 	            &info,
 	            &rect = info.titleRect,

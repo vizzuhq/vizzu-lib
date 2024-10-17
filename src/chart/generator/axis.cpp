@@ -22,13 +22,6 @@
 namespace Vizzu::Gen
 {
 
-CommonAxis interpolate(const CommonAxis &op0,
-    const CommonAxis &op1,
-    double factor)
-{
-	return {interpolate(op0.title, op1.title, factor)};
-}
-
 Geom::Point Axises::origo() const
 {
 	return {at(AxisId::x).measure.origo(),

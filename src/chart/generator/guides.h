@@ -22,10 +22,6 @@ struct GuidesByAxis
 	bool operator==(const GuidesByAxis &other) const;
 };
 
-GuidesByAxis interpolate(const GuidesByAxis &op0,
-    const GuidesByAxis &op1,
-    double factor);
-
 struct Guides
 {
 	GuidesByAxis x;

@@ -51,9 +51,7 @@ std::string NumberToString::convert(double number)
 	}
 
 	if (number_view.starts_with('-')
-	    && number_view.find_last_not_of(std::string_view{
-	           std::initializer_list<char>{'0', ',', '.', '\0'}})
-	           == 0) {
+	    && number_view.find_last_not_of("0,.") == 0) {
 		number_view.remove_prefix(1);
 		++begin;
 		--decimalPoint;

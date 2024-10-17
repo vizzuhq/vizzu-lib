@@ -365,18 +365,16 @@ void PlotBuilder::calcMeasureAxises(const Data::DataTable &dataTable)
 void PlotBuilder::calcMeasureAxis(const Data::DataTable &dataTable,
     ChannelId type)
 {
-	auto &axis = plot->axises.at(type).measure;
 	const auto &scale = plot->getOptions()->getChannels().at(type);
 	if (auto &&meas = scale.measureId) {
-		auto &&range = std::get<0>(stats.tracked.at(type));
-
-		if (auto &title = plot->axises.at(type).common.title;
+		if (auto &title = plot->axises.at(type).title;
 		    scale.title.isAuto())
 			title = dataCube.getName(*meas);
 		else if (scale.title)
 			title = *scale.title;
 
-		if (type == plot->getOptions()->subAxisType()
+		if (auto &axis = plot->axises.at(type).measure;
+		    type == plot->getOptions()->subAxisType()
 		    && plot->getOptions()->align
 		           == Base::Align::Type::stretch) {
 			axis = {Math::Range<double>::Raw(0, 100),
@@ -385,6 +383,7 @@ void PlotBuilder::calcMeasureAxis(const Data::DataTable &dataTable,
 			    scale.step.getValue()};
 		}
 		else {
+			auto &&range = std::get<0>(stats.tracked.at(type));
 			axis = {range.isReal() ? range
 			                       : Math::Range<double>::Raw(0, 0),
 			    dataTable.getUnit(meas->getColIndex()),
@@ -392,8 +391,6 @@ void PlotBuilder::calcMeasureAxis(const Data::DataTable &dataTable,
 			    scale.step.getValue()};
 		}
 	}
-	else
-		axis = {};
 }
 
 void PlotBuilder::calcDimensionAxises()
@@ -444,8 +441,8 @@ void PlotBuilder::calcDimensionAxis(ChannelId type)
 	if (auto &&series = scale.labelSeries())
 		axis.category = series.value().getColIndex();
 
-	auto &title = plot->axises.at(type).common.title;
-	if (scale.title.isAuto() && !hasLabel)
+	if (auto &title = plot->axises.at(type).title;
+	    scale.title.isAuto() && !hasLabel)
 		title = axis.category;
 	else if (scale.title)
 		title = *scale.title;

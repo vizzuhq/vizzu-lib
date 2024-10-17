@@ -1,6 +1,5 @@
 #include "guides.h"
 
-#include "base/math/interpolation.h"
 #include "chart/options/align.h"
 #include "chart/options/channel.h"
 #include "chart/options/coordsystem.h"
@@ -9,24 +8,6 @@
 
 namespace Vizzu::Gen
 {
-
-GuidesByAxis interpolate(const GuidesByAxis &op0,
-    const GuidesByAxis &op1,
-    double factor)
-{
-	GuidesByAxis res;
-	res.axis = interpolate(op0.axis, op1.axis, factor);
-	res.labels = interpolate(op0.labels, op1.labels, factor);
-	res.axisSticks =
-	    interpolate(op0.axisSticks, op1.axisSticks, factor);
-	res.axisGuides =
-	    interpolate(op0.axisGuides, op1.axisGuides, factor);
-	res.markerGuides =
-	    interpolate(op0.markerGuides, op1.markerGuides, factor);
-	res.interlacings =
-	    interpolate(op0.interlacings, op1.interlacings, factor);
-	return res;
-}
 
 bool GuidesByAxis::operator==(const GuidesByAxis &other) const
 {

@@ -9,7 +9,6 @@
 #include "base/math/trig.h"
 #include "dataframe/old/types.h"
 
-#include "align.h"
 #include "channel.h"
 #include "channelrange.h"
 #include "coordsystem.h"

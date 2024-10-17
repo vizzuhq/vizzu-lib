@@ -42,17 +42,6 @@ struct ChannelStats
 	}
 };
 
-struct CommonAxis
-{
-	::Anim::String title;
-
-	[[nodiscard]] bool operator==(const CommonAxis &) const = default;
-};
-
-CommonAxis interpolate(const CommonAxis &op0,
-    const CommonAxis &op1,
-    double factor);
-
 struct MeasureAxis
 {
 	::Anim::Interpolated<bool> enabled{false};
@@ -156,9 +145,11 @@ DimensionAxis interpolate(const DimensionAxis &op0,
 
 struct Axis
 {
-	CommonAxis common;
+	::Anim::String title;
 	MeasureAxis measure;
 	DimensionAxis dimension;
+
+	[[nodiscard]] bool operator==(const Axis &other) const = default;
 };
 
 struct Axises

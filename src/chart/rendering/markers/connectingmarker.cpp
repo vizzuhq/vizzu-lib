@@ -9,6 +9,7 @@
 #include "base/math/fuzzybool.h"
 #include "chart/generator/marker.h"
 #include "chart/generator/plot.h"
+#include "chart/options/channel.h"
 #include "chart/options/coordsystem.h"
 #include "chart/options/orientation.h"
 #include "chart/options/shapetype.h"

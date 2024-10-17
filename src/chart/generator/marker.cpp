@@ -10,6 +10,7 @@
 #include "base/geom/rect.h"
 #include "base/math/range.h"
 #include "chart/options/align.h"
+#include "chart/options/channel.h"
 #include "chart/options/coordsystem.h"
 #include "chart/options/shapetype.h"
 #include "dataframe/old/datatable.h"

@@ -1,5 +1,6 @@
 #include "morph.h"
 
+#include <concepts>
 #include <memory>
 #include <stdexcept>
 
@@ -16,7 +17,47 @@
 namespace Vizzu::Anim::Morph
 {
 
-using Math::interpolate;
+struct interpolate_t
+{
+	template <class T>
+	constexpr static bool interpolatable = []
+	{
+		using Math::interpolate;
+		return requires(const T &a, const T &b, double factor) {
+			{
+				interpolate(a, b, factor)
+			} -> std::same_as<T>;
+		};
+	}();
+
+	template <class T>
+	    requires interpolatable<T>
+	constexpr T
+	operator()(const T &a, const T &b, double factor) const
+	{
+		using Math::interpolate;
+		return interpolate(a, b, factor);
+	}
+
+	template <class T>
+	    requires(!interpolatable<T>)
+	constexpr T
+	operator()(const T &a, const T &b, double factor) const
+	{
+		T res;
+		Refl::visit(
+		    [factor]<class V>(V &res, const V &op0, const V &op1)
+		    {
+			    res = interpolate_t{}(op0, op1, factor);
+		    },
+		    res,
+		    a,
+		    b);
+		return res;
+	}
+};
+
+constexpr inline static interpolate_t interpolate{};
 
 AbstractMorph::AbstractMorph(const Gen::Plot &source,
     const Gen::Plot &target,
@@ -116,19 +157,9 @@ void Horizontal::transform(const Gen::Plot &source,
     Gen::Plot &actual,
     double factor) const
 {
-	actual.axises.at(Gen::AxisId::x).common =
-	    interpolate(source.axises.at(Gen::AxisId::x).common,
-	        target.axises.at(Gen::AxisId::x).common,
-	        factor);
-
-	actual.axises.at(Gen::AxisId::x).measure =
-	    interpolate(source.axises.at(Gen::AxisId::x).measure,
-	        target.axises.at(Gen::AxisId::x).measure,
-	        factor);
-
-	actual.axises.at(Gen::AxisId::x).dimension =
-	    interpolate(source.axises.at(Gen::AxisId::x).dimension,
-	        target.axises.at(Gen::AxisId::x).dimension,
+	actual.axises.at(Gen::AxisId::x) =
+	    interpolate(source.axises.at(Gen::AxisId::x),
+	        target.axises.at(Gen::AxisId::x),
 	        factor);
 
 	actual.keepAspectRatio = interpolate(source.keepAspectRatio,
@@ -191,34 +222,14 @@ void Vertical::transform(const Gen::Plot &source,
     Gen::Plot &actual,
     double factor) const
 {
-	actual.axises.at(Gen::AxisId::y).common =
-	    interpolate(source.axises.at(Gen::AxisId::y).common,
-	        target.axises.at(Gen::AxisId::y).common,
+	actual.axises.at(Gen::AxisId::y) =
+	    interpolate(source.axises.at(Gen::AxisId::y),
+	        target.axises.at(Gen::AxisId::y),
 	        factor);
 
-	actual.axises.at(Gen::AxisId::y).measure =
-	    interpolate(source.axises.at(Gen::AxisId::y).measure,
-	        target.axises.at(Gen::AxisId::y).measure,
-	        factor);
-
-	actual.axises.at(Gen::AxisId::y).dimension =
-	    interpolate(source.axises.at(Gen::AxisId::y).dimension,
-	        target.axises.at(Gen::AxisId::y).dimension,
-	        factor);
-
-	actual.axises.at(Gen::ChannelId::size).common =
-	    interpolate(source.axises.at(Gen::ChannelId::size).common,
-	        target.axises.at(Gen::ChannelId::size).common,
-	        factor);
-
-	actual.axises.at(Gen::ChannelId::size).measure =
-	    interpolate(source.axises.at(Gen::ChannelId::size).measure,
-	        target.axises.at(Gen::ChannelId::size).measure,
-	        factor);
-
-	actual.axises.at(Gen::ChannelId::size).dimension =
-	    interpolate(source.axises.at(Gen::ChannelId::size).dimension,
-	        target.axises.at(Gen::ChannelId::size).dimension,
+	actual.axises.at(Gen::ChannelId::size) =
+	    interpolate(source.axises.at(Gen::ChannelId::size),
+	        target.axises.at(Gen::ChannelId::size),
 	        factor);
 
 	actual.guides.y =
@@ -250,35 +261,14 @@ void Morph::Color::transform(const Gen::Plot &source,
     Gen::Plot &actual,
     double factor) const
 {
-	actual.axises.at(Gen::ChannelId::color).common =
-	    interpolate(source.axises.at(Gen::ChannelId::color).common,
-	        target.axises.at(Gen::ChannelId::color).common,
+	actual.axises.at(Gen::ChannelId::color) =
+	    interpolate(source.axises.at(Gen::ChannelId::color),
+	        target.axises.at(Gen::ChannelId::color),
 	        factor);
 
-	actual.axises.at(Gen::ChannelId::color).measure =
-	    interpolate(source.axises.at(Gen::ChannelId::color).measure,
-	        target.axises.at(Gen::ChannelId::color).measure,
-	        factor);
-
-	actual.axises.at(Gen::ChannelId::color).dimension =
-	    interpolate(source.axises.at(Gen::ChannelId::color).dimension,
-	        target.axises.at(Gen::ChannelId::color).dimension,
-	        factor);
-
-	actual.axises.at(Gen::ChannelId::lightness).common = interpolate(
-	    source.axises.at(Gen::ChannelId::lightness).common,
-	    target.axises.at(Gen::ChannelId::lightness).common,
-	    factor);
-
-	actual.axises.at(Gen::ChannelId::lightness).measure = interpolate(
-	    source.axises.at(Gen::ChannelId::lightness).measure,
-	    target.axises.at(Gen::ChannelId::lightness).measure,
-	    factor);
-
-	actual.axises.at(Gen::ChannelId::lightness).dimension =
-	    interpolate(
-	        source.axises.at(Gen::ChannelId::lightness).dimension,
-	        target.axises.at(Gen::ChannelId::lightness).dimension,
+	actual.axises.at(Gen::ChannelId::lightness) =
+	    interpolate(source.axises.at(Gen::ChannelId::lightness),
+	        target.axises.at(Gen::ChannelId::lightness),
 	        factor);
 }
 
