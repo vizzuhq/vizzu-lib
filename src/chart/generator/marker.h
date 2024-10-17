@@ -17,7 +17,7 @@
 namespace Vizzu::Gen
 {
 
-struct Axises;
+struct ChannelStats;
 
 class Marker
 {
@@ -27,7 +27,7 @@ public:
 
 	Marker(const Options &options,
 	    const Data::DataCube &data,
-	    Axises &stats,
+	    ChannelStats &stats,
 	    const Data::SeriesList &mainAxisList,
 	    const Data::SeriesList &subAxisList,
 	    const Data::MultiIndex &index,
@@ -97,7 +97,7 @@ private:
 	double getValueForChannel(const Channels &channels,
 	    ChannelId type,
 	    const Data::DataCube &data,
-	    Axises &stats,
+	    ChannelStats &stats,
 	    const Data::MultiIndex &index,
 	    const Data::MarkerId * = nullptr) const;
 };

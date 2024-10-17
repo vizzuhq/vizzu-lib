@@ -91,11 +91,26 @@ public:
 	Base::AutoParam<double> step{};
 };
 
-std::optional<AxisId> asAxis(ChannelId type);
-ChannelId asChannel(AxisId type);
+[[nodiscard]] constexpr std::optional<AxisId> asAxis(ChannelId type)
+{
+	switch (type) {
+	case ChannelId::x:
+	case ChannelId::y:
+		return static_cast<AxisId>(static_cast<ChannelIdType>(type));
+	default: return std::nullopt;
+	}
+}
 
-[[nodiscard]] bool operator==(const AxisId &axis,
-    const ChannelId &channel);
+[[nodiscard]] constexpr ChannelId asChannel(AxisId type)
+{
+	return static_cast<ChannelId>(static_cast<ChannelIdType>(type));
+}
+
+[[nodiscard]] constexpr bool operator==(const AxisId &axis,
+    const ChannelId &channel)
+{
+	return asChannel(axis) == channel;
+}
 
 }
 

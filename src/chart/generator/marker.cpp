@@ -22,7 +22,7 @@ namespace Vizzu::Gen
 
 Marker::Marker(const Options &options,
     const Data::DataCube &data,
-    Axises &stats,
+    ChannelStats &stats,
     const Data::SeriesList &mainAxisList,
     const Data::SeriesList &subAxisList,
     const Data::MultiIndex &index,
@@ -82,15 +82,15 @@ Marker::Marker(const Options &options,
 	    horizontal ? &mainId : subAxisId);
 
 	auto yChannelRectDim =
-	    channels.at(ChannelId::y).isDimension()
-	    && channels.at(ChannelId::y).hasDimension()
+	    channels.at(AxisId::y).isDimension()
+	    && channels.at(AxisId::y).hasDimension()
 	    && options.geometry == ShapeType::rectangle
 	    && options.align != Base::Align::Type::stretch;
 
 	spacing.x =
 	    (horizontal || (lineOrCircle && !polar) || yChannelRectDim)
 	            && options.getChannels().anyAxisSet()
-	            && channels.at(ChannelId::x).isDimension()
+	            && channels.at(AxisId::x).isDimension()
 	        ? 1
 	        : 0;
 
@@ -102,14 +102,14 @@ Marker::Marker(const Options &options,
 	    !horizontal ? &mainId : subAxisId);
 
 	auto xChannelRectDim =
-	    channels.at(ChannelId::x).isDimension()
-	    && channels.at(ChannelId::x).hasDimension()
+	    channels.at(AxisId::x).isDimension()
+	    && channels.at(AxisId::x).hasDimension()
 	    && options.geometry == ShapeType::rectangle
 	    && options.align != Base::Align::Type::stretch;
 
 	spacing.y = (!horizontal || lineOrCircle || xChannelRectDim)
 	                 && options.getChannels().anyAxisSet()
-	                 && channels.at(ChannelId::y).isDimension()
+	                 && channels.at(AxisId::y).isDimension()
 	              ? 1
 	              : 0;
 
@@ -165,7 +165,7 @@ Conv::JSONObj &&Marker::appendToJSON(Conv::JSONObj &&jsonObj) const
 double Marker::getValueForChannel(const Channels &channels,
     ChannelId type,
     const Data::DataCube &data,
-    Axises &stats,
+    ChannelStats &stats,
     const Data::MultiIndex &index,
     const Data::MarkerId *mid) const
 {
@@ -174,8 +174,6 @@ double Marker::getValueForChannel(const Channels &channels,
 	if (channel.isEmpty()) return channel.defaultValue;
 
 	double value{};
-
-	auto &stat = stats.at(type);
 
 	if (channel.isDimension()) {
 		std::optional<Data::MarkerId> nid;
@@ -189,7 +187,7 @@ double Marker::getValueForChannel(const Channels &channels,
 		else
 			value = static_cast<double>(id.itemId);
 
-		if (enabled) stat.dimension.track(id);
+		if (enabled) stats.track(type, id);
 	}
 	else {
 		if (const auto &measure = *channel.measureId;
@@ -198,7 +196,7 @@ double Marker::getValueForChannel(const Channels &channels,
 		else
 			value = data.valueAt(index, measure);
 
-		if (enabled) stat.measure.track(value);
+		if (enabled) stats.track(type, value);
 	}
 	return value;
 }

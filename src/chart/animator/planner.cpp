@@ -419,12 +419,12 @@ bool Planner::verticalBeforeHorizontal() const
 
 bool Planner::needVertical() const
 {
-	return source->axises.at(Gen::ChannelId::y).common
-	        != target->axises.at(Gen::ChannelId::y).common
-	    || source->axises.at(Gen::ChannelId::y).measure
-	           != target->axises.at(Gen::ChannelId::y).measure
-	    || source->axises.at(Gen::ChannelId::y).dimension
-	           != target->axises.at(Gen::ChannelId::y).dimension
+	return source->axises.at(Gen::AxisId::y).common
+	        != target->axises.at(Gen::AxisId::y).common
+	    || source->axises.at(Gen::AxisId::y).measure
+	           != target->axises.at(Gen::AxisId::y).measure
+	    || source->axises.at(Gen::AxisId::y).dimension
+	           != target->axises.at(Gen::AxisId::y).dimension
 	    || source->guides.at(Gen::AxisId::y)
 	           != target->guides.at(Gen::AxisId::y)
 	    || (isAnyLegend(Gen::ChannelId::size)
@@ -465,12 +465,12 @@ bool Planner::needVertical() const
 
 bool Planner::needHorizontal() const
 {
-	return source->axises.at(Gen::ChannelId::x).common
-	        != target->axises.at(Gen::ChannelId::x).common
-	    || source->axises.at(Gen::ChannelId::x).measure
-	           != target->axises.at(Gen::ChannelId::x).measure
-	    || source->axises.at(Gen::ChannelId::x).dimension
-	           != target->axises.at(Gen::ChannelId::x).dimension
+	return source->axises.at(Gen::AxisId::x).common
+	        != target->axises.at(Gen::AxisId::x).common
+	    || source->axises.at(Gen::AxisId::x).measure
+	           != target->axises.at(Gen::AxisId::x).measure
+	    || source->axises.at(Gen::AxisId::x).dimension
+	           != target->axises.at(Gen::AxisId::x).dimension
 	    || source->guides.at(Gen::AxisId::x)
 	           != target->guides.at(Gen::AxisId::x)
 	    || source->keepAspectRatio != target->keepAspectRatio

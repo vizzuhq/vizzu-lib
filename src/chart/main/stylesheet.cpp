@@ -103,7 +103,7 @@ void Sheet::setAxisLabels()
 		def.side = AxisLabel::Side::positive;
 	}
 	else if (const auto &xAxis =
-	             options->getChannels().at(Gen::ChannelId::x);
+	             options->getChannels().at(Gen::AxisId::x);
 	         xAxis.isDimension() && xAxis.hasDimension()
 	         && options->angle == 0)
 		def.angle.reset();
@@ -221,7 +221,7 @@ void Sheet::setAfterStyles(Gen::Plot &plot, const Geom::Size &size)
 		std::vector<Math::Range<double>> ranges;
 		bool has_collision = false;
 		for (const auto &pair :
-		    plot.axises.at(Gen::ChannelId::x).dimension) {
+		    plot.axises.at(Gen::AxisId::x).dimension) {
 
 			if (pair.second.weight == 0) continue;
 

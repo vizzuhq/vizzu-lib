@@ -146,8 +146,8 @@ public:
 	void intersection(const Options &other);
 	void simplify();
 
-	[[nodiscard]] ChannelId getHorizontalChannel() const;
-	[[nodiscard]] ChannelId getVerticalChannel() const;
+	[[nodiscard]] AxisId getHorizontalChannel() const;
+	[[nodiscard]] AxisId getVerticalChannel() const;
 
 	[[nodiscard]] const Channel &getHorizontalAxis() const
 	{

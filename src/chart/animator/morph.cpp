@@ -116,19 +116,19 @@ void Horizontal::transform(const Gen::Plot &source,
     Gen::Plot &actual,
     double factor) const
 {
-	actual.axises.at(Gen::ChannelId::x).common =
-	    interpolate(source.axises.at(Gen::ChannelId::x).common,
-	        target.axises.at(Gen::ChannelId::x).common,
+	actual.axises.at(Gen::AxisId::x).common =
+	    interpolate(source.axises.at(Gen::AxisId::x).common,
+	        target.axises.at(Gen::AxisId::x).common,
 	        factor);
 
-	actual.axises.at(Gen::ChannelId::x).measure =
-	    interpolate(source.axises.at(Gen::ChannelId::x).measure,
-	        target.axises.at(Gen::ChannelId::x).measure,
+	actual.axises.at(Gen::AxisId::x).measure =
+	    interpolate(source.axises.at(Gen::AxisId::x).measure,
+	        target.axises.at(Gen::AxisId::x).measure,
 	        factor);
 
-	actual.axises.at(Gen::ChannelId::x).dimension =
-	    interpolate(source.axises.at(Gen::ChannelId::x).dimension,
-	        target.axises.at(Gen::ChannelId::x).dimension,
+	actual.axises.at(Gen::AxisId::x).dimension =
+	    interpolate(source.axises.at(Gen::AxisId::x).dimension,
+	        target.axises.at(Gen::AxisId::x).dimension,
 	        factor);
 
 	actual.keepAspectRatio = interpolate(source.keepAspectRatio,
@@ -191,19 +191,19 @@ void Vertical::transform(const Gen::Plot &source,
     Gen::Plot &actual,
     double factor) const
 {
-	actual.axises.at(Gen::ChannelId::y).common =
-	    interpolate(source.axises.at(Gen::ChannelId::y).common,
-	        target.axises.at(Gen::ChannelId::y).common,
+	actual.axises.at(Gen::AxisId::y).common =
+	    interpolate(source.axises.at(Gen::AxisId::y).common,
+	        target.axises.at(Gen::AxisId::y).common,
 	        factor);
 
-	actual.axises.at(Gen::ChannelId::y).measure =
-	    interpolate(source.axises.at(Gen::ChannelId::y).measure,
-	        target.axises.at(Gen::ChannelId::y).measure,
+	actual.axises.at(Gen::AxisId::y).measure =
+	    interpolate(source.axises.at(Gen::AxisId::y).measure,
+	        target.axises.at(Gen::AxisId::y).measure,
 	        factor);
 
-	actual.axises.at(Gen::ChannelId::y).dimension =
-	    interpolate(source.axises.at(Gen::ChannelId::y).dimension,
-	        target.axises.at(Gen::ChannelId::y).dimension,
+	actual.axises.at(Gen::AxisId::y).dimension =
+	    interpolate(source.axises.at(Gen::AxisId::y).dimension,
+	        target.axises.at(Gen::AxisId::y).dimension,
 	        factor);
 
 	actual.axises.at(Gen::ChannelId::size).common =
