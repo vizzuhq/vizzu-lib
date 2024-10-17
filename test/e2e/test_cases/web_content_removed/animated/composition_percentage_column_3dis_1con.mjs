@@ -35,7 +35,7 @@ const testSteps = [
 					}
 				},
 				title: 'Split Column Chart',
-				align: 'min',
+				align: 'none',
 				split: true
 			}
 		})

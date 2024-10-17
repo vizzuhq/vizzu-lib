@@ -73,7 +73,7 @@ const testSteps = [
 					lightness: { set: 'Value 1 (+)' }
 				},
 				title: 'Add Conti & add new Disc Color & Change CoordSys',
-				align: 'min'
+				align: 'none'
 			}
 		})
 ]

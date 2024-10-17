@@ -114,7 +114,7 @@ const testSteps = [
 					},
 					title: '7 Stacked Area / Ratio off(?)',
 					geometry: 'area',
-					align: 'min',
+					align: 'none',
 					split: false
 				}
 			},
@@ -137,7 +137,7 @@ const testSteps = [
 					},
 					title: '8 Bar / Sum(?)',
 					geometry: 'area',
-					align: 'min',
+					align: 'none',
 					split: true
 				}
 			},
@@ -157,7 +157,7 @@ const testSteps = [
 				},
 				title: '9 Bar / Sum(?)',
 				geometry: 'rectangle',
-				align: 'min',
+				align: 'none',
 				split: false
 			}
 		}),
@@ -174,7 +174,7 @@ const testSteps = [
 					},
 					title: '10 Bar / Sum(?)',
 					geometry: 'rectangle',
-					align: 'min',
+					align: 'none',
 					split: false
 				}
 			},
@@ -195,7 +195,7 @@ const testSteps = [
 				},
 				title: '11 Bar / Sum(?)',
 				geometry: 'rectangle',
-				align: 'min',
+				align: 'none',
 				split: false
 			}
 		}),
@@ -214,7 +214,7 @@ const testSteps = [
 					},
 					title: '12 Area / Time distribution(?)',
 					geometry: 'area',
-					align: 'min',
+					align: 'none',
 					split: true
 				}
 			},
@@ -235,7 +235,7 @@ const testSteps = [
 					},
 					title: '13 Stacked Area / Time distribution(?)',
 					geometry: 'area',
-					align: 'min',
+					align: 'none',
 					split: false
 				}
 			},
@@ -255,7 +255,7 @@ const testSteps = [
 					},
 					title: '14 Area / Total timeseries(?)',
 					geometry: 'area',
-					align: 'min',
+					align: 'none',
 					split: false
 				}
 			},
@@ -275,7 +275,7 @@ const testSteps = [
 					},
 					title: '15 Stacked Area / Time distribution(?)',
 					geometry: 'area',
-					align: 'min',
+					align: 'none',
 					split: false
 				}
 			},
@@ -294,7 +294,7 @@ const testSteps = [
 				},
 				title: '16 Lollipop / Distribution(?)',
 				geometry: 'circle',
-				align: 'min',
+				align: 'none',
 				split: false
 			}
 		}),
@@ -310,7 +310,7 @@ const testSteps = [
 					},
 					title: '17 Stacked Area / Sum(?), Sum timeseries(?)',
 					geometry: 'area',
-					align: 'min',
+					align: 'none',
 					split: false
 				}
 			},

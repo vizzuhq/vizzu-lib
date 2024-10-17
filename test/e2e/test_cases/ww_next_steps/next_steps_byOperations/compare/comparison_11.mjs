@@ -25,7 +25,7 @@ const testSteps = [
 				},
 				title: 'Align min, CHG Geom. & Unstack to Comp. Components',
 				geometry: 'line',
-				align: 'min'
+				align: 'none'
 			}
 		}),
 	(chart) => {

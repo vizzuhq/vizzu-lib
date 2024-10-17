@@ -24,7 +24,7 @@ const testSteps = [
 					y: 'Value 2 (+)'
 				},
 				title: 'Group and Align min Markers to Compare Values',
-				align: 'min'
+				align: 'none'
 			}
 		}),
 	(chart) => {

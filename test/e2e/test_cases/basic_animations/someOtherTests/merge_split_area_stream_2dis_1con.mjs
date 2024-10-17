@@ -39,7 +39,7 @@ const testSteps = [
 				},
 				title: 'Split Area Chart',
 				split: true,
-				align: 'min'
+				align: 'none'
 			}
 		}),
 
@@ -53,7 +53,7 @@ const testSteps = [
 				title: 'Bar Chart',
 				geometry: 'rectangle',
 				split: false,
-				align: 'min'
+				align: 'none'
 			},
 			style: {
 				plot: {

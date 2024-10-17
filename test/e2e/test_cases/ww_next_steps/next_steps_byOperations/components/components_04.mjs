@@ -23,7 +23,7 @@ const testSteps = [
 					label: 'Value 2 (+)'
 				},
 				title: 'ALign min & Split Components to See them Separately',
-				align: 'min',
+				align: 'none',
 				split: true
 			},
 			style: {

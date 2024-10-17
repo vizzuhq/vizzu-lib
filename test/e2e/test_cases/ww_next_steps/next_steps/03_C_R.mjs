@@ -201,7 +201,7 @@ const testSteps = [
 					color: { set: 'Country' }
 				},
 				title: 'Groupped Column / Comparison(?), Group(?)',
-				align: 'min'
+				align: 'none'
 			}
 		}),
 
@@ -217,7 +217,7 @@ const testSteps = [
 					color: { set: 'Country' }
 				},
 				title: 'Column / Aggregate(?), - Discrete(?)',
-				align: 'min'
+				align: 'none'
 			}
 		}),
 
@@ -231,7 +231,7 @@ const testSteps = [
 					label: { set: 'Value 2 (+)' }
 				},
 				title: 'Column / Total(?) Aggregate(?) - Discrete(?)',
-				align: 'min',
+				align: 'none',
 				legend: null
 			}
 		}),
@@ -250,7 +250,7 @@ const testSteps = [
 						label: { set: null }
 					},
 					title: 'Column / Drill down(?), + Discrete(?)',
-					align: 'min',
+					align: 'none',
 					legend: null
 				}
 			},
@@ -270,7 +270,7 @@ const testSteps = [
 						color: { set: 'Country' }
 					},
 					title: 'Groupped Column / Comparison(?), Group(?)',
-					align: 'min',
+					align: 'none',
 					legend: 'color'
 				}
 			},
@@ -290,7 +290,7 @@ const testSteps = [
 						color: { set: 'Country' }
 					},
 					title: 'Stacked Bar / Sum(?)',
-					align: 'min'
+					align: 'none'
 				}
 			},
 			{
@@ -327,7 +327,7 @@ const testSteps = [
 						label: { set: 'Value 2 (+)' }
 					},
 					title: 'Stacked Bar / Sum(?)',
-					align: 'min'
+					align: 'none'
 				},
 				style: {
 					plot: {

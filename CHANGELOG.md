@@ -4,6 +4,7 @@
 
 ### Fixed
 
+- Removed 'min' align property from the API which equivalent with the 'none'.
 - Markers are the same even if new record added.
 
 ### Changed
