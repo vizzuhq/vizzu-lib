@@ -31,29 +31,25 @@ struct interpolate_t
 	}();
 
 	template <class T>
-	    requires interpolatable<T>
 	constexpr T
 	operator()(const T &a, const T &b, double factor) const
 	{
-		using Math::interpolate;
-		return interpolate(a, b, factor);
-	}
-
-	template <class T>
-	    requires(!interpolatable<T>)
-	constexpr T
-	operator()(const T &a, const T &b, double factor) const
-	{
-		T res;
-		Refl::visit(
-		    [factor]<class V>(V &res, const V &op0, const V &op1)
-		    {
-			    res = interpolate_t{}(op0, op1, factor);
-		    },
-		    res,
-		    a,
-		    b);
-		return res;
+		if constexpr (interpolatable<T>) {
+			using Math::interpolate;
+			return interpolate(a, b, factor);
+		}
+		else {
+			T res;
+			Refl::visit(
+			    [factor]<class V>(V &res, const V &op0, const V &op1)
+			    {
+				    res = interpolate_t{}(op0, op1, factor);
+			    },
+			    res,
+			    a,
+			    b);
+			return res;
+		}
 	}
 };
 
