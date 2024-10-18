@@ -593,6 +593,13 @@ template <class T, class Visitor> struct Applier
 	    [[maybe_unused]] Visitor &v) noexcept
 	{
 		if constexpr (!std::is_empty_v<U>) {
+			constexpr auto members =
+			    Members::get_member_functors<U>(nullptr);
+
+			static_assert(
+			    std::tuple_size_v<bases_t<U>> > 0
+			        || std::tuple_size_v<decltype(members)> > 0,
+			    "Unable to run reflection");
 			if constexpr (std::tuple_size_v<bases_t<U>> > 0) {
 				std::invoke(
 				    [&v]<class... Bases>(std::tuple<Bases...> *)
@@ -604,11 +611,7 @@ template <class T, class Visitor> struct Applier
 				    },
 				    std::add_pointer_t<bases_t<U>>{});
 			}
-
-			if constexpr (constexpr auto members =
-			                  Members::get_member_functors<U>(
-			                      nullptr);
-			              std::tuple_size_v<decltype(members)> > 0) {
+			if constexpr (std::tuple_size_v<decltype(members)> > 0) {
 				std::apply(
 				    [&v]<class... MF>(MF...)
 				    {

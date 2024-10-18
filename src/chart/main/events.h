@@ -207,7 +207,7 @@ public:
 
 		struct LegendProperties
 		{
-			Gen::ChannelId channel;
+			Gen::Options::LegendId channel;
 			double scrollTop{};
 			double scrollHeight{};
 		};

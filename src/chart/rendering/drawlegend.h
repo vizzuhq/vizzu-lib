@@ -13,7 +13,7 @@ class DrawLegend : public DrawingContext
 public:
 	void draw(Gfx::ICanvas &canvas,
 	    const Geom::Rect &legendLayout,
-	    Gen::ChannelId channelType,
+	    Gen::Options::LegendId channelType,
 	    double weight) const;
 
 	const Events::DrawEvents::Legend &events = rootEvents.draw.legend;
