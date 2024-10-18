@@ -22,17 +22,10 @@
 namespace Vizzu::Gen
 {
 
-CommonAxis interpolate(const CommonAxis &op0,
-    const CommonAxis &op1,
-    double factor)
-{
-	return {interpolate(op0.title, op1.title, factor)};
-}
-
 Geom::Point Axises::origo() const
 {
-	return {at(ChannelId::x).measure.origo(),
-	    at(ChannelId::y).measure.origo()};
+	return {at(AxisId::x).measure.origo(),
+	    at(AxisId::y).measure.origo()};
 }
 
 MeasureAxis::MeasureAxis(Math::Range<double> interval,
@@ -63,8 +56,6 @@ double MeasureAxis::origo() const
 	if (range.size() == 0) return 0;
 	return -range.getMin() / range.size();
 }
-
-void MeasureAxis::track(double value) { trackedRange.include(value); }
 
 MeasureAxis interpolate(const MeasureAxis &op0,
     const MeasureAxis &op1,
@@ -238,11 +229,6 @@ bool DimensionAxis::setLabels(double step)
 		hasLabel = true;
 	}
 	return hasLabel;
-}
-
-void DimensionAxis::track(const Data::MarkerId &id)
-{
-	(*trackedValues)[id.itemId] = id.label;
 }
 
 DimensionAxis interpolate(const DimensionAxis &op0,

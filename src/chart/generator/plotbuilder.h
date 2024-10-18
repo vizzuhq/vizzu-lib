@@ -5,6 +5,7 @@
 #include "chart/options/options.h"
 #include "dataframe/old/datatable.h"
 
+#include "axis.h"
 #include "plotptr.h"
 
 namespace Vizzu::Gen
@@ -24,6 +25,7 @@ public:
 private:
 	Data::DataCube dataCube;
 	PlotPtr plot;
+	ChannelStats stats;
 
 	struct BucketInfo
 	{
@@ -31,8 +33,7 @@ private:
 		double size{};
 	};
 
-	void initDimensionTrackers() const;
-	void resetDimensionTrackers() const;
+	void initDimensionTrackers();
 	Buckets generateMarkers(std::size_t &mainBucketSize);
 	[[nodiscard]] bool linkMarkers(const Buckets &buckets,
 	    bool main) const;
@@ -50,9 +51,6 @@ private:
 	[[nodiscard]] std::vector<BucketInfo>
 	sortedBuckets(const Buckets &buckets, bool main) const;
 	void addSpecLayout(Buckets &buckets);
-
-	[[nodiscard]] Math::Range<double> &getMeasTrackRange(
-	    ChannelId type) const;
 };
 }
 

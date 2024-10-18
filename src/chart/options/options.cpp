@@ -9,7 +9,6 @@
 #include "base/math/trig.h"
 #include "dataframe/old/types.h"
 
-#include "align.h"
 #include "channel.h"
 #include "channelrange.h"
 #include "coordsystem.h"
@@ -211,16 +210,15 @@ bool Options::sameAttributes(const Options &other) const
 	    && markersInfo == other.markersInfo;
 }
 
-ChannelId Options::getHorizontalChannel() const
+AxisId Options::getHorizontalChannel() const
 {
-	return Math::rad2quadrant(angle) % 2 == 0 ? ChannelId::x
-	                                          : ChannelId::y;
+	return Math::rad2quadrant(angle) % 2 == 0 ? AxisId::x : AxisId::y;
 }
 
-ChannelId Options::getVerticalChannel() const
+AxisId Options::getVerticalChannel() const
 {
-	return getHorizontalChannel() == ChannelId::x ? ChannelId::y
-	                                              : ChannelId::x;
+	return getHorizontalChannel() == AxisId::x ? AxisId::y
+	                                           : AxisId::x;
 }
 
 bool Options::isShapeValid(const ShapeType &shapeType) const
@@ -259,8 +257,8 @@ void Options::setAutoParameters()
 
 Orientation Options::getAutoOrientation() const
 {
-	if (const auto &x = getChannels().at(ChannelId::x),
-	    &y = getChannels().at(ChannelId::y);
+	if (const auto &x = getChannels().at(AxisId::x),
+	    &y = getChannels().at(AxisId::y);
 	    x.isMeasure()
 	    && (y.isDimension()
 	        || (!x.hasDimension() && y.hasDimension())))
@@ -280,8 +278,8 @@ std::optional<Options::LegendId> Options::getAutoLegend() const
 	if (auto &&meas = channels.at(ChannelId::label).measureId)
 		series.erase(*meas);
 
-	for (auto channelId : {ChannelId::x, ChannelId::y})
-		if (auto id = channels.at(channelId).labelSeries())
+	for (auto axisId : {AxisId::x, AxisId::y})
+		if (auto id = channels.at(axisId).labelSeries())
 			series.erase(*id);
 
 	for (auto channelId : {LegendId::color, LegendId::lightness})
@@ -340,8 +338,8 @@ void Options::setRange(Channel &channel,
 
 bool Options::labelsShownFor(const Data::SeriesIndex &series) const
 {
-	return channels.at(ChannelId::x).labelSeries() == series
-	    || channels.at(ChannelId::y).labelSeries() == series
+	return channels.at(AxisId::x).labelSeries() == series
+	    || channels.at(AxisId::y).labelSeries() == series
 	    || (legend.get()
 	        && channels.at(toChannel(*legend.get())).labelSeries()
 	               == series);

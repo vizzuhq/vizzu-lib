@@ -16,20 +16,34 @@
 
 namespace Vizzu::Gen
 {
-struct CommonAxis
+
+struct ChannelStats
 {
-	::Anim::String title;
+	using TrackType = std::variant<Math::Range<double>,
+	    std::vector<std::optional<Data::SliceIndex>>>;
 
-	[[nodiscard]] bool operator==(const CommonAxis &) const = default;
+	Refl::EnumArray<ChannelId, TrackType> tracked;
+
+	void track(ChannelId at, const Data::MarkerId &id)
+	{
+		auto &vec = std::get<1>(tracked.at(at));
+		vec[id.itemId] = id.label;
+	}
+
+	void track(ChannelId at, const double &value)
+	{
+		std::get<0>(tracked.at(at)).include(value);
+	}
+
+	void setIfRange(AxisId at, const Math::Range<double> &range)
+	{
+		if (auto *r = std::get_if<0>(&tracked.at(asChannel(at))))
+			*r = range;
+	}
 };
-
-CommonAxis interpolate(const CommonAxis &op0,
-    const CommonAxis &op1,
-    double factor);
 
 struct MeasureAxis
 {
-	Math::Range<double> trackedRange;
 	::Anim::Interpolated<bool> enabled{false};
 	Math::Range<double> range = Math::Range<double>::Raw(0, 1);
 	::Anim::String unit;
@@ -42,8 +56,6 @@ struct MeasureAxis
 	    std::optional<double> step);
 	bool operator==(const MeasureAxis &other) const;
 	[[nodiscard]] double origo() const;
-
-	void track(double value);
 };
 
 MeasureAxis interpolate(const MeasureAxis &op0,
@@ -103,8 +115,6 @@ struct DimensionAxis
 
 	bool enabled{false};
 	std::string category{};
-	std::shared_ptr<std::vector<std::optional<Data::SliceIndex>>>
-	    trackedValues;
 
 	DimensionAxis() = default;
 	bool add(const Data::SliceIndex &index,
@@ -124,7 +134,6 @@ struct DimensionAxis
 		return values.cend();
 	}
 	bool setLabels(double step);
-	void track(const Data::MarkerId &id);
 
 private:
 	Values values;
@@ -136,9 +145,11 @@ DimensionAxis interpolate(const DimensionAxis &op0,
 
 struct Axis
 {
-	CommonAxis common;
+	::Anim::String title;
 	MeasureAxis measure;
 	DimensionAxis dimension;
+
+	[[nodiscard]] bool operator==(const Axis &other) const = default;
 };
 
 struct Axises

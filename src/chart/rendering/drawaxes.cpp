@@ -168,7 +168,7 @@ Geom::Point DrawAxes::getTitleOffset(Gen::AxisId axisIndex,
 
 void DrawAxes::drawTitle(Gen::AxisId axisIndex) const
 {
-	const auto &titleString = plot->axises.at(axisIndex).common.title;
+	const auto &titleString = plot->axises.at(axisIndex).title;
 
 	const auto &titleStyle = rootStyle.plot.getAxis(axisIndex).title;
 

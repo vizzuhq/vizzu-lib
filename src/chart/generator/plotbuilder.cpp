@@ -64,28 +64,15 @@ PlotBuilder::PlotBuilder(const Data::DataTable &dataTable,
 		normalizeColors();
 		addAlignment(subBuckets);
 	}
-
-	resetDimensionTrackers();
 }
 
-void PlotBuilder::initDimensionTrackers() const
+void PlotBuilder::initDimensionTrackers()
 {
 	for (const auto &ch :
 	    plot->options->getChannels().getChannels()) {
 		if (!ch.isDimension()) continue;
-		plot->axises.at(ch.type).dimension.trackedValues =
-		    std::make_shared<
-		        std::vector<std::optional<Data::SliceIndex>>>(
-		        dataCube.combinedSizeOf(ch.dimensions()).second);
-	}
-}
-
-void PlotBuilder::resetDimensionTrackers() const
-{
-	for (const Channel &ch :
-	    plot->options->getChannels().getChannels()) {
-		if (!ch.isDimension()) continue;
-		plot->axises.at(ch.type).dimension.trackedValues.reset();
+		stats.tracked.at(ch.type).emplace<1>(
+		    dataCube.combinedSizeOf(ch.dimensions()).second);
 	}
 }
 
@@ -108,7 +95,7 @@ Buckets PlotBuilder::generateMarkers(std::size_t &mainBucketSize)
 	for (auto &&index : dataCube)
 		plot->markers.emplace_back(*plot->getOptions(),
 		    dataCube,
-		    plot->axises,
+		    stats,
 		    mainIds,
 		    subIds,
 		    index,
@@ -135,11 +122,11 @@ Buckets PlotBuilder::generateMarkers(std::size_t &mainBucketSize)
 	    && plot->getOptions()->geometry.get() == ShapeType::line
 	    && plot->getOptions()
 	           ->getChannels()
-	           .at(ChannelId::x)
+	           .at(AxisId::x)
 	           .isDimension()
 	    && plot->getOptions()
 	           ->getChannels()
-	           .at(ChannelId::y)
+	           .at(AxisId::y)
 	           .isDimension()) {
 		plot->markerConnectionOrientation.emplace(
 		    *plot->getOptions()->orientation.get());
@@ -203,12 +190,6 @@ void PlotBuilder::addSpecLayout(Buckets &buckets)
 		else
 			Charts::TreeMapBuilder::setupVector(buckets);
 	}
-}
-
-Math::Range<double> &PlotBuilder::getMeasTrackRange(
-    ChannelId type) const
-{
-	return plot->axises.at(type).measure.trackedRange;
 }
 
 bool PlotBuilder::linkMarkers(const Buckets &buckets, bool main) const
@@ -337,8 +318,8 @@ void PlotBuilder::normalizeXY()
 		++markerIt;
 
 	if (markerIt == plot->markers.end()) {
-		getMeasTrackRange(ChannelId::x) = xrange.getRange({0.0, 0.0});
-		getMeasTrackRange(ChannelId::y) = yrange.getRange({0.0, 0.0});
+		stats.setIfRange(AxisId::x, xrange.getRange({0.0, 0.0}));
+		stats.setIfRange(AxisId::y, xrange.getRange({0.0, 0.0}));
 		return;
 	}
 
@@ -366,10 +347,12 @@ void PlotBuilder::normalizeXY()
 		marker.fromRectangle(newRect);
 	}
 
-	getMeasTrackRange(ChannelId::x) =
-	    Math::Range<double>::Raw(boundRect.left(), boundRect.right());
-	getMeasTrackRange(ChannelId::y) =
-	    Math::Range<double>::Raw(boundRect.bottom(), boundRect.top());
+	stats.setIfRange(AxisId::x,
+	    Math::Range<double>::Raw(boundRect.left(),
+	        boundRect.right()));
+	stats.setIfRange(AxisId::y,
+	    Math::Range<double>::Raw(boundRect.bottom(),
+	        boundRect.top()));
 }
 
 void PlotBuilder::calcMeasureAxises(const Data::DataTable &dataTable)
@@ -382,18 +365,16 @@ void PlotBuilder::calcMeasureAxises(const Data::DataTable &dataTable)
 void PlotBuilder::calcMeasureAxis(const Data::DataTable &dataTable,
     ChannelId type)
 {
-	auto &axis = plot->axises.at(type).measure;
 	const auto &scale = plot->getOptions()->getChannels().at(type);
-	auto range = getMeasTrackRange(type);
 	if (auto &&meas = scale.measureId) {
-
-		if (auto &title = plot->axises.at(type).common.title;
+		if (auto &title = plot->axises.at(type).title;
 		    scale.title.isAuto())
 			title = dataCube.getName(*meas);
 		else if (scale.title)
 			title = *scale.title;
 
-		if (type == plot->getOptions()->subAxisType()
+		if (auto &axis = plot->axises.at(type).measure;
+		    type == plot->getOptions()->subAxisType()
 		    && plot->getOptions()->align
 		           == Base::Align::Type::stretch) {
 			axis = {Math::Range<double>::Raw(0, 100),
@@ -402,6 +383,7 @@ void PlotBuilder::calcMeasureAxis(const Data::DataTable &dataTable,
 			    scale.step.getValue()};
 		}
 		else {
+			auto &&range = std::get<0>(stats.tracked.at(type));
 			axis = {range.isReal() ? range
 			                       : Math::Range<double>::Raw(0, 0),
 			    dataTable.getUnit(meas->getColIndex()),
@@ -409,9 +391,6 @@ void PlotBuilder::calcMeasureAxis(const Data::DataTable &dataTable,
 			    scale.step.getValue()};
 		}
 	}
-	else
-		axis = {};
-	axis.trackedRange = range;
 }
 
 void PlotBuilder::calcDimensionAxises()
@@ -434,7 +413,7 @@ void PlotBuilder::calcDimensionAxis(ChannelId type)
 			if (!marker.enabled) continue;
 
 			const auto &id =
-			    (type == ChannelId::x)
+			    (type == AxisId::x)
 			            == plot->getOptions()->isHorizontal()
 			        ? marker.mainId
 			        : marker.subId;
@@ -442,13 +421,12 @@ void PlotBuilder::calcDimensionAxis(ChannelId type)
 			if (const auto &slice = id.label)
 				axis.add(*slice,
 				    static_cast<double>(id.itemId),
-				    marker.getSizeBy(type == ChannelId::x),
+				    marker.getSizeBy(type == AxisId::x),
 				    merge);
 		}
 	}
 	else {
-		const auto &indices =
-		    *plot->axises.at(type).dimension.trackedValues;
+		const auto &indices = std::get<1>(stats.tracked.at(type));
 
 		double count = 0;
 		for (auto i = 0U; i < indices.size(); ++i)
@@ -463,8 +441,8 @@ void PlotBuilder::calcDimensionAxis(ChannelId type)
 	if (auto &&series = scale.labelSeries())
 		axis.category = series.value().getColIndex();
 
-	auto &title = plot->axises.at(type).common.title;
-	if (scale.title.isAuto() && !hasLabel)
+	if (auto &title = plot->axises.at(type).title;
+	    scale.title.isAuto() && !hasLabel)
 		title = axis.category;
 	else if (scale.title)
 		title = *scale.title;
@@ -612,10 +590,8 @@ void PlotBuilder::normalizeColors()
 			cbase.setPos(color.rescale(cbase.getPos()));
 	}
 
-	plot->axises.at(ChannelId::color).measure.range =
-	    getMeasTrackRange(ChannelId::color) = color;
-	plot->axises.at(ChannelId::lightness).measure.range =
-	    getMeasTrackRange(ChannelId::lightness) = lightness;
+	plot->axises.at(ChannelId::color).measure.range = color;
+	plot->axises.at(ChannelId::lightness).measure.range = lightness;
 
 	for (auto &value : plot->axises.at(ChannelId::color).dimension)
 		value.second.colorBase =
