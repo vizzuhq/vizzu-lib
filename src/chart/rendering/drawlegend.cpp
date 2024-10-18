@@ -21,7 +21,7 @@
 #include "base/text/smartstring.h"
 #include "chart/generator/plot.h" // NOLINT(misc-include-cleaner)
 #include "chart/main/events.h"
-#include "chart/options/channel.h"
+#include "chart/options/options.h"
 #include "chart/rendering/colorbuilder.h"
 #include "chart/rendering/drawbackground.h"
 #include "chart/rendering/drawlabel.h"
@@ -31,7 +31,7 @@ namespace Vizzu::Draw
 
 void DrawLegend::draw(Gfx::ICanvas &canvas,
     const Geom::Rect &legendLayout,
-    Gen::ChannelId channelType,
+    Gen::Options::LegendId channelType,
     double weight) const
 {
 	auto markerWindowRect =
@@ -58,8 +58,9 @@ void DrawLegend::draw(Gfx::ICanvas &canvas,
 	    .weight = weight,
 	    .itemHeight = itemHeight,
 	    .markerSize = markerSize,
-	    .measure = plot->axises.at(channelType).measure,
-	    .dimension = plot->axises.at(channelType).dimension,
+	    .measure = plot->axises.at(asChannel(channelType)).measure,
+	    .dimension =
+	        plot->axises.at(asChannel(channelType)).dimension,
 	    .properties = {.channel = channelType},
 	    .fadeBarGradient = {markerWindowRect.leftSide(),
 	        {.line = {},
@@ -120,7 +121,7 @@ const Gfx::LinearGradient &DrawLegend::FadeBarGradient::operator()(
 
 void DrawLegend::drawTitle(const Info &info) const
 {
-	plot->axises.at(info.properties.channel)
+	plot->axises.at(asChannel(info.properties.channel))
 	    .title.visit(
 	        [this,
 	            &info,
@@ -286,7 +287,7 @@ void DrawLegend::drawMeasure(const Info &info) const
 
 	auto bar = getBarRect(info);
 
-	using ST = Gen::ChannelId;
+	using ST = Gen::Options::LegendId;
 	switch (info.properties.channel) {
 	case ST::color: colorBar(info, bar); break;
 	case ST::lightness: lightnessBar(info, bar); break;

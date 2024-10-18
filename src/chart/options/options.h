@@ -52,10 +52,6 @@ public:
 	using Orientation = ::Anim::Interpolated<OrientationType>;
 	using MarkersInfoMap = std::map<MarkerInfoId, MarkerIndex>;
 
-	friend bool operator==(const LegendId &, const ChannelId &);
-
-	[[nodiscard]] static ChannelId toChannel(const LegendId &);
-
 	Options() = default;
 
 	[[nodiscard]] const Channels &getChannels() const
@@ -192,6 +188,18 @@ private:
 	    ChannelExtrema min,
 	    ChannelExtrema max);
 };
+
+[[nodiscard]] constexpr ChannelId asChannel(
+    const Options::LegendId &l)
+{
+	return static_cast<ChannelId>(l);
+}
+
+[[nodiscard]] constexpr bool operator==(const Options::LegendId &l,
+    const ChannelId &c)
+{
+	return asChannel(l) == c;
+}
 
 using PlotOptionsPtr = std::shared_ptr<Options>;
 

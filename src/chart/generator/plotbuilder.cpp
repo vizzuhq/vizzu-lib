@@ -357,9 +357,12 @@ void PlotBuilder::normalizeXY()
 
 void PlotBuilder::calcMeasureAxises(const Data::DataTable &dataTable)
 {
-	for (const Channel &ch :
-	    plot->getOptions()->getChannels().getChannels())
-		calcMeasureAxis(dataTable, ch.type);
+	for (const ChannelId &ch :
+	    {ChannelId::x, ChannelId::y, ChannelId::label})
+		calcMeasureAxis(dataTable, ch);
+
+	if (auto &&legend = plot->options->legend.get())
+		calcMeasureAxis(dataTable, asChannel(*legend));
 }
 
 void PlotBuilder::calcMeasureAxis(const Data::DataTable &dataTable,
@@ -395,9 +398,11 @@ void PlotBuilder::calcMeasureAxis(const Data::DataTable &dataTable,
 
 void PlotBuilder::calcDimensionAxises()
 {
-	for (const Channel &ch :
-	    plot->getOptions()->getChannels().getChannels())
-		calcDimensionAxis(ch.type);
+	for (const ChannelId &ch : {ChannelId::x, ChannelId::y})
+		calcDimensionAxis(ch);
+
+	if (auto &&legend = plot->options->legend.get())
+		calcDimensionAxis(asChannel(*legend));
 }
 
 void PlotBuilder::calcDimensionAxis(ChannelId type)
@@ -590,17 +595,31 @@ void PlotBuilder::normalizeColors()
 			cbase.setPos(color.rescale(cbase.getPos()));
 	}
 
-	plot->axises.at(ChannelId::color).measure.range = color;
-	plot->axises.at(ChannelId::lightness).measure.range = lightness;
+	if (auto &&legend = plot->options->legend.get()) {
+		switch (*legend) {
+		case Options::LegendId::color:
+			plot->axises.at(ChannelId::color).measure.range = color;
 
-	for (auto &value : plot->axises.at(ChannelId::color).dimension)
-		value.second.colorBase =
-		    ColorBase(static_cast<uint32_t>(value.second.value), 0.5);
+			for (auto &value :
+			    plot->axises.at(ChannelId::color).dimension)
+				value.second.colorBase = ColorBase(
+				    static_cast<uint32_t>(value.second.value),
+				    0.5);
+			break;
+		case Options::LegendId::lightness:
+			plot->axises.at(ChannelId::lightness).measure.range =
+			    lightness;
 
-	for (auto &value :
-	    plot->axises.at(ChannelId::lightness).dimension) {
-		value.second.value = lightness.rescale(value.second.value);
-		value.second.colorBase = ColorBase(0U, value.second.value);
+			for (auto &value :
+			    plot->axises.at(ChannelId::lightness).dimension) {
+				value.second.value =
+				    lightness.rescale(value.second.value);
+				value.second.colorBase =
+				    ColorBase(0U, value.second.value);
+			}
+			break;
+		default:;
+		}
 	}
 }
 
