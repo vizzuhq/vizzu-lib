@@ -100,14 +100,12 @@ bool Rect::intersects(const Rect &r) const
 	auto third = strong_order(top(), r.bottom());
 	auto fourth = strong_order(r.top(), bottom());
 
-	auto isOutside =
-	    is_lt(first) || is_lt(second) || is_lt(third) || is_lt(fourth)
-	    || (is_eq(first) && !is_zero(width()) && !is_zero(r.width()))
-	    || (is_eq(second) && !is_zero(width()) && !is_zero(r.width()))
-	    || (is_eq(third) && !is_zero(height())
-	        && !is_zero(r.height()))
-	    || (is_eq(fourth) && !is_zero(height())
-	        && !is_zero(r.height()));
+	auto isOutside = is_lt(first) || is_lt(second) || is_lt(third)
+	              || is_lt(fourth)
+	              || ((is_eq(first) || is_eq(second))
+	                  && !is_zero(width()) && !is_zero(r.width()))
+	              || ((is_eq(third) || is_eq(fourth))
+	                  && !is_zero(height()) && !is_zero(r.height()));
 	return !isOutside;
 }
 
