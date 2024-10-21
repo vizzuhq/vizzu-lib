@@ -10,24 +10,22 @@ const testSteps = [
 			}
 		}),
 	(chart) =>
-		chart.animate(
-			{
-				config: {
-					x: 'Foo',
-					y: 'Bar',
-					label: 'Bar'
-				}
+		chart.animate({
+			config: {
+				x: 'Foo',
+				y: 'Bar',
+				label: 'Bar'
 			}
-		),
+		}),
 	(chart) =>
 		chart.animate({
-				config: {
-					x: { range: { min: -2, max: 2 } },
-				},
-				style: {
-					paddingRight: 100
-				}
-			})
+			config: {
+				x: { range: { min: -2, max: 2 } }
+			},
+			style: {
+				paddingRight: 100
+			}
+		})
 ]
 
 export default testSteps
