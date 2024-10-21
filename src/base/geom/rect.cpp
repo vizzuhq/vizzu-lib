@@ -95,20 +95,17 @@ bool Rect::intersects(const Rect &r) const
 {
 	using Math::Floating::is_zero;
 	using std::strong_order;
-	auto first = strong_order(r.left(), right());
-	auto second = strong_order(left(), r.right());
-	auto third = strong_order(r.bottom(), top());
-	auto fourth = strong_order(bottom(), r.top());
+	auto first = strong_order(right(), r.left());
+	auto second = strong_order(r.right(), left());
+	auto third = strong_order(top(), r.bottom());
+	auto fourth = strong_order(r.top(), bottom());
 
 	auto isOutside =
-	    is_gt(first)
+	    is_lt(first) || is_lt(second) || is_lt(third) || is_lt(fourth)
 	    || (is_eq(first) && !is_zero(width()) && !is_zero(r.width()))
-	    || is_gt(second)
 	    || (is_eq(second) && !is_zero(width()) && !is_zero(r.width()))
-	    || is_gt(third)
 	    || (is_eq(third) && !is_zero(height())
 	        && !is_zero(r.height()))
-	    || is_gt(fourth)
 	    || (is_eq(fourth) && !is_zero(height())
 	        && !is_zero(r.height()));
 	return !isOutside;
