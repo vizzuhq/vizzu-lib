@@ -25,7 +25,8 @@ struct ChannelStats
 
 	Refl::EnumArray<ChannelId, TrackType> tracked;
 
-	template <ChannelIdLike T> const TrackType &at(const T &id) const
+	template <ChannelIdLike T>
+	[[nodiscard]] const TrackType &at(const T &id) const
 	{
 		return tracked[asChannel(id)];
 	}
