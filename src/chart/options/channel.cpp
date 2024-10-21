@@ -16,7 +16,7 @@
 namespace Vizzu::Gen
 {
 
-Channel Channel::makeChannel(Type id)
+Channel Channel::makeChannel(ChannelId id)
 {
 	switch (id) {
 	case ChannelId::color: return {ChannelId::color, 0, false};

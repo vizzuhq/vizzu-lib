@@ -31,7 +31,7 @@ namespace Vizzu::Draw
 
 void DrawLegend::draw(Gfx::ICanvas &canvas,
     const Geom::Rect &legendLayout,
-    Gen::Options::LegendId channelType,
+    Gen::LegendId channelType,
     double weight) const
 {
 	auto markerWindowRect =
@@ -58,9 +58,8 @@ void DrawLegend::draw(Gfx::ICanvas &canvas,
 	    .weight = weight,
 	    .itemHeight = itemHeight,
 	    .markerSize = markerSize,
-	    .measure = plot->axises.at(asChannel(channelType)).measure,
-	    .dimension =
-	        plot->axises.at(asChannel(channelType)).dimension,
+	    .measure = plot->axises.at(channelType).measure,
+	    .dimension = plot->axises.at(channelType).dimension,
 	    .properties = {.channel = channelType},
 	    .fadeBarGradient = {markerWindowRect.leftSide(),
 	        {.line = {},
@@ -121,7 +120,7 @@ const Gfx::LinearGradient &DrawLegend::FadeBarGradient::operator()(
 
 void DrawLegend::drawTitle(const Info &info) const
 {
-	plot->axises.at(asChannel(info.properties.channel))
+	plot->axises.at(info.properties.channel)
 	    .title.visit(
 	        [this,
 	            &info,
@@ -287,7 +286,7 @@ void DrawLegend::drawMeasure(const Info &info) const
 
 	auto bar = getBarRect(info);
 
-	using ST = Gen::Options::LegendId;
+	using ST = Gen::LegendId;
 	switch (info.properties.channel) {
 	case ST::color: colorBar(info, bar); break;
 	case ST::lightness: lightnessBar(info, bar); break;

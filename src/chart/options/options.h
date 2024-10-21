@@ -27,22 +27,6 @@ namespace Vizzu::Gen
 class Options
 {
 public:
-	enum class LegendId : ChannelIdType {
-		color = static_cast<ChannelIdType>(ChannelId::color),
-		lightness = static_cast<ChannelIdType>(ChannelId::lightness),
-		size = static_cast<ChannelIdType>(ChannelId::size)
-	};
-
-	static_assert(Refl::enum_names<LegendId>.size() == 3);
-	static_assert(std::ranges::all_of(Refl::enum_names<LegendId>,
-	    [](std::string_view name)
-	    {
-		    return static_cast<ChannelIdType>(
-		               Refl::get_enum<LegendId>(name))
-		        == static_cast<ChannelIdType>(
-		            Refl::get_enum<ChannelId>(name));
-	    }));
-
 	using MarkerIndex = std::string;
 	using MarkerInfoId = std::uint32_t;
 	using Heading = ::Anim::Interpolated<std::optional<std::string>>;
@@ -188,18 +172,6 @@ private:
 	    ChannelExtrema min,
 	    ChannelExtrema max);
 };
-
-[[nodiscard]] constexpr ChannelId asChannel(
-    const Options::LegendId &l)
-{
-	return static_cast<ChannelId>(l);
-}
-
-[[nodiscard]] constexpr bool operator==(const Options::LegendId &l,
-    const ChannelId &c)
-{
-	return asChannel(l) == c;
-}
 
 using PlotOptionsPtr = std::shared_ptr<Options>;
 

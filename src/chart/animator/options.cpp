@@ -59,7 +59,7 @@ void Options::set(const std::string &path, const std::string &value)
 	}
 	else if (parts.size() == 2) {
 		auto sectionId = Conv::parse<SectionId>(parts[0]);
-		keyframe.sections.at(sectionId).set(parts[1], value);
+		keyframe.sections[sectionId].set(parts[1], value);
 	}
 	else
 		throw std::logic_error("invalid animation option: " + path);
@@ -67,13 +67,13 @@ void Options::set(const std::string &path, const std::string &value)
 
 Options::Section &Options::Keyframe::get(SectionId sectionId)
 {
-	return sections.at(sectionId);
+	return sections[sectionId];
 }
 
 const Options::Section &Options::Keyframe::get(
     SectionId sectionId) const
 {
-	return sections.at(sectionId);
+	return sections[sectionId];
 }
 
 RegroupStrategy Options::Keyframe::getRegroupStrategy() const

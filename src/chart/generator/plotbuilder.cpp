@@ -71,7 +71,7 @@ void PlotBuilder::initDimensionTrackers()
 	for (const auto &ch :
 	    plot->options->getChannels().getChannels()) {
 		if (!ch.isDimension()) continue;
-		stats.tracked.at(ch.type).emplace<1>(
+		stats.tracked[ch.type].emplace<1>(
 		    dataCube.combinedSizeOf(ch.dimensions()).second);
 	}
 }
@@ -357,16 +357,25 @@ void PlotBuilder::normalizeXY()
 
 void PlotBuilder::calcMeasureAxises(const Data::DataTable &dataTable)
 {
-	for (const ChannelId &ch :
-	    {ChannelId::x, ChannelId::y, ChannelId::label})
+	for (const AxisId &ch : {AxisId::x, AxisId::y})
 		calcMeasureAxis(dataTable, ch);
 
 	if (auto &&legend = plot->options->legend.get())
-		calcMeasureAxis(dataTable, asChannel(*legend));
+		calcMeasureAxis(dataTable, *legend);
+
+	if (auto &&meas = plot->getOptions()
+	                      ->getChannels()
+	                      .at(ChannelId::label)
+	                      .measureId)
+		plot->axises.label = {
+		    ::Anim::String{
+		        std::string{dataTable.getUnit(meas->getColIndex())}},
+		    ::Anim::String{meas->getColIndex()}};
 }
 
+template <ChannelIdLike T>
 void PlotBuilder::calcMeasureAxis(const Data::DataTable &dataTable,
-    ChannelId type)
+    T type)
 {
 	const auto &scale = plot->getOptions()->getChannels().at(type);
 	if (auto &&meas = scale.measureId) {
@@ -382,15 +391,13 @@ void PlotBuilder::calcMeasureAxis(const Data::DataTable &dataTable,
 		           == Base::Align::Type::stretch) {
 			axis = {Math::Range<double>::Raw(0, 100),
 			    "%",
-			    meas->getColIndex(),
 			    scale.step.getValue()};
 		}
 		else {
-			auto &&range = std::get<0>(stats.tracked.at(type));
+			auto &&range = std::get<0>(stats.at(type));
 			axis = {range.isReal() ? range
 			                       : Math::Range<double>::Raw(0, 0),
 			    dataTable.getUnit(meas->getColIndex()),
-			    meas->getColIndex(),
 			    scale.step.getValue()};
 		}
 	}
@@ -398,22 +405,22 @@ void PlotBuilder::calcMeasureAxis(const Data::DataTable &dataTable,
 
 void PlotBuilder::calcDimensionAxises()
 {
-	for (const ChannelId &ch : {ChannelId::x, ChannelId::y})
+	for (const AxisId &ch : {AxisId::x, AxisId::y})
 		calcDimensionAxis(ch);
 
 	if (auto &&legend = plot->options->legend.get())
-		calcDimensionAxis(asChannel(*legend));
+		calcDimensionAxis(*legend);
 }
 
-void PlotBuilder::calcDimensionAxis(ChannelId type)
+template <ChannelIdLike T> void PlotBuilder::calcDimensionAxis(T type)
 {
 	auto &axis = plot->axises.at(type).dimension;
 	auto &scale = plot->getOptions()->getChannels().at(type);
 
 	if (scale.isMeasure() || !scale.hasDimension()) return;
 
-	auto &&isTypeAxis = asAxis(type).has_value();
-	if (auto merge = scale.labelLevel == 0; isTypeAxis) {
+	constexpr bool isTypeAxis = std::is_same_v<T, AxisId>;
+	if constexpr (auto merge = scale.labelLevel == 0; isTypeAxis) {
 		for (const auto &marker : plot->markers) {
 			if (!marker.enabled) continue;
 
@@ -431,7 +438,7 @@ void PlotBuilder::calcDimensionAxis(ChannelId type)
 		}
 	}
 	else {
-		const auto &indices = std::get<1>(stats.tracked.at(type));
+		const auto &indices = std::get<1>(stats.at(type));
 
 		double count = 0;
 		for (auto i = 0U; i < indices.size(); ++i)
@@ -597,21 +604,21 @@ void PlotBuilder::normalizeColors()
 
 	if (auto &&legend = plot->options->legend.get()) {
 		switch (*legend) {
-		case Options::LegendId::color:
-			plot->axises.at(ChannelId::color).measure.range = color;
+		case LegendId::color:
+			plot->axises.at(LegendId::color).measure.range = color;
 
 			for (auto &value :
-			    plot->axises.at(ChannelId::color).dimension)
+			    plot->axises.at(LegendId::color).dimension)
 				value.second.colorBase = ColorBase(
 				    static_cast<uint32_t>(value.second.value),
 				    0.5);
 			break;
-		case Options::LegendId::lightness:
-			plot->axises.at(ChannelId::lightness).measure.range =
+		case LegendId::lightness:
+			plot->axises.at(LegendId::lightness).measure.range =
 			    lightness;
 
 			for (auto &value :
-			    plot->axises.at(ChannelId::lightness).dimension) {
+			    plot->axises.at(LegendId::lightness).dimension) {
 				value.second.value =
 				    lightness.rescale(value.second.value);
 				value.second.colorBase =

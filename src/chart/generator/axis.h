@@ -10,6 +10,7 @@
 #include "base/math/interpolation.h"
 #include "base/math/range.h"
 #include "chart/options/channel.h"
+#include "chart/options/options.h"
 #include "dataframe/old/types.h"
 
 #include "colorbase.h"
@@ -24,20 +25,25 @@ struct ChannelStats
 
 	Refl::EnumArray<ChannelId, TrackType> tracked;
 
+	template <ChannelIdLike T> const TrackType &at(const T &id) const
+	{
+		return tracked[asChannel(id)];
+	}
+
 	void track(ChannelId at, const Data::MarkerId &id)
 	{
-		auto &vec = std::get<1>(tracked.at(at));
+		auto &vec = std::get<1>(tracked[at]);
 		vec[id.itemId] = id.label;
 	}
 
 	void track(ChannelId at, const double &value)
 	{
-		std::get<0>(tracked.at(at)).include(value);
+		std::get<0>(tracked[at]).include(value);
 	}
 
 	void setIfRange(AxisId at, const Math::Range<double> &range)
 	{
-		if (auto *r = std::get_if<0>(&tracked.at(asChannel(at))))
+		if (auto *r = std::get_if<0>(&tracked[asChannel(at)]))
 			*r = range;
 	}
 };
@@ -47,12 +53,10 @@ struct MeasureAxis
 	::Anim::Interpolated<bool> enabled{false};
 	Math::Range<double> range = Math::Range<double>::Raw(0, 1);
 	::Anim::String unit;
-	::Anim::String origMeasureName;
 	::Anim::Interpolated<double> step{1.0};
 	MeasureAxis() = default;
 	MeasureAxis(Math::Range<double> interval,
 	    const std::string_view &unit,
-	    const std::string_view &measName,
 	    std::optional<double> step);
 	bool operator==(const MeasureAxis &other) const;
 	[[nodiscard]] double origo() const;
@@ -154,25 +158,35 @@ struct Axis
 
 struct Axises
 {
-	Refl::EnumArray<ChannelId, Axis> axises;
-	[[nodiscard]] const Axis &at(ChannelId channelType) const
+	Refl::EnumArray<LegendId, Axis> legend;
+	Refl::EnumArray<AxisId, Axis> axises;
+	struct Label
 	{
-		return axises.at(channelType);
+		::Anim::String unit;
+		::Anim::String origMeasureName;
+
+		[[nodiscard]] bool operator==(
+		    const Label &other) const = default;
+	} label;
+
+	[[nodiscard]] const Axis &at(LegendId legendType) const
+	{
+		return legend[legendType];
 	}
 
-	[[nodiscard]] Axis &at(ChannelId channelType)
+	[[nodiscard]] Axis &at(LegendId legendType)
 	{
-		return axises.at(channelType);
+		return legend[legendType];
 	}
 
 	[[nodiscard]] const Axis &at(AxisId axisType) const
 	{
-		return axises.at(asChannel(axisType));
+		return axises[axisType];
 	}
 
 	[[nodiscard]] Axis &at(AxisId axisType)
 	{
-		return axises.at(asChannel(axisType));
+		return axises[axisType];
 	}
 
 	[[nodiscard]] const Axis &other(AxisId axisType) const

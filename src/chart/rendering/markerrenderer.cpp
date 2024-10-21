@@ -219,18 +219,25 @@ void MarkerRenderer::drawMarkers(Gfx::ICanvas &canvas,
 
 void MarkerRenderer::drawLabels(Gfx::ICanvas &canvas) const
 {
-	auto &&axis = plot->axises.at(Gen::ChannelId::label).measure;
-	auto &&keepMeasure = !axis.origMeasureName.interpolates();
+	auto &&[unit, measure] = plot->axises.label;
+	auto &&keepMeasure = !measure.interpolates();
+
+	auto &&firstUnit =
+	    unit.values[unit.interpolates() && !unit.values[0].hasValue()]
+	        .value;
+	auto &&secondUnit =
+	    unit.values[unit.interpolates() && unit.values[1].hasValue()]
+	        .value;
 	for (const auto &blended : markers) {
 		if (blended.marker.enabled == false) continue;
 		drawLabel(canvas,
 		    blended,
-		    axis.unit.values[0].value,
+		    firstUnit,
 		    keepMeasure,
 		    ::Anim::first);
 		drawLabel(canvas,
 		    blended,
-		    axis.unit.get_or_first(::Anim::second).value,
+		    secondUnit,
 		    keepMeasure,
 		    ::Anim::second);
 	}

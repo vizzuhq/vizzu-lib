@@ -46,16 +46,30 @@ static_assert(std::ranges::all_of(Refl::enum_names<AxisId>,
 	            Refl::get_enum<ChannelId>(name));
     }));
 
+enum class LegendId : ChannelIdType {
+	color = static_cast<ChannelIdType>(ChannelId::color),
+	lightness = static_cast<ChannelIdType>(ChannelId::lightness),
+	size = static_cast<ChannelIdType>(ChannelId::size)
+};
+
+static_assert(Refl::enum_names<LegendId>.size() == 3);
+static_assert(std::ranges::all_of(Refl::enum_names<LegendId>,
+    [](std::string_view name)
+    {
+	    return static_cast<ChannelIdType>(
+	               Refl::get_enum<LegendId>(name))
+	        == static_cast<ChannelIdType>(
+	            Refl::get_enum<ChannelId>(name));
+    }));
+
 class Channel
 {
 public:
-	using Type = ChannelId;
-
 	using OptionalIndex = std::optional<Data::SeriesIndex>;
 	using IndexSet = std::set<Data::SeriesIndex>;
 	using DimensionIndices = Data::SeriesList;
 
-	static Channel makeChannel(Type id);
+	static Channel makeChannel(ChannelId id);
 
 	void addSeries(const Data::SeriesIndex &index);
 	void removeSeries(const Data::SeriesIndex &index);
@@ -74,7 +88,7 @@ public:
 	[[nodiscard]] OptionalIndex labelSeries() const;
 	bool operator==(const Channel &other) const;
 
-	Type type{};
+	ChannelId type{};
 	double defaultValue{};
 	bool stackable{};
 	OptionalIndex measureId{};
@@ -91,25 +105,35 @@ public:
 	Base::AutoParam<double> step{};
 };
 
-[[nodiscard]] constexpr std::optional<AxisId> asAxis(ChannelId type)
+[[nodiscard]] constexpr ChannelId asChannel(AxisId axis)
 {
-	switch (type) {
-	case ChannelId::x:
-	case ChannelId::y:
-		return static_cast<AxisId>(static_cast<ChannelIdType>(type));
-	default: return std::nullopt;
-	}
+	return static_cast<ChannelId>(axis);
 }
 
-[[nodiscard]] constexpr ChannelId asChannel(AxisId type)
+[[nodiscard]] constexpr ChannelId asChannel(const LegendId &legend)
 {
-	return static_cast<ChannelId>(static_cast<ChannelIdType>(type));
+	return static_cast<ChannelId>(legend);
 }
 
-[[nodiscard]] constexpr bool operator==(const AxisId &axis,
-    const ChannelId &channel)
+template <class T>
+concept ChannelIdLike = requires(const T &v) {
+	{
+		asChannel(v)
+	} -> std::same_as<ChannelId>;
+};
+
+template <ChannelIdLike T>
+[[nodiscard]] constexpr bool operator==(const T &l,
+    const ChannelId &c)
 {
-	return asChannel(axis) == channel;
+	return asChannel(l) == c;
+}
+
+template <ChannelIdLike T, ChannelIdLike U>
+    requires(!std::same_as<T, U>)
+[[nodiscard]] constexpr bool operator==(const T &, const U &)
+{
+	return false;
 }
 
 }
