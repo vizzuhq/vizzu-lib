@@ -141,6 +141,7 @@ export interface Area extends Element {
 /** Marker element position structure helper for tooltip */
 export interface MarkerPosition {
 	top: Point
+	center: Point
 }
 
 /** Plot marker element of the chart representing a data point. */

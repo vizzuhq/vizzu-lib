@@ -85,10 +85,7 @@ RectangleMarker::RectangleMarker(const Gen::Marker &marker,
 	dataRect.size = Geom::Size{points[2] - points[0]};
 	radius = 0;
 
-	dataPosition = {
-	    this->getLabelPos(Styles::MarkerLabel::Position::top,
-	            coordSys)
-	        .end};
+	setDataPosition(coordSys);
 }
 
 }

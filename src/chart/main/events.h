@@ -250,6 +250,7 @@ public:
 			struct DataPosition
 			{
 				Geom::Point top;
+				Geom::Point center;
 			} position;
 
 			explicit Marker(const Gen::Marker &marker,

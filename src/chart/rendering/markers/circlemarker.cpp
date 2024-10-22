@@ -39,10 +39,7 @@ CircleMarker::CircleMarker(const Gen::Marker &marker,
 	dataRect.size = Geom::Size();
 	radius = fabs(coordSys.verConvert(r));
 
-	dataPosition = {
-	    this->getLabelPos(Styles::MarkerLabel::Position::top,
-	            coordSys)
-	        .end};
+	setDataPosition(coordSys);
 }
 
 }

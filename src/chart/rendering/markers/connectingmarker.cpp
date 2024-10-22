@@ -159,10 +159,7 @@ ConnectingMarker::ConnectingMarker(const DrawingContext &ctx,
 	dataRect.pos = isLine ? points[2] : points[1];
 	dataRect.size = Geom::Size{points[2] - dataRect.pos};
 
-	dataPosition = {
-	    this->getLabelPos(Styles::MarkerLabel::Position::top,
-	            ctx.coordSys)
-	        .end};
+	setDataPosition(ctx.coordSys);
 }
 
 const Gen::Marker *ConnectingMarker::getPrev(

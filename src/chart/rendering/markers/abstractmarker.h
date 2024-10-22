@@ -52,6 +52,8 @@ protected:
 	    const Gen::Marker &marker,
 	    const Gen::ShapeType &shapeType,
 	    ::Anim::InterpolateIndex lineIndex);
+
+	void setDataPosition(const CoordinateSystem &coordSys);
 };
 
 class SingleDrawMarker : public AbstractMarker

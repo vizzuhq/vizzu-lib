@@ -34,6 +34,13 @@ function overlay(e, chart) {
 		ctx.arc(top.x, top.y, 2, 0, 2 * Math.PI)
 		ctx.fill()
 		ctx.restore()
+		const center = e.target.position.center
+		ctx.save()
+		ctx.fillStyle = '#000000F0'
+		ctx.moveTo(center.x, center.y)
+		ctx.arc(center.x, center.y, 2, 0, 2 * Math.PI)
+		ctx.fill()
+		ctx.restore()
 	}
 	ctx.save()
 	ctx.fillStyle = '#FF00000F'
@@ -117,7 +124,7 @@ function setupEvents(chart) {
 		})
 	})
 	chart.on('draw-complete', (e) => {
-		const references = [1393906603, 585199799]
+		const references = [329751708, -2021415194]
 		receivedEvents.push(e)
 		const result = JSON.stringify(receivedEvents, null, 2)
 		const hash = (str) =>

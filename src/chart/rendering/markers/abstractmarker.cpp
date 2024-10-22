@@ -133,6 +133,17 @@ AbstractMarker AbstractMarker::createInterpolated(
 	return aMarker;
 }
 
+void AbstractMarker::setDataPosition(const CoordinateSystem &coordSys)
+{
+	dataPosition = {
+	    this->getLabelPos(Styles::MarkerLabel::Position::top,
+	            coordSys)
+	        .end,
+	    this->getLabelPos(Styles::MarkerLabel::Position::center,
+	            coordSys)
+	        .begin};
+}
+
 Geom::Rect AbstractMarker::getBoundary() const
 {
 	return Geom::Rect::Boundary(points);
