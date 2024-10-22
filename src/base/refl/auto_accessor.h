@@ -20,8 +20,7 @@ template <class Object> struct Accessor
 
 #ifndef __clang_analyzer__
 template <class Object,
-    class Members =
-        decltype(Refl::Members::get_member_functors<Object>(nullptr)),
+    class Members = decltype(member_functors_v<Object>),
     class = std::make_index_sequence<std::tuple_size_v<Members>>>
 constexpr void *accessor_pairs{};
 

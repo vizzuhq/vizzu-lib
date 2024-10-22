@@ -45,18 +45,13 @@ struct interpolate_t
 		if constexpr (interpolatable<T>)
 			return interpolate(a, b, factor);
 		else {
-			T res;
-			Refl::visit(
-			    [factor]<interpolatable V>(V &res,
-			        const V &op0,
-			        const V &op1)
+			return Refl::visit<T>(
+			    [factor]<interpolatable V>(const V &op0, const V &op1)
 			    {
-				    res = interpolate(op0, op1, factor);
+				    return interpolate(op0, op1, factor);
 			    },
-			    res,
 			    a,
 			    b);
-			return res;
 		}
 	}
 };

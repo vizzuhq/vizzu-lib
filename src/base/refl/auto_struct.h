@@ -527,8 +527,7 @@ consteval auto get_member_functors(void *)
 template <class T>
     requires(is_structure_bindable_v<T> == structure_bindable::no
              && std::tuple_size_v<members_t<T>> == 0
-             && std::tuple_size_v<bases_t<T>> == 0
-             && !std::is_empty_v<T>)
+             && std::tuple_size_v<bases_t<T>> == 0)
 consteval auto get_member_functors(void *)
 {
 	static_assert(!std::is_polymorphic_v<T>);
@@ -536,6 +535,13 @@ consteval auto get_member_functors(void *)
 	return std::tuple{};
 }
 }
+
+template <class T>
+constexpr static inline auto member_functors_v =
+    Members::get_member_functors<T>(nullptr);
+
+template <class MF>
+using member_functor_t = typename MF::template type<>;
 
 namespace Functors
 {
@@ -569,10 +575,10 @@ template <class T, class Visitor> struct Applier
 	             && std::is_invocable_v<Visitor &,
 	                 U &(*)(const T &),
 	                 const std::initializer_list<std::string_view> &>)
-	constexpr static __attribute__((always_inline)) void apply(
+	constexpr static __attribute__((always_inline)) auto apply(
 	    Visitor &v) noexcept
 	{
-		v(FuncPtr<T, U, MemberFunctors...>,
+		return v(FuncPtr<T, U, MemberFunctors...>,
 		    name_list<MemberFunctors...>);
 	}
 
@@ -582,49 +588,50 @@ template <class T, class Visitor> struct Applier
 	             && !std::is_invocable_v<Visitor &,
 	                 U &(*)(const T &),
 	                 const std::initializer_list<std::string_view> &>)
-	constexpr static __attribute__((always_inline)) void apply(
+	constexpr static __attribute__((always_inline)) auto apply(
 	    Visitor &v) noexcept
 	{
-		v(FuncPtr<T, U, MemberFunctors...>);
+		return v(FuncPtr<T, U, MemberFunctors...>);
 	}
 
 	template <class U, class... MemberFunctors>
-	constexpr static __attribute__((always_inline)) void apply(
+	constexpr static __attribute__((always_inline)) auto apply(
 	    [[maybe_unused]] Visitor &v) noexcept
 	{
-		if constexpr (!std::is_empty_v<U>) {
-			constexpr auto members =
-			    Members::get_member_functors<U>(nullptr);
+		constexpr auto members = member_functors_v<U>;
+		static_assert(
+		    std::is_empty_v<U>
+		        || std::tuple_size_v<bases_t<U>>
+		                   + std::tuple_size_v<decltype(members)> > 0,
+		    "Unable to run reflection");
 
-			static_assert(
-			    std::tuple_size_v<bases_t<U>> > 0
-			        || std::tuple_size_v<decltype(members)> > 0,
-			    "Unable to run reflection");
-			if constexpr (std::tuple_size_v<bases_t<U>> > 0) {
-				std::invoke(
-				    [&v]<class... Bases>(std::tuple<Bases...> *)
-				    {
-					    (Functors::Applier<T,
-					         Visitor>::template apply<Bases,
-					         MemberFunctors...>(v),
-					        ...);
-				    },
-				    std::add_pointer_t<bases_t<U>>{});
-			}
-			if constexpr (std::tuple_size_v<decltype(members)> > 0) {
-				std::apply(
-				    [&v]<class... MF>(MF...)
-				    {
-					    (Functors::Applier<T, Visitor>::
-					            template apply<
-					                typename MF::template type<>,
-					                MemberFunctors...,
-					                MF>(v),
-					        ...);
-				    },
-				    members);
-			}
-		}
+		return std::invoke(
+		    [&v]<class... Bases, class... MF>(std::tuple<Bases...> *,
+		        std::tuple<MF...>)
+		    {
+			    if constexpr (
+			        std::is_same_v<
+			            std::tuple<Bases..., member_functor_t<MF>...>,
+			            std::tuple<decltype(apply<Bases,
+			                           MemberFunctors...>(v))...,
+			                decltype(apply<member_functor_t<MF>,
+			                    MemberFunctors...,
+			                    MF>(v))...>>) {
+				    return U{apply<Bases, MemberFunctors...>(v)...,
+				        apply<member_functor_t<MF>,
+				            MemberFunctors...,
+				            MF>(v)...};
+			    }
+			    else {
+				    (apply<Bases, MemberFunctors...>(v), ...);
+				    (apply<member_functor_t<MF>,
+				         MemberFunctors...,
+				         MF>(v),
+				        ...);
+			    }
+		    },
+		    std::add_pointer_t<bases_t<U>>{},
+		    members);
 	}
 };
 
@@ -683,16 +690,16 @@ constexpr __attribute__((always_inline)) auto visit(Visitor &&visitor)
 #endif
 }
 
-template <class Visitor, class T, class... Ts>
+template <class Res = void, class Visitor, class T, class... Ts>
     requires((std::is_same_v<std::remove_cvref_t<T>,
                   std::remove_cvref_t<Ts>>
               && ...))
-constexpr void
+constexpr Res
 visit(Visitor &&visitor, [[maybe_unused]] T &visitable, Ts &&...ts)
 {
 #ifndef __clang_analyzer__
 	using TT = std::remove_cvref_t<T>;
-	visit<TT>(
+	return visit<TT>(
 	    Functors::GetterVisitor<Visitor, std::tuple<T &, Ts &&...>>{
 	        std::forward<Visitor>(visitor),
 	        {visitable, std::forward<Ts>(ts)...}});
@@ -700,6 +707,7 @@ visit(Visitor &&visitor, [[maybe_unused]] T &visitable, Ts &&...ts)
 	std::ignore = std::forward<Visitor>(visitor);
 	std::ignore =
 	    std::forward_as_tuple<Ts...>(std::forward<Ts>(ts)...);
+	if constexpr (!std::is_void_v<Res>) return {};
 #endif
 }
 
