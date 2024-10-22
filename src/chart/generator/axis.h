@@ -144,10 +144,6 @@ private:
 	Values values;
 };
 
-DimensionAxis interpolate(const DimensionAxis &op0,
-    const DimensionAxis &op1,
-    double factor);
-
 struct Axis
 {
 	::Anim::String title;
