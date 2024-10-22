@@ -14,6 +14,9 @@
 
 - Changed MarkerId to be a string instead of a number.
 
+### Added
+
+- Add marker top position to draw event
 
 ## [0.14.0] - 2024-10-03
 

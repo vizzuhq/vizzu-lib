@@ -35,6 +35,7 @@ public:
 	Geom::Point center;
 	Geom::Rect dataRect;
 	double radius{};
+	Events::Targets::Marker::DataPosition dataPosition;
 
 	[[nodiscard]] Geom::Rect getBoundary() const;
 	[[nodiscard]] Geom::Line getLine() const;

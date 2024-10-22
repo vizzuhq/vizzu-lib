@@ -16,6 +16,7 @@ namespace Vizzu::Draw
 {
 
 RectangleMarker::RectangleMarker(const Gen::Marker &marker,
+    const CoordinateSystem &coordSys,
     const Gen::Options &options,
     const Styles::Chart &style) :
     SingleDrawMarker(marker, options, Gen::ShapeType::rectangle)
@@ -83,6 +84,11 @@ RectangleMarker::RectangleMarker(const Gen::Marker &marker,
 	dataRect.pos = points[0];
 	dataRect.size = Geom::Size{points[2] - points[0]};
 	radius = 0;
+
+	dataPosition = {
+	    this->getLabelPos(Styles::MarkerLabel::Position::top,
+	            coordSys)
+	        .end};
 }
 
 }

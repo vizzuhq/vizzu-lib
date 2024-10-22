@@ -47,6 +47,7 @@ AbstractMarker AbstractMarker::create(const DrawingContext &ctx,
 	switch (shapeType) {
 	case Gen::ShapeType::rectangle:
 		return RectangleMarker(marker,
+		    ctx.coordSys,
 		    ctx.getOptions(),
 		    ctx.rootStyle);
 	case Gen::ShapeType::circle:

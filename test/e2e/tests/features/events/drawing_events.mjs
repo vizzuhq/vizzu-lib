@@ -26,6 +26,15 @@ let isErrorLogged = false
 function overlay(e, chart) {
 	const coordSystem = chart.feature.coordSystem
 	const ctx = e.renderingContext
+	if (e.target && e.target.position) {
+		const top = e.target.position.top
+		ctx.save()
+		ctx.fillStyle = '#FF00FFA0'
+		ctx.moveTo(top.x, top.y)
+		ctx.arc(top.x, top.y, 2, 0, 2 * Math.PI)
+		ctx.fill()
+		ctx.restore()
+	}
 	ctx.save()
 	ctx.fillStyle = '#FF00000F'
 	ctx.strokeStyle = '#FF0000A0'
@@ -108,14 +117,14 @@ function setupEvents(chart) {
 		})
 	})
 	chart.on('draw-complete', (e) => {
-		const reference = -476544255
+		const references = [1393906603, 585199799]
 		receivedEvents.push(e)
 		const result = JSON.stringify(receivedEvents, null, 2)
 		const hash = (str) =>
 			str.split('').reduce((prev, curr) => (Math.imul(31, prev) + curr.charCodeAt(0)) | 0, 0)
-		if (hash(result) !== reference) {
+		if (!references.includes(hash(result))) {
 			if (!isErrorLogged) {
-				console.log('Expected hash: ' + reference)
+				console.log('Expected hashes: ' + references.join(' or '))
 				console.log('Actual hash: ' + hash(result))
 				isErrorLogged = true
 			}
@@ -139,22 +148,19 @@ const data = {
 const testSteps = [
 	(chart) => {
 		setupEvents(chart)
-		return chart.animate(
-			{
-				data,
-				config: {
-					color: 'Foo',
-					x: { set: 'Foo', guides: true, ticks: true, axis: true },
-					y: { set: 'Bar', guides: true, ticks: true, axis: true },
-					size: 'Baz',
-					label: 'Baz',
-					title: 'My Chart',
-					legend: 'size',
-					geometry: 'circle'
-				}
-			},
-			0
-		)
+		return chart.animate({
+			data,
+			config: {
+				color: 'Foo',
+				x: { set: 'Foo', guides: true, ticks: true, axis: true },
+				y: { set: 'Bar', guides: true, ticks: true, axis: true },
+				size: 'Baz',
+				label: 'Baz',
+				title: 'My Chart',
+				legend: 'size',
+				geometry: 'circle'
+			}
+		})
 	}
 ]
 
