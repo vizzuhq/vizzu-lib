@@ -104,7 +104,7 @@ private:
 	std::map<std::string, Accessor, std::less<>> accessors;
 };
 
-template <class Root, class U>
+template <class U, class Root>
 concept IsAccessor =
     std::is_constructible_v<typename ParamRegistry<Root>::Accessor,
         U>;

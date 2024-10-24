@@ -45,10 +45,7 @@ template <class T> struct ubiq_base
 #pragma clang diagnostic ignored "-Wmissing-field-initializers"
 #endif
 
-template <class T,
-    std::size_t... I,
-    class =
-        typename std::enable_if_t<std::is_copy_constructible_v<T>>>
+template <class T, std::size_t... I>
 consteval std::add_pointer_t<decltype(T{ubiq{I}...})>
     enable_if_constructible(std::index_sequence<I...>) noexcept;
 
@@ -63,7 +60,7 @@ consteval std::add_pointer_t<decltype(T(ubiq_base<T>{B}...,
         std::index_sequence<I...>) noexcept;
 
 template <template <class, std::size_t, class...> typename,
-    class T,
+    class,
     std::size_t Begin,
     std::size_t Middle>
     requires(Begin == Middle)
@@ -83,7 +80,7 @@ template <template <class, std::size_t, class...> typename EnableIf,
     class T,
     std::size_t Begin,
     std::size_t Middle>
-    requires(Begin < Middle && !std::is_void_v<EnableIf<T, Middle>>)
+    requires(Begin < Middle && EnableIf<T, Middle>::value)
 consteval auto detect_fields_count(int) noexcept
 {
 	return detect_fields_count<EnableIf,
@@ -105,21 +102,20 @@ consteval std::size_t detect_fields_count(std::size_t) noexcept
 	    Begin + (Middle - Begin) / 2>(0);
 }
 
-template <class T,
-    std::size_t N,
-    class = decltype(enable_if_constructible<T>(
-        std::make_index_sequence<N>()))>
-using if_constructible_t = std::size_t;
+template <class T, std::size_t N>
+using if_constructible_t = std::bool_constant<requires {
+	enable_if_constructible<T>(std::make_index_sequence<N>());
+}>;
 
 template <std::size_t M> struct FixMax
 {
-	template <class T,
-	    std::size_t N,
-	    class = decltype(enable_if_constructible_base<T>(
-	        std::make_index_sequence<N>(),
-	        std::make_index_sequence<std::min(M - N, M)>()))>
-	    requires(N <= M)
-	using if_constructible_base_t = std::size_t;
+	template <class T, std::size_t N>
+	using if_constructible_base_t =
+	    std::bool_constant<N <= M &&requires {
+		    enable_if_constructible_base<T>(
+		        std::make_index_sequence<N>(),
+		        std::make_index_sequence<std::min(M - N, M)>());
+	    }>;
 };
 
 template <class T>
@@ -668,7 +664,7 @@ struct GetterVisitor<Visitor,
 	    std::invoke_result_t<Getter, Ts>...,
 	    const std::initializer_list<std::string_view> &>
 	operator()(Getter &&getter,
-	    const std::initializer_list<std::string_view> &sv = {})
+	    const std::initializer_list<std::string_view> &sv)
 	    const noexcept
 	{
 		return std::invoke(visitor,

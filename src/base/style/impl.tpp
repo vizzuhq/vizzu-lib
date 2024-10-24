@@ -15,18 +15,19 @@ template <class T> T Sheet<T>::getFullParams() const
 
 template <class T> ParamRegistry<T>::ParamRegistry()
 {
-	Refl::visit<T>([this]<class U>(U && accessor,
-	    const std::initializer_list<std::string_view> &thePath =
-	        {}) requires std::is_constructible_v<Accessor, U> {
-		std::string currentPath;
-		for (auto sv : thePath) {
-			if (!currentPath.empty()) currentPath += '.';
-			currentPath += sv;
-		}
+	Refl::visit<T>(
+	    [this]<IsAccessor<T> U>(U &&accessor,
+	        const std::initializer_list<std::string_view> &thePath)
+	    {
+		    std::string currentPath;
+		    for (auto sv : thePath) {
+			    if (!currentPath.empty()) currentPath += '.';
+			    currentPath += sv;
+		    }
 
-		accessors.try_emplace(std::move(currentPath),
-		    std::forward<U>(accessor));
-	});
+		    accessors.try_emplace(std::move(currentPath),
+		        std::forward<U>(accessor));
+	    });
 }
 }
 
