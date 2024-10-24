@@ -2,6 +2,7 @@
 #define VIZZU_REFL_AUTO_ACCESS_H
 
 #include <map>
+#include <ranges>
 #include <string>
 #include <string_view>
 
@@ -16,59 +17,112 @@ template <class Object> struct Accessor
 {
 	std::string (*get)(const Object &);
 	void (*set)(Object &, const std::string &);
+
+	template <template <class> class TransformIn = std::type_identity,
+	    class... MPs>
+	static consteval Accessor make()
+	{
+		return {
+#ifndef __clang_analyzer__
+		    .get =
+		        +[](const Object &o)
+		        {
+			        using Type =
+			            Functors::Composite::Res<Object, MPs...>;
+			        return Conv::toString(std::as_const(
+			            Functors::FuncPtr<Object, Type, MPs...>(o)));
+		        },
+		    .set =
+		        +[](Object &o, const std::string &str)
+		        {
+			        using Type =
+			            Functors::Composite::Res<Object, MPs...>;
+			        Functors::FuncPtr<Object, Type, MPs...>(o) =
+			            Conv::parse<typename TransformIn<Type>::type>(
+			                str);
+		        }
+#endif
+		};
+	}
 };
 
-#ifndef __clang_analyzer__
 template <class Object,
-    class Members = decltype(member_functors_v<Object>),
+    class Members =
+#ifndef __clang_analyzer__
+        decltype(member_functors_v<Object>),
+#else
+        std::tuple<>,
+#endif
     class = std::make_index_sequence<std::tuple_size_v<Members>>>
-constexpr void *accessor_pairs{};
+constexpr const void *accessor_pairs{};
 
 template <class Object, class Members, std::size_t... Ix>
 constexpr std::initializer_list<
     std::pair<const std::string_view, Accessor<Object>>>
     accessor_pairs<Object, Members, std::index_sequence<Ix...>> = {
         {std::tuple_element_t<Ix, Members>::name(),
-            {.get =
-                    +[](const Object &o)
-                    {
-	                    return Conv::toString(
-	                        std::tuple_element_t<Ix, Members>::get(
-	                            o));
-                    },
-                .set =
-                    +[](Object &o, const std::string &str)
-                    {
-	                    using Type = std::remove_cvref_t<
-	                        decltype(std::tuple_element_t<Ix,
-	                            Members>::get(o))>;
-	                    auto &member = Refl::Functors::FuncPtr<Object,
-	                        Type,
-	                        std::tuple_element_t<Ix, Members>>(o);
-	                    member = Conv::parse<Type>(str);
-                    }}}...};
+            Accessor<Object>::template make<std::type_identity,
+                std::tuple_element_t<Ix, Members>>()}...};
+
+template <char sep, const std::initializer_list<std::string_view> &il>
+consteval auto merge_names()
+{
+	std::array<char,
+	    []
+	    {
+		    auto count = std::size_t{};
+		    for (auto sl : il) count += sl.size() + 1;
+		    return count ? count - 1 : 0;
+	    }()>
+	    res{};
+
+	auto it = res.data();
+	for (auto sl : il) {
+		if (it != res.data()) *it++ = sep;
+		it = std::ranges::copy(sl, it).out;
+	}
+	return res;
+};
+
+template <template <class> class TransformIn,
+    char sep,
+    auto Mptr,
+    auto... Mptrs>
+constexpr inline std::pair<const std::string_view,
+    Accessor<decltype(Impl::getBase(Mptr))>>
+    mptr_accessor_pair{
+#ifndef __clang_analyzer__
+        Name::in_data_name<merge_names<sep,
+            Functors::name_list<Members::MemberFunctor<Mptr>,
+                Members::MemberFunctor<Mptrs>...>>()>,
+        Accessor<decltype(Impl::getBase(
+            Mptr))>::template make<TransformIn,
+            Members::MemberFunctor<Mptr>,
+            Members::MemberFunctor<Mptrs>...>()
 #endif
+    };
 
 template <class Object>
-static const std::map<std::string_view, Accessor<Object>> &
-getAccessors()
+const std::map<std::string_view, Accessor<Object>> &getAccessors()
 {
-	static const std::map<std::string_view, Accessor<Object>>
-	    &accessors{
-#ifndef __clang_analyzer__
-	        accessor_pairs<Object>
-#endif
-	    };
+	static const std::map accessors{accessor_pairs<Object>};
 	return accessors;
 }
 
 template <class Object>
-Accessor<Object> getAccessor(const std::string_view &member)
+const Accessor<Object> &getAccessor(const std::string_view &member)
 {
-	auto &accessors = getAccessors<Object>();
+	const auto &accessors = getAccessors<Object>();
 	if (auto it = accessors.find(member); it != accessors.end())
 		return it->second;
-	return {};
+
+	thread_local const Accessor<Object> emptyAccessor{};
+	return emptyAccessor;
+}
+
+template <class Object> auto getAccessorNames()
+{
+	return std::ranges::views::keys(getAccessors<Object>());
 }
 }
 

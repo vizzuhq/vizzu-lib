@@ -41,10 +41,7 @@ public:
 		using FromString = void(Root &, const std::string &);
 		using ToString = std::string(const Root &);
 		template <class T>
-		    requires(Type::is_optional_v<std::remove_cvref_t<
-		                    std::invoke_result_t<T &&, Root &>>>)
-		constexpr
-		    __attribute__((always_inline)) explicit Accessor(T &&t) :
+		constexpr explicit Accessor(T &&t) :
 		    toString(
 		        [t = std::forward<T>(t)](const Root &r)
 		        {
@@ -103,11 +100,6 @@ private:
 
 	std::map<std::string, Accessor, std::less<>> accessors;
 };
-
-template <class U, class Root>
-concept IsAccessor =
-    std::is_constructible_v<typename ParamRegistry<Root>::Accessor,
-        U>;
 
 }
 

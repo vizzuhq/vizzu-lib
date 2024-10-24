@@ -59,8 +59,8 @@ void Channel::reset()
 	measureId = std::nullopt;
 	dimensionIds.clear();
 	title = Base::AutoParam<std::string, true>{};
-	axisLine = Base::AutoBool();
-	axisLabels = Base::AutoBool();
+	axis = Base::AutoBool();
+	labels = Base::AutoBool();
 	ticks = Base::AutoBool();
 	interlacing = Base::AutoBool();
 	guides = Base::AutoBool();
@@ -94,9 +94,9 @@ bool Channel::operator==(const Channel &other) const
 	            && std::isnan(other.defaultValue)))
 	    && stackable == other.stackable && range == other.range
 	    && labelLevel == other.labelLevel && title == other.title
-	    && axisLine == other.axisLine
-	    && axisLabels == other.axisLabels && ticks == other.ticks
-	    && interlacing == other.interlacing && guides == other.guides
+	    && axis == other.axis && labels == other.labels
+	    && ticks == other.ticks && interlacing == other.interlacing
+	    && guides == other.guides
 	    && markerGuides == other.markerGuides;
 }
 

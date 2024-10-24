@@ -109,9 +109,7 @@ public:
 
 	[[nodiscard]] std::string toString() const
 	{
-		if (value == 1.0) return "true";
-		if (value == 0.0) return "false";
-		return std::to_string(value);
+		return Conv::toString(static_cast<bool>(*this));
 	}
 
 	[[nodiscard]] FuzzyBool more() const

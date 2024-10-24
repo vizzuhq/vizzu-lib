@@ -1,12 +1,11 @@
 #include "abstractmarker.h"
 
 #include <array>
-#include <cstddef>
-#include <utility>
 
 #include "base/anim/interpolated.h"
 #include "base/geom/line.h"
 #include "base/math/floating.h"
+#include "base/math/interpolation.h"
 #include "chart/generator/marker.h"
 #include "chart/main/style.h"
 #include "chart/options/shapetype.h"

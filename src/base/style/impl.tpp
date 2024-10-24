@@ -7,6 +7,9 @@
 
 namespace Style
 {
+template <class U, class Root>
+concept IsAccessor = Type::is_optional_v<
+    std::remove_cvref_t<std::invoke_result_t<U &&, Root &>>>;
 
 template <class T> T Sheet<T>::getFullParams() const
 {

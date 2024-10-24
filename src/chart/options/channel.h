@@ -96,8 +96,8 @@ public:
 	ChannelRange range{};
 	std::size_t labelLevel{};
 	Base::AutoParam<std::string, true> title{};
-	Base::AutoBool axisLine{};
-	Base::AutoBool axisLabels{};
+	Base::AutoBool axis{};
+	Base::AutoBool labels{};
 	Base::AutoBool ticks{};
 	Base::AutoBool guides{};
 	Base::AutoBool markerGuides{};

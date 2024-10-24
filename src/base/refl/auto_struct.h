@@ -398,19 +398,23 @@ constexpr inline bool specified_members<From,
 	return true;
 }();
 
-template <class From,
-    std::size_t Ix,
+template <auto Ix,
+    class From = decltype(Impl::getBase(Ix)),
     bool through_memptrs = specified_members<From>>
 struct MemberFunctor;
 
 template <class From, std::size_t Ix>
     requires(!std::is_reference_v<From> && !std::is_const_v<From>)
-struct MemberFunctor<From, Ix, true>
+struct MemberFunctor<Ix, From, true> :
+    MemberFunctor<std::get<Ix>(From::members()), From, true>
+{};
+
+template <auto G, class From, bool through_memptrs>
+    requires std::is_member_object_pointer_v<decltype(G)>
+struct MemberFunctor<G, From, through_memptrs>
 {
-	template <class F = From>
-	constexpr static inline decltype(auto) get(const F &t)
+	constexpr static inline decltype(auto) get(const From &t)
 	{
-		constexpr auto G = std::get<Ix>(F::members());
 		return std::invoke(G, t);
 	}
 
@@ -418,31 +422,27 @@ struct MemberFunctor<From, Ix, true>
 	using type =
 	    std::remove_cvref_t<decltype(get(std::declval<F>()))>;
 
-	template <class F = From>
 	consteval static inline std::string_view name()
 	{
-		return Refl::Name::in_data_name<
-		    Refl::Name::name<decltype(std::get<Ix>(F::members())),
-		        std::get<Ix>(F::members())>()>;
+		return Name::in_data_name<Name::name<decltype(G), G>()>;
 	}
 };
 
-template <class From, std::size_t Ix>
+template <std::size_t Ix, class From>
     requires(!std::is_reference_v<From> && !std::is_const_v<From>
              && is_structure_bindable_v<From>
                     == structure_bindable::through_members)
-struct MemberFunctor<From, Ix, false>
+struct MemberFunctor<Ix, From, false>
 {
 	constexpr static inline decltype(auto) get(const From &t)
 	{
 		return std::get<Ix>(get_members(t));
 	}
 
-	template <class = void>
+	template <class F = From>
 	using type =
-	    std::remove_cvref_t<decltype(get(std::declval<From>()))>;
+	    std::remove_cvref_t<decltype(get(std::declval<F>()))>;
 
-	template <class = void>
 	consteval static inline std::string_view name()
 	{
 		return Refl::Name::in_data_name<Refl::Name::name<void,
@@ -454,7 +454,7 @@ struct MemberFunctor<From, Ix, false>
 template <class T, std::size_t... Ix>
 consteval auto get_members_by_bind(std::index_sequence<Ix...>)
 {
-	return std::tuple<MemberFunctor<T, Ix>...>{};
+	return std::tuple<MemberFunctor<Ix, T>...>{};
 }
 
 template <class T, std::size_t... Ix>
@@ -483,7 +483,7 @@ consteval auto get_members_by_memptrs(std::index_sequence<Ix...>)
 		return get_members_by_memptrs<T>(sequence);
 	}
 	else {
-		return std::tuple<MemberFunctor<T, Ix>...>{};
+		return std::tuple<MemberFunctor<Ix, T>...>{};
 	}
 }
 
@@ -549,6 +549,10 @@ constexpr inline auto operator>>(U &&arg, const T &)
 {
 	return T::get(std::forward<U &&>(arg));
 }
+
+template <class T, class... MemberFunctors>
+using Res = std::remove_cvref_t<decltype((
+    std::declval<const T &>() >> ... >> MemberFunctors{}))>;
 }
 
 template <class T, class U, class... MemberFunctors>
