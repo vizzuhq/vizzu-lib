@@ -196,28 +196,31 @@ template <class E> constexpr E get_enum(const std::string_view &data)
 template <class E, class V>
 struct EnumArray : std::array<V, std::size(enum_names<E>)>
 {
+	constexpr static auto first = Detail::from_to<E>().first;
 	using base_array = std::array<V, std::size(enum_names<E>)>;
 	[[nodiscard]] constexpr V &operator[](E value) noexcept
 	{
 		return base_array::operator[](
-		    static_cast<std::size_t>(value));
+		    static_cast<std::size_t>(value) - first);
 	}
 
 	[[nodiscard]] constexpr const V &operator[](
 	    E value) const noexcept
 	{
 		return base_array::operator[](
-		    static_cast<std::size_t>(value));
+		    static_cast<std::size_t>(value) - first);
 	}
 
 	[[nodiscard]] constexpr V &at(E value)
 	{
-		return base_array::at(static_cast<std::size_t>(value));
+		return base_array::at(
+		    static_cast<std::size_t>(value) - first);
 	}
 
 	[[nodiscard]] constexpr const V &at(E value) const
 	{
-		return base_array::at(static_cast<std::size_t>(value));
+		return base_array::at(
+		    static_cast<std::size_t>(value) - first);
 	}
 
 	bool operator==(const EnumArray &) const = default;

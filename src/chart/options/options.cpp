@@ -27,12 +27,6 @@ ChannelExtrema operator"" _perc(long double percent)
 }
 }
 
-[[nodiscard]] bool operator==(const Options::LegendId &l,
-    const ChannelId &c)
-{
-	return Options::toChannel(l) == c;
-}
-
 void Options::reset()
 {
 	channels.reset();
@@ -65,7 +59,7 @@ const Channel *Options::subAxisOf(ChannelId id) const
 		if (id == ChannelId::size && channels.anyAxisSet()) {
 			return &channels.at(ChannelId::size);
 		}
-		if (asAxis(id)) {
+		if (id == AxisId::x || id == AxisId::y) {
 			if (channels.at(id).isDimension() && id == mainAxisType())
 				return &subAxis();
 			return &channels.at(ChannelId::size);
@@ -267,7 +261,7 @@ Orientation Options::getAutoOrientation() const
 	return Gen::Orientation::horizontal;
 }
 
-std::optional<Options::LegendId> Options::getAutoLegend() const
+std::optional<LegendId> Options::getAutoLegend() const
 {
 	auto series = channels.getDimensions();
 	series.merge(channels.getMeasures());
@@ -283,14 +277,14 @@ std::optional<Options::LegendId> Options::getAutoLegend() const
 			series.erase(*id);
 
 	for (auto channelId : {LegendId::color, LegendId::lightness})
-		if (channels.at(toChannel(channelId))
-		        .dimensions()
-		        .contains_any(series.begin(), series.end()))
+		if (channels.at(channelId).dimensions().contains_any(
+		        series.begin(),
+		        series.end()))
 			return channelId;
 
 	for (auto channelId :
 	    {LegendId::color, LegendId::lightness, LegendId::size})
-		if (auto &&mid = channels.at(toChannel(channelId)).measureId)
+		if (auto &&mid = channels.at(channelId).measureId)
 			if (series.contains(*mid)) return channelId;
 
 	return std::nullopt;
@@ -341,8 +335,7 @@ bool Options::labelsShownFor(const Data::SeriesIndex &series) const
 	return channels.at(AxisId::x).labelSeries() == series
 	    || channels.at(AxisId::y).labelSeries() == series
 	    || (legend.get()
-	        && channels.at(toChannel(*legend.get())).labelSeries()
-	               == series);
+	        && channels.at(*legend.get()).labelSeries() == series);
 }
 
 void Options::showTooltip(std::optional<MarkerIndex> marker)
@@ -363,11 +356,6 @@ void Options::showTooltip(std::optional<MarkerIndex> marker)
 			markersInfo.find(*idFrom)->second = *marker;
 		tooltip = marker;
 	}
-}
-
-[[nodiscard]] ChannelId Options::toChannel(const LegendId &l)
-{
-	return static_cast<ChannelId>(l);
 }
 
 }

@@ -39,10 +39,10 @@ private:
 	    bool main) const;
 	void normalizeXY();
 	void calcMeasureAxises(const Data::DataTable &dataTable);
-	void calcMeasureAxis(const Data::DataTable &dataTable,
-	    ChannelId type);
+	template <ChannelIdLike T>
+	void calcMeasureAxis(const Data::DataTable &dataTable, T type);
 	void calcDimensionAxises();
-	void calcDimensionAxis(ChannelId type);
+	template <ChannelIdLike T> void calcDimensionAxis(T type);
 	void addAlignment(const Buckets &subBuckets) const;
 	void addSeparation(const Buckets &subBuckets,
 	    const std::size_t &mainBucketSize) const;

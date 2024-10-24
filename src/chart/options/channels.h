@@ -33,11 +33,13 @@ public:
 	[[nodiscard]] const Channel &at(const ChannelId &id) const;
 	[[nodiscard]] Channel &at(const ChannelId &id);
 
-	[[nodiscard]] const Channel &at(const AxisId &id) const
+	template <ChannelIdLike T>
+	[[nodiscard]] const Channel &at(const T &id) const
 	{
 		return at(asChannel(id));
 	}
-	[[nodiscard]] Channel &at(const AxisId &id)
+
+	template <ChannelIdLike T> [[nodiscard]] Channel &at(const T &id)
 	{
 		return at(asChannel(id));
 	}

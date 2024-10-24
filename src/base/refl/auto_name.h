@@ -29,6 +29,12 @@ template <class T> consteval T declval()
 #endif
 }
 
+namespace Impl
+{
+template <class Base, class Member>
+static Base getBase(Member Base::*);
+}
+
 namespace Name
 {
 template <class T> struct Wrapper
@@ -37,9 +43,6 @@ template <class T> struct Wrapper
 };
 
 template <class T> Wrapper(T) -> Wrapper<T>;
-
-template <class Base, class Member>
-static Base getBase(Member Base::*);
 
 template <class E, auto v> consteval auto name()
 {
@@ -51,7 +54,7 @@ template <class E, auto v> consteval auto name()
 	if constexpr (std::is_member_object_pointer_v<decltype(v)>)
 		return name<void,
 		    Wrapper{&std::invoke(v,
-		        declval<decltype(getBase(v)) &>())}>();
+		        declval<decltype(Impl::getBase(v)) &>())}>();
 #endif
 	constexpr std::string_view sv = __PRETTY_FUNCTION__;
 	constexpr auto last = sv.find_last_not_of(" }])");

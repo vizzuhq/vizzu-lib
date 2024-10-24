@@ -1,75 +1,48 @@
 #include "config.h"
 
 #include <functional>
+#include <map>
 #include <optional>
 #include <stdexcept>
 #include <string>
 #include <string_view>
 #include <type_traits>
-#include <utility>
 
 #include "base/anim/interpolated.h"
 #include "base/conv/auto_json.h"
 #include "base/conv/parse.h"
+#include "base/conv/tostring.h"
 #include "base/math/fuzzybool.h"
+#include "base/refl/auto_accessor.h"
 #include "base/refl/auto_enum.h"
 #include "base/text/smartstring.h"
 #include "chart/options/channel.h"
+#include "chart/options/channelrange.h"
 #include "chart/options/options.h"
 
-namespace Vizzu::Gen
+namespace Refl::Access
 {
+template <class T> struct FromStringIf : std::type_identity<T>
+{};
 
-template <class T> struct ExtractIf : std::identity
+template <class T>
+struct FromStringIf<::Anim::Interpolated<T>> : std::type_identity<T>
+{};
+
+template <>
+struct FromStringIf<Math::FuzzyBool> : std::type_identity<bool>
+{};
+
+template <auto... Mptrs>
+constexpr auto accessor =
+    mptr_accessor_pair<FromStringIf, '.', Mptrs...>;
+
+template <>
+const std::map<std::string_view, Accessor<Vizzu::Gen::Options>> &
+getAccessors<Vizzu::Gen::Options>()
 {
-	using type = T;
-};
-
-template <class T> struct ExtractIf<::Anim::Interpolated<T>>
-{
-	using type = T;
-	const T &operator()(const ::Anim::Interpolated<T> &value) const
-	{
-		return value.get();
-	}
-};
-
-template <> struct ExtractIf<Math::FuzzyBool>
-{
-	using type = bool;
-
-	bool operator()(const Math::FuzzyBool &value) const
-	{
-		return static_cast<bool>(value);
-	}
-};
-
-template <auto Mptr>
-using ExtractType =
-    ExtractIf<std::remove_cvref_t<std::invoke_result_t<decltype(Mptr),
-        decltype(Refl::Name::getBase(Mptr))>>>;
-
-template <auto Mptr>
-constexpr std::pair<std::string_view, Config::Accessor>
-    Config::accessor = {Refl::Name::in_data_name<
-                            Refl::Name::name<decltype(Mptr), Mptr>()>,
-        {.get =
-                [](const Options &options)
-            {
-	            return Conv::toString(
-	                ExtractType<Mptr>{}(std::invoke(Mptr, options)));
-            },
-            .set =
-                [](Options &options, const std::string &value)
-            {
-	            std::invoke(Mptr, options) =
-	                Conv::parse<typename ExtractType<Mptr>::type>(
-	                    value);
-            }}};
-
-const Config::Accessors &Config::getAccessors()
-{
-	static const Accessors accessors = {accessor<&Options::title>,
+	using Vizzu::Gen::Options;
+	static const std::map accessors{accessor<&Options::title>,
 	    accessor<&Options::subtitle>,
 	    accessor<&Options::caption>,
 	    accessor<&Options::legend>,
@@ -97,102 +70,70 @@ const Config::Accessors &Config::getAccessors()
 	return accessors;
 }
 
-template <auto Mptr>
-const std::pair<std::string_view, Config::ChannelAccessor>
-    Config::channel_accessor{
-        Refl::Name::in_data_name<
-            Refl::Name::name<decltype(Mptr), Mptr>()>,
-        {.get =
-                [](const Channel &channel)
-            {
-	            return Conv::toString(
-	                ExtractType<Mptr>{}(std::invoke(Mptr, channel)));
-            },
-            .set =
-                [](Channel &channel, const std::string &value)
-            {
-	            std::invoke(Mptr, channel) =
-	                Conv::parse<typename ExtractType<Mptr>::type>(
-	                    value);
-            }}};
-
-const Config::ChannelAccessors &Config::getChannelAccessors()
+template <>
+const std::map<std::string_view, Accessor<Vizzu::Gen::Channel>> &
+getAccessors<Vizzu::Gen::Channel>()
 {
-	static const ChannelAccessors accessors{
-	    channel_accessor<&Channel::title>,
-	    {"set", {}},
-	    channel_accessor<&Channel::stackable>,
-	    {"range.min",
-	        {.get =
-	                [](const Channel &channel)
-	            {
-		            return Conv::toString(channel.range.min);
-	            },
-	            .set =
-	                [](Channel &channel, const std::string &value)
-	            {
-		            channel.range.min =
-		                Conv::parse<OptionalChannelExtrema>(value);
-	            }}},
-	    {"range.max",
-	        {.get =
-	                [](const Channel &channel)
-	            {
-		            return Conv::toString(channel.range.max);
-	            },
-	            .set =
-	                [](Channel &channel, const std::string &value)
-	            {
-		            channel.range.max =
-		                Conv::parse<OptionalChannelExtrema>(value);
-	            }}},
-	    channel_accessor<&Channel::labelLevel>,
-	    {"axis", channel_accessor<&Channel::axisLine>.second},
-	    channel_accessor<&Channel::ticks>,
-	    channel_accessor<&Channel::interlacing>,
-	    channel_accessor<&Channel::guides>,
-	    channel_accessor<&Channel::markerGuides>,
-	    {"labels", channel_accessor<&Channel::axisLabels>.second},
-	    channel_accessor<&Channel::step>};
+	using Vizzu::Gen::Channel;
+	using Vizzu::Gen::ChannelRange;
+	static const std::map accessors{accessor<&Channel::title>,
+	    accessor<&Channel::stackable>,
+	    accessor<&Channel::range, &ChannelRange::min>,
+	    accessor<&Channel::range, &ChannelRange::max>,
+	    accessor<&Channel::labelLevel>,
+	    accessor<&Channel::axis>,
+	    accessor<&Channel::ticks>,
+	    accessor<&Channel::interlacing>,
+	    accessor<&Channel::guides>,
+	    accessor<&Channel::markerGuides>,
+	    accessor<&Channel::labels>,
+	    accessor<&Channel::step>};
+
 	return accessors;
 }
+}
+
+namespace Vizzu::Gen
+{
+
+using Refl::Access::getAccessor;
+using Refl::Access::getAccessorNames;
 
 std::string Config::paramsJson()
 {
 	std::string res;
 	Conv::JSONArr arr{res};
-	for (const auto &accessor : getAccessors()) arr << accessor.first;
+	for (const auto &accessor : getAccessorNames<Options>())
+		arr << accessor;
 
-	for (auto &&channelParams = getChannelAccessors();
-	     auto channelName : Refl::enum_names<ChannelId>)
+	for (auto &&channelParams = getAccessorNames<Channel>();
+	     auto channelName : Refl::enum_names<ChannelId>) {
 		for (const auto &param : channelParams)
 			arr << "channels." + std::string{channelName} + "."
-			           + std::string{param.first};
+			           + std::string{param};
+		arr << "channels." + std::string{channelName} + ".set";
+	}
 	return res;
 }
 
 void Config::setParam(const std::string &path,
     const std::string &value)
 {
-	if (path.starts_with("channels.")) {
+	if (path.starts_with("channels."))
 		setChannelParam(path, value);
-	}
-	else {
-		auto it = getAccessors().find(path);
-		if (it == getAccessors().end())
-			throw std::logic_error(
-			    path + "/" + value + ": invalid config parameter");
-		it->second.set(options, value);
-	}
+	else if (auto &&accessor = getAccessor<Options>(path).set)
+		accessor(options, value);
+	else
+		throw std::logic_error(
+		    path + "/" + value + ": invalid config parameter");
 }
 
 std::string Config::getParam(const std::string &path) const
 {
 	if (path.starts_with("channels.")) return getChannelParam(path);
 
-	if (auto it = getAccessors().find(path);
-	    it != getAccessors().end())
-		return it->second.get(options);
+	if (auto &&accessor = getAccessor<Options>(path).get)
+		return accessor(options);
 
 	throw std::logic_error(path + ": invalid config parameter");
 }
@@ -251,9 +192,8 @@ void Config::setChannelParam(const std::string &path,
 
 	if (property == "range") property += "." + parts.at(3);
 
-	const auto &accessors = getChannelAccessors();
-	if (auto it = accessors.find(property); it != accessors.end())
-		it->second.set(channel, value);
+	if (auto &&accessor = getAccessor<Channel>(property).set)
+		accessor(channel, value);
 	else
 		throw std::logic_error(
 		    path + "/" + value
@@ -278,9 +218,8 @@ std::string Config::getChannelParam(const std::string &path) const
 
 	if (property == "range") property += "." + parts.at(3);
 
-	const auto &accessors = getChannelAccessors();
-	if (auto it = accessors.find(property); it != accessors.end())
-		return it->second.get(channel);
+	if (auto &&accessor = getAccessor<Channel>(property).get)
+		return accessor(channel);
 
 	throw std::logic_error(path + ": invalid channel parameter");
 }

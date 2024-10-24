@@ -45,10 +45,7 @@ template <class T> struct ubiq_base
 #pragma clang diagnostic ignored "-Wmissing-field-initializers"
 #endif
 
-template <class T,
-    std::size_t... I,
-    class =
-        typename std::enable_if_t<std::is_copy_constructible_v<T>>>
+template <class T, std::size_t... I>
 consteval std::add_pointer_t<decltype(T{ubiq{I}...})>
     enable_if_constructible(std::index_sequence<I...>) noexcept;
 
@@ -63,7 +60,7 @@ consteval std::add_pointer_t<decltype(T(ubiq_base<T>{B}...,
         std::index_sequence<I...>) noexcept;
 
 template <template <class, std::size_t, class...> typename,
-    class T,
+    class,
     std::size_t Begin,
     std::size_t Middle>
     requires(Begin == Middle)
@@ -83,7 +80,7 @@ template <template <class, std::size_t, class...> typename EnableIf,
     class T,
     std::size_t Begin,
     std::size_t Middle>
-    requires(Begin < Middle && !std::is_void_v<EnableIf<T, Middle>>)
+    requires(Begin < Middle && EnableIf<T, Middle>::value)
 consteval auto detect_fields_count(int) noexcept
 {
 	return detect_fields_count<EnableIf,
@@ -105,21 +102,20 @@ consteval std::size_t detect_fields_count(std::size_t) noexcept
 	    Begin + (Middle - Begin) / 2>(0);
 }
 
-template <class T,
-    std::size_t N,
-    class = decltype(enable_if_constructible<T>(
-        std::make_index_sequence<N>()))>
-using if_constructible_t = std::size_t;
+template <class T, std::size_t N>
+using if_constructible_t = std::bool_constant<requires {
+	enable_if_constructible<T>(std::make_index_sequence<N>());
+}>;
 
 template <std::size_t M> struct FixMax
 {
-	template <class T,
-	    std::size_t N,
-	    class = decltype(enable_if_constructible_base<T>(
-	        std::make_index_sequence<N>(),
-	        std::make_index_sequence<std::min(M - N, M)>()))>
-	    requires(N <= M)
-	using if_constructible_base_t = std::size_t;
+	template <class T, std::size_t N>
+	using if_constructible_base_t =
+	    std::bool_constant<N <= M &&requires {
+		    enable_if_constructible_base<T>(
+		        std::make_index_sequence<N>(),
+		        std::make_index_sequence<std::min(M - N, M)>());
+	    }>;
 };
 
 template <class T>
@@ -402,19 +398,23 @@ constexpr inline bool specified_members<From,
 	return true;
 }();
 
-template <class From,
-    std::size_t Ix,
+template <auto Ix,
+    class From = decltype(Impl::getBase(Ix)),
     bool through_memptrs = specified_members<From>>
 struct MemberFunctor;
 
 template <class From, std::size_t Ix>
     requires(!std::is_reference_v<From> && !std::is_const_v<From>)
-struct MemberFunctor<From, Ix, true>
+struct MemberFunctor<Ix, From, true> :
+    MemberFunctor<std::get<Ix>(From::members()), From, true>
+{};
+
+template <auto G, class From, bool through_memptrs>
+    requires std::is_member_object_pointer_v<decltype(G)>
+struct MemberFunctor<G, From, through_memptrs>
 {
-	template <class F = From>
-	constexpr static inline decltype(auto) get(const F &t)
+	constexpr static inline decltype(auto) get(const From &t)
 	{
-		constexpr auto G = std::get<Ix>(F::members());
 		return std::invoke(G, t);
 	}
 
@@ -422,31 +422,27 @@ struct MemberFunctor<From, Ix, true>
 	using type =
 	    std::remove_cvref_t<decltype(get(std::declval<F>()))>;
 
-	template <class F = From>
 	consteval static inline std::string_view name()
 	{
-		return Refl::Name::in_data_name<
-		    Refl::Name::name<decltype(std::get<Ix>(F::members())),
-		        std::get<Ix>(F::members())>()>;
+		return Name::in_data_name<Name::name<decltype(G), G>()>;
 	}
 };
 
-template <class From, std::size_t Ix>
+template <std::size_t Ix, class From>
     requires(!std::is_reference_v<From> && !std::is_const_v<From>
              && is_structure_bindable_v<From>
                     == structure_bindable::through_members)
-struct MemberFunctor<From, Ix, false>
+struct MemberFunctor<Ix, From, false>
 {
 	constexpr static inline decltype(auto) get(const From &t)
 	{
 		return std::get<Ix>(get_members(t));
 	}
 
-	template <class = void>
+	template <class F = From>
 	using type =
-	    std::remove_cvref_t<decltype(get(std::declval<From>()))>;
+	    std::remove_cvref_t<decltype(get(std::declval<F>()))>;
 
-	template <class = void>
 	consteval static inline std::string_view name()
 	{
 		return Refl::Name::in_data_name<Refl::Name::name<void,
@@ -458,7 +454,7 @@ struct MemberFunctor<From, Ix, false>
 template <class T, std::size_t... Ix>
 consteval auto get_members_by_bind(std::index_sequence<Ix...>)
 {
-	return std::tuple<MemberFunctor<T, Ix>...>{};
+	return std::tuple<MemberFunctor<Ix, T>...>{};
 }
 
 template <class T, std::size_t... Ix>
@@ -487,7 +483,7 @@ consteval auto get_members_by_memptrs(std::index_sequence<Ix...>)
 		return get_members_by_memptrs<T>(sequence);
 	}
 	else {
-		return std::tuple<MemberFunctor<T, Ix>...>{};
+		return std::tuple<MemberFunctor<Ix, T>...>{};
 	}
 }
 
@@ -527,8 +523,7 @@ consteval auto get_member_functors(void *)
 template <class T>
     requires(is_structure_bindable_v<T> == structure_bindable::no
              && std::tuple_size_v<members_t<T>> == 0
-             && std::tuple_size_v<bases_t<T>> == 0
-             && !std::is_empty_v<T>)
+             && std::tuple_size_v<bases_t<T>> == 0)
 consteval auto get_member_functors(void *)
 {
 	static_assert(!std::is_polymorphic_v<T>);
@@ -536,6 +531,13 @@ consteval auto get_member_functors(void *)
 	return std::tuple{};
 }
 }
+
+template <class T>
+constexpr static inline auto member_functors_v =
+    Members::get_member_functors<T>(nullptr);
+
+template <class MF>
+using member_functor_t = typename MF::template type<>;
 
 namespace Functors
 {
@@ -547,6 +549,10 @@ constexpr inline auto operator>>(U &&arg, const T &)
 {
 	return T::get(std::forward<U &&>(arg));
 }
+
+template <class T, class... MemberFunctors>
+using Res = std::remove_cvref_t<decltype((
+    std::declval<const T &>() >> ... >> MemberFunctors{}))>;
 }
 
 template <class T, class U, class... MemberFunctors>
@@ -569,10 +575,10 @@ template <class T, class Visitor> struct Applier
 	             && std::is_invocable_v<Visitor &,
 	                 U &(*)(const T &),
 	                 const std::initializer_list<std::string_view> &>)
-	constexpr static __attribute__((always_inline)) void apply(
+	constexpr static __attribute__((always_inline)) auto apply(
 	    Visitor &v) noexcept
 	{
-		v(FuncPtr<T, U, MemberFunctors...>,
+		return v(FuncPtr<T, U, MemberFunctors...>,
 		    name_list<MemberFunctors...>);
 	}
 
@@ -582,46 +588,50 @@ template <class T, class Visitor> struct Applier
 	             && !std::is_invocable_v<Visitor &,
 	                 U &(*)(const T &),
 	                 const std::initializer_list<std::string_view> &>)
-	constexpr static __attribute__((always_inline)) void apply(
+	constexpr static __attribute__((always_inline)) auto apply(
 	    Visitor &v) noexcept
 	{
-		v(FuncPtr<T, U, MemberFunctors...>);
+		return v(FuncPtr<T, U, MemberFunctors...>);
 	}
 
 	template <class U, class... MemberFunctors>
-	constexpr static __attribute__((always_inline)) void apply(
+	constexpr static __attribute__((always_inline)) auto apply(
 	    [[maybe_unused]] Visitor &v) noexcept
 	{
-		if constexpr (!std::is_empty_v<U>) {
-			if constexpr (std::tuple_size_v<bases_t<U>> > 0) {
-				std::invoke(
-				    [&v]<class... Bases>(std::tuple<Bases...> *)
-				    {
-					    (Functors::Applier<T,
-					         Visitor>::template apply<Bases,
-					         MemberFunctors...>(v),
-					        ...);
-				    },
-				    std::add_pointer_t<bases_t<U>>{});
-			}
+		constexpr auto members = member_functors_v<U>;
+		static_assert(
+		    std::is_empty_v<U>
+		        || std::tuple_size_v<bases_t<U>>
+		                   + std::tuple_size_v<decltype(members)> > 0,
+		    "Unable to run reflection");
 
-			if constexpr (constexpr auto members =
-			                  Members::get_member_functors<U>(
-			                      nullptr);
-			              std::tuple_size_v<decltype(members)> > 0) {
-				std::apply(
-				    [&v]<class... MF>(MF...)
-				    {
-					    (Functors::Applier<T, Visitor>::
-					            template apply<
-					                typename MF::template type<>,
-					                MemberFunctors...,
-					                MF>(v),
-					        ...);
-				    },
-				    members);
-			}
-		}
+		return std::invoke(
+		    [&v]<class... Bases, class... MF>(std::tuple<Bases...> *,
+		        std::tuple<MF...>)
+		    {
+			    if constexpr (
+			        std::is_same_v<
+			            std::tuple<Bases..., member_functor_t<MF>...>,
+			            std::tuple<decltype(apply<Bases,
+			                           MemberFunctors...>(v))...,
+			                decltype(apply<member_functor_t<MF>,
+			                    MemberFunctors...,
+			                    MF>(v))...>>) {
+				    return U{apply<Bases, MemberFunctors...>(v)...,
+				        apply<member_functor_t<MF>,
+				            MemberFunctors...,
+				            MF>(v)...};
+			    }
+			    else {
+				    (apply<Bases, MemberFunctors...>(v), ...);
+				    (apply<member_functor_t<MF>,
+				         MemberFunctors...,
+				         MF>(v),
+				        ...);
+			    }
+		    },
+		    std::add_pointer_t<bases_t<U>>{},
+		    members);
 	}
 };
 
@@ -658,7 +668,7 @@ struct GetterVisitor<Visitor,
 	    std::invoke_result_t<Getter, Ts>...,
 	    const std::initializer_list<std::string_view> &>
 	operator()(Getter &&getter,
-	    const std::initializer_list<std::string_view> &sv = {})
+	    const std::initializer_list<std::string_view> &sv)
 	    const noexcept
 	{
 		return std::invoke(visitor,
@@ -680,16 +690,16 @@ constexpr __attribute__((always_inline)) auto visit(Visitor &&visitor)
 #endif
 }
 
-template <class Visitor, class T, class... Ts>
+template <class Res = void, class Visitor, class T, class... Ts>
     requires((std::is_same_v<std::remove_cvref_t<T>,
                   std::remove_cvref_t<Ts>>
               && ...))
-constexpr void
+constexpr Res
 visit(Visitor &&visitor, [[maybe_unused]] T &visitable, Ts &&...ts)
 {
 #ifndef __clang_analyzer__
 	using TT = std::remove_cvref_t<T>;
-	visit<TT>(
+	return visit<TT>(
 	    Functors::GetterVisitor<Visitor, std::tuple<T &, Ts &&...>>{
 	        std::forward<Visitor>(visitor),
 	        {visitable, std::forward<Ts>(ts)...}});
@@ -697,6 +707,7 @@ visit(Visitor &&visitor, [[maybe_unused]] T &visitable, Ts &&...ts)
 	std::ignore = std::forward<Visitor>(visitor);
 	std::ignore =
 	    std::forward_as_tuple<Ts...>(std::forward<Ts>(ts)...);
+	if constexpr (!std::is_void_v<Res>) return {};
 #endif
 }
 

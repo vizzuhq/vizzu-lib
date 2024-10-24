@@ -1,6 +1,5 @@
 #include "morph.h"
 
-#include <concepts>
 #include <memory>
 #include <stdexcept>
 
@@ -17,51 +16,7 @@
 namespace Vizzu::Anim::Morph
 {
 
-template <class T> struct interpolatable_t
-{
-	constexpr bool operator()() const
-	{
-		using Math::interpolate;
-		return requires(const T &a, const T &b, double factor) {
-			{
-				interpolate(a, b, factor)
-			} -> std::same_as<T>;
-		};
-	}
-};
-
-template <class T> concept interpolatable = interpolatable_t<T>{}();
-
-struct interpolate_t
-{
-	template <class T>
-	constexpr T
-	operator()(const T &a, const T &b, double factor) const;
-};
-
-constexpr inline static interpolate_t interpolate{};
-
-template <class T>
-constexpr T
-interpolate_t::operator()(const T &a, const T &b, double factor) const
-{
-	if constexpr (interpolatable<T>) {
-		using Math::interpolate;
-		return interpolate(a, b, factor);
-	}
-	else {
-		T res;
-		Refl::visit(
-		    [factor]<class V>(V &res, const V &op0, const V &op1)
-		    {
-			    res = Morph::interpolate(op0, op1, factor);
-		    },
-		    res,
-		    a,
-		    b);
-		return res;
-	}
-}
+using Math::Niebloid::interpolate;
 
 AbstractMorph::AbstractMorph(const Gen::Plot &source,
     const Gen::Plot &target,
@@ -231,18 +186,16 @@ void Vertical::transform(const Gen::Plot &source,
 	        target.axises.at(Gen::AxisId::y),
 	        factor);
 
-	actual.axises.at(Gen::ChannelId::size) =
-	    interpolate(source.axises.at(Gen::ChannelId::size),
-	        target.axises.at(Gen::ChannelId::size),
+	actual.axises.at(Gen::LegendId::size) =
+	    interpolate(source.axises.at(Gen::LegendId::size),
+	        target.axises.at(Gen::LegendId::size),
 	        factor);
 
 	actual.guides.y =
 	    interpolate(source.guides.y, target.guides.y, factor);
 
-	actual.axises.at(Gen::ChannelId::label).measure =
-	    interpolate(source.axises.at(Gen::ChannelId::label).measure,
-	        target.axises.at(Gen::ChannelId::label).measure,
-	        factor);
+	actual.axises.label =
+	    interpolate(source.axises.label, target.axises.label, factor);
 }
 
 void Vertical::transform(const Marker &source,
@@ -265,14 +218,14 @@ void Morph::Color::transform(const Gen::Plot &source,
     Gen::Plot &actual,
     double factor) const
 {
-	actual.axises.at(Gen::ChannelId::color) =
-	    interpolate(source.axises.at(Gen::ChannelId::color),
-	        target.axises.at(Gen::ChannelId::color),
+	actual.axises.at(Gen::LegendId::color) =
+	    interpolate(source.axises.at(Gen::LegendId::color),
+	        target.axises.at(Gen::LegendId::color),
 	        factor);
 
-	actual.axises.at(Gen::ChannelId::lightness) =
-	    interpolate(source.axises.at(Gen::ChannelId::lightness),
-	        target.axises.at(Gen::ChannelId::lightness),
+	actual.axises.at(Gen::LegendId::lightness) =
+	    interpolate(source.axises.at(Gen::LegendId::lightness),
+	        target.axises.at(Gen::LegendId::lightness),
 	        factor);
 }
 

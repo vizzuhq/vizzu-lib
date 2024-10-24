@@ -2,7 +2,6 @@
 #define CHART_CONFIG_H
 
 #include <functional>
-#include <map>
 #include <string>
 #include <utility>
 
@@ -23,32 +22,6 @@ public:
 	{}
 
 private:
-	struct Accessor
-	{
-		std::string (*get)(const Options &);
-		void (*set)(Options &, const std::string &);
-	};
-
-	struct ChannelAccessor
-	{
-		std::string (*get)(const Channel &);
-		void (*set)(Channel &, const std::string &);
-	};
-
-	template <auto Mptr>
-	static const std::pair<std::string_view, Accessor> accessor;
-
-	template <auto Mptr>
-	static const std::pair<std::string_view, ChannelAccessor>
-	    channel_accessor;
-
-	using Accessors = std::map<std::string_view, Accessor>;
-	using ChannelAccessors =
-	    std::map<std::string_view, ChannelAccessor>;
-
-	static const Accessors &getAccessors();
-	static const ChannelAccessors &getChannelAccessors();
-
 	std::reference_wrapper<Options> options;
 	std::reference_wrapper<Data::DataTable> table;
 

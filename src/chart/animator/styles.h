@@ -12,16 +12,14 @@
 namespace Vizzu::Anim::Morph
 {
 
-using Math::interpolate;
-
 template <typename T, typename = void> class StyleMorph;
 
 template <class T>
 class StyleMorph<T,
-    std::void_t<std::enable_if_t<Type::is_optional_v<T>>,
-        decltype(interpolate(*std::declval<const T &>(),
-            *std::declval<const T &>(),
-            double{}))>> : public ::Anim::IElement
+    std::enable_if_t<
+        Type::is_optional_v<T>
+        && Math::Niebloid::interpolatable<typename T::value_type>>> :
+    public ::Anim::IElement
 {
 public:
 	StyleMorph(const T &source, const T &target, T &actual) :
@@ -32,9 +30,8 @@ public:
 
 	void transform(double factor) override
 	{
-		using U =
-		    std::remove_cvref_t<decltype(*std::declval<const T &>())>;
-		*actual = U{interpolate(*source, *target, factor)};
+		*actual =
+		    Math::Niebloid::interpolate(*source, *target, factor);
 	}
 
 private:

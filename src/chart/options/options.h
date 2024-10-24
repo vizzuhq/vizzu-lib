@@ -27,22 +27,6 @@ namespace Vizzu::Gen
 class Options
 {
 public:
-	enum class LegendId : ChannelIdType {
-		color = static_cast<ChannelIdType>(ChannelId::color),
-		lightness = static_cast<ChannelIdType>(ChannelId::lightness),
-		size = static_cast<ChannelIdType>(ChannelId::size)
-	};
-
-	static_assert(Refl::enum_names<LegendId>.size() == 3);
-	static_assert(std::ranges::all_of(Refl::enum_names<LegendId>,
-	    [](std::string_view name)
-	    {
-		    return static_cast<ChannelIdType>(
-		               Refl::get_enum<LegendId>(name))
-		        == static_cast<ChannelIdType>(
-		            Refl::get_enum<ChannelId>(name));
-	    }));
-
 	using MarkerIndex = std::string;
 	using MarkerInfoId = std::uint32_t;
 	using Heading = ::Anim::Interpolated<std::optional<std::string>>;
@@ -51,10 +35,6 @@ public:
 	using OrientationType = Base::AutoParam<Gen::Orientation>;
 	using Orientation = ::Anim::Interpolated<OrientationType>;
 	using MarkersInfoMap = std::map<MarkerInfoId, MarkerIndex>;
-
-	friend bool operator==(const LegendId &, const ChannelId &);
-
-	[[nodiscard]] static ChannelId toChannel(const LegendId &);
 
 	Options() = default;
 

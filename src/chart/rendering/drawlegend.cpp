@@ -31,7 +31,7 @@ namespace Vizzu::Draw
 
 void DrawLegend::draw(Gfx::ICanvas &canvas,
     const Geom::Rect &legendLayout,
-    Gen::ChannelId channelType,
+    Gen::LegendId channelType,
     double weight) const
 {
 	auto markerWindowRect =
@@ -286,7 +286,7 @@ void DrawLegend::drawMeasure(const Info &info) const
 
 	auto bar = getBarRect(info);
 
-	using ST = Gen::ChannelId;
+	using ST = Gen::LegendId;
 	switch (info.properties.channel) {
 	case ST::color: colorBar(info, bar); break;
 	case ST::lightness: lightnessBar(info, bar); break;
