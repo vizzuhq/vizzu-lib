@@ -50,7 +50,7 @@ void DrawChart::drawLegend(Gfx::ICanvas &canvas,
 		    if (legend.value)
 			    legendObj.draw(canvas,
 			        bounds,
-			        Gen::Options::toChannel(*legend.value),
+			        *legend.value,
 			        legend.weight);
 	    });
 }
