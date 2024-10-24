@@ -137,11 +137,19 @@ export interface Logo extends Element {
 export interface Area extends Element {
 	tagName: 'plot-area'
 }
+
+/** Marker element position structure helper for tooltip */
+export interface MarkerPosition {
+	top: Point
+	center: Point
+}
+
 /** Plot marker element of the chart representing a data point. */
 export interface Marker extends Element {
 	tagName: 'plot-marker'
 	categories: Data.Record
 	values: Data.Record
+	position: MarkerPosition
 	/** Unique index of the marker. */
 	index: string
 }

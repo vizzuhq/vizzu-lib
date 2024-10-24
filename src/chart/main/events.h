@@ -247,16 +247,23 @@ public:
 		struct Marker : Element
 		{
 			const Gen::Marker &marker;
+			struct DataPosition
+			{
+				Geom::Point top;
+				Geom::Point center;
+			} position;
 
-			explicit Marker(const Gen::Marker &marker) :
+			explicit Marker(const Gen::Marker &marker,
+			    const DataPosition &position) :
 			    Element("plot-marker"),
-			    marker(marker)
+			    marker(marker),
+			    position(position)
 			{}
 
 			void appendToJSON(Conv::JSONObj &&jsonObj) const override
 			{
-				Element::appendToJSON(
-				    marker.appendToJSON(std::move(jsonObj)));
+				Element::appendToJSON(marker.appendToJSON(
+				    std::move(jsonObj))("position", position));
 			}
 		};
 
@@ -268,8 +275,10 @@ public:
 		{
 			bool horizontal;
 
-			MarkerGuide(const Gen::Marker &marker, bool horizontal) :
-			    MarkerChild("guide", marker),
+			MarkerGuide(const Gen::Marker &marker,
+			    const Marker::DataPosition &position,
+			    bool horizontal) :
+			    MarkerChild("guide", marker, position),
 			    horizontal(horizontal)
 			{}
 
@@ -313,15 +322,19 @@ public:
 			return std::make_unique<Legend>(properties);
 		}
 
-		static auto marker(const Gen::Marker &marker)
+		static auto marker(const Gen::Marker &marker,
+		    const Marker::DataPosition &position)
 		{
-			return std::make_unique<Marker>(marker);
+			return std::make_unique<Marker>(marker, position);
 		}
 
 		static auto markerGuide(const Gen::Marker &marker,
+		    const Marker::DataPosition &position,
 		    bool horizontal)
 		{
-			return std::make_unique<MarkerGuide>(marker, horizontal);
+			return std::make_unique<MarkerGuide>(marker,
+			    position,
+			    horizontal);
 		}
 
 		static auto root()
@@ -362,11 +375,13 @@ public:
 		}
 
 		static auto markerLabel(const std::string &label,
-		    const Gen::Marker &marker)
+		    const Gen::Marker &marker,
+		    const Marker::DataPosition &position)
 		{
 			return std::make_unique<Text<MarkerChild>>(label,
 			    "label",
-			    marker);
+			    marker,
+			    position);
 		}
 
 		static auto dimLegendLabel(
