@@ -1,8 +1,7 @@
 #include "base/style/parammerger.h"
 
 #include "../../util/test.h"
-
-#include "teststyle.h"
+#include "../testclasses.h"
 
 using test::check;
 using test::collection;

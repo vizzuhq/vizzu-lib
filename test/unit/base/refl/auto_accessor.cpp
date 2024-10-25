@@ -1,15 +1,23 @@
-#include "base/style/paramregistry.h"
+
+#include "base/refl/auto_accessor.h"
 
 #include "../../util/test.h"
+#include "../testclasses.h"
 #include "base/refl/auto_struct.h"
 #include "base/style/impl.tpp"
-
-#include "teststyle.h"
 
 using test::check;
 using test::collection;
 
-template Style::ParamRegistry<Fobar>::ParamRegistry();
+namespace Refl::Access
+{
+template <>
+const std::map<std::string, Accessor<Fobar, true>, std::less<>> &
+getAccessors<Fobar, true>()
+{
+	return Style::getAccessors<Fobar>();
+}
+}
 
 const static auto tests =
     collection::add_suite("Style::ParamRegistry")
@@ -19,10 +27,12 @@ const static auto tests =
             {
 	            auto fobar = Fobar{{1, 2}, {5, 6}};
 
-	            auto foo_bar =
-	                std::stod(Style::ParamRegistry<Fobar>::instance()
-	                              .find("foo.bar")
-	                              ->toString(fobar));
+	            auto getter =
+	                Refl::Access::getAccessor<Fobar, true>("foo.bar")
+	                    .get;
+	            check() << getter != nullptr;
+
+	            auto foo_bar = std::stod(getter(fobar));
 
 	            check() << foo_bar == 2;
             })
@@ -32,9 +42,12 @@ const static auto tests =
             {
 	            auto fobar = Fobar{{1, 2}, {5, 6}};
 
-	            Style::ParamRegistry<Fobar>::instance()
-	                .find("foo.bar")
-	                ->fromString(fobar, "9");
+	            auto setter =
+	                Refl::Access::getAccessor<Fobar, true>("foo.bar")
+	                    .set;
+	            check() << setter != nullptr;
+
+	            setter(fobar, "9");
 
 	            check() << fobar.foo.bar == 9;
             })
@@ -47,9 +60,8 @@ const static auto tests =
 	            double sum = 0;
 
 	            for (const auto &e :
-	                Style::ParamRegistry<Fobar>::instance()
-	                    .prefix_range(""))
-		            sum += std::stod(e.second.toString(fobar));
+	                Refl::Access::getAccessors<Fobar, true>())
+		            sum += std::stod(e.second.get(fobar));
 
 	            check() << sum == 1 + 2 + 5 + 6;
             })
@@ -60,9 +72,8 @@ const static auto tests =
 	            std::string nameList;
 
 	            for (const auto &e :
-	                Style::ParamRegistry<Fobar>::instance()
-	                    .prefix_range(""))
-		            nameList += ":" + e.first;
+	                Refl::Access::getAccessors<Fobar, true>())
+		            nameList += ":" + std::string{e.first};
 
 	            check() << nameList
 	                == ":baz.baz:baz.fobar:foo.bar:foo.foo";
