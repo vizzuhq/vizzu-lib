@@ -17,16 +17,16 @@ enum class NumberFormat : std::uint8_t { none, grouped, prefixed };
 namespace SmartString
 {
 template <char... separators>
-constexpr std::string join(std::span<const std::string_view> il)
+constexpr std::string &&join(std::span<const std::string_view> il,
+    std::string &&res = {})
 {
-	std::string res;
 	for (auto sl : il) {
 		if (!res.empty())
 			for (auto ch : {separators...}) res += ch;
 
 		res += sl;
 	}
-	return res;
+	return std::move(res);
 }
 
 [[nodiscard]] std::vector<std::string> split(const std::string &str,
