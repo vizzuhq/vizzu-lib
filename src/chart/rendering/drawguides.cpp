@@ -28,27 +28,24 @@ void DrawGuides::draw(bool horizontal)
 	const auto &guideStyle = rootStyle.plot.getAxis(axisId).guides;
 
 	auto baseColor = *guideStyle.color;
-	if (baseColor.alpha == 0) return;
 
-	const auto &axises = plot->axises;
-	const auto &axis = axises.at(axisId).dimension;
-
-	if (axis.enabled && *guideStyle.lineWidth > 0
+	if (const auto &axis = plot->axises.at(axisId).dimension;
+	    !baseColor.isTransparent() && axis.enabled
+	    && *guideStyle.lineWidth > 0
 	    && plot->guides.at(axisId).axisGuides != false) {
 		canvas.setLineWidth(*guideStyle.lineWidth);
 
-		for (auto it = axis.begin(); it != axis.end(); ++it) {
-			auto weight =
-			    Math::FuzzyBool::And<double>(it->second.weight,
-			        plot->guides.at(axisId).axisGuides);
-			if (weight == 0) continue;
-
-			auto next = std::next(it);
-			if (next != axis.end()) {
+		for (auto it = axis.begin(),
+		          end = it == axis.end() ? axis.end()
+		                                 : std::prev(axis.end());
+		     it != end;
+		     ++it) {
+			if (auto &&weight = (*it).weight; weight > 0)
 				drawGuide(horizontal,
-				    it->second.range.getMax(),
-				    baseColor * weight);
-			}
+				    (*it).range.getMax(),
+				    baseColor
+				        * Math::FuzzyBool::And<double>(weight,
+				            plot->guides.at(axisId).axisGuides));
 		}
 
 		canvas.setLineWidth(0);

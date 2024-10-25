@@ -16,6 +16,7 @@
 #include "base/conv/auto_json.h"
 #include "base/conv/numtostr.h"
 #include "base/refl/auto_enum.h"
+#include "base/text/smartstring.h"
 #include "chart/options/options.h"
 #include "chart/options/shapetype.h"
 #include "dataframe/impl/data_source.h"
@@ -266,21 +267,15 @@ MarkerId DataCube::getId(
 std::string DataCube::joinDimensionValues(const SeriesList &sl,
     const MultiIndex &index) const
 {
-	std::string res;
-	std::vector<std::string> resColl(sl.size());
+	std::vector<std::string_view> resColl(sl.size());
 	for (auto &&[val, comm] : dim_reindex.iterate_common(sl))
 		if (comm) {
 			auto &&[name, cats, size, ix] = val;
-			auto &&oldIx = index.old[ix];
-			resColl[*comm] =
-			    oldIx < cats.size() ? cats[oldIx] : std::string{};
+			if (auto &&oldIx = index.old[ix]; oldIx < cats.size())
+				resColl[*comm] = cats[oldIx];
 		}
 
-	for (auto &&sv : resColl) {
-		if (!res.empty()) res += ", ";
-		res += sv;
-	}
-	return res;
+	return Text::SmartString::join<',', ' '>(resColl);
 }
 
 std::shared_ptr<const CellInfo>

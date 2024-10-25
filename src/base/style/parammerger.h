@@ -15,8 +15,7 @@ namespace Style
 
 struct ParamMerger
 {
-	template <class T>
-	void operator()(Param<T> &base, Param<T> const &sub)
+	template <IsParam T> void operator()(T &base, T const &sub)
 	{
 		if (sub) base = sub;
 	}

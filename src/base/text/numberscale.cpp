@@ -50,7 +50,7 @@ NumberScale::operator std::string() const
 {
 	std::string res;
 	for (const auto &item : prefixes) {
-		res += (!res.empty() ? "," : "");
+		if (!res.empty()) res += ',';
 		res += item;
 	}
 	return res;

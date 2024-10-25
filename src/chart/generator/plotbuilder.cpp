@@ -607,22 +607,19 @@ void PlotBuilder::normalizeColors()
 		case LegendId::color:
 			plot->axises.at(LegendId::color).measure.range = color;
 
-			for (auto &value :
+			for (auto &item :
 			    plot->axises.at(LegendId::color).dimension)
-				value.second.colorBase = ColorBase(
-				    static_cast<uint32_t>(value.second.value),
-				    0.5);
+				item.colorBase =
+				    ColorBase(static_cast<uint32_t>(item.value), 0.5);
 			break;
 		case LegendId::lightness:
 			plot->axises.at(LegendId::lightness).measure.range =
 			    lightness;
 
-			for (auto &value :
+			for (auto &item :
 			    plot->axises.at(LegendId::lightness).dimension) {
-				value.second.value =
-				    lightness.rescale(value.second.value);
-				value.second.colorBase =
-				    ColorBase(0U, value.second.value);
+				item.value = lightness.rescale(item.value);
+				item.colorBase = ColorBase(0U, item.value);
 			}
 			break;
 		default:;

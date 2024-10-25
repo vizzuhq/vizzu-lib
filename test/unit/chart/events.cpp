@@ -322,8 +322,7 @@ std::multimap<std::string, event_as, std::less<>> get_events(
 		Refl::visit<Vizzu::Events::DrawEvents>(
 		    [&names]<class T>(
 		        Util::EventDispatcher::event_ptr &(*)(const T &),
-		        const std::initializer_list<std::string_view> &sv =
-		            {})
+		        const std::initializer_list<std::string_view> &sv)
 		    {
 			    std::span s{sv};
 			    if (s.back() == "begin" || s.back() == "complete") {

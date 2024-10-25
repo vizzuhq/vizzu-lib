@@ -8,6 +8,7 @@
 
 #include "base/conv/parse.h"
 #include "base/conv/tostring.h"
+#include "base/text/smartstring.h"
 
 #include "auto_struct.h"
 
@@ -67,20 +68,8 @@ constexpr std::initializer_list<
 template <char sep, const std::initializer_list<std::string_view> &il>
 consteval auto merge_names()
 {
-	std::array<char,
-	    []
-	    {
-		    auto count = std::size_t{};
-		    for (auto sl : il) count += sl.size() + 1;
-		    return count ? count - 1 : 0;
-	    }()>
-	    res{};
-
-	auto it = res.data();
-	for (auto sl : il) {
-		if (it != res.data()) *it++ = sep;
-		it = std::ranges::copy(sl, it).out;
-	}
+	std::array<char, Text::SmartString::join<sep>(il).size()> res{};
+	std::ranges::copy(Text::SmartString::join<sep>(il), res.data());
 	return res;
 };
 

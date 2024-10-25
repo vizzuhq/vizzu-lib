@@ -1,6 +1,9 @@
 #ifndef BASE_STYLE_IMPL_TPP_INCLUDED
 #define BASE_STYLE_IMPL_TPP_INCLUDED
 
+#include "base/text/smartstring.h"
+
+#include "param.h"
 #include "parammerger.h"
 #include "paramregistry.h"
 #include "sheet.h"
@@ -8,8 +11,8 @@
 namespace Style
 {
 template <class U, class Root>
-concept IsAccessor = Type::is_optional_v<
-    std::remove_cvref_t<std::invoke_result_t<U &&, Root &>>>;
+concept IsAccessor =
+    IsParam<std::remove_cvref_t<std::invoke_result_t<U &&, Root &>>>;
 
 template <class T> T Sheet<T>::getFullParams() const
 {
@@ -22,13 +25,8 @@ template <class T> ParamRegistry<T>::ParamRegistry()
 	    [this]<IsAccessor<T> U>(U &&accessor,
 	        const std::initializer_list<std::string_view> &thePath)
 	    {
-		    std::string currentPath;
-		    for (auto sv : thePath) {
-			    if (!currentPath.empty()) currentPath += '.';
-			    currentPath += sv;
-		    }
-
-		    accessors.try_emplace(std::move(currentPath),
+		    accessors.try_emplace(
+		        Text::SmartString::join<'.'>(thePath),
 		        std::forward<U>(accessor));
 	    });
 }

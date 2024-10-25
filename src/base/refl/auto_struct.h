@@ -258,37 +258,31 @@ constexpr inline bool same_as_decomposed<T, U, Members, 1> =
 
 enum class structure_bindable : std::uint8_t {
 	no,
-	through_base,
+	through_bases,
 	through_members
 };
 
 template <class T,
+    bool = !Impl::same_as_decomposed<T> && !std::is_empty_v<T>,
     class = bases_t<T>,
-    bool = Impl::same_as_decomposed<T>,
-    bool = !std::is_empty_v<T>,
     size_t = std::tuple_size_v<members_t<T>>>
 constexpr inline structure_bindable is_structure_bindable_v =
     structure_bindable::no;
 
 template <class T, size_t members, class... Base>
-constexpr inline structure_bindable is_structure_bindable_v<T,
-    std::tuple<Base...>,
-    false,
-    true,
-    members> =
-    static_cast<structure_bindable>(
-        (std::is_empty_v<Base> && ...) * 2);
+constexpr inline structure_bindable
+    is_structure_bindable_v<T, true, std::tuple<Base...>, members> =
+        static_cast<structure_bindable>(
+            (std::is_empty_v<Base> && ...) * 2);
 
 template <class T, class... Base>
     requires(sizeof...(Base) > 0)
 constexpr inline structure_bindable
-    is_structure_bindable_v<T, std::tuple<Base...>, false, true, 0> =
+    is_structure_bindable_v<T, true, std::tuple<Base...>, 0> =
         static_cast<structure_bindable>(
-            ((2
-                 * (1 - std::is_empty_v<Base>)-static_cast<bool>(
-                     is_structure_bindable_v<Base>))
-                + ... + 0)
-            <= 1);
+            ((std::is_empty_v<Base>
+                 || static_cast<bool>(is_structure_bindable_v<Base>))
+                && ...));
 
 template <class T,
     bool = static_cast<bool>(is_structure_bindable_v<T>),
@@ -422,9 +416,10 @@ struct MemberFunctor<G, From, through_memptrs>
 	using type =
 	    std::remove_cvref_t<decltype(get(std::declval<F>()))>;
 
+	template <class F = From>
 	consteval static inline std::string_view name()
 	{
-		return Name::in_data_name<Name::name<decltype(G), G>()>;
+		return Name::in_data_name<Name::name<type<F> F::*, G>()>;
 	}
 };
 
@@ -443,11 +438,12 @@ struct MemberFunctor<Ix, From, false>
 	using type =
 	    std::remove_cvref_t<decltype(get(std::declval<F>()))>;
 
+	template <class F = From>
 	consteval static inline std::string_view name()
 	{
-		return Refl::Name::in_data_name<Refl::Name::name<void,
+		return Name::in_data_name<Name::name<void,
 		    Name::Wrapper{
-		        &std::get<Ix>(get_members(declval<From &>()))}>()>;
+		        &std::get<Ix>(get_members(declval<F &>()))}>()>;
 	}
 };
 
@@ -488,15 +484,9 @@ consteval auto get_members_by_memptrs(std::index_sequence<Ix...>)
 }
 
 template <class T>
-    requires(std::tuple_size_v<decltype(T::members())> != 0
-             && (std::tuple_size_v<members_t<T>> != 0
-                 || !std::is_aggregate_v<T>))
+    requires(specified_members<T>)
 consteval auto get_member_functors(std::nullptr_t)
 {
-	static_assert(!std::is_aggregate_v<T>
-	                  || std::tuple_size_v<decltype(T::members())>
-	                         == std::tuple_size_v<members_t<T>>,
-	    "Not specified all member");
 	return get_members_by_memptrs<T>(std::make_index_sequence<
 	    std::tuple_size_v<decltype(T::members())>>{});
 }
@@ -538,6 +528,12 @@ constexpr static inline auto member_functors_v =
 
 template <class MF>
 using member_functor_t = typename MF::template type<>;
+
+template <class T>
+concept is_reflectable =
+    std::is_empty_v<T> || Members::specified_members<T>
+    || (std::is_aggregate_v<T>
+        && is_structure_bindable_v<T> != structure_bindable::no);
 
 namespace Functors
 {
@@ -598,12 +594,7 @@ template <class T, class Visitor> struct Applier
 	constexpr static __attribute__((always_inline)) auto apply(
 	    [[maybe_unused]] Visitor &v) noexcept
 	{
-		constexpr auto members = member_functors_v<U>;
-		static_assert(
-		    std::is_empty_v<U>
-		        || std::tuple_size_v<bases_t<U>>
-		                   + std::tuple_size_v<decltype(members)> > 0,
-		    "Unable to run reflection");
+		static_assert(is_reflectable<U>, "Unable to run reflection");
 
 		return std::invoke(
 		    [&v]<class... Bases, class... MF>(std::tuple<Bases...> *,
@@ -631,7 +622,7 @@ template <class T, class Visitor> struct Applier
 			    }
 		    },
 		    std::add_pointer_t<bases_t<U>>{},
-		    members);
+		    member_functors_v<U>);
 	}
 };
 
@@ -699,10 +690,12 @@ visit(Visitor &&visitor, [[maybe_unused]] T &visitable, Ts &&...ts)
 {
 #ifndef __clang_analyzer__
 	using TT = std::remove_cvref_t<T>;
-	return visit<TT>(
-	    Functors::GetterVisitor<Visitor, std::tuple<T &, Ts &&...>>{
-	        std::forward<Visitor>(visitor),
-	        {visitable, std::forward<Ts>(ts)...}});
+	using GVisitor =
+	    Functors::GetterVisitor<Visitor, std::tuple<T &, Ts &&...>>;
+	GVisitor getter_visitor{std::forward<Visitor>(visitor),
+	    {visitable, std::forward<Ts>(ts)...}};
+	return Functors::Applier<TT, GVisitor>::template apply<TT>(
+	    getter_visitor);
 #else
 	std::ignore = std::forward<Visitor>(visitor);
 	std::ignore =

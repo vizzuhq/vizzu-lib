@@ -126,17 +126,23 @@ struct DimensionAxis
 	    double value,
 	    const Math::Range<double> &range,
 	    bool merge);
-	bool operator==(const DimensionAxis &other) const;
+	[[nodiscard]] bool operator==(const DimensionAxis &other) const;
 
-	Values::iterator begin() { return values.begin(); };
-	Values::iterator end() { return values.end(); }
-	[[nodiscard]] Values::const_iterator begin() const
+	[[nodiscard]] auto begin()
 	{
-		return values.cbegin();
+		return std::ranges::views::values(values).begin();
 	};
-	[[nodiscard]] Values::const_iterator end() const
+	[[nodiscard]] auto end()
 	{
-		return values.cend();
+		return std::ranges::views::values(values).end();
+	}
+	[[nodiscard]] auto begin() const
+	{
+		return std::ranges::views::values(values).begin();
+	};
+	[[nodiscard]] auto end() const
+	{
+		return std::ranges::views::values(values).end();
 	}
 	bool setLabels(double step);
 

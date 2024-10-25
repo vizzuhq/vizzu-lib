@@ -17,7 +17,7 @@ template <typename T, typename = void> class StyleMorph;
 template <class T>
 class StyleMorph<T,
     std::enable_if_t<
-        Type::is_optional_v<T>
+        Style::IsParam<T>
         && Math::Niebloid::interpolatable<typename T::value_type>>> :
     public ::Anim::IElement
 {

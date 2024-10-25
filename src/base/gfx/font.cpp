@@ -70,7 +70,8 @@ std::string Font::toCSS() const
 	if (weight != Weight::Normal())
 		res += static_cast<std::string>(weight) + " ";
 
-	res += std::to_string(size) + "px ";
+	res += std::to_string(size);
+	res += "px ";
 	res += family;
 
 	return res;

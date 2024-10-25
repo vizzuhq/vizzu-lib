@@ -105,7 +105,7 @@ static_assert(
 static_assert(
     std::is_same_v<Refl::members_t<SimpleDerived>, std::tuple<>>);
 static_assert(Refl::is_structure_bindable_v<SimpleDerived>
-              == Refl::structure_bindable::through_base);
+              == Refl::structure_bindable::through_bases);
 static_assert(Refl::structure_binding_size_v<SimpleDerived> == 2);
 
 struct Nontrivial
