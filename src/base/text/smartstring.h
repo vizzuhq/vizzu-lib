@@ -21,9 +21,9 @@ constexpr std::string join(std::span<const std::string_view> il)
 {
 	std::string res;
 	for (auto sl : il) {
-		if (!res.empty()) {
-			static_cast<void>(((res += separators, 0), ...));
-		}
+		if (!res.empty())
+			for (auto ch : {separators...}) res += ch;
+
 		res += sl;
 	}
 	return res;
