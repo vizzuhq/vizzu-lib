@@ -98,7 +98,9 @@ consteval auto merge_names(
     const std::initializer_list<std::string_view> &il)
 {
 	std::array<char, size> res{};
-	std::ranges::copy(Text::SmartString::join<sep>(il), res.data());
+	for (auto it = res.data();
+	     auto ch : Text::SmartString::join<sep>(il))
+		*it++ = ch;
 	return res;
 };
 
