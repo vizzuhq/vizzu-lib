@@ -85,10 +85,18 @@ constexpr std::initializer_list<
             Accessor<Object>::template make<std::type_identity,
                 std::tuple_element_t<Ix, Members>>()}...};
 
-template <char sep, const std::initializer_list<std::string_view> &il>
-consteval auto merge_names()
+template <char sep>
+consteval auto merge_names_size(
+    const std::initializer_list<std::string_view> &il)
 {
-	std::array<char, Text::SmartString::join<sep>(il).size()> res{};
+	return Text::SmartString::join<sep>(il).size();
+}
+
+template <char sep, std::size_t size>
+consteval auto merge_names(
+    const std::initializer_list<std::string_view> &il)
+{
+	std::array<char, size> res{};
 	std::ranges::copy(Text::SmartString::join<sep>(il), res.data());
 	return res;
 };
@@ -102,8 +110,11 @@ constexpr inline std::pair<const std::string_view,
     mptr_accessor_pair{
 #ifndef __clang_analyzer__
         Name::in_data_name<merge_names<sep,
+            merge_names_size<sep>(
+                Functors::name_list<Members::MemberFunctor<Mptr>,
+                    Members::MemberFunctor<Mptrs>...>)>(
             Functors::name_list<Members::MemberFunctor<Mptr>,
-                Members::MemberFunctor<Mptrs>...>>()>,
+                Members::MemberFunctor<Mptrs>...>)>,
         Accessor<decltype(Impl::getBase(
             Mptr))>::template make<TransformIn,
             Members::MemberFunctor<Mptr>,
