@@ -20,7 +20,7 @@ template <class T> T Sheet<T>::getFullParams() const
 
 template <class Root> constexpr const auto &getAccessors()
 {
-	thread_local const std::map accessors{[]
+	static const std::map accessors{[]
 	    {
 		    std::map<std::string,
 		        Refl::Access::Accessor<Root, true>,

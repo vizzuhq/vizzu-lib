@@ -144,7 +144,7 @@ const Accessor<Object, runtime> &getAccessor(
 	if (auto it = accessors.find(member); it != accessors.end())
 		return it->second;
 
-	thread_local const Accessor<Object, runtime> emptyAccessor{};
+	static const Accessor<Object, runtime> emptyAccessor{};
 	return emptyAccessor;
 }
 
