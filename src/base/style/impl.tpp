@@ -10,7 +10,7 @@
 namespace Style
 {
 template <class U, class Root>
-concept IsAccessor =
+concept IsParamAccessor =
     IsParam<std::remove_cvref_t<std::invoke_result_t<U &&, Root &>>>;
 
 template <class T> T Sheet<T>::getFullParams() const
@@ -27,7 +27,7 @@ template <class Root> constexpr const auto &getAccessors()
 		        std::less<>>
 		        accessors;
 		    Refl::visit<Root>(
-		        [&accessors]<IsAccessor<Root> U>(U &&accessor,
+		        [&accessors]<IsParamAccessor<Root> U>(U &&accessor,
 		            const std::initializer_list<std::string_view>
 		                &thePath)
 		        {

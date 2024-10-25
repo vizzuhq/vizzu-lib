@@ -85,11 +85,12 @@ constexpr std::initializer_list<
             Accessor<Object>::template make<std::type_identity,
                 std::tuple_element_t<Ix, Members>>()}...};
 
-template <char sep>
 consteval auto merge_names_size(
     const std::initializer_list<std::string_view> &il)
 {
-	return Text::SmartString::join<sep>(il).size();
+	std::size_t res{};
+	for (auto sl : il) res += sl.size() + 1;
+	return res ? res - 1 : res;
 }
 
 template <char sep, std::size_t size>
@@ -110,7 +111,7 @@ constexpr inline std::pair<const std::string_view,
     mptr_accessor_pair{
 #ifndef __clang_analyzer__
         Name::in_data_name<merge_names<sep,
-            merge_names_size<sep>(
+            merge_names_size(
                 Functors::name_list<Members::MemberFunctor<Mptr>,
                     Members::MemberFunctor<Mptrs>...>)>(
             Functors::name_list<Members::MemberFunctor<Mptr>,
@@ -129,7 +130,8 @@ const std::map<
     std::less<>> &
 getAccessors()
 {
-	static_assert(!runtime, "please implement it");
+	static_assert(!runtime,
+	    "It must implement the runtime function uniquely.");
 	static const std::
 	    map<std::string_view, Accessor<Object, runtime>, std::less<>>
 	        accessors{accessor_pairs<Object>};
