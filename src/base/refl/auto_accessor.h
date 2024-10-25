@@ -30,8 +30,8 @@ template <class Object, bool runtime = false> struct Accessor
 		        {
 			        using Type =
 			            Functors::Composite::Res<Object, MPs...>;
-			        return Conv::toString(std::as_const(
-			            Functors::FuncPtr<Object, Type, MPs...>(o)));
+			        return Conv::toString(
+			            Functors::FuncPtr<Object, Type, MPs...>(o));
 		        },
 		    .set =
 		        +[](Object &o, const std::string &str)

@@ -1,12 +1,13 @@
 #include "config.h"
 
 #include <functional>
-#include <map>
+#include <initializer_list>
 #include <optional>
 #include <stdexcept>
 #include <string>
 #include <string_view>
 #include <type_traits>
+#include <utility>
 
 #include "base/anim/interpolated.h"
 #include "base/conv/auto_json.h"
@@ -42,53 +43,48 @@ using Vizzu::Gen::ChannelRange;
 using Vizzu::Gen::Options;
 
 template <>
-constexpr std::initializer_list accessor_pairs<Options,
-    decltype(member_functors_v<Options>),
-    std::make_index_sequence<
-        std::tuple_size_v<decltype(member_functors_v<Options>)>>>{
-    accessor<&Options::title>,
-    accessor<&Options::subtitle>,
-    accessor<&Options::caption>,
-    accessor<&Options::legend>,
-    accessor<&Options::coordSystem>,
-    accessor<&Options::angle>,
-    accessor<&Options::geometry>,
-    accessor<&Options::orientation>,
-    accessor<&Options::sort>,
-    accessor<&Options::reverse>,
-    accessor<&Options::align>,
-    accessor<&Options::split>,
-    {"tooltip",
-        {.get =
-                [](const Options &options)
-            {
-	            return Conv::toString(options.tooltip);
-            },
-            .set =
-                [](Options &options, const std::string &value)
-            {
-	            options.showTooltip(
-	                Conv::parse<std::optional<Options::MarkerIndex>>(
-	                    value));
-            }}}};
+constexpr std::initializer_list<
+    std::pair<const std::string_view, Accessor<Options>>>
+    accessor_pairs<Options>{accessor<&Options::title>,
+        accessor<&Options::subtitle>,
+        accessor<&Options::caption>,
+        accessor<&Options::legend>,
+        accessor<&Options::coordSystem>,
+        accessor<&Options::angle>,
+        accessor<&Options::geometry>,
+        accessor<&Options::orientation>,
+        accessor<&Options::sort>,
+        accessor<&Options::reverse>,
+        accessor<&Options::align>,
+        accessor<&Options::split>,
+        {"tooltip",
+            {.get =
+                    [](const Options &options)
+                {
+	                return Conv::toString(options.tooltip);
+                },
+                .set =
+                    [](Options &options, const std::string &value)
+                {
+	                options.showTooltip(Conv::parse<
+	                    std::optional<Options::MarkerIndex>>(value));
+                }}}};
 
 template <>
-constexpr std::initializer_list accessor_pairs<Channel,
-    decltype(member_functors_v<Channel>),
-    std::make_index_sequence<
-        std::tuple_size_v<decltype(member_functors_v<Channel>)>>>{
-    accessor<&Channel::title>,
-    accessor<&Channel::stackable>,
-    accessor<&Channel::range, &ChannelRange::min>,
-    accessor<&Channel::range, &ChannelRange::max>,
-    accessor<&Channel::labelLevel>,
-    accessor<&Channel::axis>,
-    accessor<&Channel::ticks>,
-    accessor<&Channel::interlacing>,
-    accessor<&Channel::guides>,
-    accessor<&Channel::markerGuides>,
-    accessor<&Channel::labels>,
-    accessor<&Channel::step>};
+constexpr std::initializer_list<
+    std::pair<const std::string_view, Accessor<Channel>>>
+    accessor_pairs<Channel>{accessor<&Channel::title>,
+        accessor<&Channel::stackable>,
+        accessor<&Channel::range, &ChannelRange::min>,
+        accessor<&Channel::range, &ChannelRange::max>,
+        accessor<&Channel::labelLevel>,
+        accessor<&Channel::axis>,
+        accessor<&Channel::ticks>,
+        accessor<&Channel::interlacing>,
+        accessor<&Channel::guides>,
+        accessor<&Channel::markerGuides>,
+        accessor<&Channel::labels>,
+        accessor<&Channel::step>};
 }
 
 namespace Vizzu::Gen

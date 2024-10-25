@@ -2,7 +2,10 @@
 
 #include <algorithm>
 #include <cmath>
+#include <functional>
+#include <map>
 #include <numbers>
+#include <string>
 #include <vector>
 
 #include "base/geom/point.h"
@@ -11,6 +14,7 @@
 #include "base/gfx/font.h"
 #include "base/gfx/length.h"
 #include "base/math/range.h"
+#include "base/refl/auto_accessor.h"
 #include "base/style/impl.tpp"
 #include "chart/generator/plot.h"
 #include "chart/options/channel.h"
