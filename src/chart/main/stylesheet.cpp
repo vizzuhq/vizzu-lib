@@ -20,7 +20,16 @@
 
 #include "layout.h"
 
-template Style::ParamRegistry<Vizzu::Styles::Chart>::ParamRegistry();
+namespace Refl::Access
+{
+using Vizzu::Styles::Chart;
+template <>
+const std::map<std::string, Accessor<Chart, true>, std::less<>> &
+getAccessors<Chart, true>()
+{
+	return Style::getAccessors<Chart>();
+}
+}
 
 namespace Vizzu::Styles
 {

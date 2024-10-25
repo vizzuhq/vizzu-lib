@@ -36,8 +36,6 @@ public:
 	using Orientation = ::Anim::Interpolated<OrientationType>;
 	using MarkersInfoMap = std::map<MarkerInfoId, MarkerIndex>;
 
-	Options() = default;
-
 	[[nodiscard]] const Channels &getChannels() const
 	{
 		return channels;

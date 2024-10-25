@@ -14,7 +14,7 @@
 
 namespace Refl::Access
 {
-template <class Object> struct Accessor
+template <class Object, bool runtime = false> struct Accessor
 {
 	std::string (*get)(const Object &);
 	void (*set)(Object &, const std::string &);
@@ -47,6 +47,26 @@ template <class Object> struct Accessor
 	}
 };
 
+template <class Object> struct Accessor<Object, true>
+{
+	std::function<std::string(const Object &)> get;
+	std::function<void(Object &, const std::string &)> set;
+
+	template <class Ptr> static constexpr Accessor make(Ptr ptr)
+	{
+		return {.get{[ptr](const Object &o)
+		            {
+			            return Conv::toString(ptr(o));
+		            }},
+		    .set{[ptr](Object &o, const std::string &str)
+		        {
+			        auto &e = ptr(o);
+			        e = Conv::parse<std::remove_cvref_t<decltype(e)>>(
+			            str);
+		        }}};
+	}
+};
+
 template <class Object,
     class Members =
 #ifndef __clang_analyzer__
@@ -60,7 +80,7 @@ constexpr const void *accessor_pairs{};
 template <class Object, class Members, std::size_t... Ix>
 constexpr std::initializer_list<
     std::pair<const std::string_view, Accessor<Object>>>
-    accessor_pairs<Object, Members, std::index_sequence<Ix...>> = {
+    accessor_pairs<Object, Members, std::index_sequence<Ix...>>{
         {std::tuple_element_t<Ix, Members>::name(),
             Accessor<Object>::template make<std::type_identity,
                 std::tuple_element_t<Ix, Members>>()}...};
@@ -91,27 +111,35 @@ constexpr inline std::pair<const std::string_view,
 #endif
     };
 
-template <class Object>
-const std::map<std::string_view, Accessor<Object>> &getAccessors()
+template <class Object, bool runtime = false>
+const std::map<
+    std::conditional_t<runtime, std::string, std::string_view>,
+    Accessor<Object, runtime>,
+    std::less<>> &
+getAccessors()
 {
-	static const std::map accessors{accessor_pairs<Object>};
+	static_assert(!runtime, "please implement it");
+	static const std::
+	    map<std::string_view, Accessor<Object, runtime>, std::less<>>
+	        accessors{accessor_pairs<Object>};
 	return accessors;
 }
 
-template <class Object>
-const Accessor<Object> &getAccessor(const std::string_view &member)
+template <class Object, bool runtime = false>
+const Accessor<Object, runtime> &getAccessor(
+    const std::string_view &member)
 {
-	const auto &accessors = getAccessors<Object>();
+	const auto &accessors = getAccessors<Object, runtime>();
 	if (auto it = accessors.find(member); it != accessors.end())
 		return it->second;
 
-	thread_local const Accessor<Object> emptyAccessor{};
+	thread_local const Accessor<Object, runtime> emptyAccessor{};
 	return emptyAccessor;
 }
 
-template <class Object> auto getAccessorNames()
+template <class Object, bool runtime = false> auto getAccessorNames()
 {
-	return std::ranges::views::keys(getAccessors<Object>());
+	return std::ranges::views::keys(getAccessors<Object, runtime>());
 }
 }
 

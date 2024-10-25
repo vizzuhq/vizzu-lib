@@ -5,7 +5,6 @@
 
 #include "param.h"
 #include "parammerger.h"
-#include "paramregistry.h"
 #include "sheet.h"
 
 namespace Style
@@ -19,17 +18,29 @@ template <class T> T Sheet<T>::getFullParams() const
 	return ParamMerger::merge(T{defaultParams}, activeParams.get());
 }
 
-template <class T> ParamRegistry<T>::ParamRegistry()
+template <class Root> constexpr const auto &getAccessors()
 {
-	Refl::visit<T>(
-	    [this]<IsAccessor<T> U>(U &&accessor,
-	        const std::initializer_list<std::string_view> &thePath)
+	thread_local const std::map accessors{[]
 	    {
-		    accessors.try_emplace(
-		        Text::SmartString::join<'.'>(thePath),
-		        std::forward<U>(accessor));
-	    });
+		    std::map<std::string,
+		        Refl::Access::Accessor<Root, true>,
+		        std::less<>>
+		        accessors;
+		    Refl::visit<Root>(
+		        [&accessors]<IsAccessor<Root> U>(U &&accessor,
+		            const std::initializer_list<std::string_view>
+		                &thePath)
+		        {
+			        accessors.try_emplace(
+			            Text::SmartString::join<'.'>(thePath),
+			            Refl::Access::Accessor<Root, true>::make(
+			                std::forward<U>(accessor)));
+		        });
+		    return accessors;
+	    }()};
+	return accessors;
 }
+
 }
 
 #endif

@@ -136,7 +136,7 @@ aggregate_count() noexcept
 		        /* sizeof(T) *
 		         *   std::numeric_limits<unsigned char>::digits
 		         */
-		        9>(0);
+		        15>(0);
 
 		constexpr auto bases = detect_fields_count<
 		    FixMax<fields>::template if_constructible_base_t,
@@ -363,6 +363,150 @@ constexpr inline auto get_members(T &&t, index_t<9>) noexcept
 {
 	auto &[_0, _1, _2, _3, _4, _5, _6, _7, _8] = t;
 	return std::forward_as_tuple(_0, _1, _2, _3, _4, _5, _6, _7, _8);
+}
+
+template <class T>
+// NOLINTNEXTLINE
+constexpr inline auto get_members(T &&t, index_t<10>) noexcept
+{
+	auto &[_0, _1, _2, _3, _4, _5, _6, _7, _8, _9] = t;
+	return std::forward_as_tuple(_0,
+	    _1,
+	    _2,
+	    _3,
+	    _4,
+	    _5,
+	    _6,
+	    _7,
+	    _8,
+	    _9);
+}
+
+template <class T>
+// NOLINTNEXTLINE
+constexpr inline auto get_members(T &&t, index_t<11>) noexcept
+{
+	auto &[_0, _1, _2, _3, _4, _5, _6, _7, _8, _9, _10] = t;
+	return std::forward_as_tuple(_0,
+	    _1,
+	    _2,
+	    _3,
+	    _4,
+	    _5,
+	    _6,
+	    _7,
+	    _8,
+	    _9,
+	    _10);
+}
+
+template <class T>
+// NOLINTNEXTLINE
+constexpr inline auto get_members(T &&t, index_t<12>) noexcept
+{
+	auto &[_0, _1, _2, _3, _4, _5, _6, _7, _8, _9, _10, _11] = t;
+	return std::forward_as_tuple(_0,
+	    _1,
+	    _2,
+	    _3,
+	    _4,
+	    _5,
+	    _6,
+	    _7,
+	    _8,
+	    _9,
+	    _10,
+	    _11);
+}
+
+template <class T>
+// NOLINTNEXTLINE
+constexpr inline auto get_members(T &&t, index_t<13>) noexcept
+{
+	auto &[_0, _1, _2, _3, _4, _5, _6, _7, _8, _9, _10, _11, _12] = t;
+	return std::forward_as_tuple(_0,
+	    _1,
+	    _2,
+	    _3,
+	    _4,
+	    _5,
+	    _6,
+	    _7,
+	    _8,
+	    _9,
+	    _10,
+	    _11,
+	    _12);
+}
+
+template <class T>
+// NOLINTNEXTLINE
+constexpr inline auto get_members(T &&t, index_t<14>) noexcept
+{
+	auto &[_0,
+	    _1,
+	    _2,
+	    _3,
+	    _4,
+	    _5,
+	    _6,
+	    _7,
+	    _8,
+	    _9,
+	    _10,
+	    _11,
+	    _12,
+	    _13] = t;
+	return std::forward_as_tuple(_0,
+	    _1,
+	    _2,
+	    _3,
+	    _4,
+	    _5,
+	    _6,
+	    _7,
+	    _8,
+	    _9,
+	    _10,
+	    _11,
+	    _12,
+	    _13);
+}
+
+template <class T>
+// NOLINTNEXTLINE
+constexpr inline auto get_members(T &&t, index_t<15>) noexcept
+{
+	auto &[_0,
+	    _1,
+	    _2,
+	    _3,
+	    _4,
+	    _5,
+	    _6,
+	    _7,
+	    _8,
+	    _9,
+	    _10,
+	    _11,
+	    _12,
+	    _13,
+	    _14] = t;
+	return std::forward_as_tuple(_0,
+	    _1,
+	    _2,
+	    _3,
+	    _4,
+	    _5,
+	    _6,
+	    _7,
+	    _8,
+	    _9,
+	    _10,
+	    _11,
+	    _12,
+	    _13,
+	    _14);
 }
 
 template <class T, std::size_t I>

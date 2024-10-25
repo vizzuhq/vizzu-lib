@@ -6,6 +6,15 @@
 
 #include "style.h"
 
+namespace Refl::Access
+{
+template <>
+const std::map<std::string,
+    Accessor<Vizzu::Styles::Chart, true>,
+    std::less<>> &
+getAccessors<Vizzu::Styles::Chart, true>();
+}
+
 namespace Vizzu::Gen
 {
 class Plot;
