@@ -557,8 +557,8 @@ struct MemberFunctor<G, From, through_memptrs>
 	}
 
 	template <class F = From>
-	using type =
-	    std::remove_cvref_t<decltype(get(std::declval<F>()))>;
+	using type = std::remove_cvref_t<decltype(std::invoke(G,
+	    std::declval<F>()))>;
 
 	template <class F = From>
 	consteval static inline std::string_view name()
