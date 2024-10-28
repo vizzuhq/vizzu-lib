@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+## [0.15.0] - 2024-10-28
+
 ### Fixed
 
 - Removed 'min' align property from the API which equivalent with the 'none'.
@@ -10,14 +12,13 @@
 - Axis line hide/show at same time with axis labels/ticks/title.
 - Do not draw invisible axis line.
 
-
 ### Changed
 
 - Changed MarkerId to be a string instead of a number.
 
 ### Added
 
-- Add marker top and center position to draw event
+- Add marker top and center position to draw event.
 
 ## [0.14.0] - 2024-10-03
 
