@@ -18,18 +18,10 @@ the measure (`Popularity`) to the y-axis using the set property.
 {% include-markdown "tutorial/assets/setup/setup_a.md" %}
 
 ```javascript
-chart.animate({
-    config: {
-        channels: {
-            y: {
-                set: ['Popularity']
-            },
-            x: {
-                set: ['Genres']
-            }
-        }
-    }
-})
+{
+    %
+    include "tutorial/axes_title_tooltip/01_a.js" %
+}
 ```
 
 We will reference the data series by names for clarity throughout the tutorial.
@@ -39,22 +31,10 @@ see the [Aggregating data](./aggregating_data.md) chapter. The previous example
 can be rewritten using data series descriptor objects as follows:
 
 ```javascript
-chart.animate({
-    config: {
-        channels: {
-            y: {
-                set: [{
-                    name: 'Popularity'
-                }]
-            },
-            x: {
-                set: [{
-                    name: 'Genres'
-                }]
-            }
-        }
-    }
-})
+{
+    %
+    include "tutorial/axes_title_tooltip/01_b.js" %
+}
 ```
 
 In the next step, the chart is rearranged by putting both series on the y-axis
@@ -64,18 +44,10 @@ automatically animates between the initial state and this one.
 <div id="tutorial_02"></div>
 
 ```javascript
-chart.animate({
-    config: {
-        channels: {
-            x: {
-                set: null
-            },
-            y: {
-                set: ['Genres', 'Popularity']
-            }
-        }
-    }
-})
+{
+    %
+    include "tutorial/axes_title_tooltip/02.js" %
+}
 ```
 
 Instead of set, you can use attach and detach to add or remove series to/from
@@ -84,18 +56,10 @@ the channels.
 <div id="tutorial_03"></div>
 
 ```javascript
-chart.animate({
-    config: {
-        channels: {
-            y: {
-                detach: ['Popularity']
-            },
-            x: {
-                attach: ['Popularity']
-            }
-        }
-    }
-})
+{
+    %
+    include "tutorial/axes_title_tooltip/03.js" %
+}
 ```
 
 Using attach & detach makes it easier to build your animated charts
@@ -104,7 +68,10 @@ channel in the previous step or add the following code to access the actual
 configuration of the chart.
 
 ```javascript
-console.log(chart.config);
+{
+    %
+    include "tutorial/axes_title_tooltip/04_a.js" %
+}
 ```
 
 Setting the chart title with the title property.
@@ -112,9 +79,10 @@ Setting the chart title with the title property.
 <div id="tutorial_04"></div>
 
 ```javascript
-chart.animate({
-    title: 'My first chart'
-})
+{
+    %
+    include "tutorial/axes_title_tooltip/04_b.js" %
+}
 ```
 
 Subtitle and caption textual element options are available for your charts.
@@ -122,10 +90,10 @@ Subtitle and caption textual element options are available for your charts.
 <div id="tutorial_05"></div>
 
 ```javascript
-chart.animate({
-    subtitle: 'with fancy animations',
-    caption: 'Source: Vizzu tutorial'
-})
+{
+    %
+    include "tutorial/axes_title_tooltip/05.js" %
+}
 ```
 
 Switching on the tooltips that appear on the chart elements when the user hovers
@@ -135,10 +103,13 @@ over them with their mouse by adding the (`'tooltip'`, `true`) parameters to the
 <div id="tutorial_06"></div>
 
 ```javascript
-chart.feature('tooltip', true)
+{
+    %
+    include "tutorial/axes_title_tooltip/06.js" %
+}
 ```
 
 !!! note
     Calls to this method before the library initialization completed will fail.
 
-<script src="../axes_title_tooltip.js"></script>
+<script src="./index.js"></script>
