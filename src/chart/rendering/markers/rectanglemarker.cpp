@@ -9,6 +9,7 @@
 #include "chart/options/coordsystem.h"
 #include "chart/options/options.h"
 #include "chart/options/shapetype.h"
+#include "chart/rendering/painter/coordinatesystem.h"
 
 #include "abstractmarker.h"
 

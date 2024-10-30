@@ -1,14 +1,15 @@
 #include "channel.h"
 
 #include <cmath>
+#include <compare>
 #include <cstddef>
 #include <cstdint>
 #include <iterator>
 #include <optional>
-#include <stdexcept>
 #include <string>
 #include <utility>
 
+#include "base/refl/auto_enum.h"
 #include "chart/options/autoparam.h"
 #include "dataframe/old/datatable.h"
 #include "dataframe/old/types.h"

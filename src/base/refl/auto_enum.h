@@ -228,8 +228,9 @@ struct EnumArray : std::array<V, std::size(enum_names<E>)>
 	    std::initializer_list<std::pair<E, V>> il,
 	    std::index_sequence<Ix...> = {})
 	{
-		constexpr static auto size = std::tuple_size_v<base_array>;
-		if constexpr (sizeof...(Ix) != size)
+		if constexpr (constexpr auto size =
+		                  std::tuple_size_v<base_array>;
+		              sizeof...(Ix) != size)
 			return make(il, std::make_index_sequence<size>{});
 		else {
 			if (il.size() != size)
