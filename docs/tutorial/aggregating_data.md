@@ -89,4 +89,4 @@ that sums the `Popularity` values in each of the `Genres`.
 // {% include "tutorial/aggregating_data/07_b.js" %}
 ```
 
-<script src="./index.js"></script>
+<script src="../tutorial.js" data="../assets/data/music_data.js" config="./config.json"></script>
