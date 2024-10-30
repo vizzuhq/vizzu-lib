@@ -38,6 +38,8 @@ CircleMarker::CircleMarker(const Gen::Marker &marker,
 	dataRect.pos = pos;
 	dataRect.size = Geom::Size();
 	radius = fabs(coordSys.verConvert(r));
+
+	setDataPosition(coordSys);
 }
 
 }

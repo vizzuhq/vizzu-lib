@@ -35,6 +35,7 @@ public:
 	Geom::Point center;
 	Geom::Rect dataRect;
 	double radius{};
+	Events::Targets::Marker::DataPosition dataPosition;
 
 	[[nodiscard]] Geom::Rect getBoundary() const;
 	[[nodiscard]] Geom::Line getLine() const;
@@ -51,6 +52,8 @@ protected:
 	    const Gen::Marker &marker,
 	    const Gen::ShapeType &shapeType,
 	    ::Anim::InterpolateIndex lineIndex);
+
+	void setDataPosition(const CoordinateSystem &coordSys);
 };
 
 class SingleDrawMarker : public AbstractMarker
