@@ -17,18 +17,7 @@ only use temporarily.
 // {% include-markdown "tutorial/assets/setup/setup_c.md" %}
 
 ```javascript
-chart.animate({
-    config: {
-        channels: {
-            y: {
-                detach: ['Popularity']
-            },
-            x: {
-                attach: ['Popularity']
-            }
-        }
-    }
-})
+// {% include "tutorial/orientation_split_polar/01_b.js" %}
 ```
 
 By turning the split parameter on, you can see stacked elements side-by-side,
@@ -37,11 +26,7 @@ which enables the comparison of the components.
 <div id="tutorial_02"></div>
 
 ```javascript
-chart.animate({
-    config: {
-        split: true
-    }
-})
+// {% include "tutorial/orientation_split_polar/02_b.js" %}
 ```
 
 Merging the components by turning the split parameter off.
@@ -49,11 +34,7 @@ Merging the components by turning the split parameter off.
 <div id="tutorial_03"></div>
 
 ```javascript
-chart.animate({
-    config: {
-        split: false
-    }
-})
+// {% include "tutorial/orientation_split_polar/03_b.js" %}
 ```
 
 We aggregate the data by removing the `Genres` dimension from the x-axis.
@@ -61,15 +42,7 @@ We aggregate the data by removing the `Genres` dimension from the x-axis.
 <div id="tutorial_04"></div>
 
 ```javascript
-chart.animate({
-    config: {
-        channels: {
-            x: {
-                detach: ['Genres']
-            }
-        }
-    }
-})
+// {% include "tutorial/orientation_split_polar/04_b.js" %}
 ```
 
 Switching from cartesian coordinates to polar. When doing so, it is worth
@@ -84,18 +57,7 @@ coordinates, just set the `coordSystem` parameter to `'cartesian'`.
 <div id="tutorial_05"></div>
 
 ```javascript
-chart.animate({
-    config: {
-        channels: {
-            y: {
-                range: {
-                    min: '-30%'
-                }
-            }
-        },
-        coordSystem: 'polar'
-    }
-})
+// {% include "tutorial/orientation_split_polar/05_b.js" %}
 ```
 
-<script src="../orientation_split_polar.js"></script>
+<script src="../tutorial.js"></script>
