@@ -17,21 +17,7 @@ still on the `color` channel.
 // {% include-markdown "tutorial/assets/setup/setup_c.md" %}
 
 ```javascript
-chart.animate({
-    config: {
-        channels: {
-            y: {
-                set: null
-            },
-            x: {
-                set: null
-            },
-            size: {
-                attach: ['Genres', 'Popularity']
-            }
-        }
-    }
-})
+// {% include "tutorial/without_coordinates_noop_channel/01_b.js" %}
 ```
 
 Getting from a treemap to a bubble chart is simply by changing the geometry to
@@ -41,11 +27,7 @@ circle. This bubble chart is stacked by the `Kinds` dimension that is on the
 <div id="tutorial_02"></div>
 
 ```javascript
-chart.animate({
-    config: {
-        geometry: 'circle'
-    }
-})
+// {% include "tutorial/without_coordinates_noop_channel/02_b.js" %}
 ```
 
 In order to show all bubbles as one group, we use the `noop` (no operations)
@@ -56,18 +38,7 @@ their count.
 <div id="tutorial_03"></div>
 
 ```javascript
-chart.animate({
-    config: {
-        channels: {
-            size: {
-                detach: ['Genres']
-            },
-            noop: {
-                set: ['Genres']
-            }
-        }
-    }
-})
+// {% include "tutorial/without_coordinates_noop_channel/03_b.js" %}
 ```
 
-<script src="../without_coordinates_noop_channel.js"></script>
+<script src="../tutorial.js"></script>
