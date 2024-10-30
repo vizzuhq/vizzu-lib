@@ -18,15 +18,7 @@ elements.
 // {% include-markdown "tutorial/assets/setup/setup_c.md" %}
 
 ```javascript
-chart.animate({
-    config: {
-        channels: {
-            x: {
-                set: null
-            }
-        }
-    }
-})
+// {% include "tutorial/changing_dimensions/01_b.js" %}
 ```
 
 When you simultaneously add and remove dimensions, the partitioning of the
@@ -39,21 +31,7 @@ then drilled down to the target state, as shown below.
 <div id="tutorial_02"></div>
 
 ```javascript
-chart.animate({
-    config: {
-        channels: {
-            y: {
-                detach: ['Kinds']
-            },
-            x: {
-                set: ['Genres']
-            },
-            color: {
-                set: null
-            },
-        }
-    }
-})
+// {% include "tutorial/changing_dimensions/02_b.js" %}
 ```
 
 You can change this setting and drill down to the union of the two states
@@ -62,18 +40,7 @@ instead, and then aggregate to the target state:
 <div id="tutorial_03"></div>
 
 ```javascript
-chart.animate({
-    config: {
-        channels: {
-            x: {
-                detach: ['Genres'],
-                attach: ['Kinds']
-            }
-        }
-    }
-}, {
-    regroupStrategy: 'drilldown'
-})
+// {% include "tutorial/changing_dimensions/03_b.js" %}
 ```
 
 There is also the option to fade the chart between the states:
@@ -81,18 +48,7 @@ There is also the option to fade the chart between the states:
 <div id="tutorial_04"></div>
 
 ```javascript
-chart.animate({
-    config: {
-        channels: {
-            x: {
-                detach: ['Kinds'],
-                attach: ['Genres']
-            }
-        }
-    }
-}, {
-    regroupStrategy: 'fade'
-})
+// {% include "tutorial/changing_dimensions/04_b.js" %}
 ```
 
 To simply drill down, the same dimension is put back on the y-axis.
@@ -100,18 +56,7 @@ To simply drill down, the same dimension is put back on the y-axis.
 <div id="tutorial_05"></div>
 
 ```javascript
-chart.animate({
-    config: {
-        channels: {
-            y: {
-                attach: ['Kinds']
-            },
-            color: {
-                set: ['Kinds']
-            }
-        }
-    }
-})
+// {% include "tutorial/changing_dimensions/05_b.js" %}
 ```
 
-<script src="../changing_dimensions.js"></script>
+<script src="../tutorial.js"></script>
