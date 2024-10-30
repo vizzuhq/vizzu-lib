@@ -1,0 +1,3 @@
+chart.animate({
+    geometry: 'area'
+})

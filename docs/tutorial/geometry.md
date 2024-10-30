@@ -15,11 +15,7 @@ Switching the geometry to area.
 // {% include-markdown "tutorial/assets/setup/setup_b.md" %}
 
 ```javascript
-chart.animate({
-    config: {
-        geometry: 'area',
-    }
-})
+// {% include "tutorial/geometry/01_b.js" %}
 ```
 
 Drawing a line chart.
@@ -27,11 +23,7 @@ Drawing a line chart.
 <div id="tutorial_02"></div>
 
 ```javascript
-chart.animate({
-    config: {
-        geometry: 'line',
-    }
-})
+// {% include "tutorial/geometry/02_b.js" %}
 ```
 
 Switching the geometry to circle. This setting is the most useful when used
@@ -40,11 +32,7 @@ together with the size channel, as shown in the next chapter of the tutorial.
 <div id="tutorial_03"></div>
 
 ```javascript
-chart.animate({
-    config: {
-        geometry: 'circle',
-    }
-})
+// {% include "tutorial/geometry/03_b.js" %}
 ```
 
 Rectangle geometry is the default setting in `Vizzu`, used for most common
@@ -53,11 +41,7 @@ charts like bar and column charts.
 <div id="tutorial_04"></div>
 
 ```javascript
-chart.animate({
-    config: {
-        geometry: 'rectangle',
-    }
-})
+// {% include "tutorial/geometry/04_b.js" %}
 ```
 
-<script src="../geometry.js"></script>
+<script src="../tutorial.js" data="../assets/data/music_data.js" config="./config.json"></script>
