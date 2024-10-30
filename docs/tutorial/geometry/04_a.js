@@ -1,3 +1,3 @@
 chart.animate({
-    title: 'Geometry: rectangle - default'
+	title: 'Geometry: rectangle - default'
 })

@@ -1,6 +1,6 @@
 chart.animate({
 	config: {
-		title: 'Geometry: area',
+		title: 'Label',
 		channels: {
 			y: { set: 'Popularity' },
 			x: { set: 'Genres' }

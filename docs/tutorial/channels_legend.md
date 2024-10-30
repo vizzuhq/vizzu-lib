@@ -22,15 +22,7 @@ them differently with the `style` object introduced in the
 // {% include-markdown "tutorial/assets/setup/setup_b.md" %}
 
 ```javascript
-chart.animate({
-    config: {
-        channels: {
-            label: {
-                attach: ['Popularity']
-            }
-        }
-    }
-})
+// {% include "tutorial/channels_legend/01_b.js" %}
 ```
 
 The `lightness` channel sets the lightness of the markers. In this case the same
@@ -47,16 +39,7 @@ columns’ height and lightness represent the same values. The legend for the
 <div id="tutorial_02"></div>
 
 ```javascript
-chart.animate({
-    config: {
-        channels: {
-            lightness: {
-                attach: ['Popularity']
-            }
-        },
-        legend: 'lightness'
-    }
-})
+// {% include "tutorial/channels_legend/02_b.js" %}
 ```
 
 The `color` channel sets the color of the markers. The same dimension (`Genres`)
@@ -70,19 +53,7 @@ color. If a measure is put on the `color` channel, a color range will be used.
 <div id="tutorial_03"></div>
 
 ```javascript
-chart.animate({
-    config: {
-        channels: {
-            lightness: {
-                set: null
-            },
-            color: {
-                attach: ['Genres']
-            }
-        },
-        legend: 'color',
-    }
-})
+// {% include "tutorial/channels_legend/03_b.js" %}
 ```
 
 The `size` channel sets the size of the markers if the geometry is circle -
@@ -93,16 +64,7 @@ change the geometry to circle in the example.
 <div id="tutorial_04"></div>
 
 ```javascript
-chart.animate({
-    config: {
-        channels: {
-            size: {
-                set: ['Popularity']
-            }
-        },
-        geometry: 'circle'
-    }
-})
+// {% include "tutorial/channels_legend/04_b.js" %}
 ```
 
-<script src="../channels_legend.js"></script>
+<script src="../tutorial.js" config="./config.json"></script>

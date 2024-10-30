@@ -1,3 +1,3 @@
 chart.animate({
-    geometry: 'circle'
+	geometry: 'circle'
 })

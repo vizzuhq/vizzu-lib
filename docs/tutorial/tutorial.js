@@ -1,10 +1,9 @@
 const mdChartLoaded = import('../assets/javascripts/mdchart.js')
 
 const scriptTag = document.currentScript
-const dataFile = scriptTag.getAttribute('data')
 const configFile = scriptTag.getAttribute('config')
 
-const dataLoaded = import(dataFile)
+const dataLoaded = import('../assets/data/music_data.js')
 const configLoaded = fetch(configFile).then((response) => response.json())
 
 Promise.all([mdChartLoaded, dataLoaded, configLoaded]).then((results) => {
