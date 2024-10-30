@@ -27,6 +27,7 @@ AbstractMarker AbstractMarker::create(const DrawingContext &ctx,
 	switch (shapeType) {
 	case Gen::ShapeType::rectangle:
 		return RectangleMarker(marker,
+		    ctx.coordSys,
 		    ctx.getOptions(),
 		    ctx.rootStyle);
 	case Gen::ShapeType::circle:
@@ -109,6 +110,17 @@ AbstractMarker AbstractMarker::createInterpolated(
 		    interpolate(fromMarker.radius, toMarker.radius, factor);
 	}
 	return aMarker;
+}
+
+void AbstractMarker::setDataPosition(const CoordinateSystem &coordSys)
+{
+	dataPosition = {
+	    this->getLabelPos(Styles::MarkerLabel::Position::top,
+	            coordSys)
+	        .end,
+	    this->getLabelPos(Styles::MarkerLabel::Position::center,
+	            coordSys)
+	        .begin};
 }
 
 Geom::Rect AbstractMarker::getBoundary() const

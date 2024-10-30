@@ -66,7 +66,9 @@ void MarkerRenderer::drawLines(Gfx::ICanvas &canvas,
 			const Geom::Line line(axisPoint, blended.center);
 
 			auto guideElement =
-			    Events::Targets::markerGuide(blended.marker, false);
+			    Events::Targets::markerGuide(blended.marker,
+			        blended.dataPosition,
+			        false);
 
 			if (rootEvents.draw.plot.marker.guide->invoke(
 			        Events::OnLineDrawEvent(*guideElement,
@@ -87,7 +89,9 @@ void MarkerRenderer::drawLines(Gfx::ICanvas &canvas,
 			const Geom::Line line(center, axisPoint);
 
 			auto guideElement =
-			    Events::Targets::markerGuide(blended.marker, true);
+			    Events::Targets::markerGuide(blended.marker,
+			        blended.dataPosition,
+			        true);
 
 			if (rootEvents.draw.plot.marker.guide->invoke(
 			        Events::OnLineDrawEvent(*guideElement,
@@ -268,7 +272,8 @@ void MarkerRenderer::draw(Gfx::ICanvas &canvas,
 	canvas.setLineWidth(*rootStyle.plot.marker.borderWidth);
 
 	auto markerElement =
-	    Events::Targets::marker(abstractMarker.marker);
+	    Events::Targets::marker(abstractMarker.marker,
+	        abstractMarker.dataPosition);
 
 	auto colorAlpha =
 	    Math::FuzzyBool::And<double>(abstractMarker.enabled, factor);
@@ -369,7 +374,9 @@ void MarkerRenderer::drawLabel(Gfx::ICanvas &canvas,
 	    Gfx::ColorTransform::OverrideColor(
 	        (*labelStyle.filter)(color)*colorAlpha),
 	    *rootEvents.draw.plot.marker.label,
-	    Events::Targets::markerLabel(text, marker));
+	    Events::Targets::markerLabel(text,
+	        marker,
+	        abstractMarker.dataPosition));
 }
 
 std::string MarkerRenderer::getLabelText(
