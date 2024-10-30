@@ -93,11 +93,20 @@ class MdChart {
 		return chart
 	}
 
-	static async loadAnimation(url, returnOriginal = false) {
+	static async loadAnimation(url, returnOriginal = false, replace = null) {
 		try {
 			const response = await fetch(url)
 			if (!response.ok) throw new Error(`Error fetching: ${response.statusText}`)
-			const code = await response.text()
+			let code = await response.text()
+			if (Array.isArray(replace)) {
+				replace.forEach(([searchValue, replaceValue]) => {
+					const regex = new RegExp(
+						searchValue.replace(/[-/\\^$*+?.()|[\]{}]/g, '\\$&'),
+						'g'
+					)
+					code = code.replace(regex, replaceValue)
+				})
+			}
 			return new Function( // eslint-disable-line no-new-func
 				'chart',
 				returnOriginal ? `${code}; return chart;` : `return ${code}`
@@ -109,27 +118,29 @@ class MdChart {
 
 	static async loadAnimations(animations) {
 		const steps = []
-		for (const animation of animations) {
+
+		async function loadAnimation(animation) {
 			if (typeof animation === 'string') {
 				const func = await MdChart.loadAnimation(`./${animation}.js`)
-				steps.push([(chart) => func(chart)])
-			} else if (Array.isArray(animation)) {
+				return (chart) => func(chart)
+			} else if (typeof animation === 'object' && animation.name) {
+				const { name, returnOriginal, replace } = animation
+				const func = await MdChart.loadAnimation(`./${name}.js`, returnOriginal, replace)
+				return (chart) => func(chart)
+			}
+		}
+
+		for (const animation of animations) {
+			if (Array.isArray(animation)) {
 				const animSteps = []
 				for (const subAnimation of animation) {
-					if (typeof subAnimation === 'string') {
-						const func = await MdChart.loadAnimation(`./${subAnimation}.js`)
-						animSteps.push((chart) => func(chart))
-					} else if (typeof subAnimation === 'object' && subAnimation.name) {
-						const { name, returnOriginal } = subAnimation
-						const func = await MdChart.loadAnimation(`./${name}.js`, returnOriginal)
-						animSteps.push((chart) => func(chart))
-					}
+					const func = await loadAnimation(subAnimation)
+					if (func) animSteps.push(func)
 				}
 				steps.push(animSteps)
-			} else if (typeof animation === 'object' && animation.name) {
-				const { name, returnOriginal } = animation
-				const func = await MdChart.loadAnimation(`./${name}.js`, returnOriginal)
-				steps.push([(chart) => func(chart)])
+			} else {
+				const func = await loadAnimation(animation)
+				if (func) steps.push([func])
 			}
 		}
 		return steps
