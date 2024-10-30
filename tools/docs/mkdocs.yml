@@ -87,7 +87,8 @@ plugins:
     - literate-nav:
           implicit_index: true
     - autorefs
-    - include-markdown
+    - include-markdown:
+        opening_tag: "// {%"
     - placeholder
     - gen-files:
           scripts:

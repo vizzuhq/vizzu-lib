@@ -11,7 +11,7 @@ In this step, we seek forward to `50%` of progress after the animation starts.
 
 <div id="tutorial_01"></div>
 
-{% include-markdown "tutorial/assets/setup/setup_c.md" %}
+// {% include-markdown "tutorial/assets/setup/setup_c.md" %}
 
 ```javascript
 chart.animate({

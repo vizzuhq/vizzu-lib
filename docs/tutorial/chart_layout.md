@@ -18,7 +18,7 @@ are aligned.
 
 <div id="tutorial_01"></div>
 
-{% include-markdown "tutorial/assets/setup/setup_c.md" %}
+// {% include-markdown "tutorial/assets/setup/setup_c.md" %}
 
 ```javascript
 chart.animate({

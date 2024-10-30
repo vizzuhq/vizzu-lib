@@ -19,7 +19,7 @@ stacked bubble chart using its preset.
 
 <div id="tutorial_01"></div>
 
-{% include-markdown "tutorial/assets/setup/setup_a.md" %}
+// {% include-markdown "tutorial/assets/setup/setup_a.md" %}
 
 ```javascript
 chart.animate(Vizzu.presets.stackedBubble({

@@ -14,7 +14,7 @@ we also add the same dimension to the color channel.
 
 <div id="tutorial_01"></div>
 
-{% include-markdown "tutorial/assets/setup/setup_b.md" %}
+// {% include-markdown "tutorial/assets/setup/setup_b.md" %}
 
 ```javascript
 chart.animate({
