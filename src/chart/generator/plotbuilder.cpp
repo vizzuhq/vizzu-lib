@@ -68,12 +68,11 @@ PlotBuilder::PlotBuilder(const Data::DataTable &dataTable,
 
 void PlotBuilder::initDimensionTrackers()
 {
-	for (const auto &ch :
-	    plot->options->getChannels().getChannels()) {
-		if (!ch.isDimension()) continue;
-		stats.tracked[ch.type].emplace<1>(
-		    dataCube.combinedSizeOf(ch.dimensions()).second);
-	}
+	for (auto *tracks = stats.tracked.data();
+	     const auto &ch : plot->options->getChannels().getChannels())
+		if (auto &track = *tracks++; ch.isDimension())
+			track.emplace<1>(
+			    dataCube.combinedSizeOf(ch.dimensions()).second);
 }
 
 Buckets PlotBuilder::generateMarkers(std::size_t &mainBucketSize)

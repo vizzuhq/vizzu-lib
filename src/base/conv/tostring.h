@@ -51,6 +51,9 @@ std::string toString(const From &value)
 	();
 }
 
+template <class T>
+concept IsStringifiable = requires(const T &t) { Conv::toString(t); };
+
 }
 
 #endif

@@ -47,6 +47,10 @@ template <typename To> To parse(const std::string &string)
 	();
 }
 
+template <class T>
+concept IsParsable =
+    requires(const std::string &s) { Conv::parse<T>(s); };
+
 }
 
 #endif

@@ -223,6 +223,27 @@ struct EnumArray : std::array<V, std::size(enum_names<E>)>
 		    static_cast<std::size_t>(value) - first);
 	}
 
+	template <std::size_t... Ix>
+	[[nodiscard]] consteval static EnumArray make(
+	    std::initializer_list<std::pair<E, V>> il,
+	    std::index_sequence<Ix...> = {})
+	{
+		constexpr static auto size = std::tuple_size_v<base_array>;
+		if constexpr (sizeof...(Ix) != size)
+			return make(il, std::make_index_sequence<size>{});
+		else {
+			if (il.size() != size)
+				throw std::runtime_error("Invalid init size");
+
+			auto ix = first;
+			for (auto &&[e, v] : il) {
+				if (static_cast<E>(ix++) != e)
+					throw std::runtime_error("Invalid init order");
+			}
+			return {{(std::data(il) + Ix)->second...}};
+		}
+	}
+
 	bool operator==(const EnumArray &) const = default;
 };
 

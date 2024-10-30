@@ -62,14 +62,29 @@ static_assert(std::ranges::all_of(Refl::enum_names<LegendId>,
 	            Refl::get_enum<ChannelId>(name));
     }));
 
-class Channel
+struct ChannelProperties
+{
+	bool stackable{};
+	Base::AutoParam<std::string, true> title{};
+	ChannelRange range{};
+	std::size_t labelLevel{};
+	Base::AutoBool axis{};
+	Base::AutoBool ticks{};
+	Base::AutoBool interlacing{};
+	Base::AutoBool guides{};
+	Base::AutoBool markerGuides{};
+	Base::AutoBool labels{};
+	Base::AutoParam<double> step{};
+};
+
+class Channel : public ChannelProperties
 {
 public:
 	using OptionalIndex = std::optional<Data::SeriesIndex>;
 	using IndexSet = std::set<Data::SeriesIndex>;
 	using DimensionIndices = Data::SeriesList;
 
-	static Channel makeChannel(ChannelId id);
+	[[nodiscard]] static Channel makeChannel(ChannelId id);
 
 	void addSeries(const Data::SeriesIndex &index);
 	void removeSeries(const Data::SeriesIndex &index);
@@ -88,21 +103,9 @@ public:
 	[[nodiscard]] OptionalIndex labelSeries() const;
 	bool operator==(const Channel &other) const;
 
-	ChannelId type{};
 	double defaultValue{};
-	bool stackable{};
 	OptionalIndex measureId{};
 	DimensionIndices dimensionIds{};
-	ChannelRange range{};
-	std::size_t labelLevel{};
-	Base::AutoParam<std::string, true> title{};
-	Base::AutoBool axis{};
-	Base::AutoBool labels{};
-	Base::AutoBool ticks{};
-	Base::AutoBool guides{};
-	Base::AutoBool markerGuides{};
-	Base::AutoBool interlacing{};
-	Base::AutoParam<double> step{};
 };
 
 [[nodiscard]] constexpr ChannelId asChannel(AxisId axis)

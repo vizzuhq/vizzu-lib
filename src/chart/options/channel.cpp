@@ -18,18 +18,26 @@ namespace Vizzu::Gen
 
 Channel Channel::makeChannel(ChannelId id)
 {
-	switch (id) {
-	case ChannelId::color: return {ChannelId::color, 0, false};
-	case ChannelId::label: return {ChannelId::label, 0, false};
-	case ChannelId::lightness:
-		return {ChannelId::lightness, 0.5, false};
-	case ChannelId::size: return {ChannelId::size, 0, true};
-	case ChannelId::x: return {ChannelId::x, 1, true};
-	case ChannelId::y: return {ChannelId::y, 1, true};
-	case ChannelId::noop: return {ChannelId::noop, 0, false};
-	default:;
-	};
-	throw std::logic_error("internal error: invalid channel id");
+	static constexpr auto defVals =
+	    Refl::EnumArray<ChannelId, double>::make(
+	        {{ChannelId::color, 0.0},
+	            {ChannelId::lightness, 0.5},
+	            {ChannelId::size, 0.0},
+	            {ChannelId::label, 0.0},
+	            {ChannelId::x, 1.0},
+	            {ChannelId::y, 1.0},
+	            {ChannelId::noop, 0.0}});
+
+	static constexpr auto defStackable =
+	    Refl::EnumArray<ChannelId, bool>::make(
+	        {{ChannelId::color, false},
+	            {ChannelId::lightness, false},
+	            {ChannelId::size, true},
+	            {ChannelId::label, false},
+	            {ChannelId::x, true},
+	            {ChannelId::y, true},
+	            {ChannelId::noop, false}});
+	return {{defStackable[id]}, defVals[id]};
 }
 
 void Channel::addSeries(const Data::SeriesIndex &index)
@@ -87,11 +95,10 @@ void Channel::collectDimesions(IndexSet &dimensions) const
 
 bool Channel::operator==(const Channel &other) const
 {
-	return type == other.type && measureId == other.measureId
+	return measureId == other.measureId
 	    && dimensionIds == other.dimensionIds
-	    && (defaultValue == other.defaultValue
-	        || (std::isnan(defaultValue)
-	            && std::isnan(other.defaultValue)))
+	    && std::is_eq(
+	        std::weak_order(defaultValue, other.defaultValue))
 	    && stackable == other.stackable && range == other.range
 	    && labelLevel == other.labelLevel && title == other.title
 	    && axis == other.axis && labels == other.labels
