@@ -17,18 +17,7 @@ we also add the same dimension to the color channel.
 // {% include-markdown "tutorial/assets/setup/setup_b.md" %}
 
 ```javascript
-chart.animate({
-    config: {
-        channels: {
-            y: {
-                attach: ['Kinds']
-            },
-            color: {
-                attach: ['Kinds']
-            }
-        }
-    }
-})
+// {% include "tutorial/group_stack/01_b.js" %}
 ```
 
 By detaching this newly added dimension from the y-axis and attaching it to the
@@ -38,18 +27,7 @@ viewer.
 <div id="tutorial_02"></div>
 
 ```javascript
-chart.animate({
-    config: {
-        channels: {
-            y: {
-                detach: ['Kinds']
-            },
-            x: {
-                attach: ['Kinds']
-            }
-        }
-    }
-})
+// {% include "tutorial/group_stack/02_b.js" %}
 ```
 
 In order to change the category via which the elements are grouped, just change
@@ -58,15 +36,7 @@ the order of the dimension with another one on the same axis.
 <div id="tutorial_03"></div>
 
 ```javascript
-chart.animate({
-    config: {
-        channels: {
-            x: {
-                set: ['Kinds', 'Genres']
-            }
-        }
-    }
-})
+// {% include "tutorial/group_stack/03_b.js" %}
 ```
 
 To stack a grouped chart, you just have to do the same thing the other way
@@ -75,18 +45,7 @@ around: detach the dimension from the x-axis and attach it to the y-axis.
 <div id="tutorial_04"></div>
 
 ```javascript
-chart.animate({
-    config: {
-        channels: {
-            x: {
-                detach: ['Kinds']
-            },
-            y: {
-                attach: ['Kinds']
-            }
-        }
-    }
-})
+// {% include "tutorial/group_stack/04_b.js" %}
 ```
 
-<script src="../group_stack.js"></script>
+<script src="../tutorial.js"></script>
