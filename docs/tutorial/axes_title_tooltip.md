@@ -88,4 +88,4 @@ over them with their mouse by adding the (`'tooltip'`, `true`) parameters to the
 !!! note
     Calls to this method before the library initialization completed will fail.
 
-<script src="../tutorial.js"></script>
+<script src="../snippet.js"></script>

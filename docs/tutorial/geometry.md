@@ -44,4 +44,4 @@ charts like bar and column charts.
 // {% include "tutorial/geometry/04_b.js" %}
 ```
 
-<script src="../tutorial.js"></script>
+<script src="../snippet.js"></script>

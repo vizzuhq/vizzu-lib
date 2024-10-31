@@ -67,4 +67,4 @@ following, simplified format to do that.
 // {% include "tutorial/animation_options/06_b.js" %}
 ```
 
-<script src="../tutorial.js"></script>
+<script src="../snippet.js"></script>

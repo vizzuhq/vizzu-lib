@@ -100,11 +100,7 @@ class MdChart {
 			let code = await response.text()
 			if (Array.isArray(replace)) {
 				replace.forEach(([searchValue, replaceValue]) => {
-					const regex = new RegExp(
-						searchValue.replace(/[-/\\^$*+?.()|[\]{}]/g, '\\$&'),
-						'g'
-					)
-					code = code.replace(regex, replaceValue)
+					code = code.replaceAll(searchValue, replaceValue)
 				})
 			}
 			return new Function( // eslint-disable-line no-new-func

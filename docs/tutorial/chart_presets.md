@@ -57,4 +57,4 @@ method's parameter.
     `Vizzu.presets.radialBar` is equivalent to
     `chart.constructor.presets.radialBar`.
 
-<script src="../tutorial.js"></script>
+<script src="../snippet.js"></script>
