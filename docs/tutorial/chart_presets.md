@@ -22,12 +22,7 @@ stacked bubble chart using its preset.
 // {% include-markdown "tutorial/assets/setup/setup_a.md" %}
 
 ```javascript
-chart.animate(Vizzu.presets.stackedBubble({
-    size: 'Popularity',
-    color: 'Kinds',
-    stackedBy: 'Genres',
-    title: 'Using a preset',
-}))
+// {% include "tutorial/chart_presets/01_b.js" %}
 ```
 
 Presets will override all channels, removing all previously set series from the
@@ -39,13 +34,7 @@ where chart elements are sorted by value.
 <div id="tutorial_02"></div>
 
 ```javascript
-chart.animate(Vizzu.presets.radialStackedBar({
-    angle: 'Popularity',
-    radius: 'Genres',
-    stackedBy: 'Kinds',
-    sort: 'byValue',
-    title: 'Set sorting for a chart preset'
-}))
+// {% include "tutorial/chart_presets/02_b.js" %}
 ```
 
 As you will see, the preset doesn't override the previously configured sorting
@@ -60,16 +49,7 @@ method's parameter.
 <div id="tutorial_03"></div>
 
 ```javascript
-chart.animate({
-    config: Vizzu.presets.radialBar({
-        angle: 'Popularity',
-        radius: 'Genres',
-        title: 'Setting style for a preset'
-    }),
-    style: {
-        'plot.xAxis.interlacing.color': '#ffffff00'
-    }
-})
+// {% include "tutorial/chart_presets/03_b.js" %}
 ```
 
 !!! info
@@ -77,4 +57,4 @@ chart.animate({
     `Vizzu.presets.radialBar` is equivalent to
     `chart.constructor.presets.radialBar`.
 
-<script src="../chart_presets.js"></script>
+<script src="../tutorial.js"></script>
