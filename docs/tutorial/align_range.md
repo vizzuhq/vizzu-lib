@@ -26,7 +26,7 @@ whereas on a bar chart, horizontally.
 Change align and configures the y axis labels to disappear during the animation.
 
 ```javascript
-// {% include "tutorial/align_range/01_b.js" %}
+// {% include "tutorial/align_range/01.js" %}
 ```
 
 Stretched alignment. This way the elements will proportionally fill the entire

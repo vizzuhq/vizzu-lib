@@ -17,7 +17,7 @@ the default animation options.
 // {% include-markdown "tutorial/assets/setup/setup_c.md" %}
 
 ```javascript
-// {% include "tutorial/animation_options/01_b.js" %}
+// {% include "tutorial/animation_options/01.js" %}
 ```
 
 We stack the columns, still with the default options.

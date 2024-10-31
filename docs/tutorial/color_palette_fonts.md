@@ -24,13 +24,13 @@ you should add
 // {% include-markdown "tutorial/assets/setup/setup_c.md" %}
 
 ```javascript
-// {% include "tutorial/color_palette_fonts/01_b.js" %}
+// {% include "tutorial/color_palette_fonts/01_a.js" %}
 ```
 
 The actual style settings of the chart can be accessed via the `style` property.
 
 ```javascript
-// {% include "tutorial/color_palette_fonts/01_c.js" %}
+// {% include "tutorial/color_palette_fonts/01_b.js" %}
 ```
 
 Changing the title font size will only affect the title; all other font sizes

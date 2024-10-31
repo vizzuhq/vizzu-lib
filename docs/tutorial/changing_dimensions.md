@@ -18,7 +18,7 @@ elements.
 // {% include-markdown "tutorial/assets/setup/setup_c.md" %}
 
 ```javascript
-// {% include "tutorial/changing_dimensions/01_b.js" %}
+// {% include "tutorial/changing_dimensions/01.js" %}
 ```
 
 When you simultaneously add and remove dimensions, the partitioning of the

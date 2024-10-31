@@ -17,7 +17,7 @@ still on the `color` channel.
 // {% include-markdown "tutorial/assets/setup/setup_c.md" %}
 
 ```javascript
-// {% include "tutorial/without_coordinates_noop_channel/01_b.js" %}
+// {% include "tutorial/without_coordinates_noop_channel/01.js" %}
 ```
 
 Getting from a treemap to a bubble chart is simply by changing the geometry to

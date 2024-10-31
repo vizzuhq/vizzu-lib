@@ -1,5 +1,12 @@
 [
-	["01_a", "01_b", { "name": "01_c", "returnOriginal": true }],
+	[
+		{
+			"name": "../assets/setup/setup_c",
+			"replace": [["config: {", "config: {title: 'Color palette',"]]
+		},
+		"01_a",
+		{ "name": "01_b", "returnOriginal": true }
+	],
 	["02_a", "02_b"],
 	["03_a", "03_b"],
 	["04_a", "04_b"],

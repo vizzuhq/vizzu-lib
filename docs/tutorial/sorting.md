@@ -16,7 +16,7 @@ ascending order.
 // {% include-markdown "tutorial/assets/setup/setup_c.md" %}
 
 ```javascript
-// {% include "tutorial/sorting/01_b.js" %}
+// {% include "tutorial/sorting/01.js" %}
 ```
 
 If you want descending order instead, you have to set the `reverse` parameter to

@@ -21,7 +21,7 @@ are aligned.
 // {% include-markdown "tutorial/assets/setup/setup_c.md" %}
 
 ```javascript
-// {% include "tutorial/chart_layout/01_b.js" %}
+// {% include "tutorial/chart_layout/01.js" %}
 ```
 
 Setting the width of the legend.

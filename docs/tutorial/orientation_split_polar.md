@@ -17,7 +17,7 @@ only use temporarily.
 // {% include-markdown "tutorial/assets/setup/setup_c.md" %}
 
 ```javascript
-// {% include "tutorial/orientation_split_polar/01_b.js" %}
+// {% include "tutorial/orientation_split_polar/01.js" %}
 ```
 
 By turning the split parameter on, you can see stacked elements side-by-side,
