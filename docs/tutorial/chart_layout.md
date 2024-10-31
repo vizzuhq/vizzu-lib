@@ -21,17 +21,7 @@ are aligned.
 // {% include-markdown "tutorial/assets/setup/setup_c.md" %}
 
 ```javascript
-chart.animate({
-    style: {
-        backgroundColor: '#A0A0A0',
-        plot: {
-            backgroundColor: '#D2D2D2'
-        },
-        legend: {
-            backgroundColor: '#808080'
-        },
-    }
-})
+// {% include "tutorial/chart_layout/01_b.js" %}
 ```
 
 Setting the width of the legend.
@@ -39,13 +29,7 @@ Setting the width of the legend.
 <div id="tutorial_02"></div>
 
 ```javascript
-chart.animate({
-    style: {
-        legend: {
-            width: 50
-        }
-    }
-})
+// {% include "tutorial/chart_layout/02_b.js" %}
 ```
 
 Setting the legend width back to its default value.
@@ -53,13 +37,7 @@ Setting the legend width back to its default value.
 <div id="tutorial_03"></div>
 
 ```javascript
-chart.animate({
-    style: {
-        legend: {
-            width: null
-        }
-    }
-})
+// {% include "tutorial/chart_layout/03.js" %}
 ```
 
 Changing the title paddings. By default, the title is horizontally centered
@@ -69,15 +47,7 @@ the text moving to the right.
 <div id="tutorial_04"></div>
 
 ```javascript
-chart.animate({
-    style: {
-        title: {
-            paddingTop: 20,
-            paddingBottom: 20,
-            paddingLeft: 200
-        }
-    }
-})
+// {% include "tutorial/chart_layout/04_b.js" %}
 ```
 
 Setting the title paddings back to their default values.
@@ -85,15 +55,7 @@ Setting the title paddings back to their default values.
 <div id="tutorial_05"></div>
 
 ```javascript
-chart.animate({
-    style: {
-        title: {
-            paddingTop: null,
-            paddingBottom: null,
-            paddingLeft: null
-        }
-    }
-})
+// {% include "tutorial/chart_layout/05.js" %}
 ```
 
 Changing the paddings of the plot area to position the plot. The texts on the
@@ -102,14 +64,7 @@ axes are drawn on the padding of the plot and not the plot itself.
 <div id="tutorial_06"></div>
 
 ```javascript
-chart.animate({
-    style: {
-        plot: {
-            paddingLeft: 100,
-            paddingRight: 100
-        }
-    }
-})
+// {% include "tutorial/chart_layout/06_b.js" %}
 ```
 
 Setting the plot paddings back to their default values.
@@ -117,14 +72,7 @@ Setting the plot paddings back to their default values.
 <div id="tutorial_07"></div>
 
 ```javascript
-chart.animate({
-    style: {
-        plot: {
-            paddingLeft: null,
-            paddingRight: null
-        }
-    }
-})
+// {% include "tutorial/chart_layout/07.js" %}
 ```
 
-<script src="../chart_layout.js"></script>
+<script src="../tutorial.js"></script>
