@@ -11,45 +11,45 @@ namespace Conv
 {
 
 template <class T>
-concept Parsable = requires(
-    const std::string &s) { static_cast<T>(T::fromString(s)); };
+concept Parsable = !std::is_void_v<decltype(T::fromString(
+    std::declval<std::string>()))>;
 
-template <typename To> To parse(const std::string &string)
+template <class To>
+constexpr inline static bool IsParsable =
+    std::is_enum_v<To> || Parsable<To>
+    || (Type::is_optional_v<To> && IsParsable<Type::optional_t<To>>)
+    || std::is_constructible_v<To, std::string>
+    || std::is_same_v<To, bool> || std::is_floating_point_v<To>
+    || std::is_integral_v<To>;
+
+template <> constexpr inline bool IsParsable<void> = false;
+
+template <typename To>
+    requires IsParsable<To>
+[[nodiscard]] auto parse(const std::string &string)
 {
-	if constexpr (std::is_enum_v<To>) {
+	if constexpr (std::is_enum_v<To>)
 		return Refl::get_enum<To>(string);
-	}
-	else if constexpr (Parsable<To>) {
+	else if constexpr (Parsable<To>)
 		return To::fromString(string);
-	}
 	else if constexpr (Type::is_optional_v<To>) {
-		if (string == "null") return std::nullopt;
-		return parse<typename To::value_type>(string);
+		if (string == "null")
+			return std::optional<decltype(parse<Type::optional_t<To>>(
+			    string))>{std::nullopt};
+		return std::optional{parse<Type::optional_t<To>>(string)};
 	}
-	else if constexpr (std::is_constructible_v<To, std::string>) {
+	else if constexpr (std::is_constructible_v<To, std::string>)
 		return To(string);
-	}
-	else if constexpr (std::is_same_v<To, bool>) {
+	else if constexpr (std::is_same_v<To, bool>)
 		return string == "true"
 		    || (string != "false" && (throw std::bad_cast(), true));
-	}
-	else if constexpr (std::is_floating_point_v<To>) {
+	else if constexpr (std::is_floating_point_v<To>)
 		return static_cast<To>(strtod(string.c_str(), nullptr));
-	}
-	else if constexpr (std::is_integral_v<To>) {
+	else {
+		static_assert(std::is_integral_v<To>);
 		return static_cast<To>(strtoll(string.c_str(), nullptr, 10));
 	}
-	else
-		[]<bool flag = false>()
-		{
-			static_assert(flag, "no conversion from string");
-		}
-	();
 }
-
-template <class T>
-concept IsParsable =
-    requires(const std::string &s) { Conv::parse<T>(s); };
 
 }
 

@@ -59,12 +59,10 @@ void StyleMorphFactory::operator()(const T &source,
 	}
 }
 
-template <typename T>
-    requires(
-        std::is_same_v<typename T::value_type, Text::NumberFormat>
-        || std::is_same_v<typename T::value_type, Text::NumberScale>
-        || std::is_same_v<typename T::value_type,
-            Styles::MarkerLabel::Format>)
+template <typename T, typename PT>
+    requires(std::is_same_v<PT, Text::NumberFormat>
+             || std::is_same_v<PT, Text::NumberScale>
+             || std::is_same_v<PT, Styles::MarkerLabel::Format>)
 void StyleMorphFactory::operator()(const T &, const T &, T &) const
 {}
 

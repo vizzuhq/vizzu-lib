@@ -37,13 +37,13 @@ public:
 		}
 	}
 
-	explicit operator std::string() const
+	[[nodiscard]] auto toString() const
 	{
-		if (autoSet) return "auto";
-		if constexpr (nullable) { return Conv::toString(value); }
-		else {
+		if (autoSet) return decltype(Conv::toString(value)){"auto"};
+		if constexpr (nullable)
+			return Conv::toString(value);
+		else
 			return Conv::toString(*value);
-		}
 	}
 
 	explicit operator bool() const

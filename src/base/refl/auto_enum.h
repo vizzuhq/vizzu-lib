@@ -213,13 +213,13 @@ struct EnumArray : std::array<V, std::size(enum_names<E>)>
 
 	[[nodiscard]] constexpr V &at(E value)
 	{
-		return base_array::at(
+		return base_array::operator[](
 		    static_cast<std::size_t>(value) - first);
 	}
 
 	[[nodiscard]] constexpr const V &at(E value) const
 	{
-		return base_array::at(
+		return base_array::operator[](
 		    static_cast<std::size_t>(value) - first);
 	}
 

@@ -24,15 +24,7 @@ struct Channels : Refl::EnumArray<ChannelId, Channel>
 	[[nodiscard]] IndexSet getDimensions(
 	    const std::span<const ChannelId> &channelTypes) const;
 
-	[[nodiscard]] const Channel &at(const ChannelId &id) const
-	{
-		return (*this)[id];
-	}
-
-	[[nodiscard]] Channel &at(const ChannelId &id)
-	{
-		return (*this)[id];
-	}
+	using EnumArray::at;
 
 	template <ChannelIdLike T>
 	[[nodiscard]] const Channel &at(const T &id) const

@@ -33,8 +33,8 @@ template <class Object, bool runtime = false> struct Accessor
 			        using Type =
 			            Functors::Composite::Res<Object, MPs...>;
 			        static_assert(Conv::IsStringifiable<Type>);
-			        return Conv::toString(
-			            Functors::FuncPtr<Object, Type, MPs...>(o));
+			        return std::string{Conv::toString(
+			            Functors::FuncPtr<Object, Type, MPs...>(o))};
 		        },
 		    .set =
 		        +[](Object &o, const std::string &str)
@@ -59,7 +59,7 @@ template <class Object> struct Accessor<Object, true>
 	{
 		return {.get{[ptr](const Object &o)
 		            {
-			            return Conv::toString(ptr(o));
+			            return std::string{Conv::toString(ptr(o))};
 		            }},
 		    .set{[ptr](Object &o, const std::string &str)
 		        {

@@ -18,7 +18,7 @@ template <class T>
 class StyleMorph<T,
     std::enable_if_t<
         Style::IsParam<T>
-        && Math::Niebloid::interpolatable<typename T::value_type>>> :
+        && Math::Niebloid::interpolatable<Style::ParamT<T>>>> :
     public ::Anim::IElement
 {
 public:
@@ -81,13 +81,10 @@ public:
 	    requires(requires(StyleMorph<T> &m) { m.transform(0.0); })
 	void operator()(const T &source, const T &target, T &value) const;
 
-	template <typename T>
-	    requires(
-	        std::is_same_v<typename T::value_type, Text::NumberFormat>
-	        || std::is_same_v<typename T::value_type,
-	            Text::NumberScale>
-	        || std::is_same_v<typename T::value_type,
-	            Styles::MarkerLabel::Format>)
+	template <typename T, typename PT = Style::ParamT<T>>
+	    requires(std::is_same_v<PT, Text::NumberFormat>
+	             || std::is_same_v<PT, Text::NumberScale>
+	             || std::is_same_v<PT, Styles::MarkerLabel::Format>)
 	void operator()(const T &, const T &, T &) const;
 
 private:
