@@ -19,16 +19,6 @@ namespace Vizzu::Gen
 
 Channel Channel::makeChannel(ChannelId id)
 {
-	static constexpr auto defVals =
-	    Refl::EnumArray<ChannelId, double>::make(
-	        {{ChannelId::color, 0.0},
-	            {ChannelId::lightness, 0.5},
-	            {ChannelId::size, 0.0},
-	            {ChannelId::label, 0.0},
-	            {ChannelId::x, 1.0},
-	            {ChannelId::y, 1.0},
-	            {ChannelId::noop, 0.0}});
-
 	static constexpr auto defStackable =
 	    Refl::EnumArray<ChannelId, bool>::make(
 	        {{ChannelId::color, false},
@@ -38,7 +28,7 @@ Channel Channel::makeChannel(ChannelId id)
 	            {ChannelId::x, true},
 	            {ChannelId::y, true},
 	            {ChannelId::noop, false}});
-	return {{defStackable[id]}, defVals[id]};
+	return {{defStackable[id]}};
 }
 
 void Channel::addSeries(const Data::SeriesIndex &index)
@@ -88,24 +78,10 @@ bool Channel::hasDimension() const { return !dimensionIds.empty(); }
 
 bool Channel::isMeasure() const { return measureId.has_value(); }
 
-void Channel::collectDimesions(IndexSet &dimensions) const
+void Channel::collectDimensions(IndexSet &dimensions) const
 {
 	for (const auto &dimension : dimensionIds)
 		dimensions.insert(dimension);
-}
-
-bool Channel::operator==(const Channel &other) const
-{
-	return measureId == other.measureId
-	    && dimensionIds == other.dimensionIds
-	    && std::is_eq(
-	        std::weak_order(defaultValue, other.defaultValue))
-	    && stackable == other.stackable && range == other.range
-	    && labelLevel == other.labelLevel && title == other.title
-	    && axis == other.axis && labels == other.labels
-	    && ticks == other.ticks && interlacing == other.interlacing
-	    && guides == other.guides
-	    && markerGuides == other.markerGuides;
 }
 
 const Channel::DimensionIndices &Channel::dimensions() const

@@ -12,13 +12,12 @@ namespace Vizzu::Gen
 
 bool Channels::anyAxisSet() const
 {
-	return !channels[ChannelId::x].isEmpty()
-	    || !channels[ChannelId::y].isEmpty();
+	return !at(AxisId::x).isEmpty() || !at(AxisId::y).isEmpty();
 }
 
 bool Channels::isEmpty() const
 {
-	return std::ranges::all_of(channels,
+	return std::ranges::all_of(*this,
 	    [](const auto &channel)
 	    {
 		    return channel.isEmpty();
@@ -29,8 +28,8 @@ Channels::IndexSet Channels::getDimensions() const
 {
 	IndexSet dimensions;
 
-	for (const auto &channel : channels)
-		channel.collectDimesions(dimensions);
+	for (const auto &channel : *this)
+		channel.collectDimensions(dimensions);
 
 	return dimensions;
 }
@@ -39,7 +38,7 @@ Channels::IndexSet Channels::getMeasures() const
 {
 	IndexSet series;
 
-	for (const auto &channel : channels)
+	for (const auto &channel : *this)
 		if (auto &&mid = channel.measureId) series.insert(*mid);
 
 	return series;
@@ -51,56 +50,44 @@ Channels::IndexSet Channels::getDimensions(
 	IndexSet dimensions;
 
 	for (auto &&channelType : channelTypes)
-		channels[channelType].collectDimesions(dimensions);
+		at(channelType).collectDimensions(dimensions);
 
 	return dimensions;
 }
 
 void Channels::removeSeries(const Data::SeriesIndex &index)
 {
-	for (auto &channel : channels) channel.removeSeries(index);
+	for (auto &channel : *this) channel.removeSeries(index);
 }
 
 bool Channels::isSeriesUsed(const Data::SeriesIndex &index) const
 {
-	return std::ranges::any_of(channels,
+	return std::ranges::any_of(*this,
 	    [&](const auto &channel)
 	    {
 		    return channel.isSeriesUsed(index);
 	    });
 }
 
-const Channel &Channels::at(const ChannelId &id) const
-{
-	return channels[id];
-}
-
-Channel &Channels::at(const ChannelId &id) { return channels[id]; }
-
 void Channels::reset()
 {
-	for (auto &channel : channels) channel.reset();
-}
-
-bool Channels::operator==(const Channels &other) const
-{
-	return channels == other.channels;
+	for (auto &channel : *this) channel.reset();
 }
 
 Channels Channels::shadow() const
 {
 	Channels shadow = *this;
 
-	shadow.channels[ChannelId::color].reset();
-	shadow.channels[ChannelId::lightness].reset();
-	shadow.channels[ChannelId::label].reset();
-	shadow.channels[ChannelId::noop].reset();
+	shadow[ChannelId::color].reset();
+	shadow[ChannelId::lightness].reset();
+	shadow[ChannelId::label].reset();
+	shadow[ChannelId::noop].reset();
 
 	for (auto &&attr : getDimensions({{ChannelId::color,
 	         ChannelId::lightness,
 	         ChannelId::label,
 	         ChannelId::noop}}))
-		shadow.channels[ChannelId::noop].addSeries(attr);
+		shadow[ChannelId::noop].addSeries(attr);
 
 	return shadow;
 }

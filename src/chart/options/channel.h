@@ -75,6 +75,8 @@ struct ChannelProperties
 	Base::AutoBool markerGuides{};
 	Base::AutoBool labels{};
 	Base::AutoParam<double> step{};
+
+	bool operator==(const ChannelProperties &) const = default;
 };
 
 class Channel : public ChannelProperties
@@ -95,15 +97,15 @@ public:
 	[[nodiscard]] bool isDimension() const;
 	[[nodiscard]] bool hasDimension() const;
 	[[nodiscard]] bool isMeasure() const;
-	void collectDimesions(IndexSet &dimensions) const;
+	void collectDimensions(IndexSet &dimensions) const;
 	[[nodiscard]] const DimensionIndices &dimensions() const;
 	[[nodiscard]] std::pair<const DimensionIndices &,
 	    const std::size_t &>
 	dimensionsWithLevel() const;
 	[[nodiscard]] OptionalIndex labelSeries() const;
-	bool operator==(const Channel &other) const;
+	[[nodiscard]] bool operator==(
+	    const Channel &other) const = default;
 
-	double defaultValue{};
 	OptionalIndex measureId{};
 	DimensionIndices dimensionIds{};
 };

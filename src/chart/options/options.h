@@ -137,7 +137,7 @@ public:
 		return channels.at(getHorizontalChannel());
 	}
 
-	[[nodiscard]] const Channel &getVeritalAxis() const
+	[[nodiscard]] const Channel &getVerticalAxis() const
 	{
 		return channels.at(getVerticalChannel());
 	}
@@ -147,7 +147,7 @@ public:
 		return channels.at(getHorizontalChannel());
 	}
 
-	Channel &getVeritalAxis()
+	Channel &getVerticalAxis()
 	{
 		return channels.at(getVerticalChannel());
 	}
@@ -166,7 +166,13 @@ public:
 	void showTooltip(std::optional<MarkerIndex> marker);
 
 private:
-	Channels channels;
+	Channels channels{
+	    []<std::size_t... Ix>(std::index_sequence<Ix...>)
+	    {
+		    return decltype(channels){
+		        Channel::makeChannel(static_cast<ChannelId>(Ix))...};
+	    }(std::make_index_sequence<
+	        std::tuple_size_v<decltype(channels)::base_array>>{})};
 
 	[[nodiscard]] Gen::Orientation getAutoOrientation() const;
 	[[nodiscard]] std::optional<LegendId> getAutoLegend() const;

@@ -292,7 +292,7 @@ std::optional<LegendId> Options::getAutoLegend() const
 
 void Options::setAutoRange(bool hPositive, bool vPositive)
 {
-	auto &v = getVeritalAxis();
+	auto &v = getVerticalAxis();
 	auto &h = getHorizontalAxis();
 	auto &&cart = coordSystem.get() == CoordSystem::cartesian;
 	auto &&nrect = geometry != ShapeType::rectangle;

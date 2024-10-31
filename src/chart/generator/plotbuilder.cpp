@@ -69,7 +69,7 @@ PlotBuilder::PlotBuilder(const Data::DataTable &dataTable,
 void PlotBuilder::initDimensionTrackers()
 {
 	for (auto *tracks = stats.tracked.data();
-	     const auto &ch : plot->options->getChannels().getChannels())
+	     const auto &ch : plot->options->getChannels())
 		if (auto &track = *tracks++; ch.isDimension())
 			track.emplace<1>(
 			    dataCube.combinedSizeOf(ch.dimensions()).second);
@@ -309,7 +309,7 @@ void PlotBuilder::normalizeXY()
 {
 	const auto &xrange =
 	    plot->getOptions()->getHorizontalAxis().range;
-	const auto &yrange = plot->getOptions()->getVeritalAxis().range;
+	const auto &yrange = plot->getOptions()->getVerticalAxis().range;
 
 	auto markerIt = plot->markers.begin();
 	while (markerIt != plot->markers.end()
