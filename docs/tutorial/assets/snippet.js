@@ -1,7 +1,7 @@
-const mdChartLoaded = import('../assets/javascripts/mdchart.js')
+const mdChartLoaded = import('../../assets/javascripts/mdchart.js')
 
 const scriptTag = document.currentScript
-const dataFile = scriptTag.getAttribute('data') ?? '../assets/data/music_data.js'
+const dataFile = scriptTag.getAttribute('data') ?? '../../assets/data/music_data.js'
 
 const dataLoaded = import(dataFile)
 const configLoaded = fetch('./config.json').then((response) => response.json())

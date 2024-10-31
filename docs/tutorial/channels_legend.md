@@ -67,4 +67,4 @@ change the geometry to circle in the example.
 // {% include "tutorial/channels_legend/04_b.js" %}
 ```
 
-<script src="../snippet.js"></script>
+<script src="../assets/snippet.js"></script>

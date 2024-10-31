@@ -15,7 +15,7 @@ Switching the geometry to area.
 // {% include-markdown "tutorial/assets/setup/setup_b.md" %}
 
 ```javascript
-// {% include "tutorial/geometry/01_b.js" %}
+// {% include "tutorial/geometry/01.js" %}
 ```
 
 Drawing a line chart.
@@ -44,4 +44,4 @@ charts like bar and column charts.
 // {% include "tutorial/geometry/04_b.js" %}
 ```
 
-<script src="../snippet.js"></script>
+<script src="../assets/snippet.js"></script>

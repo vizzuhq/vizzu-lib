@@ -41,4 +41,4 @@ their count.
 // {% include "tutorial/without_coordinates_noop_channel/03_b.js" %}
 ```
 
-<script src="../snippet.js"></script>
+<script src="../assets/snippet.js"></script>

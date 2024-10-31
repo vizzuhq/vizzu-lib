@@ -18,7 +18,7 @@ the measure (`Popularity`) to the y-axis using the set property.
 // {% include-markdown "tutorial/assets/setup/setup_a.md" %}
 
 ```javascript
-// {% include "tutorial/axes_title_tooltip/01_a.js" %}
+// {% include "tutorial/assets/setup/setup_b.js" %}
 ```
 
 We will reference the data series by names for clarity throughout the tutorial.
@@ -28,7 +28,7 @@ see the [Aggregating data](./aggregating_data.md) chapter. The previous example
 can be rewritten using data series descriptor objects as follows:
 
 ```javascript
-// {% include "tutorial/axes_title_tooltip/01_b.js" %}
+// {% include "tutorial/axes_title_tooltip/01.js" %}
 ```
 
 In the next step, the chart is rearranged by putting both series on the y-axis
@@ -88,4 +88,4 @@ over them with their mouse by adding the (`'tooltip'`, `true`) parameters to the
 !!! note
     Calls to this method before the library initialization completed will fail.
 
-<script src="../snippet.js"></script>
+<script src="../assets/snippet.js"></script>

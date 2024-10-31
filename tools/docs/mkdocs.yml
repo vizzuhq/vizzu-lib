@@ -76,7 +76,7 @@ markdown_extensions:
 plugins:
     - exclude:
           glob:
-              - tutorial/assets/**
+              - tutorial/assets/**.md
     - mike:
           version_selector: true
           alias_type: symlink

@@ -1,5 +1,5 @@
 [
-	["01_a", "01_b"],
+	["../assets/setup/setup_b", "01"],
 	"02",
 	"03",
 	[{ "name": "04_a", "returnOriginal": true }, "04_b"],

@@ -48,4 +48,4 @@ around: detach the dimension from the x-axis and attach it to the y-axis.
 // {% include "tutorial/group_stack/04_b.js" %}
 ```
 
-<script src="../snippet.js"></script>
+<script src="../assets/snippet.js"></script>

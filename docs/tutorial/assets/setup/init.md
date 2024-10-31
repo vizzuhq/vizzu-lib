@@ -19,4 +19,8 @@ import data from 'https://lib.vizzuhq.com/xLIB_MINOR_VERSIONx/assets/data/music_
 let chart = new Vizzu('myVizzu')
 
 await chart.initializing
+
+chart.animate({
+    data
+})
 ```

@@ -60,4 +60,4 @@ coordinates, just set the `coordSystem` parameter to `'cartesian'`.
 // {% include "tutorial/orientation_split_polar/05_b.js" %}
 ```
 
-<script src="../snippet.js"></script>
+<script src="../assets/snippet.js"></script>
