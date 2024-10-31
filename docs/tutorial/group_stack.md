@@ -17,7 +17,7 @@ we also add the same dimension to the color channel.
 // {% include-markdown "tutorial/assets/setup/setup_b.md" %}
 
 ```javascript
-// {% include "tutorial/group_stack/01_b.js" %}
+// {% include "tutorial/group_stack/01.js" %}
 ```
 
 By detaching this newly added dimension from the y-axis and attaching it to the

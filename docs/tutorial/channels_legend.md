@@ -22,7 +22,7 @@ them differently with the `style` object introduced in the
 // {% include-markdown "tutorial/assets/setup/setup_b.md" %}
 
 ```javascript
-// {% include "tutorial/channels_legend/01_b.js" %}
+// {% include "tutorial/channels_legend/01.js" %}
 ```
 
 The `lightness` channel sets the lightness of the markers. In this case the same
