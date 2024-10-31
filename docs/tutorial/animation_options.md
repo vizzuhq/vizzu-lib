@@ -17,18 +17,7 @@ the default animation options.
 // {% include-markdown "tutorial/assets/setup/setup_c.md" %}
 
 ```javascript
-chart.animate({
-    config: {
-        channels: {
-            y: {
-                detach: ['Kinds']
-            },
-            x: {
-                attach: ['Kinds']
-            }
-        }
-    }
-})
+// {% include "tutorial/animation_options/01_b.js" %}
 ```
 
 We stack the columns, still with the default options.
@@ -36,18 +25,7 @@ We stack the columns, still with the default options.
 <div id="tutorial_02"></div>
 
 ```javascript
-chart.animate({
-    config: {
-        channels: {
-            x: {
-                detach: ['Kinds']
-            },
-            y: {
-                attach: ['Kinds']
-            }
-        }
-    }
-})
+// {% include "tutorial/animation_options/02_b.js" %}
 ```
 
 Now we change the animation settings for the elements moving along the y-axis
@@ -57,27 +35,7 @@ move from the center of the chart elements to the top of them.
 <div id="tutorial_03"></div>
 
 ```javascript
-chart.animate({
-    config: {
-        channels: {
-            y: {
-                detach: ['Kinds']
-            },
-            x: {
-                attach: ['Kinds']
-            }
-        }
-    }
-}, {
-    y: {
-        duration: 2,
-        delay: 2
-    },
-    style: {
-        duration: 2,
-        delay: 4
-    }
-})
+// {% include "tutorial/animation_options/03_b.js" %}
 ```
 
 This is an example of changing the settings for the whole animation at once.
@@ -85,21 +43,7 @@ This is an example of changing the settings for the whole animation at once.
 <div id="tutorial_04"></div>
 
 ```javascript
-chart.animate({
-    config: {
-        channels: {
-            x: {
-                detach: ['Kinds']
-            },
-            y: {
-                attach: ['Kinds']
-            }
-        }
-    }
-}, {
-    duration: 1,
-    easing: 'linear'
-})
+// {% include "tutorial/animation_options/04_b.js" %}
 ```
 
 When the two settings are combined, `Vizzu` will use the general animation
@@ -110,29 +54,7 @@ quicker since the duration of the whole animation is set to 1 second.
 <div id="tutorial_05"></div>
 
 ```javascript
-chart.animate({
-    config: {
-        channels: {
-            x: {
-                attach: ['Kinds']
-            },
-            y: {
-                detach: ['Kinds']
-            }
-        }
-    }
-}, {
-    duration: 1,
-    easing: 'linear',
-    y: {
-        duration: 2,
-        delay: 2
-    },
-    style: {
-        duration: 2,
-        delay: 4
-    }
-})
+// {% include "tutorial/animation_options/05_b.js" %}
 ```
 
 The default unit for animation is seconds, but you can set other units. Besides
@@ -142,18 +64,7 @@ following, simplified format to do that.
 <div id="tutorial_06"></div>
 
 ```javascript
-chart.animate({
-    config: {
-        channels: {
-            x: {
-                detach: ['Kinds']
-            },
-            y: {
-                attach: ['Kinds']
-            }
-        }
-    }
-}, '500ms')
+// {% include "tutorial/animation_options/06_b.js" %}
 ```
 
-<script src="../animation_options.js"></script>
+<script src="../tutorial.js"></script>
