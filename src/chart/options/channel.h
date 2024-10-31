@@ -80,8 +80,15 @@ struct ChannelSeriesList
 		Parse type{};
 		std::optional<Data::SeriesIndex> res{};
 
-		[[nodiscard]] FromString &operator()(const std::string &str);
-	} static &fromString;
+		[[nodiscard]] FromString &operator()(
+		    const std::string &str) const;
+
+		static FromString &instance() noexcept
+		{
+			thread_local FromString instance;
+			return instance;
+		}
+	} thread_local static const &fromString;
 
 	ChannelSeriesList &operator=(FromString &);
 

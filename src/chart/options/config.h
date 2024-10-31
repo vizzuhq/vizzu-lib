@@ -16,7 +16,10 @@ public:
 	static std::string paramsJson();
 	[[nodiscard]] std::string getParam(const std::string &path) const;
 	void setParam(const std::string &path, const std::string &value);
-	explicit Config(Options &options, Data::DataTable &table);
+	explicit Config(Options &options, Data::DataTable &table) :
+	    options(options),
+	    table(table)
+	{}
 
 private:
 	std::reference_wrapper<Options> options;

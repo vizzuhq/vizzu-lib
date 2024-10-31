@@ -55,14 +55,6 @@ void Config::setParam(const std::string &path,
 		    path + "/" + value + ": invalid config parameter");
 }
 
-Config::Config(Options &options, Data::DataTable &table) :
-    options(options),
-    table(table)
-{
-	auto &fromString = ChannelSeriesList::fromString;
-	fromString.table = &table;
-}
-
 std::string Config::getParam(const std::string &path) const
 {
 	if (path.starts_with("channels.")) return getChannelParam(path);
@@ -97,7 +89,8 @@ void Config::setChannelParam(const std::string &path,
 		return;
 	}
 	if (property == "set") {
-		auto &fromString = ChannelSeriesList::fromString;
+		auto &fromString = ChannelSeriesList::FromString::instance();
+		fromString.table = &table.get();
 		if ((parts.size() == 3 && value == "null")
 		    || (parts.size() == 5 && parts[3] == "0"
 		        && parts[4] == "name")) {

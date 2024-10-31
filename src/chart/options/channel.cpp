@@ -27,17 +27,14 @@ std::string ChannelSeriesList::toString() const
 	return res;
 }
 
-ChannelSeriesList::FromString &get() noexcept
-{
-	static ChannelSeriesList::FromString res;
-	return res;
-}
-
-ChannelSeriesList::FromString &ChannelSeriesList::fromString = get();
+thread_local const ChannelSeriesList::FromString
+    &ChannelSeriesList::fromString{FromString::instance()};
 
 ChannelSeriesList::FromString &
-ChannelSeriesList::FromString::operator()(const std::string &str)
+ChannelSeriesList::FromString::operator()(
+    const std::string &str) const
 {
+	auto &res = instance().res;
 	switch (type) {
 	default:
 	case Parse::null: break;
@@ -55,7 +52,7 @@ ChannelSeriesList::FromString::operator()(const std::string &str)
 			res.emplace().setAggr(str);
 		break;
 	}
-	return *this;
+	return instance();
 }
 ChannelSeriesList &ChannelSeriesList::operator=(FromString &index)
 {
