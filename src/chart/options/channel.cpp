@@ -39,11 +39,13 @@ ChannelSeriesList::FromString::operator()(
 	default:
 	case Parse::null: break;
 	case Parse::name:
-		if (res && !res->isDimension())
-			res = Data::SeriesIndex{str, *table}.setAggr(
-			    res->getAggr());
-		else if (!str.empty())
-			res.emplace(str, *table);
+		if (!str.empty()) {
+			if (res && !res->isDimension())
+				res = Data::SeriesIndex{str, *table}.setAggr(
+				    res->getAggr());
+			else
+				res.emplace(str, *table);
+		}
 		break;
 	case Parse::aggregator:
 		if (res)

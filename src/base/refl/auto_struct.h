@@ -679,19 +679,22 @@ concept is_reflectable =
     || (std::is_aggregate_v<T>
         && is_structure_bindable_v<T> != structure_bindable::no);
 
-template <class T, auto L, class = void, class... PreMPs>
+template <class T, auto L, class... PreMPs>
 constexpr static auto all_member_functor_v{
     []<class... Bases, class... MF>(std::tuple<Bases...> *,
         std::tuple<MF...>)
     {
-	    static_assert(is_reflectable<T>, "Unable to run reflection");
-	    return decltype(std::tuple_cat(
-	        all_member_functor_v<Bases, L, void, PreMPs...>...,
-	        all_member_functor_v<member_functor_t<MF>,
-	            L,
-	            void,
-	            PreMPs...,
-	            MF>...)){};
+	    if constexpr (L.template operator()<T>()) {
+		    return std::tuple<std::tuple<PreMPs...>>{};
+	    }
+	    else if constexpr (is_reflectable<T>) {
+		    return decltype(std::tuple_cat(
+		        all_member_functor_v<Bases, L, PreMPs...>...,
+		        all_member_functor_v<member_functor_t<MF>,
+		            L,
+		            PreMPs...,
+		            MF>...)){};
+	    }
     }(std::add_pointer_t<bases_t<T>>{}, member_functors_v<T>)};
 
 template <class T, auto L, class... PreMPs>
