@@ -26,7 +26,7 @@ template <> constexpr inline bool IsParsable<void> = false;
 
 template <typename To>
     requires IsParsable<To>
-[[nodiscard]] auto parse(const std::string &string)
+[[nodiscard]] decltype(auto) parse(const std::string &string)
 {
 	if constexpr (std::is_enum_v<To>)
 		return Refl::get_enum<To>(string);

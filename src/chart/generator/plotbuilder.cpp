@@ -365,7 +365,7 @@ void PlotBuilder::calcMeasureAxises(const Data::DataTable &dataTable)
 	if (auto &&meas = plot->getOptions()
 	                      ->getChannels()
 	                      .at(ChannelId::label)
-	                      .measureId)
+	                      .measure())
 		plot->axises.label = {
 		    ::Anim::String{
 		        std::string{dataTable.getUnit(meas->getColIndex())}},
@@ -377,7 +377,7 @@ void PlotBuilder::calcMeasureAxis(const Data::DataTable &dataTable,
     T type)
 {
 	const auto &scale = plot->getOptions()->getChannels().at(type);
-	if (auto &&meas = scale.measureId) {
+	if (auto &&meas = scale.measure()) {
 		if (auto &title = plot->axises.at(type).title;
 		    scale.title.isAuto())
 			title = dataCube.getName(*meas);

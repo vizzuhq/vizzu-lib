@@ -30,7 +30,7 @@ template <> constexpr inline bool IsStringifiable<void> = false;
 
 template <typename From>
     requires IsStringifiable<From>
-[[nodiscard]] auto toString(const From &value)
+[[nodiscard]] decltype(auto) toString(const From &value)
 {
 	if constexpr (std::is_enum_v<From>)
 		return Refl::enum_name(value);

@@ -39,7 +39,7 @@ Channels::IndexSet Channels::getMeasures() const
 	IndexSet series;
 
 	for (const auto &channel : *this)
-		if (auto &&mid = channel.measureId) series.insert(*mid);
+		if (auto &&mid = channel.measure()) series.insert(*mid);
 
 	return series;
 }

@@ -62,29 +62,38 @@ static_assert(std::ranges::all_of(Refl::enum_names<LegendId>,
 	            Refl::get_enum<ChannelId>(name));
     }));
 
-struct ChannelProperties
+struct ChannelSeriesList
 {
-	bool stackable{};
-	Base::AutoParam<std::string, true> title{};
-	ChannelRange range{};
-	std::size_t labelLevel{};
-	Base::AutoBool axis{};
-	Base::AutoBool ticks{};
-	Base::AutoBool interlacing{};
-	Base::AutoBool guides{};
-	Base::AutoBool markerGuides{};
-	Base::AutoBool labels{};
-	Base::AutoParam<double> step{};
+	using OptionalIndex = std::optional<Data::SeriesIndex>;
+	using DimensionIndices = Data::SeriesList;
+	OptionalIndex measureId{};
+	DimensionIndices dimensionIds{};
 
-	bool operator==(const ChannelProperties &) const = default;
+	[[nodiscard]] std::string toString() const;
+
+	struct FromString
+	{
+		enum class Parse : std::uint8_t { null, name, aggregator };
+		const Data::DataTable *table{};
+		ChannelId latestChannel{};
+		std::size_t position{};
+		Parse type{};
+		std::optional<Data::SeriesIndex> res{};
+
+		[[nodiscard]] FromString &operator()(const std::string &str);
+	} static fromString;
+
+	void operator=(FromString &);
+
+	bool operator==(const ChannelSeriesList &) const = default;
 };
 
-class Channel : public ChannelProperties
+class Channel
 {
 public:
-	using OptionalIndex = std::optional<Data::SeriesIndex>;
+	using OptionalIndex = ChannelSeriesList::OptionalIndex;
 	using IndexSet = std::set<Data::SeriesIndex>;
-	using DimensionIndices = Data::SeriesList;
+	using DimensionIndices = ChannelSeriesList::DimensionIndices;
 
 	[[nodiscard]] static Channel makeChannel(ChannelId id);
 
@@ -106,8 +115,23 @@ public:
 	[[nodiscard]] bool operator==(
 	    const Channel &other) const = default;
 
-	OptionalIndex measureId{};
-	DimensionIndices dimensionIds{};
+	[[nodiscard]] const OptionalIndex &measure() const
+	{
+		return set.measureId;
+	}
+
+	bool stackable{};
+	Base::AutoParam<std::string, true> title{};
+	ChannelRange range{};
+	std::size_t labelLevel{};
+	Base::AutoBool axis{};
+	Base::AutoBool ticks{};
+	Base::AutoBool interlacing{};
+	Base::AutoBool guides{};
+	Base::AutoBool markerGuides{};
+	Base::AutoBool labels{};
+	Base::AutoParam<double> step{};
+	ChannelSeriesList set{};
 };
 
 [[nodiscard]] constexpr ChannelId asChannel(AxisId axis)

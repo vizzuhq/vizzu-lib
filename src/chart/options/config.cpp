@@ -29,12 +29,11 @@ std::string Config::paramsJson()
 		arr << accessor;
 	arr << "tooltip";
 
-	for (auto &&channelParams = getAccessorNames<ChannelProperties>();
+	for (auto &&channelParams = getAccessorNames<Channel>();
 	     auto channelName : Refl::enum_names<ChannelId>) {
 		for (const auto &param : channelParams)
 			arr << "channels." + std::string{channelName} + "."
 			           + std::string{param};
-		arr << "channels." + std::string{channelName} + ".set";
 	}
 	return res;
 }
@@ -53,6 +52,14 @@ void Config::setParam(const std::string &path,
 	else
 		throw std::logic_error(
 		    path + "/" + value + ": invalid config parameter");
+}
+
+Config::Config(Options &options, Data::DataTable &table) :
+    options(options),
+    table(table)
+{
+	auto &fromString = ChannelSeriesList::fromString;
+	fromString.table = &table;
 }
 
 std::string Config::getParam(const std::string &path) const
@@ -74,8 +81,8 @@ void Config::setChannelParam(const std::string &path,
 	Options &options = this->options;
 
 	auto parts = Text::SmartString::split(path, '.');
-	auto &channel =
-	    options.getChannels().at(Conv::parse<ChannelId>(parts.at(1)));
+	auto channelId = Conv::parse<ChannelId>(parts.at(1));
+	auto &channel = options.getChannels().at(channelId);
 	auto property = parts.at(2);
 
 	if (property == "attach") {
@@ -89,41 +96,56 @@ void Config::setChannelParam(const std::string &path,
 		return;
 	}
 	if (property == "set") {
-		options.markersInfo.clear();
-		if (parts.size() == 3 && value == "null")
-			channel.reset();
-		else {
-			if (const std::string_view command =
-			        parts.size() == 4 ? std::string_view{"name"}
-			                          : parts.at(4);
-			    command == "name") {
-				if (std::stoi(parts.at(3)) == 0) channel.reset();
-				if (value.empty()) { channel.measureId.emplace(); }
-				else
-					channel.addSeries({value, table});
-			}
-			else if (command == "aggregator") {
-				if (value != "null") {
-					if (!channel.measureId.has_value())
-						channel.measureId.emplace(
-						    channel.dimensionIds.pop_back());
+		auto &fromString = ChannelSeriesList::fromString;
+		if ((parts.size() == 3 && value == "null")
+		    || (parts.size() == 5 && parts[3] == "0"
+		        && parts[4] == "name")) {
+			auto needSaveAggregator =
+			    fromString.position == 0
+			    && fromString.type
+			           == ChannelSeriesList::FromString::Parse::
+			               aggregator
+			    && fromString.res && !fromString.res->isDimension()
+			    && fromString.res->getColIndex() == ""
+			    && fromString.latestChannel == channelId;
 
-					channel.measureId->setAggr(value);
+			std::optional<dataframe::aggregator_type> aggregator;
+			if (needSaveAggregator)
+				aggregator = fromString.res->getAggr();
+
+			channel.reset();
+			options.markersInfo.clear();
+
+			fromString.type =
+			    ChannelSeriesList::FromString::Parse::null;
+			fromString.res = {};
+
+			if (aggregator)
+				fromString.res.emplace().setAggr(aggregator);
+		}
+		fromString.latestChannel = channelId;
+		if (parts.size() == 5) {
+			fromString.type =
+			    Conv::parse<ChannelSeriesList::FromString::Parse>(
+			        parts[4]);
+			if (auto i = std::stoull(parts.at(3));
+			    i != fromString.position) {
+				if (fromString.res) {
+					if (fromString.res->isDimension())
+						throw std::runtime_error(
+						    "Multiple dimension at channel "
+						    + parts.at(1) + ": "
+						    + fromString.res->getColIndex());
+					fromString.res = {};
 				}
-				else if (channel.measureId)
-					channel.measureId->setAggr(
-					    channel.measureId->getColIndex().empty()
-					        ? "count"
-					        : "sum");
+				fromString.position = i;
 			}
 		}
-		return;
 	}
 
 	if (property == "range") property += "." + parts.at(3);
 
-	if (auto &&accessor =
-	        getAccessor<ChannelProperties>(property).set)
+	if (auto &&accessor = getAccessor<Channel>(property).set)
 		accessor(channel, value);
 	else
 		throw std::logic_error(
@@ -139,18 +161,9 @@ std::string Config::getChannelParam(const std::string &path) const
 
 	const auto &channel = options.get().getChannels().at(id);
 
-	if (property == "set") {
-		std::string res;
-		Conv::JSONArr arr{res};
-		if (auto &&measure = channel.measureId) arr << *measure;
-		for (auto &&dim : channel.dimensions()) arr << dim;
-		return res;
-	}
-
 	if (property == "range") property += "." + parts.at(3);
 
-	if (auto &&accessor =
-	        getAccessor<ChannelProperties>(property).get)
+	if (auto &&accessor = getAccessor<Channel>(property).get)
 		return accessor(channel);
 
 	throw std::logic_error(path + ": invalid channel parameter");

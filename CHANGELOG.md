@@ -5,6 +5,11 @@
 ### Fixed
 
 - Do not interpolate hiding/showing legend
+- Fix aggregator interface for 'set' channel parameter:
+  - From now not accepted the same dimension on the same channel (except if the latest is duplicated).
+  - From now, it is prohibited to set multiple measure on one channel.
+  - Fix series parsing when aggregator comes first.
+  - Fix disappearing dimension when aggregated dimension was already set. 
 
 ## [0.15.0] - 2024-10-28
 

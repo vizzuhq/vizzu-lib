@@ -680,16 +680,11 @@ concept is_reflectable =
         && is_structure_bindable_v<T> != structure_bindable::no);
 
 template <class T, auto L, class = void, class... PreMPs>
-constexpr static std::tuple<std::tuple<PreMPs...>>
-    all_member_functor_v{};
-
-template <class T, auto L, class... PreMPs>
-constexpr static auto all_member_functor_v<T,
-    L,
-    std::enable_if_t<!L.template operator()<T>()>,
-    PreMPs...>{[]<class... Bases, class... MF>(std::tuple<Bases...> *,
-                   std::tuple<MF...>)
+constexpr static auto all_member_functor_v{
+    []<class... Bases, class... MF>(std::tuple<Bases...> *,
+        std::tuple<MF...>)
     {
+	    static_assert(is_reflectable<T>, "Unable to run reflection");
 	    return decltype(std::tuple_cat(
 	        all_member_functor_v<Bases, L, void, PreMPs...>...,
 	        all_member_functor_v<member_functor_t<MF>,
@@ -698,6 +693,13 @@ constexpr static auto all_member_functor_v<T,
 	            PreMPs...,
 	            MF>...)){};
     }(std::add_pointer_t<bases_t<T>>{}, member_functors_v<T>)};
+
+template <class T, auto L, class... PreMPs>
+constexpr static std::tuple<std::tuple<PreMPs...>>
+    all_member_functor_v<T,
+        L,
+        std::enable_if_t<L.template operator()<T>()>,
+        PreMPs...>{};
 
 namespace Functors
 {

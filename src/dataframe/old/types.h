@@ -43,6 +43,13 @@ public:
 
 	void setAggr(const std::string &aggr);
 
+	SeriesIndex &setAggr(
+	    const std::optional<dataframe::aggregator_type> &aggr)
+	{
+		aggregator = aggr;
+		return *this;
+	}
+
 	[[nodiscard]] const dataframe::aggregator_type &getAggr() const
 	{
 		return *aggregator;

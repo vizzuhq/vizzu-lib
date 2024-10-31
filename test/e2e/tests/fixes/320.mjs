@@ -21,7 +21,7 @@ const testSteps = [
 				target: {
 					config: {
 						channels: {
-							label: { set: ['Foo'] }
+							label: { set: [{ name: 'Foo' }] }
 						}
 					}
 				}
