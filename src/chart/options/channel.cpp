@@ -1,15 +1,16 @@
 #include "channel.h"
 
 #include <cmath>
-#include <compare>
 #include <cstddef>
 #include <cstdint>
 #include <iterator>
 #include <optional>
+#include <stdexcept>
 #include <string>
 #include <utility>
 
 #include "base/conv/auto_json.h"
+#include "base/conv/tostring.h"
 #include "base/refl/auto_enum.h"
 #include "chart/options/autoparam.h"
 #include "dataframe/old/datatable.h"
@@ -26,7 +27,13 @@ std::string ChannelSeriesList::toString() const
 	return res;
 }
 
-ChannelSeriesList::FromString ChannelSeriesList::fromString{};
+ChannelSeriesList::FromString &get() noexcept
+{
+	static ChannelSeriesList::FromString res;
+	return res;
+}
+
+ChannelSeriesList::FromString &ChannelSeriesList::fromString = get();
 
 ChannelSeriesList::FromString &
 ChannelSeriesList::FromString::operator()(const std::string &str)
@@ -38,7 +45,7 @@ ChannelSeriesList::FromString::operator()(const std::string &str)
 		if (res && !res->isDimension())
 			res = Data::SeriesIndex{str, *table}.setAggr(
 			    res->getAggr());
-		else if (str != "")
+		else if (!str.empty())
 			res.emplace(str, *table);
 		break;
 	case Parse::aggregator:
@@ -83,7 +90,7 @@ ChannelSeriesList &ChannelSeriesList::operator=(FromString &index)
 		}
 		else if (measureId->getColIndex() == index.res->getColIndex()
 		         || (measureId->getAggr() == index.res->getAggr()
-		             && measureId->getColIndex() == "")) {
+		             && measureId->getColIndex().empty())) {
 
 			measureId = *index.res;
 			index.res = {};

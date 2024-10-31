@@ -4,7 +4,6 @@
 #include <optional>
 #include <stdexcept>
 #include <string>
-#include <string_view>
 
 #include "base/conv/auto_json.h"
 #include "base/conv/parse.h"
@@ -14,6 +13,8 @@
 #include "base/text/smartstring.h"
 #include "chart/options/channel.h"
 #include "chart/options/options.h"
+#include "dataframe/interface.h"
+#include "dataframe/old/datatable.h"
 
 namespace Vizzu::Gen
 {
@@ -106,7 +107,7 @@ void Config::setChannelParam(const std::string &path,
 			           == ChannelSeriesList::FromString::Parse::
 			               aggregator
 			    && fromString.res && !fromString.res->isDimension()
-			    && fromString.res->getColIndex() == ""
+			    && fromString.res->getColIndex().empty()
 			    && fromString.latestChannel == channelId;
 
 			std::optional<dataframe::aggregator_type> aggregator;

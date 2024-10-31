@@ -38,7 +38,9 @@ class SeriesIndex
 	explicit SeriesIndex(dataframe::series_meta_t const &meta);
 
 public:
-	SeriesIndex() : aggregator(dataframe::aggregator_type::count) {}
+	SeriesIndex() noexcept :
+	    aggregator(dataframe::aggregator_type::count)
+	{}
 	SeriesIndex(std::string const &str, const DataTable &table);
 
 	void setAggr(const std::string &aggr);

@@ -81,7 +81,7 @@ struct ChannelSeriesList
 		std::optional<Data::SeriesIndex> res{};
 
 		[[nodiscard]] FromString &operator()(const std::string &str);
-	} static fromString;
+	} static &fromString;
 
 	ChannelSeriesList &operator=(FromString &);
 
