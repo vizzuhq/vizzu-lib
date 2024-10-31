@@ -83,7 +83,7 @@ struct ChannelSeriesList
 		[[nodiscard]] FromString &operator()(const std::string &str);
 	} static fromString;
 
-	void operator=(FromString &);
+	ChannelSeriesList &operator=(FromString &);
 
 	bool operator==(const ChannelSeriesList &) const = default;
 };

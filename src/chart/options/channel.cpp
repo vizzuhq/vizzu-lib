@@ -50,9 +50,9 @@ ChannelSeriesList::FromString::operator()(const std::string &str)
 	}
 	return *this;
 }
-void ChannelSeriesList::operator=(FromString &index)
+ChannelSeriesList &ChannelSeriesList::operator=(FromString &index)
 {
-	if (!index.res) return;
+	if (!index.res) return *this;
 	if (auto already_set =
 	        dimensionIds.size() + measureId.has_value();
 	    already_set == index.position) {
@@ -103,6 +103,7 @@ void ChannelSeriesList::operator=(FromString &index)
 			            : index.res->getColIndex())
 			    + ")");
 	}
+	return *this;
 }
 
 Channel Channel::makeChannel(ChannelId id)

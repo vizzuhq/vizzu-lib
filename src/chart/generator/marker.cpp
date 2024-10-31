@@ -9,6 +9,7 @@
 #include "base/geom/point.h"
 #include "base/geom/rect.h"
 #include "base/math/range.h"
+#include "base/refl/auto_enum.h"
 #include "chart/options/align.h"
 #include "chart/options/channel.h"
 #include "chart/options/coordsystem.h"
