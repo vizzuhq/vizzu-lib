@@ -104,14 +104,14 @@ constexpr std::pair<const std::string_view, Accessor<Object>>
 #endif
     };
 
+template <class T>
+using IsSerializableT = std::bool_constant<IsSerializable<T>>;
+
 template <class Object,
     class Members =
 #ifndef __clang_analyzer__
-        std::remove_cvref_t<decltype(all_member_functor_v<Object,
-            []<class T>()
-            {
-	            return IsSerializable<T>;
-            }>)>
+        std::remove_cvref_t<
+            decltype(all_member_functor_v<Object, IsSerializableT>)>
 #else
         std::tuple<>
 #endif
