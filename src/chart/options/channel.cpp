@@ -27,18 +27,13 @@ std::string ChannelSeriesList::toString() const
 	return res;
 }
 
-thread_local const ChannelSeriesList::FromString
-    &ChannelSeriesList::fromString{FromString::instance()};
-
-ChannelSeriesList::FromString &
-ChannelSeriesList::FromString::operator()(
-    const std::string &str) const
+ChannelSeriesList::Parser &ChannelSeriesList::Parser::operator()(
+    const std::string &str)
 {
-	auto &res = instance().res;
 	switch (type) {
 	default:
-	case Parse::null: break;
-	case Parse::name:
+	case Token::null: break;
+	case Token::name:
 		if (!str.empty()) {
 			if (res && !res->isDimension())
 				res = Data::SeriesIndex{str, *table}.setAggr(
@@ -47,16 +42,24 @@ ChannelSeriesList::FromString::operator()(
 				res.emplace(str, *table);
 		}
 		break;
-	case Parse::aggregator:
+	case Token::aggregator:
 		if (res)
 			res->setAggr(str);
 		else
 			res.emplace().setAggr(str);
 		break;
 	}
-	return instance();
+	return *this;
 }
-ChannelSeriesList &ChannelSeriesList::operator=(FromString &index)
+
+ChannelSeriesList::Parser &
+ChannelSeriesList::Parser::instance() noexcept
+{
+	thread_local Parser instance;
+	return instance;
+}
+
+ChannelSeriesList &ChannelSeriesList::operator=(Parser &index)
 {
 	if (!index.res) return *this;
 	if (auto already_set =
@@ -144,8 +147,7 @@ void Channel::removeSeries(const Data::SeriesIndex &index)
 
 bool Channel::isSeriesUsed(const Data::SeriesIndex &index) const
 {
-	return (set.measureId && *set.measureId == index)
-	    || set.dimensionIds.contains(index);
+	return set.measureId == index || set.dimensionIds.contains(index);
 }
 
 void Channel::reset()
@@ -182,11 +184,6 @@ void Channel::collectDimensions(IndexSet &dimensions) const
 		dimensions.insert(dimension);
 }
 
-const Channel::DimensionIndices &Channel::dimensions() const
-{
-	return set.dimensionIds;
-}
-
 std::pair<const Channel::DimensionIndices &, const std::size_t &>
 Channel::dimensionsWithLevel() const
 {
@@ -195,12 +192,9 @@ Channel::dimensionsWithLevel() const
 
 Channel::OptionalIndex Channel::labelSeries() const
 {
-	if (isDimension()) {
-		if (labelLevel < set.dimensionIds.size())
-			return *std::next(set.dimensionIds.begin(),
-			    static_cast<std::intptr_t>(labelLevel));
-		return std::nullopt;
-	}
+	if (isDimension() && labelLevel < set.dimensionIds.size())
+		return *std::next(set.dimensionIds.begin(),
+		    static_cast<std::intptr_t>(labelLevel));
 	return set.measureId;
 }
 

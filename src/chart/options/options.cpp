@@ -273,7 +273,7 @@ std::optional<LegendId> Options::getAutoLegend() const
 		series.erase(*meas);
 
 	for (auto axisId : {AxisId::x, AxisId::y})
-		if (auto id = channels.at(axisId).labelSeries())
+		if (auto &&id = channels.at(axisId).labelSeries())
 			series.erase(*id);
 
 	for (auto channelId : {LegendId::color, LegendId::lightness})

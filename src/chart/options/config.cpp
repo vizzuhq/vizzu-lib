@@ -89,50 +89,46 @@ void Config::setChannelParam(const std::string &path,
 		return;
 	}
 	if (property == "set") {
-		auto &fromString = ChannelSeriesList::FromString::instance();
-		fromString.table = &table.get();
+		auto &listParser = ChannelSeriesList::Parser::instance();
+		listParser.table = &table.get();
+		using Token = ChannelSeriesList::Parser::Token;
 		if ((parts.size() == 3 && value == "null")
 		    || (parts.size() == 5 && parts[3] == "0"
 		        && parts[4] == "name")) {
 			auto needSaveAggregator =
-			    fromString.position == 0
-			    && fromString.type
-			           == ChannelSeriesList::FromString::Parse::
-			               aggregator
-			    && fromString.res && !fromString.res->isDimension()
-			    && fromString.res->getColIndex().empty()
-			    && fromString.latestChannel == channelId;
+			    parts.size() == 5 && listParser.position == 0
+			    && listParser.type == Token::aggregator
+			    && listParser.res && !listParser.res->isDimension()
+			    && listParser.res->getColIndex().empty()
+			    && listParser.latestChannel == channelId;
 
 			std::optional<dataframe::aggregator_type> aggregator;
 			if (needSaveAggregator)
-				aggregator = fromString.res->getAggr();
+				aggregator = listParser.res->getAggr();
 
 			channel.reset();
 			options.markersInfo.clear();
 
-			fromString.type =
-			    ChannelSeriesList::FromString::Parse::null;
-			fromString.res = {};
+			listParser.type = Token::null;
+			listParser.res = {};
 
 			if (aggregator)
-				fromString.res.emplace().setAggr(aggregator);
+				listParser.res.emplace().setAggr(aggregator);
 		}
-		fromString.latestChannel = channelId;
+		listParser.latestChannel = channelId;
 		if (parts.size() == 5) {
-			fromString.type =
-			    Conv::parse<ChannelSeriesList::FromString::Parse>(
-			        parts[4]);
+			listParser.type = Conv::parse<Token>(parts[4]);
 			if (auto i = std::stoull(parts.at(3));
-			    i != fromString.position) {
-				if (fromString.res) {
-					if (fromString.res->isDimension())
+			    i != listParser.position) {
+				if (listParser.res) {
+					if (listParser.res->isDimension())
 						throw std::runtime_error(
 						    "Multiple dimension at channel "
 						    + parts.at(1) + ": "
-						    + fromString.res->getColIndex());
-					fromString.res = {};
+						    + listParser.res->getColIndex());
+					listParser.res = {};
 				}
-				fromString.position = i;
+				listParser.position = i;
 			}
 		}
 	}

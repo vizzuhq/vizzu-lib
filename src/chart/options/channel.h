@@ -71,26 +71,29 @@ struct ChannelSeriesList
 
 	[[nodiscard]] std::string toString() const;
 
-	struct FromString
+	struct Parser
 	{
-		enum class Parse : std::uint8_t { null, name, aggregator };
+		enum class Token : std::uint8_t { null, name, aggregator };
 		const Data::DataTable *table{};
 		ChannelId latestChannel{};
 		std::size_t position{};
-		Parse type{};
+		Token type{};
 		std::optional<Data::SeriesIndex> res{};
 
-		[[nodiscard]] FromString &operator()(
-		    const std::string &str) const;
+		[[nodiscard]] Parser &operator()(const std::string &str);
 
-		static FromString &instance() noexcept
+		static Parser &instance() noexcept;
+	};
+
+	struct ParserGetter
+	{
+		Parser &operator()(const std::string &str) const noexcept
 		{
-			thread_local FromString instance;
-			return instance;
+			return Parser::instance()(str);
 		}
-	} thread_local static const &fromString;
+	} constexpr static fromString{};
 
-	ChannelSeriesList &operator=(FromString &);
+	ChannelSeriesList &operator=(Parser &);
 
 	bool operator==(const ChannelSeriesList &) const = default;
 };
@@ -114,7 +117,6 @@ public:
 	[[nodiscard]] bool hasDimension() const;
 	[[nodiscard]] bool isMeasure() const;
 	void collectDimensions(IndexSet &dimensions) const;
-	[[nodiscard]] const DimensionIndices &dimensions() const;
 	[[nodiscard]] std::pair<const DimensionIndices &,
 	    const std::size_t &>
 	dimensionsWithLevel() const;
@@ -122,23 +124,28 @@ public:
 	[[nodiscard]] bool operator==(
 	    const Channel &other) const = default;
 
+	[[nodiscard]] const DimensionIndices &dimensions() const
+	{
+		return set.dimensionIds;
+	}
+
 	[[nodiscard]] const OptionalIndex &measure() const
 	{
 		return set.measureId;
 	}
 
 	bool stackable{};
-	Base::AutoParam<std::string, true> title{};
+	ChannelSeriesList set{};
 	ChannelRange range{};
 	std::size_t labelLevel{};
+	Base::AutoParam<std::string, true> title{};
 	Base::AutoBool axis{};
+	Base::AutoBool labels{};
 	Base::AutoBool ticks{};
-	Base::AutoBool interlacing{};
 	Base::AutoBool guides{};
 	Base::AutoBool markerGuides{};
-	Base::AutoBool labels{};
+	Base::AutoBool interlacing{};
 	Base::AutoParam<double> step{};
-	ChannelSeriesList set{};
 };
 
 [[nodiscard]] constexpr ChannelId asChannel(AxisId axis)
