@@ -152,7 +152,13 @@ void Config::setChannelParam(const std::string &path,
 				}
 				listParser.position = i;
 			}
-			listParser.type = Conv::parse<Token>(parts[4]);
+			if (parts.at(4) == "name")
+				listParser.type = Token::name;
+			else if (parts.at(4) == "aggregator")
+				listParser.type = Token::aggregator;
+			else
+				throw std::logic_error(
+				    path + ": invalid channel parameter");
 		}
 	}
 

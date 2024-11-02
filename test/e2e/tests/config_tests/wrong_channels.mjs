@@ -185,6 +185,25 @@ const testCases = [
 				}
 			})
 		]
+	},
+	{
+		testName: 'err_invalid_member_at_channel',
+		errorMsg: 'error: channels.x.set.0.invalid: invalid channel parameter',
+		testSteps: [
+			Chart.animate({
+				data: 'simpleDataWithOneValue',
+				config: {
+					x: [
+						{
+							aggregator: 'count',
+							name: 'Bar',
+							invalid: 'invalid'
+						}
+					],
+					y: 'Foo'
+				}
+			})
+		]
 	}
 ]
 
