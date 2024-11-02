@@ -95,16 +95,31 @@ void Config::setChannelParam(const std::string &path,
 		if ((parts.size() == 3 && value == "null")
 		    || (parts.size() == 5 && parts[3] == "0"
 		        && parts[4] == "name")) {
-			auto needSaveAggregator =
-			    parts.size() == 5 && listParser.position == 0
-			    && listParser.type == Token::aggregator
-			    && listParser.res && !listParser.res->isDimension()
-			    && listParser.res->getColIndex().empty()
-			    && listParser.latestChannel == channelId;
 
 			std::optional<dataframe::aggregator_type> aggregator;
-			if (needSaveAggregator)
-				aggregator = listParser.res->getAggr();
+			if (auto &&res = listParser.res) {
+				if (res->isDimension())
+					throw std::runtime_error(
+					    "Multiple dimension at channel "
+					    + std::string{Conv::toString(
+					        listParser.latestChannel)}
+					    + ": " + res->getColIndex());
+
+				if (listParser.type == Token::aggregator) {
+					if (parts.size() == 5 && listParser.position == 0
+					    && res->getColIndex().empty()
+					    && listParser.latestChannel == channelId)
+						aggregator = listParser.res->getAggr();
+					else
+						throw std::runtime_error(
+						    "Aggregator has no set name at channel "
+						    + std::string{Conv::toString(
+						        listParser.latestChannel)}
+						    + ": "
+						    + std::string{
+						        Conv::toString(res->getAggr())});
+				}
+			}
 
 			channel.reset();
 			options.markersInfo.clear();
@@ -117,19 +132,27 @@ void Config::setChannelParam(const std::string &path,
 		}
 		listParser.latestChannel = channelId;
 		if (parts.size() == 5) {
-			listParser.type = Conv::parse<Token>(parts[4]);
 			if (auto i = std::stoull(parts.at(3));
 			    i != listParser.position) {
-				if (listParser.res) {
-					if (listParser.res->isDimension())
+				if (auto &&res = listParser.res) {
+					if (res->isDimension())
 						throw std::runtime_error(
 						    "Multiple dimension at channel "
 						    + parts.at(1) + ": "
-						    + listParser.res->getColIndex());
-					listParser.res = {};
+						    + res->getColIndex());
+
+					if (listParser.type == Token::aggregator)
+						throw std::runtime_error(
+						    "Aggregator has no set name at channel "
+						    + parts.at(1) + ": "
+						    + std::string{
+						        Conv::toString(res->getAggr())});
+
+					res.reset();
 				}
 				listParser.position = i;
 			}
+			listParser.type = Conv::parse<Token>(parts[4]);
 		}
 	}
 

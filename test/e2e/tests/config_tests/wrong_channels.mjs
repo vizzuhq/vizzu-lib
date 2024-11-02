@@ -8,7 +8,8 @@ const testCases = [
 			Chart.animate({
 				data: 'simpleDataWithOneValue',
 				config: {
-					x: ['Foo', 'Foo', 'Foo']
+					x: ['Foo', 'Foo'],
+					y: 'Bar'
 				}
 			})
 		]
@@ -20,7 +21,7 @@ const testCases = [
 			Chart.animate({
 				data: 'simpleDataWithOneValue',
 				config: {
-					x: ['Foo', 'Bar', 'Foo', 'NotParsedButNeeded']
+					x: ['Foo', 'Bar', 'Foo', 'Bar']
 				}
 			})
 		]
@@ -147,6 +148,40 @@ const testCases = [
 							name: 'Bar'
 						}
 					]
+				}
+			})
+		]
+	},
+	{
+		testName: 'err_no_name_1',
+		errorMsg: 'error: Aggregator has no set name at channel x: count',
+		testSteps: [
+			Chart.animate({
+				data: 'simpleDataWithOneValue',
+				config: {
+					x: [
+						{
+							aggregator: 'count'
+						},
+						'Bar'
+					]
+				}
+			})
+		]
+	},
+	{
+		testName: 'err_no_name_2',
+		errorMsg: 'error: Aggregator has no set name at channel x: count',
+		testSteps: [
+			Chart.animate({
+				data: 'simpleDataWithOneValue',
+				config: {
+					x: [
+						{
+							aggregator: 'count'
+						}
+					],
+					y: 'Foo'
 				}
 			})
 		]
