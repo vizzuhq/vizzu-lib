@@ -41,6 +41,8 @@ ChannelSeriesList::Parser &ChannelSeriesList::Parser::operator()(
 			else
 				res.emplace(str, *table);
 		}
+		else if (!res)
+			res.emplace();
 		break;
 	case Token::aggregator:
 		if (res)
