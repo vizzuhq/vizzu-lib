@@ -90,17 +90,16 @@ Buckets PlotBuilder::generateMarkers(std::size_t &mainBucketSize)
 		map.emplace(mid, ix);
 
 	auto first = map.begin();
-	for (Marker::MarkerPosition ix{}; auto &&index : dataCube) {
+	for (auto &&index : dataCube) {
 		auto &marker = plot->markers.emplace_back(*plot->getOptions(),
 		    dataCube,
 		    stats,
 		    mainIds,
 		    subIds,
-		    ix++,
 		    index,
 		    map.contains(index.marker_id));
 
-		while (first != map.end() && first->first == marker.pos.idx)
+		while (first != map.end() && first->first == marker.idx)
 			plot->markersInfo.insert({first++->second,
 			    Plot::MarkerInfo{Plot::MarkerInfoContent{marker}}});
 	}

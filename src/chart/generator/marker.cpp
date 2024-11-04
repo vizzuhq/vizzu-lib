@@ -1,6 +1,5 @@
 #include "marker.h"
 
-#include <cstddef>
 #include <cstdint>
 #include <optional>
 #include <utility>
@@ -27,7 +26,6 @@ Marker::Marker(const Options &options,
     ChannelStats &stats,
     const Data::SeriesList &mainAxisList,
     const Data::SeriesList &subAxisList,
-    MarkerPosition pos,
     const Data::MultiIndex &index,
     bool needMarkerInfo) :
     enabled(true),
@@ -38,7 +36,7 @@ Marker::Marker(const Options &options,
                           .at(ChannelId::size)
                           .dimensionsWithLevel(),
         index)),
-    pos{index.marker_id, pos}
+    idx{index.marker_id}
 {
 	const auto &channels = options.getChannels();
 	auto color = getValueForChannel(channels,
@@ -138,19 +136,15 @@ bool Marker::connectMarkers(bool first,
     bool polarConnection)
 {
 	if (prev && next && main && (!first || polarConnection)) {
-		next->prevMainMarker = prev->pos;
+		next->prevMainMarker =
+		    RelativeMarkerIndex{prev->idx, prev - next};
 		next->polarConnection = polarConnection && first;
 		return true;
 	}
-	if (next && main) next->prevMainMarker = next->pos;
+	if (next && main)
+		next->prevMainMarker = RelativeMarkerIndex{next->idx, {}};
 
 	return false;
-}
-
-void Marker::setIdOffset(size_t offset)
-{
-	if (prevMainMarker.hasOneValue())
-		prevMainMarker->value.pos += offset;
 }
 
 Conv::JSONObj &&Marker::appendToJSON(Conv::JSONObj &&jsonObj) const
@@ -158,7 +152,7 @@ Conv::JSONObj &&Marker::appendToJSON(Conv::JSONObj &&jsonObj) const
 	if (cellInfo) return std::move(jsonObj).merge(cellInfo->json);
 	jsonObj.nested("categories");
 	jsonObj.nested("values");
-	return std::move(jsonObj)("index", pos.idx);
+	return std::move(jsonObj)("index", idx);
 }
 
 double Marker::getValueForChannel(const Channels &channels,

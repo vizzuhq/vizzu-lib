@@ -155,8 +155,8 @@ struct data_source::sorter
 
 			auto less = sort == sort_type::less
 			         || sort == sort_type::natural_less;
-			auto &first = less ? dim.values[a] : dim.values[b];
-			auto &second = less ? dim.values[b] : dim.values[a];
+			const auto &first = less ? dim.values[a] : dim.values[b];
+			const auto &second = less ? dim.values[b] : dim.values[a];
 			if (first == nav && second == nav)
 				return std::weak_ordering::equivalent;
 

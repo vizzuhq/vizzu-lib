@@ -15,7 +15,6 @@ public:
 	    Gen::ShapeType type);
 
 	static const Gen::Marker *getPrev(const Gen::Marker &marker,
-	    const std::vector<Gen::Marker> &markers,
 	    ::Anim::InterpolateIndex lineIndex);
 };
 

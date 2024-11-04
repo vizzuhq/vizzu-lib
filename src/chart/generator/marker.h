@@ -23,14 +23,12 @@ class Marker
 {
 public:
 	using MarkerIndex = Options::MarkerIndex;
-	using MarkerPosition = std::size_t;
 
 	Marker(const Options &options,
 	    const Data::DataCube &data,
 	    ChannelStats &stats,
 	    const Data::SeriesList &mainAxisList,
 	    const Data::SeriesList &subAxisList,
-	    MarkerPosition pos,
 	    const Data::MultiIndex &index,
 	    bool needMarkerInfo);
 
@@ -61,19 +59,19 @@ public:
 	Id subId;
 	Id sizeId;
 
-	struct MarkerIndexPosition
+	struct RelativeMarkerIndex
 	{
 		MarkerIndex idx;
-		MarkerPosition pos{};
+		std::ptrdiff_t distance{};
 
-		friend bool operator==(const MarkerIndexPosition &lhs,
-		    const MarkerIndexPosition &rhs)
+		friend bool operator==(const RelativeMarkerIndex &lhs,
+		    const RelativeMarkerIndex &rhs)
 		{
 			return lhs.idx == rhs.idx;
 		}
 	};
-	MarkerIndexPosition pos;
-	::Anim::Interpolated<MarkerIndexPosition> prevMainMarker;
+	MarkerIndex idx{};
+	::Anim::Interpolated<RelativeMarkerIndex> prevMainMarker;
 	::Anim::Interpolated<bool> polarConnection{false};
 
 	static bool connectMarkers(bool first,
@@ -89,7 +87,6 @@ public:
 	    bool horizontal) const;
 	void setSizeBy(bool horizontal, Math::Range<double> range);
 
-	void setIdOffset(size_t offset);
 	Conv::JSONObj &&appendToJSON(Conv::JSONObj &&jsonObj) const;
 
 private:
