@@ -13,8 +13,7 @@ namespace Gfx
 
 Color::operator std::string() const
 {
-	std::string res(9, '\0');
-	res[0] = '#';
+	std::string res(9, '#');
 	Text::Character::toHex(getRedByte(), res.data() + 1);
 	Text::Character::toHex(getGreenByte(), res.data() + 3);
 	Text::Character::toHex(getBlueByte(), res.data() + 5);

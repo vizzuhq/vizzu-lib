@@ -262,7 +262,7 @@ void DrawAxes::drawDimensionLabels(bool horizontal) const
 	const auto &labelStyle = rootStyle.plot.getAxis(axisIndex).label;
 
 	auto textColor = *labelStyle.color;
-	if (textColor.alpha == 0.0) return;
+	if (textColor.isTransparent()) return;
 
 	auto origo = plot->axises.origo();
 	const auto &axises = plot->axises;
@@ -271,22 +271,24 @@ void DrawAxes::drawDimensionLabels(bool horizontal) const
 	if (axis.enabled) {
 		canvas.setFont(Gfx::Font{labelStyle});
 
-		for (auto it = axis.begin(); it != axis.end(); ++it) {
-			drawDimensionLabel(horizontal, origo, it, axis.category);
-		}
+		for (const auto &item : axis)
+			drawDimensionLabel(horizontal,
+			    origo,
+			    item,
+			    axis.category);
 	}
 }
 
 void DrawAxes::drawDimensionLabel(bool horizontal,
     const Geom::Point &origo,
-    Gen::DimensionAxis::Values::const_iterator it,
+    const Gen::DimensionAxis::Item &item,
     const std::string_view &category) const
 {
 	const auto &enabled =
 	    horizontal ? plot->guides.x : plot->guides.y;
 
-	auto weight = Math::FuzzyBool::And<double>(it->second.weight,
-	    enabled.labels);
+	auto weight =
+	    Math::FuzzyBool::And<double>(item.weight, enabled.labels);
 	if (weight == 0) return;
 
 	auto axisIndex = horizontal ? Gen::AxisId::x : Gen::AxisId::y;
@@ -297,19 +299,18 @@ void DrawAxes::drawDimensionLabel(bool horizontal,
 	    [this,
 	        &drawLabel,
 	        &labelStyle,
-	        &it,
+	        &item,
 	        &horizontal,
 	        &origo,
 	        ident = Geom::Point::Ident(horizontal),
 	        normal = Geom::Point::Ident(!horizontal),
-	        &text = it->second.label,
-	        &categoryVal = it->second.categoryValue,
+	        &text = item.label,
 	        &weight,
 	        &category](::Anim::InterpolateIndex index,
 	        const auto &position)
 	    {
 		    if (labelStyle.position->interpolates()
-		        && !it->second.presentAt(index))
+		        && !item.presentAt(index))
 			    return;
 
 		    Geom::Point refPos;
@@ -322,8 +323,7 @@ void DrawAxes::drawDimensionLabel(bool horizontal,
 		    case Pos::min_edge: refPos = Geom::Point(); break;
 		    }
 
-		    auto relCenter =
-		        refPos + ident * it->second.range.middle();
+		    auto relCenter = refPos + ident * item.range.middle();
 
 		    auto under =
 		        labelStyle.position->interpolates()
@@ -332,15 +332,14 @@ void DrawAxes::drawDimensionLabel(bool horizontal,
 		            : labelStyle.side->factor(
 		                Styles::AxisLabel::Side::negative);
 
-		    auto sign = 1 - 2 * under;
-
-		    auto posDir = coordSys.convertDirectionAt(
-		        {relCenter, relCenter + normal});
-
-		    posDir = posDir.extend(sign);
-
-		    auto draw = [&](const ::Anim::Weighted<std::string> &str,
-		                    double plusWeight = 1.0)
+		    auto draw =
+		        [&,
+		            posDir = coordSys
+		                         .convertDirectionAt(
+		                             {relCenter, relCenter + normal})
+		                         .extend(1 - 2 * under)](
+		            const ::Anim::Weighted<std::string> &str,
+		            double plusWeight = 1.0)
 		    {
 			    drawLabel.draw(canvas,
 			        str.value,
@@ -353,8 +352,8 @@ void DrawAxes::drawDimensionLabel(bool horizontal,
 			                plusWeight)),
 			        *rootEvents.draw.plot.axis.label,
 			        Events::Targets::dimAxisLabel(category,
-			            categoryVal,
-			            categoryVal,
+			            item.categoryValue,
+			            item.categoryValue,
 			            horizontal));
 		    };
 

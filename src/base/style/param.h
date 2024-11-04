@@ -3,10 +3,14 @@
 
 #include <optional>
 
+#include "base/type/traits.h"
+
 namespace Style
 {
 
 template <typename T> using Param = std::optional<T>;
+
+template <class U> concept IsParam = Type::is_optional_v<U>;
 
 }
 

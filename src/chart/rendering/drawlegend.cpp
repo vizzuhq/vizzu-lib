@@ -21,7 +21,7 @@
 #include "base/text/smartstring.h"
 #include "chart/generator/plot.h" // NOLINT(misc-include-cleaner)
 #include "chart/main/events.h"
-#include "chart/options/options.h"
+#include "chart/options/channel.h"
 #include "chart/rendering/colorbuilder.h"
 #include "chart/rendering/drawbackground.h"
 #include "chart/rendering/drawlabel.h"
@@ -31,7 +31,7 @@ namespace Vizzu::Draw
 
 void DrawLegend::draw(Gfx::ICanvas &canvas,
     const Geom::Rect &legendLayout,
-    Gen::Options::LegendId channelType,
+    Gen::LegendId channelType,
     double weight) const
 {
 	auto markerWindowRect =
@@ -58,9 +58,8 @@ void DrawLegend::draw(Gfx::ICanvas &canvas,
 	    .weight = weight,
 	    .itemHeight = itemHeight,
 	    .markerSize = markerSize,
-	    .measure = plot->axises.at(asChannel(channelType)).measure,
-	    .dimension =
-	        plot->axises.at(asChannel(channelType)).dimension,
+	    .measure = plot->axises.at(channelType).measure,
+	    .dimension = plot->axises.at(channelType).dimension,
 	    .properties = {.channel = channelType},
 	    .fadeBarGradient = {markerWindowRect.leftSide(),
 	        {.line = {},
@@ -121,7 +120,7 @@ const Gfx::LinearGradient &DrawLegend::FadeBarGradient::operator()(
 
 void DrawLegend::drawTitle(const Info &info) const
 {
-	plot->axises.at(asChannel(info.properties.channel))
+	plot->axises.at(info.properties.channel)
 	    .title.visit(
 	        [this,
 	            &info,
@@ -151,11 +150,10 @@ void DrawLegend::drawDimension(Info &info) const
 	if (!info.dimensionEnabled) return;
 
 	auto label = DrawLabel{{ctx()}};
-	for (const auto &value : info.dimension) {
-		if (value.second.weight <= 0) continue;
+	for (const auto &item : info.dimension) {
+		if (item.weight <= 0) continue;
 
-		auto itemRect =
-		    getItemRect(info, value.second.range.getMin());
+		auto itemRect = getItemRect(info, item.range.getMin());
 
 		if (itemRect.y().getMin() > info.markerWindowRect.y().getMax()
 		    || itemRect.y().getMax()
@@ -170,15 +168,15 @@ void DrawLegend::drawDimension(Info &info) const
 		                 + info.fadeHeight;
 
 		const auto alpha =
-		    Math::FuzzyBool::And(value.second.weight, info.weight);
+		    Math::FuzzyBool::And(item.weight, info.weight);
 
 		drawMarker(info,
-		    value.second.categoryValue,
-		    colorBuilder.render(value.second.colorBase) * alpha,
+		    item.categoryValue,
+		    colorBuilder.render(item.colorBase) * alpha,
 		    getMarkerRect(info, itemRect),
 		    needGradient);
 
-		value.second.label.visit(
+		item.label.visit(
 		    [&](::Anim::InterpolateIndex, const auto &weighted)
 		    {
 			    label.draw(info.canvas,
@@ -188,8 +186,8 @@ void DrawLegend::drawDimension(Info &info) const
 			        *events.label,
 			        Events::Targets::dimLegendLabel(
 			            info.dimension.category,
-			            value.second.categoryValue,
-			            value.second.categoryValue,
+			            item.categoryValue,
+			            item.categoryValue,
 			            info.properties),
 			        {.colorTransform = Gfx::ColorTransform::Opacity(
 			             Math::FuzzyBool::And(alpha,
@@ -287,7 +285,7 @@ void DrawLegend::drawMeasure(const Info &info) const
 
 	auto bar = getBarRect(info);
 
-	using ST = Gen::Options::LegendId;
+	using ST = Gen::LegendId;
 	switch (info.properties.channel) {
 	case ST::color: colorBar(info, bar); break;
 	case ST::lightness: lightnessBar(info, bar); break;
@@ -336,10 +334,9 @@ Math::Range<double> DrawLegend::markersLegendRange(const Info &info)
 	}
 
 	if (info.dimensionEnabled)
-		for (const auto &value : info.dimension)
-			res.include({value.second.range.getMin()
-			                 * info.itemHeight,
-			    (value.second.range.getMax() + 1) * info.itemHeight});
+		for (const auto &item : info.dimension)
+			res.include({item.range.getMin() * info.itemHeight,
+			    (item.range.getMax() + 1) * info.itemHeight});
 
 	return res;
 }

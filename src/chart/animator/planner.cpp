@@ -351,10 +351,10 @@ bool Planner::positionMorphNeeded() const
 
 bool Planner::needColor() const
 {
-	return source->axises.at(Gen::ChannelId::color)
-	        != target->axises.at(Gen::ChannelId::color)
-	    || source->axises.at(Gen::ChannelId::lightness)
-	           != target->axises.at(Gen::ChannelId::lightness)
+	return source->axises.at(Gen::LegendId::color)
+	        != target->axises.at(Gen::LegendId::color)
+	    || source->axises.at(Gen::LegendId::lightness)
+	           != target->axises.at(Gen::LegendId::lightness)
 	    || anyMarker(+[](const Gen::Marker &source,
 	                      const Gen::Marker &target) -> bool
 	        {
@@ -404,8 +404,8 @@ bool Planner::needVertical() const
 	        != target->axises.at(Gen::AxisId::y)
 	    || source->guides.at(Gen::AxisId::y)
 	           != target->guides.at(Gen::AxisId::y)
-	    || source->axises.at(Gen::ChannelId::size)
-	           != target->axises.at(Gen::ChannelId::size)
+	    || source->axises.at(Gen::LegendId::size)
+	           != target->axises.at(Gen::LegendId::size)
 	    || (source->markerConnectionOrientation
 	            != target->markerConnectionOrientation
 	        && (source->markerConnectionOrientation.value_or(
@@ -414,13 +414,7 @@ bool Planner::needVertical() const
 	            || target->markerConnectionOrientation.value_or(
 	                   Gen::Orientation::horizontal)
 	                   == Gen::Orientation::vertical))
-	    || source->axises.at(Gen::ChannelId::label)
-	               .measure.origMeasureName.get()
-	           != target->axises.at(Gen::ChannelId::label)
-	                  .measure.origMeasureName.get()
-	    || source->axises.at(Gen::ChannelId::label).measure.unit.get()
-	           != target->axises.at(Gen::ChannelId::label)
-	                  .measure.unit.get()
+	    || source->axises.label != target->axises.label
 	    || anyMarker(+[](const Gen::Marker &source,
 	                      const Gen::Marker &target) -> bool
 	        {

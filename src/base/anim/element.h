@@ -23,8 +23,7 @@ public:
 
 	void transform(double factor) override
 	{
-		using Math::interpolate;
-		actual = interpolate(source, target, factor);
+		actual = Math::Niebloid::interpolate(source, target, factor);
 	}
 
 	const T &source;

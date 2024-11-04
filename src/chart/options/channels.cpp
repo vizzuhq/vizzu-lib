@@ -72,10 +72,10 @@ bool Channels::isSeriesUsed(const Data::SeriesIndex &index) const
 
 const Channel &Channels::at(const ChannelId &id) const
 {
-	return channels.at(id);
+	return channels[id];
 }
 
-Channel &Channels::at(const ChannelId &id) { return channels.at(id); }
+Channel &Channels::at(const ChannelId &id) { return channels[id]; }
 
 void Channels::reset()
 {

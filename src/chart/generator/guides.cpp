@@ -33,8 +33,8 @@ Guides::Guides(const Options &options)
 	const auto &xOpt = options.getChannels().at(AxisId::x);
 	const auto &yOpt = options.getChannels().at(AxisId::y);
 
-	x.axis = xOpt.axisLine.getValue(yIsMeasure);
-	y.axis = yOpt.axisLine.getValue(xIsMeasure && !isPolar);
+	x.axis = xOpt.axis.getValue(yIsMeasure);
+	y.axis = yOpt.axis.getValue(xIsMeasure && !isPolar);
 
 	x.markerGuides = xOpt.markerGuides.getValue(
 	    isCircle && yIsMeasure && !isPolar);
@@ -58,7 +58,7 @@ Guides::Guides(const Options &options)
 	y.axisSticks = yOpt.ticks.getValue(
 	    xIsMeasure && yIsMeasure && !isHorizontal);
 
-	x.labels = xOpt.axisLabels.getValue(
+	x.labels = xOpt.labels.getValue(
 	    (!isPolar || yIsMeasure)
 	    && ((xIsMeasure && (x.axisSticks || x.interlacings))
 	        || (!xIsMeasure && !xOpt.isEmpty())));
@@ -67,7 +67,7 @@ Guides::Guides(const Options &options)
 	    isPolar && !yIsMeasure
 	    && (options.align == Base::Align::Type::stretch);
 
-	y.labels = yOpt.axisLabels.getValue(
+	y.labels = yOpt.labels.getValue(
 	    !stretchedPolar
 	    && ((yIsMeasure && (y.axisSticks || y.interlacings))
 	        || (!yIsMeasure && !yOpt.isEmpty())));
