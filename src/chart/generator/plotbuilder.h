@@ -41,13 +41,6 @@ private:
 	void calcAxises(const Data::DataTable &dataTable);
 	template <ChannelIdLike T>
 	void calcAxis(const Data::DataTable &dataTable, T type);
-	/*
-	void calcMeasureAxises(const Data::DataTable &dataTable);
-	template <ChannelIdLike T>
-	void calcMeasureAxis(const Data::DataTable &dataTable, T type);
-	void calcDimensionAxises();
-	template <ChannelIdLike T> void calcDimensionAxis(T type);
-	*/
 	void addAlignment(const Buckets &subBuckets) const;
 	void addSeparation(const Buckets &subBuckets,
 	    const std::size_t &mainBucketSize) const;

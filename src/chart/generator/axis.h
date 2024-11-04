@@ -125,7 +125,7 @@ struct DimensionAxis
 	bool add(const Data::SliceIndex &index,
 	    double value,
 	    const Math::Range<double> &range,
-	    bool merge = false);
+	    bool merge = true);
 	[[nodiscard]] bool operator==(const DimensionAxis &other) const;
 
 	[[nodiscard]] auto begin()
