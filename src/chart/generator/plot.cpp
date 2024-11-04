@@ -38,7 +38,7 @@ Plot::MarkersInfo interpolate(const Plot::MarkersInfo &op1,
 }
 
 Plot::MarkerInfoContent::MarkerInfoContent(const Marker &marker) :
-    markerId{std::in_place, marker.idx, marker.pos},
+    markerId{marker.pos},
     info{marker.cellInfo, &marker.cellInfo->markerInfo}
 {}
 
@@ -117,7 +117,7 @@ bool Plot::hasMarkerChange(const Plot &source, const Plot &target)
 		return true;
 
 	for (std::size_t ix = 0; ix < msize; ++ix)
-		if (source.markers[ix].idx != target.markers[ix].idx)
+		if (source.markers[ix].pos.idx != target.markers[ix].pos.idx)
 			return true;
 	return false;
 }
@@ -135,18 +135,19 @@ void Plot::mergeMarkersAndCellInfo(Plot &source, Plot &target)
 	auto reindex2 = target_reindex.begin();
 	std::size_t pos{};
 	while (first1 != smarkers.end() && first2 != tmarkers.end()) {
-		if (auto cmp = first1->idx <=> first2->idx; std::is_lt(cmp)) {
-			*reindex1++ = {first1->idx, pos};
+		if (auto cmp = first1->pos.idx <=> first2->pos.idx;
+		    std::is_lt(cmp)) {
+			*reindex1++ = {first1->pos.idx, pos};
 			first2 = tmarkers.emplace(first2, *first1);
 			first2->enabled = false;
 		}
 		else if (std::is_gt(cmp)) {
-			*reindex2++ = {first2->idx, pos};
+			*reindex2++ = {first2->pos.idx, pos};
 			first1 = smarkers.emplace(first1, *first2);
 			first1->enabled = false;
 		}
 		else {
-			*reindex1++ = *reindex2++ = {first1->idx, pos};
+			*reindex1++ = *reindex2++ = {first1->pos.idx, pos};
 		}
 		++first1;
 		++first2;
@@ -155,12 +156,12 @@ void Plot::mergeMarkersAndCellInfo(Plot &source, Plot &target)
 
 	if (first2 != tmarkers.end())
 		while (first2 != tmarkers.end()) {
-			*reindex2++ = {first2->idx, pos++};
+			*reindex2++ = {first2->pos.idx, pos++};
 			smarkers.emplace_back(*first2++).enabled = false;
 		}
 	else
 		while (first1 != smarkers.end()) {
-			*reindex1++ = {first1->idx, pos++};
+			*reindex1++ = {first1->pos.idx, pos++};
 			tmarkers.emplace_back(*first1++).enabled = false;
 		}
 

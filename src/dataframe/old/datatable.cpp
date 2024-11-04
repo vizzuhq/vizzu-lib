@@ -150,8 +150,8 @@ DataCube::DataCube(const DataTable &table,
 
 	for (const auto &dim : dimensions) {
 		df->set_sort(dim.getColIndex(),
-		    dataframe::sort_type::by_categories,
-		    dataframe::na_position::last);
+		    dataframe::sort_type::less,
+		    dataframe::na_position::first);
 	}
 
 	df->finalize();

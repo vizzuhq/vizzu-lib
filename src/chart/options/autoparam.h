@@ -13,7 +13,6 @@ namespace Vizzu::Base
 
 template <typename Type, bool nullable = false> struct AutoParam
 {
-public:
 	AutoParam() : autoSet(true) {}
 
 	explicit AutoParam(const Type &value)
@@ -75,10 +74,7 @@ public:
 		return value == other;
 	}
 
-	bool operator==(const AutoParam &other) const
-	{
-		return value == other.value && autoSet == other.autoSet;
-	}
+	bool operator==(const AutoParam &other) const = default;
 
 private:
 	bool autoSet{};

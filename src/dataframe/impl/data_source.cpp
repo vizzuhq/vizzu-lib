@@ -150,7 +150,32 @@ struct data_source::sorter
 			using enum series_type;
 		case dimension: {
 			const auto &dim = unsafe_get<dimension>(series).second;
-			return cmp_dim(dim.values[a], dim.values[b], na);
+			if (sort == sort_type::by_categories)
+				return cmp_dim(dim.values[a], dim.values[b], na);
+
+			auto less = sort == sort_type::less
+			         || sort == sort_type::natural_less;
+			auto &first = less ? dim.values[a] : dim.values[b];
+			auto &second = less ? dim.values[b] : dim.values[a];
+			if (first == nav && second == nav)
+				return std::weak_ordering::equivalent;
+
+			if (first == nav || second == nav)
+				return (na == na_position::last) == (second == nav)
+				         ? std::weak_ordering::less
+				         : std::weak_ordering::greater;
+			switch (sort) {
+			default: break;
+			case sort_type::less:
+			case sort_type::greater:
+				return dim.categories[first]
+				   <=> dim.categories[second];
+			case sort_type::natural_less:
+			case sort_type::natural_greater:
+				return Text::NaturalCmp{}.cmp(
+				    dim.categories[first].c_str(),
+				    dim.categories[second].c_str());
+			}
 		}
 		case measure: {
 			const auto &mea = unsafe_get<measure>(series).second;
@@ -533,7 +558,7 @@ std::string data_source::get_id(std::size_t record,
 		const auto *val = dimensions[ix].get(record);
 		res += name;
 		res += '\37';
-		res += val ? *val : std::string_view{"␀"};
+		res += val ? *val : std::string_view{"\33"};
 		res += '\36';
 	}
 	if (series.empty()) res = "␀";

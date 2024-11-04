@@ -13,12 +13,12 @@ public:
 	    bool ignoreSpace = true);
 	[[nodiscard]] bool operator()(const std::string &,
 	    const std::string &) const;
+	[[nodiscard]] std::weak_ordering cmp(const char *,
+	    const char *) const;
 
 private:
 	bool ignoreCase;
 	bool ignoreSpace;
-	[[nodiscard]] std::weak_ordering cmp(const char *,
-	    const char *) const;
 	[[nodiscard]] std::weak_ordering cmpChar(const char &,
 	    const char &) const;
 	[[nodiscard]] static std::weak_ordering cmpNum(const char *&,

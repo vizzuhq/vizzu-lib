@@ -30,6 +30,7 @@ public:
 	    ChannelStats &stats,
 	    const Data::SeriesList &mainAxisList,
 	    const Data::SeriesList &subAxisList,
+	    MarkerPosition pos,
 	    const Data::MultiIndex &index,
 	    bool needMarkerInfo);
 
@@ -60,9 +61,6 @@ public:
 	Id subId;
 	Id sizeId;
 
-	MarkerIndex idx;
-	MarkerPosition pos{};
-
 	struct MarkerIndexPosition
 	{
 		MarkerIndex idx;
@@ -74,6 +72,7 @@ public:
 			return lhs.idx == rhs.idx;
 		}
 	};
+	MarkerIndexPosition pos;
 	::Anim::Interpolated<MarkerIndexPosition> prevMainMarker;
 	::Anim::Interpolated<bool> polarConnection{false};
 
