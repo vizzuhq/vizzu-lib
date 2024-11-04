@@ -14,6 +14,14 @@ module.exports = {
 			extends: ['@vizzu/eslint-config/standard']
 		},
 		{
+			files: ['docs/tutorial/shorthands_store/03_b.js'],
+			extends: ['@vizzu/eslint-config/standard'],
+			rules: {
+				'no-var': 'off',
+				'no-unused-vars': 'off'
+			}
+		},
+		{
 			files: ['test/e2e/test_cases/**', 'test/e2e/test_data/**'],
 			extends: ['@vizzu/eslint-config/standard'],
 			rules: {
