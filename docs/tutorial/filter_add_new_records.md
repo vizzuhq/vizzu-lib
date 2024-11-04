@@ -18,13 +18,7 @@ from the chart.
 // {% include-markdown "tutorial/assets/setup/setup_c.md" %}
 
 ```javascript
-chart.animate({
-    data: {
-        filter: record =>
-            record['Genres'] == 'Pop' ||
-            record['Genres'] == 'Metal',
-    }
-})
+// {% include "tutorial/filter_add_new_records/01.js" %}
 ```
 
 Now we add a cross-filter that includes items from both the `Genres` and the
@@ -34,13 +28,7 @@ we weren't update the filter, `Vizzu` would use it in subsequent states.
 <div id="tutorial_02"></div>
 
 ```javascript
-chart.animate({
-    data: {
-        filter: record =>
-            (record['Genres'] == 'Pop' || record['Genres'] == 'Metal') &&
-            record['Kinds'] == 'Smooth'
-    }
-})
+// {% include "tutorial/filter_add_new_records/02_b.js" %}
 ```
 
 Switching the filter off to get back to the original view.
@@ -48,11 +36,7 @@ Switching the filter off to get back to the original view.
 <div id="tutorial_03"></div>
 
 ```javascript
-chart.animate({
-    data: {
-        filter: null,
-    }
-})
+// {% include "tutorial/filter_add_new_records/03_b.js" %}
 ```
 
 Here we add another record to the data set and update the chart accordingly.
@@ -60,15 +44,7 @@ Here we add another record to the data set and update the chart accordingly.
 <div id="tutorial_04"></div>
 
 ```javascript
-chart.animate({
-    data: {
-        records: [
-            ['Soul', 'Hard', 91],
-            ['Soul', 'Smooth', 57],
-            ['Soul', 'Experimental', 115],
-        ]
-    }
-})
+// {% include "tutorial/filter_add_new_records/04_b.js" %}
 ```
 
 !!! info
@@ -77,4 +53,4 @@ chart.animate({
     function saves the config and style parameters of the chart into a variable
     but not the data.
 
-<script src="../filter_add_new_records.js"></script>
+<script src="../assets/snippet.js" config="../filter_add_new_records/config.js"></script>
