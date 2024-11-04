@@ -49,15 +49,15 @@ PlotBuilder::PlotBuilder(const Data::DataTable &dataTable,
 
 	if (!plot->options->getChannels().anyAxisSet()) {
 		addSpecLayout(subBuckets);
-		calcAxises(dataTable);
+		calcLegendAndLabel(dataTable);
 		normalizeColors();
 		if (plot->options->geometry != ShapeType::circle)
 			normalizeSizes();
 	}
 	else {
 		addSeparation(subBuckets, mainBucketSize);
-		normalizeXY();
 		calcAxises(dataTable);
+		calcLegendAndLabel(dataTable);
 		normalizeSizes();
 		normalizeColors();
 		addAlignment(subBuckets);
@@ -296,7 +296,7 @@ bool PlotBuilder::linkMarkers(const Buckets &buckets, bool main) const
 	return hasConnection;
 }
 
-void PlotBuilder::normalizeXY()
+void PlotBuilder::calcAxises(const Data::DataTable &dataTable)
 {
 	const auto &xrange =
 	    plot->getOptions()->getHorizontalAxis().range;
@@ -310,46 +310,46 @@ void PlotBuilder::normalizeXY()
 	if (markerIt == plot->markers.end()) {
 		stats.setIfRange(AxisId::x, xrange.getRange({0.0, 0.0}));
 		stats.setIfRange(AxisId::y, xrange.getRange({0.0, 0.0}));
-		return;
+	}
+	else {
+		auto boundRect = markerIt->toRectangle();
+
+		while (++markerIt != plot->markers.end()) {
+			if (!markerIt->enabled) continue;
+			boundRect = boundRect.boundary(markerIt->toRectangle());
+		}
+
+		plot->getOptions()->setAutoRange(
+		    !std::signbit(boundRect.hSize().getMin()),
+		    !std::signbit(boundRect.vSize().getMin()));
+
+		boundRect.setHSize(xrange.getRange(boundRect.hSize()));
+		boundRect.setVSize(yrange.getRange(boundRect.vSize()));
+
+		for (auto &marker : plot->markers) {
+			if (!boundRect.positive().intersects(
+			        marker.toRectangle().positive()))
+				marker.enabled = false;
+
+			auto rect = marker.toRectangle();
+			auto newRect = boundRect.normalize(rect);
+			marker.fromRectangle(newRect);
+		}
+
+		stats.setIfRange(AxisId::x,
+		    Math::Range<double>::Raw(boundRect.left(),
+		        boundRect.right()));
+		stats.setIfRange(AxisId::y,
+		    Math::Range<double>::Raw(boundRect.bottom(),
+		        boundRect.top()));
 	}
 
-	auto boundRect = markerIt->toRectangle();
-
-	while (++markerIt != plot->markers.end()) {
-		if (!markerIt->enabled) continue;
-		boundRect = boundRect.boundary(markerIt->toRectangle());
-	}
-
-	plot->getOptions()->setAutoRange(
-	    !std::signbit(boundRect.hSize().getMin()),
-	    !std::signbit(boundRect.vSize().getMin()));
-
-	boundRect.setHSize(xrange.getRange(boundRect.hSize()));
-	boundRect.setVSize(yrange.getRange(boundRect.vSize()));
-
-	for (auto &marker : plot->markers) {
-		if (!boundRect.positive().intersects(
-		        marker.toRectangle().positive()))
-			marker.enabled = false;
-
-		auto rect = marker.toRectangle();
-		auto newRect = boundRect.normalize(rect);
-		marker.fromRectangle(newRect);
-	}
-
-	stats.setIfRange(AxisId::x,
-	    Math::Range<double>::Raw(boundRect.left(),
-	        boundRect.right()));
-	stats.setIfRange(AxisId::y,
-	    Math::Range<double>::Raw(boundRect.bottom(),
-	        boundRect.top()));
-}
-
-void PlotBuilder::calcAxises(const Data::DataTable &dataTable)
-{
 	for (const AxisId &ch : {AxisId::x, AxisId::y})
 		calcAxis(dataTable, ch);
+}
 
+void PlotBuilder::calcLegendAndLabel(const Data::DataTable &dataTable)
+{
 	if (auto &&legend = plot->options->legend.get())
 		calcAxis(dataTable, *legend);
 
