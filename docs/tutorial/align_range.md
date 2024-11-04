@@ -84,4 +84,4 @@ Whenever you want to set your ranges back to the default value, just set them to
 // {% include "tutorial/align_range/06_b.js" %}
 ```
 
-<script src="../assets/snippet.js"></script>
+<script src="../assets/snippet.js" config="../align_range/config.js"></script>

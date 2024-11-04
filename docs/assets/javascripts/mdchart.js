@@ -93,16 +93,33 @@ class MdChart {
 		return chart
 	}
 
-	static async loadAnimation(url, returnOriginal = false, replace = null) {
+	static async loadAnimation(url, config) {
 		try {
-			const response = await fetch(url)
-			if (!response.ok) throw new Error(`Error fetching: ${response.statusText}`)
-			let code = await response.text()
+			let code
+			if (
+				typeof window === 'undefined' &&
+				typeof process !== 'undefined' &&
+				process.versions?.node
+			) {
+				const fs = await import('fs').then((module) => module.promises)
+				code = await fs.readFile(
+					config?.nodeBaseUrl ? `${config.nodeBaseUrl}/${url}` : url,
+					'utf8'
+				)
+			} else {
+				const response = await fetch(
+					config?.browserBaseUrl ? `${config.browserBaseUrl}/${url}` : url
+				)
+				if (!response.ok) throw new Error(`Error fetching: ${response.statusText}`)
+				code = await response.text()
+			}
+			const replace = config?.replace
 			if (Array.isArray(replace)) {
 				replace.forEach(([searchValue, replaceValue]) => {
 					code = code.replaceAll(searchValue, replaceValue)
 				})
 			}
+			const returnOriginal = config?.returnOriginal
 			return new Function( // eslint-disable-line no-new-func
 				'chart',
 				returnOriginal ? `${code}; return chart;` : `return ${code}`
@@ -112,16 +129,23 @@ class MdChart {
 		}
 	}
 
-	static async loadAnimations(animations) {
+	static async loadAnimations(animations, nodeBaseUrl = undefined, browserBaseUrl = undefined) {
 		const steps = []
+		const baseUrl = {
+			nodeBaseUrl,
+			browserBaseUrl
+		}
 
 		async function loadAnimation(animation) {
 			if (typeof animation === 'string') {
-				const func = await MdChart.loadAnimation(`./${animation}.js`)
+				const func = await MdChart.loadAnimation(`${animation}.js`, baseUrl)
 				return (chart) => func(chart)
 			} else if (typeof animation === 'object' && animation.name) {
-				const { name, returnOriginal, replace } = animation
-				const func = await MdChart.loadAnimation(`./${name}.js`, returnOriginal, replace)
+				const { name, ...config } = animation
+				const func = await MdChart.loadAnimation(
+					`${name}.js`,
+					Object.assign({}, config, baseUrl)
+				)
 				return (chart) => func(chart)
 			}
 		}

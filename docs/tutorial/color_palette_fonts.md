@@ -71,4 +71,4 @@ You can reset styles to default on any levels by setting them to `null`.
 For information on all available style parameters see the [Style](./style.md)
 chapter.
 
-<script src="../assets/snippet.js"></script>
+<script src="../assets/snippet.js" config="../color_palette_fonts/config.js"></script>

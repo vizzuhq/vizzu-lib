@@ -59,4 +59,4 @@ elements according to this new logic.
 // {% include "tutorial/sorting/05_b.js" %}
 ```
 
-<script src="../assets/snippet.js"></script>
+<script src="../assets/snippet.js" config="../sorting/config.js"></script>

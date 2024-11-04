@@ -88,7 +88,7 @@ plugins:
           implicit_index: true
     - autorefs
     - include-markdown:
-        opening_tag: "// {%"
+          opening_tag: '// {%'
     - placeholder
     - gen-files:
           scripts:

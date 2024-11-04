@@ -75,4 +75,4 @@ Setting the plot paddings back to their default values.
 // {% include "tutorial/chart_layout/07.js" %}
 ```
 
-<script src="../assets/snippet.js"></script>
+<script src="../assets/snippet.js" config="../chart_layout/config.js"></script>

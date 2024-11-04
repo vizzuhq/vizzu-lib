@@ -60,7 +60,8 @@ Please note that the test require Chrome, ChromeDriver and Selenium Webdriver to
 			'/test/e2e/tests/config_tests.json',
 			'/test/e2e/tests/style_tests.json',
 			'/test/e2e/tests/features.json',
-			'/test/e2e/tests/fixes.json'
+			'/test/e2e/tests/fixes.json',
+			'/test/e2e/tests/docs.json'
 		])
 
 		.choices('Werror', ['noref', 'sameref'])

@@ -59,4 +59,4 @@ To simply drill down, the same dimension is put back on the y-axis.
 // {% include "tutorial/changing_dimensions/05_b.js" %}
 ```
 
-<script src="../assets/snippet.js"></script>
+<script src="../assets/snippet.js" config="../changing_dimensions/config.js"></script>
