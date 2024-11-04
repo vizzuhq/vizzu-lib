@@ -44,7 +44,7 @@ const static auto tests =
             {
 	            throws<std::bad_cast>() << []
 	            {
-		            parse<bool>("foo");
+		            check() << parse<bool>("foo") == true;
 	            };
             })
 

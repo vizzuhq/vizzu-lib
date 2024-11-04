@@ -15,40 +15,42 @@ namespace Conv
 
 template <class T>
 concept ToStringMember =
-    requires(const T &t) { static_cast<std::string>(t.toString()); };
+    !std::is_void_v<decltype(std::declval<const T &>().toString())>;
+
+template <class From>
+constexpr inline static bool IsStringifiable =
+    ToStringMember<From> || std::is_enum_v<From>
+    || (Type::is_optional_v<From>
+        && IsStringifiable<Type::optional_t<From>>)
+    || std::is_constructible_v<std::string, From>
+    || std::is_constructible_v<std::string_view, From>
+    || std::is_arithmetic_v<From>;
+
+template <> constexpr inline bool IsStringifiable<void> = false;
 
 template <typename From>
-    requires(ToStringMember<From> || std::is_enum_v<From>
-             || Type::is_optional_v<From>
-             || std::is_constructible_v<std::string, From>
-             || std::is_arithmetic_v<From>)
-std::string toString(const From &value)
+    requires IsStringifiable<From>
+[[nodiscard]] decltype(auto) toString(const From &value)
 {
-	if constexpr (std::is_enum_v<From>) {
-		return Refl::enum_name<std::string>(value);
-	}
+	if constexpr (std::is_enum_v<From>)
+		return Refl::enum_name(value);
 	else if constexpr (Type::is_optional_v<From>) {
-		if (!value) return "null";
+		if (!value) return decltype(toString(*value)){"null"};
 		return toString(*value);
 	}
-	else if constexpr (std::is_constructible_v<std::string, From>) {
+	else if constexpr (std::is_constructible_v<std::string, From>)
 		return static_cast<std::string>(value);
-	}
-	else if constexpr (std::is_same_v<From, bool>) {
+	else if constexpr (std::is_constructible_v<std::string_view,
+	                       From>)
+		return static_cast<std::string_view>(value);
+	else if constexpr (std::is_same_v<From, bool>)
 		return value ? "true" : "false";
-	}
-	else if constexpr (std::is_arithmetic_v<From>) {
+	else if constexpr (std::is_arithmetic_v<From>)
 		return std::to_string(value);
-	}
-	else if constexpr (ToStringMember<From>) {
+	else {
+		static_assert(ToStringMember<From>);
 		return value.toString();
 	}
-	else
-		[]<bool flag = false>()
-		{
-			static_assert(flag, "no string conversion");
-		}
-	();
 }
 
 }

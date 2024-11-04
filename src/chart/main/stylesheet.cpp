@@ -92,7 +92,7 @@ void Sheet::setPlot()
 		defaultParams.plot.paddingLeft =
 		    Gfx::Length::Emphemeral(45.0 / 12.0);
 	}
-	else if (options->getVeritalAxis().isDimension()) {
+	else if (options->getVerticalAxis().isDimension()) {
 		defaultParams.plot.paddingLeft =
 		    Gfx::Length::Emphemeral(80.0 / 12.0);
 	}
@@ -153,7 +153,7 @@ void Sheet::setMarkers()
 			defaultParams.plot.marker.fillOpacity = 0.8;
 		}
 		else if (options->geometry == Gen::ShapeType::rectangle) {
-			const auto &vertical = options->getVeritalAxis();
+			const auto &vertical = options->getVerticalAxis();
 			const auto &horizontal = options->getHorizontalAxis();
 			if (auto polar = options->coordSystem.get()
 			              == Gen::CoordSystem::polar;

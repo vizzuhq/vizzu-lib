@@ -14,14 +14,16 @@
 
 namespace Refl::Access
 {
+template <class T>
+concept IsSerializable =
+    Conv::IsParsable<T> && Conv::IsStringifiable<T>;
+
 template <class Object, bool runtime = false> struct Accessor
 {
 	std::string (*get)(const Object &);
 	void (*set)(Object &, const std::string &);
 
-	template <template <class> class TransformIn = std::type_identity,
-	    class... MPs>
-	static consteval Accessor make()
+	template <class... MPs> static consteval Accessor make()
 	{
 		return {
 #ifndef __clang_analyzer__
@@ -30,17 +32,18 @@ template <class Object, bool runtime = false> struct Accessor
 		        {
 			        using Type =
 			            Functors::Composite::Res<Object, MPs...>;
-			        return Conv::toString(
-			            Functors::FuncPtr<Object, Type, MPs...>(o));
+			        static_assert(Conv::IsStringifiable<Type>);
+			        return std::string{Conv::toString(
+			            Functors::FuncPtr<Object, Type, MPs...>(o))};
 		        },
 		    .set =
 		        +[](Object &o, const std::string &str)
 		        {
 			        using Type =
 			            Functors::Composite::Res<Object, MPs...>;
+			        static_assert(Conv::IsParsable<Type>);
 			        Functors::FuncPtr<Object, Type, MPs...>(o) =
-			            Conv::parse<typename TransformIn<Type>::type>(
-			                str);
+			            Conv::parse<Type>(str);
 		        }
 #endif
 		};
@@ -56,7 +59,7 @@ template <class Object> struct Accessor<Object, true>
 	{
 		return {.get{[ptr](const Object &o)
 		            {
-			            return Conv::toString(ptr(o));
+			            return std::string{Conv::toString(ptr(o))};
 		            }},
 		    .set{[ptr](Object &o, const std::string &str)
 		        {
@@ -67,24 +70,6 @@ template <class Object> struct Accessor<Object, true>
 	}
 };
 
-template <class Object,
-    class Members =
-#ifndef __clang_analyzer__
-        decltype(member_functors_v<Object>),
-#else
-        std::tuple<>,
-#endif
-    class = std::make_index_sequence<std::tuple_size_v<Members>>>
-constexpr const void *accessor_pairs{};
-
-template <class Object, class Members, std::size_t... Ix>
-constexpr std::initializer_list<
-    std::pair<const std::string_view, Accessor<Object>>>
-    accessor_pairs<Object, Members, std::index_sequence<Ix...>>{
-        {std::tuple_element_t<Ix, Members>::name(),
-            Accessor<Object>::template make<std::type_identity,
-                std::tuple_element_t<Ix, Members>>()}...};
-
 consteval auto merge_names_size(
     const std::initializer_list<std::string_view> &il)
 {
@@ -93,38 +78,51 @@ consteval auto merge_names_size(
 	return res ? res - 1 : res;
 }
 
-template <char sep, std::size_t size>
+template <std::size_t size>
 consteval auto merge_names(
     const std::initializer_list<std::string_view> &il)
 {
 	std::array<char, size> res{};
 	for (auto it = res.data(); auto sl : il) {
-		if (it != res.data()) *it++ = sep;
+		if (it != res.data()) *it++ = '.';
 		for (auto ch : sl) *it++ = ch;
 	}
 	return res;
 };
 
-template <template <class> class TransformIn,
-    char sep,
-    auto Mptr,
-    auto... Mptrs>
-constexpr inline std::pair<const std::string_view,
-    Accessor<decltype(Impl::getBase(Mptr))>>
-    mptr_accessor_pair{
+template <class Object, class MPs>
+constexpr const void *accessor_pair{};
+
+template <class Object, class... Member>
+constexpr std::pair<const std::string_view, Accessor<Object>>
+    accessor_pair<Object, std::tuple<Member...>>{
 #ifndef __clang_analyzer__
-        Name::in_data_name<merge_names<sep,
-            merge_names_size(
-                Functors::name_list<Members::MemberFunctor<Mptr>,
-                    Members::MemberFunctor<Mptrs>...>)>(
-            Functors::name_list<Members::MemberFunctor<Mptr>,
-                Members::MemberFunctor<Mptrs>...>)>,
-        Accessor<decltype(Impl::getBase(
-            Mptr))>::template make<TransformIn,
-            Members::MemberFunctor<Mptr>,
-            Members::MemberFunctor<Mptrs>...>()
+        Name::in_data_name<merge_names<merge_names_size(
+            Functors::name_list<Member...>)>(
+            Functors::name_list<Member...>)>,
+        Accessor<Object>::template make<Member...>()
 #endif
     };
+
+template <class T>
+using IsSerializableT = std::bool_constant<IsSerializable<T>>;
+
+template <class Object,
+    class Members =
+#ifndef __clang_analyzer__
+        std::remove_cvref_t<
+            decltype(all_member_functor_v<Object, IsSerializableT>)>
+#else
+        std::tuple<>
+#endif
+    >
+constexpr const void *accessor_pairs{};
+
+template <class Object, class... Members>
+constexpr std::initializer_list<
+    std::pair<const std::string_view, Accessor<Object>>>
+    accessor_pairs<Object, std::tuple<Members...>>{
+        accessor_pair<Object, Members>...};
 
 template <class Object, bool runtime = false>
 const std::map<

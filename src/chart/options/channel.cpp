@@ -9,55 +9,153 @@
 #include <string>
 #include <utility>
 
+#include "base/conv/auto_json.h"
+#include "base/conv/tostring.h"
+#include "base/refl/auto_enum.h"
 #include "chart/options/autoparam.h"
 #include "dataframe/old/datatable.h"
 #include "dataframe/old/types.h"
 
 namespace Vizzu::Gen
 {
+std::string ChannelSeriesList::toString() const
+{
+	std::string res;
+	Conv::JSONArr arr{res};
+	if (auto &&measure = measureId) arr << *measure;
+	for (auto &&dim : dimensionIds) arr << dim;
+	return res;
+}
+
+ChannelSeriesList::Parser &ChannelSeriesList::Parser::operator()(
+    const std::string &str)
+{
+	switch (type) {
+	default:
+	case Token::null: break;
+	case Token::name:
+		if (!str.empty()) {
+			if (res && !res->isDimension())
+				res = Data::SeriesIndex{str, *table}.setAggr(
+				    res->getAggr());
+			else
+				res.emplace(str, *table);
+		}
+		else if (!res)
+			res.emplace();
+		break;
+	case Token::aggregator:
+		if (res)
+			res->setAggr(str);
+		else
+			res.emplace().setAggr(str);
+		break;
+	}
+	return *this;
+}
+
+ChannelSeriesList::Parser &
+ChannelSeriesList::Parser::instance() noexcept
+{
+	thread_local Parser instance;
+	return instance;
+}
+
+ChannelSeriesList &ChannelSeriesList::operator=(Parser &index)
+{
+	if (!index.res) return *this;
+	if (auto already_set =
+	        dimensionIds.size() + measureId.has_value();
+	    already_set == index.position) {
+		if (index.res->isDimension()) {
+			if (dimensionIds.push_back(*index.res)) index.res = {};
+		}
+		else if (!measureId)
+			measureId = *index.res;
+		else
+			throw std::runtime_error(
+			    "Multiple measure at channel "
+			    + std::string{Conv::toString(index.latestChannel)}
+			    + ": "
+			    + std::string{Conv::toString(measureId->getAggr())}
+			    + "(" + measureId->getColIndex() + ") and "
+			    + std::string{Conv::toString(index.res->getAggr())}
+			    + "("
+			    + (index.res->getColIndex().empty()
+			            ? "..."
+			            : index.res->getColIndex())
+			    + ")");
+	}
+	else if (already_set == index.position + 1) {
+		if (!measureId) {
+			measureId = dimensionIds.pop_back();
+			measureId->setAggr(index.res->getAggr());
+			index.res = {};
+		}
+		else if (measureId->getColIndex() == index.res->getColIndex()
+		         || (measureId->getAggr() == index.res->getAggr()
+		             && measureId->getColIndex().empty())) {
+
+			measureId = *index.res;
+			index.res = {};
+		}
+		else
+			throw std::runtime_error(
+			    "Multiple measure at channel "
+			    + std::string{Conv::toString(index.latestChannel)}
+			    + ": "
+			    + std::string{Conv::toString(measureId->getAggr())}
+			    + "(" + measureId->getColIndex() + ") and "
+			    + std::string{Conv::toString(index.res->getAggr())}
+			    + "("
+			    + (index.res->getColIndex().empty()
+			                && !dimensionIds.empty()
+			            ? dimensionIds.pop_back().getColIndex()
+			            : index.res->getColIndex())
+			    + ")");
+	}
+	return *this;
+}
 
 Channel Channel::makeChannel(ChannelId id)
 {
-	switch (id) {
-	case ChannelId::color: return {ChannelId::color, 0, false};
-	case ChannelId::label: return {ChannelId::label, 0, false};
-	case ChannelId::lightness:
-		return {ChannelId::lightness, 0.5, false};
-	case ChannelId::size: return {ChannelId::size, 0, true};
-	case ChannelId::x: return {ChannelId::x, 1, true};
-	case ChannelId::y: return {ChannelId::y, 1, true};
-	case ChannelId::noop: return {ChannelId::noop, 0, false};
-	default:;
-	};
-	throw std::logic_error("internal error: invalid channel id");
+	static constexpr auto defStackable =
+	    Refl::EnumArray<ChannelId, bool>::make(
+	        {{ChannelId::color, false},
+	            {ChannelId::lightness, false},
+	            {ChannelId::size, true},
+	            {ChannelId::label, false},
+	            {ChannelId::x, true},
+	            {ChannelId::y, true},
+	            {ChannelId::noop, false}});
+	return {defStackable[id]};
 }
 
 void Channel::addSeries(const Data::SeriesIndex &index)
 {
 	if (index.isDimension())
-		dimensionIds.push_back(index);
+		set.dimensionIds.push_back(index);
 	else
-		measureId = index;
+		set.measureId = index;
 }
 
 void Channel::removeSeries(const Data::SeriesIndex &index)
 {
 	if (index.isDimension())
-		dimensionIds.remove(index);
-	else if (measureId)
-		measureId = std::nullopt;
+		set.dimensionIds.remove(index);
+	else if (set.measureId)
+		set.measureId = std::nullopt;
 }
 
 bool Channel::isSeriesUsed(const Data::SeriesIndex &index) const
 {
-	return (measureId && *measureId == index)
-	    || dimensionIds.contains(index);
+	return set.measureId == index || set.dimensionIds.contains(index);
 }
 
 void Channel::reset()
 {
-	measureId = std::nullopt;
-	dimensionIds.clear();
+	set.measureId = std::nullopt;
+	set.dimensionIds.clear();
 	title = Base::AutoParam<std::string, true>{};
 	axis = Base::AutoBool();
 	labels = Base::AutoBool();
@@ -70,56 +168,36 @@ void Channel::reset()
 
 bool Channel::isEmpty() const
 {
-	return !measureId && dimensionIds.empty();
+	return !set.measureId && set.dimensionIds.empty();
 }
 
-bool Channel::isDimension() const { return !measureId; }
+bool Channel::isDimension() const { return !set.measureId; }
 
-bool Channel::hasDimension() const { return !dimensionIds.empty(); }
-
-bool Channel::isMeasure() const { return measureId.has_value(); }
-
-void Channel::collectDimesions(IndexSet &dimensions) const
+bool Channel::hasDimension() const
 {
-	for (const auto &dimension : dimensionIds)
+	return !set.dimensionIds.empty();
+}
+
+bool Channel::isMeasure() const { return set.measureId.has_value(); }
+
+void Channel::collectDimensions(IndexSet &dimensions) const
+{
+	for (const auto &dimension : set.dimensionIds)
 		dimensions.insert(dimension);
-}
-
-bool Channel::operator==(const Channel &other) const
-{
-	return type == other.type && measureId == other.measureId
-	    && dimensionIds == other.dimensionIds
-	    && (defaultValue == other.defaultValue
-	        || (std::isnan(defaultValue)
-	            && std::isnan(other.defaultValue)))
-	    && stackable == other.stackable && range == other.range
-	    && labelLevel == other.labelLevel && title == other.title
-	    && axis == other.axis && labels == other.labels
-	    && ticks == other.ticks && interlacing == other.interlacing
-	    && guides == other.guides
-	    && markerGuides == other.markerGuides;
-}
-
-const Channel::DimensionIndices &Channel::dimensions() const
-{
-	return dimensionIds;
 }
 
 std::pair<const Channel::DimensionIndices &, const std::size_t &>
 Channel::dimensionsWithLevel() const
 {
-	return {dimensionIds, labelLevel};
+	return {set.dimensionIds, labelLevel};
 }
 
 Channel::OptionalIndex Channel::labelSeries() const
 {
-	if (isDimension()) {
-		if (labelLevel < dimensionIds.size())
-			return *std::next(dimensionIds.begin(),
-			    static_cast<std::intptr_t>(labelLevel));
-		return std::nullopt;
-	}
-	return measureId;
+	if (isDimension() && labelLevel < set.dimensionIds.size())
+		return *std::next(set.dimensionIds.begin(),
+		    static_cast<std::intptr_t>(labelLevel));
+	return set.measureId;
 }
 
 }

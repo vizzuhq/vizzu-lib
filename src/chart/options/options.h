@@ -24,16 +24,35 @@
 namespace Vizzu::Gen
 {
 
-class Options
+struct OptionProperties
 {
-public:
-	using MarkerIndex = std::string;
-	using MarkerInfoId = std::uint32_t;
 	using Heading = ::Anim::Interpolated<std::optional<std::string>>;
 	using LegendType = Base::AutoParam<LegendId, true>;
 	using Legend = ::Anim::Interpolated<LegendType>;
 	using OrientationType = Base::AutoParam<Gen::Orientation>;
 	using Orientation = ::Anim::Interpolated<OrientationType>;
+
+	Heading title{std::nullopt};
+	Heading subtitle{std::nullopt};
+	Heading caption{std::nullopt};
+	Legend legend;
+	::Anim::Interpolated<CoordSystem> coordSystem{
+	    CoordSystem::cartesian};
+	double angle{};
+	::Anim::Interpolated<ShapeType> geometry{ShapeType::rectangle};
+	Orientation orientation{OrientationType{}};
+	Sort sort{Sort::none};
+	Math::FuzzyBool reverse{false};
+	Base::Align::Type align{Base::Align::Type::none};
+	Math::FuzzyBool split;
+};
+
+class Options : public OptionProperties
+{
+public:
+	using MarkerIndex = std::string;
+	using MarkerInfoId = std::uint32_t;
+	using Heading = ::Anim::Interpolated<std::optional<std::string>>;
 	using MarkersInfoMap = std::map<MarkerInfoId, MarkerIndex>;
 
 	[[nodiscard]] const Channels &getChannels() const
@@ -96,21 +115,7 @@ public:
 		return split
 		    && (subAxisType() != stackChannelType() || isStacked());
 	}
-
-	Heading title{std::nullopt};
-	Heading subtitle{std::nullopt};
-	Heading caption{std::nullopt};
-	::Anim::Interpolated<CoordSystem> coordSystem{
-	    CoordSystem::cartesian};
-	double angle{};
-	::Anim::Interpolated<ShapeType> geometry{ShapeType::rectangle};
-	Orientation orientation{OrientationType{}};
-	Math::FuzzyBool split;
-	Base::Align::Type align{Base::Align::Type::none};
 	Data::Filter dataFilter;
-	Sort sort{Sort::none};
-	Math::FuzzyBool reverse{false};
-	Legend legend;
 	std::optional<MarkerIndex> tooltip;
 	MarkersInfoMap markersInfo;
 
@@ -132,7 +137,7 @@ public:
 		return channels.at(getHorizontalChannel());
 	}
 
-	[[nodiscard]] const Channel &getVeritalAxis() const
+	[[nodiscard]] const Channel &getVerticalAxis() const
 	{
 		return channels.at(getVerticalChannel());
 	}
@@ -142,7 +147,7 @@ public:
 		return channels.at(getHorizontalChannel());
 	}
 
-	Channel &getVeritalAxis()
+	Channel &getVerticalAxis()
 	{
 		return channels.at(getVerticalChannel());
 	}
@@ -161,7 +166,13 @@ public:
 	void showTooltip(std::optional<MarkerIndex> marker);
 
 private:
-	Channels channels;
+	Channels channels{
+	    []<std::size_t... Ix>(std::index_sequence<Ix...>)
+	    {
+		    return decltype(channels){
+		        Channel::makeChannel(static_cast<ChannelId>(Ix))...};
+	    }(std::make_index_sequence<
+	        std::tuple_size_v<decltype(channels)::base_array>>{})};
 
 	[[nodiscard]] Gen::Orientation getAutoOrientation() const;
 	[[nodiscard]] std::optional<LegendId> getAutoLegend() const;

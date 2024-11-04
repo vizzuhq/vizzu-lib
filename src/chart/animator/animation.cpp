@@ -201,7 +201,7 @@ Gen::PlotPtr Animation::getIntermediate(const Gen::PlotPtr &base,
 		for (const auto &series : labelChannel.dimensions())
 			extOptions->getChannels()
 			    .at(Gen::ChannelId::noop)
-			    .dimensionIds.push_back(series);
+			    .addSeries(series);
 
 		labelChannel.reset();
 

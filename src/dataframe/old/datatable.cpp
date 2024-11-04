@@ -175,7 +175,7 @@ DataCube::DataCube(const DataTable &table,
 	        {ChannelId::x, !horizontal && stackInhibitingShape},
 	        {ChannelId::y, horizontal && stackInhibitingShape}}) {
 		const auto &channel = channels.at(channelId);
-		auto &&meas = channel.measureId;
+		auto &&meas = channel.measure();
 		if (!meas) continue;
 		const auto *subChannel = options.subAxisOf(channelId);
 		if (!subChannel) continue;

@@ -679,6 +679,24 @@ concept is_reflectable =
     || (std::is_aggregate_v<T>
         && is_structure_bindable_v<T> != structure_bindable::no);
 
+template <class T, template <class> class Checker, class... PreMPs>
+constexpr static auto all_member_functor_v{
+    []<class... Bases, class... MF>(std::tuple<Bases...> *,
+        std::tuple<MF...>)
+    {
+	    if constexpr (Checker<T>::value) {
+		    return std::tuple<std::tuple<PreMPs...>>{};
+	    }
+	    else if constexpr (is_reflectable<T>) {
+		    return decltype(std::tuple_cat(
+		        all_member_functor_v<Bases, Checker, PreMPs...>...,
+		        all_member_functor_v<member_functor_t<MF>,
+		            Checker,
+		            PreMPs...,
+		            MF>...)){};
+	    }
+    }(std::add_pointer_t<bases_t<T>>{}, member_functors_v<T>)};
+
 namespace Functors
 {
 namespace Composite

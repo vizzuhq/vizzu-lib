@@ -282,10 +282,10 @@ struct chart_setup
 		for (auto &&[ch, name, aggr] : series) {
 			channels.at(ch).addSeries({name, std::ref(table)});
 			if (aggr) {
-				if (!channels.at(ch).measureId)
-					channels.at(ch).measureId =
-					    channels.at(ch).dimensionIds.pop_back();
-				channels.at(ch).measureId->setAggr(aggr);
+				if (!channels.at(ch).measure())
+					channels.at(ch).set.measureId =
+					    channels.at(ch).set.dimensionIds.pop_back();
+				channels.at(ch).set.measureId->setAggr(aggr);
 			}
 		}
 		chart.setBoundRect(Geom::Rect(Geom::Point{}, {{640, 480}}));

@@ -102,7 +102,9 @@ const static auto tests =
             {
 	            throws<std::exception>() << []
 	            {
-		            Conv::parse<FuncString>("foo");
+		            check() << Conv::parse<FuncString>("foo")
+		                           .isEmpty()
+		                == 0.0;
 	            };
             })
 

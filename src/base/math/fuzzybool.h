@@ -114,6 +114,14 @@ public:
 		return std::to_string(value);
 	}
 
+	[[nodiscard]] static FuzzyBool fromString(const std::string &str)
+	{
+		if (str == "true") return True();
+		if (str == "false") return False();
+
+		throw std::bad_cast();
+	}
+
 	[[nodiscard]] FuzzyBool more() const
 	{
 		return FuzzyBool(std::max(0.0, 2 * value - 1));

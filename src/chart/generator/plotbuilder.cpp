@@ -68,12 +68,11 @@ PlotBuilder::PlotBuilder(const Data::DataTable &dataTable,
 
 void PlotBuilder::initDimensionTrackers()
 {
-	for (const auto &ch :
-	    plot->options->getChannels().getChannels()) {
-		if (!ch.isDimension()) continue;
-		stats.tracked[ch.type].emplace<1>(
-		    dataCube.combinedSizeOf(ch.dimensions()).second);
-	}
+	for (auto *tracks = stats.tracked.data();
+	     const auto &ch : plot->options->getChannels())
+		if (auto &track = *tracks++; ch.isDimension())
+			track.emplace<1>(
+			    dataCube.combinedSizeOf(ch.dimensions()).second);
 }
 
 Buckets PlotBuilder::generateMarkers(std::size_t &mainBucketSize)
@@ -310,7 +309,7 @@ void PlotBuilder::normalizeXY()
 {
 	const auto &xrange =
 	    plot->getOptions()->getHorizontalAxis().range;
-	const auto &yrange = plot->getOptions()->getVeritalAxis().range;
+	const auto &yrange = plot->getOptions()->getVerticalAxis().range;
 
 	auto markerIt = plot->markers.begin();
 	while (markerIt != plot->markers.end()
@@ -366,7 +365,7 @@ void PlotBuilder::calcMeasureAxises(const Data::DataTable &dataTable)
 	if (auto &&meas = plot->getOptions()
 	                      ->getChannels()
 	                      .at(ChannelId::label)
-	                      .measureId)
+	                      .measure())
 		plot->axises.label = {
 		    ::Anim::String{
 		        std::string{dataTable.getUnit(meas->getColIndex())}},
@@ -378,7 +377,7 @@ void PlotBuilder::calcMeasureAxis(const Data::DataTable &dataTable,
     T type)
 {
 	const auto &scale = plot->getOptions()->getChannels().at(type);
-	if (auto &&meas = scale.measureId) {
+	if (auto &&meas = scale.measure()) {
 		if (auto &title = plot->axises.at(type).title;
 		    scale.title.isAuto())
 			title = dataCube.getName(*meas);

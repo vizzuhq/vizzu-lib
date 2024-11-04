@@ -9,6 +9,7 @@
 #include "base/geom/point.h"
 #include "base/geom/rect.h"
 #include "base/math/range.h"
+#include "base/refl/auto_enum.h"
 #include "chart/options/align.h"
 #include "chart/options/channel.h"
 #include "chart/options/coordsystem.h"
@@ -172,7 +173,19 @@ double Marker::getValueForChannel(const Channels &channels,
 {
 	const auto &channel = channels.at(type);
 
-	if (channel.isEmpty()) return channel.defaultValue;
+	if (channel.isEmpty()) {
+		static constexpr auto defVals =
+		    Refl::EnumArray<ChannelId, double>::make(
+		        {{ChannelId::color, 0.0},
+		            {ChannelId::lightness, 0.5},
+		            {ChannelId::size, 0.0},
+		            {ChannelId::label, 0.0},
+		            {ChannelId::x, 1.0},
+		            {ChannelId::y, 1.0},
+		            {ChannelId::noop, 0.0}});
+
+		return defVals[type];
+	}
 
 	double value{};
 
@@ -191,7 +204,7 @@ double Marker::getValueForChannel(const Channels &channels,
 		if (enabled) stats.track(type, id);
 	}
 	else {
-		if (const auto &measure = *channel.measureId;
+		if (const auto &measure = *channel.measure();
 		    channel.stackable)
 			value = data.aggregateAt(index, type, measure);
 		else

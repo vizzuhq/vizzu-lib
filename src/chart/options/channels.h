@@ -12,15 +12,9 @@
 namespace Vizzu::Gen
 {
 
-class Channels
+struct Channels : Refl::EnumArray<ChannelId, Channel>
 {
-public:
 	using IndexSet = std::set<Data::SeriesIndex>;
-	struct Pos
-	{
-		ChannelId channelId;
-		int position;
-	};
 
 	[[nodiscard]] bool anyAxisSet() const;
 	[[nodiscard]] bool isEmpty() const;
@@ -30,8 +24,7 @@ public:
 	[[nodiscard]] IndexSet getDimensions(
 	    const std::span<const ChannelId> &channelTypes) const;
 
-	[[nodiscard]] const Channel &at(const ChannelId &id) const;
-	[[nodiscard]] Channel &at(const ChannelId &id);
+	using EnumArray::at;
 
 	template <ChannelIdLike T>
 	[[nodiscard]] const Channel &at(const T &id) const
@@ -51,20 +44,9 @@ public:
 
 	void reset();
 
-	bool operator==(const Channels &other) const;
+	bool operator==(const Channels &other) const = default;
 
 	[[nodiscard]] Channels shadow() const;
-
-	[[nodiscard]] auto &getChannels() { return channels; }
-
-private:
-	Refl::EnumArray<ChannelId, Channel> channels =
-	    []<std::size_t... Ix>(std::index_sequence<Ix...>)
-	{
-		return decltype(channels){
-		    Channel::makeChannel(static_cast<ChannelId>(Ix))...};
-	}(std::make_index_sequence<
-	    std::tuple_size_v<decltype(channels)::base_array>>{});
 };
 
 }

@@ -19,7 +19,7 @@ ChannelExtrema::ChannelExtrema(const std::string &str)
 
 ChannelExtrema::operator std::string() const
 {
-	return std::to_string(value) + Conv::toString(unit);
+	return std::to_string(value) + std::string{Conv::toString(unit)};
 }
 
 Math::Range<double> ChannelRange::getRange(

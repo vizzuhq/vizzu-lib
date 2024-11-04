@@ -144,7 +144,7 @@ public:
 	// NOLINTNEXTLINE(cppcoreguidelines-missing-std-forward)
 	[[nodiscard]] auto get(T &&) const = delete;
 
-	explicit operator std::string() const
+	[[nodiscard]] auto toString() const
 	{
 		if (!has_second) return Conv::toString(values[0].value);
 

@@ -71,7 +71,7 @@ consteval std::pair<real_t<E>, real_t<E>> from_to()
 	}
 }
 
-template <class E, int, int>
+template <class E>
     requires(!UniqueRange<E> && std::same_as<bool, real_t<E>>)
 consteval std::pair<real_t<E>, real_t<E>> from_to()
 {
@@ -131,7 +131,7 @@ constexpr std::array enum_name_holder = Detail::whole_array<E>(
         Detail::count<E>()>{});
 
 template <class E>
-constinit const std::array enum_name_holder<E, true> =
+constexpr std::array enum_name_holder<E, true> =
     Detail::whole_array<E, int>(
         std::make_integer_sequence<int, Detail::count<E>()>{});
 
@@ -182,7 +182,7 @@ Type enum_name(E name)
 template <class E> constexpr E get_enum(const std::string_view &data)
 {
 	constexpr auto first = Detail::from_to<E>().first;
-	Detail::real_t<E> ix{};
+	decltype(Detail::count<E>()) ix{};
 	for (auto v : enum_names<E>) {
 		if (v == data) break;
 		++ix;
@@ -213,14 +213,36 @@ struct EnumArray : std::array<V, std::size(enum_names<E>)>
 
 	[[nodiscard]] constexpr V &at(E value)
 	{
-		return base_array::at(
+		return base_array::operator[](
 		    static_cast<std::size_t>(value) - first);
 	}
 
 	[[nodiscard]] constexpr const V &at(E value) const
 	{
-		return base_array::at(
+		return base_array::operator[](
 		    static_cast<std::size_t>(value) - first);
+	}
+
+	template <std::size_t... Ix>
+	[[nodiscard]] consteval static EnumArray make(
+	    std::initializer_list<std::pair<E, V>> il,
+	    std::index_sequence<Ix...> = {})
+	{
+		if constexpr (constexpr auto size =
+		                  std::tuple_size_v<base_array>;
+		              sizeof...(Ix) != size)
+			return make(il, std::make_index_sequence<size>{});
+		else {
+			if (il.size() != size)
+				throw std::runtime_error("Invalid init size");
+
+			auto ix = first;
+			for (auto &&[e, v] : il) {
+				if (static_cast<E>(ix++) != e)
+					throw std::runtime_error("Invalid init order");
+			}
+			return {{(std::data(il) + Ix)->second...}};
+		}
 	}
 
 	bool operator==(const EnumArray &) const = default;

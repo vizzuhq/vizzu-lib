@@ -269,11 +269,11 @@ std::optional<LegendId> Options::getAutoLegend() const
 	for (const auto &id : channels.at(ChannelId::label).dimensions())
 		series.erase(id);
 
-	if (auto &&meas = channels.at(ChannelId::label).measureId)
+	if (auto &&meas = channels.at(ChannelId::label).measure())
 		series.erase(*meas);
 
 	for (auto axisId : {AxisId::x, AxisId::y})
-		if (auto id = channels.at(axisId).labelSeries())
+		if (auto &&id = channels.at(axisId).labelSeries())
 			series.erase(*id);
 
 	for (auto channelId : {LegendId::color, LegendId::lightness})
@@ -284,7 +284,7 @@ std::optional<LegendId> Options::getAutoLegend() const
 
 	for (auto channelId :
 	    {LegendId::color, LegendId::lightness, LegendId::size})
-		if (auto &&mid = channels.at(channelId).measureId)
+		if (auto &&mid = channels.at(channelId).measure())
 			if (series.contains(*mid)) return channelId;
 
 	return std::nullopt;
@@ -292,7 +292,7 @@ std::optional<LegendId> Options::getAutoLegend() const
 
 void Options::setAutoRange(bool hPositive, bool vPositive)
 {
-	auto &v = getVeritalAxis();
+	auto &v = getVerticalAxis();
 	auto &h = getHorizontalAxis();
 	auto &&cart = coordSystem.get() == CoordSystem::cartesian;
 	auto &&nrect = geometry != ShapeType::rectangle;

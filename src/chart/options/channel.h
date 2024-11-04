@@ -62,14 +62,50 @@ static_assert(std::ranges::all_of(Refl::enum_names<LegendId>,
 	            Refl::get_enum<ChannelId>(name));
     }));
 
+struct ChannelSeriesList
+{
+	using OptionalIndex = std::optional<Data::SeriesIndex>;
+	using DimensionIndices = Data::SeriesList;
+	OptionalIndex measureId{};
+	DimensionIndices dimensionIds{};
+
+	[[nodiscard]] std::string toString() const;
+
+	struct Parser
+	{
+		enum class Token : std::uint8_t { null, name, aggregator };
+		const Data::DataTable *table{};
+		ChannelId latestChannel{};
+		std::size_t position{};
+		Token type{};
+		std::optional<Data::SeriesIndex> res{};
+
+		[[nodiscard]] Parser &operator()(const std::string &str);
+
+		static Parser &instance() noexcept;
+	};
+
+	struct ParserGetter
+	{
+		Parser &operator()(const std::string &str) const noexcept
+		{
+			return Parser::instance()(str);
+		}
+	} constexpr static fromString{};
+
+	ChannelSeriesList &operator=(Parser &);
+
+	bool operator==(const ChannelSeriesList &) const = default;
+};
+
 class Channel
 {
 public:
-	using OptionalIndex = std::optional<Data::SeriesIndex>;
+	using OptionalIndex = ChannelSeriesList::OptionalIndex;
 	using IndexSet = std::set<Data::SeriesIndex>;
-	using DimensionIndices = Data::SeriesList;
+	using DimensionIndices = ChannelSeriesList::DimensionIndices;
 
-	static Channel makeChannel(ChannelId id);
+	[[nodiscard]] static Channel makeChannel(ChannelId id);
 
 	void addSeries(const Data::SeriesIndex &index);
 	void removeSeries(const Data::SeriesIndex &index);
@@ -80,19 +116,26 @@ public:
 	[[nodiscard]] bool isDimension() const;
 	[[nodiscard]] bool hasDimension() const;
 	[[nodiscard]] bool isMeasure() const;
-	void collectDimesions(IndexSet &dimensions) const;
-	[[nodiscard]] const DimensionIndices &dimensions() const;
+	void collectDimensions(IndexSet &dimensions) const;
 	[[nodiscard]] std::pair<const DimensionIndices &,
 	    const std::size_t &>
 	dimensionsWithLevel() const;
 	[[nodiscard]] OptionalIndex labelSeries() const;
-	bool operator==(const Channel &other) const;
+	[[nodiscard]] bool operator==(
+	    const Channel &other) const = default;
 
-	ChannelId type{};
-	double defaultValue{};
+	[[nodiscard]] const DimensionIndices &dimensions() const
+	{
+		return set.dimensionIds;
+	}
+
+	[[nodiscard]] const OptionalIndex &measure() const
+	{
+		return set.measureId;
+	}
+
 	bool stackable{};
-	OptionalIndex measureId{};
-	DimensionIndices dimensionIds{};
+	ChannelSeriesList set{};
 	ChannelRange range{};
 	std::size_t labelLevel{};
 	Base::AutoParam<std::string, true> title{};
