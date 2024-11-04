@@ -1,4 +1,4 @@
 {
-	"suite": "/test/e2e/tests/docs",
+	"suite": "/test/e2e/tests/docs/tutorial",
 	"test": {}
 }
