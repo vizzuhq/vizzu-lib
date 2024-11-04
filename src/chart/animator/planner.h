@@ -52,8 +52,6 @@ private:
 	static size_t dimensionCount(const Gen::Plot *plot,
 	    Gen::AxisId type);
 
-	[[nodiscard]] bool isAnyLegend(Gen::ChannelId type) const;
-
 	::Anim::Options getOptions(SectionId sectionId,
 	    ::Anim::Duration duration,
 	    ::Anim::Duration delay = ::Anim::Duration(0),

@@ -2,11 +2,14 @@
 
 ## [Unreleased]
 
+### Fixed
+
+- Do not interpolate hiding/showing legend
+
 ## [0.15.0] - 2024-10-28
 
 ### Fixed
 
-- Removed 'min' align property from the API which equivalent with the 'none'.
 - Markers are the same even if new record added.
 - Flying out marker label fixed.
 - Axis line hide/show at same time with axis labels/ticks/title.
@@ -14,6 +17,7 @@
 
 ### Changed
 
+- Removed 'min' align property from the API which equivalent with the 'none'.
 - Changed MarkerId to be a string instead of a number.
 
 ### Added

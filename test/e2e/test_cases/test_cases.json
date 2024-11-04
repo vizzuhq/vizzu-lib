@@ -2,19 +2,19 @@
 	"suite": "/test/e2e/test_cases",
 	"test": {
 		"basic_animations/anim_order/circle_without_2_carte_horizontal": {
-			"refs": ["3d44d8e"]
+			"refs": ["cbdfce7"]
 		},
 		"basic_animations/anim_order/circle_without_2_carte_vertical": {
-			"refs": ["c5c0df5"]
+			"refs": ["8d79239"]
 		},
 		"basic_animations/anim_order/rectangle_without_2_carte_bar": {
-			"refs": ["2a487b0"]
+			"refs": ["f55a535"]
 		},
 		"basic_animations/anim_order/rectangle_without_2_carte_column": {
-			"refs": ["e88e517"]
+			"refs": ["6b48769"]
 		},
 		"basic_animations/anim_order/rectangle_without_2_polar_bar": {
-			"refs": ["06f37e3"]
+			"refs": ["d4f69ca"]
 		},
 		"basic_animations/anim_order/rectangle_without_2_polar_column": {
 			"refs": ["6ed4a66"]
@@ -62,7 +62,7 @@
 			"refs": ["64caf45"]
 		},
 		"basic_animations/legend_transitions/color_conti_changes_anim": {
-			"refs": ["7872a7f"]
+			"refs": ["e13376e"]
 		},
 		"basic_animations/legend_transitions/color_conti_discrete_anim": {
 			"refs": ["c209ca4"]
@@ -71,7 +71,7 @@
 			"refs": ["0ebaa76"]
 		},
 		"basic_animations/legend_transitions/color_discrete_changes_anim": {
-			"refs": ["c36beaa"]
+			"refs": ["133ff31"]
 		},
 		"basic_animations/legend_transitions/color_off_on_anim": {
 			"refs": ["55f74b0"]
@@ -2180,7 +2180,7 @@
 			"refs": ["db6403b"]
 		},
 		"ww_noFade/wNoFade_Tests/1_des_pol/circle/05a_cir_1c": {
-			"refs": ["216fee7"]
+			"refs": ["8f7bbda"]
 		},
 		"ww_noFade/wNoFade_Tests/1_des_pol/circle/05b_cir_1c": {
 			"refs": ["8c9bec9"]
@@ -2537,7 +2537,7 @@
 			"refs": ["c5f9b0c"]
 		},
 		"ww_noFade/wNoFade_cases/1_des_pol/circle/05a_cir_1c": {
-			"refs": ["0627807"]
+			"refs": ["1d179cc"]
 		},
 		"ww_noFade/wNoFade_cases/1_des_pol/circle/05b_cir_1c": {
 			"refs": ["edf0ce6"]
@@ -2567,7 +2567,7 @@
 			"refs": ["6ee8c09"]
 		},
 		"ww_noFade/wNoFade_cases/1_des_pol/line/05b_lin": {
-			"refs": ["a0a7cec"]
+			"refs": ["b391702"]
 		},
 		"ww_noFade/wNoFade_cases/1_des_pol/line/06a_lin": {
 			"refs": ["8813bdf"]
@@ -2831,10 +2831,10 @@
 			"refs": ["1e1175c"]
 		},
 		"ww_noFade/wNoFade_cases/2_des_pol-without/line_V1/05a_d-w_lin_V1": {
-			"refs": ["bcbbb71"]
+			"refs": ["53af9c5"]
 		},
 		"ww_noFade/wNoFade_cases/2_des_pol-without/line_V1/05b_d-w_lin_V1": {
-			"refs": ["6788f87"]
+			"refs": ["1589dde"]
 		},
 		"ww_noFade/wNoFade_cases/2_des_pol-without/line_V1/06a_d-w_lin_V1": {
 			"refs": ["f9998fb"]

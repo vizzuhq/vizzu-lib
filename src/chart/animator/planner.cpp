@@ -351,12 +351,10 @@ bool Planner::positionMorphNeeded() const
 
 bool Planner::needColor() const
 {
-	return (isAnyLegend(Gen::ChannelId::color)
-	           && source->axises.at(Gen::ChannelId::color)
-	                  != target->axises.at(Gen::ChannelId::color))
-	    || (isAnyLegend(Gen::ChannelId::lightness)
-	        && source->axises.at(Gen::ChannelId::lightness)
-	               != target->axises.at(Gen::ChannelId::lightness))
+	return source->axises.at(Gen::ChannelId::color)
+	        != target->axises.at(Gen::ChannelId::color)
+	    || source->axises.at(Gen::ChannelId::lightness)
+	           != target->axises.at(Gen::ChannelId::lightness)
 	    || anyMarker(+[](const Gen::Marker &source,
 	                      const Gen::Marker &target) -> bool
 	        {
@@ -406,9 +404,8 @@ bool Planner::needVertical() const
 	        != target->axises.at(Gen::AxisId::y)
 	    || source->guides.at(Gen::AxisId::y)
 	           != target->guides.at(Gen::AxisId::y)
-	    || (isAnyLegend(Gen::ChannelId::size)
-	        && source->axises.at(Gen::ChannelId::size)
-	               != target->axises.at(Gen::ChannelId::size))
+	    || source->axises.at(Gen::ChannelId::size)
+	           != target->axises.at(Gen::ChannelId::size)
 	    || (source->markerConnectionOrientation
 	            != target->markerConnectionOrientation
 	        && (source->markerConnectionOrientation.value_or(
@@ -459,13 +456,6 @@ bool Planner::needHorizontal() const
 		                || source.spacing.x != target.spacing.x
 		                || source.size.x != target.size.x);
 	        });
-}
-
-bool Planner::isAnyLegend(Gen::ChannelId type) const
-{
-	const auto &src = source->getOptions()->legend.get();
-	const auto &trg = target->getOptions()->legend.get();
-	return (src && *src == type) || (trg && *trg == type);
 }
 
 void Planner::addMorph(SectionId sectionId,
