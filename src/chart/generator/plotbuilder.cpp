@@ -89,20 +89,19 @@ Buckets PlotBuilder::generateMarkers(std::size_t &mainBucketSize)
 	for (auto &&[ix, mid] : plot->getOptions()->markersInfo)
 		map.emplace(mid, ix);
 
-	auto first = map.begin();
-	for (auto &&index : dataCube) {
-		auto &marker = plot->markers.emplace_back(*plot->getOptions(),
-		    dataCube,
-		    stats,
-		    mainIds,
-		    subIds,
-		    index,
-		    map.contains(index.marker_id));
-
-		while (first != map.end() && first->first == marker.idx)
-			plot->markersInfo.insert({first++->second,
+	for (auto first = map.begin(); auto &&index : dataCube)
+		for (auto &marker =
+		         plot->markers.emplace_back(*plot->getOptions(),
+		             dataCube,
+		             stats,
+		             mainIds,
+		             subIds,
+		             index,
+		             map.contains(index.marker_id));
+		     first != map.end() && first->first == marker.idx;
+		     ++first)
+			plot->markersInfo.insert({first->second,
 			    Plot::MarkerInfo{Plot::MarkerInfoContent{marker}}});
-	}
 
 	Buckets buckets(plot->markers);
 	auto &&hasMarkerConnection =
