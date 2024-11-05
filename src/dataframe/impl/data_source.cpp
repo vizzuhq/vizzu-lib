@@ -165,7 +165,7 @@ struct data_source::sorter
 				         ? std::weak_ordering::less
 				         : std::weak_ordering::greater;
 			switch (sort) {
-			default: break;
+			default:
 			case sort_type::less:
 			case sort_type::greater:
 				return dim.categories[first]
