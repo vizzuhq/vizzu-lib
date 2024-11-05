@@ -1,9 +1,18 @@
 const renderingUpdate = 'chart.feature.rendering.update()'
 const unknownEvent = "if (!error.toString().includes('unknown event handler')) throw error"
 
+let Image
+if (typeof window === 'undefined') {
+	const { Image: NodeImage } = await import('canvas')
+	Image = NodeImage
+} else {
+	Image = window.Image
+}
 const image = new Image()
 image.src =
 	'data:image/gif;base64,R0lGODlhAwACAPIAAJLf6q/i7M/r8un0+PT6+/n8/QAAAAAAACH5BAQAAAAALAAAAAADAAIAAAMEWBMkkAA7'
+const imageComplete =
+	'if (!assets.image.complete) assets.image.onload = registerHandler; else registerHandler()'
 
 export default [
 	[
@@ -66,8 +75,15 @@ export default [
 		{
 			name: '04_b',
 			returnOriginal: true,
-			replace: [['backgroundImageHandler)', `backgroundImageHandler);${renderingUpdate}`]],
+			replace: [
+				['image.onload', 'const registerHandler '],
+				[
+					'backgroundImageHandler)\n}',
+					`assets.eventHandler);${renderingUpdate}};${imageComplete}`
+				]
+			],
 			assets: {
+				image,
 				eventHandler: (event) => {
 					event.renderingContext.drawImage(
 						image,
