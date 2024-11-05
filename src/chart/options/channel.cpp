@@ -12,6 +12,7 @@
 #include "base/conv/auto_json.h"
 #include "base/conv/tostring.h"
 #include "base/refl/auto_enum.h"
+#include "base/text/smartstring.h"
 #include "chart/options/autoparam.h"
 #include "dataframe/old/datatable.h"
 #include "dataframe/old/types.h"
@@ -30,26 +31,15 @@ std::string ChannelSeriesList::toString() const
 ChannelSeriesList::Parser &ChannelSeriesList::Parser::operator()(
     const std::string &str)
 {
-	switch (type) {
-	default:
-	case Token::null: break;
-	case Token::name:
-		if (!str.empty()) {
-			if (res && !res->isDimension())
-				res = Data::SeriesIndex{str, *table}.setAggr(
-				    res->getAggr());
-			else
-				res.emplace(str, *table);
-		}
-		else if (!res)
-			res.emplace();
-		break;
-	case Token::aggregator:
-		if (res)
-			res->setAggr(str);
+	if (current) {
+		if (auto &curr = channels[*current]; path[4] == "name")
+			curr.name = str;
+		else if (path[4] == "aggregator")
+			curr.aggregator = str;
 		else
-			res.emplace().setAggr(str);
-		break;
+			throw std::runtime_error(
+			    Text::SmartString::join<'.'>(path)
+			    + ": invalid channel parameter");
 	}
 	return *this;
 }
@@ -61,58 +51,44 @@ ChannelSeriesList::Parser::instance() noexcept
 	return instance;
 }
 
-ChannelSeriesList &ChannelSeriesList::operator=(Parser &index)
+ChannelSeriesList &ChannelSeriesList::operator=(Parser &parser)
 {
-	if (!index.res) return *this;
-	if (auto already_set =
-	        dimensionIds.size() + measureId.has_value();
-	    already_set == index.position) {
-		if (index.res->isDimension()) {
-			if (dimensionIds.push_back(*index.res)) index.res = {};
-		}
-		else if (!measureId)
-			measureId = *index.res;
-		else
-			throw std::runtime_error(
-			    "Multiple measure at channel "
-			    + std::string{Conv::toString(index.latestChannel)}
-			    + ": "
-			    + std::string{Conv::toString(measureId->getAggr())}
-			    + "(" + measureId->getColIndex() + ") and "
-			    + std::string{Conv::toString(index.res->getAggr())}
-			    + "("
-			    + (index.res->getColIndex().empty()
-			            ? "..."
-			            : index.res->getColIndex())
-			    + ")");
-	}
-	else if (already_set == index.position + 1) {
-		if (!measureId) {
-			measureId = dimensionIds.pop_back();
-			measureId->setAggr(index.res->getAggr());
-			index.res = {};
-		}
-		else if (measureId->getColIndex() == index.res->getColIndex()
-		         || (measureId->getAggr() == index.res->getAggr()
-		             && measureId->getColIndex().empty())) {
+	if (!parser.current) {
+		for (auto &[name, aggr] :
+		    std::exchange(parser.channels, {})) {
+			std::optional<Data::SeriesIndex> index;
+			if (!name || name->empty())
+				index.emplace().setAggr(aggr);
+			else if (auto &ix = index.emplace(*name, *parser.table);
+			         !aggr.empty())
+				ix.setAggr(aggr);
 
-			measureId = *index.res;
-			index.res = {};
+			if (!name)
+				throw std::runtime_error(
+				    "Aggregator has no set name at channel "
+				    + parser.path[1] + ": "
+				    + std::string{Conv::toString(index->getAggr())});
+
+			if (parser.path[2] == "detach")
+				removeSeries(*index);
+			else if (!addSeries(*index)) {
+				if (index->isDimension()) {
+					throw std::runtime_error(
+					    "Multiple dimension at channel "
+					    + parser.path[1] + ": "
+					    + index->getColIndex());
+				}
+
+				throw std::runtime_error(
+				    "Multiple measure at channel " + parser.path[1]
+				    + ": "
+				    + std::string{Conv::toString(
+				        measureId->getAggr())}
+				    + "(" + measureId->getColIndex() + ") and "
+				    + std::string{Conv::toString(index->getAggr())}
+				    + "(" + index->getColIndex() + ")");
+			}
 		}
-		else
-			throw std::runtime_error(
-			    "Multiple measure at channel "
-			    + std::string{Conv::toString(index.latestChannel)}
-			    + ": "
-			    + std::string{Conv::toString(measureId->getAggr())}
-			    + "(" + measureId->getColIndex() + ") and "
-			    + std::string{Conv::toString(index.res->getAggr())}
-			    + "("
-			    + (index.res->getColIndex().empty()
-			                && !dimensionIds.empty()
-			            ? dimensionIds.pop_back().getColIndex()
-			            : index.res->getColIndex())
-			    + ")");
 	}
 	return *this;
 }
@@ -131,20 +107,20 @@ Channel Channel::makeChannel(ChannelId id)
 	return {defStackable[id]};
 }
 
-void Channel::addSeries(const Data::SeriesIndex &index)
+bool ChannelSeriesList::addSeries(const Data::SeriesIndex &index)
 {
-	if (index.isDimension())
-		set.dimensionIds.push_back(index);
-	else
-		set.measureId = index;
+	if (index.isDimension()) return dimensionIds.push_back(index);
+	if (measureId) return false;
+	measureId = index;
+	return true;
 }
 
-void Channel::removeSeries(const Data::SeriesIndex &index)
+void ChannelSeriesList::removeSeries(const Data::SeriesIndex &index)
 {
 	if (index.isDimension())
-		set.dimensionIds.remove(index);
-	else if (set.measureId)
-		set.measureId = std::nullopt;
+		dimensionIds.remove(index);
+	else if (measureId)
+		measureId = std::nullopt;
 }
 
 bool Channel::isSeriesUsed(const Data::SeriesIndex &index) const

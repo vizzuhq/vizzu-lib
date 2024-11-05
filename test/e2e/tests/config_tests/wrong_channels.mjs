@@ -40,7 +40,7 @@ const testCases = [
 	},
 	{
 		testName: 'err_multiple_meas_dim_aggr_1',
-		errorMsg: 'error: Multiple measure at channel x: sum(Bar) and distinct(...)',
+		errorMsg: 'error: Multiple measure at channel x: sum(Bar) and distinct(Foo)',
 		testSteps: [
 			Chart.animate({
 				data: 'simpleDataWithOneValue',
@@ -133,7 +133,7 @@ const testCases = [
 	},
 	{
 		testName: 'err_multiple_meas_dim_aggr_6',
-		errorMsg: 'error: Multiple measure at channel x: count(Foo) and count(...)',
+		errorMsg: 'error: Multiple measure at channel x: count(Foo) and count(Bar)',
 		testSteps: [
 			Chart.animate({
 				data: 'simpleDataWithOneValue',

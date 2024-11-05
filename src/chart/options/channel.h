@@ -71,14 +71,18 @@ struct ChannelSeriesList
 
 	[[nodiscard]] std::string toString() const;
 
+	struct RawChannel
+	{
+		std::optional<std::string> name;
+		std::string aggregator;
+	};
+
 	struct Parser
 	{
-		enum class Token : std::uint8_t { null, name, aggregator };
 		const Data::DataTable *table{};
-		ChannelId latestChannel{};
-		std::size_t position{};
-		Token type{};
-		std::optional<Data::SeriesIndex> res{};
+		std::vector<RawChannel> channels;
+		std::optional<std::size_t> current;
+		std::span<std::string> path;
 
 		[[nodiscard]] Parser &operator()(const std::string &str);
 
@@ -96,6 +100,9 @@ struct ChannelSeriesList
 	ChannelSeriesList &operator=(Parser &);
 
 	bool operator==(const ChannelSeriesList &) const = default;
+
+	bool addSeries(const Data::SeriesIndex &index);
+	void removeSeries(const Data::SeriesIndex &index);
 };
 
 class Channel
@@ -105,10 +112,17 @@ public:
 	using IndexSet = std::set<Data::SeriesIndex>;
 	using DimensionIndices = ChannelSeriesList::DimensionIndices;
 
-	[[nodiscard]] static Channel makeChannel(ChannelId id);
+	void addSeries(const Data::SeriesIndex &index)
+	{
+		set.addSeries(index);
+	}
 
-	void addSeries(const Data::SeriesIndex &index);
-	void removeSeries(const Data::SeriesIndex &index);
+	void removeSeries(const Data::SeriesIndex &index)
+	{
+		set.removeSeries(index);
+	}
+
+	[[nodiscard]] static Channel makeChannel(ChannelId id);
 	[[nodiscard]] bool isSeriesUsed(
 	    const Data::SeriesIndex &index) const;
 	void reset();

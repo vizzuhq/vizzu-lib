@@ -27,12 +27,7 @@ ColorPalette::ColorPalette(const std::string &string)
 
 ColorPalette::operator std::string() const
 {
-	std::string res;
-	for (const auto &color : colors) {
-		res += (!res.empty() ? " " : "");
-		res += static_cast<std::string>(color);
-	}
-	return res;
+	return Text::SmartString::join<' '>(colors);
 }
 
 Color ColorPalette::operator[](unsigned index) const

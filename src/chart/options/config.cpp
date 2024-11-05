@@ -78,87 +78,35 @@ void Config::setChannelParam(const std::string &path,
 	auto &channel = options.getChannels().at(channelId);
 	auto property = parts.at(2);
 
-	if (property == "attach") {
-		options.markersInfo.clear();
-		channel.addSeries({value, table});
-		return;
+	if (property == "attach" || property == "detach") {
+		if (parts.size() == 3) return;
+		property = "set";
 	}
-	if (property == "detach") {
-		options.markersInfo.clear();
-		channel.removeSeries({value, table});
-		return;
-	}
+
 	if (property == "set") {
-		auto &listParser = ChannelSeriesList::Parser::instance();
-		listParser.table = &table.get();
-		using Token = ChannelSeriesList::Parser::Token;
-		if ((parts.size() == 3 && value == "null")
-		    || (parts.size() == 5 && parts[3] == "0"
-		        && parts[4] == "name")) {
-
-			std::optional<dataframe::aggregator_type> aggregator;
-			if (auto &&res = listParser.res) {
-				if (res->isDimension())
-					throw std::runtime_error(
-					    "Multiple dimension at channel "
-					    + std::string{Conv::toString(
-					        listParser.latestChannel)}
-					    + ": " + res->getColIndex());
-
-				if (listParser.type == Token::aggregator) {
-					if (parts.size() == 5 && listParser.position == 0
-					    && res->getColIndex().empty()
-					    && listParser.latestChannel == channelId)
-						aggregator = listParser.res->getAggr();
-					else
-						throw std::runtime_error(
-						    "Aggregator has no set name at channel "
-						    + std::string{Conv::toString(
-						        listParser.latestChannel)}
-						    + ": "
-						    + std::string{
-						        Conv::toString(res->getAggr())});
-				}
-			}
-
+		if (parts.size() == 3) {
 			channel.reset();
 			options.markersInfo.clear();
-
-			listParser.type = Token::null;
-			listParser.res = {};
-
-			if (aggregator)
-				listParser.res.emplace().setAggr(aggregator);
+			return;
 		}
-		listParser.latestChannel = channelId;
-		if (parts.size() == 5) {
-			if (auto i = std::stoull(parts.at(3));
-			    i != listParser.position) {
-				if (auto &&res = listParser.res) {
-					if (res->isDimension())
-						throw std::runtime_error(
-						    "Multiple dimension at channel "
-						    + parts.at(1) + ": "
-						    + res->getColIndex());
 
-					if (listParser.type == Token::aggregator)
-						throw std::runtime_error(
-						    "Aggregator has no set name at channel "
-						    + parts.at(1) + ": "
-						    + std::string{
-						        Conv::toString(res->getAggr())});
+		if (auto &listParser = ChannelSeriesList::Parser::instance();
+		    parts.size() == 4) {
+			if (parts[3] == "begin") {
+				if (parts[2] == "set") channel.reset();
 
-					res.reset();
-				}
-				listParser.position = i;
+				options.markersInfo.clear();
+				listParser.table = &table.get();
+				listParser.channels.resize(std::stoull(value));
+				return;
 			}
-			if (parts.at(4) == "name")
-				listParser.type = Token::name;
-			else if (parts.at(4) == "aggregator")
-				listParser.type = Token::aggregator;
-			else
-				throw std::logic_error(
-				    path + ": invalid channel parameter");
+
+			listParser.current = std::nullopt;
+			listParser.path = parts;
+		}
+		else {
+			listParser.current = std::stoull(parts.at(3));
+			listParser.path = parts;
 		}
 	}
 

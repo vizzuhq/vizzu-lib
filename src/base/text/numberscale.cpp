@@ -48,12 +48,7 @@ std::string NumberScale::at(std::size_t index) const
 
 NumberScale::operator std::string() const
 {
-	std::string res;
-	for (const auto &item : prefixes) {
-		if (!res.empty()) res += ',';
-		res += item;
-	}
-	return res;
+	return Text::SmartString::join<','>(prefixes);
 }
 
 }
