@@ -336,7 +336,7 @@ Math::Range<double> DrawLegend::markersLegendRange(const Info &info)
 	if (info.dimensionEnabled)
 		for (const auto &item : info.dimension)
 			res.include({item.range.getMin() * info.itemHeight,
-			    (item.range.getMax() + 1) * info.itemHeight});
+			    (item.range.getMin() + 1) * info.itemHeight});
 
 	return res;
 }

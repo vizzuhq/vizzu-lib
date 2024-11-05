@@ -394,8 +394,8 @@ void PlotBuilder::calcAxis(const Data::DataTable &dataTable, T type)
 	}
 	else {
 		constexpr bool isTypeAxis = std::is_same_v<T, AxisId>;
-		if constexpr (isTypeAxis) {
-			auto merge = scale.labelLevel == 0;
+		if constexpr (auto merge = scale.labelLevel == 0;
+		              isTypeAxis) {
 			for (const auto &marker : plot->markers) {
 				if (!marker.enabled) continue;
 
@@ -421,7 +421,10 @@ void PlotBuilder::calcAxis(const Data::DataTable &dataTable, T type)
 				    sliceIndex
 				    && axis.dimension.add(*sliceIndex,
 				        i,
-				        {count, count}))
+				        {count, count},
+				        type == LegendId::size
+				            || (type == LegendId::lightness
+				                && merge)))
 					count += 1;
 		}
 		auto hasLabel = axis.dimension.setLabels(

@@ -154,16 +154,15 @@ bool Channel::isSeriesUsed(const Data::SeriesIndex &index) const
 
 void Channel::reset()
 {
-	set.measureId = std::nullopt;
-	set.dimensionIds.clear();
-	title = Base::AutoParam<std::string, true>{};
+	set = {};
+	labelLevel = {};
+	title = {};
 	axis = Base::AutoBool();
 	labels = Base::AutoBool();
 	ticks = Base::AutoBool();
-	interlacing = Base::AutoBool();
 	guides = Base::AutoBool();
 	markerGuides = Base::AutoBool();
-	labelLevel = 0;
+	interlacing = Base::AutoBool();
 }
 
 bool Channel::isEmpty() const

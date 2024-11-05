@@ -76,6 +76,8 @@ template <typename Type, bool nullable = false> struct AutoParam
 
 	bool operator==(const AutoParam &other) const = default;
 
+	const std::optional<Type> &getValueOrAuto() { return value; }
+
 private:
 	bool autoSet{};
 	std::optional<Type> value;
