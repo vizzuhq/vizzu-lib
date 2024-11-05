@@ -59,6 +59,8 @@ public:
 	Id subId;
 	Id sizeId;
 
+	MarkerIndex idx{};
+
 	struct RelativeMarkerIndex
 	{
 		MarkerIndex idx;
@@ -70,7 +72,6 @@ public:
 			return lhs.idx == rhs.idx;
 		}
 	};
-	MarkerIndex idx{};
 	::Anim::Interpolated<RelativeMarkerIndex> prevMainMarker;
 	::Anim::Interpolated<bool> polarConnection{false};
 
