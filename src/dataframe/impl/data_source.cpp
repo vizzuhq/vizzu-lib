@@ -136,7 +136,7 @@ struct data_source::sorter
 		         || sort == sort_type::by_categories;
 
 		if (lhs == nav || rhs == nav)
-			return (na == na_position::last) ^ (rhs == nav) ^ less
+			return (na == na_position::last) != (rhs == nav) != less
 			         ? std::weak_ordering::less
 			         : std::weak_ordering::greater;
 
