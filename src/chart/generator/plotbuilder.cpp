@@ -46,6 +46,7 @@ PlotBuilder::PlotBuilder(const Data::DataTable &dataTable,
 
 	std::size_t mainBucketSize{};
 	auto &&subBuckets = generateMarkers(mainBucketSize);
+	linkMarkers(subBuckets);
 
 	if (!plot->options->getChannels().anyAxisSet()) {
 		addSpecLayout(subBuckets);
@@ -103,25 +104,7 @@ Buckets PlotBuilder::generateMarkers(std::size_t &mainBucketSize)
 			plot->markersInfo.insert({first->second,
 			    Plot::MarkerInfo{Plot::MarkerInfoContent{marker}}});
 
-	Buckets buckets(plot->markers);
-	auto &&hasMarkerConnection =
-	    linkMarkers(buckets.sort(&Marker::mainId), true);
-	std::ignore = linkMarkers(buckets.sort(&Marker::subId), false);
-
-	if (hasMarkerConnection
-	    && plot->getOptions()->geometry.get() == ShapeType::line
-	    && plot->getOptions()
-	           ->getChannels()
-	           .at(AxisId::x)
-	           .isDimension()
-	    && plot->getOptions()
-	           ->getChannels()
-	           .at(AxisId::y)
-	           .isDimension()) {
-		plot->markerConnectionOrientation.emplace(
-		    *plot->getOptions()->orientation.get());
-	}
-	return buckets;
+	return Buckets{plot->markers};
 }
 
 std::vector<PlotBuilder::BucketInfo>
@@ -179,6 +162,27 @@ void PlotBuilder::addSpecLayout(Buckets &buckets)
 		}
 		else
 			Charts::TreeMapBuilder::setupVector(buckets);
+	}
+}
+
+void PlotBuilder::linkMarkers(Buckets &buckets)
+{
+	auto &&hasMarkerConnection =
+	    linkMarkers(buckets.sort(&Marker::mainId), true);
+	std::ignore = linkMarkers(buckets.sort(&Marker::subId), false);
+
+	if (hasMarkerConnection
+	    && plot->getOptions()->geometry.get() == ShapeType::line
+	    && plot->getOptions()
+	           ->getChannels()
+	           .at(AxisId::x)
+	           .isDimension()
+	    && plot->getOptions()
+	           ->getChannels()
+	           .at(AxisId::y)
+	           .isDimension()) {
+		plot->markerConnectionOrientation.emplace(
+		    *plot->getOptions()->orientation.get());
 	}
 }
 
