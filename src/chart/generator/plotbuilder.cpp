@@ -216,19 +216,15 @@ bool PlotBuilder::linkMarkers(const Buckets &buckets, bool main) const
 		for (std::size_t ix{}, max = sorted.size(); ix < max; ++ix) {
 			auto &o = dimOffset[ix];
 			for (const auto &bucket : buckets) {
+				auto &&ids = std::ranges::views::values(bucket);
 				auto sIx = sorted[ix].index;
-				auto it = std::ranges::lower_bound(bucket,
+				auto it = std::ranges::lower_bound(ids,
 				    sIx,
 				    std::less{},
-				    [](const std::pair<Marker &,
-				        const Data::MarkerId &> &p)
-				    {
-					    return p.second.itemId;
-				    });
-				if (it == bucket.end() || (*it).second.itemId != sIx)
-					continue;
+				    &Data::MarkerId::itemId);
+				if (it == ids.end() || (*it).itemId != sIx) continue;
 
-				auto &marker = (*it).first;
+				auto &marker = **it.base().base().base();
 				if (!marker.enabled) continue;
 				o = std::max(o,
 				    marker.size.*coord,
@@ -257,33 +253,24 @@ bool PlotBuilder::linkMarkers(const Buckets &buckets, bool main) const
 		double prevPos{};
 		for (auto i = 0U; i < sorted.size(); ++i) {
 			auto idAct = sorted[i].index;
-			auto it = std::ranges::lower_bound(bucket,
+			auto &&ids = std::ranges::views::values(bucket);
+			auto it = std::ranges::lower_bound(ids,
 			    idAct,
 			    std::less{},
-			    [](const std::pair<Marker &, const Data::MarkerId &>
-			            &p)
-			    {
-				    return p.second.itemId;
-			    });
-			Marker *act =
-			    it == bucket.end() || (*it).second.itemId != idAct
-			        ? nullptr
-			        : &(*it).first;
+			    &Data::MarkerId::itemId);
+			Marker *act = it == ids.end() || (*it).itemId != idAct
+			                ? nullptr
+			                : *it.base().base().base();
 
 			auto iNext = (i + 1) % sorted.size();
 			auto idNext = sorted[iNext].index;
-			it = std::ranges::lower_bound(bucket,
+			it = std::ranges::lower_bound(ids,
 			    idNext,
 			    std::less{},
-			    [](const std::pair<Marker &, const Data::MarkerId &>
-			            &p)
-			    {
-				    return p.second.itemId;
-			    });
-			Marker *next =
-			    it == bucket.end() || (*it).second.itemId != idNext
-			        ? nullptr
-			        : &(*it).first;
+			    &Data::MarkerId::itemId);
+			Marker *next = it == ids.end() || (*it).itemId != idNext
+			                 ? nullptr
+			                 : *it.base().base().base();
 
 			if (act)
 				prevPos = act->position.*coord +=
