@@ -59,7 +59,7 @@ public:
 	Id subId;
 	Id sizeId;
 
-	MarkerIndex idx{};
+	MarkerIndex idx;
 
 	struct RelativeMarkerIndex
 	{
