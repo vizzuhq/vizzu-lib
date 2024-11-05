@@ -72,7 +72,8 @@ public:
 			return lhs.idx == rhs.idx;
 		}
 	};
-	::Anim::Interpolated<RelativeMarkerIndex> prevMainMarker;
+	::Anim::Interpolated<RelativeMarkerIndex> prevMainMarker{
+	    RelativeMarkerIndex{idx, {}}};
 	::Anim::Interpolated<bool> polarConnection{false};
 
 	static bool connectMarkers(bool first,

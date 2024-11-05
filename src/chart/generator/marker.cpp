@@ -141,8 +141,6 @@ bool Marker::connectMarkers(bool first,
 		next->polarConnection = polarConnection && first;
 		return true;
 	}
-	if (next && main)
-		next->prevMainMarker = RelativeMarkerIndex{next->idx, {}};
 
 	return false;
 }

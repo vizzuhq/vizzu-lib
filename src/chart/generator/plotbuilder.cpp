@@ -46,7 +46,6 @@ PlotBuilder::PlotBuilder(const Data::DataTable &dataTable,
 
 	std::size_t mainBucketSize{};
 	auto &&subBuckets = generateMarkers(mainBucketSize);
-	linkMarkers(subBuckets);
 
 	if (!plot->options->getChannels().anyAxisSet()) {
 		addSpecLayout(subBuckets);
@@ -56,6 +55,7 @@ PlotBuilder::PlotBuilder(const Data::DataTable &dataTable,
 			normalizeSizes();
 	}
 	else {
+		linkMarkers(subBuckets);
 		addSeparation(subBuckets, mainBucketSize);
 		calcAxises(dataTable);
 		calcLegendAndLabel(dataTable);
