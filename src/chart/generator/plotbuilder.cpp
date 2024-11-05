@@ -415,13 +415,14 @@ void PlotBuilder::calcAxis(const Data::DataTable &dataTable, T type)
 		else {
 			const auto &indices = std::get<1>(stats.at(type));
 
-			double count = 0;
-			for (auto i = 0U; i < indices.size(); ++i)
+			double count{};
+			for (std::size_t i{}; i < indices.size(); ++i)
 				if (const auto &sliceIndex = indices[i];
 				    sliceIndex
 				    && axis.dimension.add(*sliceIndex,
-				        i,
-				        {count, count},
+				        count,
+				        {static_cast<double>(i),
+				            static_cast<double>(i)},
 				        type == LegendId::size
 				            || (type == LegendId::lightness
 				                && merge)))
@@ -587,8 +588,9 @@ void PlotBuilder::normalizeColors()
 
 			for (auto &item :
 			    plot->axises.at(LegendId::color).dimension)
-				item.colorBase =
-				    ColorBase(static_cast<uint32_t>(item.value), 0.5);
+				item.colorBase = ColorBase(
+				    static_cast<uint32_t>(item.range.middle()),
+				    0.5);
 			break;
 		case LegendId::lightness:
 			plot->axises.at(LegendId::lightness).measure.range =
@@ -596,8 +598,10 @@ void PlotBuilder::normalizeColors()
 
 			for (auto &item :
 			    plot->axises.at(LegendId::lightness).dimension) {
-				item.value = lightness.rescale(item.value);
-				item.colorBase = ColorBase(0U, item.value);
+				item.range = Math::Range<double>::Raw(
+				    lightness.rescale(item.range.getMin()),
+				    lightness.rescale(item.range.getMax()));
+				item.colorBase = ColorBase(0U, item.range.middle());
 			}
 			break;
 		default:;
