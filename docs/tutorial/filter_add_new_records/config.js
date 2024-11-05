@@ -6,30 +6,26 @@ export default [
 		},
 		'01'
 	],
-	[
-		{
-			name: '02_a',
-			initDataFilter: (record) => record.Genres === 'Pop' || record.Genres === 'Metal'
-		},
-		'02_b'
-	],
-	[
-		{
-			name: '03_a',
-			initDataFilter: (record) =>
-				(record.Genres === 'Pop' || record.Genres === 'Metal') && record.Kinds === 'Smooth'
-		},
-		'03_b'
-	],
-	[
-		{
-			name: '04_a',
-			replace: [['config: {', 'data, config: {']],
-			initDataFilter: (record) => record.Genres !== 'Soul'
-		},
-		{
-			name: '04_b',
-			replace: [['data: {', 'data: { filter: null,']]
-		}
-	]
+	{
+		initDataFilter: (record) => record.Genres === 'Pop' || record.Genres === 'Metal',
+		anims: ['02_a', '02_b']
+	},
+	{
+		initDataFilter: (record) =>
+			(record.Genres === 'Pop' || record.Genres === 'Metal') && record.Kinds === 'Smooth',
+		anims: ['03_a', '03_b']
+	},
+	{
+		initDataFilter: (record) => record.Genres !== 'Soul',
+		anims: [
+			{
+				name: '04_a',
+				replace: [['config: {', 'data, config: {']]
+			},
+			{
+				name: '04_b',
+				replace: [['data: {', 'data: { filter: null,']]
+			}
+		]
+	}
 ]

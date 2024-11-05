@@ -71,7 +71,7 @@ class MdChart {
 				})
 				for (let i = 0; i < snippet.anims.length; i++) {
 					chart = chart.then((chart) => {
-						chart = snippet.anims[i](chart, this.data, {})
+						chart = snippet.anims[i](chart, this.data, snippet?.assets)
 						if (this.id === 'tutorial' && firstRun && chart.activated) {
 							chart.activated.then((control) => control.seek('100%'))
 						}
@@ -123,6 +123,7 @@ class MdChart {
 			return new Function( // eslint-disable-line no-new-func
 				'chart',
 				'data',
+				'assets',
 				returnOriginal ? `${code}; return chart;` : `return ${code}`
 			)
 		} catch (error) {
@@ -138,33 +139,35 @@ class MdChart {
 		}
 
 		async function loadAnimation(animation) {
-			let func
-			let initDataFilter
-			const test = { func, initDataFilter }
+			let anim
+			const ans = { anim: undefined, assets: undefined }
 			if (typeof animation === 'string') {
-				func = await MdChart.loadAnimation(`${animation}.js`, baseUrl)
+				anim = await MdChart.loadAnimation(`${animation}.js`, baseUrl)
 			} else if (typeof animation === 'object' && animation.name) {
 				const { name, ...config } = animation
-				func = await MdChart.loadAnimation(`${name}.js`, Object.assign({}, config, baseUrl))
-				if (config?.initDataFilter !== undefined)
-					test.initDataFilter = config.initDataFilter
+				anim = await MdChart.loadAnimation(`${name}.js`, Object.assign({}, config, baseUrl))
+				ans.assets = animation?.assets
 			}
-			test.func = (chart, data) => func(chart, data)
-			return test
+			ans.anim = (chart, data, assets) => anim(chart, data, assets)
+			return ans
 		}
 
 		for (const animation of animations) {
 			const step = { anims: [] }
+
+			let subAnimations
 			if (Array.isArray(animation)) {
-				for (const subAnimation of animation) {
-					const test = await loadAnimation(subAnimation)
-					if (test?.func) step.anims.push(test.func)
-					if (test?.initDataFilter) step.initDataFilter = test.initDataFilter
-				}
+				subAnimations = animation
 			} else {
-				const test = await loadAnimation(animation)
-				if (test?.func) step.anims.push(test.func)
-				if (test?.initDataFilter) step.initDataFilter = test.initDataFilter
+				subAnimations = animation?.anims ?? []
+				if (animation?.initDataFilter !== undefined)
+					step.initDataFilter = animation.initDataFilter
+			}
+
+			for (const subAnimation of subAnimations) {
+				const ans = await loadAnimation(subAnimation)
+				step.anims.push(ans.anim)
+				if (ans.assets) step.assets = ans.assets
 			}
 			steps.push(step)
 		}
