@@ -120,7 +120,7 @@ PlotBuilder::sortedBuckets(const Buckets &buckets, bool main) const
 			auto it = std::ranges::lower_bound(sorted,
 			    idx.itemId,
 			    std::less{},
-			    std::mem_fn(&BucketInfo::index));
+			    &BucketInfo::index);
 			if (it == sorted.end() || it->index != idx.itemId)
 				it = sorted.emplace(it, idx.itemId, 0.0);
 

@@ -82,17 +82,14 @@ void DrawMarkerInfo::MarkerDC::interpolate(double weight1,
 void DrawMarkerInfo::MarkerDC::loadMarker(Content &cnt)
 {
 	const auto &marker =
-	    *std::lower_bound(parent.plot->getMarkers().begin(),
-	        parent.plot->getMarkers().end(),
+	    // NOLINTNEXTLINE(misc-include-cleaner)
+	    *std::ranges::lower_bound(parent.plot->getMarkers(),
 	        cnt.markerId.value(),
-	        [](const Gen::Marker &marker,
-	            const Gen::Marker::MarkerIndex &id)
-	        {
-		        return marker.idx < id;
-	        });
+	        std::less{},
+	        &Gen::Marker::idx);
 
 	auto blendedMarker =
-	    Draw::AbstractMarker::createInterpolated(parent.ctx(),
+	    AbstractMarker::createInterpolated(parent.ctx(),
 	        marker,
 	        ::Anim::first);
 
