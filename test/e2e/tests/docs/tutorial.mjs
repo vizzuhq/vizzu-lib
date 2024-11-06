@@ -1,4 +1,4 @@
-import MdChart from '../../../../docs/assets/javascripts/mdchart.js'
+import { loadAnimations } from '../../../../docs/assets/javascripts/snippet.js'
 
 async function getTestSteps(dataFile, configName) {
 	const dataLoaded = import(dataFile)
@@ -6,7 +6,7 @@ async function getTestSteps(dataFile, configName) {
 	const [data, config] = await Promise.all([dataLoaded, configLoaded])
 
 	const animations = (
-		await MdChart.loadAnimations(
+		await loadAnimations(
 			config.default,
 			`./docs/tutorial/${configName}`,
 			`../../../../../../docs/tutorial/${configName}`

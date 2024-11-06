@@ -1,4 +1,5 @@
 import Vizzu from '../dist/vizzu.min.js'
+import { loadAnimations } from './snippet.js'
 
 class MdChart {
 	constructor(data, id) {
@@ -7,7 +8,7 @@ class MdChart {
 	}
 
 	async create(snippets) {
-		const animations = await MdChart.loadAnimations(snippets)
+		const animations = await loadAnimations(snippets)
 		let chart = Promise.resolve()
 		for (let i = 0; i < animations.length; i++) {
 			const number = i + 1
@@ -90,82 +91,6 @@ class MdChart {
 		div.click()
 
 		return chart
-	}
-
-	static async loadAnimation(url, config) {
-		try {
-			let code
-			if (
-				typeof window === 'undefined' &&
-				typeof process !== 'undefined' &&
-				process.versions?.node
-			) {
-				const fs = await import('fs').then((module) => module.promises)
-				code = await fs.readFile(
-					config?.nodeBaseUrl ? `${config.nodeBaseUrl}/${url}` : url,
-					'utf8'
-				)
-			} else {
-				const response = await fetch(
-					config?.browserBaseUrl ? `${config.browserBaseUrl}/${url}` : url
-				)
-				if (!response.ok) throw new Error(`Error fetching: ${response.statusText}`)
-				code = await response.text()
-			}
-			const replace = config?.replace
-			if (Array.isArray(replace)) {
-				replace.forEach(([searchValue, replaceValue]) => {
-					code = code.replaceAll(searchValue, replaceValue)
-				})
-			}
-			const returnOriginal = config?.returnOriginal
-			return new Function( // eslint-disable-line no-new-func
-				'chart',
-				'data',
-				'assets',
-				returnOriginal ? `${code}; return chart;` : `return ${code}`
-			)
-		} catch (error) {
-			console.error('Error during animation load or execution:', error)
-		}
-	}
-
-	static async loadAnimations(animations, nodeBaseUrl = undefined, browserBaseUrl = undefined) {
-		const steps = []
-		const baseUrl = {
-			nodeBaseUrl,
-			browserBaseUrl
-		}
-
-		async function loadAnimation(animation) {
-			let anim
-			if (typeof animation === 'string') {
-				anim = await MdChart.loadAnimation(`${animation}.js`, baseUrl)
-			} else if (typeof animation === 'object' && animation.name) {
-				const { name, ...config } = animation
-				anim = await MdChart.loadAnimation(`${name}.js`, Object.assign({}, config, baseUrl))
-			}
-			return (chart, data, assets) => anim(chart, data, assets)
-		}
-
-		for (const animation of animations) {
-			const step = { anims: [] }
-
-			let subAnimations
-			if (Array.isArray(animation)) {
-				subAnimations = animation
-			} else {
-				subAnimations = animation?.anims ?? []
-				if (animation?.assets) step.assets = animation.assets
-			}
-
-			for (const subAnimation of subAnimations) {
-				const anim = await loadAnimation(subAnimation)
-				step.anims.push(anim)
-			}
-			steps.push(step)
-		}
-		return steps
 	}
 }
 

@@ -1,4 +1,4 @@
-import MdChart from '../../../../../docs/assets/javascripts/mdchart.js'
+import { loadAnimation } from '../../../../../docs/assets/javascripts/snippet.js'
 
 async function getTestSteps(dataFile, configName) {
 	const dataLoaded = import(dataFile)
@@ -13,7 +13,7 @@ async function getTestSteps(dataFile, configName) {
 	const steps = []
 	for (const animation of config.default) {
 		for (const subAnimation of animation.anims) {
-			const func = await MdChart.loadAnimation(
+			const func = await loadAnimation(
 				`${subAnimation.name}.js`,
 				Object.assign({}, subAnimation, baseUrl)
 			)
