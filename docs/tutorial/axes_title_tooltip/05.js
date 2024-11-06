@@ -1,4 +1,6 @@
 chart.animate({
-	subtitle: 'with fancy animations',
-	caption: 'Source: Vizzu tutorial'
+	config: {
+		subtitle: 'with fancy animations',
+		caption: 'Source: Vizzu tutorial'
+	}
 })

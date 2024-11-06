@@ -1,3 +1,5 @@
 chart.animate({
-	title: 'My first chart'
+	config: {
+		title: 'My first chart'
+	}
 })
