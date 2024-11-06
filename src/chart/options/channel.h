@@ -91,7 +91,7 @@ struct ChannelSeriesList
 
 	struct ParserGetter
 	{
-		Parser &operator()(const std::string &str) const noexcept
+		Parser &operator()(const std::string &str) const
 		{
 			return Parser::instance()(str);
 		}

@@ -30,8 +30,12 @@ template <char... separators> constexpr std::string join(auto &&il)
 {
 	std::string res;
 	for (auto &&sl : il) {
-		if (!res.empty())
-			for (auto ch : {separators...}) res += ch;
+		if (!res.empty()) {
+			static const std::array sep{separators...};
+			static_assert(sep.size() == 1 || sep.size() == 2);
+			res += sep[0];
+			if constexpr (sep.size() > 1) res += sep[1];
+		}
 
 		if constexpr (PlusAssignableToString<decltype(sl)>)
 			res += sl;
