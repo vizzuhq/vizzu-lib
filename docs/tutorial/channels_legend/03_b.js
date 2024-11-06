@@ -5,7 +5,7 @@ chart.animate({
 				set: null
 			},
 			color: {
-				attach: 'Genres'
+				attach: ['Genres']
 			}
 		},
 		legend: 'color'

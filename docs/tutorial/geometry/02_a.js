@@ -1,3 +1,5 @@
 chart.animate({
-	title: 'Geometry: line'
+	config: {
+		title: 'Geometry: line'
+	}
 })

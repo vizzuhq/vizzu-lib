@@ -2,7 +2,7 @@ chart.animate({
 	config: {
 		channels: {
 			size: {
-				set: 'Popularity'
+				set: ['Popularity']
 			}
 		},
 		geometry: 'circle'

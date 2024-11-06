@@ -2,7 +2,7 @@ chart.animate({
 	config: {
 		channels: {
 			lightness: {
-				attach: 'Popularity'
+				attach: ['Popularity']
 			}
 		},
 		legend: 'lightness'
