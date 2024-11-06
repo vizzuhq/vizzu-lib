@@ -167,8 +167,8 @@ const testSteps = [
 		chart.animate({
 			config: {
 				channels: {
-					y: { attach: ['Value 2 (+)'] },
-					label: { attach: ['Value 2 (+)'] }
+					y: { detach: ['Value 5 (+/-)'], attach: ['Value 2 (+)'] },
+					label: { detach: ['Value 5 (+/-)'], attach: ['Value 2 (+)'] }
 				},
 				title: 'Change Continuous',
 				angle: (Math.PI * 9) / 18
@@ -190,7 +190,7 @@ const testSteps = [
 				channels: {
 					y: { detach: ['Value 2 (+)'], range: { min: 'auto', max: 'auto' } },
 					x: { attach: ['Value 2 (+)'] },
-					label: { attach: ['Value 2 (+)', 'Country'] }
+					label: { attach: ['Country'] }
 				},
 				title: 'Polar Coordinate',
 				angle: (Math.PI * 27) / 18,

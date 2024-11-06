@@ -50,7 +50,7 @@ const testSteps = [
 				channels: {
 					lightness: { attach: ['Value 2 (+)'] },
 					label: { attach: ['Country_code'], detach: ['Joy factors'] },
-					size: { attach: ['Value 2 (+)', 'Country_code'] }
+					size: { attach: ['Country_code'] }
 				},
 				title: 'Y C+D, X D - Treemap.'
 			},
@@ -110,7 +110,7 @@ const testSteps = [
 				channels: {
 					x: { detach: ['Joy factors', 'Value 1 (+)'] },
 					y: { detach: ['Value 2 (+)', 'Country_code'] },
-					size: { attach: ['Value 2 (+)', 'Country_code'] }
+					size: { attach: ['Value 2 (+)'] }
 				},
 				title: 'Y C+D, X D+C (Y first) - Treemap'
 			}

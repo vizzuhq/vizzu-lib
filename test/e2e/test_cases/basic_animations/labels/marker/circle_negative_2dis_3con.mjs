@@ -310,9 +310,8 @@ const testSteps = [
 				channels: {
 					y: { detach: ['Value 5 (+/-)'], range: { min: '0%', max: '110%' } },
 					x: { detach: ['Value 6 (+/-)'], range: { min: '0%', max: '110%' } },
-					color: { attach: ['Country'] },
-					size: { attach: ['Value 1 (+)'] },
-					label: { attach: ['Value 1 (+)'] }
+					size: { detach: ['Value 4 (+/-)'], attach: ['Value 1 (+)'] },
+					label: { detach: ['Value 5 (+/-)'], attach: ['Value 1 (+)'] }
 				},
 				title: 'Without Coordinate',
 				coordSystem: 'cartesian'

@@ -20,7 +20,7 @@ const testSteps = [
 				channels: {
 					x: { attach: ['Value 2 (+)'] },
 					y: { attach: ['Value 5 (+/-)'] },
-					size: { attach: ['Value 1 (+)'] }
+					size: { detach: ['Value 2 (+)'], attach: ['Value 1 (+)'] }
 				}
 			}
 		}),
@@ -30,7 +30,7 @@ const testSteps = [
 				channels: {
 					x: { detach: ['Value 2 (+)'] },
 					y: { detach: ['Value 5 (+/-)'] },
-					size: { attach: ['Value 2 (+)', 'Country_code'] }
+					size: { detach: ['Value 1 (+)'], attach: ['Value 2 (+)', 'Country_code'] }
 				}
 			}
 		})
