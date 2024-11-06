@@ -344,7 +344,7 @@ void PlotBuilder::calcAxises(const Data::DataTable &dataTable)
 void PlotBuilder::calcLegendAndLabel(const Data::DataTable &dataTable)
 {
 	if (auto &&legend = plot->options->legend.get()) {
-		auto &type = *legend;
+		auto type{*legend};
 		const auto &scale =
 		    plot->getOptions()->getChannels().at(type);
 
