@@ -3,10 +3,10 @@ chart.animate(
 		config: {
 			channels: {
 				x: {
-					detach: 'Kinds'
+					detach: ['Kinds']
 				},
 				y: {
-					attach: 'Kinds'
+					attach: ['Kinds']
 				}
 			}
 		}
