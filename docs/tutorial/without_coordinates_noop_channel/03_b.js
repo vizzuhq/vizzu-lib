@@ -2,10 +2,10 @@ chart.animate({
 	config: {
 		channels: {
 			size: {
-				detach: 'Genres'
+				detach: ['Genres']
 			},
 			noop: {
-				set: 'Genres'
+				set: ['Genres']
 			}
 		}
 	}
