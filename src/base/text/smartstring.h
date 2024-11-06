@@ -18,6 +18,14 @@ enum class NumberFormat : std::uint8_t { none, grouped, prefixed };
 
 namespace SmartString
 {
+template <class T>
+concept PlusAssignableToString =
+    requires(std::string &str, const T &t) {
+	    {
+		    str += t
+	    } -> std::same_as<std::string &>;
+    };
+
 template <char... separators> constexpr std::string join(auto &&il)
 {
 	std::string res;
@@ -25,7 +33,7 @@ template <char... separators> constexpr std::string join(auto &&il)
 		if (!res.empty())
 			for (auto ch : {separators...}) res += ch;
 
-		if constexpr (requires { res += sl; })
+		if constexpr (PlusAssignableToString<decltype(sl)>)
 			res += sl;
 		else
 			res += Conv::toString(sl);
