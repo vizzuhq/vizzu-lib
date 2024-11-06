@@ -9,8 +9,7 @@ chart.animate([
 					y: {
 						detach: ['Kinds']
 					}
-				},
-				title: 'Using keyframes'
+				}
 			}
 		},
 		options: {
