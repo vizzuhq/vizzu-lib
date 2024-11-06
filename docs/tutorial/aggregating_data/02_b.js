@@ -1,7 +1,7 @@
 chart.animate({
 	config: {
 		channels: {
-			y: { set: 'min(Popularity)' }
+			y: { set: ['min(Popularity)'] }
 		}
 	}
 })

@@ -1,7 +1,7 @@
 chart.animate({
 	config: {
 		channels: {
-			x: { set: 'Genres' }
+			x: { set: ['Genres'] }
 		}
 	}
 })

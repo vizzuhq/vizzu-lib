@@ -1,7 +1,7 @@
 chart.animate({
 	config: {
 		channels: {
-			y: { set: 'count()' }
+			y: { set: ['count()'] }
 		}
 	}
 })
