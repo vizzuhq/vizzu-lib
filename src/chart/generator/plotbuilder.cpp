@@ -47,22 +47,24 @@ PlotBuilder::PlotBuilder(const Data::DataTable &dataTable,
 	std::size_t mainBucketSize{};
 	auto &&subBuckets = generateMarkers(mainBucketSize);
 
-	if (!plot->options->getChannels().anyAxisSet()) {
+	if (!plot->options->getChannels().anyAxisSet())
 		addSpecLayout(subBuckets);
-		calcLegendAndLabel(dataTable);
-		normalizeColors();
-		if (plot->options->geometry != ShapeType::circle)
-			normalizeSizes();
-	}
-	else {
-		linkMarkers(subBuckets);
-		addSeparation(subBuckets, mainBucketSize);
-		calcAxises(dataTable);
-		calcLegendAndLabel(dataTable);
-		normalizeSizes();
-		normalizeColors();
-		addAlignment(subBuckets);
-	}
+	else
+		addAxisLayout(subBuckets, mainBucketSize, dataTable);
+
+	calcLegendAndLabel(dataTable);
+	normalizeColors();
+	normalizeSizes();
+}
+
+void PlotBuilder::addAxisLayout(Buckets &subBuckets,
+    const std::size_t &mainBucketSize,
+    const Data::DataTable &dataTable)
+{
+	linkMarkers(subBuckets);
+	addSeparation(subBuckets, mainBucketSize);
+	calcAxises(dataTable);
+	addAlignment(subBuckets);
 }
 
 void PlotBuilder::initDimensionTrackers()
@@ -514,6 +516,10 @@ void PlotBuilder::addSeparation(const Buckets &subBuckets,
 
 void PlotBuilder::normalizeSizes()
 {
+	if (plot->getOptions()->geometry == ShapeType::circle
+	    && !plot->options->getChannels().anyAxisSet())
+		return;
+
 	if (plot->getOptions()->geometry == ShapeType::circle
 	    || plot->getOptions()->geometry == ShapeType::line) {
 		Math::Range<double> size;
