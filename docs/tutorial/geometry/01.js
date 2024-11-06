@@ -1,3 +1,5 @@
 chart.animate({
-	geometry: 'area'
+	config: {
+		geometry: 'area'
+	}
 })
