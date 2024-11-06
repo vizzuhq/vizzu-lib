@@ -40,8 +40,7 @@ private:
 	    bool main) const;
 	void calcAxises(const Data::DataTable &dataTable);
 	void calcLegendAndLabel(const Data::DataTable &dataTable);
-	template <ChannelIdLike T>
-	void calcAxis(const Data::DataTable &dataTable, T type);
+	void calcAxis(const Data::DataTable &dataTable, AxisId type);
 	void addAlignment(const Buckets &subBuckets) const;
 	void addSeparation(const Buckets &subBuckets,
 	    const std::size_t &mainBucketSize) const;

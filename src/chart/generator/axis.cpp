@@ -183,7 +183,8 @@ MeasureAxis interpolate(const MeasureAxis &op0,
 bool DimensionAxis::add(const Data::SliceIndex &index,
     double value,
     const Math::Range<double> &range,
-    bool merge)
+    bool merge,
+    bool label)
 {
 	this->enabled = true;
 
@@ -195,7 +196,7 @@ bool DimensionAxis::add(const Data::SliceIndex &index,
 	}
 	values.emplace(std::piecewise_construct,
 	    std::tuple{index},
-	    std::tuple{range, value});
+	    std::tuple{range, value, index.value, label});
 
 	return true;
 }

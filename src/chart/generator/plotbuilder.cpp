@@ -343,8 +343,49 @@ void PlotBuilder::calcAxises(const Data::DataTable &dataTable)
 
 void PlotBuilder::calcLegendAndLabel(const Data::DataTable &dataTable)
 {
-	if (auto &&legend = plot->options->legend.get())
-		calcAxis(dataTable, *legend);
+	if (auto &&legend = plot->options->legend.get()) {
+		auto &type = *legend;
+		const auto &scale =
+		    plot->getOptions()->getChannels().at(type);
+
+		auto &calcLegend = plot->axises.at(type);
+		auto isAutoTitle = scale.title.isAuto();
+		if (scale.title) calcLegend.title = *scale.title;
+
+		if (auto &&meas = scale.measure()) {
+			if (isAutoTitle)
+				calcLegend.title = dataCube.getName(*meas);
+			auto &&range = std::get<0>(stats.at(type));
+			calcLegend.measure = {
+			    range.isReal() ? range
+			                   : Math::Range<double>::Raw(0, 0),
+			    dataTable.getUnit(meas->getColIndex()),
+			    scale.step.getValue()};
+		}
+		else if (!scale.isEmpty()) {
+			const auto &indices = std::get<1>(stats.at(type));
+			auto merge = type == LegendId::size
+			          || (type == LegendId::lightness
+			              && scale.labelLevel == 0);
+			double count{};
+			for (std::size_t i{}; i < indices.size(); ++i)
+				if (const auto &sliceIndex = indices[i];
+				    sliceIndex
+				    && calcLegend.dimension.add(*sliceIndex,
+				        count,
+				        {static_cast<double>(i),
+				            static_cast<double>(i)},
+				        merge,
+				        true))
+					count += 1;
+			if (auto &&series = scale.labelSeries())
+				calcLegend.dimension.category =
+				    series.value().getColIndex();
+
+			if (isAutoTitle && calcLegend.dimension.empty())
+				calcLegend.title = calcLegend.dimension.category;
+		}
+	}
 
 	if (auto &&meas = plot->getOptions()
 	                      ->getChannels()
@@ -356,8 +397,8 @@ void PlotBuilder::calcLegendAndLabel(const Data::DataTable &dataTable)
 		    ::Anim::String{meas->getColIndex()}};
 }
 
-template <ChannelIdLike T>
-void PlotBuilder::calcAxis(const Data::DataTable &dataTable, T type)
+void PlotBuilder::calcAxis(const Data::DataTable &dataTable,
+    AxisId type)
 {
 	const auto &scale = plot->getOptions()->getChannels().at(type);
 	if (scale.isEmpty()) return;
@@ -386,48 +427,28 @@ void PlotBuilder::calcAxis(const Data::DataTable &dataTable, T type)
 		}
 	}
 	else {
-		constexpr bool isTypeAxis = std::is_same_v<T, AxisId>;
-		if constexpr (auto merge = scale.labelLevel == 0;
-		              isTypeAxis) {
-			for (const auto &marker : plot->markers) {
-				if (!marker.enabled) continue;
+		for (auto merge = scale.labelLevel == 0;
+		     const auto &marker : plot->markers) {
+			if (!marker.enabled) continue;
 
-				const auto &id =
-				    (type == AxisId::x)
-				            == plot->getOptions()->isHorizontal()
-				        ? marker.mainId
-				        : marker.subId;
+			const auto &id =
+			    (type == AxisId::x)
+			            == plot->getOptions()->isHorizontal()
+			        ? marker.mainId
+			        : marker.subId;
 
-				if (const auto &slice = id.label)
-					axis.dimension.add(*slice,
-					    static_cast<double>(id.itemId),
-					    marker.getSizeBy(type == AxisId::x),
-					    merge);
-			}
+			if (const auto &slice = id.label)
+				axis.dimension.add(*slice,
+				    static_cast<double>(id.itemId),
+				    marker.getSizeBy(type == AxisId::x),
+				    merge,
+				    false);
 		}
-		else {
-			const auto &indices = std::get<1>(stats.at(type));
-
-			double count{};
-			for (std::size_t i{}; i < indices.size(); ++i)
-				if (const auto &sliceIndex = indices[i];
-				    sliceIndex
-				    && axis.dimension.add(*sliceIndex,
-				        count,
-				        {static_cast<double>(i),
-				            static_cast<double>(i)},
-				        type == LegendId::size
-				            || (type == LegendId::lightness
-				                && merge)))
-					count += 1;
-		}
-		auto hasLabel = axis.dimension.setLabels(
-		    isTypeAxis ? scale.step.getValue(1.0) : 1.0);
-
 		if (auto &&series = scale.labelSeries())
 			axis.dimension.category = series.value().getColIndex();
 
-		if (isAutoTitle && !hasLabel)
+		if (!axis.dimension.setLabels(scale.step.getValue(1.0))
+		    && isAutoTitle)
 			axis.title = axis.dimension.category;
 	}
 }

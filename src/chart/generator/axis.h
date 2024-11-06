@@ -81,17 +81,23 @@ struct DimensionAxis
 		Math::Range<double> range;
 		double value;
 		::Anim::Interpolated<ColorBase> colorBase;
-		::Anim::String label;
 		std::string categoryValue;
+		::Anim::String label;
 		double weight;
 
-		Item(Math::Range<double> range, double value) :
+		Item(Math::Range<double> range,
+		    double value,
+		    const std::string &categoryValue,
+		    bool setCatAsLabel) :
 		    start(true),
 		    end(true),
 		    range(range),
 		    value(value),
+		    categoryValue(categoryValue),
 		    weight(1.0)
-		{}
+		{
+			if (setCatAsLabel) label = categoryValue;
+		}
 
 		Item(const Item &item, bool starter, double factor) :
 		    start(starter),
@@ -99,8 +105,8 @@ struct DimensionAxis
 		    range(item.range),
 		    value(item.value),
 		    colorBase(item.colorBase),
-		    label(item.label),
 		    categoryValue(item.categoryValue),
+		    label(item.label),
 		    weight(Math::FuzzyBool::And(item.weight, factor))
 		{}
 
@@ -125,7 +131,8 @@ struct DimensionAxis
 	bool add(const Data::SliceIndex &index,
 	    double value,
 	    const Math::Range<double> &range,
-	    bool merge);
+	    bool merge,
+	    bool label);
 	[[nodiscard]] bool operator==(const DimensionAxis &other) const;
 
 	[[nodiscard]] auto begin()
@@ -144,6 +151,7 @@ struct DimensionAxis
 	{
 		return std::ranges::views::values(values).end();
 	}
+	[[nodiscard]] bool empty() const { return values.empty(); }
 	bool setLabels(double step);
 
 private:
