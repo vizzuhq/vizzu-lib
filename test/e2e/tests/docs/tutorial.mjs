@@ -1,8 +1,8 @@
 import MdChart from '../../../../docs/assets/javascripts/mdchart.js'
 
 async function getTestSteps(dataFile, configName) {
-	const dataLoaded = await import(dataFile)
-	const configLoaded = await import(`../../../../docs/tutorial/${configName}/config.js`)
+	const dataLoaded = import(dataFile)
+	const configLoaded = import(`../../../../docs/tutorial/${configName}/config.js`)
 	const [data, config] = await Promise.all([dataLoaded, configLoaded])
 
 	const animations = (

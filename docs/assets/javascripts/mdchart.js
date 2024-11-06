@@ -31,9 +31,8 @@ class MdChart {
 				if (prevChart) {
 					animTarget.config = Object.assign({}, prevChart.config)
 					animTarget.style = Object.assign({}, prevChart.style)
-					// remove if it can be found in the prevChart
-					if (snippet.initDataFilter) {
-						animTarget.data = { filter: snippet.initDataFilter }
+					if (snippet?.assets?.initDataFilter) {
+						animTarget.data = { filter: snippet.assets.initDataFilter }
 					}
 				}
 			}
@@ -140,16 +139,13 @@ class MdChart {
 
 		async function loadAnimation(animation) {
 			let anim
-			const ans = { anim: undefined, assets: undefined }
 			if (typeof animation === 'string') {
 				anim = await MdChart.loadAnimation(`${animation}.js`, baseUrl)
 			} else if (typeof animation === 'object' && animation.name) {
 				const { name, ...config } = animation
 				anim = await MdChart.loadAnimation(`${name}.js`, Object.assign({}, config, baseUrl))
-				ans.assets = animation?.assets
 			}
-			ans.anim = (chart, data, assets) => anim(chart, data, assets)
-			return ans
+			return (chart, data, assets) => anim(chart, data, assets)
 		}
 
 		for (const animation of animations) {
@@ -160,14 +156,12 @@ class MdChart {
 				subAnimations = animation
 			} else {
 				subAnimations = animation?.anims ?? []
-				if (animation?.initDataFilter !== undefined)
-					step.initDataFilter = animation.initDataFilter
+				if (animation?.assets) step.assets = animation.assets
 			}
 
 			for (const subAnimation of subAnimations) {
-				const ans = await loadAnimation(subAnimation)
-				step.anims.push(ans.anim)
-				if (ans.assets) step.assets = ans.assets
+				const anim = await loadAnimation(subAnimation)
+				step.anims.push(anim)
 			}
 			steps.push(step)
 		}

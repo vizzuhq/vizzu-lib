@@ -7,16 +7,20 @@ export default [
 		'01'
 	],
 	{
-		initDataFilter: (record) => record.Genres === 'Pop' || record.Genres === 'Metal',
+		assets: {
+			initDataFilter: (record) => record.Genres === 'Pop' || record.Genres === 'Metal'
+		},
 		anims: ['02_a', '02_b']
 	},
 	{
-		initDataFilter: (record) =>
-			(record.Genres === 'Pop' || record.Genres === 'Metal') && record.Kinds === 'Smooth',
+		assets: {
+			initDataFilter: (record) =>
+				(record.Genres === 'Pop' || record.Genres === 'Metal') && record.Kinds === 'Smooth'
+		},
 		anims: ['03_a', '03_b']
 	},
 	{
-		initDataFilter: (record) => record.Genres !== 'Soul',
+		assets: { initDataFilter: (record) => record.Genres !== 'Soul' },
 		anims: [
 			{
 				name: '04_a',
