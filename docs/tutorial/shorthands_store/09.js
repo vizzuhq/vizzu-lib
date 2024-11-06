@@ -4,10 +4,10 @@ chart.animate({
 		title: 'Store function',
 		align: 'stretch',
 		channels: {
-			y: { set: ['Popularity', 'Kinds'] },
-			x: { set: 'Genres' },
+			y: ['Popularity', 'Kinds'],
+			x: 'Genres',
 			label: { attach: 'Popularity' }
 		},
-		color: { set: 'Kinds' }
+		color: 'Kinds'
 	}
 })
