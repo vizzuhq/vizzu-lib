@@ -2,10 +2,10 @@ chart.animate({
 	config: {
 		channels: {
 			y: {
-				attach: 'Kinds'
+				attach: ['Kinds']
 			},
 			color: {
-				attach: 'Kinds'
+				attach: ['Kinds']
 			}
 		}
 	}

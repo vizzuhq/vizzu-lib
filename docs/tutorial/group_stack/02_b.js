@@ -1,8 +1,8 @@
 chart.animate({
 	config: {
 		channels: {
-			y: { detach: 'Kinds' },
-			x: { attach: 'Kinds' }
+			y: { detach: ['Kinds'] },
+			x: { attach: ['Kinds'] }
 		}
 	}
 })
