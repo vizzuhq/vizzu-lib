@@ -212,14 +212,12 @@ bool DimensionAxis::setLabels(double step)
 	step = std::max(step, 1.0, Math::Floating::less);
 	double currStep = 0.0;
 
-	std::multimap<double, Values::pointer> reorder;
+	std::multimap<double, std::reference_wrapper<Item>> reorder;
 	for (auto &ref : values)
-		reorder.emplace(ref.second.range.getMin(), &ref);
+		reorder.emplace(ref.second.range.getMin(), ref.second);
 
-	for (int curr{}; auto &[v, pp] : reorder) {
-		auto &[slice, item] = *pp;
-		item.categoryValue = slice.value;
-
+	for (int curr{};
+	     Item & item : std::ranges::views::values(reorder)) {
 		if (++curr <= currStep) continue;
 		currStep += step;
 		item.label = item.categoryValue;
