@@ -2,7 +2,7 @@ export default [
 	[
 		{
 			name: '../assets/setup/setup_c',
-			replace: [['config: {', "config: {title: 'Plot, title and legend background',"]]
+			replace: [['config: {', "config: {title: 'Plot, legend and background',"]]
 		},
 		'01'
 	],
