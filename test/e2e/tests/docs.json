@@ -1,4 +1,62 @@
 {
 	"suite": "/test/e2e/tests/docs/tutorial",
-	"test": {}
+	"test": {
+		"aggregating_data": {
+			"refs": ["83f7b33"]
+		},
+		"align_range": {
+			"refs": ["b3188f8"]
+		},
+		"animation_control_keyframes": {
+			"refs": ["ef161c7"]
+		},
+		"animation_options": {
+			"refs": ["6a84a70"]
+		},
+		"axes_title_tooltip": {
+			"refs": ["e7a5619"]
+		},
+		"changing_dimensions": {
+			"refs": ["23be71f"]
+		},
+		"channels_legend": {
+			"refs": ["f7f4417"]
+		},
+		"chart_layout": {
+			"refs": ["93a235c"]
+		},
+		"chart_presets": {
+			"refs": ["4dfa5ac"]
+		},
+		"color_palette_fonts": {
+			"refs": ["c6d06d7"]
+		},
+		"events": {
+			"refs": ["31dc184"]
+		},
+		"filter_add_new_records": {
+			"refs": ["1207ccf"]
+		},
+		"geometry": {
+			"refs": ["50d8151"]
+		},
+		"group_stack": {
+			"refs": ["981e902"]
+		},
+		"orientation_split_polar": {
+			"refs": ["5e3012a"]
+		},
+		"shorthands_store": {
+			"refs": ["df4002a"]
+		},
+		"sorting": {
+			"refs": ["f86ec6a"]
+		},
+		"stacking_explanation": {
+			"refs": ["919ff24"]
+		},
+		"without_coordinates_noop_channel": {
+			"refs": ["294bc34"]
+		}
+	}
 }
