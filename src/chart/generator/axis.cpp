@@ -39,8 +39,6 @@ MeasureAxis::MeasureAxis(const Math::Range<double> &interval,
 {
 	if (Math::Floating::is_zero(range.size()))
 		this->step->value = 0;
-	else if (this->step->value == 0)
-		this->step->value = std::signbit(range.size()) ? -1 : 1;
 	else if (std::signbit(this->step->value)
 	         != std::signbit(range.size()))
 		this->step->value *= -1;
