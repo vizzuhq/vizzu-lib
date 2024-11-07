@@ -104,7 +104,7 @@ const testSteps = [
 		chart.animate({
 			config: {
 				channels: {
-					y: { detach: ['Value 2 (+)'], range: { min: 'auto', max: 'auto' } },
+					y: { detach: ['Value 5 (+/-)'], range: { min: 'auto', max: 'auto' } },
 					x: { attach: ['Value 2 (+)'] },
 					label: { detach: ['Value 5 (+/-)'], attach: ['Value 2 (+)', 'Country'] }
 				},

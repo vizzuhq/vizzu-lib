@@ -57,20 +57,38 @@ ChannelSeriesList &ChannelSeriesList::operator=(Parser &parser)
 		for (auto &[name, aggr] :
 		    std::exchange(parser.channels, {})) {
 			std::optional<Data::SeriesIndex> index;
-			if (!name || name->empty())
+
+			if (!name) {
+				if (aggr.empty())
+					throw std::runtime_error(
+					    "Empty series at channel: " + parser.path[1]);
+				throw std::runtime_error(
+				    "Aggregator has no set name at channel "
+				    + parser.path[1] + ": " + aggr);
+			}
+
+			if (name->empty())
 				index.emplace().setAggr(aggr);
 			else if (auto &ix = index.emplace(*name, *parser.table);
 			         !aggr.empty())
 				ix.setAggr(aggr);
 
-			if (!name)
-				throw std::runtime_error(
-				    "Aggregator has no set name at channel "
-				    + parser.path[1] + ": "
-				    + std::string{Conv::toString(index->getAggr())});
+			if (parser.path[2] == "detach") {
+				if (!removeSeries(*index)) {
+					if (index->isDimension())
+						throw std::runtime_error(
+						    "Missing detachable dimension at channel "
+						    + parser.path[1] + ": "
+						    + index->getColIndex());
 
-			if (parser.path[2] == "detach")
-				removeSeries(*index);
+					throw std::runtime_error(
+					    "Missing detachable measure at channel "
+					    + parser.path[1] + ": "
+					    + std::string{Conv::toString(
+					        index->getAggr())}
+					    + "(" + index->getColIndex() + ")");
+				}
+			}
 			else if (!addSeries(*index)) {
 				if (index->isDimension()) {
 					throw std::runtime_error(
@@ -115,12 +133,12 @@ bool ChannelSeriesList::addSeries(const Data::SeriesIndex &index)
 	return true;
 }
 
-void ChannelSeriesList::removeSeries(const Data::SeriesIndex &index)
+bool ChannelSeriesList::removeSeries(const Data::SeriesIndex &index)
 {
-	if (index.isDimension())
-		dimensionIds.remove(index);
-	else if (measureId)
-		measureId = std::nullopt;
+	if (index.isDimension()) return dimensionIds.remove(index);
+	auto res = measureId == index;
+	if (res) measureId = std::nullopt;
+	return res;
 }
 
 bool Channel::isSeriesUsed(const Data::SeriesIndex &index) const

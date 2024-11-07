@@ -35,9 +35,13 @@ template <typename From>
 	if constexpr (std::is_enum_v<From>)
 		return Refl::enum_name(value);
 	else if constexpr (Type::is_optional_v<From>) {
-		if (!value) return decltype(toString(*value)){"null"};
-		return toString(*value);
+		using T = std::remove_cvref_t<decltype(toString(*value))>;
+		if (!value) return T{"null"};
+		return T{toString(*value)};
 	}
+	else if constexpr (std::is_same_v<From, std::string>
+	                   || std::is_same_v<From, std::string_view>)
+		return (value);
 	else if constexpr (std::is_constructible_v<std::string, From>)
 		return static_cast<std::string>(value);
 	else if constexpr (std::is_constructible_v<std::string_view,

@@ -102,7 +102,7 @@ struct ChannelSeriesList
 	bool operator==(const ChannelSeriesList &) const = default;
 
 	bool addSeries(const Data::SeriesIndex &index);
-	void removeSeries(const Data::SeriesIndex &index);
+	bool removeSeries(const Data::SeriesIndex &index);
 };
 
 class Channel
