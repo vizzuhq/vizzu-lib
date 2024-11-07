@@ -47,21 +47,24 @@ PlotBuilder::PlotBuilder(const Data::DataTable &dataTable,
 	std::size_t mainBucketSize{};
 	auto &&subBuckets = generateMarkers(mainBucketSize);
 
-	if (!plot->options->getChannels().anyAxisSet()) {
+	if (!plot->options->getChannels().anyAxisSet())
 		addSpecLayout(subBuckets);
-		calcLegendAndLabel(dataTable);
-		normalizeColors();
-		if (plot->options->geometry != ShapeType::circle)
-			normalizeSizes();
-	}
-	else {
-		addSeparation(subBuckets, mainBucketSize);
-		calcAxises(dataTable);
-		calcLegendAndLabel(dataTable);
-		normalizeSizes();
-		normalizeColors();
-		addAlignment(subBuckets);
-	}
+	else
+		addAxisLayout(subBuckets, mainBucketSize, dataTable);
+
+	calcLegendAndLabel(dataTable);
+	normalizeColors();
+	normalizeSizes();
+}
+
+void PlotBuilder::addAxisLayout(Buckets &subBuckets,
+    const std::size_t &mainBucketSize,
+    const Data::DataTable &dataTable)
+{
+	linkMarkers(subBuckets);
+	addSeparation(subBuckets, mainBucketSize);
+	calcAxises(dataTable);
+	addAlignment(subBuckets);
 }
 
 void PlotBuilder::initDimensionTrackers()
@@ -103,25 +106,7 @@ Buckets PlotBuilder::generateMarkers(std::size_t &mainBucketSize)
 			plot->markersInfo.insert({first->second,
 			    Plot::MarkerInfo{Plot::MarkerInfoContent{marker}}});
 
-	Buckets buckets(plot->markers);
-	auto &&hasMarkerConnection =
-	    linkMarkers(buckets.sort(&Marker::mainId), true);
-	std::ignore = linkMarkers(buckets.sort(&Marker::subId), false);
-
-	if (hasMarkerConnection
-	    && plot->getOptions()->geometry.get() == ShapeType::line
-	    && plot->getOptions()
-	           ->getChannels()
-	           .at(AxisId::x)
-	           .isDimension()
-	    && plot->getOptions()
-	           ->getChannels()
-	           .at(AxisId::y)
-	           .isDimension()) {
-		plot->markerConnectionOrientation.emplace(
-		    *plot->getOptions()->orientation.get());
-	}
-	return buckets;
+	return Buckets{plot->markers};
 }
 
 std::vector<PlotBuilder::BucketInfo>
@@ -137,7 +122,7 @@ PlotBuilder::sortedBuckets(const Buckets &buckets, bool main) const
 			auto it = std::ranges::lower_bound(sorted,
 			    idx.itemId,
 			    std::less{},
-			    std::mem_fn(&BucketInfo::index));
+			    &BucketInfo::index);
 			if (it == sorted.end() || it->index != idx.itemId)
 				it = sorted.emplace(it, idx.itemId, 0.0);
 
@@ -182,6 +167,27 @@ void PlotBuilder::addSpecLayout(Buckets &buckets)
 	}
 }
 
+void PlotBuilder::linkMarkers(Buckets &buckets)
+{
+	auto &&hasMarkerConnection =
+	    linkMarkers(buckets.sort(&Marker::mainId), true);
+	std::ignore = linkMarkers(buckets.sort(&Marker::subId), false);
+
+	if (hasMarkerConnection
+	    && plot->getOptions()->geometry.get() == ShapeType::line
+	    && plot->getOptions()
+	           ->getChannels()
+	           .at(AxisId::x)
+	           .isDimension()
+	    && plot->getOptions()
+	           ->getChannels()
+	           .at(AxisId::y)
+	           .isDimension()) {
+		plot->markerConnectionOrientation.emplace(
+		    *plot->getOptions()->orientation.get());
+	}
+}
+
 bool PlotBuilder::linkMarkers(const Buckets &buckets, bool main) const
 {
 	auto &&sorted = sortedBuckets(buckets, main);
@@ -212,19 +218,15 @@ bool PlotBuilder::linkMarkers(const Buckets &buckets, bool main) const
 		for (std::size_t ix{}, max = sorted.size(); ix < max; ++ix) {
 			auto &o = dimOffset[ix];
 			for (const auto &bucket : buckets) {
+				auto &&ids = std::ranges::views::values(bucket);
 				auto sIx = sorted[ix].index;
-				auto it = std::ranges::lower_bound(bucket,
+				auto it = std::ranges::lower_bound(ids,
 				    sIx,
 				    std::less{},
-				    [](const std::pair<Marker &,
-				        const Data::MarkerId &> &p)
-				    {
-					    return p.second.itemId;
-				    });
-				if (it == bucket.end() || (*it).second.itemId != sIx)
-					continue;
+				    &Data::MarkerId::itemId);
+				if (it == ids.end() || (*it).itemId != sIx) continue;
 
-				auto &marker = (*it).first;
+				auto &marker = **it.base().base().base();
 				if (!marker.enabled) continue;
 				o = std::max(o,
 				    marker.size.*coord,
@@ -253,33 +255,24 @@ bool PlotBuilder::linkMarkers(const Buckets &buckets, bool main) const
 		double prevPos{};
 		for (auto i = 0U; i < sorted.size(); ++i) {
 			auto idAct = sorted[i].index;
-			auto it = std::ranges::lower_bound(bucket,
+			auto &&ids = std::ranges::views::values(bucket);
+			auto it = std::ranges::lower_bound(ids,
 			    idAct,
 			    std::less{},
-			    [](const std::pair<Marker &, const Data::MarkerId &>
-			            &p)
-			    {
-				    return p.second.itemId;
-			    });
-			Marker *act =
-			    it == bucket.end() || (*it).second.itemId != idAct
-			        ? nullptr
-			        : &(*it).first;
+			    &Data::MarkerId::itemId);
+			Marker *act = it == ids.end() || (*it).itemId != idAct
+			                ? nullptr
+			                : *it.base().base().base();
 
 			auto iNext = (i + 1) % sorted.size();
 			auto idNext = sorted[iNext].index;
-			it = std::ranges::lower_bound(bucket,
+			it = std::ranges::lower_bound(ids,
 			    idNext,
 			    std::less{},
-			    [](const std::pair<Marker &, const Data::MarkerId &>
-			            &p)
-			    {
-				    return p.second.itemId;
-			    });
-			Marker *next =
-			    it == bucket.end() || (*it).second.itemId != idNext
-			        ? nullptr
-			        : &(*it).first;
+			    &Data::MarkerId::itemId);
+			Marker *next = it == ids.end() || (*it).itemId != idNext
+			                 ? nullptr
+			                 : *it.base().base().base();
 
 			if (act)
 				prevPos = act->position.*coord +=
@@ -394,8 +387,8 @@ void PlotBuilder::calcAxis(const Data::DataTable &dataTable, T type)
 	}
 	else {
 		constexpr bool isTypeAxis = std::is_same_v<T, AxisId>;
-		if constexpr (isTypeAxis) {
-			auto merge = scale.labelLevel == 0;
+		if constexpr (auto merge = scale.labelLevel == 0;
+		              isTypeAxis) {
 			for (const auto &marker : plot->markers) {
 				if (!marker.enabled) continue;
 
@@ -415,13 +408,17 @@ void PlotBuilder::calcAxis(const Data::DataTable &dataTable, T type)
 		else {
 			const auto &indices = std::get<1>(stats.at(type));
 
-			double count = 0;
-			for (auto i = 0U; i < indices.size(); ++i)
+			double count{};
+			for (std::size_t i{}; i < indices.size(); ++i)
 				if (const auto &sliceIndex = indices[i];
 				    sliceIndex
 				    && axis.dimension.add(*sliceIndex,
-				        i,
-				        {count, count}))
+				        count,
+				        {static_cast<double>(i),
+				            static_cast<double>(i)},
+				        type == LegendId::size
+				            || (type == LegendId::lightness
+				                && merge)))
 					count += 1;
 		}
 		auto hasLabel = axis.dimension.setLabels(
@@ -520,6 +517,10 @@ void PlotBuilder::addSeparation(const Buckets &subBuckets,
 void PlotBuilder::normalizeSizes()
 {
 	if (plot->getOptions()->geometry == ShapeType::circle
+	    && !plot->options->getChannels().anyAxisSet())
+		return;
+
+	if (plot->getOptions()->geometry == ShapeType::circle
 	    || plot->getOptions()->geometry == ShapeType::line) {
 		Math::Range<double> size;
 
@@ -584,8 +585,9 @@ void PlotBuilder::normalizeColors()
 
 			for (auto &item :
 			    plot->axises.at(LegendId::color).dimension)
-				item.colorBase =
-				    ColorBase(static_cast<uint32_t>(item.value), 0.5);
+				item.colorBase = ColorBase(
+				    static_cast<uint32_t>(item.range.middle()),
+				    0.5);
 			break;
 		case LegendId::lightness:
 			plot->axises.at(LegendId::lightness).measure.range =
@@ -593,8 +595,10 @@ void PlotBuilder::normalizeColors()
 
 			for (auto &item :
 			    plot->axises.at(LegendId::lightness).dimension) {
-				item.value = lightness.rescale(item.value);
-				item.colorBase = ColorBase(0U, item.value);
+				item.range = Math::Range<double>::Raw(
+				    lightness.rescale(item.range.getMin()),
+				    lightness.rescale(item.range.getMax()));
+				item.colorBase = ColorBase(0U, item.range.middle());
 			}
 			break;
 		default:;

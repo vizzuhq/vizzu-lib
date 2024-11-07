@@ -18,20 +18,18 @@ template <class ChartType> struct SizeDependentLayout
 		std::vector<double> sizes;
 		for (const auto &level : hierarchy)
 			for (auto &sum = sizes.emplace_back();
-			     const auto &item : level) {
-				if (auto &&size = item.first.sizeFactor;
+			     const auto &item : level.base())
+				if (auto &&size = item->sizeFactor;
 				    std::isfinite(size) && size > 0)
 					sum += size;
-			}
 
 		const ChartType chart(sizes);
 
 		for (auto it = chart.markers.data();
 		     const auto &level : hierarchy) {
 			std::vector<double> ssizes(level.size());
-			for (std::size_t ix{}; const auto &item : level) {
-				ssizes[ix++] = item.first.sizeFactor;
-			}
+			for (std::size_t ix{}; const auto &item : level.base())
+				ssizes[ix++] = item->sizeFactor;
 
 			const ChartType subChart(ssizes, it++);
 

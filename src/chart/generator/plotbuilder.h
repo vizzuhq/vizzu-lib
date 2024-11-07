@@ -35,6 +35,7 @@ private:
 
 	void initDimensionTrackers();
 	Buckets generateMarkers(std::size_t &mainBucketSize);
+	void linkMarkers(Buckets &subBuckets);
 	[[nodiscard]] bool linkMarkers(const Buckets &buckets,
 	    bool main) const;
 	void calcAxises(const Data::DataTable &dataTable);
@@ -49,6 +50,9 @@ private:
 	[[nodiscard]] std::vector<BucketInfo>
 	sortedBuckets(const Buckets &buckets, bool main) const;
 	void addSpecLayout(Buckets &buckets);
+	void addAxisLayout(Buckets &subBuckets,
+	    const std::size_t &mainBucketSize,
+	    const Data::DataTable &dataTable);
 };
 }
 

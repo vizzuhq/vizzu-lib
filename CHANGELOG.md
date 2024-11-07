@@ -11,6 +11,12 @@
   - From now, it is prohibited to set only aggregator without series name.
   - Fix series parsing when aggregator comes first.
   - Fix disappearing dimension when aggregated dimension was already set. 
+- Fix legend with multiple dimension duplicated markers:
+  - Markers of color are never merged.
+  - Markers of size are always merged.
+  - Markers of lightness are only merged when labelLevel == 0.
+    - When merge happens, the marker shows the middle value of lightness.
+- Remove rare fantom empty marker space on scrollable legend.
 
 ## [0.15.0] - 2024-10-28
 
