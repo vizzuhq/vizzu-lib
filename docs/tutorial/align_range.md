@@ -21,21 +21,12 @@ whereas on a bar chart, horizontally.
 
 <div id="tutorial_01"></div>
 
-{% include-markdown "tutorial/assets/setup/setup_c.md" %}
+// {% include-markdown "tutorial/assets/setup/setup_c.md" %}
 
 Change align and configures the y axis labels to disappear during the animation.
 
 ```javascript
-chart.animate({
-    config: {
-        align: 'center',
-        channels: {
-            y: {
-                labels: false
-            }
-        }
-    }
-})
+// {% include "tutorial/align_range/01.js" %}
 ```
 
 Stretched alignment. This way the elements will proportionally fill the entire
@@ -45,11 +36,7 @@ scale will also switch from values to percentages when used.
 <div id="tutorial_02"></div>
 
 ```javascript
-chart.animate({
-    config: {
-        align: 'stretch'
-    }
-})
+// {% include "tutorial/align_range/02_b.js" %}
 ```
 
 Getting back to the default alignment.
@@ -57,16 +44,7 @@ Getting back to the default alignment.
 <div id="tutorial_03"></div>
 
 ```javascript
-chart.animate({
-    config: {
-        align: 'none',
-        channels: {
-            y: {
-                labels: true
-            }
-        }
-    }
-})
+// {% include "tutorial/align_range/03_b.js" %}
 ```
 
 You can set the range of an axis by setting the minimum and maximum values of
@@ -78,17 +56,7 @@ the biggest element’s value.
 <div id="tutorial_04"></div>
 
 ```javascript
-chart.animate({
-    config: {
-        channels: {
-            y: {
-                range: {
-                    max: '150%'
-                }
-            }
-        }
-    }
-})
+// {% include "tutorial/align_range/04_b.js" %}
 ```
 
 You can also set the range for an axis with a dimension on it. You can even use
@@ -97,18 +65,7 @@ this feature to filter certain elements, just like in the following example.
 <div id="tutorial_05"></div>
 
 ```javascript
-chart.animate({
-    config: {
-        channels: {
-            x: {
-                range: {
-                    min: -2,
-                    max: 3
-                }
-            }
-        }
-    }
-})
+// {% include "tutorial/align_range/05_b.js" %}
 ```
 
 Ranges have certain defaults depending on the chart's configuration, based on
@@ -124,23 +81,7 @@ Whenever you want to set your ranges back to the default value, just set them to
 <div id="tutorial_06"></div>
 
 ```javascript
-chart.animate({
-    config: {
-        channels: {
-            x: {
-                range: {
-                    min: 'auto',
-                    max: 'auto'
-                }
-            },
-            y: {
-                range: {
-                    max: 'auto'
-                }
-            }
-        }
-    }
-})
+// {% include "tutorial/align_range/06_b.js" %}
 ```
 
-<script src="../align_range.js"></script>
+<script src="../assets/snippet.js" config="../align_range/config.js"></script>

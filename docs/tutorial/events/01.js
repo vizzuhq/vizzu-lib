@@ -1,0 +1,1 @@
+chart.on('click', clickHandler)

@@ -17,14 +17,10 @@ animate method, you can simplify your code by using only the object of the
 
 <div id="tutorial_01"></div>
 
-{% include-markdown "tutorial/assets/setup/setup_c.md" %}
+// {% include-markdown "tutorial/assets/setup/setup_c.md" %}
 
 ```javascript
-chart.animate({
-    // config: {
-    align: 'stretch'
-    // }
-})
+// {% include "tutorial/shorthands_store/01.js" %}
 ```
 
 Let's save this state by calling the `store` function.
@@ -32,9 +28,9 @@ Let's save this state by calling the `store` function.
 <div id="tutorial_02"></div>
 
 ```javascript
-var snapshot;
+var snapshot
 
-snapshot = chart.store();
+snapshot = chart.store()
 ```
 
 If you set/attach/detach just one series on a channel, you don't have to put
@@ -44,23 +40,7 @@ that series into an array. Also, let's save this animation by calling the
 <div id="tutorial_03"></div>
 
 ```javascript
-var animation;
-
-chart.animate({
-    channels: {
-        // x: { attach: [ 'Kinds' ] },
-        x: {
-            attach: 'Kinds'
-        },
-        // y: { detach: [ 'Kinds' ] },
-        y: {
-            detach: 'Kinds'
-        }
-    },
-    align: 'none'
-}).activated.then(control => {
-    animation = control.store();
-});
+// {% include "tutorial/shorthands_store/03_b.js" %}
 ```
 
 If you use set on a channel and no other options like range, you don't have to
@@ -70,14 +50,7 @@ can simply write the series' name after the channel name.
 <div id="tutorial_04"></div>
 
 ```javascript
-chart.animate({
-    channels: {
-        // y: { set: [ 'Kinds', 'Popularity' ] },
-        y: ['Kinds', 'Popularity'],
-        // x: { set: [ 'Genres' ] },
-        x: 'Genres'
-    }
-})
+// {% include "tutorial/shorthands_store/04_b.js" %}
 ```
 
 In any case, you can simply omit the `channel` object, `Vizzu` will
@@ -86,12 +59,7 @@ automatically recognize the channels by their names.
 <div id="tutorial_05"></div>
 
 ```javascript
-chart.animate({
-    // channels: {
-    y: 'Kinds',
-    x: ['Genres', 'Popularity']
-    // }
-})
+// {% include "tutorial/shorthands_store/05_b.js" %}
 ```
 
 If you have multiple keyframes, but with no animation options, you can omit the
@@ -100,17 +68,7 @@ If you have multiple keyframes, but with no animation options, you can omit the
 <div id="tutorial_06"></div>
 
 ```javascript
-chart.animate([{
-    // target: {
-    y: ['Genres', 'Popularity']
-    x: 'Kinds',
-    // }
-}, {
-    // target: {
-    y: 'Kinds',
-    x: ['Genres', 'Popularity']
-    // }
-}])
+// {% include "tutorial/shorthands_store/06_b.js" %}
 ```
 
 Instead of creating nested objects, you can set the styles like this.
@@ -118,13 +76,7 @@ Instead of creating nested objects, you can set the styles like this.
 <div id="tutorial_07"></div>
 
 ```javascript
-chart.animate({
-    style: {
-        // plot: { xAxis: { label: { fontSize: '150%' } } }
-        'plot.xAxis.label.fontSize': '150%',
-        'plot.backgroundColor': '#A0A0A0'
-    }
-})
+// {% include "tutorial/shorthands_store/07_b.js" %}
 ```
 
 Shorthands feature can be switched off if not needed:
@@ -149,4 +101,4 @@ You can also get back to a state that you previously stored.
 chart.animate(snapshot)
 ```
 
-<script src="../shorthands_store.js"></script>
+<script src="../assets/snippet.js" config="../shorthands_store/config.js"></script>

@@ -1,0 +1,3 @@
+chart.animate({
+	style: null
+})

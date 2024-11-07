@@ -41,7 +41,8 @@ The animation of the selected test case will be displayed using the chosen Vizzu
 			'/test/e2e/tests/config_tests.json',
 			'/test/e2e/tests/style_tests.json',
 			'/test/e2e/tests/features.json',
-			'/test/e2e/tests/fixes.json'
+			'/test/e2e/tests/fixes.json',
+			'/test/e2e/tests/docs.json'
 		])
 
 		.example([

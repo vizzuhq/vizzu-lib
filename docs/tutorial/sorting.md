@@ -13,14 +13,10 @@ ascending order.
 
 <div id="tutorial_01"></div>
 
-{% include-markdown "tutorial/assets/setup/setup_c.md" %}
+// {% include-markdown "tutorial/assets/setup/setup_c.md" %}
 
 ```javascript
-chart.animate({
-    config: {
-        sort: 'byValue'
-    }
-})
+// {% include "tutorial/sorting/01.js" %}
 ```
 
 If you want descending order instead, you have to set the `reverse` parameter to
@@ -30,11 +26,7 @@ in the opposite order than they are in the data set added to `Vizzu`.
 <div id="tutorial_02"></div>
 
 ```javascript
-chart.animate({
-    config: {
-        reverse: true
-    }
-})
+// {% include "tutorial/sorting/02_b.js" %}
 ```
 
 This is how to switch back to the default sorting.
@@ -42,12 +34,7 @@ This is how to switch back to the default sorting.
 <div id="tutorial_03"></div>
 
 ```javascript
-chart.animate({
-    config: {
-        sort: 'none',
-        reverse: false
-    }
-})
+// {% include "tutorial/sorting/03_b.js" %}
 ```
 
 When you have more than one dimension on a channel, their order determines how
@@ -57,18 +44,7 @@ organized by `Genres`, and then we have one bar for each of `Kinds`.
 <div id="tutorial_04"></div>
 
 ```javascript
-chart.animate({
-    config: {
-        channels: {
-            y: {
-                detach: ['Kinds']
-            },
-            x: {
-                set: ['Genres', 'Kinds']
-            }
-        }
-    }
-})
+// {% include "tutorial/sorting/04_b.js" %}
 ```
 
 When switching the order of dimensions on the x-axis `Vizzu` will rearrange the
@@ -80,15 +56,7 @@ elements according to this new logic.
 <div id="tutorial_05"></div>
 
 ```javascript
-chart.animate({
-    config: {
-        channels: {
-            x: {
-                set: ['Kinds', 'Genres']
-            },
-        }
-    }
-})
+// {% include "tutorial/sorting/05_b.js" %}
 ```
 
-<script src="../sorting.js"></script>
+<script src="../assets/snippet.js" config="../sorting/config.js"></script>

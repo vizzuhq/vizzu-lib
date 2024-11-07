@@ -14,4 +14,4 @@ origo.
 
 <div id="tutorial_01"></div>
 
-<script src="../stacking_explanation.js"></script>
+<script src="../assets/snippet.js"  config="../stacking_explanation/config.js" data="../stacking_explanation/data.js"></script>

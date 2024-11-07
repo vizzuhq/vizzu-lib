@@ -21,24 +21,16 @@ you should add
 
 <div id="tutorial_01"></div>
 
-{% include-markdown "tutorial/assets/setup/setup_c.md" %}
+// {% include-markdown "tutorial/assets/setup/setup_c.md" %}
 
 ```javascript
-chart.animate({
-    style: {
-        plot: {
-            marker: {
-                colorPalette: '#9355e8FF #123456FF #BDAF10FF'
-            }
-        }
-    }
-})
+// {% include "tutorial/color_palette_fonts/01_a.js" %}
 ```
 
 The actual style settings of the chart can be accessed via the `style` property.
 
 ```javascript
-console.log(chart.style);
+// {% include "tutorial/color_palette_fonts/01_b.js" %}
 ```
 
 Changing the title font size will only affect the title; all other font sizes
@@ -47,13 +39,7 @@ remain the same. `CSS` version: `--vizzu-title-fontSize: 50;`.
 <div id="tutorial_02"></div>
 
 ```javascript
-chart.animate({
-    style: {
-        title: {
-            fontSize: 50
-        }
-    }
-})
+// {% include "tutorial/color_palette_fonts/02_b.js" %}
 ```
 
 This is how to set the font size back to its default value.
@@ -61,13 +47,7 @@ This is how to set the font size back to its default value.
 <div id="tutorial_03"></div>
 
 ```javascript
-chart.animate({
-    style: {
-        title: {
-            fontSize: null
-        }
-    }
-})
+// {% include "tutorial/color_palette_fonts/03_b.js" %}
 ```
 
 In case you change the font size of the whole chart with the top-level
@@ -77,11 +57,7 @@ proportionally. The size refers to the font size of the axis labels by default.
 <div id="tutorial_04"></div>
 
 ```javascript
-chart.animate({
-    style: {
-        fontSize: 20
-    }
-})
+// {% include "tutorial/color_palette_fonts/04_b.js" %}
 ```
 
 You can reset styles to default on any levels by setting them to `null`.
@@ -89,12 +65,10 @@ You can reset styles to default on any levels by setting them to `null`.
 <div id="tutorial_05"></div>
 
 ```javascript
-chart.animate({
-    style: null
-})
+// {% include "tutorial/color_palette_fonts/05_b.js" %}
 ```
 
 For information on all available style parameters see the [Style](./style.md)
 chapter.
 
-<script src="../color_palette_fonts.js"></script>
+<script src="../assets/snippet.js" config="../color_palette_fonts/config.js"></script>

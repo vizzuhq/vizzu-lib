@@ -76,7 +76,8 @@ markdown_extensions:
 plugins:
     - exclude:
           glob:
-              - tutorial/assets/**
+              - tutorial/assets/**.md
+              - tutorial/.eslintrc.cjs
     - mike:
           version_selector: true
           alias_type: symlink
@@ -87,7 +88,8 @@ plugins:
     - literate-nav:
           implicit_index: true
     - autorefs
-    - include-markdown
+    - include-markdown:
+          opening_tag: '// {%'
     - placeholder
     - gen-files:
           scripts:

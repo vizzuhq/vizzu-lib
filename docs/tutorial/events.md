@@ -14,20 +14,20 @@ block with information about the clicked chart element.
 
 <div id="tutorial_01"></div>
 
-{% include-markdown "tutorial/assets/setup/setup_c.md" %}
+// {% include-markdown "tutorial/assets/setup/setup_c.md" %}
 
 ```javascript
 function clickHandler(event) {
-    alert(JSON.stringify(event.target));
+    alert(JSON.stringify(event.target))
 }
 
-chart.on('click', clickHandler);
+// {% include "tutorial/events/01.js" %}
 ```
 
 Unregistering the previously registered handler.
 
 ```javascript
-chart.off('click', clickHandler);
+chart.off('click', clickHandler)
 ```
 
 Here we override the axis label color for `Jazz` to red and all others to gray.
@@ -37,16 +37,16 @@ Here we override the axis label color for `Jazz` to red and all others to gray.
 ```javascript
 function labelDrawHandler(event) {
     event.renderingContext.fillStyle =
-        (event.target.value === 'Jazz') ? 'red' : 'gray';
+        (event.target.value === 'Jazz') ? 'red' : 'gray'
 }
 
-chart.on('plot-axis-label-draw', labelDrawHandler);
+// {% include "tutorial/events/02_b.js" %}
 ```
 
 Unregistering the previously registered handler.
 
 ```javascript
-chart.off('plot-axis-label-draw', labelDrawHandler);
+chart.off('plot-axis-label-draw', labelDrawHandler)
 ```
 
 The default behaviour of all events can be blocked by calling the event's
@@ -57,16 +57,16 @@ bottom right corner of the chart.
 
 ```javascript
 function logoDrawHandler(event) {
-    event.preventDefault();
+    event.preventDefault()
 }
 
-chart.on('logo-draw', logoDrawHandler);
+// {% include "tutorial/events/03_b.js" %}
 ```
 
 Unregistering the previously registered handler.
 
 ```javascript
-chart.off('logo-draw', logoDrawHandler);
+chart.off('logo-draw', logoDrawHandler)
 ```
 
 You can also add a background image to the chart using the `preventDefault`
@@ -75,24 +75,22 @@ method.
 <div id="tutorial_04"></div>
 
 ```javascript
-const image = new Image();
+const image = new Image()
+image.src = 'data:image/gif;base64,R0lGODlhAwACAPIAAJLf6q/i7M/r8un0+PT6+/n8/QAAAAAAACH5BAQAAAAALAAAAAADAAIAAAMEWBMkkAA7'
 
 function backgroundImageHandler(event) {
     event.renderingContext.drawImage(image, 0, 0,
-        event.detail.rect.size.x, event.detail.rect.size.y);
-    event.preventDefault();
+        event.detail.rect.size.x, event.detail.rect.size.y)
+    event.preventDefault()
 }
 
-image.src = 'data:image/gif;base64,R0lGODlhAwACAPIAAJLf6q/i7M/r8un0+PT6+/n8/QAAAAAAACH5BAQAAAAALAAAAAADAAIAAAMEWBMkkAA7';
-image.onload = () => {
-    chart.on('background-draw', backgroundImageHandler);
-};
+// {% include "tutorial/events/04_b.js" %}
 ```
 
 Unregistering the previously registered handler.
 
 ```javascript
-chart.off('background-draw', backgroundImageHandler);
+chart.off('background-draw', backgroundImageHandler)
 ```
 
-<script src="../events.js"></script>
+<script src="../assets/snippet.js" config="../events/config.js"></script>

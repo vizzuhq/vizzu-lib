@@ -11,21 +11,10 @@ In this step, we seek forward to `50%` of progress after the animation starts.
 
 <div id="tutorial_01"></div>
 
-{% include-markdown "tutorial/assets/setup/setup_c.md" %}
+// {% include-markdown "tutorial/assets/setup/setup_c.md" %}
 
 ```javascript
-chart.animate({
-    config: {
-        channels: {
-            x: {
-                attach: ['Kinds']
-            },
-            y: {
-                detach: ['Kinds']
-            }
-        },
-    }
-}).activated.then(control => control.seek('50%'));
+// {% include "tutorial/animation_control_keyframes/01.js" %}
 ```
 
 You can also control the initial position and play state of the animation
@@ -34,21 +23,7 @@ through the animation options argument of the animate method.
 <div id="tutorial_02"></div>
 
 ```javascript
-chart.animate({
-    config: {
-        channels: {
-            x: {
-                detach: ['Kinds']
-            },
-            y: {
-                attach: ['Kinds']
-            }
-        },
-    }
-}, {
-    playState: 'paused',
-    position: 0.5
-}).activated.then(control => control.play());
+// {% include "tutorial/animation_control_keyframes/02_b.js" %}
 ```
 
 You may want to control multiple animations as a single one. For example you
@@ -63,42 +38,10 @@ keyframes.
 <div id="tutorial_03"></div>
 
 ```javascript
-chart.animate([{
-    target: {
-        config: {
-            channels: {
-                x: {
-                    attach: ['Kinds']
-                },
-                y: {
-                    detach: ['Kinds']
-                }
-            },
-        }
-    },
-    options: {
-        duration: 0.5
-    }
-}, {
-    target: {
-        config: {
-            channels: {
-                x: {
-                    detach: ['Kinds']
-                },
-                y: {
-                    attach: ['Kinds']
-                }
-            }
-        }
-    },
-    options: {
-        duration: 1
-    }
-}]);
+// {% include "tutorial/animation_control_keyframes/03_b.js" %}
 ```
 
 The initial state of the animation can be set, too, by using the second argument
 of the `animate` method.
 
-<script src="../animation_control_keyframes.js"></script>
+<script src="../assets/snippet.js" config="../animation_control_keyframes/config.js"></script>

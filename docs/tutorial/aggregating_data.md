@@ -13,28 +13,12 @@ within `Genres`.
 
 <div id="tutorial_01"></div>
 
-{% include-markdown "tutorial/assets/setup/setup_a.md" %}
+// {% include-markdown "tutorial/assets/setup/setup_a.md" %}
 
 ```javascript
-chart.animate({
-    config: {
-        channels: {
-            y: {
-                set: ['Popularity']
-            }
-        }
-    }
-})
+// {% include "tutorial/aggregating_data/01_b.js" %}
 
-chart.animate({
-    config: {
-        channels: {
-            x: {
-                set: ['Genres']
-            }
-        }
-    }
-})
+// {% include "tutorial/aggregating_data/01_d.js" %}
 ```
 
 Next to the default logic of sum, there are a handful of other aggregation
@@ -53,15 +37,7 @@ measure in each of the `Genres`.
 <div id="tutorial_02"></div>
 
 ```javascript
-chart.animate({
-    config: {
-        channels: {
-            y: {
-                set: ['min(Popularity)']
-            }
-        }
-    }
-})
+// {% include "tutorial/aggregating_data/02_b.js" %}
 ```
 
 Maximum value: the height of the bars show the maximum value in the `Popularity`
@@ -70,15 +46,7 @@ measure in each of the `Genres`.
 <div id="tutorial_03"></div>
 
 ```javascript
-chart.animate({
-    config: {
-        channels: {
-            y: {
-                set: ['max(Popularity)']
-            }
-        }
-    }
-})
+// {% include "tutorial/aggregating_data/03_b.js" %}
 ```
 
 Mean value: the height of the bars show the mean value of the `Popularity`
@@ -87,15 +55,7 @@ measure in each of the `Genres`.
 <div id="tutorial_04"></div>
 
 ```javascript
-chart.animate({
-    config: {
-        channels: {
-            y: {
-                set: ['mean(Popularity)']
-            }
-        }
-    }
-})
+// {% include "tutorial/aggregating_data/04_b.js" %}
 ```
 
 Count: the height of the bars show the number of items (rows if you will) in
@@ -104,15 +64,7 @@ each of the `Genres`.
 <div id="tutorial_05"></div>
 
 ```javascript
-chart.animate({
-    config: {
-        channels: {
-            y: {
-                set: ['count()']
-            }
-        }
-    }
-})
+// {% include "tutorial/aggregating_data/05_b.js" %}
 ```
 
 Distinct: the height of the bars show the number of distinct categories of
@@ -125,15 +77,7 @@ Distinct: the height of the bars show the number of distinct categories of
 <div id="tutorial_06"></div>
 
 ```javascript
-chart.animate({
-    config: {
-        channels: {
-            y: {
-                set: ['distinct(Kinds)']
-            }
-        }
-    }
-})
+// {% include "tutorial/aggregating_data/06_b.js" %}
 ```
 
 Sum: this is how you can get back to the default aggregation logic of `Vizzu`
@@ -142,15 +86,7 @@ that sums the `Popularity` values in each of the `Genres`.
 <div id="tutorial_07"></div>
 
 ```javascript
-chart.animate({
-    config: {
-        channels: {
-            y: {
-                set: ['sum(Popularity)']
-            }
-        }
-    }
-})
+// {% include "tutorial/aggregating_data/07_b.js" %}
 ```
 
-<script src="../aggregating_data.js"></script>
+<script src="../assets/snippet.js" config="../aggregating_data/config.js"></script>

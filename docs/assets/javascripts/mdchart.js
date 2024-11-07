@@ -1,4 +1,5 @@
 import Vizzu from '../dist/vizzu.min.js'
+import { loadAnimations } from './snippet.js'
 
 class MdChart {
 	constructor(data, id) {
@@ -6,11 +7,12 @@ class MdChart {
 		this.id = id
 	}
 
-	create(snippets) {
+	async create(snippets) {
+		const animations = await loadAnimations(snippets)
 		let chart = Promise.resolve()
-		for (let i = 0; i < snippets.length; i++) {
+		for (let i = 0; i < animations.length; i++) {
 			const number = i + 1
-			chart = this.animate(('0' + number).slice(-2), snippets[i], chart)
+			chart = this.animate(('0' + number).slice(-2), animations[i], chart)
 		}
 	}
 
@@ -30,9 +32,8 @@ class MdChart {
 				if (prevChart) {
 					animTarget.config = Object.assign({}, prevChart.config)
 					animTarget.style = Object.assign({}, prevChart.style)
-					// remove if it can be found in the prevChart
-					if (snippet.initDataFilter) {
-						animTarget.data = { filter: snippet.initDataFilter }
+					if (snippet?.assets?.initDataFilter) {
+						animTarget.data = { filter: snippet.assets.initDataFilter }
 					}
 				}
 			}
@@ -70,7 +71,7 @@ class MdChart {
 				})
 				for (let i = 0; i < snippet.anims.length; i++) {
 					chart = chart.then((chart) => {
-						chart = snippet.anims[i](chart, {})
+						chart = snippet.anims[i](chart, this.data, snippet?.assets)
 						if (this.id === 'tutorial' && firstRun && chart.activated) {
 							chart.activated.then((control) => control.seek('100%'))
 						}
