@@ -270,6 +270,30 @@ const testCases = [
 				}
 			})
 		]
+	},
+	{
+		testName: 'err_wrong_aggregator_type_1',
+		errorMsg: 'error: dataframe error: aggregator: measure',
+		testSteps: [
+			Chart.animate({
+				data: 'simpleDataWithOneValue',
+				config: {
+					x: { name: 'Bar', aggregator: 'distinct' }
+				}
+			})
+		]
+	},
+	{
+		testName: 'err_wrong_aggregator_type_2',
+		errorMsg: 'error: dataframe error: aggregator: dimension',
+		testSteps: [
+			Chart.animate({
+				data: 'simpleDataWithOneValue',
+				config: {
+					x: { name: 'Foo', aggregator: 'sum' }
+				}
+			})
+		]
 	}
 ]
 

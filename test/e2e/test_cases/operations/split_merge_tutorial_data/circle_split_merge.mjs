@@ -32,7 +32,7 @@ const testSteps = [
 		chart.animate({
 			config: {
 				channels: {
-					y: { detach: ['Categ. Parent', 'Categ. Child'] }
+					y: { detach: ['Categ. Parent'] }
 				},
 				title: 'Operations: Circle - Merged.',
 				split: false

@@ -27,7 +27,7 @@ const testSteps = [
 		chart.animate({
 			config: {
 				channels: {
-					size: { detach: ['Values 3', 'Timeseries', 'Categ. Child'] },
+					size: { detach: ['Categ. Child'] },
 					y: {
 						set: ['Categ. Parent', 'Values 1'],
 						range: { min: '0%', max: '110%' }
@@ -54,7 +54,6 @@ const testSteps = [
 		chart.animate({
 			config: {
 				channels: {
-					size: { detach: ['Values 3', 'Timeseries', 'Categ. Child'] },
 					y: {
 						set: ['Categ. Parent', 'Categ. Child', 'Values 1'],
 						range: { min: '0%', max: '110%' }
