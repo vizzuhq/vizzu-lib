@@ -1,22 +1,18 @@
 export async function loadAnimation(url, config) {
 	try {
 		let code
-		if (
-			typeof window === 'undefined' &&
-			typeof process !== 'undefined' &&
-			process.versions?.node
-		) {
-			const fs = await import('fs').then((module) => module.promises)
-			code = await fs.readFile(
-				config?.nodeBaseUrl ? `${config.nodeBaseUrl}/${url}` : url,
-				'utf8'
-			)
-		} else {
+		if (typeof window !== 'undefined') {
 			const response = await fetch(
 				config?.browserBaseUrl ? `${config.browserBaseUrl}/${url}` : url
 			)
 			if (!response.ok) throw new Error(`Error fetching: ${response.statusText}`)
 			code = await response.text()
+		} else {
+			const fs = await import('fs').then((module) => module.promises)
+			code = await fs.readFile(
+				config?.nodeBaseUrl ? `${config.nodeBaseUrl}/${url}` : url,
+				'utf8'
+			)
 		}
 		const replace = config?.replace
 		if (Array.isArray(replace)) {
