@@ -355,10 +355,7 @@ void PlotBuilder::calcLegendAndLabel(const Data::DataTable &dataTable)
 		if (auto &&meas = scale.measure()) {
 			if (isAutoTitle)
 				calcLegend.title = dataCube.getName(*meas);
-			auto &&range = std::get<0>(stats.at(type));
-			calcLegend.measure = {
-			    range.isReal() ? range
-			                   : Math::Range<double>::Raw(0, 0),
+			calcLegend.measure = {std::get<0>(stats.at(type)),
 			    dataTable.getUnit(meas->getColIndex()),
 			    scale.step.getValue()};
 		}
@@ -417,14 +414,10 @@ void PlotBuilder::calcAxis(const Data::DataTable &dataTable,
 			axis.measure = {Math::Range<double>::Raw(0, 100),
 			    "%",
 			    scale.step.getValue()};
-		else {
-			auto &&range = std::get<0>(stats.at(type));
-			axis.measure = {range.isReal()
-			                    ? range
-			                    : Math::Range<double>::Raw(0, 0),
+		else
+			axis.measure = {std::get<0>(stats.at(type)),
 			    dataTable.getUnit(meas->getColIndex()),
 			    scale.step.getValue()};
-		}
 	}
 	else {
 		for (auto merge = scale.labelLevel == 0;

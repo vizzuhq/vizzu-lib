@@ -28,16 +28,19 @@ Geom::Point Axises::origo() const
 	    at(AxisId::y).measure.origo()};
 }
 
-MeasureAxis::MeasureAxis(Math::Range<double> interval,
+MeasureAxis::MeasureAxis(const Math::Range<double> &interval,
     const std::string_view &unit,
-    std::optional<double> step) :
+    const std::optional<double> &step) :
     enabled(true),
-    range(interval),
+    range(interval.isReal() ? interval
+                            : Math::Range<double>::Raw(0, 0)),
     unit(std::string{unit}),
     step(step ? *step : Math::Renard::R5().ceil(range.size() / 5.0))
 {
 	if (Math::Floating::is_zero(range.size()))
 		this->step->value = 0;
+	else if (this->step->value == 0)
+		this->step->value = std::signbit(range.size()) ? -1 : 1;
 	else if (std::signbit(this->step->value)
 	         != std::signbit(range.size()))
 		this->step->value *= -1;

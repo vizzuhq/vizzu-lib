@@ -56,9 +56,9 @@ struct MeasureAxis
 	::Anim::String unit;
 	::Anim::Interpolated<double> step{1.0};
 	MeasureAxis() = default;
-	MeasureAxis(Math::Range<double> interval,
+	MeasureAxis(const Math::Range<double> &interval,
 	    const std::string_view &unit,
-	    std::optional<double> step);
+	    const std::optional<double> &step);
 	bool operator==(const MeasureAxis &other) const;
 	[[nodiscard]] double origo() const;
 };
