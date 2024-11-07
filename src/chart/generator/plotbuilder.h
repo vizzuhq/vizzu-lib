@@ -37,12 +37,10 @@ private:
 	Buckets generateMarkers(std::size_t &mainBucketSize);
 	[[nodiscard]] bool linkMarkers(const Buckets &buckets,
 	    bool main) const;
-	void normalizeXY();
-	void calcMeasureAxises(const Data::DataTable &dataTable);
+	void calcAxises(const Data::DataTable &dataTable);
+	void calcLegendAndLabel(const Data::DataTable &dataTable);
 	template <ChannelIdLike T>
-	void calcMeasureAxis(const Data::DataTable &dataTable, T type);
-	void calcDimensionAxises();
-	template <ChannelIdLike T> void calcDimensionAxis(T type);
+	void calcAxis(const Data::DataTable &dataTable, T type);
 	void addAlignment(const Buckets &subBuckets) const;
 	void addSeparation(const Buckets &subBuckets,
 	    const std::size_t &mainBucketSize) const;

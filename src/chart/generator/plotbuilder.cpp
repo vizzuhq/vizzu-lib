@@ -49,17 +49,15 @@ PlotBuilder::PlotBuilder(const Data::DataTable &dataTable,
 
 	if (!plot->options->getChannels().anyAxisSet()) {
 		addSpecLayout(subBuckets);
-		calcDimensionAxises();
-		calcMeasureAxises(dataTable);
+		calcLegendAndLabel(dataTable);
 		normalizeColors();
 		if (plot->options->geometry != ShapeType::circle)
 			normalizeSizes();
 	}
 	else {
 		addSeparation(subBuckets, mainBucketSize);
-		normalizeXY();
-		calcDimensionAxises();
-		calcMeasureAxises(dataTable);
+		calcAxises(dataTable);
+		calcLegendAndLabel(dataTable);
 		normalizeSizes();
 		normalizeColors();
 		addAlignment(subBuckets);
@@ -91,26 +89,19 @@ Buckets PlotBuilder::generateMarkers(std::size_t &mainBucketSize)
 	for (auto &&[ix, mid] : plot->getOptions()->markersInfo)
 		map.emplace(mid, ix);
 
-	for (auto &&index : dataCube)
-		plot->markers.emplace_back(*plot->getOptions(),
-		    dataCube,
-		    stats,
-		    mainIds,
-		    subIds,
-		    index,
-		    map.contains(index.marker_id));
-
-	std::ranges::stable_sort(plot->markers,
-	    std::less{},
-	    std::mem_fn(&Marker::idx));
-
-	auto first = map.begin();
-	for (Marker::MarkerPosition ix{}; auto &marker : plot->markers) {
-		marker.pos = ix++;
-		while (first != map.end() && first->first == marker.idx)
-			plot->markersInfo.insert({first++->second,
+	for (auto first = map.begin(); auto &&index : dataCube)
+		for (auto &marker =
+		         plot->markers.emplace_back(*plot->getOptions(),
+		             dataCube,
+		             stats,
+		             mainIds,
+		             subIds,
+		             index,
+		             map.contains(index.marker_id));
+		     first != map.end() && first->first == marker.idx;
+		     ++first)
+			plot->markersInfo.insert({first->second,
 			    Plot::MarkerInfo{Plot::MarkerInfoContent{marker}}});
-	}
 
 	Buckets buckets(plot->markers);
 	auto &&hasMarkerConnection =
@@ -305,7 +296,7 @@ bool PlotBuilder::linkMarkers(const Buckets &buckets, bool main) const
 	return hasConnection;
 }
 
-void PlotBuilder::normalizeXY()
+void PlotBuilder::calcAxises(const Data::DataTable &dataTable)
 {
 	const auto &xrange =
 	    plot->getOptions()->getHorizontalAxis().range;
@@ -319,48 +310,48 @@ void PlotBuilder::normalizeXY()
 	if (markerIt == plot->markers.end()) {
 		stats.setIfRange(AxisId::x, xrange.getRange({0.0, 0.0}));
 		stats.setIfRange(AxisId::y, xrange.getRange({0.0, 0.0}));
-		return;
+	}
+	else {
+		auto boundRect = markerIt->toRectangle();
+
+		while (++markerIt != plot->markers.end()) {
+			if (!markerIt->enabled) continue;
+			boundRect = boundRect.boundary(markerIt->toRectangle());
+		}
+
+		plot->getOptions()->setAutoRange(
+		    !std::signbit(boundRect.hSize().getMin()),
+		    !std::signbit(boundRect.vSize().getMin()));
+
+		boundRect.setHSize(xrange.getRange(boundRect.hSize()));
+		boundRect.setVSize(yrange.getRange(boundRect.vSize()));
+
+		for (auto &marker : plot->markers) {
+			if (!boundRect.positive().intersects(
+			        marker.toRectangle().positive()))
+				marker.enabled = false;
+
+			auto rect = marker.toRectangle();
+			auto newRect = boundRect.normalize(rect);
+			marker.fromRectangle(newRect);
+		}
+
+		stats.setIfRange(AxisId::x,
+		    Math::Range<double>::Raw(boundRect.left(),
+		        boundRect.right()));
+		stats.setIfRange(AxisId::y,
+		    Math::Range<double>::Raw(boundRect.bottom(),
+		        boundRect.top()));
 	}
 
-	auto boundRect = markerIt->toRectangle();
-
-	while (++markerIt != plot->markers.end()) {
-		if (!markerIt->enabled) continue;
-		boundRect = boundRect.boundary(markerIt->toRectangle());
-	}
-
-	plot->getOptions()->setAutoRange(
-	    !std::signbit(boundRect.hSize().getMin()),
-	    !std::signbit(boundRect.vSize().getMin()));
-
-	boundRect.setHSize(xrange.getRange(boundRect.hSize()));
-	boundRect.setVSize(yrange.getRange(boundRect.vSize()));
-
-	for (auto &marker : plot->markers) {
-		if (!boundRect.positive().intersects(
-		        marker.toRectangle().positive()))
-			marker.enabled = false;
-
-		auto rect = marker.toRectangle();
-		auto newRect = boundRect.normalize(rect);
-		marker.fromRectangle(newRect);
-	}
-
-	stats.setIfRange(AxisId::x,
-	    Math::Range<double>::Raw(boundRect.left(),
-	        boundRect.right()));
-	stats.setIfRange(AxisId::y,
-	    Math::Range<double>::Raw(boundRect.bottom(),
-	        boundRect.top()));
+	for (const AxisId &ch : {AxisId::x, AxisId::y})
+		calcAxis(dataTable, ch);
 }
 
-void PlotBuilder::calcMeasureAxises(const Data::DataTable &dataTable)
+void PlotBuilder::calcLegendAndLabel(const Data::DataTable &dataTable)
 {
-	for (const AxisId &ch : {AxisId::x, AxisId::y})
-		calcMeasureAxis(dataTable, ch);
-
 	if (auto &&legend = plot->options->legend.get())
-		calcMeasureAxis(dataTable, *legend);
+		calcAxis(dataTable, *legend);
 
 	if (auto &&meas = plot->getOptions()
 	                      ->getChannels()
@@ -373,90 +364,75 @@ void PlotBuilder::calcMeasureAxises(const Data::DataTable &dataTable)
 }
 
 template <ChannelIdLike T>
-void PlotBuilder::calcMeasureAxis(const Data::DataTable &dataTable,
-    T type)
+void PlotBuilder::calcAxis(const Data::DataTable &dataTable, T type)
 {
 	const auto &scale = plot->getOptions()->getChannels().at(type);
-	if (auto &&meas = scale.measure()) {
-		if (auto &title = plot->axises.at(type).title;
-		    scale.title.isAuto())
-			title = dataCube.getName(*meas);
-		else if (scale.title)
-			title = *scale.title;
+	if (scale.isEmpty()) return;
 
-		if (auto &axis = plot->axises.at(type).measure;
-		    type == plot->getOptions()->subAxisType()
+	auto &axis = plot->axises.at(type);
+
+	auto isAutoTitle = scale.title.isAuto();
+	if (scale.title) axis.title = *scale.title;
+
+	if (auto &&meas = scale.measure()) {
+		if (isAutoTitle) axis.title = dataCube.getName(*meas);
+
+		if (type == plot->getOptions()->subAxisType()
 		    && plot->getOptions()->align
-		           == Base::Align::Type::stretch) {
-			axis = {Math::Range<double>::Raw(0, 100),
+		           == Base::Align::Type::stretch)
+			axis.measure = {Math::Range<double>::Raw(0, 100),
 			    "%",
 			    scale.step.getValue()};
-		}
 		else {
 			auto &&range = std::get<0>(stats.at(type));
-			axis = {range.isReal() ? range
-			                       : Math::Range<double>::Raw(0, 0),
+			axis.measure = {range.isReal()
+			                    ? range
+			                    : Math::Range<double>::Raw(0, 0),
 			    dataTable.getUnit(meas->getColIndex()),
 			    scale.step.getValue()};
 		}
 	}
-}
-
-void PlotBuilder::calcDimensionAxises()
-{
-	for (const AxisId &ch : {AxisId::x, AxisId::y})
-		calcDimensionAxis(ch);
-
-	if (auto &&legend = plot->options->legend.get())
-		calcDimensionAxis(*legend);
-}
-
-template <ChannelIdLike T> void PlotBuilder::calcDimensionAxis(T type)
-{
-	auto &axis = plot->axises.at(type).dimension;
-	auto &scale = plot->getOptions()->getChannels().at(type);
-
-	if (scale.isMeasure() || !scale.hasDimension()) return;
-
-	constexpr bool isTypeAxis = std::is_same_v<T, AxisId>;
-	if constexpr (auto merge = scale.labelLevel == 0; isTypeAxis) {
-		for (const auto &marker : plot->markers) {
-			if (!marker.enabled) continue;
-
-			const auto &id =
-			    (type == AxisId::x)
-			            == plot->getOptions()->isHorizontal()
-			        ? marker.mainId
-			        : marker.subId;
-
-			if (const auto &slice = id.label)
-				axis.add(*slice,
-				    static_cast<double>(id.itemId),
-				    marker.getSizeBy(type == AxisId::x),
-				    merge);
-		}
-	}
 	else {
-		const auto &indices = std::get<1>(stats.at(type));
+		constexpr bool isTypeAxis = std::is_same_v<T, AxisId>;
+		if constexpr (isTypeAxis) {
+			auto merge = scale.labelLevel == 0;
+			for (const auto &marker : plot->markers) {
+				if (!marker.enabled) continue;
 
-		double count = 0;
-		for (auto i = 0U; i < indices.size(); ++i)
-			if (const auto &sliceIndex = indices[i];
-			    sliceIndex
-			    && axis.add(*sliceIndex, i, {count, count}, merge))
-				count += 1;
+				const auto &id =
+				    (type == AxisId::x)
+				            == plot->getOptions()->isHorizontal()
+				        ? marker.mainId
+				        : marker.subId;
+
+				if (const auto &slice = id.label)
+					axis.dimension.add(*slice,
+					    static_cast<double>(id.itemId),
+					    marker.getSizeBy(type == AxisId::x),
+					    merge);
+			}
+		}
+		else {
+			const auto &indices = std::get<1>(stats.at(type));
+
+			double count = 0;
+			for (auto i = 0U; i < indices.size(); ++i)
+				if (const auto &sliceIndex = indices[i];
+				    sliceIndex
+				    && axis.dimension.add(*sliceIndex,
+				        i,
+				        {count, count}))
+					count += 1;
+		}
+		auto hasLabel = axis.dimension.setLabels(
+		    isTypeAxis ? scale.step.getValue(1.0) : 1.0);
+
+		if (auto &&series = scale.labelSeries())
+			axis.dimension.category = series.value().getColIndex();
+
+		if (isAutoTitle && !hasLabel)
+			axis.title = axis.dimension.category;
 	}
-	auto hasLabel =
-	    axis.setLabels(isTypeAxis ? scale.step.getValue(1.0) : 1.0);
-
-	if (auto &&series = scale.labelSeries())
-		axis.category = series.value().getColIndex();
-
-	if (auto &title = plot->axises.at(type).title;
-	    scale.title.isAuto() && !hasLabel)
-		title = axis.category;
-	else if (scale.title)
-		title = *scale.title;
 }
 
 void PlotBuilder::addAlignment(const Buckets &subBuckets) const

@@ -11,8 +11,18 @@ class NaturalCmp
 public:
 	explicit NaturalCmp(bool ignoreCase = true,
 	    bool ignoreSpace = true);
-	[[nodiscard]] bool operator()(const std::string &,
-	    const std::string &) const;
+
+	[[nodiscard]] bool operator()(const std::string &lhs,
+	    const std::string &rhs) const
+	{
+		return std::is_lt(cmp(lhs, rhs));
+	}
+
+	[[nodiscard]] std::weak_ordering cmp(const std::string &lhs,
+	    const std::string &rhs) const
+	{
+		return cmp(lhs.c_str(), rhs.c_str());
+	}
 
 private:
 	bool ignoreCase;

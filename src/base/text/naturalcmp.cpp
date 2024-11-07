@@ -15,12 +15,6 @@ NaturalCmp::NaturalCmp(bool ignoreCase, bool ignoreSpace) :
     ignoreSpace(ignoreSpace)
 {}
 
-bool NaturalCmp::operator()(const std::string &op0,
-    const std::string &op1) const
-{
-	return std::is_lt(cmp(op0.c_str(), op1.c_str()));
-}
-
 std::weak_ordering NaturalCmp::cmp(const char *s0,
     const char *s1) const
 {

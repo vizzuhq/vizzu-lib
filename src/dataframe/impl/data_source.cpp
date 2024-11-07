@@ -122,12 +122,37 @@ std::size_t data_source::get_record_count() const
 
 struct data_source::sorter
 {
-	[[nodiscard]] static std::weak_ordering
-	cmp_dim(std::uint32_t lhs, std::uint32_t rhs, na_position na)
+	[[nodiscard]] static std::weak_ordering cmp_dim(std::uint32_t lhs,
+	    std::uint32_t rhs,
+	    na_position na,
+	    sort_type sort,
+	    const std::vector<std::string> &categories)
 	{
-		return na == na_position::last || (lhs != nav && rhs != nav)
-		         ? lhs <=> rhs
-		         : rhs <=> lhs;
+		if (lhs == nav && rhs == nav)
+			return std::weak_ordering::equivalent;
+
+		auto less = sort == sort_type::less
+		         || sort == sort_type::natural_less
+		         || sort == sort_type::by_categories;
+
+		if (lhs == nav || rhs == nav)
+			return ((na == na_position::last) != (rhs == nav)) != less
+			         ? std::weak_ordering::less
+			         : std::weak_ordering::greater;
+
+		switch (const auto &first = less ? lhs : rhs,
+		        &second = less ? rhs : lhs;
+		        sort) {
+		default:
+		case sort_type::by_categories: return lhs <=> rhs;
+		case sort_type::less:
+		case sort_type::greater:
+			return categories[first] <=> categories[second];
+		case sort_type::natural_less:
+		case sort_type::natural_greater:
+			return Text::NaturalCmp{}.cmp(categories[first],
+			    categories[second]);
+		}
 	}
 
 	[[nodiscard]] static std::weak_ordering
@@ -150,7 +175,11 @@ struct data_source::sorter
 			using enum series_type;
 		case dimension: {
 			const auto &dim = unsafe_get<dimension>(series).second;
-			return cmp_dim(dim.values[a], dim.values[b], na);
+			return cmp_dim(dim.values[a],
+			    dim.values[b],
+			    na,
+			    sort,
+			    dim.categories);
 		}
 		case measure: {
 			const auto &mea = unsafe_get<measure>(series).second;
@@ -533,7 +562,7 @@ std::string data_source::get_id(std::size_t record,
 		const auto *val = dimensions[ix].get(record);
 		res += name;
 		res += '\37';
-		res += val ? *val : std::string_view{"␀"};
+		res += val ? *val : std::string_view{"\33"};
 		res += '\36';
 	}
 	if (series.empty()) res = "␀";

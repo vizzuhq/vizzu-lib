@@ -1,6 +1,5 @@
 #include "marker.h"
 
-#include <cstddef>
 #include <cstdint>
 #include <optional>
 #include <utility>
@@ -37,7 +36,7 @@ Marker::Marker(const Options &options,
                           .at(ChannelId::size)
                           .dimensionsWithLevel(),
         index)),
-    idx(index.marker_id)
+    idx{index.marker_id}
 {
 	const auto &channels = options.getChannels();
 	auto color = getValueForChannel(channels,
@@ -138,22 +137,14 @@ bool Marker::connectMarkers(bool first,
 {
 	if (prev && next && main && (!first || polarConnection)) {
 		next->prevMainMarker =
-		    MarkerIndexPosition{prev->idx, prev->pos};
+		    RelativeMarkerIndex{prev->idx, prev - next};
 		next->polarConnection = polarConnection && first;
 		return true;
 	}
-	if (next && main) {
-		next->prevMainMarker =
-		    MarkerIndexPosition{next->idx, next->pos};
-	}
+	if (next && main)
+		next->prevMainMarker = RelativeMarkerIndex{next->idx, {}};
 
 	return false;
-}
-
-void Marker::setIdOffset(size_t offset)
-{
-	if (prevMainMarker.hasOneValue())
-		prevMainMarker->value.pos += offset;
 }
 
 Conv::JSONObj &&Marker::appendToJSON(Conv::JSONObj &&jsonObj) const

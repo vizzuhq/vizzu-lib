@@ -8,7 +8,7 @@
 #include "base/math/floating.h"
 #include "base/math/fuzzybool.h"
 #include "chart/generator/marker.h"
-#include "chart/generator/plot.h"
+#include "chart/generator/plot.h" // NOLINT(misc-include-cleaner)
 #include "chart/options/channel.h"
 #include "chart/options/coordsystem.h"
 #include "chart/options/orientation.h"
@@ -63,8 +63,7 @@ ConnectingMarker::ConnectingMarker(const DrawingContext &ctx,
 
 	lineWidth[0] = lineWidth[1] = 0;
 
-	const auto *prev =
-	    getPrev(marker, ctx.plot->getMarkers(), lineIndex);
+	const auto *prev = getPrev(marker, lineIndex);
 
 	labelEnabled =
 	    ctx.getOptions().geometry.factor<Math::FuzzyBool>(type)
@@ -164,13 +163,12 @@ ConnectingMarker::ConnectingMarker(const DrawingContext &ctx,
 
 const Gen::Marker *ConnectingMarker::getPrev(
     const Gen::Marker &marker,
-    const Gen::Plot::Markers &markers,
     ::Anim::InterpolateIndex lineIndex)
 {
 	const auto &prevId =
 	    marker.prevMainMarker.get_or_first(lineIndex);
 	return prevId.value.idx.empty() ? nullptr
-	                                : &markers[prevId.value.pos];
+	                                : &marker + prevId.value.distance;
 }
 
 }

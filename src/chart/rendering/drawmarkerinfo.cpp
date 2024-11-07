@@ -1,5 +1,6 @@
 #include "drawmarkerinfo.h"
 
+#include <algorithm>
 #include <utility>
 
 #include "base/anim/interpolated.h"
@@ -8,6 +9,7 @@
 #include "base/gfx/color.h"
 #include "base/gfx/draw/infobubble.h"
 #include "base/gfx/font.h"
+#include "chart/generator/marker.h"
 #include "chart/main/style.h"
 #include "chart/rendering/markers/abstractmarker.h"
 
@@ -80,7 +82,14 @@ void DrawMarkerInfo::MarkerDC::interpolate(double weight1,
 void DrawMarkerInfo::MarkerDC::loadMarker(Content &cnt)
 {
 	const auto &marker =
-	    parent.plot->getMarkers()[cnt.markerId.value().pos];
+	    *std::lower_bound(parent.plot->getMarkers().begin(),
+	        parent.plot->getMarkers().end(),
+	        cnt.markerId.value(),
+	        [](const Gen::Marker &marker,
+	            const Gen::Marker::MarkerIndex &id)
+	        {
+		        return marker.idx < id;
+	        });
 
 	auto blendedMarker =
 	    Draw::AbstractMarker::createInterpolated(parent.ctx(),

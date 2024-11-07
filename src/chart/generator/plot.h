@@ -39,7 +39,7 @@ public:
 
 	struct MarkerInfoContent
 	{
-		std::optional<Marker::MarkerIndexPosition> markerId;
+		std::optional<Marker::MarkerIndex> markerId;
 		std::shared_ptr<
 		    const std::vector<std::pair<std::string, std::string>>>
 		    info;

@@ -151,7 +151,7 @@ void MarkerRenderer::drawMarkers(Gfx::ICanvas &canvas,
 			    [this, &blended, &other, &canvas, &painter](
 			        ::Anim::InterpolateIndex index,
 			        const ::Anim::Weighted<
-			            Gen::Marker::MarkerIndexPosition> &value)
+			            Gen::Marker::RelativeMarkerIndex> &value)
 			{
 				if (index == ::Anim::second && !other) {
 					other.emplace(
@@ -190,7 +190,7 @@ void MarkerRenderer::drawMarkers(Gfx::ICanvas &canvas,
 
 			auto sum_weight =
 			    blended.marker.prevMainMarker.combine<double>(
-			        [](const Gen::Marker::MarkerIndexPosition &pos)
+			        [](const Gen::Marker::RelativeMarkerIndex &pos)
 			        {
 				        return !pos.idx.empty();
 			        });

@@ -167,17 +167,7 @@ void dataframe::set_sort(const std::string_view &series,
 	switch (ser) {
 		using enum series_type;
 	default: error(error_type::series_not_found, series);
-	case dimension: {
-		std::optional<std::vector<std::size_t>> indices;
-		if (const auto &dim = unsafe_get<dimension>(ser).second;
-		    (sort == sort_type::by_categories
-		        || std::ranges::is_sorted(
-		            indices.emplace(dim.get_indices(sort))))
-		    && (na_pos == dim.na_pos || !dim.contains_nav))
-			break;
-
-		error(error_type::sort, series);
-	}
+	case dimension: break;
 	case measure:
 		switch (sort) {
 		default:
