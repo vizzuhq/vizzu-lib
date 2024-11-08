@@ -152,7 +152,7 @@ struct DimensionAxis
 	[[nodiscard]] bool empty() const { return values.empty(); }
 	bool setLabels(double step);
 
-	const Values &getValues() const { return values; }
+	[[nodiscard]] const Values &getValues() const { return values; }
 
 private:
 	Values values;
