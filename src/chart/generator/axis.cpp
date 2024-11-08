@@ -204,9 +204,9 @@ bool DimensionAxis::add(const Data::SliceIndex &index,
 
 bool DimensionAxis::setLabels(double step)
 {
-	bool hasLabel{};
+	auto hasLabel = false;
 	step = std::max(step, 1.0, Math::Floating::less);
-	double currStep = 0.0;
+	auto currStep = 0.0;
 
 	using SortedItems =
 		std::multiset<std::reference_wrapper<Item>, decltype(
@@ -215,10 +215,11 @@ bool DimensionAxis::setLabels(double step)
 				return Math::Floating::less(lhs.range.getMin(), rhs.range.getMin());
 			})>;
 
-	for (int curr{}; Item & item : SortedItems{begin(), end()}) {
+	for (auto curr = int{};
+	     auto &&item : SortedItems{begin(), end()}) {
 		if (++curr <= currStep) continue;
 		currStep += step;
-		item.label = true;
+		item.get().label = true;
 		hasLabel = true;
 	}
 	return hasLabel;

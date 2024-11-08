@@ -192,9 +192,6 @@ struct Axises
 		if (const auto &l0 = leftLegend[0];
 		    l0 && l0->type == legendType)
 			return l0->calc;
-		if (const auto &l1 = leftLegend[1];
-		    l1 && l1->type == legendType)
-			return l1->calc;
 
 		return empty();
 	}
@@ -246,9 +243,6 @@ struct Axises
 	}
 
 	[[nodiscard]] Geom::Point origo() const;
-
-	[[nodiscard]] bool operator==(
-	    const Axises &other) const = default;
 
 private:
 	[[nodiscard]] static const Axis &empty();
