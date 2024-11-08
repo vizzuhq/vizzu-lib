@@ -85,7 +85,7 @@ void DrawMarkerInfo::MarkerDC::loadMarker(Content &cnt)
 	    // NOLINTNEXTLINE(misc-include-cleaner)
 	    *std::ranges::lower_bound(parent.plot->getMarkers(),
 	        cnt.markerId.value(),
-	        std::less{},
+	        {},
 	        &Gen::Marker::idx);
 
 	auto blendedMarker =

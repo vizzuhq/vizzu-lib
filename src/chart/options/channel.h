@@ -71,7 +71,7 @@ struct ChannelSeriesList
 
 	[[nodiscard]] std::string toString() const;
 
-	struct RawChannel
+	struct RawChannelSeries
 	{
 		std::optional<std::string> name;
 		std::string aggregator;
@@ -80,7 +80,7 @@ struct ChannelSeriesList
 	struct Parser
 	{
 		const Data::DataTable *table{};
-		std::vector<RawChannel> channels;
+		std::vector<RawChannelSeries> channels;
 		std::optional<std::size_t> current;
 		std::span<std::string> path;
 

@@ -110,6 +110,11 @@ Buckets PlotBuilder::generateMarkers(std::size_t &mainBucketSize)
 			plot->markersInfo.insert({first->second,
 			    Plot::MarkerInfo{Plot::MarkerInfoContent{marker}}});
 
+	if (!std::ranges::is_sorted(plot->markers, {}, &Marker::idx))
+		throw std::runtime_error(
+		    "One of your series name or category contains control "
+		    "character (possible tab/endline).");
+
 	return Buckets{plot->markers};
 }
 
@@ -125,7 +130,7 @@ PlotBuilder::sortedBuckets(const Buckets &buckets, bool main) const
 			// NOLINTNEXTLINE(misc-include-cleaner)
 			auto it = std::ranges::lower_bound(sorted,
 			    idx.itemId,
-			    std::less{},
+			    {},
 			    &BucketInfo::index);
 			if (it == sorted.end() || it->index != idx.itemId)
 				it = sorted.emplace(it, idx.itemId, 0.0);
@@ -226,7 +231,7 @@ bool PlotBuilder::linkMarkers(const Buckets &buckets, bool main) const
 				auto sIx = sorted[ix].index;
 				auto it = std::ranges::lower_bound(ids,
 				    sIx,
-				    std::less{},
+				    {},
 				    &Data::MarkerId::itemId);
 				if (it == ids.end() || (*it).itemId != sIx) continue;
 
@@ -262,7 +267,7 @@ bool PlotBuilder::linkMarkers(const Buckets &buckets, bool main) const
 			auto &&ids = std::ranges::views::values(bucket);
 			auto it = std::ranges::lower_bound(ids,
 			    idAct,
-			    std::less{},
+			    {},
 			    &Data::MarkerId::itemId);
 			Marker *act = it == ids.end() || (*it).itemId != idAct
 			                ? nullptr
@@ -272,7 +277,7 @@ bool PlotBuilder::linkMarkers(const Buckets &buckets, bool main) const
 			auto idNext = sorted[iNext].index;
 			it = std::ranges::lower_bound(ids,
 			    idNext,
-			    std::less{},
+			    {},
 			    &Data::MarkerId::itemId);
 			Marker *next = it == ids.end() || (*it).itemId != idNext
 			                 ? nullptr
