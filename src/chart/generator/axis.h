@@ -55,10 +55,13 @@ struct MeasureAxis
 {
 	::Anim::Interpolated<bool> enabled{false};
 	Math::Range<double> range = Math::Range<double>::Raw(0, 1);
+	std::string series;
 	::Anim::String unit;
 	::Anim::Interpolated<double> step{1.0};
+
 	MeasureAxis() = default;
 	MeasureAxis(const Math::Range<double> &interval,
+	    const std::string &series,
 	    const std::string_view &unit,
 	    const std::optional<double> &step);
 	[[nodiscard]] bool operator==(
@@ -203,6 +206,16 @@ struct Axises
 	{
 		if (&source == &empty() && &target == &empty()) return;
 		using Math::Niebloid::interpolate;
+
+		if (source.measure.enabled.get()
+		    && target.measure.enabled.get()
+		    && source.measure.series != target.measure.series) {
+			leftLegend[0].emplace(legendType,
+			    interpolate(source, empty(), factor));
+			leftLegend[1].emplace(legendType,
+			    interpolate(empty(), target, factor));
+			return;
+		}
 
 		leftLegend[leftLegend[0] && leftLegend[0]->type != legendType]
 		    .emplace(legendType, interpolate(source, target, factor));

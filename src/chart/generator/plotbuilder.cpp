@@ -361,6 +361,7 @@ void PlotBuilder::calcLegendAndLabel(const Data::DataTable &dataTable)
 			if (isAutoTitle)
 				calcLegend.title = dataCube.getName(*meas);
 			calcLegend.measure = {std::get<0>(stats.at(type)),
+			    meas->getColIndex(),
 			    dataTable.getUnit(meas->getColIndex()),
 			    scale.step.getValue()};
 		}
@@ -415,10 +416,12 @@ void PlotBuilder::calcAxis(const Data::DataTable &dataTable,
 		    && plot->getOptions()->align
 		           == Base::Align::Type::stretch)
 			axis.measure = {Math::Range<double>::Raw(0, 100),
+			    meas->getColIndex(),
 			    "%",
 			    scale.step.getValue()};
 		else
 			axis.measure = {std::get<0>(stats.at(type)),
+			    meas->getColIndex(),
 			    dataTable.getUnit(meas->getColIndex()),
 			    scale.step.getValue()};
 	}
