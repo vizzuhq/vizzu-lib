@@ -28,6 +28,57 @@ const Axis &Axises::empty()
 	return empty;
 }
 
+void Axises::addLegendInterpolation(
+    [[maybe_unused]] double legendFactor,
+    LegendId legendType,
+    const Axis &source,
+    const Axis &target,
+    double factor)
+{
+	if (&source == &empty() && &target == &empty()) return;
+	using Math::Niebloid::interpolate;
+
+	if (source.measure.enabled.get() && target.measure.enabled.get()
+	    && source.measure.series != target.measure.series) {
+		if (!leftLegend[1]) leftLegend[1].emplace(legendType);
+
+		leftLegend[0]->calc = interpolate(source, empty(), factor);
+		leftLegend[1]->calc = interpolate(empty(), target, factor);
+		return;
+	}
+
+	auto &legendObj =
+	    leftLegend[leftLegend[0]
+	               && leftLegend[0]->type != legendType];
+	if (!legendObj) legendObj.emplace(legendType);
+	legendObj->calc = interpolate(source, target, factor);
+	++legendObj->interpolated;
+
+	if (leftLegend[0] && leftLegend[1]
+	    && leftLegend[0]->interpolated == leftLegend[1]->interpolated
+	    && !leftLegend[0]->calc.dimension.empty()
+	    && !leftLegend[1]->calc.dimension.empty()
+	    && leftLegend[0]
+	               ->calc.dimension.getValues()
+	               .begin()
+	               ->first.column
+	           == leftLegend[1]
+	                  ->calc.dimension.getValues()
+	                  .begin()
+	                  ->first.column) {
+		for (auto &item : leftLegend[0]->calc.dimension)
+			item.weight = 1.0;
+		for (auto &item : leftLegend[1]->calc.dimension)
+			item.weight = 1.0;
+
+		leftLegend[1]->calc.dimension =
+		    leftLegend[0]->calc.dimension =
+		        interpolate(leftLegend[0]->calc.dimension,
+		            leftLegend[1]->calc.dimension,
+		            legendFactor);
+	}
+}
+
 Geom::Point Axises::origo() const
 {
 	return {at(AxisId::x).measure.origo(),

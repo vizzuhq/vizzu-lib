@@ -121,8 +121,9 @@ public:
 		return values[has_second && static_cast<bool>(index)];
 	}
 
+	template <class T>
 	[[nodiscard]] std::optional<InterpolateIndex> get_index(
-	    const Type &type) const
+	    T &&type) const
 	{
 		if (values[0].value == type) return first;
 		if (has_second && values[1].value == type) return second;

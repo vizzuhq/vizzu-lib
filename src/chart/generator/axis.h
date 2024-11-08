@@ -108,7 +108,7 @@ struct DimensionAxis
 		    value(item.value),
 		    colorBase(item.colorBase),
 		    label(item.label),
-		    weight(Math::FuzzyBool::And(item.weight, factor))
+		    weight(item.weight * factor)
 		{}
 
 		bool operator==(const Item &other) const
@@ -174,6 +174,7 @@ struct Axises
 	{
 		LegendId type;
 		Axis calc;
+		std::uint64_t interpolated{};
 	};
 	std::array<std::optional<CalcLegend>, 2> leftLegend;
 
@@ -196,27 +197,11 @@ struct Axises
 		return empty();
 	}
 
-	void addLegendInterpolation(LegendId legendType,
+	void addLegendInterpolation(double legendFactor,
+	    LegendId legendType,
 	    const Axis &source,
 	    const Axis &target,
-	    double factor)
-	{
-		if (&source == &empty() && &target == &empty()) return;
-		using Math::Niebloid::interpolate;
-
-		if (source.measure.enabled.get()
-		    && target.measure.enabled.get()
-		    && source.measure.series != target.measure.series) {
-			leftLegend[0].emplace(legendType,
-			    interpolate(source, empty(), factor));
-			leftLegend[1].emplace(legendType,
-			    interpolate(empty(), target, factor));
-			return;
-		}
-
-		leftLegend[leftLegend[0] && leftLegend[0]->type != legendType]
-		    .emplace(legendType, interpolate(source, target, factor));
-	}
+	    double factor);
 
 	Axis &create(LegendId legendType)
 	{

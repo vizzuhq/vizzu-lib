@@ -186,7 +186,9 @@ void Vertical::transform(const Gen::Plot &source,
 	        target.axises.at(Gen::AxisId::y),
 	        factor);
 
-	actual.axises.addLegendInterpolation(Gen::LegendId::size,
+	actual.axises.addLegendInterpolation(
+	    actual.getOptions()->legend.factor(Gen::LegendId::size),
+	    Gen::LegendId::size,
 	    source.axises.at(Gen::LegendId::size),
 	    target.axises.at(Gen::LegendId::size),
 	    factor);
@@ -218,12 +220,16 @@ void Morph::Color::transform(const Gen::Plot &source,
     Gen::Plot &actual,
     double factor) const
 {
-	actual.axises.addLegendInterpolation(Gen::LegendId::color,
+	actual.axises.addLegendInterpolation(
+	    actual.getOptions()->legend.factor(Gen::LegendId::color),
+	    Gen::LegendId::color,
 	    source.axises.at(Gen::LegendId::color),
 	    target.axises.at(Gen::LegendId::color),
 	    factor);
 
-	actual.axises.addLegendInterpolation(Gen::LegendId::lightness,
+	actual.axises.addLegendInterpolation(
+	    actual.getOptions()->legend.factor(Gen::LegendId::lightness),
+	    Gen::LegendId::lightness,
 	    source.axises.at(Gen::LegendId::lightness),
 	    target.axises.at(Gen::LegendId::lightness),
 	    factor);

@@ -18,6 +18,7 @@
     - When merge happens, the marker shows the middle value of lightness.
 - Remove rare fantom empty marker space on scrollable legend.
 - Same legend with different measure series are not interpolated. 
+- Different legend with same dimension series are interpolated.
 
 ## [0.15.0] - 2024-10-28
 
