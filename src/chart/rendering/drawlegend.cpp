@@ -32,7 +32,8 @@ namespace Vizzu::Draw
 void DrawLegend::draw(Gfx::ICanvas &canvas,
     const Geom::Rect &legendLayout,
     Gen::LegendId channelType,
-    double weight) const
+    double weight,
+    const Gen::Axis &axis) const
 {
 	auto markerWindowRect =
 	    style.contentRect(legendLayout, rootStyle.calculatedSize());
@@ -58,8 +59,7 @@ void DrawLegend::draw(Gfx::ICanvas &canvas,
 	    .weight = weight,
 	    .itemHeight = itemHeight,
 	    .markerSize = markerSize,
-	    .measure = plot->axises.at(channelType).measure,
-	    .dimension = plot->axises.at(channelType).dimension,
+	    .axis = axis,
 	    .properties = {.channel = channelType},
 	    .fadeBarGradient = {markerWindowRect.leftSide(),
 	        {.line = {},
@@ -120,37 +120,35 @@ const Gfx::LinearGradient &DrawLegend::FadeBarGradient::operator()(
 
 void DrawLegend::drawTitle(const Info &info) const
 {
-	plot->axises.at(info.properties.channel)
-	    .title.visit(
-	        [this,
-	            &info,
-	            &rect = info.titleRect,
-	            mul = Math::FuzzyBool::Or(info.measureEnabled,
-	                info.dimensionEnabled)](::Anim::InterpolateIndex,
-	            const auto &title)
-	        {
-		        if (title.weight <= 0) return;
+	info.axis.title.visit(
+	    [this,
+	        &info,
+	        &rect = info.titleRect,
+	        mul = Math::FuzzyBool::Or(info.measureEnabled,
+	            !info.axis.dimension.empty())](
+	        ::Anim::InterpolateIndex,
+	        const auto &title)
+	    {
+		    if (title.weight <= 0) return;
 
-		        DrawLabel{{ctx()}}.draw(info.canvas,
-		            Geom::TransformedRect::fromRect(rect),
-		            title.value,
-		            style.title,
-		            *events.title,
-		            Events::Targets::legendTitle(title.value,
-		                info.properties),
-		            {.colorTransform = Gfx::ColorTransform::Opacity(
-		                 Math::FuzzyBool::And(title.weight,
-		                     info.weight,
-		                     mul))});
-	        });
+		    DrawLabel{{ctx()}}.draw(info.canvas,
+		        Geom::TransformedRect::fromRect(rect),
+		        title.value,
+		        style.title,
+		        *events.title,
+		        Events::Targets::legendTitle(title.value,
+		            info.properties),
+		        {.colorTransform = Gfx::ColorTransform::Opacity(
+		             Math::FuzzyBool::And(title.weight,
+		                 info.weight,
+		                 mul))});
+	    });
 }
 
 void DrawLegend::drawDimension(Info &info) const
 {
-	if (!info.dimensionEnabled) return;
-
-	auto label = DrawLabel{{ctx()}};
-	for (const auto &[sindex, item] : info.dimension.getValues()) {
+	for (auto label = DrawLabel{{ctx()}}; const auto &[sindex, item] :
+	     info.axis.dimension.getValues()) {
 		if (item.weight <= 0) continue;
 
 		auto itemRect = getItemRect(info, item.value);
@@ -259,16 +257,16 @@ void DrawLegend::drawMeasure(const Info &info) const
 {
 	if (info.measureEnabled <= 0) return;
 
-	info.measure.unit.visit(
+	info.axis.measure.unit.visit(
 	    [this, &info](::Anim::InterpolateIndex, const auto &unit)
 	    {
 		    extremaLabel(info,
-		        info.measure.range.getMax(),
+		        info.axis.measure.range.getMax(),
 		        unit.value,
 		        0,
 		        unit.weight);
 		    extremaLabel(info,
-		        info.measure.range.getMin(),
+		        info.axis.measure.range.getMin(),
 		        unit.value,
 		        5,
 		        unit.weight);
@@ -324,10 +322,9 @@ Math::Range<double> DrawLegend::markersLegendRange(const Info &info)
 		res.include(6.0 * info.itemHeight);
 	}
 
-	if (info.dimensionEnabled)
-		for (const auto &item : info.dimension)
-			res.include({item.value * info.itemHeight,
-			    (item.value + 1) * info.itemHeight});
+	for (const auto &item : info.axis.dimension)
+		res.include({item.value * info.itemHeight,
+		    (item.value + 1) * info.itemHeight});
 
 	return res;
 }
