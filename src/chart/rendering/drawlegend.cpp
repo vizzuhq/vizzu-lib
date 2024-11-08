@@ -150,7 +150,7 @@ void DrawLegend::drawDimension(Info &info) const
 	if (!info.dimensionEnabled) return;
 
 	auto label = DrawLabel{{ctx()}};
-	for (const auto &item : info.dimension) {
+	for (const auto &[sindex, item] : info.dimension.getValues()) {
 		if (item.weight <= 0) continue;
 
 		auto itemRect = getItemRect(info, item.value);
@@ -171,7 +171,7 @@ void DrawLegend::drawDimension(Info &info) const
 		    Math::FuzzyBool::And(item.weight, info.weight);
 
 		drawMarker(info,
-		    item.categoryValue,
+		    sindex,
 		    colorBuilder.render(item.colorBase) * alpha,
 		    getMarkerRect(info, itemRect),
 		    needGradient);
@@ -184,9 +184,8 @@ void DrawLegend::drawDimension(Info &info) const
 			        weighted.value,
 			        style.label,
 			        *events.label,
-			        Events::Targets::dimLegendLabel(
-			            info.dimension.category,
-			            item.categoryValue,
+			        Events::Targets::dimLegendLabel(sindex.column,
+			            sindex.value,
 			            info.properties),
 			        {.colorTransform = Gfx::ColorTransform::Opacity(
 			             Math::FuzzyBool::And(alpha,
@@ -229,7 +228,7 @@ Geom::TransformedRect DrawLegend::getLabelRect(const Info &info,
 }
 
 void DrawLegend::drawMarker(Info &info,
-    std::string_view categoryValue,
+    const Data::SliceIndex &sindex,
     const Gfx::Color &color,
     const Geom::Rect &rect,
     bool needGradient) const
@@ -248,10 +247,9 @@ void DrawLegend::drawMarker(Info &info,
 	                  Styles::Legend::Marker::Type::circle)
 	            * rect.size.minSize() / 2.0;
 
-	auto markerElement =
-	    Events::Targets::legendMarker(info.dimension.category,
-	        categoryValue,
-	        info.properties);
+	auto markerElement = Events::Targets::legendMarker(sindex.column,
+	    sindex.value,
+	    info.properties);
 
 	if (events.marker->invoke(
 	        Events::OnRectDrawEvent(*markerElement, {rect, false}))) {

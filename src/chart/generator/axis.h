@@ -43,7 +43,8 @@ struct ChannelStats
 		std::get<0>(tracked[at]).include(value);
 	}
 
-	void setIfRange(AxisId at, const Math::Range<double> &range)
+	template <ChannelIdLike Id>
+	void setIfRange(Id at, const Math::Range<double> &range)
 	{
 		if (auto *r = std::get_if<0>(&tracked[asChannel(at)]))
 			*r = range;
@@ -60,7 +61,8 @@ struct MeasureAxis
 	MeasureAxis(const Math::Range<double> &interval,
 	    const std::string_view &unit,
 	    const std::optional<double> &step);
-	bool operator==(const MeasureAxis &other) const;
+	[[nodiscard]] bool operator==(
+	    const MeasureAxis &other) const = default;
 	[[nodiscard]] double origo() const;
 };
 
@@ -82,7 +84,6 @@ struct DimensionAxis
 		Math::Range<double> range;
 		double value;
 		::Anim::Interpolated<ColorBase> colorBase;
-		std::string categoryValue;
 		::Anim::String label;
 		double weight;
 
@@ -94,7 +95,6 @@ struct DimensionAxis
 		    end(true),
 		    range(range),
 		    value(value),
-		    categoryValue(categoryValue),
 		    weight(1.0)
 		{
 			if (setCatAsLabel) label = categoryValue;
@@ -106,7 +106,6 @@ struct DimensionAxis
 		    range(item.range),
 		    value(item.value),
 		    colorBase(item.colorBase),
-		    categoryValue(item.categoryValue),
 		    label(item.label),
 		    weight(Math::FuzzyBool::And(item.weight, factor))
 		{}
@@ -126,7 +125,6 @@ struct DimensionAxis
 	using Values = std::multimap<Data::SliceIndex, Item>;
 
 	bool enabled{false};
-	std::string category{};
 
 	DimensionAxis() = default;
 	bool add(const Data::SliceIndex &index,
@@ -134,7 +132,8 @@ struct DimensionAxis
 	    const Math::Range<double> &range,
 	    bool merge,
 	    bool label);
-	[[nodiscard]] bool operator==(const DimensionAxis &other) const;
+	[[nodiscard]] bool operator==(
+	    const DimensionAxis &other) const = default;
 
 	[[nodiscard]] auto begin()
 	{
@@ -154,6 +153,8 @@ struct DimensionAxis
 	}
 	[[nodiscard]] bool empty() const { return values.empty(); }
 	bool setLabels(double step);
+
+	const Values &getValues() const { return values; }
 
 private:
 	Values values;

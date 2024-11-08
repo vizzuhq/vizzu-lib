@@ -44,12 +44,6 @@ MeasureAxis::MeasureAxis(const Math::Range<double> &interval,
 		this->step->value *= -1;
 }
 
-bool MeasureAxis::operator==(const MeasureAxis &other) const
-{
-	return enabled == other.enabled && range == other.range
-	    && step == other.step && unit == other.unit;
-}
-
 double MeasureAxis::origo() const
 {
 	if (range.size() == 0) return 0;
@@ -202,26 +196,24 @@ bool DimensionAxis::add(const Data::SliceIndex &index,
 	return true;
 }
 
-bool DimensionAxis::operator==(const DimensionAxis &other) const
-{
-	return enabled == other.enabled && values == other.values;
-}
-
 bool DimensionAxis::setLabels(double step)
 {
 	bool hasLabel{};
 	step = std::max(step, 1.0, Math::Floating::less);
 	double currStep = 0.0;
 
-	std::multimap<double, std::reference_wrapper<Item>> reorder;
+	std::multimap<double,
+	    std::reference_wrapper<
+	        std::pair<const Data::SliceIndex, Item>>>
+	    reorder;
 	for (auto &ref : values)
-		reorder.emplace(ref.second.range.getMin(), ref.second);
+		reorder.emplace(ref.second.range.getMin(), ref);
 
 	for (int curr{};
-	     Item & item : std::ranges::views::values(reorder)) {
+	     auto &pair : std::ranges::views::values(reorder)) {
 		if (++curr <= currStep) continue;
 		currStep += step;
-		item.label = item.categoryValue;
+		pair.get().second.label = pair.get().first.value;
 		hasLabel = true;
 	}
 	return hasLabel;

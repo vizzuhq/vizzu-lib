@@ -375,12 +375,10 @@ void PlotBuilder::calcLegendAndLabel(const Data::DataTable &dataTable)
 				        merge,
 				        true))
 					count += 1;
-			if (auto &&series = scale.labelSeries())
-				calcLegend.dimension.category =
-				    series.value().getColIndex();
 
-			if (isAutoTitle && calcLegend.dimension.empty())
-				calcLegend.title = calcLegend.dimension.category;
+			if (auto &&series = scale.labelSeries();
+			    series && isAutoTitle && calcLegend.dimension.empty())
+				calcLegend.title = series.value().getColIndex();
 		}
 	}
 
@@ -437,12 +435,10 @@ void PlotBuilder::calcAxis(const Data::DataTable &dataTable,
 				    merge,
 				    false);
 		}
-		if (auto &&series = scale.labelSeries())
-			axis.dimension.category = series.value().getColIndex();
-
-		if (!axis.dimension.setLabels(scale.step.getValue(1.0))
-		    && isAutoTitle)
-			axis.title = axis.dimension.category;
+		if (auto &&series = scale.labelSeries();
+		    !axis.dimension.setLabels(scale.step.getValue(1.0))
+		    && series && isAutoTitle)
+			axis.title = series.value().getColIndex();
 	}
 }
 

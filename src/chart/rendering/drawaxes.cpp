@@ -271,18 +271,15 @@ void DrawAxes::drawDimensionLabels(bool horizontal) const
 	if (axis.enabled) {
 		canvas.setFont(Gfx::Font{labelStyle});
 
-		for (const auto &item : axis)
-			drawDimensionLabel(horizontal,
-			    origo,
-			    item,
-			    axis.category);
+		for (const auto &[slice, item] : axis.getValues())
+			drawDimensionLabel(horizontal, origo, item, slice);
 	}
 }
 
 void DrawAxes::drawDimensionLabel(bool horizontal,
     const Geom::Point &origo,
     const Gen::DimensionAxis::Item &item,
-    const std::string_view &category) const
+    const Data::SliceIndex &index) const
 {
 	const auto &enabled =
 	    horizontal ? plot->guides.x : plot->guides.y;
@@ -306,7 +303,7 @@ void DrawAxes::drawDimensionLabel(bool horizontal,
 	        normal = Geom::Point::Ident(!horizontal),
 	        &text = item.label,
 	        &weight,
-	        &category](::Anim::InterpolateIndex index,
+	        &sindex = index](::Anim::InterpolateIndex index,
 	        const auto &position)
 	    {
 		    if (labelStyle.position->interpolates()
@@ -351,9 +348,9 @@ void DrawAxes::drawDimensionLabel(bool horizontal,
 			                str.weight,
 			                plusWeight)),
 			        *rootEvents.draw.plot.axis.label,
-			        Events::Targets::dimAxisLabel(category,
-			            item.categoryValue,
-			            item.categoryValue,
+			        Events::Targets::dimAxisLabel(sindex.column,
+			            sindex.value,
+			            sindex.value,
 			            horizontal));
 		    };
 

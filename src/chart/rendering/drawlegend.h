@@ -59,7 +59,7 @@ private:
 	void drawMeasure(const Info &info) const;
 
 	void drawMarker(Info &info,
-	    std::string_view categoryValue,
+	    const Data::SliceIndex &sindex,
 	    const Gfx::Color &color,
 	    const Geom::Rect &rect,
 	    bool needGradient) const;
