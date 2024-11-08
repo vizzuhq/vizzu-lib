@@ -186,10 +186,10 @@ void Vertical::transform(const Gen::Plot &source,
 	        target.axises.at(Gen::AxisId::y),
 	        factor);
 
-	actual.axises.at(Gen::LegendId::size) =
-	    interpolate(source.axises.at(Gen::LegendId::size),
-	        target.axises.at(Gen::LegendId::size),
-	        factor);
+	actual.axises.addLegendInterpolation(Gen::LegendId::size,
+	    source.axises.at(Gen::LegendId::size),
+	    target.axises.at(Gen::LegendId::size),
+	    factor);
 
 	actual.guides.y =
 	    interpolate(source.guides.y, target.guides.y, factor);
@@ -218,15 +218,15 @@ void Morph::Color::transform(const Gen::Plot &source,
     Gen::Plot &actual,
     double factor) const
 {
-	actual.axises.at(Gen::LegendId::color) =
-	    interpolate(source.axises.at(Gen::LegendId::color),
-	        target.axises.at(Gen::LegendId::color),
-	        factor);
+	actual.axises.addLegendInterpolation(Gen::LegendId::color,
+	    source.axises.at(Gen::LegendId::color),
+	    target.axises.at(Gen::LegendId::color),
+	    factor);
 
-	actual.axises.at(Gen::LegendId::lightness) =
-	    interpolate(source.axises.at(Gen::LegendId::lightness),
-	        target.axises.at(Gen::LegendId::lightness),
-	        factor);
+	actual.axises.addLegendInterpolation(Gen::LegendId::lightness,
+	    source.axises.at(Gen::LegendId::lightness),
+	    target.axises.at(Gen::LegendId::lightness),
+	    factor);
 }
 
 void Morph::Color::transform(const Marker &source,

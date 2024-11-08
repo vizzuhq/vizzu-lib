@@ -268,7 +268,7 @@ void DrawAxes::drawDimensionLabels(bool horizontal) const
 	const auto &axises = plot->axises;
 	const auto &axis = axises.at(axisIndex).dimension;
 
-	if (axis.enabled) {
+	if (!axis.empty()) {
 		canvas.setFont(Gfx::Font{labelStyle});
 
 		for (const auto &[slice, item] : axis.getValues())

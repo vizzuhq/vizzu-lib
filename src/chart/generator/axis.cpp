@@ -22,6 +22,12 @@
 namespace Vizzu::Gen
 {
 
+const Axis &Axises::empty()
+{
+	static const Axis empty;
+	return empty;
+}
+
 Geom::Point Axises::origo() const
 {
 	return {at(AxisId::x).measure.origo(),
@@ -181,8 +187,6 @@ bool DimensionAxis::add(const Data::SliceIndex &index,
     bool merge,
     bool label)
 {
-	this->enabled = true;
-
 	if (merge) {
 		if (auto it = values.find(index); it != values.end()) {
 			it->second.range.include(range);
@@ -224,15 +228,12 @@ DimensionAxis interpolate(const DimensionAxis &op0,
 {
 	DimensionAxis res;
 
-	for (const auto &[slice, item] : op0.values) {
-		res.enabled = true;
+	for (const auto &[slice, item] : op0.values)
 		res.values.emplace(std::piecewise_construct,
 		    std::tuple{slice},
 		    std::forward_as_tuple(item, true, 1 - factor));
-	}
 
 	for (const auto &[slice, item] : op1.values) {
-		res.enabled = true;
 		auto [resIt, end] = res.values.equal_range(slice);
 
 		while (resIt != end && resIt->second.end) { ++resIt; }

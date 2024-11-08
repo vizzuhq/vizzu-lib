@@ -46,7 +46,7 @@ private:
 		const Gen::MeasureAxis &measure;
 		const Gen::DimensionAxis &dimension;
 		double measureEnabled = measure.enabled.calculate<double>();
-		bool dimensionEnabled = dimension.enabled;
+		bool dimensionEnabled = !dimension.empty();
 		double measureWeight =
 		    Math::FuzzyBool::And(weight, measureEnabled);
 		Events::Targets::LegendProperties properties;

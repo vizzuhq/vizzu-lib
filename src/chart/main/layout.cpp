@@ -12,7 +12,7 @@ namespace Vizzu
 
 template <class T>
 auto popRectArea(double height,
-    ::Anim::Interpolated<T> &interpolated,
+    const ::Anim::Interpolated<T> &interpolated,
     Geom::Rect &rect,
     Geom::Rect (Geom::Rect::*pop)(double),
     void (Geom::Rect::*set)(double) = nullptr,

@@ -122,8 +122,6 @@ struct DimensionAxis
 	};
 	using Values = std::multimap<Data::SliceIndex, Item>;
 
-	bool enabled{false};
-
 	DimensionAxis() = default;
 	bool add(const Data::SliceIndex &index,
 	    double value,
@@ -169,7 +167,13 @@ struct Axis
 
 struct Axises
 {
-	Refl::EnumArray<LegendId, Axis> legend;
+	struct CalcLegend
+	{
+		LegendId type;
+		Axis calc;
+	};
+	std::array<std::optional<CalcLegend>, 2> leftLegend;
+
 	Refl::EnumArray<AxisId, Axis> axises;
 	struct Label
 	{
@@ -182,12 +186,31 @@ struct Axises
 
 	[[nodiscard]] const Axis &at(LegendId legendType) const
 	{
-		return legend[legendType];
+		if (const auto &l0 = leftLegend[0];
+		    l0 && l0->type == legendType)
+			return l0->calc;
+		if (const auto &l1 = leftLegend[1];
+		    l1 && l1->type == legendType)
+			return l1->calc;
+
+		return empty();
 	}
 
-	[[nodiscard]] Axis &at(LegendId legendType)
+	void addLegendInterpolation(LegendId legendType,
+	    const Axis &source,
+	    const Axis &target,
+	    double factor)
 	{
-		return legend[legendType];
+		if (&source == &empty() && &target == &empty()) return;
+		using Math::Niebloid::interpolate;
+
+		leftLegend[leftLegend[0] && leftLegend[0]->type != legendType]
+		    .emplace(legendType, interpolate(source, target, factor));
+	}
+
+	Axis &create(LegendId legendType)
+	{
+		return leftLegend[0].emplace(legendType).calc;
 	}
 
 	[[nodiscard]] const Axis &at(AxisId axisType) const
@@ -213,6 +236,9 @@ struct Axises
 
 	[[nodiscard]] bool operator==(
 	    const Axises &other) const = default;
+
+private:
+	[[nodiscard]] static const Axis &empty();
 };
 
 }

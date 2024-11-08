@@ -353,7 +353,7 @@ void PlotBuilder::calcLegendAndLabel(const Data::DataTable &dataTable)
 		const auto &scale =
 		    plot->getOptions()->getChannels().at(type);
 
-		auto &calcLegend = plot->axises.at(type);
+		auto &calcLegend = plot->axises.create(type);
 		auto isAutoTitle = scale.title.isAuto();
 		if (scale.title) calcLegend.title = *scale.title;
 
@@ -594,22 +594,20 @@ void PlotBuilder::normalizeColors()
 	}
 
 	if (auto &&legend = plot->options->legend.get()) {
-		switch (*legend) {
+		switch (auto &calcLegend = plot->axises.leftLegend[0];
+		        *legend) {
 		case LegendId::color:
-			plot->axises.at(LegendId::color).measure.range = color;
+			calcLegend->calc.measure.range = color;
 
-			for (auto &item :
-			    plot->axises.at(LegendId::color).dimension)
+			for (auto &item : calcLegend->calc.dimension)
 				item.colorBase = ColorBase(
 				    static_cast<uint32_t>(item.range.middle()),
 				    0.5);
 			break;
 		case LegendId::lightness:
-			plot->axises.at(LegendId::lightness).measure.range =
-			    lightness;
+			calcLegend->calc.measure.range = lightness;
 
-			for (auto &item :
-			    plot->axises.at(LegendId::lightness).dimension) {
+			for (auto &item : calcLegend->calc.dimension) {
 				item.range = Math::Range<double>::Raw(
 				    lightness.rescale(item.range.getMin()),
 				    lightness.rescale(item.range.getMax()));

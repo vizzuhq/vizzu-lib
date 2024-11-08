@@ -21,7 +21,7 @@ template <std::floating_point T> struct Range
 	constexpr static auto less = Floating::less;
 	constexpr static auto is_zero = Floating::is_zero;
 
-	static Range<T> Raw(const T &min, const T &max)
+	constexpr static Range<T> Raw(const T &min, const T &max)
 	{
 		Range<T> range;
 		range.min = min;
@@ -29,7 +29,7 @@ template <std::floating_point T> struct Range
 		return range;
 	}
 
-	Range() :
+	constexpr Range() :
 	    min(std::numeric_limits<T>::max()),
 	    max(std::numeric_limits<T>::lowest())
 	{}

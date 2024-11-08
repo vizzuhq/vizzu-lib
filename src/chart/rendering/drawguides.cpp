@@ -30,14 +30,12 @@ void DrawGuides::draw(bool horizontal)
 	auto baseColor = *guideStyle.color;
 
 	if (const auto &axis = plot->axises.at(axisId).dimension;
-	    !baseColor.isTransparent() && axis.enabled
+	    !baseColor.isTransparent() && !axis.empty()
 	    && *guideStyle.lineWidth > 0
 	    && plot->guides.at(axisId).axisGuides != false) {
 		canvas.setLineWidth(*guideStyle.lineWidth);
 
-		for (auto it = axis.begin(),
-		          end = it == axis.end() ? axis.end()
-		                                 : std::prev(axis.end());
+		for (auto it = axis.begin(), end = std::prev(axis.end());
 		     it != end;
 		     ++it) {
 			if (auto &&weight = (*it).weight; weight > 0)
