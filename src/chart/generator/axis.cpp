@@ -191,7 +191,7 @@ bool DimensionAxis::add(const Data::SliceIndex &index,
 	}
 	values.emplace(std::piecewise_construct,
 	    std::tuple{index},
-	    std::tuple{range, value, index.value, label});
+	    std::tuple{range, value, label});
 
 	return true;
 }
@@ -202,18 +202,15 @@ bool DimensionAxis::setLabels(double step)
 	step = std::max(step, 1.0, Math::Floating::less);
 	double currStep = 0.0;
 
-	std::multimap<double,
-	    std::reference_wrapper<
-	        std::pair<const Data::SliceIndex, Item>>>
-	    reorder;
-	for (auto &ref : values)
-		reorder.emplace(ref.second.range.getMin(), ref);
+	std::multimap<double, std::reference_wrapper<Item>> reorder;
+	for (auto &ref : std::ranges::views::values(values))
+		reorder.emplace(ref.range.getMin(), ref);
 
 	for (int curr{};
-	     auto &pair : std::ranges::views::values(reorder)) {
+	     Item & item : std::ranges::views::values(reorder)) {
 		if (++curr <= currStep) continue;
 		currStep += step;
-		pair.get().second.label = pair.get().first.value;
+		item.label = true;
 		hasLabel = true;
 	}
 	return hasLabel;

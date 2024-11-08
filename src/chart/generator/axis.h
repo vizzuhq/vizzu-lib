@@ -84,21 +84,19 @@ struct DimensionAxis
 		Math::Range<double> range;
 		double value;
 		::Anim::Interpolated<ColorBase> colorBase;
-		::Anim::String label;
+		::Anim::Interpolated<bool> label;
 		double weight;
 
 		Item(Math::Range<double> range,
 		    double value,
-		    const std::string &categoryValue,
 		    bool setCatAsLabel) :
 		    start(true),
 		    end(true),
 		    range(range),
 		    value(value),
+		    label(setCatAsLabel),
 		    weight(1.0)
-		{
-			if (setCatAsLabel) label = categoryValue;
-		}
+		{}
 
 		Item(const Item &item, bool starter, double factor) :
 		    start(starter),

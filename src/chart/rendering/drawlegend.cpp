@@ -181,7 +181,7 @@ void DrawLegend::drawDimension(Info &info) const
 		    {
 			    label.draw(info.canvas,
 			        getLabelRect(info, itemRect),
-			        weighted.value,
+			        weighted.value ? sindex.value : "",
 			        style.label,
 			        *events.label,
 			        Events::Targets::dimLegendLabel(sindex.column,

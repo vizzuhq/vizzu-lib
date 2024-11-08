@@ -335,11 +335,11 @@ void DrawAxes::drawDimensionLabel(bool horizontal,
 		                         .convertDirectionAt(
 		                             {relCenter, relCenter + normal})
 		                         .extend(1 - 2 * under)](
-		            const ::Anim::Weighted<std::string> &str,
+		            const ::Anim::Weighted<bool> &str,
 		            double plusWeight = 1.0)
 		    {
 			    drawLabel.draw(canvas,
-			        str.value,
+			        str.value ? sindex.value : "",
 			        posDir,
 			        labelStyle,
 			        0,
