@@ -85,13 +85,13 @@ Geom::Point Axises::origo() const
 }
 
 MeasureAxis::MeasureAxis(const Math::Range<double> &interval,
-    const std::string &series,
+    std::string series,
     const std::string_view &unit,
     const std::optional<double> &step) :
     enabled(true),
     range(interval.isReal() ? interval
                             : Math::Range<double>::Raw(0, 0)),
-    series(series),
+    series(std::move(series)),
     unit(std::string{unit}),
     step(step ? *step : Math::Renard::R5().ceil(range.size() / 5.0))
 {
