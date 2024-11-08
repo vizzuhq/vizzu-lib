@@ -32,8 +32,7 @@ const testSteps = [
 			config: {
 				channels: {
 					x: { detach: ['Values 1'] },
-					y: { attach: ['Values 1'] },
-					color: { attach: ['Categ. Parent'] }
+					y: { attach: ['Values 1'] }
 				},
 				title: 'Operations: Rectangle - Orientation Change - No:3'
 			}

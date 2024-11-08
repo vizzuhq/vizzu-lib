@@ -34,10 +34,13 @@ template <typename To>
 		return To::fromString(string);
 	else if constexpr (Type::is_optional_v<To>) {
 		if (string == "null")
-			return std::optional<decltype(parse<Type::optional_t<To>>(
-			    string))>{std::nullopt};
+			return std::optional<std::remove_cvref_t<
+			    decltype(parse<Type::optional_t<To>>(string))>>{};
 		return std::optional{parse<Type::optional_t<To>>(string)};
 	}
+	else if constexpr (std::is_same_v<std::remove_const_t<To>,
+	                       std::string>)
+		return (string);
 	else if constexpr (std::is_constructible_v<To, std::string>)
 		return To(string);
 	else if constexpr (std::is_same_v<To, bool>)

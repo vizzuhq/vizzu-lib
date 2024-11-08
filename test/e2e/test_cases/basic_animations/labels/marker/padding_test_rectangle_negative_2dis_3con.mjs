@@ -104,9 +104,9 @@ const testSteps = [
 		chart.animate({
 			config: {
 				channels: {
-					y: { detach: ['Value 2 (+)'], range: { min: 'auto', max: 'auto' } },
+					y: { detach: ['Value 5 (+/-)'], range: { min: 'auto', max: 'auto' } },
 					x: { attach: ['Value 2 (+)'] },
-					label: { attach: ['Value 2 (+)', 'Country'] }
+					label: { detach: ['Value 5 (+/-)'], attach: ['Value 2 (+)', 'Country'] }
 				},
 				title: '1 Rectangle Marker Label PaddingBottom: 40',
 				coordSystem: 'polar'

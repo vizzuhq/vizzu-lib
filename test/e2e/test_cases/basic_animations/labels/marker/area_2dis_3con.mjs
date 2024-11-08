@@ -172,8 +172,8 @@ const testSteps = [
 		chart.animate({
 			config: {
 				channels: {
-					y: { attach: ['Value 1 (+)'] },
-					label: { attach: ['Value 1 (+)'] }
+					y: { detach: ['Value 2 (+)'], attach: ['Value 1 (+)'] },
+					label: { detach: ['Value 2 (+)'], attach: ['Value 1 (+)'] }
 				},
 				title: 'Change Continuous'
 			},
@@ -192,8 +192,8 @@ const testSteps = [
 		chart.animate({
 			config: {
 				channels: {
-					y: { attach: ['Value 2 (+)'] },
-					label: { attach: ['Value 2 (+)'] }
+					y: { detach: ['Value 1 (+)'], attach: ['Value 2 (+)'] },
+					label: { detach: ['Value 1 (+)'], attach: ['Value 2 (+)'] }
 				},
 				title: 'Polar Coordinate',
 				coordSystem: 'polar'

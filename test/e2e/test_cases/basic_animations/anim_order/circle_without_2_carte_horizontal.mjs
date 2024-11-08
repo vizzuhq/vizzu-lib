@@ -44,7 +44,7 @@ const testSteps = [
 				channels: {
 					lightness: { attach: ['Value 2 (+)'] },
 					label: { attach: ['Country_code'], detach: ['Joy factors'] },
-					size: { attach: ['Value 2 (+)', 'Country_code'] }
+					size: { attach: ['Country_code'] }
 				},
 				title: 'X C+D, Y D - Bubble.'
 			},
@@ -82,7 +82,7 @@ const testSteps = [
 				channels: {
 					y: { detach: ['Joy factors'] },
 					x: { detach: ['Value 2 (+)', 'Country_code'] },
-					size: { attach: ['Value 2 (+)', 'Country_code'] }
+					size: { attach: ['Value 2 (+)'] }
 				},
 				title: 'X C+D, Y D (X first) - Bubble'
 			},
@@ -131,7 +131,7 @@ const testSteps = [
 				channels: {
 					y: { detach: ['Joy factors', 'Value 1 (+)'] },
 					x: { detach: ['Value 2 (+)', 'Country_code'] },
-					size: { attach: ['Value 2 (+)', 'Country_code'] }
+					size: { attach: ['Value 2 (+)'] }
 				},
 				title: 'X C+D, Y D+C (X first) - Bubble'
 			},

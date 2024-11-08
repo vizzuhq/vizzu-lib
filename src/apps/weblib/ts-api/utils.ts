@@ -34,6 +34,10 @@ export function isIterable(value: unknown): value is Record<string, unknown> {
 
 export function iterateObject<T>(obj: T, paramHandler: Visitor, path: string = ''): void {
 	if (obj && obj !== null && typeof obj === 'object') {
+		const isArray = Array.isArray(obj)
+		if (isArray) {
+			paramHandler(path + '.begin', obj.length)
+		}
 		Object.keys(obj).forEach((key) => {
 			const newPath = path + (path.length === 0 ? '' : '.') + key
 			const value = obj[key as keyof T]
@@ -43,6 +47,9 @@ export function iterateObject<T>(obj: T, paramHandler: Visitor, path: string = '
 				paramHandler(newPath, value)
 			}
 		})
+		if (isArray) {
+			paramHandler(path + '.end', obj.length)
+		}
 	}
 }
 

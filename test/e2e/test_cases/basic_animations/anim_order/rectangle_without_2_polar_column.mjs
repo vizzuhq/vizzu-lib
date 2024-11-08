@@ -22,7 +22,6 @@ const testSteps = [
 						x: { attach: ['Joy factors', 'index'] },
 						y: { attach: ['Value 2 (+)'] },
 						size: { detach: ['Value 2 (+)'] }
-						//                   label: { detach: ['Joy factors'] }
 					},
 					title: 'Y C, X D (X first) - Coxcomb',
 					coordSystem: 'polar'
@@ -47,8 +46,7 @@ const testSteps = [
 					channels: {
 						x: { detach: ['Joy factors', 'index'] },
 						y: { detach: ['Value 2 (+)'] },
-						size: { attach: ['Value 2 (+)'] },
-						label: { attach: ['Joy factors'] }
+						size: { attach: ['Value 2 (+)'] }
 					},
 					title: 'Y C, X D (Y first) - Treemap',
 					coordSystem: 'cartesian'
@@ -76,7 +74,7 @@ const testSteps = [
 				channels: {
 					lightness: { attach: ['Value 2 (+)'] },
 					label: { attach: ['Country_code'], detach: ['Joy factors'] },
-					size: { attach: ['Value 2 (+)', 'Country_code'] }
+					size: { attach: ['Country_code'] }
 				},
 				title: 'Y C+D, X D - Treemap.'
 			}
@@ -114,7 +112,7 @@ const testSteps = [
 					channels: {
 						x: { detach: ['Joy factors', 'index'] },
 						y: { detach: ['Value 2 (+)', 'Country_code'] },
-						size: { attach: ['Value 2 (+)', 'Country_code'] },
+						size: { attach: ['Value 2 (+)'] },
 						label: { attach: ['Country_code'] }
 					},
 					title: 'Y C+D, X D (Y first) - Treemap',
@@ -164,7 +162,7 @@ const testSteps = [
 				channels: {
 					x: { detach: ['Joy factors', 'Value 1 (+)'] },
 					y: { detach: ['Value 2 (+)', 'Country_code'] },
-					size: { attach: ['Value 2 (+)', 'Country_code'] }
+					size: { attach: ['Value 2 (+)'] }
 				},
 				title: 'Y C+D, X D+C (Y first) - Treemap',
 				coordSystem: 'cartesian'
@@ -208,7 +206,7 @@ const testSteps = [
 		chart.animate({
 			config: {
 				channels: {
-					x: { attach: ['index'] }
+					x: { detach: ['Value 1 (+)'], attach: ['index'] }
 				},
 				title: 'Y C, X D (X first) - Coxcomb'
 			}

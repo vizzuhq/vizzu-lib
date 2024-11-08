@@ -7,6 +7,8 @@
 #include <string_view>
 #include <vector>
 
+#include "base/conv/tostring.h"
+
 #include "numberscale.h"
 
 namespace Text
@@ -16,15 +18,29 @@ enum class NumberFormat : std::uint8_t { none, grouped, prefixed };
 
 namespace SmartString
 {
-template <char... separators>
-constexpr std::string join(std::span<const std::string_view> il)
+template <class T>
+concept PlusAssignableToString =
+    requires(std::string &str, const T &t) {
+	    {
+		    str += t
+	    } -> std::same_as<std::string &>;
+    };
+
+template <char... separators> constexpr std::string join(auto &&il)
 {
 	std::string res;
-	for (auto sl : il) {
-		if (!res.empty())
-			for (auto ch : {separators...}) res += ch;
+	for (auto &&sl : il) {
+		if (!res.empty()) {
+			static const std::array sep{separators...};
+			static_assert(sep.size() == 1 || sep.size() == 2);
+			res += sep[0];
+			if constexpr (sep.size() > 1) res += sep[1];
+		}
 
-		res += sl;
+		if constexpr (PlusAssignableToString<decltype(sl)>)
+			res += sl;
+		else
+			res += Conv::toString(sl);
 	}
 	return res;
 }
