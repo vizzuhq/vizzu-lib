@@ -6,10 +6,10 @@ chart.animate(
 			align: 'stretch',
 			channels: {
 				y: ['Popularity', 'Kinds'],
-				x: 'Genres',
-				label: { attach: 'Popularity' }
+				x: ['Genres'],
+				label: ['Popularity']
 			},
-			color: 'Kinds'
+			color: ['Kinds']
 		}
 	},
 	0
