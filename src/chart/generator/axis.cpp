@@ -28,8 +28,7 @@ const Axis &Axises::empty()
 	return empty;
 }
 
-void Axises::addLegendInterpolation(
-    [[maybe_unused]] double legendFactor,
+void Axises::addLegendInterpolation(double legendFactor,
     LegendId legendType,
     const Axis &source,
     const Axis &target,

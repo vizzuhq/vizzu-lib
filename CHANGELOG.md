@@ -19,6 +19,7 @@
 - Remove rare fantom empty marker space on scrollable legend.
 - Same legend with different measure series are not interpolated. 
 - Different legend with same dimension series are interpolated.
+- Invisible axis labels are not draw.
 
 ## [0.15.0] - 2024-10-28
 

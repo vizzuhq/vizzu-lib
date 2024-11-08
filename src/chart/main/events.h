@@ -430,14 +430,13 @@ public:
 		}
 
 		static auto dimAxisLabel(const std::string_view &categoryName,
-		    const std::string_view &categoryValue,
-		    const std::string &label,
+		    const std::string &categoryValue,
 		    bool horizontal)
 		{
 			return std::make_unique<CategoryInfo<Text<AxisChild>>>(
 			    categoryName,
 			    categoryValue,
-			    label,
+			    categoryValue,
 			    "label",
 			    horizontal);
 		}

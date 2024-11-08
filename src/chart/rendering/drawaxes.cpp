@@ -338,8 +338,9 @@ void DrawAxes::drawDimensionLabel(bool horizontal,
 		            const ::Anim::Weighted<bool> &str,
 		            double plusWeight = 1.0)
 		    {
+			    if (!str.value) return;
 			    drawLabel.draw(canvas,
-			        str.value ? sindex.value : "",
+			        sindex.value,
 			        posDir,
 			        labelStyle,
 			        0,
@@ -349,7 +350,6 @@ void DrawAxes::drawDimensionLabel(bool horizontal,
 			                plusWeight)),
 			        *rootEvents.draw.plot.axis.label,
 			        Events::Targets::dimAxisLabel(sindex.column,
-			            sindex.value,
 			            sindex.value,
 			            horizontal));
 		    };

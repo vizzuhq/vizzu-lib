@@ -43,12 +43,13 @@ void DrawChart::drawLegend(Gfx::ICanvas &canvas,
 {
 	auto &&legendObj = DrawLegend{{ctx()}};
 
-	for (const auto &legend : plot->axises.leftLegend)
+	for (auto &&legOpt = getOptions().legend;
+	     const auto &legend : plot->axises.leftLegend)
 		if (legend)
 			legendObj.draw(canvas,
 			    bounds,
 			    legend->type,
-			    getOptions().legend.factor(legend->type),
+			    legOpt.factor(legend->type),
 			    legend->calc);
 }
 

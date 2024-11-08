@@ -606,6 +606,8 @@ void PlotBuilder::normalizeColors()
 				item.colorBase = ColorBase(
 				    static_cast<uint32_t>(item.range.middle()),
 				    0.5);
+
+			stats.setIfRange(LegendId::color, color);
 			break;
 		case LegendId::lightness:
 			calcLegend->calc.measure.range = lightness;
@@ -616,6 +618,8 @@ void PlotBuilder::normalizeColors()
 				    lightness.rescale(item.range.getMax()));
 				item.colorBase = ColorBase(0U, item.range.middle());
 			}
+
+			stats.setIfRange(LegendId::lightness, lightness);
 			break;
 		default:;
 		}
