@@ -202,12 +202,14 @@ bool DimensionAxis::setLabels(double step)
 	step = std::max(step, 1.0, Math::Floating::less);
 	double currStep = 0.0;
 
-	std::multimap<double, std::reference_wrapper<Item>> reorder;
-	for (auto &ref : std::ranges::views::values(values))
-		reorder.emplace(ref.range.getMin(), ref);
+	using SortedItems =
+		std::multiset<std::reference_wrapper<Item>, decltype(
+			[] (Item& lhs, Item &rhs)
+			{
+				return Math::Floating::less(lhs.range.getMin(), rhs.range.getMin());
+			})>;
 
-	for (int curr{};
-	     Item & item : std::ranges::views::values(reorder)) {
+	for (int curr{}; Item & item : SortedItems{begin(), end()}) {
 		if (++curr <= currStep) continue;
 		currStep += step;
 		item.label = true;
