@@ -28,10 +28,7 @@ Marker::Marker(const Options &options,
     const Data::SeriesList &subAxisList,
     const Data::MultiIndex &index,
     bool needMarkerInfo) :
-    enabled(true),
-    cellInfo(enabled || needMarkerInfo
-                 ? data.cellInfo(index, needMarkerInfo)
-                 : nullptr),
+    cellInfo(data.cellInfo(index, needMarkerInfo)),
     sizeId(data.getId(options.getChannels()
                           .at(ChannelId::size)
                           .dimensionsWithLevel(),
@@ -147,10 +144,7 @@ bool Marker::connectMarkers(bool first,
 
 Conv::JSONObj &&Marker::appendToJSON(Conv::JSONObj &&jsonObj) const
 {
-	if (cellInfo) return std::move(jsonObj).merge(cellInfo->json);
-	jsonObj.nested("categories");
-	jsonObj.nested("values");
-	return std::move(jsonObj)("index", idx);
+	return std::move(jsonObj).merge(cellInfo->json);
 }
 
 double Marker::getValueForChannel(const Channels &channels,

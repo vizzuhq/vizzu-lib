@@ -24,6 +24,7 @@ struct ChannelStats
 	    std::vector<std::optional<Data::SliceIndex>>>;
 
 	Refl::EnumArray<ChannelId, TrackType> tracked;
+	Math::Range<double> lightness;
 
 	template <ChannelIdLike T>
 	[[nodiscard]] const TrackType &at(const T &id) const

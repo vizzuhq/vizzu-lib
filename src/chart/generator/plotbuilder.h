@@ -38,7 +38,7 @@ private:
 	void linkMarkers(Buckets &subBuckets);
 	[[nodiscard]] bool linkMarkers(const Buckets &buckets,
 	    bool main) const;
-	void calcAxises(const Data::DataTable &dataTable);
+	void normalizeXY();
 	void calcLegendAndLabel(const Data::DataTable &dataTable);
 	void calcAxis(const Data::DataTable &dataTable, AxisId type);
 	void addAlignment(const Buckets &subBuckets) const;

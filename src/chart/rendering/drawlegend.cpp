@@ -187,7 +187,6 @@ void DrawLegend::drawDimension(Info &info) const
 			        Events::Targets::dimLegendLabel(
 			            info.dimension.category,
 			            item.categoryValue,
-			            item.categoryValue,
 			            info.properties),
 			        {.colorTransform = Gfx::ColorTransform::Opacity(
 			             Math::FuzzyBool::And(alpha,
