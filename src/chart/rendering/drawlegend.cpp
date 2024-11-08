@@ -237,16 +237,16 @@ void DrawLegend::drawMarker(Info &info,
 	info.canvas.setLineColor(color);
 	info.canvas.setLineWidth(0);
 
-	auto radius = rootStyle.legend.marker.type->factor(
-	                  Styles::Legend::Marker::Type::circle)
-	            * rect.size.minSize() / 2.0;
-
-	auto markerElement = Events::Targets::legendMarker(sindex.column,
-	    sindex.value,
-	    info.properties);
-
-	if (events.marker->invoke(
+	if (auto &&markerElement{
+	        Events::Targets::legendMarker(sindex.column,
+	            sindex.value,
+	            info.properties)};
+	    events.marker->invoke(
 	        Events::OnRectDrawEvent(*markerElement, {rect, false}))) {
+		auto radius = rootStyle.legend.marker.type->factor(
+		                  Styles::Legend::Marker::Type::circle)
+		            * rect.size.minSize() / 2.0;
+
 		Gfx::Draw::RoundedRect(info.canvas, rect, radius);
 		renderedChart.emplace(Geom::TransformedRect::fromRect(rect),
 		    std::move(markerElement));
