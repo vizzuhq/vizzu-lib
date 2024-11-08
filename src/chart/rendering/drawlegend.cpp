@@ -176,25 +176,19 @@ void DrawLegend::drawDimension(Info &info) const
 		    getMarkerRect(info, itemRect),
 		    needGradient);
 
-		item.label.visit(
-		    [&](::Anim::InterpolateIndex, const auto &weighted)
-		    {
-			    label.draw(info.canvas,
-			        getLabelRect(info, itemRect),
-			        weighted.value ? sindex.value : "",
-			        style.label,
-			        *events.label,
-			        Events::Targets::dimLegendLabel(sindex.column,
-			            sindex.value,
-			            info.properties),
-			        {.colorTransform = Gfx::ColorTransform::Opacity(
-			             Math::FuzzyBool::And(alpha,
-			                 weighted.weight)),
-			            .gradient = needGradient
-			                          ? std::ref(info.fadeBarGradient)
-			                          : decltype(DrawLabel::Options::
-			                                  gradient){}});
-		    });
+		label.draw(info.canvas,
+		    getLabelRect(info, itemRect),
+		    sindex.value,
+		    style.label,
+		    *events.label,
+		    Events::Targets::dimLegendLabel(sindex.column,
+		        sindex.value,
+		        info.properties),
+		    {.colorTransform = Gfx::ColorTransform::Opacity(alpha),
+		        .gradient =
+		            needGradient
+		                ? std::ref(info.fadeBarGradient)
+		                : decltype(DrawLabel::Options::gradient){}});
 	}
 }
 
