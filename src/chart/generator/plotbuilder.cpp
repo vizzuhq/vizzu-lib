@@ -374,7 +374,7 @@ void PlotBuilder::calcLegendAndLabel(const Data::DataTable &dataTable)
 			for (std::uint32_t i{}; i < indices.size(); ++i)
 				if (const auto &sliceIndex = indices[i]; sliceIndex) {
 
-					double rangeId = static_cast<double>(i);
+					auto rangeId = static_cast<double>(i);
 					std::optional<ColorBase> color;
 					if (type == LegendId::color)
 						color = ColorBase(i, 0.5);
