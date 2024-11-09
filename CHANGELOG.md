@@ -20,6 +20,7 @@
 - Same legend with different measure series are not interpolated. 
 - Different legend with same dimension series are interpolated.
 - Invisible axis labels are not draw.
+- Fix chaotic axis labels on sorted chart with multiple dimension.
 
 ## [0.15.0] - 2024-10-28
 

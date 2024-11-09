@@ -52,9 +52,9 @@ PlotBuilder::PlotBuilder(const Data::DataTable &dataTable,
 	else
 		addAxisLayout(subBuckets, mainBucketSize, dataTable);
 
-	calcLegendAndLabel(dataTable);
 	normalizeColors();
 	normalizeSizes();
+	calcLegendAndLabel(dataTable);
 }
 
 void PlotBuilder::addAxisLayout(Buckets &subBuckets,
@@ -371,16 +371,26 @@ void PlotBuilder::calcLegendAndLabel(const Data::DataTable &dataTable)
 			          || (type == LegendId::lightness
 			              && scale.labelLevel == 0);
 			double count{};
-			for (std::size_t i{}; i < indices.size(); ++i)
-				if (const auto &sliceIndex = indices[i];
-				    sliceIndex
-				    && calcLegend.dimension.add(*sliceIndex,
-				        count,
-				        {static_cast<double>(i),
-				            static_cast<double>(i)},
-				        merge,
-				        true))
-					count += 1;
+			for (std::uint32_t i{}; i < indices.size(); ++i)
+				if (const auto &sliceIndex = indices[i]; sliceIndex) {
+
+					double rangeId = static_cast<double>(i);
+					std::optional<ColorBase> color;
+					if (type == LegendId::color)
+						color = ColorBase(i, 0.5);
+					else if (type == LegendId::lightness) {
+						rangeId = stats.lightness.rescale(rangeId);
+						color = ColorBase(0U, rangeId);
+					}
+
+					if (calcLegend.dimension.add(*sliceIndex,
+					        {rangeId, rangeId},
+					        count,
+					        color,
+					        true,
+					        merge))
+						count += 1;
+				}
 
 			if (auto &&series = scale.labelSeries();
 			    series && isAutoTitle && calcLegend.dimension.empty())
@@ -426,7 +436,12 @@ void PlotBuilder::calcAxis(const Data::DataTable &dataTable,
 			    scale.step.getValue()};
 	}
 	else {
-		for (auto merge = scale.labelLevel == 0;
+		for (auto merge =
+		         scale.labelLevel == 0
+		         && ((type == AxisId::x)
+		                 != plot->getOptions()->isHorizontal()
+		             || plot->getOptions()->sort != Sort::byValue
+		             || scale.dimensions().size() == 1);
 		     const auto &marker : plot->markers) {
 			if (!marker.enabled) continue;
 
@@ -438,10 +453,11 @@ void PlotBuilder::calcAxis(const Data::DataTable &dataTable,
 
 			if (const auto &slice = id.label)
 				axis.dimension.add(*slice,
-				    static_cast<double>(id.itemId),
 				    marker.getSizeBy(type == AxisId::x),
-				    merge,
-				    false);
+				    static_cast<double>(id.itemId),
+				    {},
+				    false,
+				    merge);
 		}
 		if (auto &&series = scale.labelSeries();
 		    !axis.dimension.setLabels(scale.step.getValue(1.0))
@@ -554,6 +570,8 @@ void PlotBuilder::normalizeSizes()
 			marker.sizeFactor = size.getMax() == size.getMin()
 			                      ? 0
 			                      : size.normalize(marker.sizeFactor);
+
+		stats.setIfRange(LegendId::size, size);
 	}
 	else
 		for (auto &marker : plot->markers) marker.sizeFactor = 0;
@@ -597,28 +615,11 @@ void PlotBuilder::normalizeColors()
 	}
 
 	if (auto &&legend = plot->options->legend.get()) {
-		switch (auto &calcLegend = plot->axises.leftLegend[0];
-		        *legend) {
+		switch (*legend) {
 		case LegendId::color:
-			calcLegend->calc.measure.range = color;
-
-			for (auto &item : calcLegend->calc.dimension)
-				item.colorBase = ColorBase(
-				    static_cast<uint32_t>(item.range.middle()),
-				    0.5);
-
 			stats.setIfRange(LegendId::color, color);
 			break;
 		case LegendId::lightness:
-			calcLegend->calc.measure.range = lightness;
-
-			for (auto &item : calcLegend->calc.dimension) {
-				item.range = Math::Range<double>::Raw(
-				    lightness.rescale(item.range.getMin()),
-				    lightness.rescale(item.range.getMax()));
-				item.colorBase = ColorBase(0U, item.range.middle());
-			}
-
 			stats.setIfRange(LegendId::lightness, lightness);
 			break;
 		default:;

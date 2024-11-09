@@ -92,6 +92,7 @@ struct DimensionAxis
 
 		Item(Math::Range<double> range,
 		    double value,
+		    const std::optional<ColorBase> &color,
 		    bool setCatAsLabel) :
 		    start(true),
 		    end(true),
@@ -99,7 +100,9 @@ struct DimensionAxis
 		    value(value),
 		    label(setCatAsLabel),
 		    weight(1.0)
-		{}
+		{
+			if (color) colorBase = *color;
+		}
 
 		Item(const Item &item, bool starter, double factor) :
 		    start(starter),
@@ -127,10 +130,11 @@ struct DimensionAxis
 
 	DimensionAxis() = default;
 	bool add(const Data::SliceIndex &index,
-	    double value,
 	    const Math::Range<double> &range,
-	    bool merge,
-	    bool label);
+	    double value,
+	    const std::optional<ColorBase> &color,
+	    bool label,
+	    bool merge);
 	[[nodiscard]] bool operator==(
 	    const DimensionAxis &other) const = default;
 

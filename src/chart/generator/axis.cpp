@@ -234,20 +234,39 @@ MeasureAxis interpolate(const MeasureAxis &op0,
 	return res;
 }
 bool DimensionAxis::add(const Data::SliceIndex &index,
-    double value,
     const Math::Range<double> &range,
-    bool merge,
-    bool label)
+    double value,
+    const std::optional<ColorBase> &color,
+    bool label,
+    bool merge)
 {
+	auto [it, end] = values.equal_range(index);
 	if (merge) {
-		if (auto it = values.find(index); it != values.end()) {
+		if (it != end) {
+			if (auto &col = it->second.colorBase;
+			    col.hasOneValue() && color && col->value.isDiscrete()
+			    && color->isDiscrete()
+			    && col->value.getIndex() == color->getIndex())
+				col->value.setLightness(
+				    col->value.getLightness()
+				    + (color->getLightness()
+				          - col->value.getLightness())
+				          / (range.middle()
+				              - it->second.range.middle())
+				          * (range.getMax()
+				              - it->second.range.getMax())
+				          / 2);
+
 			it->second.range.include(range);
 			return false;
 		}
 	}
+	else
+		while (it != end)
+			if (it++->second.range == range) return false;
 	values.emplace(std::piecewise_construct,
 	    std::tuple{index},
-	    std::tuple{range, value, label});
+	    std::tuple{range, value, color, label});
 
 	return true;
 }
