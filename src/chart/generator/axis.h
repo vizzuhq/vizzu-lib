@@ -85,22 +85,22 @@ struct DimensionAxis
 		bool start;
 		bool end;
 		Math::Range<double> range;
-		double value;
+		::Anim::Interpolated<std::uint32_t> position;
 		::Anim::Interpolated<ColorBase> colorBase;
 		::Anim::Interpolated<bool> label;
 		double weight;
 
 		Item(Math::Range<double> range,
-		    double value,
+		    const std::optional<std::uint32_t> &position,
 		    const std::optional<ColorBase> &color,
 		    bool setCatAsLabel) :
 		    start(true),
 		    end(true),
 		    range(range),
-		    value(value),
 		    label(setCatAsLabel),
 		    weight(1.0)
 		{
+			if (position) this->position = *position;
 			if (color) colorBase = *color;
 		}
 
@@ -108,7 +108,7 @@ struct DimensionAxis
 		    start(starter),
 		    end(!starter),
 		    range(item.range),
-		    value(item.value),
+		    position(item.position),
 		    colorBase(item.colorBase),
 		    label(item.label),
 		    weight(item.weight * factor)
@@ -117,7 +117,7 @@ struct DimensionAxis
 		bool operator==(const Item &other) const
 		{
 			return range == other.range && weight == other.weight
-			    && value == other.value;
+			    && position == other.position;
 		}
 
 		[[nodiscard]] bool presentAt(
@@ -132,7 +132,7 @@ struct DimensionAxis
 	DimensionAxis() = default;
 	bool add(const Data::SliceIndex &index,
 	    const Math::Range<double> &range,
-	    double value,
+	    const std::optional<std::uint32_t> &position,
 	    const std::optional<ColorBase> &color,
 	    bool label,
 	    bool merge);

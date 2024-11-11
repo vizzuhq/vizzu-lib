@@ -151,7 +151,8 @@ void DrawLegend::drawDimension(Info &info) const
 	     info.axis.dimension.getValues()) {
 		if (item.weight <= 0) continue;
 
-		auto itemRect = getItemRect(info, item.value);
+		auto itemRect =
+		    getItemRect(info, item.position.calculate<double>());
 
 		if (itemRect.y().getMin() > info.markerWindowRect.y().getMax()
 		    || itemRect.y().getMax()
@@ -315,15 +316,13 @@ Geom::Rect DrawLegend::getBarRect(const Info &info)
 
 Math::Range<double> DrawLegend::markersLegendRange(const Info &info)
 {
-	Math::Range<double> res;
-	if (info.measureEnabled > 0.0) {
-		res.include(0.0);
-		res.include(6.0 * info.itemHeight);
-	}
+	Math::Range res{0.0, 0.0};
+
+	if (info.measureEnabled > 0.0) res.include(6.0 * info.itemHeight);
 
 	for (const auto &item : info.axis.dimension)
-		res.include({item.value * info.itemHeight,
-		    (item.value + 1) * info.itemHeight});
+		res.include((item.position.calculate<double>() + 1)
+		            * info.itemHeight);
 
 	return res;
 }

@@ -370,8 +370,7 @@ void PlotBuilder::calcLegendAndLabel(const Data::DataTable &dataTable)
 			auto merge = type == LegendId::size
 			          || (type == LegendId::lightness
 			              && scale.labelLevel == 0);
-			double count{};
-			for (std::uint32_t i{}; i < indices.size(); ++i)
+			for (std::uint32_t i{}, count{}; i < indices.size(); ++i)
 				if (const auto &sliceIndex = indices[i]; sliceIndex) {
 
 					auto rangeId = static_cast<double>(i);
@@ -389,7 +388,7 @@ void PlotBuilder::calcLegendAndLabel(const Data::DataTable &dataTable)
 					        color,
 					        true,
 					        merge))
-						count += 1;
+						++count;
 				}
 
 			if (auto &&series = scale.labelSeries();

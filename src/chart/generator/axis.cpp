@@ -235,7 +235,7 @@ MeasureAxis interpolate(const MeasureAxis &op0,
 }
 bool DimensionAxis::add(const Data::SliceIndex &index,
     const Math::Range<double> &range,
-    double value,
+    const std::optional<std::uint32_t> &position,
     const std::optional<ColorBase> &color,
     bool label,
     bool merge)
@@ -258,7 +258,7 @@ bool DimensionAxis::add(const Data::SliceIndex &index,
 			if (it++->second.range == range) return false;
 	values.emplace(std::piecewise_construct,
 	    std::tuple{index},
-	    std::tuple{range, value, color, label});
+	    std::tuple{range, position, color, label});
 
 	return true;
 }
@@ -324,9 +324,9 @@ DimensionAxis interpolate(const DimensionAxis &op0,
 			resIt->second.label =
 			    interpolate(resIt->second.label, item.label, factor);
 
-			resIt->second.value =
-			    Math::interpolate(resIt->second.value,
-			        item.value,
+			resIt->second.position =
+			    interpolate(resIt->second.position,
+			        item.position,
 			        factor);
 
 			resIt->second.weight += item.weight * factor;
