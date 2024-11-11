@@ -236,7 +236,7 @@ void Sheet::setAfterStyles(Gen::Plot &plot, const Geom::Size &size)
 		for (const auto &[label, item] :
 		    plot.axises.at(Gen::AxisId::x).dimension.getValues()) {
 
-			if (item.weight == 0 || !item.label.get()) continue;
+			if (!item.label.get()) continue;
 
 			auto textBoundary =
 			    Gfx::ICanvas::textBoundary(font, label.value);

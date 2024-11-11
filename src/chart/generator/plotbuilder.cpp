@@ -4,12 +4,12 @@
 #include <cmath>
 #include <cstddef>
 #include <cstdint>
-#include <functional>
 #include <limits>
 #include <map>
 #include <memory>
 #include <optional>
 #include <ranges>
+#include <stdexcept>
 #include <tuple>
 #include <utility>
 #include <vector>
@@ -31,6 +31,7 @@
 #include "dataframe/old/types.h"
 
 #include "buckets.h"
+#include "colorbase.h"
 #include "plot.h"
 
 namespace Vizzu::Gen

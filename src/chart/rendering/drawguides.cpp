@@ -38,7 +38,7 @@ void DrawGuides::draw(bool horizontal)
 		for (auto it = axis.begin(), end = std::prev(axis.end());
 		     it != end;
 		     ++it) {
-			if (auto &&weight = (*it).weight; weight > 0)
+			if (auto &&weight = (*it).weight(axis.factor); weight > 0)
 				drawGuide(horizontal,
 				    (*it).range.getMax(),
 				    baseColor

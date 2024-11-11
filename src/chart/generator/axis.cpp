@@ -2,9 +2,12 @@
 
 #include <algorithm>
 #include <cmath>
+#include <cstdint>
+#include <functional>
 #include <limits>
 #include <map>
 #include <optional>
+#include <set>
 #include <string>
 #include <string_view>
 #include <tuple>
@@ -18,6 +21,8 @@
 #include "base/math/renard.h"
 #include "chart/options/channel.h"
 #include "dataframe/old/types.h"
+
+#include "colorbase.h"
 
 namespace Vizzu::Gen
 {
@@ -37,8 +42,12 @@ void Axises::addLegendInterpolation(double legendFactor,
 	if (&source == &empty() && &target == &empty()) return;
 	using Math::Niebloid::interpolate;
 
-	if (source.measure.enabled.get() && target.measure.enabled.get()
-	    && source.measure.series != target.measure.series) {
+	if (((source.measure.enabled.get()
+	         && target.measure.enabled.get())
+	        || (!source.dimension.empty()
+	            && !target.dimension.empty()))
+	    && source.seriesName() != target.seriesName()) {
+		if (!leftLegend[0]) leftLegend[0].emplace(legendType);
 		if (!leftLegend[1]) leftLegend[1].emplace(legendType);
 
 		leftLegend[0]->calc = interpolate(source, empty(), factor);
@@ -46,35 +55,43 @@ void Axises::addLegendInterpolation(double legendFactor,
 		return;
 	}
 
-	auto &legendObj =
-	    leftLegend[leftLegend[0]
-	               && leftLegend[0]->type != legendType];
+	auto second = leftLegend[0] && leftLegend[0]->type != legendType;
+	auto &legendObj = leftLegend[second];
 	if (!legendObj) legendObj.emplace(legendType);
 	legendObj->calc = interpolate(source, target, factor);
 	++legendObj->interpolated;
 
-	if (leftLegend[0] && leftLegend[1]
-	    && leftLegend[0]->interpolated == leftLegend[1]->interpolated
-	    && !leftLegend[0]->calc.dimension.empty()
-	    && !leftLegend[1]->calc.dimension.empty()
-	    && leftLegend[0]
-	               ->calc.dimension.getValues()
-	               .begin()
-	               ->first.column
-	           == leftLegend[1]
-	                  ->calc.dimension.getValues()
-	                  .begin()
-	                  ->first.column) {
-		for (auto &item : leftLegend[0]->calc.dimension)
-			item.weight = 1.0;
-		for (auto &item : leftLegend[1]->calc.dimension)
-			item.weight = 1.0;
+	if (!second) legendFactor = 1.0 - legendFactor;
+
+	if (auto sameInterpolated =
+	        leftLegend[0] && leftLegend[1]
+	        && leftLegend[0]->interpolated
+	               == leftLegend[1]->interpolated
+	        && leftLegend[0]->calc.seriesName()
+	               == leftLegend[1]->calc.seriesName();
+	    sameInterpolated && !leftLegend[0]->calc.dimension.empty()
+	    && !leftLegend[1]->calc.dimension.empty()) {
 
 		leftLegend[1]->calc.dimension =
 		    leftLegend[0]->calc.dimension =
 		        interpolate(leftLegend[0]->calc.dimension,
 		            leftLegend[1]->calc.dimension,
 		            legendFactor);
+	}
+	else if (sameInterpolated
+	         && leftLegend[0]->calc.measure.enabled.factor(true) > 0
+	         && leftLegend[1]->calc.measure.enabled.factor(true)
+	                > 0) {
+
+		leftLegend[0]->calc.measure.enabled =
+		    ::Anim::Interpolated{true};
+		leftLegend[1]->calc.measure.enabled =
+		    ::Anim::Interpolated{true};
+
+		leftLegend[1]->calc.measure = leftLegend[0]->calc.measure =
+		    interpolate(leftLegend[0]->calc.measure,
+		        leftLegend[1]->calc.measure,
+		        legendFactor);
 	}
 }
 
@@ -114,6 +131,7 @@ MeasureAxis interpolate(const MeasureAxis &op0,
 {
 	MeasureAxis res;
 	res.enabled = interpolate(op0.enabled, op1.enabled, factor);
+	res.series = op0.series;
 
 	if (op0.enabled.get() && op1.enabled.get()) {
 		constexpr auto MAX = std::numeric_limits<double>::max() / 2;
@@ -226,6 +244,7 @@ MeasureAxis interpolate(const MeasureAxis &op0,
 		res.unit = op0.unit;
 	}
 	else if (op1.enabled.get()) {
+		res.series = op1.series;
 		res.range = op1.range;
 		res.step = op1.step;
 		res.unit = op1.unit;
@@ -292,10 +311,12 @@ DimensionAxis interpolate(const DimensionAxis &op0,
 {
 	DimensionAxis res;
 
+	res.factor = factor;
+
 	for (const auto &[slice, item] : op0.values)
 		res.values.emplace(std::piecewise_construct,
 		    std::tuple{slice},
-		    std::forward_as_tuple(item, true, 1 - factor));
+		    std::forward_as_tuple(item, true));
 
 	for (const auto &[slice, item] : op1.values) {
 		auto [resIt, end] = res.values.equal_range(slice);
@@ -306,7 +327,7 @@ DimensionAxis interpolate(const DimensionAxis &op0,
 			res.values.emplace_hint(resIt,
 			    std::piecewise_construct,
 			    std::tuple{slice},
-			    std::forward_as_tuple(item, false, factor));
+			    std::forward_as_tuple(item, false));
 		}
 		else {
 			resIt->second.end = true;
@@ -328,8 +349,6 @@ DimensionAxis interpolate(const DimensionAxis &op0,
 			    interpolate(resIt->second.position,
 			        item.position,
 			        factor);
-
-			resIt->second.weight += item.weight * factor;
 		}
 	}
 

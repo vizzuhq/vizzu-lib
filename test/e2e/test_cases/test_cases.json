@@ -296,7 +296,7 @@
 			"refs": ["d80d608"]
 		},
 		"operations/orientation_tutorial_data/area_orientation": {
-			"refs": ["6c42aad"]
+			"refs": ["1de53d2"]
 		},
 		"operations/orientation_tutorial_data/line_orientation": {
 			"refs": ["1777877"]
@@ -2858,7 +2858,7 @@
 			"refs": ["75c809b"]
 		},
 		"ww_noFade/wNoFade_cases/2_des_pol-without/rectangle/04b_d-w_rec_2c": {
-			"refs": ["302238b"]
+			"refs": ["c8813bc"]
 		},
 		"ww_noFade/wNoFade_cases/2_des_pol-without/rectangle/05a_d-w_rec_2c": {
 			"refs": ["43f2861"]

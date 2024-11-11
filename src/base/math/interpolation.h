@@ -38,11 +38,13 @@ template <class T> concept interpolatable = interpolatable_t<T>{}();
 struct interpolate_t
 {
 	template <class T>
-	constexpr T
+	constexpr auto
 	operator()(const T &a, const T &b, double factor) const
 	{
 		using Math::interpolate;
-		if constexpr (interpolatable<T>)
+		if constexpr (std::is_same_v<std::remove_cvref_t<T>, bool>)
+			return Math::interpolate<double>(a, b, factor);
+		else if constexpr (interpolatable<T>)
 			return interpolate(a, b, factor);
 		else {
 			return Refl::visit<T>(

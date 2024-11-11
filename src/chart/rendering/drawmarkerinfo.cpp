@@ -1,6 +1,5 @@
 #include "drawmarkerinfo.h"
 
-#include <algorithm>
 #include <utility>
 
 #include "base/anim/interpolated.h"

@@ -33,7 +33,8 @@ private:
 	void drawDimensionLabel(bool horizontal,
 	    const Geom::Point &origo,
 	    const Gen::DimensionAxis::Item &item,
-	    const Data::SliceIndex &index) const;
+	    const Data::SliceIndex &index,
+	    double weight) const;
 };
 
 }

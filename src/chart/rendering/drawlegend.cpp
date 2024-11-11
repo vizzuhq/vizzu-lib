@@ -4,7 +4,6 @@
 #include <cstddef>
 #include <functional>
 #include <string>
-#include <string_view>
 #include <utility>
 
 #include "base/anim/interpolated.h"
@@ -19,12 +18,14 @@
 #include "base/math/fuzzybool.h"
 #include "base/math/range.h"
 #include "base/text/smartstring.h"
+#include "chart/generator/axis.h"
 #include "chart/generator/plot.h" // NOLINT(misc-include-cleaner)
 #include "chart/main/events.h"
 #include "chart/options/channel.h"
 #include "chart/rendering/colorbuilder.h"
 #include "chart/rendering/drawbackground.h"
 #include "chart/rendering/drawlabel.h"
+#include "dataframe/old/types.h"
 
 namespace Vizzu::Draw
 {
@@ -149,7 +150,8 @@ void DrawLegend::drawDimension(Info &info) const
 {
 	for (auto label = DrawLabel{{ctx()}}; const auto &[sindex, item] :
 	     info.axis.dimension.getValues()) {
-		if (item.weight <= 0) continue;
+		auto weight = item.weight(info.axis.dimension.factor);
+		if (weight <= 0) continue;
 
 		auto itemRect =
 		    getItemRect(info, item.position.calculate<double>());
@@ -166,8 +168,7 @@ void DrawLegend::drawDimension(Info &info) const
 		           < info.markerWindowRect.y().getMin()
 		                 + info.fadeHeight;
 
-		const auto alpha =
-		    Math::FuzzyBool::And(item.weight, info.weight);
+		const auto alpha = Math::FuzzyBool::And(weight, info.weight);
 
 		drawMarker(info,
 		    sindex,
