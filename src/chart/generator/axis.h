@@ -93,11 +93,11 @@ struct DimensionAxis
 		Item(Math::Range<double> range,
 		    const std::optional<std::uint32_t> &position,
 		    const std::optional<ColorBase> &color,
-		    bool setCatAsLabel) :
+		    bool setCategoryAsLabel) :
 		    start(true),
 		    end(true),
 		    range(range),
-		    label(setCatAsLabel),
+		    label(setCategoryAsLabel),
 		    weight(1.0)
 		{
 			if (position) this->position = *position;
@@ -175,13 +175,13 @@ struct Axis
 
 struct Axises
 {
-	struct CalcLegend
+	struct CalculatedLegend
 	{
 		LegendId type;
 		Axis calc;
 		std::uint64_t interpolated{};
 	};
-	std::array<std::optional<CalcLegend>, 2> leftLegend;
+	std::array<std::optional<CalculatedLegend>, 2> leftLegend;
 
 	Refl::EnumArray<AxisId, Axis> axises;
 	struct Label
