@@ -313,45 +313,64 @@ DimensionAxis interpolate(const DimensionAxis &op0,
 
 	res.factor = factor;
 
-	for (const auto &[slice, item] : op0.values)
-		res.values.emplace(std::piecewise_construct,
-		    std::tuple{slice},
-		    std::forward_as_tuple(item, true));
-
-	for (const auto &[slice, item] : op1.values) {
-		auto [resIt, end] = res.values.equal_range(slice);
-
-		while (resIt != end && resIt->second.end) { ++resIt; }
-
-		if (resIt == end) {
-			res.values.emplace_hint(resIt,
-			    std::piecewise_construct,
-			    std::tuple{slice},
-			    std::forward_as_tuple(item, false));
+	for (auto first1 = op0.values.begin(),
+	          first2 = op1.values.begin(),
+	          last1 = op0.values.end(),
+	          last2 = op1.values.end();
+	     first1 != last1 || first2 != last2;)
+		if (first2 == last2
+		    || (first1 != last1 && first1->first < first2->first)) {
+			res.values.emplace(std::piecewise_construct,
+			    std::tuple{first1->first},
+			    std::forward_as_tuple(first1->second, true));
+			++first1;
+		}
+		else if (first1 == last1 || first2->first < first1->first) {
+			res.values.emplace(std::piecewise_construct,
+			    std::tuple{first2->first},
+			    std::forward_as_tuple(first2->second, false));
+			++first2;
 		}
 		else {
-			resIt->second.end = true;
+			auto key = first1->first;
+			auto to1 = op0.values.upper_bound(key);
+			auto to2 = op1.values.upper_bound(key);
 
-			resIt->second.range =
-			    Math::interpolate(resIt->second.range,
-			        item.range,
-			        factor);
+			while (first1 != to1 && first2 != to2)
+				res.values.emplace(key,
+				    interpolate(first1++->second,
+				        first2++->second,
+				        factor));
 
-			resIt->second.colorBase =
-			    interpolate(resIt->second.colorBase,
-			        item.colorBase,
-			        factor);
+			for (auto &latest = std::prev(to2)->second; first1 != to1;
+			     ++first1)
+				res.values
+				    .emplace(key,
+				        interpolate(first1->second, latest, factor))
+				    ->second.end = false;
 
-			resIt->second.label =
-			    interpolate(resIt->second.label, item.label, factor);
-
-			resIt->second.position =
-			    interpolate(resIt->second.position,
-			        item.position,
-			        factor);
+			for (auto &latest = std::prev(to1)->second; first2 != to2;
+			     ++first2)
+				res.values
+				    .emplace(key,
+				        interpolate(latest, first2->second, factor))
+				    ->second.start = false;
 		}
-	}
 
+	return res;
+}
+
+DimensionAxis::Item interpolate(const DimensionAxis::Item &op0,
+    const DimensionAxis::Item &op1,
+    double factor)
+{
+	using Math::Niebloid::interpolate;
+	DimensionAxis::Item res;
+	res.start = res.end = true;
+	res.range = interpolate(op0.range, op1.range, factor);
+	res.colorBase = interpolate(op0.colorBase, op1.colorBase, factor);
+	res.label = interpolate(op0.label, op1.label, factor);
+	res.position = interpolate(op0.position, op1.position, factor);
 	return res;
 }
 

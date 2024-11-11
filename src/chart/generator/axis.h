@@ -81,6 +81,8 @@ struct DimensionAxis
 
 	class Item
 	{
+		explicit Item() = default;
+
 	public:
 		bool start;
 		bool end;
@@ -127,6 +129,9 @@ struct DimensionAxis
 		{
 			return Math::Niebloid::interpolate(start, end, atEnd);
 		}
+
+		friend Item
+		interpolate(const Item &op0, const Item &op1, double factor);
 	};
 	using Values = std::multimap<Data::SliceIndex, Item>;
 

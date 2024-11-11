@@ -27,6 +27,10 @@ const testSteps = [
 		chart.animate({
 			lightness: 'Bar',
 			y: ['Foo3', 'Bar']
+		}),
+	(chart) =>
+		chart.animate({
+			sort: 'none'
 		})
 ]
 
