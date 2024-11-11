@@ -84,8 +84,8 @@ struct DimensionAxis
 		explicit Item() = default;
 
 	public:
-		bool start;
-		bool end;
+		bool start{};
+		bool end{};
 		Math::Range<double> range;
 		::Anim::Interpolated<std::uint32_t> position;
 		::Anim::Interpolated<ColorBase> colorBase;

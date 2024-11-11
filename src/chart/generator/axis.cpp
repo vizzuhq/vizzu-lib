@@ -342,14 +342,16 @@ DimensionAxis interpolate(const DimensionAxis &op0,
 				        first2++->second,
 				        factor));
 
-			for (auto &latest = std::prev(to2)->second; first1 != to1;
+			for (const auto &latest = std::prev(to2)->second;
+			     first1 != to1;
 			     ++first1)
 				res.values
 				    .emplace(key,
 				        interpolate(first1->second, latest, factor))
 				    ->second.end = false;
 
-			for (auto &latest = std::prev(to1)->second; first2 != to2;
+			for (const auto &latest = std::prev(to1)->second;
+			     first2 != to2;
 			     ++first2)
 				res.values
 				    .emplace(key,
