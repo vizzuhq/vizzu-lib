@@ -454,7 +454,7 @@ void PlotBuilder::calcAxis(const Data::DataTable &dataTable,
 			if (const auto &slice = id.label)
 				axis.dimension.add(*slice,
 				    marker.getSizeBy(type == AxisId::x),
-				    static_cast<double>(id.itemId),
+				    {},
 				    {},
 				    false,
 				    merge);
@@ -606,7 +606,6 @@ void PlotBuilder::normalizeColors()
 	                .range.getRange(lightness);
 
 	for (auto &marker : plot->markers) {
-		if (!marker.enabled) continue;
 		auto &&cbase = marker.colorBase->value;
 		cbase.setLightness(lightness.rescale(cbase.getLightness()));
 

@@ -243,21 +243,13 @@ bool DimensionAxis::add(const Data::SliceIndex &index,
 	auto [it, end] = values.equal_range(index);
 	if (merge) {
 		if (it != end) {
+			it->second.range.include(range);
 			if (auto &col = it->second.colorBase;
 			    col.hasOneValue() && color && col->value.isDiscrete()
 			    && color->isDiscrete()
 			    && col->value.getIndex() == color->getIndex())
-				col->value.setLightness(
-				    col->value.getLightness()
-				    + (color->getLightness()
-				          - col->value.getLightness())
-				          / (range.middle()
-				              - it->second.range.middle())
-				          * (range.getMax()
-				              - it->second.range.getMax())
-				          / 2);
+				col->value.setLightness(it->second.range.middle());
 
-			it->second.range.include(range);
 			return false;
 		}
 	}

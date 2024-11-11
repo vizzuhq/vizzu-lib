@@ -116,7 +116,8 @@ struct DimensionAxis
 
 		bool operator==(const Item &other) const
 		{
-			return range == other.range && weight == other.weight;
+			return range == other.range && weight == other.weight
+			    && value == other.value;
 		}
 
 		[[nodiscard]] bool presentAt(
