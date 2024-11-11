@@ -257,7 +257,7 @@ void DrawLegend::drawMeasure(const Info &info) const
 {
 	if (info.measureEnabled <= 0) return;
 
-	auto &[unit, weight] =
+	const auto &[unit, weight] =
 	    info.axis.measure.unit.get_or_first(::Anim::first);
 
 	extremaLabel(info,
