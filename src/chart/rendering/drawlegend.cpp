@@ -257,20 +257,19 @@ void DrawLegend::drawMeasure(const Info &info) const
 {
 	if (info.measureEnabled <= 0) return;
 
-	info.axis.measure.unit.visit(
-	    [this, &info](::Anim::InterpolateIndex, const auto &unit)
-	    {
-		    extremaLabel(info,
-		        info.axis.measure.range.getMax(),
-		        unit.value,
-		        0,
-		        unit.weight);
-		    extremaLabel(info,
-		        info.axis.measure.range.getMin(),
-		        unit.value,
-		        5,
-		        unit.weight);
-	    });
+	auto &[unit, weight] =
+	    info.axis.measure.unit.get_or_first(::Anim::first);
+
+	extremaLabel(info,
+	    info.axis.measure.range.getMax(),
+	    unit,
+	    0,
+	    weight);
+	extremaLabel(info,
+	    info.axis.measure.range.getMin(),
+	    unit,
+	    5,
+	    weight);
 
 	auto bar = getBarRect(info);
 
