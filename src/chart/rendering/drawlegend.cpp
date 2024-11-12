@@ -315,7 +315,7 @@ Geom::Rect DrawLegend::getBarRect(const Info &info)
 	return res;
 }
 
-Math::Range<double> DrawLegend::markersLegendRange(const Info &info)
+Math::Range<> DrawLegend::markersLegendRange(const Info &info)
 {
 	Math::Range res{0.0, 0.0};
 

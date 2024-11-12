@@ -20,11 +20,11 @@ namespace Vizzu::Gen
 
 struct ChannelStats
 {
-	using TrackType = std::variant<Math::Range<double>,
+	using TrackType = std::variant<Math::Range<>,
 	    std::vector<std::optional<Data::SliceIndex>>>;
 
 	Refl::EnumArray<ChannelId, TrackType> tracked;
-	Math::Range<double> lightness;
+	Math::Range<> lightness;
 
 	template <ChannelIdLike T>
 	[[nodiscard]] const TrackType &at(const T &id) const
@@ -44,7 +44,7 @@ struct ChannelStats
 	}
 
 	template <ChannelIdLike Id>
-	void setIfRange(Id at, const Math::Range<double> &range)
+	void setIfRange(Id at, const Math::Range<> &range)
 	{
 		if (auto *r = std::get_if<0>(&tracked[asChannel(at)]))
 			*r = range;
@@ -54,13 +54,13 @@ struct ChannelStats
 struct MeasureAxis
 {
 	::Anim::Interpolated<bool> enabled{false};
-	Math::Range<double> range = Math::Range<double>::Raw(0, 1);
+	Math::Range<> range = Math::Range<>::Raw(0, 1);
 	std::string series;
 	::Anim::String unit;
 	::Anim::Interpolated<double> step{1.0};
 
 	MeasureAxis() = default;
-	MeasureAxis(const Math::Range<double> &interval,
+	MeasureAxis(const Math::Range<> &interval,
 	    std::string series,
 	    const std::string_view &unit,
 	    const std::optional<double> &step);
@@ -86,12 +86,12 @@ struct DimensionAxis
 	public:
 		bool start{};
 		bool end{};
-		Math::Range<double> range;
+		Math::Range<> range;
 		::Anim::Interpolated<std::uint32_t> position;
 		::Anim::Interpolated<ColorBase> colorBase;
 		::Anim::Interpolated<bool> label;
 
-		Item(Math::Range<double> range,
+		Item(Math::Range<> range,
 		    const std::optional<std::uint32_t> &position,
 		    const std::optional<ColorBase> &color,
 		    bool setCategoryAsLabel) :
@@ -139,7 +139,7 @@ struct DimensionAxis
 
 	DimensionAxis() = default;
 	bool add(const Data::SliceIndex &index,
-	    const Math::Range<double> &range,
+	    const Math::Range<> &range,
 	    const std::optional<std::uint32_t> &position,
 	    const std::optional<ColorBase> &color,
 	    bool label,

@@ -22,17 +22,17 @@ ChannelExtrema::operator std::string() const
 	return std::to_string(value) + std::string{Conv::toString(unit)};
 }
 
-Math::Range<double> ChannelRange::getRange(
-    const Math::Range<double> &original) const
+Math::Range<> ChannelRange::getRange(
+    const Math::Range<> &original) const
 {
-	return Math::Range<double>::Raw(
+	return Math::Range<>::Raw(
 	    getExtrema(min, original.getMin(), original),
 	    getExtrema(max, original.getMax(), original));
 }
 
 double ChannelRange::getExtrema(const OptionalChannelExtrema &extrema,
     double original,
-    const Math::Range<double> &originalRange)
+    const Math::Range<> &originalRange)
 {
 	if (!static_cast<bool>(extrema)) return original;
 

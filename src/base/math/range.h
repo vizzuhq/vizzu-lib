@@ -10,7 +10,7 @@
 namespace Math
 {
 
-template <std::floating_point T> struct Range
+template <std::floating_point T = double> struct Range
 {
 	struct Transform
 	{

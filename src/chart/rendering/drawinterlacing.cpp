@@ -79,7 +79,7 @@ void DrawInterlacing::draw(bool horizontal, bool text) const
 	}
 	else {
 		auto highWeight =
-		    Math::Range<double>::Raw(stepLow, stepHigh).rescale(step);
+		    Math::Range<>::Raw(stepLow, stepHigh).rescale(step);
 
 		auto lowWeight = (1.0 - highWeight) * enabled;
 		highWeight *= enabled;

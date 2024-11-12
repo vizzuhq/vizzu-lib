@@ -297,9 +297,9 @@ struct DataPoint
 	Param<::Anim::Interpolated<std::optional<double>>>
 	    rectangleSpacing;
 
-	[[nodiscard]] Math::Range<double> lightnessRange() const
+	[[nodiscard]] Math::Range<> lightnessRange() const
 	{
-		return Math::Range<double>::Raw(*minLightness, *maxLightness);
+		return Math::Range<>::Raw(*minLightness, *maxLightness);
 	}
 };
 

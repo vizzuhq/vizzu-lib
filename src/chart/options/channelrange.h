@@ -41,8 +41,8 @@ public:
 	OptionalChannelExtrema min;
 	OptionalChannelExtrema max;
 
-	[[nodiscard]] Math::Range<double> getRange(
-	    const Math::Range<double> &original) const;
+	[[nodiscard]] Math::Range<> getRange(
+	    const Math::Range<> &original) const;
 
 	bool operator==(const ChannelRange &other) const
 	{
@@ -52,7 +52,7 @@ public:
 private:
 	static double getExtrema(const OptionalChannelExtrema &extrema,
 	    double original,
-	    const Math::Range<double> &originalRange);
+	    const Math::Range<> &originalRange);
 };
 
 }

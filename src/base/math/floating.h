@@ -4,28 +4,25 @@
 #include <compare>
 #include <concepts>
 #include <limits>
+#include <type_traits>
 
 namespace Math::Floating
 {
 
 [[nodiscard]] int orderOfMagnitude(double value, double base = 10);
 
-constexpr auto inline less = [](auto a, auto b)
+constexpr auto inline less =
+    []<std::floating_point T>(T a, std::type_identity_t<T> b)
 {
-	static_assert(std::floating_point<decltype(a)>);
 	return std::is_lt(std::strong_order(a, b));
 };
 
-constexpr auto inline is_zero = [](auto value)
+constexpr auto inline is_zero = []<std::floating_point T>(T value)
 {
-	using F = decltype(value);
-	static_assert(std::floating_point<F>);
-	if constexpr (std::numeric_limits<F>::is_iec559) {
-		return value == F{};
-	}
-	else {
-		return std::is_eq(std::weak_order(F{}, value));
-	}
+	if constexpr (std::numeric_limits<T>::is_iec559)
+		return value == T{};
+	else
+		return std::is_eq(std::weak_order(T{}, value));
 };
 
 }

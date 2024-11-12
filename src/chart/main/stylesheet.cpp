@@ -231,7 +231,7 @@ void Sheet::setAfterStyles(Gen::Plot &plot, const Geom::Size &size)
 
 		auto font = Gfx::Font{xLabel};
 
-		std::vector<Math::Range<double>> ranges;
+		std::vector<Math::Range<>> ranges;
 		bool has_collision = false;
 		for (const auto &[label, item] :
 		    plot.axises.at(Gen::AxisId::x).dimension.getValues()) {
@@ -251,12 +251,12 @@ void Sheet::setAfterStyles(Gen::Plot &plot, const Geom::Size &size)
 			auto rangeCenter = item.range.middle();
 
 			auto next_range =
-			    Math::Range<double>::Raw(rangeCenter - xHalfSize,
+			    Math::Range<>::Raw(rangeCenter - xHalfSize,
 			        rangeCenter + xHalfSize);
 
 			if (std::any_of(ranges.begin(),
 			        ranges.end(),
-			        [&next_range](const Math::Range<double> &other)
+			        [&next_range](const Math::Range<> &other)
 			        {
 				        return other.includes(next_range);
 			        })) {
