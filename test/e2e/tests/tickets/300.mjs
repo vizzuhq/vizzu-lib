@@ -10,20 +10,20 @@ const testSteps = [
 
 		return chart.animate({ data })
 	},
-	(chart) => chart.animate(
-		{
+	(chart) =>
+		chart.animate({
 			title: 'Foo'
-		}
-	),
-	(chart) => chart.animate({
-		config: {
-			x: 'Foo',
-			y: 'Bar'
-		},
-		style: {
-			paddingLeft: '200px'
-		}
-	})
+		}),
+	(chart) =>
+		chart.animate({
+			config: {
+				x: 'Foo',
+				y: 'Bar'
+			},
+			style: {
+				paddingLeft: '200px'
+			}
+		})
 ]
 
 export default testSteps

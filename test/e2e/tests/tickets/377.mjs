@@ -9,13 +9,15 @@ const testSteps = [
 
 		return chart.animate({ data })
 	},
-	(chart) => chart.animate(
-		{
-			y: 'Bar'
-		}, 1
-	),
-	(chart) => chart.animate(
-		{
+	(chart) =>
+		chart.animate(
+			{
+				y: 'Bar'
+			},
+			1
+		),
+	(chart) =>
+		chart.animate({
 			config: {
 				x: 'Foo',
 				color: 'Foo'
@@ -27,9 +29,7 @@ const testSteps = [
 					}
 				}
 			}
-		}
-	)
-
+		})
 ]
 
 export default testSteps

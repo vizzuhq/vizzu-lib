@@ -10,15 +10,14 @@ const testSteps = [
 
 		return chart.animate({ data })
 	},
-	(chart) => chart.animate(
-		{
+	(chart) =>
+		chart.animate({
 			x: ['Foo', 'Baz'],
-			y: { set: ['Bar'], range: { max: 20 } } ,
+			y: { set: ['Bar'], range: { max: 20 } },
 			label: 'Bar',
 			color: 'Foo',
-			coordSystem: 'polar',
-		}
-	)
+			coordSystem: 'polar'
+		})
 ]
 
 export default testSteps

@@ -11,18 +11,18 @@ const testSteps = [
 
 		return chart.animate({ data })
 	},
-	(chart) => chart.animate(
-		{
+	(chart) =>
+		chart.animate({
 			x: ['Foo', 'Foo2'],
 			y: 'Baz',
 			color: 'Foo',
 			geometry: 'circle',
 			sort: 'byValue'
-		}
-	),
-	(chart) => chart.animate({
-		y: ['Foo3', 'Baz']
-	})
+		}),
+	(chart) =>
+		chart.animate({
+			y: ['Foo3', 'Baz']
+		})
 ]
 
 export default testSteps

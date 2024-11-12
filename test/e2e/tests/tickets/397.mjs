@@ -9,18 +9,19 @@ const testSteps = [
 
 		return chart.animate({ data })
 	},
-	(chart) => chart.animate(
-		{
+	(chart) =>
+		chart.animate({
 			x: 'Foo',
 			y: 'Baz'
-		}
-	),
-	(chart) => chart.animate({
-		x: { step: 2 }
-	}),
-	(chart) => chart.animate({
-		x: { step: 3 }
-	})
+		}),
+	(chart) =>
+		chart.animate({
+			x: { step: 2 }
+		}),
+	(chart) =>
+		chart.animate({
+			x: { step: 3 }
+		})
 ]
 
 export default testSteps
