@@ -9,8 +9,6 @@
 namespace Math::Floating
 {
 
-[[nodiscard]] int orderOfMagnitude(double value, double base = 10);
-
 constexpr auto inline less =
     []<std::floating_point T>(T a, std::type_identity_t<T> b)
 {
