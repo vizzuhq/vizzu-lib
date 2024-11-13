@@ -4,13 +4,11 @@
 #include <compare>
 #include <concepts>
 #include <limits>
-#include <type_traits>
 
 namespace Math::Floating
 {
 
-constexpr auto inline less =
-    []<std::floating_point T>(T a, std::type_identity_t<T> b)
+constexpr auto inline less = []<std::floating_point T>(T a, T b)
 {
 	return std::is_lt(std::strong_order(a, b));
 };
