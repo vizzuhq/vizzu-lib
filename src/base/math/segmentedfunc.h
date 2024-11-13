@@ -44,7 +44,8 @@ template <typename T, class CRTP> struct SegmentedFunction
 
 		for (auto it0 = stops.begin(), it1 = other.stops.begin();
 		     it0 != stops.end() || it1 != other.stops.end();) {
-			if (it1 == other.stops.end() || it0->pos < it1->pos) {
+			if (it1 == other.stops.end()
+			    || (it0 != stops.end() && it0->pos < it1->pos)) {
 				res.stops.emplace_back(it0->pos,
 				    it0->value + other(it0->pos));
 				++it0;
