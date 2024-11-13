@@ -73,20 +73,18 @@ public:
 	Interpolated &operator=(Interpolated &&) noexcept(
 	    std::is_nothrow_move_assignable_v<Type>) = default;
 
-	constexpr explicit Interpolated(Type value)
-	{
-		values[first] = Weighted<Type>(std::move(value));
-	}
+	constexpr explicit Interpolated(Type value) :
+	    values{{Weighted{std::move(value)}}}
+	{}
 
 	explicit Interpolated(const std::string &str)
 	    requires(!std::is_same_v<Type, std::string>)
-	{
-		values[first] = Weighted<Type>(Conv::parse<Type>(str));
-	}
+	    : values{{Weighted{Conv::parse<Type>(str)}}}
+	{}
 
 	Interpolated &operator=(Type value)
 	{
-		values[first] = Weighted<Type>(std::move(value));
+		values[first] = Weighted{std::move(value)};
 		return *this;
 	}
 
@@ -131,10 +129,6 @@ public:
 		return {};
 	}
 
-	template <class T>
-	// NOLINTNEXTLINE(cppcoreguidelines-missing-std-forward)
-	[[nodiscard]] auto get(T &&) const = delete;
-
 	[[nodiscard]] auto toString() const
 	{
 		if (!has_second) return Conv::toString(values[first].value);
@@ -161,16 +155,7 @@ public:
 
 	bool operator==(const Type &other) const
 	{
-		return !has_second && values[first].weight == 1.0
-		    && values[first].value == other;
-	}
-
-	bool operator<(const Interpolated<Type> &other) const
-	{
-		if (has_second && other.has_second)
-			throw std::logic_error("cannot compare weigthed pairs");
-		if (!other.has_second) return false;
-		return values[first] < other.values[first];
+		return hasOneValue() && values[first].value == other;
 	}
 
 	template <class T> void visit(T &&branch) const
@@ -197,7 +182,8 @@ public:
 		return static_cast<T>(res);
 	}
 
-	[[nodiscard]] bool contains(const Type &value) const
+	template <class T = Type>
+	[[nodiscard]] bool contains(const T &value) const
 	{
 		if (value == values[first].value) return true;
 		if (has_second && value == values[second].value) return true;
