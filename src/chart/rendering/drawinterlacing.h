@@ -32,7 +32,8 @@ private:
 	    const ::Anim::String &unit,
 	    double alpha) const;
 
-	void drawSticks(double tickIntensity,
+	void drawSticks(double tickLength,
+	    const Gfx::Color &tickColor,
 	    bool horizontal,
 	    const Geom::Point &tickPos) const;
 };

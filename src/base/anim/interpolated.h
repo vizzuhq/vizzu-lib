@@ -199,6 +199,20 @@ public:
 			res += values[second].weight;
 		return T{res};
 	}
+
+	template <class Fun, class T = std::invoke_result_t<Fun, Type>>
+	[[nodiscard]] Interpolated<T> transform(Fun &&fun = {}) const
+	{
+		Interpolated<T> res;
+		res.has_second = has_second;
+		res.values[first].value = fun(values[first].value);
+		res.values[first].weight = values[first].weight;
+		if (has_second) {
+			res.values[second].value = fun(values[second].value);
+			res.values[second].weight = values[second].weight;
+		}
+		return res;
+	}
 };
 
 template <typename Type>
