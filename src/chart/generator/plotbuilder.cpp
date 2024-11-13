@@ -487,7 +487,7 @@ void PlotBuilder::addAlignment(const Buckets &subBuckets) const
 
 	auto &&vectical = !plot->getOptions()->isHorizontal();
 	const Base::Align align{plot->getOptions()->align,
-	    Math::Range(0.0, 1.0)};
+	    Math::Range<>::Raw(0.0, 1.0)};
 	for (auto &&bucket : subBuckets) {
 		Math::Range<> range;
 
@@ -526,7 +526,7 @@ void PlotBuilder::addSeparation(const Buckets &subBuckets,
 				}
 			}
 
-		auto max = Math::Range(0.0, 0.0);
+		auto max = Math::Range<>::Raw({}, {});
 		for (auto i = 0U; i < ranges.size(); ++i)
 			if (anyEnabled[i]) max = max + ranges[i];
 

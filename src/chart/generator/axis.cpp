@@ -106,7 +106,7 @@ MeasureAxis::MeasureAxis(const Math::Range<> &interval,
     const std::string_view &unit,
     const std::optional<double> &step) :
     enabled(true),
-    range(interval.isReal() ? interval : Math::Range<>::Raw(0, 0)),
+    range(interval.isReal() ? interval : Math::Range<>::Raw({}, {})),
     series(std::move(series)),
     unit(std::string{unit}),
     step(step ? *step : Math::Renard::R5().ceil(range.size() / 5.0))

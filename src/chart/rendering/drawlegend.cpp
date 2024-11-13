@@ -317,7 +317,7 @@ Geom::Rect DrawLegend::getBarRect(const Info &info)
 
 Math::Range<> DrawLegend::markersLegendRange(const Info &info)
 {
-	Math::Range res{0.0, 0.0};
+	auto res = Math::Range<>::Raw({}, {});
 
 	if (info.measureEnabled > 0.0) res.include(6.0 * info.itemHeight);
 
