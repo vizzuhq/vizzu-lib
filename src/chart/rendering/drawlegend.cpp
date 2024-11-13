@@ -154,7 +154,7 @@ void DrawLegend::drawDimension(Info &info) const
 		if (weight <= 0) continue;
 
 		auto itemRect =
-		    getItemRect(info, item.position.calculate<double>());
+		    getItemRect(info, item.position.combine<double>());
 
 		if (itemRect.y().getMin() > info.markerWindowRect.y().getMax()
 		    || itemRect.y().getMax()
@@ -322,8 +322,8 @@ Math::Range<> DrawLegend::markersLegendRange(const Info &info)
 	if (info.measureEnabled > 0.0) res.include(6.0 * info.itemHeight);
 
 	for (const auto &item : info.axis.dimension)
-		res.include((item.position.calculate<double>() + 1)
-		            * info.itemHeight);
+		res.include(
+		    (item.position.combine<double>() + 1) * info.itemHeight);
 
 	return res;
 }

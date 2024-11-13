@@ -181,11 +181,11 @@ public:
 	}
 
 	template <class U = void,
-	    class Fun,
+	    class Fun = std::identity,
 	    class T = std::conditional_t<std::is_void_v<U>,
-	        std::invoke_result_t<Fun, Type>,
+	        std::remove_cvref_t<std::invoke_result_t<Fun, Type>>,
 	        U>>
-	T combine(Fun &&branch) const
+	T combine(Fun &&branch = {}) const
 	{
 		auto res = static_cast<T>(branch(values[first].value))
 		         * values[first].weight;
@@ -212,39 +212,6 @@ public:
 		if (has_second && values[second].value == value)
 			res += values[second].weight;
 		return T{res};
-	}
-
-	template <typename T = Type> [[nodiscard]] T calculate() const
-	{
-		auto res = static_cast<T>(this->values[first].value)
-		         * this->values[first].weight;
-		if (has_second)
-			res = res
-			    + static_cast<T>(this->values[second].value)
-			          * this->values[second].weight;
-		return res;
-	}
-
-	template <typename T = Type> [[nodiscard]] T min() const
-	{
-		using Less = std::conditional_t<std::floating_point<T>,
-		    decltype(Math::Floating::less),
-		    std::less<T>>;
-		return !has_second ? this->values[first].value
-		                   : std::min(this->values[first].value,
-		                       this->values[second].value,
-		                       Less{});
-	}
-
-	template <typename T = Type> [[nodiscard]] T max() const
-	{
-		using Less = std::conditional_t<std::floating_point<T>,
-		    decltype(Math::Floating::less),
-		    std::less<T>>;
-		return !has_second ? this->values[first].value
-		                   : std::max(this->values[first].value,
-		                       this->values[second].value,
-		                       Less{});
 	}
 };
 

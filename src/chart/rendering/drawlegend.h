@@ -46,7 +46,7 @@ private:
 		double markerSize{};
 		const Gen::Axis &axis;
 		double measureEnabled =
-		    axis.measure.enabled.calculate<double>();
+		    axis.measure.enabled.combine<double>();
 		double measureWeight =
 		    Math::FuzzyBool::And(weight, measureEnabled);
 		Events::Targets::LegendProperties properties;

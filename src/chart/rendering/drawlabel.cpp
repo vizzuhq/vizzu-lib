@@ -79,7 +79,7 @@ std::pair<Geom::Rect, double> DrawLabel::alignText(
 {
 	Geom::Rect res{paddedRect.pos, textSize};
 
-	auto align = style.textAlign->calculate<double>();
+	auto align = style.textAlign->combine<double>();
 	if (auto space = paddedRect.size.x - textSize.x; space > 0)
 		res.pos.x += space / 2.0 * (1 + align);
 
