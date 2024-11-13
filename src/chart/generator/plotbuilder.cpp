@@ -151,7 +151,7 @@ PlotBuilder::sortedBuckets(const Buckets &buckets, bool main) const
 
 void PlotBuilder::addSpecLayout(Buckets &buckets)
 {
-	auto geometry = plot->getOptions()->geometry.values[0].value;
+	auto geometry = plot->getOptions()->geometry->value;
 	if (auto &markers = plot->markers; isConnecting(geometry))
 		Charts::TableChart::setupVector(markers, true);
 	else if (plot->getOptions()

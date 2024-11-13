@@ -149,13 +149,11 @@ void Plot::mergeMarkersAndCellInfo(Plot &source, Plot &target)
 	for (std::ptrdiff_t ix{}; ix < markers_size; ++ix) {
 		auto &smarker = smarkers[ix];
 		auto &tmarker = tmarkers[ix];
-		if (auto &[idx, prePos] =
-		        smarker.prevMainMarker.values[0].value;
+		if (auto &[idx, prePos] = smarker.prevMainMarker->value;
 		    !idx.empty())
 			prePos = indices.at(idx) - ix;
 
-		if (auto &[idx, prePos] =
-		        tmarker.prevMainMarker.values[0].value;
+		if (auto &[idx, prePos] = tmarker.prevMainMarker->value;
 		    !idx.empty())
 			prePos = indices.at(idx) - ix;
 
