@@ -38,6 +38,13 @@ struct Point
 		return {horizontal ? 1.0 : 0.0, horizontal ? 0.0 : 1.0};
 	}
 
+	[[nodiscard]] static Point
+	Coord(bool horizontal, double value, double other)
+	{
+		return {horizontal ? value : other,
+		    horizontal ? other : value};
+	}
+
 	[[nodiscard]] static Point Polar(double radius, double angle)
 	{
 		return {radius * cos(angle), radius * sin(angle)};

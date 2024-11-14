@@ -41,14 +41,10 @@ void DrawInterlacing::draw(bool horizontal, bool text) const
 {
 	auto axisIndex = horizontal ? Gen::AxisId::y : Gen::AxisId::x;
 
-	auto interlacingColor =
-	    *rootStyle.plot.getAxis(axisIndex).interlacing.color;
-
 	const auto &axis = plot->axises.at(axisIndex).measure;
 	auto enabled = axis.enabled.combine<double>();
 
-	if (enabled == 0.0 || (!text && interlacingColor.alpha <= 0.0))
-		return;
+	if (enabled == 0.0) return;
 
 	auto stepI = axis.step();
 	auto step = stepI.combine();
@@ -62,6 +58,9 @@ void DrawInterlacing::draw(bool horizontal, bool text) const
 	    std::clamp(Math::Renard::R5().ceil(step), min, max);
 	auto stepLow =
 	    std::clamp(Math::Renard::R5().floor(step), min, max);
+
+	if (Math::Floating::is_zero(axis.range.size()))
+		step = stepHigh = stepLow = 1.0;
 
 	if (stepHigh == step) {
 		draw(axis.enabled,
@@ -109,15 +108,14 @@ void DrawInterlacing::draw(
     double rangeSize,
     bool text) const
 {
-	const auto &enabled =
-	    horizontal ? plot->guides.y : plot->guides.x;
-
 	auto axisIndex = horizontal ? Gen::AxisId::y : Gen::AxisId::x;
+	const auto &guides = plot->guides.at(axisIndex);
 	const auto &axisStyle = rootStyle.plot.getAxis(axisIndex);
+	const auto &axis = plot->axises.at(axisIndex).measure;
 
 	auto interlacingColor =
 	    *axisStyle.interlacing.color
-	    * Math::FuzzyBool::And<double>(weight, enabled.interlacings);
+	    * Math::FuzzyBool::And<double>(weight, guides.interlacings);
 
 	auto tickLength = axisStyle.ticks.length->get(
 	    coordSys.getRect().size.getCoord(horizontal),
@@ -125,129 +123,109 @@ void DrawInterlacing::draw(
 
 	auto tickColor =
 	    *axisStyle.ticks.color
-	    * Math::FuzzyBool::And<double>(weight, enabled.axisSticks);
+	    * Math::FuzzyBool::And<double>(weight, guides.axisSticks);
 
 	auto needTick = tickLength > 0 && !tickColor.isTransparent()
 	             && *axisStyle.ticks.lineWidth > 0;
 
 	auto textAlpha =
-	    Math::FuzzyBool::And<double>(weight, enabled.labels);
+	    Math::FuzzyBool::And<double>(weight, guides.labels);
 
 	if ((!text && interlacingColor.isTransparent())
 	    || (text && !needTick && textAlpha == 0.0))
 		return;
 
-	const auto &axis = plot->axises.at(axisIndex).measure;
-	const auto origo = plot->axises.origo();
-
 	auto singleLabelRange = Math::Floating::is_zero(rangeSize);
+	if (singleLabelRange && !text) return;
 
 	double stripWidth{};
-	if (singleLabelRange) {
-		if (!text) return;
-		stepSize = 1.0;
-	}
-	else {
+	if (!singleLabelRange) {
 		stripWidth = stepSize / rangeSize;
 		if (stripWidth <= 0) return;
 	}
 
+	const auto origo = plot->axises.origo();
 	auto axisBottom = origo.getCoord(!horizontal) + stripWidth;
 
-	auto iMin =
-	    axisBottom > 0
-	        ? std::floor(
-	              -origo.getCoord(!horizontal) / (2 * stripWidth))
-	              * 2
-	        : std::round((axis.range.getMin() - stepSize) / stepSize);
+	auto i = static_cast<int>(
+	    axisBottom > 0 ? std::floor(-origo.getCoord(!horizontal)
+	                                / (2 * stripWidth))
+	                         * 2
+	                   : std::round((axis.range.getMin() - stepSize)
+	                                / stepSize));
 
-	auto interlaceCount = 0U;
-	const auto maxInterlaceCount = 1000U;
-	for (auto i = static_cast<int>(iMin);
-	     ++interlaceCount <= maxInterlaceCount;
-	     i += 2) {
-		auto bottom = axisBottom + i * stripWidth;
-		if (bottom > 1.0) break;
-		auto clippedBottom = bottom;
-		auto top = bottom + stripWidth;
-		auto clipTop = top > 1.0;
-		auto clipBottom = bottom < 0.0;
-		auto topUnderflow = top < 0.0;
-		if (clipTop) top = 1.0;
-		if (clipBottom) clippedBottom = 0.0;
+	if (axisBottom + i * stripWidth + stripWidth < 0.0)
+		i += 2
+		   * static_cast<int>(std::ceil(
+		       -(axisBottom + stripWidth) / (2 * stripWidth)));
 
-		if (!topUnderflow) {
-			Geom::Rect rect(Geom::Point{clippedBottom, 0.0},
-			    Geom::Size{top - clippedBottom, 1.0});
+	if (!text) {
+		painter.setPolygonToCircleFactor(0);
+		painter.setPolygonStraightFactor(0);
+	}
 
-			if (horizontal)
-				rect =
-				    Geom::Rect{rect.pos.flip(), {rect.size.flip()}};
+	for (auto bottom = axisBottom + i * stripWidth; bottom <= 1.0;
+	     i += 2, bottom = axisBottom + i * stripWidth) {
+		auto clippedBottom =
+		    std::max(bottom, 0.0, Math::Floating::less);
+		auto clippedSize =
+		    std::min(bottom + stripWidth, 1.0, Math::Floating::less)
+		    - clippedBottom;
+		auto rect = Geom::Rect{
+		    Geom::Point::Coord(horizontal, 0.0, clippedBottom),
+		    {Geom::Size::Coord(horizontal, 1.0, clippedSize)}};
 
-			if (text) {
-				canvas.setFont(Gfx::Font{axisStyle.label});
+		if (text) {
+			if (auto tickPos = rect.bottomLeft().comp(!horizontal)
+			                 + origo.comp(horizontal);
+			    bottom >= 0.0) {
+				if (textAlpha > 0)
+					drawDataLabel(axisEnabled,
+					    horizontal,
+					    tickPos,
+					    (i + 1) * stepSize,
+					    axis.unit,
+					    textAlpha);
 
-				if (!clipBottom) {
-					auto value = (i + 1) * stepSize;
-					auto tickPos = rect.bottomLeft().comp(!horizontal)
-					             + origo.comp(horizontal);
-
-					if (textAlpha > 0)
-						drawDataLabel(axisEnabled,
-						    horizontal,
-						    tickPos,
-						    value,
-						    axis.unit,
-						    textAlpha);
-
-					if (needTick)
-						drawSticks(tickLength,
-						    tickColor,
-						    horizontal,
-						    tickPos);
-				}
-				if (singleLabelRange) break;
-				if (!clipTop) {
-					auto value = (i + 2) * stepSize;
-					auto tickPos = rect.topRight().comp(!horizontal)
-					             + origo.comp(horizontal);
-
-					if (textAlpha > 0)
-						drawDataLabel(axisEnabled,
-						    horizontal,
-						    tickPos,
-						    value,
-						    axis.unit,
-						    textAlpha);
-
-					if (needTick)
-						drawSticks(tickLength,
-						    tickColor,
-						    horizontal,
-						    tickPos);
-				}
+				if (needTick)
+					drawSticks(tickLength,
+					    tickColor,
+					    horizontal,
+					    tickPos);
 			}
-			else if (!singleLabelRange) {
-				canvas.save();
+			if (singleLabelRange) break;
+			if (auto tickPos = rect.topRight().comp(!horizontal)
+			                 + origo.comp(horizontal);
+			    bottom + stripWidth <= 1.0) {
+				if (textAlpha > 0)
+					drawDataLabel(axisEnabled,
+					    horizontal,
+					    tickPos,
+					    (i + 2) * stepSize,
+					    axis.unit,
+					    textAlpha);
 
-				canvas.setLineColor(Gfx::Color::Transparent());
-				canvas.setBrushColor(interlacingColor);
-
-				painter.setPolygonToCircleFactor(0);
-				painter.setPolygonStraightFactor(0);
-
-				if (auto &&eventTarget =
-				        Events::Targets::axisInterlacing(!horizontal);
-				    rootEvents.draw.plot.axis.interlacing->invoke(
-				        Events::OnRectDrawEvent(*eventTarget,
-				            {rect, true}))) {
-					painter.drawPolygon(rect.points());
-					renderedChart.emplace(Draw::Rect{rect, true},
-					    std::move(eventTarget));
-				}
-
-				canvas.restore();
+				if (needTick)
+					drawSticks(tickLength,
+					    tickColor,
+					    horizontal,
+					    tickPos);
 			}
+		}
+		else {
+			canvas.save();
+			canvas.setLineColor(Gfx::Color::Transparent());
+			canvas.setBrushColor(interlacingColor);
+			if (auto &&eventTarget =
+			        Events::Targets::axisInterlacing(!horizontal);
+			    rootEvents.draw.plot.axis.interlacing->invoke(
+			        Events::OnRectDrawEvent(*eventTarget,
+			            {rect, true}))) {
+				painter.drawPolygon(rect.points());
+				renderedChart.emplace(Draw::Rect{rect, true},
+				    std::move(eventTarget));
+			}
+			canvas.restore();
 		}
 	}
 }
