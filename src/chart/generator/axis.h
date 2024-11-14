@@ -53,55 +53,20 @@ struct ChannelStats
 
 struct MeasureAxis
 {
-	struct FixLabels
-	{
-		std::set<double> labels;
-		[[nodiscard]] bool operator==(
-		    const FixLabels &) const = default;
-	};
-	using Labels = std::variant<double, FixLabels>;
-
 	::Anim::Interpolated<bool> enabled{false};
 	Math::Range<> range = Math::Range<>::Raw(0, 1);
 	std::string series;
 	::Anim::String unit;
-	::Anim::Interpolated<Labels> labels{1.0};
+	::Anim::Interpolated<double> step{1.0};
 
 	MeasureAxis() = default;
 	MeasureAxis(const Math::Range<> &interval,
 	    std::string series,
 	    const std::string_view &unit,
 	    const std::optional<double> &step);
-	MeasureAxis(const Math::Range<> &interval,
-	    std::string series,
-	    const std::string_view &unit,
-	    const FixLabels &labels);
 	[[nodiscard]] bool operator==(
 	    const MeasureAxis &other) const = default;
 	[[nodiscard]] double origo() const;
-
-	[[nodiscard]] static double step(const Labels &labels,
-	    const Math::Range<> &range)
-	{
-		return std::visit(
-		    [&range = range]<typename L>(const L &labels)
-		    {
-			    if constexpr (std::is_same_v<L, double>)
-				    return labels;
-			    else
-				    return range.size() / labels.labels.size();
-		    },
-		    labels);
-	}
-
-	[[nodiscard]] ::Anim::Interpolated<double> step() const
-	{
-		return labels.transform(
-		    [&range = range](const Labels &labels)
-		    {
-			    return step(labels, range);
-		    });
-	}
 };
 
 MeasureAxis interpolate(const MeasureAxis &op0,

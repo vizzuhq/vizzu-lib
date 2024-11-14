@@ -3,13 +3,11 @@
 #include <algorithm>
 #include <cmath>
 #include <cstddef>
-#include <utility>
 
 #include "base/anim/interpolated.h"
 #include "base/geom/point.h"
 #include "base/geom/rect.h"
 #include "base/gfx/colortransform.h"
-#include "base/gfx/font.h"
 #include "base/math/floating.h"
 #include "base/math/range.h"
 #include "base/math/renard.h"
@@ -46,12 +44,11 @@ void DrawInterlacing::draw(bool horizontal, bool text) const
 
 	if (enabled == 0.0) return;
 
-	auto stepI = axis.step();
-	auto step = stepI.combine();
+	auto step = axis.step.combine();
 
 	auto &&[min, max] =
-	    std::minmax(stepI.get_or_first(::Anim::first).value,
-	        stepI.get_or_first(::Anim::second).value,
+	    std::minmax(axis.step.get_or_first(::Anim::first).value,
+	        axis.step.get_or_first(::Anim::second).value,
 	        Math::Floating::less);
 
 	auto stepHigh =
