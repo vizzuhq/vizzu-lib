@@ -8,6 +8,7 @@
 #include <string>
 
 #include "base/anim/interpolated.h"
+#include "base/geom/orientation.h"
 #include "base/geom/rect.h"
 #include "base/math/fuzzybool.h"
 #include "base/math/range.h"
@@ -17,7 +18,6 @@
 #include "autoparam.h"
 #include "channels.h"
 #include "coordsystem.h"
-#include "orientation.h"
 #include "shapetype.h"
 #include "sort.h"
 
@@ -29,7 +29,7 @@ struct OptionProperties
 	using Heading = ::Anim::Interpolated<std::optional<std::string>>;
 	using LegendType = Base::AutoParam<LegendId, true>;
 	using Legend = ::Anim::Interpolated<LegendType>;
-	using OrientationType = Base::AutoParam<Gen::Orientation>;
+	using OrientationType = Base::AutoParam<Geom::Orientation>;
 	using Orientation = ::Anim::Interpolated<OrientationType>;
 
 	Heading title{std::nullopt};
@@ -71,9 +71,15 @@ public:
 	[[nodiscard]] bool isHorizontal() const
 	{
 		auto hasOrientation = orientation.get();
-		return (hasOrientation ? *hasOrientation
-		                       : getAutoOrientation())
-		    == Gen::Orientation::horizontal;
+		return Geom::isHorizontal(
+		    hasOrientation ? *hasOrientation : getAutoOrientation());
+	}
+
+	[[nodiscard]] Geom::Orientation getOrientation() const
+	{
+		auto hasOrientation = orientation.get();
+		return hasOrientation ? *hasOrientation
+		                      : getAutoOrientation();
 	}
 
 	[[nodiscard]] AxisId subAxisType() const
@@ -174,7 +180,7 @@ private:
 	    }(std::make_index_sequence<
 	        std::tuple_size_v<decltype(channels)::base_array>>{})};
 
-	[[nodiscard]] Gen::Orientation getAutoOrientation() const;
+	[[nodiscard]] Geom::Orientation getAutoOrientation() const;
 	[[nodiscard]] std::optional<LegendId> getAutoLegend() const;
 	static void setMeasureRange(Channel &channel, bool positive);
 	static void setRange(Channel &channel,

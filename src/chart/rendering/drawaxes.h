@@ -29,8 +29,8 @@ private:
 	    bool fades) const;
 	void drawAxis(Gen::AxisId axisIndex) const;
 	void drawTitle(Gen::AxisId axisIndex) const;
-	void drawDimensionLabels(bool horizontal) const;
-	void drawDimensionLabel(bool horizontal,
+	void drawDimensionLabels(Gen::AxisId axisIndex) const;
+	void drawDimensionLabel(Gen::AxisId axisIndex,
 	    const Geom::Point &origo,
 	    const Gen::DimensionAxis::Item &item,
 	    const Data::SliceIndex &index,

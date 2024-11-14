@@ -68,7 +68,7 @@ void MarkerRenderer::drawLines(Gfx::ICanvas &canvas,
 			auto guideElement =
 			    Events::Targets::markerGuide(blended.marker,
 			        blended.dataPosition,
-			        false);
+			        Gen::AxisId::y);
 
 			if (rootEvents.draw.plot.marker.guide->invoke(
 			        Events::OnLineDrawEvent(*guideElement,
@@ -91,7 +91,7 @@ void MarkerRenderer::drawLines(Gfx::ICanvas &canvas,
 			auto guideElement =
 			    Events::Targets::markerGuide(blended.marker,
 			        blended.dataPosition,
-			        true);
+			        Gen::AxisId::x);
 
 			if (rootEvents.draw.plot.marker.guide->invoke(
 			        Events::OnLineDrawEvent(*guideElement,

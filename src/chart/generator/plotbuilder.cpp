@@ -133,7 +133,7 @@ PlotBuilder::sortedBuckets(const Buckets &buckets, bool main) const
 				it = sorted.emplace(it, idx.itemId, 0.0);
 
 			it->size += marker.size.getCoord(
-			    !plot->getOptions()->isHorizontal());
+			    !plot->getOptions()->getOrientation());
 		}
 
 	if (main && plot->getOptions()->sort == Sort::byValue)
@@ -451,7 +451,7 @@ void PlotBuilder::calcAxis(const Data::DataTable &dataTable,
 
 			if (const auto &slice = id.label)
 				axis.dimension.add(*slice,
-				    marker.getSizeBy(type == AxisId::x),
+				    marker.getSizeBy(type),
 				    {},
 				    {},
 				    false,
@@ -485,7 +485,7 @@ void PlotBuilder::addAlignment(const Buckets &subBuckets) const
 			        subAxisRange.getMax() - halfSize);
 	}
 
-	auto &&vectical = !plot->getOptions()->isHorizontal();
+	auto &&subAxis = plot->getOptions()->subAxisType();
 	const Base::Align align{plot->getOptions()->align,
 	    Math::Range<>::Raw(0.0, 1.0)};
 	for (auto &&bucket : subBuckets) {
@@ -493,13 +493,13 @@ void PlotBuilder::addAlignment(const Buckets &subBuckets) const
 
 		for (auto &&[marker, idx] : bucket)
 			if (marker.enabled)
-				range.include(marker.getSizeBy(vectical));
+				range.include(marker.getSizeBy(subAxis));
 
 		auto &&transform = align.getAligned(range) / range;
 
 		for (auto &&[marker, idx] : bucket)
-			marker.setSizeBy(vectical,
-			    marker.getSizeBy(vectical) * transform);
+			marker.setSizeBy(subAxis,
+			    marker.getSizeBy(subAxis) * transform);
 	}
 }
 
@@ -513,7 +513,7 @@ void PlotBuilder::addSeparation(const Buckets &subBuckets,
 		    Math::Range<>::Raw({}, {})};
 		std::vector<bool> anyEnabled(mainBucketSize);
 
-		auto &&vertical = !plot->getOptions()->isHorizontal();
+		auto &&subAxis = plot->getOptions()->subAxisType();
 		for (auto &&bucket : subBuckets)
 			for (std::size_t i{}, prIx{};
 			     auto &&[marker, idx] : bucket) {
@@ -521,7 +521,7 @@ void PlotBuilder::addSeparation(const Buckets &subBuckets,
 				    ranges.size();
 				if (marker.enabled) {
 					ranges[i].include(
-					    marker.getSizeBy(vertical).size());
+					    marker.getSizeBy(subAxis).size());
 					anyEnabled[i] = true;
 				}
 			}
@@ -539,9 +539,9 @@ void PlotBuilder::addSeparation(const Buckets &subBuckets,
 			     auto &&[marker, idx] : bucket) {
 				(i += idx.itemId - std::exchange(prIx, idx.itemId)) %=
 				    ranges.size();
-				marker.setSizeBy(vertical,
+				marker.setSizeBy(subAxis,
 				    Base::Align{align, ranges[i]}.getAligned(
-				        marker.getSizeBy(vertical)));
+				        marker.getSizeBy(subAxis)));
 			}
 	}
 }

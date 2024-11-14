@@ -15,9 +15,10 @@ public:
 	Painter &painter;
 
 private:
-	void draw(bool horizontal);
-	void
-	drawGuide(bool horizontal, double val, const Gfx::Color &color);
+	void draw(Gen::AxisId axisId);
+	void drawGuide(Gen::AxisId axisId,
+	    double val,
+	    const Gfx::Color &color);
 };
 
 }

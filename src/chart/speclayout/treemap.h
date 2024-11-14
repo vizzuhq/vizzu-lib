@@ -28,7 +28,8 @@ private:
 	    It end,
 	    const Geom::Point &p0,
 	    const Geom::Point &p1,
-	    bool horizontal = true);
+	    Geom::Orientation orientation =
+	        Geom::Orientation::horizontal);
 };
 
 struct TreeMapBuilder : SizeDependentLayout<TreeMap>

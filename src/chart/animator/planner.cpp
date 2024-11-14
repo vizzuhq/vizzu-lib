@@ -13,9 +13,9 @@
 #include "base/anim/easingfunc.h"
 #include "base/anim/element.h"
 #include "base/anim/group.h"
+#include "base/geom/orientation.h"
 #include "chart/generator/plot.h"
 #include "chart/options/channel.h"
-#include "chart/options/orientation.h"
 #include "chart/options/shapetype.h"
 
 #include "morph.h"
@@ -408,12 +408,12 @@ bool Planner::needVertical() const
 	           != target->axises.at(Gen::LegendId::size)
 	    || (source->markerConnectionOrientation
 	            != target->markerConnectionOrientation
-	        && (source->markerConnectionOrientation.value_or(
-	                Gen::Orientation::horizontal)
-	                == Gen::Orientation::vertical
-	            || target->markerConnectionOrientation.value_or(
-	                   Gen::Orientation::horizontal)
-	                   == Gen::Orientation::vertical))
+	        && (!isHorizontal(
+	                source->markerConnectionOrientation.value_or(
+	                    Geom::Orientation::horizontal))
+	            || !isHorizontal(
+	                target->markerConnectionOrientation.value_or(
+	                    Geom::Orientation::horizontal))))
 	    || source->axises.label != target->axises.label
 	    || anyMarker(+[](const Gen::Marker &source,
 	                      const Gen::Marker &target) -> bool
@@ -436,12 +436,12 @@ bool Planner::needHorizontal() const
 	    || source->keepAspectRatio != target->keepAspectRatio
 	    || (source->markerConnectionOrientation
 	            != target->markerConnectionOrientation
-	        && ((source->markerConnectionOrientation.value_or(
-	                 Gen::Orientation::vertical)
-	                == Gen::Orientation::horizontal)
-	            || (target->markerConnectionOrientation.value_or(
-	                    Gen::Orientation::vertical)
-	                == Gen::Orientation::horizontal)))
+	        && (isHorizontal(
+	                source->markerConnectionOrientation.value_or(
+	                    Geom::Orientation::vertical))
+	            || isHorizontal(
+	                target->markerConnectionOrientation.value_or(
+	                    Geom::Orientation::vertical))))
 	    || anyMarker(+[](const Gen::Marker &source,
 	                      const Gen::Marker &target) -> bool
 	        {

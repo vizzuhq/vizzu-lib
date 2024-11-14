@@ -38,7 +38,7 @@ void TreeMap::divide(It begin,
     It end,
     const Geom::Point &p0,
     const Geom::Point &p1,
-    bool horizontal)
+    Geom::Orientation orientation)
 {
 	while (begin != end && begin->negative)
 		begin++->emplaceRect({0, 0}, {0, 0});
@@ -73,13 +73,14 @@ void TreeMap::divide(It begin,
 
 	auto &&[px, py] = Math::interpolate(p0, p1, factor);
 
-	if (horizontal) {
-		divide(begin, it, p0, Geom::Point{p1.x, py}, false);
-		divide(it, end, Geom::Point{p0.x, py}, p1, false);
+	using enum Geom::Orientation;
+	if (isHorizontal(orientation)) {
+		divide(begin, it, p0, Geom::Point{p1.x, py}, vertical);
+		divide(it, end, Geom::Point{p0.x, py}, p1, vertical);
 	}
 	else {
-		divide(begin, it, p0, Geom::Point{px, p1.y}, true);
-		divide(it, end, Geom::Point{px, p0.y}, p1, true);
+		divide(begin, it, p0, Geom::Point{px, p1.y}, horizontal);
+		divide(it, end, Geom::Point{px, p0.y}, p1, horizontal);
 	}
 }
 

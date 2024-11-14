@@ -16,17 +16,17 @@ public:
 	Painter &painter;
 
 private:
-	void draw(bool horizontal, bool text) const;
+	void draw(Gen::AxisId axisIndex, bool text) const;
 
 	void draw(const ::Anim::Interpolated<bool> &enabled,
-	    bool horizontal,
+	    Gen::AxisId axisIndex,
 	    double stepSize,
 	    double weight,
 	    double rangeSize,
 	    bool text) const;
 
 	void drawDataLabel(const ::Anim::Interpolated<bool> &enabled,
-	    bool horizontal,
+	    Gen::AxisId axisIndex,
 	    const Geom::Point &tickPos,
 	    double value,
 	    const ::Anim::String &unit,
@@ -34,7 +34,7 @@ private:
 
 	void drawSticks(double tickLength,
 	    const Gfx::Color &tickColor,
-	    bool horizontal,
+	    Gen::AxisId axisIndex,
 	    const Geom::Point &tickPos) const;
 };
 

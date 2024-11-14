@@ -56,7 +56,7 @@ public:
 	Axises axises;
 	Guides guides;
 	Math::FuzzyBool keepAspectRatio;
-	std::optional<Orientation> markerConnectionOrientation;
+	std::optional<Geom::Orientation> markerConnectionOrientation;
 
 	Plot(const Plot &other) = default;
 	Plot(PlotOptionsPtr opts, Styles::Chart style);

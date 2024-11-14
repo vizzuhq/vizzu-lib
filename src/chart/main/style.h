@@ -5,6 +5,7 @@
 
 #include "base/anim/interpolated.h"
 #include "base/geom/angle.h"
+#include "base/geom/orientation.h"
 #include "base/geom/rect.h"
 #include "base/gfx/canvas.h"
 #include "base/gfx/color.h"
@@ -219,7 +220,7 @@ struct AxisTitleParams
 	enum class Side : std::uint8_t { positive, upon, negative };
 	enum class VPosition : std::uint8_t { begin, middle, end };
 	enum class VSide : std::uint8_t { positive, upon, negative };
-	enum class Orientation : std::uint8_t { horizontal, vertical };
+	using Orientation = Geom::Orientation;
 
 	Param<::Anim::Interpolated<Position>> position;
 	Param<::Anim::Interpolated<Side>> side;

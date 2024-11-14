@@ -11,6 +11,8 @@
 #include "base/math/floating.h"
 #include "base/math/tolerance.h"
 
+#include "orientation.h"
+
 namespace Geom
 {
 
@@ -33,16 +35,17 @@ struct Point
 		    std::numeric_limits<double>::lowest()};
 	}
 
-	[[nodiscard]] static Point Ident(bool horizontal)
+	[[nodiscard]] static Point Ident(Orientation orientation)
 	{
-		return {horizontal ? 1.0 : 0.0, horizontal ? 0.0 : 1.0};
+		return {static_cast<double>(isHorizontal(orientation)),
+		    static_cast<double>(!isHorizontal(orientation))};
 	}
 
 	[[nodiscard]] static Point
-	Coord(bool horizontal, double value, double other)
+	Coord(Orientation orientation, double value, double other = 0.0)
 	{
-		return {horizontal ? value : other,
-		    horizontal ? other : value};
+		return {isHorizontal(orientation) ? value : other,
+		    isHorizontal(orientation) ? other : value};
 	}
 
 	[[nodiscard]] static Point Polar(double radius, double angle)
@@ -160,17 +163,9 @@ struct Point
 
 	[[nodiscard]] Point yComp() const { return {0, y}; }
 
-	[[nodiscard]] Point comp(bool horizontal) const
+	[[nodiscard]] Point comp(Orientation orientation) const
 	{
-		return horizontal ? xComp() : yComp();
-	}
-
-	double &operator[](size_t index)
-	{
-		if (index == 0) return x;
-		if (index == 1) return y;
-		throw std::logic_error(
-		    "internal error: point coordinate index out of bounds");
+		return isHorizontal(orientation) ? xComp() : yComp();
 	}
 
 	[[nodiscard]] double abs() const
@@ -224,12 +219,15 @@ struct Point
 	[[nodiscard]] Point normalized() const;
 	[[nodiscard]] Point normal(bool clockwise) const;
 
-	[[nodiscard]] double getCoord(bool horizontal) const
+	[[nodiscard]] double getCoord(Orientation orientation) const
 	{
-		return horizontal ? x : y;
+		return isHorizontal(orientation) ? x : y;
 	}
 
-	double &getCoord(bool horizontal) { return horizontal ? x : y; }
+	double &getCoord(Orientation orientation)
+	{
+		return isHorizontal(orientation) ? x : y;
+	}
 
 	[[nodiscard]] Point leftNormal() const { return Point{y, -x}; }
 
