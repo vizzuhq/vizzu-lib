@@ -128,8 +128,6 @@ MeasureAxis interpolate(const MeasureAxis &op0,
     const MeasureAxis &op1,
     double factor)
 {
-	using Math::Niebloid::interpolate;
-
 	MeasureAxis res;
 	res.enabled = interpolate(op0.enabled, op1.enabled, factor);
 	res.series = op0.series;
