@@ -37,7 +37,7 @@ private:
 	Buckets generateMarkers(std::size_t &mainBucketSize);
 	void linkMarkers(Buckets &subBuckets);
 	[[nodiscard]] bool linkMarkers(const Buckets &buckets,
-	    bool main) const;
+	    AxisId axisIndex) const;
 	void calcAxises(const Data::DataTable &dataTable);
 	void calcLegendAndLabel(const Data::DataTable &dataTable);
 	void calcAxis(const Data::DataTable &dataTable, AxisId type);

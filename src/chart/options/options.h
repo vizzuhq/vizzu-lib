@@ -70,9 +70,7 @@ public:
 
 	[[nodiscard]] bool isHorizontal() const
 	{
-		auto hasOrientation = orientation.get();
-		return Geom::isHorizontal(
-		    hasOrientation ? *hasOrientation : getAutoOrientation());
+		return Geom::isHorizontal(getOrientation());
 	}
 
 	[[nodiscard]] Geom::Orientation getOrientation() const
@@ -84,7 +82,7 @@ public:
 
 	[[nodiscard]] AxisId subAxisType() const
 	{
-		return isHorizontal() ? AxisId::y : AxisId::x;
+		return !mainAxisType();
 	}
 
 	[[nodiscard]] const Channel &mainAxis() const

@@ -317,7 +317,7 @@ void Planner::calcNeeded()
 		            return source.prevMainMarker
 		                != target.prevMainMarker;
 	            })
-	        || srcOpt->isHorizontal() != trgOpt->isHorizontal());
+	        || srcOpt->getOrientation() != trgOpt->getOrientation());
 }
 
 bool Planner::anyMarker(
@@ -378,7 +378,7 @@ bool Planner::verticalBeforeHorizontal() const
 	const auto &srcOpt = source->getOptions();
 	const auto &trgOpt = target->getOptions();
 
-	if (srcOpt->isHorizontal() != trgOpt->isHorizontal()
+	if (srcOpt->getOrientation() != trgOpt->getOrientation()
 	    || !srcOpt->getChannels().anyAxisSet()
 	    || !trgOpt->getChannels().anyAxisSet()) {
 		if (srcOpt->getChannels().anyAxisSet())

@@ -162,19 +162,20 @@ void DrawInterlacing::draw(
 		painter.setPolygonStraightFactor(0);
 	}
 
+	auto Transform = [&](int x)
+	{
+		return std::pair{iMin + x * 2,
+		    axisBottom + (iMin + x * 2) * stripWidth};
+	};
+	constexpr static auto Predicate =
+	    [](const std::pair<int, double> &x)
+	{
+		return x.second <= 1.0;
+	};
+
 	for (auto &&[i, bottom] :
-	    std::views::iota(0)
-	        | std::views::transform(
-	            [&](int x)
-	            {
-		            return std::pair{iMin + x * 2,
-		                axisBottom + (iMin + x * 2) * stripWidth};
-	            })
-	        | std::views::take_while(
-	            [](const std::pair<int, double> &x)
-	            {
-		            return x.second <= 1.0;
-	            })) {
+	    std::views::iota(0) | std::views::transform(Transform)
+	        | std::views::take_while(Predicate)) {
 		auto clippedBottom =
 		    std::max(bottom, 0.0, Math::Floating::less);
 		auto clippedSize =

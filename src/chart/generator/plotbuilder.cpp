@@ -176,8 +176,10 @@ void PlotBuilder::addSpecLayout(Buckets &buckets)
 void PlotBuilder::linkMarkers(Buckets &buckets)
 {
 	auto &&hasMarkerConnection =
-	    linkMarkers(buckets.sort(&Marker::mainId), true);
-	std::ignore = linkMarkers(buckets.sort(&Marker::subId), false);
+	    linkMarkers(buckets.sort(&Marker::mainId),
+	        plot->getOptions()->mainAxisType());
+	std::ignore = linkMarkers(buckets.sort(&Marker::subId),
+	    plot->getOptions()->subAxisType());
 
 	if (hasMarkerConnection
 	    && plot->getOptions()->geometry.get() == ShapeType::line
@@ -194,27 +196,19 @@ void PlotBuilder::linkMarkers(Buckets &buckets)
 	}
 }
 
-bool PlotBuilder::linkMarkers(const Buckets &buckets, bool main) const
+bool PlotBuilder::linkMarkers(const Buckets &buckets,
+    AxisId axisIndex) const
 {
-	auto &&sorted = sortedBuckets(buckets, main);
+	auto isMain = axisIndex == plot->getOptions()->mainAxisType();
+	auto &&sorted = sortedBuckets(buckets, isMain);
 
 	std::vector dimOffset(sorted.size(),
 	    std::numeric_limits<double>::lowest());
-
-	auto channelId = main ? plot->getOptions()->mainAxisType()
-	                      : plot->getOptions()->subAxisType();
-	auto subChannelId = main ? plot->getOptions()->subAxisType()
-	                         : plot->getOptions()->mainAxisType();
-	auto &&axis = plot->getOptions()->getChannels().at(channelId);
-	auto &&subAxis =
-	    plot->getOptions()->getChannels().at(subChannelId);
-
-	auto horizontal = plot->getOptions()->isHorizontal();
-	double Geom::Point::*const coord =
-	    horizontal == main ? &Geom::Point::x : &Geom::Point::y;
+	auto &&axis = plot->getOptions()->getChannels().at(axisIndex);
+	auto &&subAxis = plot->getOptions()->getChannels().at(!axisIndex);
 
 	auto isAggregatable = axis.isDimension()
-	                   || (main && subAxis.isMeasure()
+	                   || (isMain && subAxis.isMeasure()
 	                       && plot->getOptions()->geometry.get()
 	                              == ShapeType::rectangle);
 
@@ -235,7 +229,7 @@ bool PlotBuilder::linkMarkers(const Buckets &buckets, bool main) const
 				auto &marker = **it.base().base().base();
 				if (!marker.enabled) continue;
 				o = std::max(o,
-				    marker.size.*coord,
+				    marker.size.getCoord(+axisIndex),
 				    Math::Floating::less);
 			}
 			if (o == std::numeric_limits<double>::lowest()) o = 0.0;
@@ -254,8 +248,8 @@ bool PlotBuilder::linkMarkers(const Buckets &buckets, bool main) const
 	auto connecting =
 	    isConnecting(plot->getOptions()->geometry.get());
 
-	auto needPolarConnection =
-	    polar && connecting && main && horizontal;
+	auto needPolarConnection = polar && connecting && isMain
+	                        && plot->getOptions()->isHorizontal();
 
 	for (const auto &bucket : buckets) {
 		double prevPos{};
@@ -281,14 +275,14 @@ bool PlotBuilder::linkMarkers(const Buckets &buckets, bool main) const
 			                 : *it.base().base().base();
 
 			if (act)
-				prevPos = act->position.*coord +=
+				prevPos = act->position.getCoord(+axisIndex) +=
 				    isAggregatable ? dimOffset[i] : prevPos;
 
 			hasConnection |=
 			    Marker::connectMarkers(iNext == 0 && act != next,
 			        act,
 			        next,
-			        main,
+			        isMain,
 			        needPolarConnection);
 		}
 	}
@@ -436,16 +430,14 @@ void PlotBuilder::calcAxis(const Data::DataTable &dataTable,
 	else {
 		for (auto merge =
 		         scale.labelLevel == 0
-		         && ((type == AxisId::x)
-		                 != plot->getOptions()->isHorizontal()
+		         && (type != plot->getOptions()->mainAxisType()
 		             || plot->getOptions()->sort != Sort::byValue
 		             || scale.dimensions().size() == 1);
 		     const auto &marker : plot->markers) {
 			if (!marker.enabled) continue;
 
 			const auto &id =
-			    (type == AxisId::x)
-			            == plot->getOptions()->isHorizontal()
+			    type == plot->getOptions()->mainAxisType()
 			        ? marker.mainId
 			        : marker.subId;
 
