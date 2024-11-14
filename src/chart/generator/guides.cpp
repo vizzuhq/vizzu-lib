@@ -20,18 +20,15 @@ bool GuidesByAxis::operator==(const GuidesByAxis &other) const
 
 Guides::Guides(const Options &options)
 {
-	const auto &channelX = options.getChannels().at(AxisId::x);
-	const auto &channelY = options.getChannels().at(AxisId::y);
-	if (channelX.isEmpty() && channelY.isEmpty()) return;
+	const auto &xOpt = options.getChannels().at(AxisId::x);
+	const auto &yOpt = options.getChannels().at(AxisId::y);
+	if (xOpt.isEmpty() && yOpt.isEmpty()) return;
 
-	auto xIsMeasure = channelX.isMeasure();
-	auto yIsMeasure = channelY.isMeasure();
+	auto xIsMeasure = options.isMeasure(ChannelId::x);
+	auto yIsMeasure = options.isMeasure(ChannelId::y);
 	auto isPolar = options.coordSystem.get() == CoordSystem::polar;
 	auto isCircle = options.geometry.get() == ShapeType::circle;
 	auto isHorizontal = options.isHorizontal();
-
-	const auto &xOpt = options.getChannels().at(AxisId::x);
-	const auto &yOpt = options.getChannels().at(AxisId::y);
 
 	x.axis = xOpt.axis.getValue(yIsMeasure);
 	y.axis = yOpt.axis.getValue(xIsMeasure && !isPolar);

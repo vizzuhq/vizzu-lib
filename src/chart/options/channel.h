@@ -140,14 +140,12 @@ public:
 	    const Data::SeriesIndex &index) const;
 	void reset();
 	[[nodiscard]] bool isEmpty() const;
-	[[nodiscard]] bool isDimension() const;
 	[[nodiscard]] bool hasDimension() const;
-	[[nodiscard]] bool isMeasure() const;
+	[[nodiscard]] bool hasMeasure() const;
 	void collectDimensions(IndexSet &dimensions) const;
 	[[nodiscard]] std::pair<const DimensionIndices &,
 	    const std::size_t &>
 	dimensionsWithLevel() const;
-	[[nodiscard]] OptionalIndex labelSeries() const;
 	[[nodiscard]] bool operator==(
 	    const Channel &other) const = default;
 

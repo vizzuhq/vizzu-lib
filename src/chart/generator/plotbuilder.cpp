@@ -72,7 +72,7 @@ void PlotBuilder::initDimensionTrackers()
 {
 	for (auto *tracks = stats.tracked.data();
 	     const auto &ch : plot->options->getChannels())
-		if (auto &track = *tracks++; ch.isDimension())
+		if (auto &track = *tracks++; !ch.hasMeasure())
 			track.emplace<1>(
 			    dataCube.combinedSizeOf(ch.dimensions()).second);
 }
@@ -154,10 +154,7 @@ void PlotBuilder::addSpecLayout(Buckets &buckets)
 	auto geometry = plot->getOptions()->geometry->value;
 	if (auto &markers = plot->markers; isConnecting(geometry))
 		Charts::TableChart::setupVector(markers, true);
-	else if (plot->getOptions()
-	             ->getChannels()
-	             .at(ChannelId::size)
-	             .isDimension())
+	else if (!plot->getOptions()->isMeasure(ChannelId::size))
 		Charts::TableChart::setupVector(markers);
 	else if (!dataCube.empty()) {
 		if (buckets.sort(&Marker::sizeId);
@@ -183,14 +180,14 @@ void PlotBuilder::linkMarkers(Buckets &buckets)
 
 	if (hasMarkerConnection
 	    && plot->getOptions()->geometry.get() == ShapeType::line
-	    && plot->getOptions()
-	           ->getChannels()
-	           .at(AxisId::x)
-	           .isDimension()
-	    && plot->getOptions()
-	           ->getChannels()
-	           .at(AxisId::y)
-	           .isDimension()) {
+	    && !plot->getOptions()
+	            ->getChannels()
+	            .at(AxisId::x)
+	            .hasMeasure()
+	    && !plot->getOptions()
+	            ->getChannels()
+	            .at(AxisId::y)
+	            .hasMeasure()) {
 		plot->markerConnectionOrientation.emplace(
 		    *plot->getOptions()->orientation.get());
 	}
@@ -204,13 +201,13 @@ bool PlotBuilder::linkMarkers(const Buckets &buckets,
 
 	std::vector dimOffset(sorted.size(),
 	    std::numeric_limits<double>::lowest());
-	auto &&axis = plot->getOptions()->getChannels().at(axisIndex);
-	auto &&subAxis = plot->getOptions()->getChannels().at(!axisIndex);
 
-	auto isAggregatable = axis.isDimension()
-	                   || (isMain && subAxis.isMeasure()
-	                       && plot->getOptions()->geometry.get()
-	                              == ShapeType::rectangle);
+	auto isAggregatable =
+	    !plot->getOptions()->isMeasure(asChannel(axisIndex))
+	    || (isMain
+	        && plot->getOptions()->isMeasure(asChannel(!axisIndex))
+	        && plot->getOptions()->geometry.get()
+	               == ShapeType::rectangle);
 
 	if (isAggregatable) {
 		double pre_neg{};
@@ -384,7 +381,8 @@ void PlotBuilder::calcLegendAndLabel(const Data::DataTable &dataTable)
 						++count;
 				}
 
-			if (auto &&series = scale.labelSeries();
+			if (auto &&series =
+			        plot->options->labelSeries(asChannel(type));
 			    series && isAutoTitle && calcLegend.dimension.empty())
 				calcLegend.title = series.value().getColIndex();
 		}
@@ -411,20 +409,21 @@ void PlotBuilder::calcAxis(const Data::DataTable &dataTable,
 	auto isAutoTitle = scale.title.isAuto();
 	if (scale.title) axis.title = *scale.title;
 
-	if (auto &&meas = scale.measure()) {
-		if (isAutoTitle) axis.title = dataCube.getName(*meas);
+	if (plot->getOptions()->isMeasure(asChannel(type))) {
+		auto &meas = *scale.measure();
+		if (isAutoTitle) axis.title = dataCube.getName(meas);
 
 		if (type == plot->getOptions()->subAxisType()
 		    && plot->getOptions()->align
 		           == Base::Align::Type::stretch)
 			axis.measure = {Math::Range<>::Raw(0, 100),
-			    meas->getColIndex(),
+			    meas.getColIndex(),
 			    "%",
 			    scale.step.getValue()};
 		else
 			axis.measure = {std::get<0>(stats.at(type)),
-			    meas->getColIndex(),
-			    dataTable.getUnit(meas->getColIndex()),
+			    meas.getColIndex(),
+			    dataTable.getUnit(meas.getColIndex()),
 			    scale.step.getValue()};
 	}
 	else {
@@ -449,7 +448,8 @@ void PlotBuilder::calcAxis(const Data::DataTable &dataTable,
 				    false,
 				    merge);
 		}
-		if (auto &&series = scale.labelSeries();
+		if (auto &&series =
+		        plot->options->labelSeries(asChannel(type));
 		    !axis.dimension.setLabels(scale.step.getValue(1.0))
 		    && series && isAutoTitle)
 			axis.title = series.value().getColIndex();

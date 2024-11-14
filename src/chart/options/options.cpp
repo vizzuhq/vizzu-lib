@@ -60,7 +60,7 @@ const Channel *Options::subAxisOf(ChannelId id) const
 			return &channels.at(ChannelId::size);
 		}
 		if (id == AxisId::x || id == AxisId::y) {
-			if (channels.at(id).isDimension() && id == mainAxisType())
+			if (!isMeasure(id) && id == mainAxisType())
 				return &subAxis();
 			return &channels.at(ChannelId::size);
 		}
@@ -238,14 +238,14 @@ Options::MarkerInfoId Options::generateMarkerInfoId()
 
 void Options::setAutoParameters()
 {
-	if (auto &leg = *legend; leg.value.isAuto()) {
-		leg.weight = 1.0;
-		leg.value.setAuto(getAutoLegend());
-	}
-
 	if (auto &ori = *orientation; ori.value.isAuto()) {
 		ori.weight = 1.0;
 		ori.value.setAuto(getAutoOrientation());
+	}
+
+	if (auto &leg = *legend; leg.value.isAuto()) {
+		leg.weight = 1.0;
+		leg.value.setAuto(getAutoLegend());
 	}
 }
 
@@ -253,8 +253,8 @@ Geom::Orientation Options::getAutoOrientation() const
 {
 	if (const auto &x = getChannels().at(AxisId::x),
 	    &y = getChannels().at(AxisId::y);
-	    x.isMeasure()
-	    && (y.isDimension()
+	    x.hasMeasure()
+	    && (!y.hasMeasure()
 	        || (!x.hasDimension() && y.hasDimension())))
 		return Geom::Orientation::vertical;
 
@@ -272,9 +272,8 @@ std::optional<LegendId> Options::getAutoLegend() const
 	if (auto &&meas = channels.at(ChannelId::label).measure())
 		series.erase(*meas);
 
-	for (auto axisId : {AxisId::x, AxisId::y})
-		if (auto &&id = channels.at(axisId).labelSeries())
-			series.erase(*id);
+	for (auto axisId : {ChannelId::x, ChannelId::y})
+		if (auto &&id = labelSeries(axisId)) series.erase(*id);
 
 	for (auto channelId : {LegendId::color, LegendId::lightness})
 		if (channels.at(channelId).dimensions().contains_any(
@@ -294,18 +293,19 @@ void Options::setAutoRange(bool hPositive, bool vPositive)
 {
 	auto &v = getVerticalAxis();
 	auto &h = getHorizontalAxis();
+	auto vHasMeasure = getVerticalAxis().hasMeasure();
+	auto hHasMeasure = getHorizontalAxis().hasMeasure();
 	auto &&cart = coordSystem.get() == CoordSystem::cartesian;
 	auto &&nrect = geometry != ShapeType::rectangle;
 
-	if (cart && h.isMeasure() && (v.isDimension() || nrect))
+	if (cart && hHasMeasure && (!vHasMeasure || nrect))
 		setMeasureRange(h, hPositive);
-	else if (!cart && h.isMeasure() && v.isDimension()
-	         && v.hasDimension())
+	else if (!cart && hHasMeasure && !vHasMeasure && v.hasDimension())
 		setRange(h, 0.0_perc, 133.0_perc);
 	else
 		setRange(h, 0.0_perc, 100.0_perc);
 
-	if (v.isMeasure() && (h.isDimension() || (cart && nrect)))
+	if (vHasMeasure && (!hHasMeasure || (cart && nrect)))
 		setMeasureRange(v, vPositive);
 	else
 		setRange(v, 0.0_perc, 100.0_perc);
@@ -332,10 +332,10 @@ void Options::setRange(Channel &channel,
 
 bool Options::labelsShownFor(const Data::SeriesIndex &series) const
 {
-	return channels.at(AxisId::x).labelSeries() == series
-	    || channels.at(AxisId::y).labelSeries() == series
+	return labelSeries(ChannelId::x) == series
+	    || labelSeries(ChannelId::y) == series
 	    || (legend.get()
-	        && channels.at(*legend.get()).labelSeries() == series);
+	        && labelSeries(asChannel(*legend.get())) == series);
 }
 
 void Options::showTooltip(std::optional<MarkerIndex> marker)

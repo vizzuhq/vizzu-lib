@@ -49,9 +49,10 @@ Marker::Marker(const Options &options,
 	    stats,
 	    index);
 
-	colorBase = channels.at(ChannelId::color).isDimension()
-	              ? ColorBase(static_cast<uint32_t>(color), lightness)
-	              : ColorBase(color, lightness);
+	colorBase =
+	    options.isMeasure(ChannelId::color)
+	        ? ColorBase(color, lightness)
+	        : ColorBase(static_cast<uint32_t>(color), lightness);
 
 	sizeFactor = getValueForChannel(channels,
 	    ChannelId::size,
@@ -73,6 +74,9 @@ Marker::Marker(const Options &options,
 	                 || options.geometry == ShapeType::circle;
 	auto polar = options.coordSystem.get() == CoordSystem::polar;
 
+	auto xHasMeas = channels.at(AxisId::x).hasMeasure();
+	auto yHasMeas = channels.at(AxisId::y).hasMeasure();
+
 	position.x = size.x = getValueForChannel(channels,
 	    ChannelId::x,
 	    data,
@@ -81,15 +85,13 @@ Marker::Marker(const Options &options,
 	    horizontal ? &mainId : subAxisId);
 
 	auto yChannelRectDim =
-	    channels.at(AxisId::y).isDimension()
-	    && channels.at(AxisId::y).hasDimension()
+	    !yHasMeas && channels.at(AxisId::y).hasDimension()
 	    && options.geometry == ShapeType::rectangle
 	    && options.align != Base::Align::Type::stretch;
 
 	spacing.x =
 	    (horizontal || (lineOrCircle && !polar) || yChannelRectDim)
-	            && options.getChannels().anyAxisSet()
-	            && channels.at(AxisId::x).isDimension()
+	            && options.getChannels().anyAxisSet() && !xHasMeas
 	        ? 1
 	        : 0;
 
@@ -101,14 +103,13 @@ Marker::Marker(const Options &options,
 	    !horizontal ? &mainId : subAxisId);
 
 	auto xChannelRectDim =
-	    channels.at(AxisId::x).isDimension()
-	    && channels.at(AxisId::x).hasDimension()
+	    !xHasMeas && channels.at(AxisId::x).hasDimension()
 	    && options.geometry == ShapeType::rectangle
 	    && options.align != Base::Align::Type::stretch;
 
 	spacing.y = (!horizontal || lineOrCircle || xChannelRectDim)
 	                 && options.getChannels().anyAxisSet()
-	                 && channels.at(AxisId::y).isDimension()
+	                 && !yHasMeas
 	              ? 1
 	              : 0;
 
@@ -121,7 +122,7 @@ Marker::Marker(const Options &options,
 		    index));
 
 		label =
-		    Label{labelChannel.isDimension() ? std::nullopt : value,
+		    Label{labelChannel.hasMeasure() ? value : std::nullopt,
 		        data.joinDimensionValues(labelChannel.dimensions(),
 		            index)};
 	}
@@ -173,7 +174,15 @@ double Marker::getValueForChannel(const Channels &channels,
 
 	double value{};
 
-	if (channel.isDimension()) {
+	if (const auto &measure = channel.measure()) {
+		if (channel.stackable)
+			value = data.aggregateAt(index, type, *measure);
+		else
+			value = data.valueAt(index, *measure);
+
+		if (enabled) stats.track(type, value);
+	}
+	else {
 		std::optional<Data::MarkerId> nid;
 		if (!mid)
 			nid.emplace(
@@ -186,15 +195,6 @@ double Marker::getValueForChannel(const Channels &channels,
 			value = static_cast<double>(id.itemId);
 
 		if (enabled) stats.track(type, id);
-	}
-	else {
-		if (const auto &measure = *channel.measure();
-		    channel.stackable)
-			value = data.aggregateAt(index, type, measure);
-		else
-			value = data.valueAt(index, measure);
-
-		if (enabled) stats.track(type, value);
 	}
 	return value;
 }

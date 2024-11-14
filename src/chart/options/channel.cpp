@@ -164,14 +164,12 @@ bool Channel::isEmpty() const
 	return !set.measureId && set.dimensionIds.empty();
 }
 
-bool Channel::isDimension() const { return !set.measureId; }
-
 bool Channel::hasDimension() const
 {
 	return !set.dimensionIds.empty();
 }
 
-bool Channel::isMeasure() const { return set.measureId.has_value(); }
+bool Channel::hasMeasure() const { return set.measureId.has_value(); }
 
 void Channel::collectDimensions(IndexSet &dimensions) const
 {
@@ -183,14 +181,6 @@ std::pair<const Channel::DimensionIndices &, const std::size_t &>
 Channel::dimensionsWithLevel() const
 {
 	return {set.dimensionIds, labelLevel};
-}
-
-Channel::OptionalIndex Channel::labelSeries() const
-{
-	if (isDimension() && labelLevel < set.dimensionIds.size())
-		return *std::next(set.dimensionIds.begin(),
-		    static_cast<std::intptr_t>(labelLevel));
-	return set.measureId;
 }
 
 }
