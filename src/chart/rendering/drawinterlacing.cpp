@@ -3,12 +3,15 @@
 #include <algorithm>
 #include <cmath>
 #include <cstddef>
+#include <ranges>
+#include <utility>
 
 #include "base/anim/interpolated.h"
 #include "base/geom/point.h"
 #include "base/geom/rect.h"
 #include "base/gfx/colortransform.h"
 #include "base/math/floating.h"
+#include "base/math/fuzzybool.h"
 #include "base/math/range.h"
 #include "base/math/renard.h"
 #include "base/text/smartstring.h"
@@ -142,25 +145,36 @@ void DrawInterlacing::draw(
 	const auto origo = plot->axises.origo();
 	auto axisBottom = origo.getCoord(!orientation) + stripWidth;
 
-	auto i = static_cast<int>(
+	auto iMin = static_cast<int>(
 	    axisBottom > 0 ? std::floor(-origo.getCoord(!orientation)
 	                                / (2 * stripWidth))
 	                         * 2
 	                   : std::round((axis.range.getMin() - stepSize)
 	                                / stepSize));
 
-	if (axisBottom + i * stripWidth + stripWidth < 0.0)
-		i += 2
-		   * static_cast<int>(std::ceil(
-		       -(axisBottom + stripWidth) / (2 * stripWidth)));
+	if (axisBottom + iMin * stripWidth + stripWidth < 0.0)
+		iMin += 2
+		      * static_cast<int>(std::ceil(
+		          -(axisBottom + stripWidth) / (2 * stripWidth)));
 
 	if (!text) {
 		painter.setPolygonToCircleFactor(0);
 		painter.setPolygonStraightFactor(0);
 	}
 
-	for (auto bottom = axisBottom + i * stripWidth; bottom <= 1.0;
-	     i += 2, bottom = axisBottom + i * stripWidth) {
+	for (auto &&[i, bottom] :
+	    std::views::iota(0)
+	        | std::views::transform(
+	            [&](int x)
+	            {
+		            return std::pair{iMin + x * 2,
+		                axisBottom + (iMin + x * 2) * stripWidth};
+	            })
+	        | std::views::take_while(
+	            [](const std::pair<int, double> &x)
+	            {
+		            return x.second <= 1.0;
+	            })) {
 		auto clippedBottom =
 		    std::max(bottom, 0.0, Math::Floating::less);
 		auto clippedSize =

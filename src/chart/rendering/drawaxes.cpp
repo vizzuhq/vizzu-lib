@@ -7,6 +7,7 @@
 #include "base/anim/interpolated.h"
 #include "base/geom/affinetransform.h"
 #include "base/geom/line.h"
+#include "base/geom/orientation.h"
 #include "base/geom/point.h"
 #include "base/geom/transformedrect.h"
 #include "base/gfx/colortransform.h"

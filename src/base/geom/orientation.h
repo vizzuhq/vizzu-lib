@@ -1,8 +1,6 @@
 #ifndef BASE_GEOM_ORIENTATION_H
 #define BASE_GEOM_ORIENTATION_H
 
-#include <cstdint>
-
 namespace Geom
 {
 

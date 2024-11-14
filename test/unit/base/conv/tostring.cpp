@@ -44,8 +44,9 @@ const static auto tests =
         .add_case("converts_bool_to_boolalpha",
             []
             {
-	            check() << toString(true) == "true";
-	            check() << toString(false) == "false";
+	            check() << toString(true) == std::string_view{"true"};
+	            check() << toString(false)
+	                == std::string_view{"false"};
             })
 
     ;

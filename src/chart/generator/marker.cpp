@@ -5,6 +5,7 @@
 #include <utility>
 
 #include "base/conv/auto_json.h"
+#include "base/geom/orientation.h"
 #include "base/geom/point.h"
 #include "base/geom/rect.h"
 #include "base/math/range.h"

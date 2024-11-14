@@ -5,6 +5,7 @@
 #include <iterator>
 #include <vector>
 
+#include "base/geom/orientation.h"
 #include "base/math/interpolation.h"
 
 #include "specmarker.h"

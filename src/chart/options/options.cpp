@@ -3,6 +3,7 @@
 
 #include <atomic>
 #include <cstddef>
+#include <iterator>
 #include <optional>
 
 #include "base/geom/orientation.h"
