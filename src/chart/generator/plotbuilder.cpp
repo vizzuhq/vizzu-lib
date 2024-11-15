@@ -410,7 +410,7 @@ void PlotBuilder::calcAxis(const Data::DataTable &dataTable,
 	if (scale.title) axis.title = *scale.title;
 
 	if (plot->getOptions()->isMeasure(asChannel(type))) {
-		auto &meas = *scale.measure();
+		const auto &meas = *scale.measure();
 		if (isAutoTitle) axis.title = dataCube.getName(meas);
 
 		if (type == plot->getOptions()->subAxisType()
