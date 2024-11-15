@@ -92,8 +92,7 @@ void Sheet::setPlot()
 		defaultParams.plot.paddingLeft =
 		    Gfx::Length::Emphemeral(45.0 / 12.0);
 	}
-	else if (!options->isMeasure(
-	             asChannel(options->getVerticalChannel()))) {
+	else if (!options->isMeasure(-options->getVerticalChannel())) {
 		defaultParams.plot.paddingLeft =
 		    Gfx::Length::Emphemeral(80.0 / 12.0);
 	}
@@ -147,19 +146,18 @@ void Sheet::setMarkers()
 	else {
 		auto sizeMeasure = options->isMeasure(Gen::ChannelId::size);
 		auto mainMeasure =
-		    options->isMeasure(asChannel(options->mainAxisType()));
-		auto subMeasure =
-		    options->isMeasure(asChannel(options->subAxisType()));
+		    options->isMeasure(-options->mainAxisType());
+		auto subMeasure = options->isMeasure(-options->subAxisType());
 		if (options->geometry == Gen::ShapeType::circle && sizeMeasure
 		    && (mainMeasure || subMeasure)) {
 			defaultParams.plot.marker.borderWidth = 1;
 			defaultParams.plot.marker.fillOpacity = 0.8;
 		}
 		else if (options->geometry == Gen::ShapeType::rectangle) {
-			auto vIsMeasure = options->isMeasure(
-			    asChannel(options->getVerticalChannel()));
-			auto hIsMeasure = options->isMeasure(
-			    asChannel(options->getHorizontalChannel()));
+			auto vIsMeasure =
+			    options->isMeasure(-options->getVerticalChannel());
+			auto hIsMeasure =
+			    options->isMeasure(-options->getHorizontalChannel());
 			if (auto polar = options->coordSystem.get()
 			              == Gen::CoordSystem::polar;
 			    polar && options->getVerticalAxis().isEmpty())

@@ -203,9 +203,8 @@ bool PlotBuilder::linkMarkers(const Buckets &buckets,
 	    std::numeric_limits<double>::lowest());
 
 	auto isAggregatable =
-	    !plot->getOptions()->isMeasure(asChannel(axisIndex))
-	    || (isMain
-	        && plot->getOptions()->isMeasure(asChannel(!axisIndex))
+	    !plot->getOptions()->isMeasure(-axisIndex)
+	    || (isMain && plot->getOptions()->isMeasure(-!axisIndex)
 	        && plot->getOptions()->geometry.get()
 	               == ShapeType::rectangle);
 
@@ -357,11 +356,10 @@ void PlotBuilder::calcLegendAndLabel(const Data::DataTable &dataTable)
 		}
 		else if (!scale.isEmpty()) {
 			const auto &indices = std::get<1>(stats.at(type));
-			auto merge = type == LegendId::size
-			          || (type == LegendId::lightness
-			              && plot->getOptions()->dimLabelIndex(
-			                     asChannel(type))
-			                     == 0);
+			auto merge =
+			    type == LegendId::size
+			    || (type == LegendId::lightness
+			        && plot->getOptions()->dimLabelIndex(-type) == 0);
 			for (std::uint32_t i{}, count{}; i < indices.size(); ++i)
 				if (const auto &sliceIndex = indices[i]; sliceIndex) {
 
@@ -410,7 +408,7 @@ void PlotBuilder::calcAxis(const Data::DataTable &dataTable,
 	auto isAutoTitle = scale.title.isAuto();
 	if (scale.title) axis.title = *scale.title;
 
-	if (plot->getOptions()->isMeasure(asChannel(type))) {
+	if (plot->getOptions()->isMeasure(-type)) {
 		const auto &meas = *scale.measure();
 		if (isAutoTitle) axis.title = dataCube.getName(meas);
 
@@ -429,8 +427,7 @@ void PlotBuilder::calcAxis(const Data::DataTable &dataTable,
 	}
 	else {
 		for (auto merge =
-		         plot->getOptions()->dimLabelIndex(asChannel(type))
-		             == 0
+		         plot->getOptions()->dimLabelIndex(-type) == 0
 		         && (type != plot->getOptions()->mainAxisType()
 		             || plot->getOptions()->sort != Sort::byValue
 		             || scale.dimensions().size() == 1);

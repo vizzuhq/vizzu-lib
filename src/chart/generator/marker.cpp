@@ -31,10 +31,10 @@ Marker::Marker(const Options &options,
     bool needMarkerInfo) :
     cellInfo(data.cellInfo(index, needMarkerInfo)),
     mainId(data.getId(mainAxisList,
-        options.dimLabelIndex(asChannel(options.mainAxisType())),
+        options.dimLabelIndex(-options.mainAxisType()),
         index)),
     subId(data.getId(subAxisList,
-        options.dimLabelIndex(asChannel(options.subAxisType())),
+        options.dimLabelIndex(-options.subAxisType()),
         index)),
     sizeId(data.getId(
         options.getChannels().at(ChannelId::size).dimensions(),
@@ -74,11 +74,11 @@ Marker::Marker(const Options &options,
 	    sizeId);
 
 	if (subAxisList != options.subAxis().dimensions())
-		subId.label = data.getId(options.subAxis().dimensions(),
-		                      options.dimLabelIndex(
-		                          asChannel(options.subAxisType())),
-		                      index)
-		                  .label;
+		subId.label =
+		    data.getId(options.subAxis().dimensions(),
+		            options.dimLabelIndex(-options.subAxisType()),
+		            index)
+		        .label;
 
 	auto horizontal = options.isHorizontal();
 	auto lineOrCircle = options.geometry == ShapeType::line

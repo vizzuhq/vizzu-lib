@@ -170,12 +170,12 @@ public:
 	Base::AutoParam<double> step{};
 };
 
-[[nodiscard]] constexpr ChannelId asChannel(AxisId axis)
+[[nodiscard]] constexpr ChannelId operator-(const AxisId &axis)
 {
 	return static_cast<ChannelId>(axis);
 }
 
-[[nodiscard]] constexpr ChannelId asChannel(const LegendId &legend)
+[[nodiscard]] constexpr ChannelId operator-(const LegendId &legend)
 {
 	return static_cast<ChannelId>(legend);
 }
@@ -183,7 +183,7 @@ public:
 template <class T>
 concept ChannelIdLike = requires(const T &v) {
 	{
-		asChannel(v)
+		-v
 	} -> std::same_as<ChannelId>;
 };
 
@@ -191,7 +191,7 @@ template <ChannelIdLike T>
 [[nodiscard]] constexpr bool operator==(const T &l,
     const ChannelId &c)
 {
-	return asChannel(l) == c;
+	return -l == c;
 }
 
 template <ChannelIdLike T, ChannelIdLike U>

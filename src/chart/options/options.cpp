@@ -74,7 +74,7 @@ ChannelId Options::stackChannelType() const
 	if (channels.anyAxisSet()) {
 		switch (geometry.get()) {
 		case ShapeType::area:
-		case ShapeType::rectangle: return asChannel(subAxisType());
+		case ShapeType::rectangle: return -subAxisType();
 		default:
 		case ShapeType::circle:
 		case ShapeType::line: return ChannelId::size;
@@ -86,7 +86,7 @@ ChannelId Options::stackChannelType() const
 std::optional<ChannelId> Options::secondaryStackType() const
 {
 	if (channels.anyAxisSet() && geometry == ShapeType::line)
-		return asChannel(subAxisType());
+		return -subAxisType();
 
 	return std::nullopt;
 }

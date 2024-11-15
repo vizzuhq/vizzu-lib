@@ -29,7 +29,7 @@ struct ChannelStats
 	template <ChannelIdLike T>
 	[[nodiscard]] const TrackType &at(const T &id) const
 	{
-		return tracked[asChannel(id)];
+		return tracked[-id];
 	}
 
 	void track(ChannelId at, const Data::MarkerId &id)
@@ -46,8 +46,7 @@ struct ChannelStats
 	template <ChannelIdLike Id>
 	void setIfRange(Id at, const Math::Range<> &range)
 	{
-		if (auto *r = std::get_if<0>(&tracked[asChannel(at)]))
-			*r = range;
+		if (auto *r = std::get_if<0>(&tracked[-at])) *r = range;
 	}
 };
 

@@ -121,7 +121,7 @@ public:
 	    IdType channel) const
 	{
 		auto &&ch = channels.at(channel);
-		if (auto dimIndex = dimLabelIndex(asChannel(channel)))
+		if (auto dimIndex = dimLabelIndex(-channel))
 			return *std::next(ch.set.dimensionIds.begin(),
 			    static_cast<std::intptr_t>(*dimIndex));
 		return ch.labelLevel.getValue(0) == 0 ? ch.measure()
