@@ -434,7 +434,7 @@ const static auto tests =
 	using Axis = Vizzu::Events::Targets::Axis;
 	for (auto &&[beg, end] = events.equal_range("plot-axis-draw");
 	     const auto &[j, t, l] : values(subrange(beg, end)))
-		if (!static_cast<Axis const &>(*t).horizontal)
+		if (!isHorizontal(+static_cast<Axis const &>(*t).axis))
 			xCenter = std::get<Vizzu::Draw::Line>(l).line.begin.x;
 
 	std::set<double> zero_count{};

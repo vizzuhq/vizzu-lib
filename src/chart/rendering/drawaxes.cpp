@@ -7,6 +7,7 @@
 #include "base/anim/interpolated.h"
 #include "base/geom/affinetransform.h"
 #include "base/geom/line.h"
+#include "base/geom/orientation.h"
 #include "base/geom/point.h"
 #include "base/geom/transformedrect.h"
 #include "base/gfx/colortransform.h"
@@ -41,8 +42,8 @@ void DrawAxes::drawLabels() const
 {
 	interlacing.drawTexts();
 
-	drawDimensionLabels(true);
-	drawDimensionLabels(false);
+	drawDimensionLabels(Gen::AxisId::x);
+	drawDimensionLabels(Gen::AxisId::y);
 
 	drawTitle(Gen::AxisId::x);
 	drawTitle(Gen::AxisId::y);
@@ -50,11 +51,9 @@ void DrawAxes::drawLabels() const
 
 Geom::Line DrawAxes::getAxis(Gen::AxisId axisIndex) const
 {
-	auto horizontal = axisIndex == Gen::AxisId::x;
-
 	auto offset = plot->axises.other(axisIndex).measure.origo();
 
-	auto direction = Geom::Point::Ident(horizontal);
+	auto direction = Geom::Point::Ident(+axisIndex);
 
 	auto p0 = direction.flip() * offset;
 	auto p1 = p0 + direction;
@@ -77,8 +76,7 @@ void DrawAxes::drawAxis(Gen::AxisId axisIndex) const
 		canvas.setLineColor(lineColor);
 		canvas.setLineWidth(1.0);
 
-		if (auto &&eventTarget =
-		        Events::Targets::axis(axisIndex == Gen::AxisId::x);
+		if (auto &&eventTarget = Events::Targets::axis(axisIndex);
 
 		    rootEvents.draw.plot.axis.base->invoke(
 		        Events::OnLineDrawEvent(*eventTarget,
@@ -192,7 +190,7 @@ void DrawAxes::drawTitle(Gen::AxisId axisIndex) const
 
 		auto relCenter = getTitleBasePos(axisIndex, index);
 
-		auto normal = Geom::Point::Ident(true);
+		auto normal = Geom::Point::X(1.0);
 
 		auto offset =
 		    getTitleOffset(axisIndex, index, fades == ::Anim::second);
@@ -210,18 +208,15 @@ void DrawAxes::drawTitle(Gen::AxisId axisIndex) const
 		    [&size](const Styles::AxisTitle::Orientation &orientation)
 		{
 			return Geom::Size{
-			    orientation
-			            == Styles::AxisTitle::Orientation::vertical
-			        ? size.flip()
-			        : size};
+			    isHorizontal(orientation) ? size : size.flip()};
 		};
 
 		auto angle =
 		    -std::numbers::pi / 2.0
 		    * (fades == ::Anim::second
-		            ? titleStyle.orientation->get_or_first(index)
-		                      .value
-		                  == Styles::AxisTitle::Orientation::vertical
+		            ? !isHorizontal(
+		                titleStyle.orientation->get_or_first(index)
+		                    .value)
 		            : titleStyle.orientation->factor(
 		                Styles::AxisTitle::Orientation::vertical));
 
@@ -246,8 +241,7 @@ void DrawAxes::drawTitle(Gen::AxisId axisIndex) const
 		    title.value,
 		    titleStyle,
 		    *rootEvents.draw.plot.axis.title,
-		    Events::Targets::axisTitle(title.value,
-		        axisIndex == Gen::AxisId::x),
+		    Events::Targets::axisTitle(title.value, axisIndex),
 		    {.colorTransform = Gfx::ColorTransform::Opacity(weight),
 		        .flip = upsideDown});
 
@@ -255,10 +249,8 @@ void DrawAxes::drawTitle(Gen::AxisId axisIndex) const
 	}
 }
 
-void DrawAxes::drawDimensionLabels(bool horizontal) const
+void DrawAxes::drawDimensionLabels(Gen::AxisId axisIndex) const
 {
-	auto axisIndex = horizontal ? Gen::AxisId::x : Gen::AxisId::y;
-
 	const auto &labelStyle = rootStyle.plot.getAxis(axisIndex).label;
 
 	auto textColor = *labelStyle.color;
@@ -270,11 +262,10 @@ void DrawAxes::drawDimensionLabels(bool horizontal) const
 
 	if (!axis.empty()) {
 		canvas.setFont(Gfx::Font{labelStyle});
-		const auto &enabled =
-		    horizontal ? plot->guides.x : plot->guides.y;
+		const auto &enabled = plot->guides.at(axisIndex);
 
 		for (const auto &[slice, item] : axis.getValues())
-			drawDimensionLabel(horizontal,
+			drawDimensionLabel(axisIndex,
 			    origo,
 			    item,
 			    slice,
@@ -283,27 +274,28 @@ void DrawAxes::drawDimensionLabels(bool horizontal) const
 	}
 }
 
-void DrawAxes::drawDimensionLabel(bool horizontal,
+void DrawAxes::drawDimensionLabel(Gen::AxisId axisIndex,
     const Geom::Point &origo,
     const Gen::DimensionAxis::Item &item,
     const Data::SliceIndex &index,
     double weight) const
 {
 	if (weight == 0) return;
+	auto orientation = +axisIndex;
 
-	auto axisIndex = horizontal ? Gen::AxisId::x : Gen::AxisId::y;
 	const auto &labelStyle = rootStyle.plot.getAxis(axisIndex).label;
 
 	auto drawLabel = OrientedLabel{{ctx()}};
 	labelStyle.position->visit(
 	    [this,
+	        &axisIndex,
 	        &drawLabel,
 	        &labelStyle,
 	        &item,
-	        &horizontal,
+	        &orientation,
 	        &origo,
-	        ident = Geom::Point::Ident(horizontal),
-	        normal = Geom::Point::Ident(!horizontal),
+	        ident = Geom::Point::Ident(orientation),
+	        normal = Geom::Point::Ident(!orientation),
 	        &text = item.label,
 	        &weight,
 	        &sindex = index](::Anim::InterpolateIndex index,
@@ -318,7 +310,7 @@ void DrawAxes::drawDimensionLabel(bool horizontal,
 		    switch (position.value) {
 			    using Pos = Styles::AxisLabel::Position;
 		    case Pos::max_edge: refPos = normal; break;
-		    case Pos::axis: refPos = origo.comp(!horizontal); break;
+		    case Pos::axis: refPos = origo.comp(!orientation); break;
 		    default:
 		    case Pos::min_edge: refPos = Geom::Point(); break;
 		    }
@@ -354,7 +346,7 @@ void DrawAxes::drawDimensionLabel(bool horizontal,
 			        *rootEvents.draw.plot.axis.label,
 			        Events::Targets::dimAxisLabel(sindex.column,
 			            sindex.value,
-			            horizontal));
+			            axisIndex));
 		    };
 
 		    if (text.interpolates()

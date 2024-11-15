@@ -4,6 +4,7 @@
 #include <cmath>
 
 #include "base/anim/interpolated.h"
+#include "base/geom/orientation.h"
 #include "base/geom/point.h"
 #include "base/math/floating.h"
 #include "base/math/fuzzybool.h"
@@ -11,7 +12,6 @@
 #include "chart/generator/plot.h" // NOLINT(misc-include-cleaner)
 #include "chart/options/channel.h"
 #include "chart/options/coordsystem.h"
-#include "chart/options/orientation.h"
 #include "chart/options/shapetype.h"
 #include "chart/rendering/drawingcontext.h"
 
@@ -46,11 +46,11 @@ ConnectingMarker::ConnectingMarker(const DrawingContext &ctx,
 	    Gen::CoordSystem::polar);
 	auto horizontal =
 	    ctx.getOptions().orientation.factor<Math::FuzzyBool>(
-	        Gen::Orientation::horizontal);
+	        Geom::Orientation::horizontal);
 
 	auto &&isHorizontal =
 	    ctx.getOptions().orientation.get_or_first(lineIndex).value
-	    == Gen::Orientation::horizontal;
+	    == Geom::Orientation::horizontal;
 
 	linear = !polar || horizontal
 	      || Math::FuzzyBool::And(

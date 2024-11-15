@@ -3,8 +3,6 @@
 #include <algorithm>
 #include <cmath>
 
-#include "floating.h"
-
 namespace Math
 {
 

@@ -17,14 +17,12 @@ namespace Vizzu::Draw
 
 void DrawGuides::draw()
 {
-	draw(true);
-	draw(false);
+	draw(Gen::AxisId::x);
+	draw(Gen::AxisId::y);
 }
 
-void DrawGuides::draw(bool horizontal)
+void DrawGuides::draw(Gen::AxisId axisId)
 {
-	auto axisId = horizontal ? Gen::AxisId::x : Gen::AxisId::y;
-
 	const auto &guideStyle = rootStyle.plot.getAxis(axisId).guides;
 
 	auto baseColor = *guideStyle.color;
@@ -39,7 +37,7 @@ void DrawGuides::draw(bool horizontal)
 		     it != end;
 		     ++it) {
 			if (auto &&weight = (*it).weight(axis.factor); weight > 0)
-				drawGuide(horizontal,
+				drawGuide(axisId,
 				    (*it).range.getMax(),
 				    baseColor
 				        * Math::FuzzyBool::And<double>(weight,
@@ -50,14 +48,14 @@ void DrawGuides::draw(bool horizontal)
 	}
 }
 
-void DrawGuides::drawGuide(bool horizontal,
+void DrawGuides::drawGuide(Gen::AxisId axisId,
     double val,
     const Gfx::Color &color)
 {
-	auto eventTarget = Events::Targets::axisGuide(horizontal);
+	auto eventTarget = Events::Targets::axisGuide(axisId);
 
-	auto ident = Geom::Point::Ident(horizontal);
-	auto normal = Geom::Point::Ident(!horizontal);
+	auto ident = Geom::Point::Ident(+axisId);
+	auto normal = Geom::Point::Ident(!+axisId);
 	auto relMax = ident * val;
 
 	canvas.setLineColor(color);

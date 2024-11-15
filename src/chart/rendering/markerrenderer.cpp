@@ -14,6 +14,7 @@
 #include "base/text/smartstring.h"
 #include "chart/generator/plot.h" // NOLINT(misc-include-cleaner)
 #include "chart/main/events.h"
+#include "chart/options/channel.h"
 #include "chart/options/coordsystem.h"
 #include "chart/options/shapetype.h"
 #include "markers/abstractmarker.h"
@@ -68,7 +69,7 @@ void MarkerRenderer::drawLines(Gfx::ICanvas &canvas,
 			auto guideElement =
 			    Events::Targets::markerGuide(blended.marker,
 			        blended.dataPosition,
-			        false);
+			        Gen::AxisId::y);
 
 			if (rootEvents.draw.plot.marker.guide->invoke(
 			        Events::OnLineDrawEvent(*guideElement,
@@ -91,7 +92,7 @@ void MarkerRenderer::drawLines(Gfx::ICanvas &canvas,
 			auto guideElement =
 			    Events::Targets::markerGuide(blended.marker,
 			        blended.dataPosition,
-			        true);
+			        Gen::AxisId::x);
 
 			if (rootEvents.draw.plot.marker.guide->invoke(
 			        Events::OnLineDrawEvent(*guideElement,

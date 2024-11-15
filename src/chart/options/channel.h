@@ -6,6 +6,7 @@
 #include <set>
 #include <string>
 
+#include "base/geom/orientation.h"
 #include "dataframe/old/types.h"
 
 #include "autoparam.h"
@@ -61,6 +62,18 @@ static_assert(std::ranges::all_of(Refl::enum_names<LegendId>,
 	        == static_cast<ChannelIdType>(
 	            Refl::get_enum<ChannelId>(name));
     }));
+
+[[nodiscard]] constexpr Geom::Orientation operator+(
+    const AxisId &axis)
+{
+	return axis == AxisId::x ? Geom::Orientation::horizontal
+	                         : Geom::Orientation::vertical;
+}
+
+[[nodiscard]] constexpr AxisId operator!(const AxisId &axis)
+{
+	return axis == AxisId::x ? AxisId::y : AxisId::x;
+}
 
 struct ChannelSeriesList
 {

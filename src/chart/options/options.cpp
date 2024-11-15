@@ -1,18 +1,18 @@
 
 #include "options.h"
 
-#include <array>
 #include <atomic>
 #include <cstddef>
+#include <iterator>
 #include <optional>
 
+#include "base/geom/orientation.h"
 #include "base/math/trig.h"
 #include "dataframe/old/types.h"
 
 #include "channel.h"
 #include "channelrange.h"
 #include "coordsystem.h"
-#include "orientation.h"
 #include "shapetype.h"
 
 namespace Vizzu::Gen
@@ -249,16 +249,16 @@ void Options::setAutoParameters()
 	}
 }
 
-Orientation Options::getAutoOrientation() const
+Geom::Orientation Options::getAutoOrientation() const
 {
 	if (const auto &x = getChannels().at(AxisId::x),
 	    &y = getChannels().at(AxisId::y);
 	    x.isMeasure()
 	    && (y.isDimension()
 	        || (!x.hasDimension() && y.hasDimension())))
-		return Gen::Orientation::vertical;
+		return Geom::Orientation::vertical;
 
-	return Gen::Orientation::horizontal;
+	return Geom::Orientation::horizontal;
 }
 
 std::optional<LegendId> Options::getAutoLegend() const

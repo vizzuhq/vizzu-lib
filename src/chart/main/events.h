@@ -230,17 +230,16 @@ public:
 
 		struct Axis : Element
 		{
-			bool horizontal;
+			Gen::AxisId axis;
 
-			explicit Axis(bool horizontal) :
+			explicit Axis(Gen::AxisId axis) :
 			    Element("plot-axis"),
-			    horizontal(horizontal)
+			    axis(axis)
 			{}
 
 			void appendToJSON(Conv::JSONObj &&jsonObj) const override
 			{
-				Element::appendToJSON(std::move(
-				    jsonObj)("id", (horizontal ? "x" : "y")));
+				Element::appendToJSON(std::move(jsonObj)("id", axis));
 			}
 		};
 
@@ -273,19 +272,19 @@ public:
 
 		struct MarkerGuide : MarkerChild
 		{
-			bool horizontal;
+			Gen::AxisId axis;
 
 			MarkerGuide(const Gen::Marker &marker,
 			    const Marker::DataPosition &position,
-			    bool horizontal) :
+			    Gen::AxisId axis) :
 			    MarkerChild("guide", marker, position),
-			    horizontal(horizontal)
+			    axis(axis)
 			{}
 
 			void appendToJSON(Conv::JSONObj &&jsonObj) const override
 			{
-				MarkerChild::appendToJSON(std::move(
-				    jsonObj)("id", (horizontal ? "x" : "y")));
+				MarkerChild::appendToJSON(
+				    std::move(jsonObj)("id", axis));
 			}
 		};
 
@@ -312,9 +311,9 @@ public:
 			}
 		};
 
-		static auto axis(bool horizontal)
+		static auto axis(Gen::AxisId axis)
 		{
-			return std::make_unique<Axis>(horizontal);
+			return std::make_unique<Axis>(axis);
 		}
 
 		static auto legend(const LegendProperties &properties)
@@ -330,11 +329,11 @@ public:
 
 		static auto markerGuide(const Gen::Marker &marker,
 		    const Marker::DataPosition &position,
-		    bool horizontal)
+		    Gen::AxisId axis)
 		{
 			return std::make_unique<MarkerGuide>(marker,
 			    position,
-			    horizontal);
+			    axis);
 		}
 
 		static auto root()
@@ -431,46 +430,45 @@ public:
 
 		static auto dimAxisLabel(const std::string_view &categoryName,
 		    const std::string &categoryValue,
-		    bool horizontal)
+		    Gen::AxisId axis)
 		{
 			return std::make_unique<CategoryInfo<Text<AxisChild>>>(
 			    categoryName,
 			    categoryValue,
 			    categoryValue,
 			    "label",
-			    horizontal);
+			    axis);
 		}
 
 		static auto measAxisLabel(const std::string &label,
-		    bool horizontal)
+		    Gen::AxisId axis)
 		{
 			return std::make_unique<Text<AxisChild>>(label,
 			    "label",
-			    horizontal);
+			    axis);
 		}
 
 		static auto axisTitle(const std::string &title,
-		    bool horizontal)
+		    Gen::AxisId axis)
 		{
 			return std::make_unique<Text<AxisChild>>(title,
 			    "title",
-			    horizontal);
+			    axis);
 		}
 
-		static auto axisGuide(bool horizontal)
+		static auto axisGuide(Gen::AxisId axis)
 		{
-			return std::make_unique<AxisChild>("guide", horizontal);
+			return std::make_unique<AxisChild>("guide", axis);
 		}
 
-		static auto axisTick(bool horizontal)
+		static auto axisTick(Gen::AxisId axis)
 		{
-			return std::make_unique<AxisChild>("tick", horizontal);
+			return std::make_unique<AxisChild>("tick", axis);
 		}
 
-		static auto axisInterlacing(bool horizontal)
+		static auto axisInterlacing(Gen::AxisId axis)
 		{
-			return std::make_unique<AxisChild>("interlacing",
-			    horizontal);
+			return std::make_unique<AxisChild>("interlacing", axis);
 		}
 	};
 };
