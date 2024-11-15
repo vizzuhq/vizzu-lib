@@ -70,10 +70,10 @@ void PlotBuilder::addAxisLayout(Buckets &subBuckets,
 
 void PlotBuilder::initDimensionTrackers()
 {
-	for (auto *tracks = stats.tracked.data();
-	     const auto &ch : plot->getOptions()->getChannels())
-		if (auto &track = *tracks++; !ch.hasMeasure())
-			track.emplace<1>(
+	for (auto type : Refl::enum_values<ChannelId>())
+		if (auto &&ch = plot->getOptions()->getChannels().at(type);
+		    !ch.hasMeasure())
+			stats.tracked.at(type).emplace<1>(
 			    dataCube.combinedSizeOf(ch.dimensions()).second);
 }
 
@@ -347,12 +347,14 @@ void PlotBuilder::calcLegendAndLabel(const Data::DataTable &dataTable)
 		if (scale.title) calcLegend.title = *scale.title;
 
 		if (auto &&meas = scale.measure()) {
-			if (isAutoTitle)
-				calcLegend.title = dataCube.getName(*meas);
-			calcLegend.measure = {std::get<0>(stats.at(type)),
-			    meas->getColIndex(),
-			    dataTable.getUnit(meas->getColIndex()),
-			    scale.step.getValue()};
+			if (plot->getOptions()->isMeasure(-type)) {
+				if (isAutoTitle)
+					calcLegend.title = dataCube.getName(*meas);
+				calcLegend.measure = {std::get<0>(stats.at(type)),
+				    meas->getColIndex(),
+				    dataTable.getUnit(meas->getColIndex()),
+				    scale.step.getValue()};
+			}
 		}
 		else if (!scale.isEmpty()) {
 			const auto &indices = std::get<1>(stats.at(type));
@@ -361,8 +363,7 @@ void PlotBuilder::calcLegendAndLabel(const Data::DataTable &dataTable)
 			    || (type == LegendId::lightness
 			        && plot->getOptions()->dimLabelIndex(-type) == 0);
 			for (std::uint32_t i{}, count{}; i < indices.size(); ++i)
-				if (const auto &sliceIndex = indices[i]; sliceIndex) {
-
+				if (const auto &sliceIndex = indices[i]) {
 					auto rangeId = static_cast<double>(i);
 					std::optional<ColorBase> color;
 					if (type == LegendId::color)

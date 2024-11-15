@@ -62,7 +62,7 @@ Marker::Marker(const Options &options,
 	        index));
 
 	colorBase =
-	    options.isMeasure(ChannelId::color)
+	    channels.at(ChannelId::color).hasMeasure()
 	        ? ColorBase(color, lightness)
 	        : ColorBase(static_cast<uint32_t>(color), lightness);
 
