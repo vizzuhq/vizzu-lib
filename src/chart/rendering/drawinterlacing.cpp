@@ -50,16 +50,19 @@ void DrawInterlacing::draw(bool horizontal, bool text) const
 
 	if (!axis.range.isReal()) return;
 
-	auto enabled = axis.enabled.calculate<double>();
+	auto enabled = axis.enabled.combine<double>();
 
-	auto step = axis.step.calculate();
+	auto step = axis.step.combine();
 
-	auto stepHigh = std::clamp(Math::Renard::R5().ceil(step),
-	    axis.step.min(),
-	    axis.step.max());
-	auto stepLow = std::clamp(Math::Renard::R5().floor(step),
-	    axis.step.min(),
-	    axis.step.max());
+	auto &&[min, max] =
+	    std::minmax(axis.step.get_or_first(::Anim::first).value,
+	        axis.step.get_or_first(::Anim::second).value,
+	        Math::Floating::less);
+
+	auto stepHigh =
+	    std::clamp(Math::Renard::R5().ceil(step), min, max);
+	auto stepLow =
+	    std::clamp(Math::Renard::R5().floor(step), min, max);
 
 	if (stepHigh == step) {
 		draw(axis.enabled,
@@ -79,7 +82,7 @@ void DrawInterlacing::draw(bool horizontal, bool text) const
 	}
 	else {
 		auto highWeight =
-		    Math::Range<double>::Raw(stepLow, stepHigh).rescale(step);
+		    Math::Range<>::Raw(stepLow, stepHigh).rescale(step);
 
 		auto lowWeight = (1.0 - highWeight) * enabled;
 		highWeight *= enabled;

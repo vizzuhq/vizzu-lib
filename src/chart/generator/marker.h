@@ -85,9 +85,8 @@ public:
 	[[nodiscard]] Geom::Rect toRectangle() const;
 	void fromRectangle(const Geom::Rect &rect);
 
-	[[nodiscard]] Math::Range<double> getSizeBy(
-	    bool horizontal) const;
-	void setSizeBy(bool horizontal, Math::Range<double> range);
+	[[nodiscard]] Math::Range<> getSizeBy(bool horizontal) const;
+	void setSizeBy(bool horizontal, Math::Range<> range);
 
 	Conv::JSONObj &&appendToJSON(Conv::JSONObj &&jsonObj) const;
 

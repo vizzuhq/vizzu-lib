@@ -24,7 +24,7 @@ NormalizedNumber::NormalizedNumber(double value, double base) :
 	if (value != 0) {
 		positive = !std::signbit(value);
 		if (!positive) value = -value;
-		exponent = Floating::orderOfMagnitude(value, base);
+		exponent = static_cast<int>(floor(log(value) / log(base)));
 		coefficient = value / pow(base, exponent);
 		coefficient = std::clamp(coefficient, 1.0, base);
 	}

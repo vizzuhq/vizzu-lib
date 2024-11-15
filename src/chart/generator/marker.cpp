@@ -209,13 +209,12 @@ void Marker::fromRectangle(const Geom::Rect &rect)
 	size = rect.size;
 }
 
-Math::Range<double> Marker::getSizeBy(bool horizontal) const
+Math::Range<> Marker::getSizeBy(bool horizontal) const
 {
 	return horizontal ? toRectangle().hSize() : toRectangle().vSize();
 }
 
-void Marker::setSizeBy(bool horizontal,
-    const Math::Range<double> range)
+void Marker::setSizeBy(bool horizontal, const Math::Range<> range)
 {
 	auto rect = toRectangle();
 	if (horizontal)

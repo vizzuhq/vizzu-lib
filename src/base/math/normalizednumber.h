@@ -26,8 +26,6 @@ public:
 		return positive ? coefficient : -coefficient;
 	}
 	void setExponent(int exp);
-
-private:
 };
 
 class ScientificNumber : public NormalizedNumber

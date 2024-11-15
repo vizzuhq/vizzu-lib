@@ -200,7 +200,8 @@ void DrawMarkerInfo::draw(Gfx::ICanvas &canvas,
     const Geom::Rect &boundary) const
 {
 	for (const auto &info : plot->getMarkersInfo()) {
-		auto &&[cnt1, weight1] = info.second.values[0];
+		auto &&[cnt1, weight1] =
+		    info.second.get_or_first(::Anim::first);
 		if (!info.second.interpolates() && cnt1) {
 			MarkerDC dc(*this, canvas, boundary, cnt1);
 			dc.draw(weight1);

@@ -8,7 +8,7 @@
 namespace Vizzu::Base
 {
 
-struct Align : private Math::Range<double>
+struct Align : private Math::Range<>
 {
 	enum class Type : std::uint8_t { none, center, stretch };
 

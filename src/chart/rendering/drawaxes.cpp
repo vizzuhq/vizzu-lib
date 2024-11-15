@@ -357,17 +357,16 @@ void DrawAxes::drawDimensionLabel(bool horizontal,
 			            horizontal));
 		    };
 
-		    if (labelStyle.position->interpolates()
-		        && text.interpolates())
-			    draw(text.get_or_first(index), position.weight);
-		    if (!labelStyle.position->interpolates()
-		        && !text.interpolates())
-			    draw(text.values[0]);
-		    else if (labelStyle.position->interpolates())
-			    draw(text.values[0], position.weight);
-		    else if (text.interpolates()) {
-			    draw(text.values[0]);
+		    if (text.interpolates()
+		        && !labelStyle.position->interpolates()) {
+			    draw(text.get_or_first(::Anim::first));
 			    draw(text.get_or_first(::Anim::second));
+		    }
+		    else {
+			    draw(text.get_or_first(index),
+			        !labelStyle.position->interpolates()
+			            ? 1.0
+			            : position.weight);
 		    }
 	    });
 }

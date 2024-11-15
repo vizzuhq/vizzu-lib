@@ -47,20 +47,20 @@ struct Rect
 	[[nodiscard]] double width() const { return size.x; }
 	[[nodiscard]] double height() const { return size.y; }
 
-	[[nodiscard]] Math::Range<double> hSize() const
+	[[nodiscard]] Math::Range<> hSize() const
 	{
 		return {left(), right()};
 	}
-	[[nodiscard]] Math::Range<double> vSize() const
+	[[nodiscard]] Math::Range<> vSize() const
 	{
 		return {bottom(), top()};
 	}
 
-	[[nodiscard]] Math::Range<double> x() const
+	[[nodiscard]] Math::Range<> x() const
 	{
 		return {pos.x, pos.x + size.x};
 	}
-	[[nodiscard]] Math::Range<double> y() const
+	[[nodiscard]] Math::Range<> y() const
 	{
 		return {pos.y, pos.y + size.y};
 	}
@@ -89,13 +89,13 @@ struct Rect
 	void setWidth(double val) { size.x = val; }
 	void setHeight(double val) { size.y = val; }
 
-	void setHSize(const Math::Range<double> &range)
+	void setHSize(const Math::Range<> &range)
 	{
 		setLeft(range.getMin());
 		setRight(range.getMax());
 	}
 
-	void setVSize(const Math::Range<double> &range)
+	void setVSize(const Math::Range<> &range)
 	{
 		setBottom(range.getMin());
 		setTop(range.getMax());

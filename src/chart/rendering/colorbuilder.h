@@ -13,7 +13,7 @@ namespace Vizzu::Draw
 
 struct ColorBuilder
 {
-	using LightnessRange = Math::Range<double>;
+	using LightnessRange = Math::Range<>;
 
 	ColorBuilder(const LightnessRange &lightnessRange,
 	    const ::Anim::Interpolated<Gfx::ColorPalette> &palette,

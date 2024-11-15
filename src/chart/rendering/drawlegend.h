@@ -46,7 +46,7 @@ private:
 		double markerSize{};
 		const Gen::Axis &axis;
 		double measureEnabled =
-		    axis.measure.enabled.calculate<double>();
+		    axis.measure.enabled.combine<double>();
 		double measureWeight =
 		    Math::FuzzyBool::And(weight, measureEnabled);
 		Events::Targets::LegendProperties properties;
@@ -71,7 +71,7 @@ private:
 	getLabelRect(const Info &info, const Geom::Rect &itemRect);
 	[[nodiscard]] static Geom::Rect getBarRect(const Info &info);
 
-	[[nodiscard]] static Math::Range<double> markersLegendRange(
+	[[nodiscard]] static Math::Range<> markersLegendRange(
 	    const Info &info);
 
 	void extremaLabel(const Info &info,

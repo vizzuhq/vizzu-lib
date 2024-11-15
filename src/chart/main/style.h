@@ -106,7 +106,8 @@ struct Font
 	[[nodiscard]] std::string calculatedFamily() const
 	{
 		if (fontFamily.has_value())
-			if (auto &&ff = fontFamily->values[0].value; !ff.empty())
+			if (auto &&ff = fontFamily->values[::Anim::first].value;
+			    !ff.empty())
 				return ff;
 
 		if (fontParent) return fontParent->calculatedFamily();
@@ -297,9 +298,9 @@ struct DataPoint
 	Param<::Anim::Interpolated<std::optional<double>>>
 	    rectangleSpacing;
 
-	[[nodiscard]] Math::Range<double> lightnessRange() const
+	[[nodiscard]] Math::Range<> lightnessRange() const
 	{
-		return Math::Range<double>::Raw(*minLightness, *maxLightness);
+		return Math::Range<>::Raw(*minLightness, *maxLightness);
 	}
 };
 

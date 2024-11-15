@@ -101,13 +101,12 @@ Geom::Point Axises::origo() const
 	    at(AxisId::y).measure.origo()};
 }
 
-MeasureAxis::MeasureAxis(const Math::Range<double> &interval,
+MeasureAxis::MeasureAxis(const Math::Range<> &interval,
     std::string series,
     const std::string_view &unit,
     const std::optional<double> &step) :
     enabled(true),
-    range(interval.isReal() ? interval
-                            : Math::Range<double>::Raw(0, 0)),
+    range(interval.isReal() ? interval : Math::Range<>::Raw({}, {})),
     series(std::move(series)),
     unit(std::string{unit}),
     step(step ? *step : Math::Renard::R5().ceil(range.size() / 5.0))
@@ -142,7 +141,7 @@ MeasureAxis interpolate(const MeasureAxis &op0,
 
 		if (auto s0Zero = is_zero(s0), s1Zero = is_zero(s1);
 		    s0Zero && s1Zero) {
-			res.range = Math::Range<double>::Raw(
+			res.range = Math::Range<>::Raw(
 			    Math::interpolate(op0.range.getMin(),
 			        op1.range.getMin(),
 			        factor),
@@ -159,8 +158,8 @@ MeasureAxis interpolate(const MeasureAxis &op0,
 			    0.0,
 			    factor);
 
-			res.range = Math::Range<double>::Raw(
-			    op1.range.middle() - middleAt * size,
+			res.range = Math::Range<>::Raw(op1.range.middle()
+			                                   - middleAt * size,
 			    op1.range.middle()
 			        + (factor == 1.0 ? 0.0 : (1 - middleAt) * size));
 
@@ -169,7 +168,7 @@ MeasureAxis interpolate(const MeasureAxis &op0,
 
 			res.step = interpolate(op0.step,
 			    Anim::Interpolated{max},
-			    Math::Range<double>::Raw(op0.step.get(), max)
+			    Math::Range<>::Raw(op0.step.get(), max)
 			        .rescale(step));
 		}
 		else if (s0Zero) {
@@ -179,8 +178,8 @@ MeasureAxis interpolate(const MeasureAxis &op0,
 			    op1.range.rescale(op0.range.middle()),
 			    factor);
 
-			res.range = Math::Range<double>::Raw(
-			    op0.range.middle() - middleAt * size,
+			res.range = Math::Range<>::Raw(op0.range.middle()
+			                                   - middleAt * size,
 			    op0.range.middle()
 			        + (factor == 0.0 ? 0.0 : (1 - middleAt) * size));
 
@@ -189,7 +188,7 @@ MeasureAxis interpolate(const MeasureAxis &op0,
 
 			res.step = interpolate(op1.step,
 			    Anim::Interpolated{max},
-			    Math::Range<double>::Raw(op1.step.get(), max)
+			    Math::Range<>::Raw(op1.step.get(), max)
 			        .rescale(step));
 		}
 		else {
@@ -201,7 +200,7 @@ MeasureAxis interpolate(const MeasureAxis &op0,
 
 			const auto size = is_zero(interp) ? MAX : 1 / interp;
 
-			res.range = Math::Range<double>::Raw(
+			res.range = Math::Range<>::Raw(
 			    Math::interpolate(op0.range.getMin() * s0Inv,
 			        op1.range.getMin() * s1Inv,
 			        factor)
@@ -220,19 +219,18 @@ MeasureAxis interpolate(const MeasureAxis &op0,
 			    op0sign == std::signbit(op1.step.get()))
 				res.step = interpolate(op0.step,
 				    op1.step,
-				    Math::Range<double>::Raw(op0.step.get(),
-				        op1.step.get())
+				    Math::Range<>::Raw(op0.step.get(), op1.step.get())
 				        .rescale(step));
 			else if (auto max = std::copysign(MAX, step);
 			         op0sign == std::signbit(step))
 				res.step = interpolate(op0.step,
 				    Anim::Interpolated{max},
-				    Math::Range<double>::Raw(op0.step.get(), max)
+				    Math::Range<>::Raw(op0.step.get(), max)
 				        .rescale(step));
 			else
 				res.step = interpolate(op1.step,
 				    Anim::Interpolated{max},
-				    Math::Range<double>::Raw(op1.step.get(), max)
+				    Math::Range<>::Raw(op1.step.get(), max)
 				        .rescale(step));
 		}
 
@@ -253,7 +251,7 @@ MeasureAxis interpolate(const MeasureAxis &op0,
 	return res;
 }
 bool DimensionAxis::add(const Data::SliceIndex &index,
-    const Math::Range<double> &range,
+    const Math::Range<> &range,
     const std::optional<std::uint32_t> &position,
     const std::optional<ColorBase> &color,
     bool label,

@@ -49,12 +49,13 @@ AbstractMarker AbstractMarker::createInterpolated(
 {
 	const auto &options = ctx.getOptions();
 
-	auto fromShapeType = options.geometry.values[0].value;
+	auto &&[fromShapeType, firstWeight] =
+	    options.geometry.get_or_first(::Anim::first);
 
 	auto fromMarker = create(ctx, marker, fromShapeType, lineIndex);
 
-	auto toShapeType =
-	    options.geometry.get_or_first(::Anim::second).value;
+	auto &&[toShapeType, secondWeight] =
+	    options.geometry.get_or_first(::Anim::second);
 
 	if (fromShapeType == toShapeType) return fromMarker;
 
@@ -72,8 +73,6 @@ AbstractMarker AbstractMarker::createInterpolated(
 	auto labelEnableSum = static_cast<double>(aMarker.labelEnabled);
 
 	if (marker.polarConnection.interpolates()) {
-		auto firstWeight = options.geometry.values[0].weight;
-		auto secondWeight = options.geometry.values[1].weight;
 		enableSum = firstWeight + secondWeight;
 		enableFactorBase = secondWeight;
 		labelEnableSum = firstWeight + secondWeight;

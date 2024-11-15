@@ -151,7 +151,7 @@ PlotBuilder::sortedBuckets(const Buckets &buckets, bool main) const
 
 void PlotBuilder::addSpecLayout(Buckets &buckets)
 {
-	auto geometry = plot->getOptions()->geometry.values[0].value;
+	auto geometry = plot->getOptions()->geometry->value;
 	if (auto &markers = plot->markers; isConnecting(geometry))
 		Charts::TableChart::setupVector(markers, true);
 	else if (plot->getOptions()
@@ -336,11 +336,9 @@ void PlotBuilder::calcAxises(const Data::DataTable &dataTable)
 		}
 
 		stats.setIfRange(AxisId::x,
-		    Math::Range<double>::Raw(boundRect.left(),
-		        boundRect.right()));
+		    Math::Range<>::Raw(boundRect.left(), boundRect.right()));
 		stats.setIfRange(AxisId::y,
-		    Math::Range<double>::Raw(boundRect.bottom(),
-		        boundRect.top()));
+		    Math::Range<>::Raw(boundRect.bottom(), boundRect.top()));
 	}
 
 	for (const AxisId &ch : {AxisId::x, AxisId::y})
@@ -425,7 +423,7 @@ void PlotBuilder::calcAxis(const Data::DataTable &dataTable,
 		if (type == plot->getOptions()->subAxisType()
 		    && plot->getOptions()->align
 		           == Base::Align::Type::stretch)
-			axis.measure = {Math::Range<double>::Raw(0, 100),
+			axis.measure = {Math::Range<>::Raw(0, 100),
 			    meas->getColIndex(),
 			    "%",
 			    scale.step.getValue()};
@@ -482,16 +480,16 @@ void PlotBuilder::addAlignment(const Buckets &subBuckets) const
 	if (plot->getOptions()->align == Base::Align::Type::center) {
 		auto &&halfSize = subAxisRange.size() / 2.0;
 		if (!Math::Floating::is_zero(halfSize))
-			subAxisRange = Math::Range<double>::Raw(
-			    subAxisRange.getMin() - halfSize,
-			    subAxisRange.getMax() - halfSize);
+			subAxisRange =
+			    Math::Range<>::Raw(subAxisRange.getMin() - halfSize,
+			        subAxisRange.getMax() - halfSize);
 	}
 
 	auto &&vectical = !plot->getOptions()->isHorizontal();
 	const Base::Align align{plot->getOptions()->align,
-	    Math::Range(0.0, 1.0)};
+	    Math::Range<>::Raw(0.0, 1.0)};
 	for (auto &&bucket : subBuckets) {
-		Math::Range<double> range;
+		Math::Range<> range;
 
 		for (auto &&[marker, idx] : bucket)
 			if (marker.enabled)
@@ -512,7 +510,7 @@ void PlotBuilder::addSeparation(const Buckets &subBuckets,
 		auto align = plot->getOptions()->align;
 
 		std::vector ranges{mainBucketSize,
-		    Math::Range<double>::Raw({}, {})};
+		    Math::Range<>::Raw({}, {})};
 		std::vector<bool> anyEnabled(mainBucketSize);
 
 		auto &&vertical = !plot->getOptions()->isHorizontal();
@@ -528,7 +526,7 @@ void PlotBuilder::addSeparation(const Buckets &subBuckets,
 				}
 			}
 
-		auto max = Math::Range(0.0, 0.0);
+		auto max = Math::Range<>::Raw({}, {});
 		for (auto i = 0U; i < ranges.size(); ++i)
 			if (anyEnabled[i]) max = max + ranges[i];
 
@@ -556,7 +554,7 @@ void PlotBuilder::normalizeSizes()
 
 	if (plot->getOptions()->geometry == ShapeType::circle
 	    || plot->getOptions()->geometry == ShapeType::line) {
-		Math::Range<double> size;
+		Math::Range<> size;
 
 		for (auto &marker : plot->markers)
 			if (marker.enabled) size.include(marker.sizeFactor);
@@ -580,7 +578,7 @@ void PlotBuilder::normalizeSizes()
 void PlotBuilder::normalizeColors()
 {
 	auto &lightness = stats.lightness;
-	Math::Range<double> color;
+	Math::Range<> color;
 
 	bool wasValidMarker{};
 	for (auto &marker : plot->markers) {

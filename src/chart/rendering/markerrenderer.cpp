@@ -198,7 +198,9 @@ void MarkerRenderer::drawMarkers(Gfx::ICanvas &canvas,
 				if (containsSingle) {
 					auto lineIndex =
 					    isConnecting(
-					        getOptions().geometry.values[0].value)
+					        getOptions()
+					            .geometry.values[::Anim::first]
+					            .value)
 					        ? ::Anim::first
 					        : ::Anim::second;
 
@@ -213,8 +215,9 @@ void MarkerRenderer::drawMarkers(Gfx::ICanvas &canvas,
 			}
 			else
 				drawMarker(::Anim::first,
-				    ::Anim::Weighted{
-				        blended.marker.prevMainMarker.values[0].value,
+				    ::Anim::Weighted{blended.marker.prevMainMarker
+				                         .values[::Anim::first]
+				                         .value,
 				        sum_weight});
 		}
 	}
@@ -226,11 +229,16 @@ void MarkerRenderer::drawLabels(Gfx::ICanvas &canvas) const
 	auto &&keepMeasure = !measure.interpolates();
 
 	auto &&firstUnit =
-	    unit.values[unit.interpolates() && !unit.values[0].hasValue()]
+	    unit.get_or_first(unit.get_or_first(::Anim::first).hasValue()
+	                          ? ::Anim::first
+	                          : ::Anim::second)
 	        .value;
 	auto &&secondUnit =
-	    unit.values[unit.interpolates() && unit.values[1].hasValue()]
+	    unit.get_or_first(unit.get_or_first(::Anim::second).hasValue()
+	                          ? ::Anim::second
+	                          : ::Anim::first)
 	        .value;
+
 	for (const auto &blended : markers) {
 		if (blended.marker.enabled == false) continue;
 		drawLabel(canvas,

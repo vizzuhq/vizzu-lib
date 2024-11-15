@@ -8,8 +8,6 @@
 namespace Math::Floating
 {
 
-[[nodiscard]] int orderOfMagnitude(double value, double base = 10);
-
 constexpr auto inline less = [](auto a, auto b)
 {
 	static_assert(std::floating_point<decltype(a)>);
@@ -20,12 +18,10 @@ constexpr auto inline is_zero = [](auto value)
 {
 	using F = decltype(value);
 	static_assert(std::floating_point<F>);
-	if constexpr (std::numeric_limits<F>::is_iec559) {
+	if constexpr (std::numeric_limits<F>::is_iec559)
 		return value == F{};
-	}
-	else {
+	else
 		return std::is_eq(std::weak_order(F{}, value));
-	}
 };
 
 }
