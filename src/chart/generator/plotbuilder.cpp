@@ -52,9 +52,9 @@ PlotBuilder::PlotBuilder(const Data::DataTable &dataTable,
 	else
 		addAxisLayout(subBuckets, mainBucketSize, dataTable);
 
-	calcLegendAndLabel(dataTable);
 	normalizeColors();
 	normalizeSizes();
+	calcLegendAndLabel(dataTable);
 }
 
 void PlotBuilder::addAxisLayout(Buckets &subBuckets,
@@ -106,6 +106,11 @@ Buckets PlotBuilder::generateMarkers(std::size_t &mainBucketSize)
 			plot->markersInfo.insert({first->second,
 			    Plot::MarkerInfo{Plot::MarkerInfoContent{marker}}});
 
+	if (!std::ranges::is_sorted(plot->markers, {}, &Marker::idx))
+		throw std::runtime_error(
+		    "One of your series name or category contains control "
+		    "character (possible tab/endline).");
+
 	return Buckets{plot->markers};
 }
 
@@ -121,7 +126,7 @@ PlotBuilder::sortedBuckets(const Buckets &buckets, bool main) const
 			// NOLINTNEXTLINE(misc-include-cleaner)
 			auto it = std::ranges::lower_bound(sorted,
 			    idx.itemId,
-			    std::less{},
+			    {},
 			    &BucketInfo::index);
 			if (it == sorted.end() || it->index != idx.itemId)
 				it = sorted.emplace(it, idx.itemId, 0.0);
@@ -222,7 +227,7 @@ bool PlotBuilder::linkMarkers(const Buckets &buckets, bool main) const
 				auto sIx = sorted[ix].index;
 				auto it = std::ranges::lower_bound(ids,
 				    sIx,
-				    std::less{},
+				    {},
 				    &Data::MarkerId::itemId);
 				if (it == ids.end() || (*it).itemId != sIx) continue;
 
@@ -258,7 +263,7 @@ bool PlotBuilder::linkMarkers(const Buckets &buckets, bool main) const
 			auto &&ids = std::ranges::views::values(bucket);
 			auto it = std::ranges::lower_bound(ids,
 			    idAct,
-			    std::less{},
+			    {},
 			    &Data::MarkerId::itemId);
 			Marker *act = it == ids.end() || (*it).itemId != idAct
 			                ? nullptr
@@ -268,7 +273,7 @@ bool PlotBuilder::linkMarkers(const Buckets &buckets, bool main) const
 			auto idNext = sorted[iNext].index;
 			it = std::ranges::lower_bound(ids,
 			    idNext,
-			    std::less{},
+			    {},
 			    &Data::MarkerId::itemId);
 			Marker *next = it == ids.end() || (*it).itemId != idNext
 			                 ? nullptr
@@ -343,8 +348,54 @@ void PlotBuilder::calcAxises(const Data::DataTable &dataTable)
 
 void PlotBuilder::calcLegendAndLabel(const Data::DataTable &dataTable)
 {
-	if (auto &&legend = plot->options->legend.get())
-		calcAxis(dataTable, *legend);
+	if (auto &&legend = plot->options->legend.get()) {
+		auto type{*legend};
+		const auto &scale =
+		    plot->getOptions()->getChannels().at(type);
+
+		auto &calcLegend = plot->axises.create(type);
+		auto isAutoTitle = scale.title.isAuto();
+		if (scale.title) calcLegend.title = *scale.title;
+
+		if (auto &&meas = scale.measure()) {
+			if (isAutoTitle)
+				calcLegend.title = dataCube.getName(*meas);
+			calcLegend.measure = {std::get<0>(stats.at(type)),
+			    meas->getColIndex(),
+			    dataTable.getUnit(meas->getColIndex()),
+			    scale.step.getValue()};
+		}
+		else if (!scale.isEmpty()) {
+			const auto &indices = std::get<1>(stats.at(type));
+			auto merge = type == LegendId::size
+			          || (type == LegendId::lightness
+			              && scale.labelLevel == 0);
+			for (std::uint32_t i{}, count{}; i < indices.size(); ++i)
+				if (const auto &sliceIndex = indices[i]; sliceIndex) {
+
+					auto rangeId = static_cast<double>(i);
+					std::optional<ColorBase> color;
+					if (type == LegendId::color)
+						color = ColorBase(i, 0.5);
+					else if (type == LegendId::lightness) {
+						rangeId = stats.lightness.rescale(rangeId);
+						color = ColorBase(0U, rangeId);
+					}
+
+					if (calcLegend.dimension.add(*sliceIndex,
+					        {rangeId, rangeId},
+					        count,
+					        color,
+					        true,
+					        merge))
+						++count;
+				}
+
+			if (auto &&series = scale.labelSeries();
+			    series && isAutoTitle && calcLegend.dimension.empty())
+				calcLegend.title = series.value().getColIndex();
+		}
+	}
 
 	if (auto &&meas = plot->getOptions()
 	                      ->getChannels()
@@ -356,8 +407,8 @@ void PlotBuilder::calcLegendAndLabel(const Data::DataTable &dataTable)
 		    ::Anim::String{meas->getColIndex()}};
 }
 
-template <ChannelIdLike T>
-void PlotBuilder::calcAxis(const Data::DataTable &dataTable, T type)
+void PlotBuilder::calcAxis(const Data::DataTable &dataTable,
+    AxisId type)
 {
 	const auto &scale = plot->getOptions()->getChannels().at(type);
 	if (scale.isEmpty()) return;
@@ -374,61 +425,43 @@ void PlotBuilder::calcAxis(const Data::DataTable &dataTable, T type)
 		    && plot->getOptions()->align
 		           == Base::Align::Type::stretch)
 			axis.measure = {Math::Range<double>::Raw(0, 100),
+			    meas->getColIndex(),
 			    "%",
 			    scale.step.getValue()};
-		else {
-			auto &&range = std::get<0>(stats.at(type));
-			axis.measure = {range.isReal()
-			                    ? range
-			                    : Math::Range<double>::Raw(0, 0),
+		else
+			axis.measure = {std::get<0>(stats.at(type)),
+			    meas->getColIndex(),
 			    dataTable.getUnit(meas->getColIndex()),
 			    scale.step.getValue()};
-		}
 	}
 	else {
-		constexpr bool isTypeAxis = std::is_same_v<T, AxisId>;
-		if constexpr (auto merge = scale.labelLevel == 0;
-		              isTypeAxis) {
-			for (const auto &marker : plot->markers) {
-				if (!marker.enabled) continue;
+		for (auto merge =
+		         scale.labelLevel == 0
+		         && ((type == AxisId::x)
+		                 != plot->getOptions()->isHorizontal()
+		             || plot->getOptions()->sort != Sort::byValue
+		             || scale.dimensions().size() == 1);
+		     const auto &marker : plot->markers) {
+			if (!marker.enabled) continue;
 
-				const auto &id =
-				    (type == AxisId::x)
-				            == plot->getOptions()->isHorizontal()
-				        ? marker.mainId
-				        : marker.subId;
+			const auto &id =
+			    (type == AxisId::x)
+			            == plot->getOptions()->isHorizontal()
+			        ? marker.mainId
+			        : marker.subId;
 
-				if (const auto &slice = id.label)
-					axis.dimension.add(*slice,
-					    static_cast<double>(id.itemId),
-					    marker.getSizeBy(type == AxisId::x),
-					    merge);
-			}
+			if (const auto &slice = id.label)
+				axis.dimension.add(*slice,
+				    marker.getSizeBy(type == AxisId::x),
+				    {},
+				    {},
+				    false,
+				    merge);
 		}
-		else {
-			const auto &indices = std::get<1>(stats.at(type));
-
-			double count{};
-			for (std::size_t i{}; i < indices.size(); ++i)
-				if (const auto &sliceIndex = indices[i];
-				    sliceIndex
-				    && axis.dimension.add(*sliceIndex,
-				        count,
-				        {static_cast<double>(i),
-				            static_cast<double>(i)},
-				        type == LegendId::size
-				            || (type == LegendId::lightness
-				                && merge)))
-					count += 1;
-		}
-		auto hasLabel = axis.dimension.setLabels(
-		    isTypeAxis ? scale.step.getValue(1.0) : 1.0);
-
-		if (auto &&series = scale.labelSeries())
-			axis.dimension.category = series.value().getColIndex();
-
-		if (isAutoTitle && !hasLabel)
-			axis.title = axis.dimension.category;
+		if (auto &&series = scale.labelSeries();
+		    !axis.dimension.setLabels(scale.step.getValue(1.0))
+		    && series && isAutoTitle)
+			axis.title = series.value().getColIndex();
 	}
 }
 
@@ -536,6 +569,8 @@ void PlotBuilder::normalizeSizes()
 			marker.sizeFactor = size.getMax() == size.getMin()
 			                      ? 0
 			                      : size.normalize(marker.sizeFactor);
+
+		stats.setIfRange(LegendId::size, size);
 	}
 	else
 		for (auto &marker : plot->markers) marker.sizeFactor = 0;
@@ -543,7 +578,7 @@ void PlotBuilder::normalizeSizes()
 
 void PlotBuilder::normalizeColors()
 {
-	Math::Range<double> lightness;
+	auto &lightness = stats.lightness;
 	Math::Range<double> color;
 
 	bool wasValidMarker{};
@@ -570,7 +605,6 @@ void PlotBuilder::normalizeColors()
 	                .range.getRange(lightness);
 
 	for (auto &marker : plot->markers) {
-		if (!marker.enabled) continue;
 		auto &&cbase = marker.colorBase->value;
 		cbase.setLightness(lightness.rescale(cbase.getLightness()));
 
@@ -581,25 +615,10 @@ void PlotBuilder::normalizeColors()
 	if (auto &&legend = plot->options->legend.get()) {
 		switch (*legend) {
 		case LegendId::color:
-			plot->axises.at(LegendId::color).measure.range = color;
-
-			for (auto &item :
-			    plot->axises.at(LegendId::color).dimension)
-				item.colorBase = ColorBase(
-				    static_cast<uint32_t>(item.range.middle()),
-				    0.5);
+			stats.setIfRange(LegendId::color, color);
 			break;
 		case LegendId::lightness:
-			plot->axises.at(LegendId::lightness).measure.range =
-			    lightness;
-
-			for (auto &item :
-			    plot->axises.at(LegendId::lightness).dimension) {
-				item.range = Math::Range<double>::Raw(
-				    lightness.rescale(item.range.getMin()),
-				    lightness.rescale(item.range.getMax()));
-				item.colorBase = ColorBase(0U, item.range.middle());
-			}
+			stats.setIfRange(LegendId::lightness, lightness);
 			break;
 		default:;
 		}

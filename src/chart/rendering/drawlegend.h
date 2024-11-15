@@ -14,7 +14,8 @@ public:
 	void draw(Gfx::ICanvas &canvas,
 	    const Geom::Rect &legendLayout,
 	    Gen::LegendId channelType,
-	    double weight) const;
+	    double weight,
+	    const Gen::Axis &axis) const;
 
 	const Events::DrawEvents::Legend &events = rootEvents.draw.legend;
 	const Styles::Legend &style = rootStyle.legend;
@@ -43,10 +44,9 @@ private:
 		double weight{};
 		double itemHeight{};
 		double markerSize{};
-		const Gen::MeasureAxis &measure;
-		const Gen::DimensionAxis &dimension;
-		double measureEnabled = measure.enabled.calculate<double>();
-		bool dimensionEnabled = dimension.enabled;
+		const Gen::Axis &axis;
+		double measureEnabled =
+		    axis.measure.enabled.calculate<double>();
 		double measureWeight =
 		    Math::FuzzyBool::And(weight, measureEnabled);
 		Events::Targets::LegendProperties properties;
@@ -59,7 +59,7 @@ private:
 	void drawMeasure(const Info &info) const;
 
 	void drawMarker(Info &info,
-	    std::string_view categoryValue,
+	    const Data::SliceIndex &sindex,
 	    const Gfx::Color &color,
 	    const Geom::Rect &rect,
 	    bool needGradient) const;

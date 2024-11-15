@@ -386,14 +386,13 @@ public:
 
 		static auto dimLegendLabel(
 		    const std::string_view &categoryName,
-		    const std::string_view &categoryValue,
-		    const std::string &label,
+		    const std::string &categoryValue,
 		    const LegendProperties &properties)
 		{
 			return std::make_unique<CategoryInfo<Text<LegendChild>>>(
 			    categoryName,
 			    categoryValue,
-			    label,
+			    categoryValue,
 			    "label",
 			    properties);
 		}
@@ -431,14 +430,13 @@ public:
 		}
 
 		static auto dimAxisLabel(const std::string_view &categoryName,
-		    const std::string_view &categoryValue,
-		    const std::string &label,
+		    const std::string &categoryValue,
 		    bool horizontal)
 		{
 			return std::make_unique<CategoryInfo<Text<AxisChild>>>(
 			    categoryName,
 			    categoryValue,
-			    label,
+			    categoryValue,
 			    "label",
 			    horizontal);
 		}

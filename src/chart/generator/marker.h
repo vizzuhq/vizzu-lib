@@ -37,7 +37,7 @@ public:
 	Geom::Point size;
 	Geom::Point spacing;
 	double sizeFactor;
-	Math::FuzzyBool enabled;
+	Math::FuzzyBool enabled{true};
 	std::shared_ptr<const Data::CellInfo> cellInfo;
 
 	struct Label

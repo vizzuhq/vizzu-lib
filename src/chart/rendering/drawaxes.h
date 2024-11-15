@@ -33,7 +33,7 @@ private:
 	void drawDimensionLabel(bool horizontal,
 	    const Geom::Point &origo,
 	    const Gen::DimensionAxis::Item &item,
-	    const std::string_view &category) const;
+	    const Data::SliceIndex &index) const;
 };
 
 }

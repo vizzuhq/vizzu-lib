@@ -21,10 +21,10 @@ public:
 	Type value{};
 	double weight{};
 
-	Weighted() noexcept(
+	constexpr Weighted() noexcept(
 	    std::is_nothrow_default_constructible_v<Type>) = default;
 
-	explicit Weighted(Type value, double weight = 1.0) :
+	constexpr explicit Weighted(Type value, double weight = 1.0) :
 	    value(std::move(value)),
 	    weight(weight)
 	{}
@@ -62,7 +62,7 @@ public:
 	std::array<Weighted<Type>, 2> values;
 	bool has_second{};
 
-	Interpolated() noexcept(
+	constexpr Interpolated() noexcept(
 	    std::is_nothrow_default_constructible_v<Type>) = default;
 	Interpolated(const Interpolated &) noexcept(
 	    std::is_nothrow_copy_constructible_v<Type>) = default;
@@ -73,7 +73,7 @@ public:
 	Interpolated &operator=(Interpolated &&) noexcept(
 	    std::is_nothrow_move_assignable_v<Type>) = default;
 
-	explicit Interpolated(Type value)
+	constexpr explicit Interpolated(Type value)
 	{
 		values[0] = Weighted<Type>(std::move(value));
 	}
@@ -108,17 +108,6 @@ public:
 		return static_cast<InterpolateIndex>(has_second);
 	}
 
-	[[nodiscard]] Interpolated shifted() const
-	{
-		if (has_second)
-			throw std::logic_error("Cannot move Weigthed Value");
-
-		Interpolated res;
-		res.values[1] = values[0];
-		res.has_second = true;
-		return res;
-	}
-
 	[[nodiscard]] const Type &get() const
 	{
 		if (!has_second) return values[0].value;
@@ -132,8 +121,9 @@ public:
 		return values[has_second && static_cast<bool>(index)];
 	}
 
+	template <class T>
 	[[nodiscard]] std::optional<InterpolateIndex> get_index(
-	    const Type &type) const
+	    T &&type) const
 	{
 		if (values[0].value == type) return first;
 		if (has_second && values[1].value == type) return second;

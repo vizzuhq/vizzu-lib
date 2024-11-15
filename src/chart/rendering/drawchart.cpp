@@ -43,16 +43,14 @@ void DrawChart::drawLegend(Gfx::ICanvas &canvas,
 {
 	auto &&legendObj = DrawLegend{{ctx()}};
 
-	getOptions().legend.visit(
-	    [&legendObj, &canvas, &bounds](::Anim::InterpolateIndex,
-	        const auto &legend)
-	    {
-		    if (legend.value)
-			    legendObj.draw(canvas,
-			        bounds,
-			        *legend.value,
-			        legend.weight);
-	    });
+	for (auto &&legOpt = getOptions().legend;
+	     const auto &legend : plot->axises.leftLegend)
+		if (legend)
+			legendObj.draw(canvas,
+			    bounds,
+			    legend->type,
+			    legOpt.factor(legend->type),
+			    legend->calc);
 }
 
 template <auto targetGetter, class MemberGetter>

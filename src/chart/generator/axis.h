@@ -24,6 +24,7 @@ struct ChannelStats
 	    std::vector<std::optional<Data::SliceIndex>>>;
 
 	Refl::EnumArray<ChannelId, TrackType> tracked;
+	Math::Range<double> lightness;
 
 	template <ChannelIdLike T>
 	[[nodiscard]] const TrackType &at(const T &id) const
@@ -42,7 +43,8 @@ struct ChannelStats
 		std::get<0>(tracked[at]).include(value);
 	}
 
-	void setIfRange(AxisId at, const Math::Range<double> &range)
+	template <ChannelIdLike Id>
+	void setIfRange(Id at, const Math::Range<double> &range)
 	{
 		if (auto *r = std::get_if<0>(&tracked[asChannel(at)]))
 			*r = range;
@@ -53,13 +55,17 @@ struct MeasureAxis
 {
 	::Anim::Interpolated<bool> enabled{false};
 	Math::Range<double> range = Math::Range<double>::Raw(0, 1);
+	std::string series;
 	::Anim::String unit;
 	::Anim::Interpolated<double> step{1.0};
+
 	MeasureAxis() = default;
-	MeasureAxis(Math::Range<double> interval,
+	MeasureAxis(const Math::Range<double> &interval,
+	    std::string series,
 	    const std::string_view &unit,
-	    std::optional<double> step);
-	bool operator==(const MeasureAxis &other) const;
+	    const std::optional<double> &step);
+	[[nodiscard]] bool operator==(
+	    const MeasureAxis &other) const = default;
 	[[nodiscard]] double origo() const;
 };
 
@@ -79,34 +85,39 @@ struct DimensionAxis
 		bool start;
 		bool end;
 		Math::Range<double> range;
-		double value;
+		::Anim::Interpolated<std::uint32_t> position;
 		::Anim::Interpolated<ColorBase> colorBase;
-		::Anim::String label;
-		std::string categoryValue;
+		::Anim::Interpolated<bool> label;
 		double weight;
 
-		Item(Math::Range<double> range, double value) :
+		Item(Math::Range<double> range,
+		    const std::optional<std::uint32_t> &position,
+		    const std::optional<ColorBase> &color,
+		    bool setCategoryAsLabel) :
 		    start(true),
 		    end(true),
 		    range(range),
-		    value(value),
+		    label(setCategoryAsLabel),
 		    weight(1.0)
-		{}
+		{
+			if (position) this->position = *position;
+			if (color) colorBase = *color;
+		}
 
 		Item(const Item &item, bool starter, double factor) :
 		    start(starter),
 		    end(!starter),
 		    range(item.range),
-		    value(item.value),
+		    position(item.position),
 		    colorBase(item.colorBase),
 		    label(item.label),
-		    categoryValue(item.categoryValue),
-		    weight(Math::FuzzyBool::And(item.weight, factor))
+		    weight(item.weight * factor)
 		{}
 
 		bool operator==(const Item &other) const
 		{
-			return range == other.range && weight == other.weight;
+			return range == other.range && weight == other.weight
+			    && position == other.position;
 		}
 
 		[[nodiscard]] bool presentAt(
@@ -118,15 +129,15 @@ struct DimensionAxis
 	};
 	using Values = std::multimap<Data::SliceIndex, Item>;
 
-	bool enabled{false};
-	std::string category{};
-
 	DimensionAxis() = default;
 	bool add(const Data::SliceIndex &index,
-	    double value,
 	    const Math::Range<double> &range,
+	    const std::optional<std::uint32_t> &position,
+	    const std::optional<ColorBase> &color,
+	    bool label,
 	    bool merge);
-	[[nodiscard]] bool operator==(const DimensionAxis &other) const;
+	[[nodiscard]] bool operator==(
+	    const DimensionAxis &other) const = default;
 
 	[[nodiscard]] auto begin()
 	{
@@ -144,7 +155,10 @@ struct DimensionAxis
 	{
 		return std::ranges::views::values(values).end();
 	}
+	[[nodiscard]] bool empty() const { return values.empty(); }
 	bool setLabels(double step);
+
+	[[nodiscard]] const Values &getValues() const { return values; }
 
 private:
 	Values values;
@@ -161,7 +175,14 @@ struct Axis
 
 struct Axises
 {
-	Refl::EnumArray<LegendId, Axis> legend;
+	struct CalculatedLegend
+	{
+		LegendId type;
+		Axis calc;
+		std::uint64_t interpolated{};
+	};
+	std::array<std::optional<CalculatedLegend>, 2> leftLegend;
+
 	Refl::EnumArray<AxisId, Axis> axises;
 	struct Label
 	{
@@ -174,12 +195,22 @@ struct Axises
 
 	[[nodiscard]] const Axis &at(LegendId legendType) const
 	{
-		return legend[legendType];
+		if (const auto &l0 = leftLegend[0];
+		    l0 && l0->type == legendType)
+			return l0->calc;
+
+		return empty();
 	}
 
-	[[nodiscard]] Axis &at(LegendId legendType)
+	void addLegendInterpolation(double legendFactor,
+	    LegendId legendType,
+	    const Axis &source,
+	    const Axis &target,
+	    double factor);
+
+	Axis &create(LegendId legendType)
 	{
-		return legend[legendType];
+		return leftLegend[0].emplace(legendType).calc;
 	}
 
 	[[nodiscard]] const Axis &at(AxisId axisType) const
@@ -203,8 +234,8 @@ struct Axises
 
 	[[nodiscard]] Geom::Point origo() const;
 
-	[[nodiscard]] bool operator==(
-	    const Axises &other) const = default;
+private:
+	[[nodiscard]] static const Axis &empty();
 };
 
 }

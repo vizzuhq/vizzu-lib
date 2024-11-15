@@ -233,13 +233,13 @@ void Sheet::setAfterStyles(Gen::Plot &plot, const Geom::Size &size)
 
 		std::vector<Math::Range<double>> ranges;
 		bool has_collision = false;
-		for (const auto &item :
-		    plot.axises.at(Gen::AxisId::x).dimension) {
+		for (const auto &[label, item] :
+		    plot.axises.at(Gen::AxisId::x).dimension.getValues()) {
 
-			if (item.weight == 0) continue;
+			if (item.weight == 0 || !item.label.get()) continue;
 
 			auto textBoundary =
-			    Gfx::ICanvas::textBoundary(font, item.label.get());
+			    Gfx::ICanvas::textBoundary(font, label.value);
 			auto textXHalfMargin =
 			    xLabel.toInvMargin(textBoundary, font.size)
 			        .getSpace()

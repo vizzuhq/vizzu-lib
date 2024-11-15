@@ -22,17 +22,76 @@
 namespace Vizzu::Gen
 {
 
+const Axis &Axises::empty()
+{
+	static const Axis empty;
+	return empty;
+}
+
+void Axises::addLegendInterpolation(double legendFactor,
+    LegendId legendType,
+    const Axis &source,
+    const Axis &target,
+    double factor)
+{
+	if (&source == &empty() && &target == &empty()) return;
+	using Math::Niebloid::interpolate;
+
+	if (source.measure.enabled.get() && target.measure.enabled.get()
+	    && source.measure.series != target.measure.series) {
+		if (!leftLegend[1]) leftLegend[1].emplace(legendType);
+
+		leftLegend[0]->calc = interpolate(source, empty(), factor);
+		leftLegend[1]->calc = interpolate(empty(), target, factor);
+		return;
+	}
+
+	auto &legendObj =
+	    leftLegend[leftLegend[0]
+	               && leftLegend[0]->type != legendType];
+	if (!legendObj) legendObj.emplace(legendType);
+	legendObj->calc = interpolate(source, target, factor);
+	++legendObj->interpolated;
+
+	if (leftLegend[0] && leftLegend[1]
+	    && leftLegend[0]->interpolated == leftLegend[1]->interpolated
+	    && !leftLegend[0]->calc.dimension.empty()
+	    && !leftLegend[1]->calc.dimension.empty()
+	    && leftLegend[0]
+	               ->calc.dimension.getValues()
+	               .begin()
+	               ->first.column
+	           == leftLegend[1]
+	                  ->calc.dimension.getValues()
+	                  .begin()
+	                  ->first.column) {
+		for (auto &item : leftLegend[0]->calc.dimension)
+			item.weight = 1.0;
+		for (auto &item : leftLegend[1]->calc.dimension)
+			item.weight = 1.0;
+
+		leftLegend[1]->calc.dimension =
+		    leftLegend[0]->calc.dimension =
+		        interpolate(leftLegend[0]->calc.dimension,
+		            leftLegend[1]->calc.dimension,
+		            legendFactor);
+	}
+}
+
 Geom::Point Axises::origo() const
 {
 	return {at(AxisId::x).measure.origo(),
 	    at(AxisId::y).measure.origo()};
 }
 
-MeasureAxis::MeasureAxis(Math::Range<double> interval,
+MeasureAxis::MeasureAxis(const Math::Range<double> &interval,
+    std::string series,
     const std::string_view &unit,
-    std::optional<double> step) :
+    const std::optional<double> &step) :
     enabled(true),
-    range(interval),
+    range(interval.isReal() ? interval
+                            : Math::Range<double>::Raw(0, 0)),
+    series(std::move(series)),
     unit(std::string{unit}),
     step(step ? *step : Math::Renard::R5().ceil(range.size() / 5.0))
 {
@@ -41,12 +100,6 @@ MeasureAxis::MeasureAxis(Math::Range<double> interval,
 	else if (std::signbit(this->step->value)
 	         != std::signbit(range.size()))
 		this->step->value *= -1;
-}
-
-bool MeasureAxis::operator==(const MeasureAxis &other) const
-{
-	return enabled == other.enabled && range == other.range
-	    && step == other.step && unit == other.unit;
 }
 
 double MeasureAxis::origo() const
@@ -181,47 +234,53 @@ MeasureAxis interpolate(const MeasureAxis &op0,
 	return res;
 }
 bool DimensionAxis::add(const Data::SliceIndex &index,
-    double value,
     const Math::Range<double> &range,
+    const std::optional<std::uint32_t> &position,
+    const std::optional<ColorBase> &color,
+    bool label,
     bool merge)
 {
-	this->enabled = true;
-
+	auto [it, end] = values.equal_range(index);
 	if (merge) {
-		if (auto it = values.find(index); it != values.end()) {
+		if (it != end) {
 			it->second.range.include(range);
+			if (auto &col = it->second.colorBase;
+			    col.hasOneValue() && color && col->value.isDiscrete()
+			    && color->isDiscrete()
+			    && col->value.getIndex() == color->getIndex())
+				col->value.setLightness(it->second.range.middle());
+
 			return false;
 		}
 	}
+	else
+		while (it != end)
+			if (it++->second.range == range) return false;
 	values.emplace(std::piecewise_construct,
 	    std::tuple{index},
-	    std::tuple{range, value});
+	    std::tuple{range, position, color, label});
 
 	return true;
 }
 
-bool DimensionAxis::operator==(const DimensionAxis &other) const
-{
-	return enabled == other.enabled && values == other.values;
-}
-
 bool DimensionAxis::setLabels(double step)
 {
-	bool hasLabel{};
+	auto hasLabel = false;
 	step = std::max(step, 1.0, Math::Floating::less);
-	double currStep = 0.0;
+	auto currStep = 0.0;
 
-	std::multimap<double, Values::pointer> reorder;
-	for (auto &ref : values)
-		reorder.emplace(ref.second.range.getMin(), &ref);
+	using SortedItems =
+		std::multiset<std::reference_wrapper<Item>, decltype(
+			[] (Item& lhs, Item &rhs)
+			{
+				return Math::Floating::less(lhs.range.getMin(), rhs.range.getMin());
+			})>;
 
-	for (int curr{}; auto &[v, pp] : reorder) {
-		auto &[slice, item] = *pp;
-		item.categoryValue = slice.value;
-
+	for (auto curr = int{};
+	     auto &&item : SortedItems{begin(), end()}) {
 		if (++curr <= currStep) continue;
 		currStep += step;
-		item.label = item.categoryValue;
+		item.get().label = true;
 		hasLabel = true;
 	}
 	return hasLabel;
@@ -233,15 +292,12 @@ DimensionAxis interpolate(const DimensionAxis &op0,
 {
 	DimensionAxis res;
 
-	for (const auto &[slice, item] : op0.values) {
-		res.enabled = true;
+	for (const auto &[slice, item] : op0.values)
 		res.values.emplace(std::piecewise_construct,
 		    std::tuple{slice},
 		    std::forward_as_tuple(item, true, 1 - factor));
-	}
 
 	for (const auto &[slice, item] : op1.values) {
-		res.enabled = true;
 		auto [resIt, end] = res.values.equal_range(slice);
 
 		while (resIt != end && resIt->second.end) { ++resIt; }
@@ -268,9 +324,9 @@ DimensionAxis interpolate(const DimensionAxis &op0,
 			resIt->second.label =
 			    interpolate(resIt->second.label, item.label, factor);
 
-			resIt->second.value =
-			    Math::interpolate(resIt->second.value,
-			        item.value,
+			resIt->second.position =
+			    interpolate(resIt->second.position,
+			        item.position,
 			        factor);
 
 			resIt->second.weight += item.weight * factor;

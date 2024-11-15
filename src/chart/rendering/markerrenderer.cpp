@@ -265,34 +265,31 @@ void MarkerRenderer::draw(Gfx::ICanvas &canvas,
 	painter.setPolygonStraightFactor(
 	    static_cast<double>(abstractMarker.linear));
 
-	auto colors = getColor(abstractMarker);
-
 	canvas.save();
 
 	canvas.setLineWidth(*rootStyle.plot.marker.borderWidth);
 
-	auto markerElement =
-	    Events::Targets::marker(abstractMarker.marker,
-	        abstractMarker.dataPosition);
-
+	auto &&[borderColor, itemColor] = getColor(abstractMarker);
 	auto colorAlpha =
 	    Math::FuzzyBool::And<double>(abstractMarker.enabled, factor);
 
-	if (isLine) {
+	if (auto markerElement =
+	        Events::Targets::marker(abstractMarker.marker,
+	            abstractMarker.dataPosition);
+	    isLine) {
 		auto line = abstractMarker.getLine();
-
-		auto p0 = coordSys.convert(line.begin);
-		auto p1 = coordSys.convert(line.end);
 
 		colorAlpha = Math::FuzzyBool::And<double>(colorAlpha,
 		    abstractMarker.connected);
 
-		canvas.setBrushColor(colors.second * colorAlpha);
-		canvas.setLineColor(colors.second * colorAlpha);
+		canvas.setBrushColor(itemColor * colorAlpha);
+		canvas.setLineColor(itemColor * colorAlpha);
 
 		if (rootEvents.draw.plot.marker.base->invoke(
 		        Events::OnLineDrawEvent(*markerElement,
-		            {Geom::Line(p0, p1), false}))) {
+		            {{coordSys.convert(line.begin),
+		                 coordSys.convert(line.end)},
+		                false}))) {
 			painter.drawStraightLine(line,
 			    abstractMarker.lineWidth,
 			    getOptions().coordSystem.factor(
@@ -302,7 +299,7 @@ void MarkerRenderer::draw(Gfx::ICanvas &canvas,
 			        : static_cast<double>(abstractMarker.linear));
 
 			renderedChart.emplace(
-			    Draw::Marker{abstractMarker.marker.enabled != false,
+			    Marker{abstractMarker.marker.enabled != false,
 			        abstractMarker.shapeType,
 			        abstractMarker.points,
 			        abstractMarker.lineWidth},
@@ -310,16 +307,15 @@ void MarkerRenderer::draw(Gfx::ICanvas &canvas,
 		}
 	}
 	else {
-		auto boundary = abstractMarker.getBoundary();
-		canvas.setLineColor(colors.first * colorAlpha);
-		canvas.setBrushColor(colors.second * colorAlpha);
+		canvas.setLineColor(borderColor * colorAlpha);
+		canvas.setBrushColor(itemColor * colorAlpha);
 
 		if (rootEvents.draw.plot.marker.base->invoke(
 		        Events::OnRectDrawEvent(*markerElement,
-		            {boundary, true}))) {
+		            {abstractMarker.getBoundary(), true}))) {
 			painter.drawPolygon(abstractMarker.points);
 			renderedChart.emplace(
-			    Draw::Marker{abstractMarker.marker.enabled != false,
+			    Marker{abstractMarker.marker.enabled != false,
 			        abstractMarker.shapeType,
 			        abstractMarker.points,
 			        abstractMarker.lineWidth},

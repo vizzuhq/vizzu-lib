@@ -32,7 +32,8 @@ namespace Vizzu::Draw
 void DrawLegend::draw(Gfx::ICanvas &canvas,
     const Geom::Rect &legendLayout,
     Gen::LegendId channelType,
-    double weight) const
+    double weight,
+    const Gen::Axis &axis) const
 {
 	auto markerWindowRect =
 	    style.contentRect(legendLayout, rootStyle.calculatedSize());
@@ -58,8 +59,7 @@ void DrawLegend::draw(Gfx::ICanvas &canvas,
 	    .weight = weight,
 	    .itemHeight = itemHeight,
 	    .markerSize = markerSize,
-	    .measure = plot->axises.at(channelType).measure,
-	    .dimension = plot->axises.at(channelType).dimension,
+	    .axis = axis,
 	    .properties = {.channel = channelType},
 	    .fadeBarGradient = {markerWindowRect.leftSide(),
 	        {.line = {},
@@ -120,40 +120,39 @@ const Gfx::LinearGradient &DrawLegend::FadeBarGradient::operator()(
 
 void DrawLegend::drawTitle(const Info &info) const
 {
-	plot->axises.at(info.properties.channel)
-	    .title.visit(
-	        [this,
-	            &info,
-	            &rect = info.titleRect,
-	            mul = Math::FuzzyBool::Or(info.measureEnabled,
-	                info.dimensionEnabled)](::Anim::InterpolateIndex,
-	            const auto &title)
-	        {
-		        if (title.weight <= 0) return;
+	info.axis.title.visit(
+	    [this,
+	        &info,
+	        &rect = info.titleRect,
+	        mul = Math::FuzzyBool::Or(info.measureEnabled,
+	            !info.axis.dimension.empty())](
+	        ::Anim::InterpolateIndex,
+	        const auto &title)
+	    {
+		    if (title.weight <= 0) return;
 
-		        DrawLabel{{ctx()}}.draw(info.canvas,
-		            Geom::TransformedRect::fromRect(rect),
-		            title.value,
-		            style.title,
-		            *events.title,
-		            Events::Targets::legendTitle(title.value,
-		                info.properties),
-		            {.colorTransform = Gfx::ColorTransform::Opacity(
-		                 Math::FuzzyBool::And(title.weight,
-		                     info.weight,
-		                     mul))});
-	        });
+		    DrawLabel{{ctx()}}.draw(info.canvas,
+		        Geom::TransformedRect::fromRect(rect),
+		        title.value,
+		        style.title,
+		        *events.title,
+		        Events::Targets::legendTitle(title.value,
+		            info.properties),
+		        {.colorTransform = Gfx::ColorTransform::Opacity(
+		             Math::FuzzyBool::And(title.weight,
+		                 info.weight,
+		                 mul))});
+	    });
 }
 
 void DrawLegend::drawDimension(Info &info) const
 {
-	if (!info.dimensionEnabled) return;
-
-	auto label = DrawLabel{{ctx()}};
-	for (const auto &item : info.dimension) {
+	for (auto label = DrawLabel{{ctx()}}; const auto &[sindex, item] :
+	     info.axis.dimension.getValues()) {
 		if (item.weight <= 0) continue;
 
-		auto itemRect = getItemRect(info, item.value);
+		auto itemRect =
+		    getItemRect(info, item.position.calculate<double>());
 
 		if (itemRect.y().getMin() > info.markerWindowRect.y().getMax()
 		    || itemRect.y().getMax()
@@ -171,32 +170,24 @@ void DrawLegend::drawDimension(Info &info) const
 		    Math::FuzzyBool::And(item.weight, info.weight);
 
 		drawMarker(info,
-		    item.categoryValue,
+		    sindex,
 		    colorBuilder.render(item.colorBase) * alpha,
 		    getMarkerRect(info, itemRect),
 		    needGradient);
 
-		item.label.visit(
-		    [&](::Anim::InterpolateIndex, const auto &weighted)
-		    {
-			    label.draw(info.canvas,
-			        getLabelRect(info, itemRect),
-			        weighted.value,
-			        style.label,
-			        *events.label,
-			        Events::Targets::dimLegendLabel(
-			            info.dimension.category,
-			            item.categoryValue,
-			            item.categoryValue,
-			            info.properties),
-			        {.colorTransform = Gfx::ColorTransform::Opacity(
-			             Math::FuzzyBool::And(alpha,
-			                 weighted.weight)),
-			            .gradient = needGradient
-			                          ? std::ref(info.fadeBarGradient)
-			                          : decltype(DrawLabel::Options::
-			                                  gradient){}});
-		    });
+		label.draw(info.canvas,
+		    getLabelRect(info, itemRect),
+		    sindex.value,
+		    style.label,
+		    *events.label,
+		    Events::Targets::dimLegendLabel(sindex.column,
+		        sindex.value,
+		        info.properties),
+		    {.colorTransform = Gfx::ColorTransform::Opacity(alpha),
+		        .gradient =
+		            needGradient
+		                ? std::ref(info.fadeBarGradient)
+		                : decltype(DrawLabel::Options::gradient){}});
 	}
 }
 
@@ -230,7 +221,7 @@ Geom::TransformedRect DrawLegend::getLabelRect(const Info &info,
 }
 
 void DrawLegend::drawMarker(Info &info,
-    std::string_view categoryValue,
+    const Data::SliceIndex &sindex,
     const Gfx::Color &color,
     const Geom::Rect &rect,
     bool needGradient) const
@@ -245,17 +236,16 @@ void DrawLegend::drawMarker(Info &info,
 	info.canvas.setLineColor(color);
 	info.canvas.setLineWidth(0);
 
-	auto radius = rootStyle.legend.marker.type->factor(
-	                  Styles::Legend::Marker::Type::circle)
-	            * rect.size.minSize() / 2.0;
-
-	auto markerElement =
-	    Events::Targets::legendMarker(info.dimension.category,
-	        categoryValue,
-	        info.properties);
-
-	if (events.marker->invoke(
+	if (auto &&markerElement{
+	        Events::Targets::legendMarker(sindex.column,
+	            sindex.value,
+	            info.properties)};
+	    events.marker->invoke(
 	        Events::OnRectDrawEvent(*markerElement, {rect, false}))) {
+		auto radius = rootStyle.legend.marker.type->factor(
+		                  Styles::Legend::Marker::Type::circle)
+		            * rect.size.minSize() / 2.0;
+
 		Gfx::Draw::RoundedRect(info.canvas, rect, radius);
 		renderedChart.emplace(Geom::TransformedRect::fromRect(rect),
 		    std::move(markerElement));
@@ -268,20 +258,19 @@ void DrawLegend::drawMeasure(const Info &info) const
 {
 	if (info.measureEnabled <= 0) return;
 
-	info.measure.unit.visit(
-	    [this, &info](::Anim::InterpolateIndex, const auto &unit)
-	    {
-		    extremaLabel(info,
-		        info.measure.range.getMax(),
-		        unit.value,
-		        0,
-		        unit.weight);
-		    extremaLabel(info,
-		        info.measure.range.getMin(),
-		        unit.value,
-		        5,
-		        unit.weight);
-	    });
+	const auto &[unit, weight] =
+	    info.axis.measure.unit.get_or_first(::Anim::first);
+
+	extremaLabel(info,
+	    info.axis.measure.range.getMax(),
+	    unit,
+	    0,
+	    weight);
+	extremaLabel(info,
+	    info.axis.measure.range.getMin(),
+	    unit,
+	    5,
+	    weight);
 
 	auto bar = getBarRect(info);
 
@@ -327,16 +316,13 @@ Geom::Rect DrawLegend::getBarRect(const Info &info)
 
 Math::Range<double> DrawLegend::markersLegendRange(const Info &info)
 {
-	Math::Range<double> res;
-	if (info.measureEnabled > 0.0) {
-		res.include(0.0);
-		res.include(6.0 * info.itemHeight);
-	}
+	Math::Range res{0.0, 0.0};
 
-	if (info.dimensionEnabled)
-		for (const auto &item : info.dimension)
-			res.include({item.value * info.itemHeight,
-			    (item.value + 1) * info.itemHeight});
+	if (info.measureEnabled > 0.0) res.include(6.0 * info.itemHeight);
+
+	for (const auto &item : info.axis.dimension)
+		res.include((item.position.calculate<double>() + 1)
+		            * info.itemHeight);
 
 	return res;
 }
