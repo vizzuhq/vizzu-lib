@@ -17,8 +17,8 @@
   - Markers of lightness are only merged when labelLevel == 0.
     - When merge happens, the marker shows the middle value of lightness.
 - Remove rare fantom empty marker space on scrollable legend.
-- Same legend with different measure series are not interpolated. 
-- Different legend with same dimension series are interpolated.
+- Same legend with different series are not interpolated. 
+- Different legend with same series are interpolated.
 - Invisible axis labels are not draw.
 - Fix chaotic axis labels on sorted chart with multiple dimension.
 

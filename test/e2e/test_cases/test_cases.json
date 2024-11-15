@@ -56,7 +56,7 @@
 			"refs": ["10761b9"]
 		},
 		"basic_animations/legend_transitions/color_2discrete_anim": {
-			"refs": ["4fb1ac9"]
+			"refs": ["fed1ebe"]
 		},
 		"basic_animations/legend_transitions/color_conti_anim": {
 			"refs": ["64caf45"]
@@ -296,10 +296,10 @@
 			"refs": ["d80d608"]
 		},
 		"operations/orientation_tutorial_data/area_orientation": {
-			"refs": ["6c42aad"]
+			"refs": ["1de53d2"]
 		},
 		"operations/orientation_tutorial_data/line_orientation": {
-			"refs": ["1777877"]
+			"refs": ["6a19276"]
 		},
 		"operations/orientation_tutorial_data/rectangle_orientation": {
 			"refs": ["4c39423"]
@@ -2858,7 +2858,7 @@
 			"refs": ["75c809b"]
 		},
 		"ww_noFade/wNoFade_cases/2_des_pol-without/rectangle/04b_d-w_rec_2c": {
-			"refs": ["302238b"]
+			"refs": ["c8813bc"]
 		},
 		"ww_noFade/wNoFade_cases/2_des_pol-without/rectangle/05a_d-w_rec_2c": {
 			"refs": ["43f2861"]

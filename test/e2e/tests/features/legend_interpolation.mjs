@@ -43,6 +43,17 @@ const testSteps = [
 			config: {
 				lightness: 'Foo2'
 			}
+		}),
+	(chart) =>
+		chart.animate({
+			data: {
+				filter: (record) => record.Bar !== 'B' && record.Bar !== 'E' && record.Bar !== 'F'
+			},
+			config: {
+				lightness: null,
+				color: 'Foo2',
+				legend: 'color'
+			}
 		})
 ]
 

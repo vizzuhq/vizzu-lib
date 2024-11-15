@@ -13,8 +13,6 @@
 #include "base/text/smartstring.h"
 #include "chart/options/channel.h"
 #include "chart/options/options.h"
-#include "dataframe/interface.h"
-#include "dataframe/old/datatable.h"
 
 namespace Vizzu::Gen
 {

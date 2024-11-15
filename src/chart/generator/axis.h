@@ -81,14 +81,15 @@ struct DimensionAxis
 
 	class Item
 	{
+		explicit Item() = default;
+
 	public:
-		bool start;
-		bool end;
+		bool start{};
+		bool end{};
 		Math::Range<double> range;
 		::Anim::Interpolated<std::uint32_t> position;
 		::Anim::Interpolated<ColorBase> colorBase;
 		::Anim::Interpolated<bool> label;
-		double weight;
 
 		Item(Math::Range<double> range,
 		    const std::optional<std::uint32_t> &position,
@@ -97,27 +98,24 @@ struct DimensionAxis
 		    start(true),
 		    end(true),
 		    range(range),
-		    label(setCategoryAsLabel),
-		    weight(1.0)
+		    label(setCategoryAsLabel)
 		{
 			if (position) this->position = *position;
 			if (color) colorBase = *color;
 		}
 
-		Item(const Item &item, bool starter, double factor) :
+		Item(const Item &item, bool starter) :
 		    start(starter),
 		    end(!starter),
 		    range(item.range),
 		    position(item.position),
 		    colorBase(item.colorBase),
-		    label(item.label),
-		    weight(item.weight * factor)
+		    label(item.label)
 		{}
 
 		bool operator==(const Item &other) const
 		{
-			return range == other.range && weight == other.weight
-			    && position == other.position;
+			return range == other.range && position == other.position;
 		}
 
 		[[nodiscard]] bool presentAt(
@@ -126,8 +124,18 @@ struct DimensionAxis
 			return (index == ::Anim::first && start)
 			    || (index == ::Anim::second && end);
 		}
+
+		[[nodiscard]] double weight(double atEnd) const
+		{
+			return Math::Niebloid::interpolate(start, end, atEnd);
+		}
+
+		friend Item
+		interpolate(const Item &op0, const Item &op1, double factor);
 	};
 	using Values = std::multimap<Data::SliceIndex, Item>;
+
+	double factor{};
 
 	DimensionAxis() = default;
 	bool add(const Data::SliceIndex &index,
@@ -169,6 +177,13 @@ struct Axis
 	::Anim::String title;
 	MeasureAxis measure;
 	DimensionAxis dimension;
+
+	[[nodiscard]] const std::string &seriesName() const
+	{
+		if (!dimension.empty())
+			return dimension.getValues().begin()->first.column;
+		return measure.series;
+	}
 
 	[[nodiscard]] bool operator==(const Axis &other) const = default;
 };

@@ -2,7 +2,6 @@
 
 #include <numbers>
 #include <string>
-#include <string_view>
 #include <utility>
 
 #include "base/anim/interpolated.h"
@@ -18,6 +17,7 @@
 #include "chart/main/events.h"
 #include "chart/main/style.h"
 #include "chart/options/channel.h"
+#include "dataframe/old/types.h"
 
 #include "drawguides.h"
 #include "drawlabel.h"
@@ -270,22 +270,25 @@ void DrawAxes::drawDimensionLabels(bool horizontal) const
 
 	if (!axis.empty()) {
 		canvas.setFont(Gfx::Font{labelStyle});
+		const auto &enabled =
+		    horizontal ? plot->guides.x : plot->guides.y;
 
 		for (const auto &[slice, item] : axis.getValues())
-			drawDimensionLabel(horizontal, origo, item, slice);
+			drawDimensionLabel(horizontal,
+			    origo,
+			    item,
+			    slice,
+			    Math::FuzzyBool::And<double>(item.weight(axis.factor),
+			        enabled.labels));
 	}
 }
 
 void DrawAxes::drawDimensionLabel(bool horizontal,
     const Geom::Point &origo,
     const Gen::DimensionAxis::Item &item,
-    const Data::SliceIndex &index) const
+    const Data::SliceIndex &index,
+    double weight) const
 {
-	const auto &enabled =
-	    horizontal ? plot->guides.x : plot->guides.y;
-
-	auto weight =
-	    Math::FuzzyBool::And<double>(item.weight, enabled.labels);
 	if (weight == 0) return;
 
 	auto axisIndex = horizontal ? Gen::AxisId::x : Gen::AxisId::y;

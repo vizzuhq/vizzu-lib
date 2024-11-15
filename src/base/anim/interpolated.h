@@ -123,7 +123,7 @@ public:
 
 	template <class T>
 	[[nodiscard]] std::optional<InterpolateIndex> get_index(
-	    T &&type) const
+	    const T &type) const
 	{
 		if (values[0].value == type) return first;
 		if (has_second && values[1].value == type) return second;
