@@ -177,10 +177,4 @@ void Channel::collectDimensions(IndexSet &dimensions) const
 		dimensions.insert(dimension);
 }
 
-std::pair<const Channel::DimensionIndices &, const std::size_t &>
-Channel::dimensionsWithLevel() const
-{
-	return {set.dimensionIds, labelLevel};
-}
-
 }

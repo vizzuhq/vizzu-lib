@@ -272,7 +272,7 @@ std::optional<LegendId> Options::getAutoLegend() const
 	if (auto &&meas = channels.at(ChannelId::label).measure())
 		series.erase(*meas);
 
-	for (auto axisId : {ChannelId::x, ChannelId::y})
+	for (auto axisId : {AxisId::x, AxisId::y})
 		if (auto &&id = labelSeries(axisId)) series.erase(*id);
 
 	for (auto channelId : {LegendId::color, LegendId::lightness})
@@ -332,10 +332,9 @@ void Options::setRange(Channel &channel,
 
 bool Options::labelsShownFor(const Data::SeriesIndex &series) const
 {
-	return labelSeries(ChannelId::x) == series
-	    || labelSeries(ChannelId::y) == series
-	    || (legend.get()
-	        && labelSeries(asChannel(*legend.get())) == series);
+	return labelSeries(AxisId::x) == series
+	    || labelSeries(AxisId::y) == series
+	    || (legend.get() && labelSeries(*legend.get()) == series);
 }
 
 void Options::showTooltip(std::optional<MarkerIndex> marker)

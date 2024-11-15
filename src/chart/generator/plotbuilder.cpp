@@ -48,7 +48,7 @@ PlotBuilder::PlotBuilder(const Data::DataTable &dataTable,
 	std::size_t mainBucketSize{};
 	auto &&subBuckets = generateMarkers(mainBucketSize);
 
-	if (!plot->options->getChannels().anyAxisSet())
+	if (!plot->getOptions()->getChannels().anyAxisSet())
 		addSpecLayout(subBuckets);
 	else
 		addAxisLayout(subBuckets, mainBucketSize, dataTable);
@@ -71,7 +71,7 @@ void PlotBuilder::addAxisLayout(Buckets &subBuckets,
 void PlotBuilder::initDimensionTrackers()
 {
 	for (auto *tracks = stats.tracked.data();
-	     const auto &ch : plot->options->getChannels())
+	     const auto &ch : plot->getOptions()->getChannels())
 		if (auto &track = *tracks++; !ch.hasMeasure())
 			track.emplace<1>(
 			    dataCube.combinedSizeOf(ch.dimensions()).second);
@@ -338,7 +338,7 @@ void PlotBuilder::calcAxises(const Data::DataTable &dataTable)
 
 void PlotBuilder::calcLegendAndLabel(const Data::DataTable &dataTable)
 {
-	if (auto &&legend = plot->options->legend.get()) {
+	if (auto &&legend = plot->getOptions()->legend.get()) {
 		auto type{*legend};
 		const auto &scale =
 		    plot->getOptions()->getChannels().at(type);
@@ -359,7 +359,9 @@ void PlotBuilder::calcLegendAndLabel(const Data::DataTable &dataTable)
 			const auto &indices = std::get<1>(stats.at(type));
 			auto merge = type == LegendId::size
 			          || (type == LegendId::lightness
-			              && scale.labelLevel == 0);
+			              && plot->getOptions()->dimLabelIndex(
+			                     asChannel(type))
+			                     == 0);
 			for (std::uint32_t i{}, count{}; i < indices.size(); ++i)
 				if (const auto &sliceIndex = indices[i]; sliceIndex) {
 
@@ -381,8 +383,7 @@ void PlotBuilder::calcLegendAndLabel(const Data::DataTable &dataTable)
 						++count;
 				}
 
-			if (auto &&series =
-			        plot->options->labelSeries(asChannel(type));
+			if (auto &&series = plot->getOptions()->labelSeries(type);
 			    series && isAutoTitle && calcLegend.dimension.empty())
 				calcLegend.title = series.value().getColIndex();
 		}
@@ -428,7 +429,8 @@ void PlotBuilder::calcAxis(const Data::DataTable &dataTable,
 	}
 	else {
 		for (auto merge =
-		         scale.labelLevel == 0
+		         plot->getOptions()->dimLabelIndex(asChannel(type))
+		             == 0
 		         && (type != plot->getOptions()->mainAxisType()
 		             || plot->getOptions()->sort != Sort::byValue
 		             || scale.dimensions().size() == 1);
@@ -448,8 +450,7 @@ void PlotBuilder::calcAxis(const Data::DataTable &dataTable,
 				    false,
 				    merge);
 		}
-		if (auto &&series =
-		        plot->options->labelSeries(asChannel(type));
+		if (auto &&series = plot->getOptions()->labelSeries(type);
 		    !axis.dimension.setLabels(scale.step.getValue(1.0))
 		    && series && isAutoTitle)
 			axis.title = series.value().getColIndex();
@@ -541,7 +542,7 @@ void PlotBuilder::addSeparation(const Buckets &subBuckets,
 void PlotBuilder::normalizeSizes()
 {
 	if (plot->getOptions()->geometry == ShapeType::circle
-	    && !plot->options->getChannels().anyAxisSet())
+	    && !plot->getOptions()->getChannels().anyAxisSet())
 		return;
 
 	if (plot->getOptions()->geometry == ShapeType::circle
@@ -603,7 +604,7 @@ void PlotBuilder::normalizeColors()
 			cbase.setPos(color.rescale(cbase.getPos()));
 	}
 
-	if (auto &&legend = plot->options->legend.get()) {
+	if (auto &&legend = plot->getOptions()->legend.get()) {
 		switch (*legend) {
 		case LegendId::color:
 			stats.setIfRange(LegendId::color, color);

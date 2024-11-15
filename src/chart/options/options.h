@@ -95,27 +95,37 @@ public:
 		return channels.at(subAxisType());
 	}
 
-	[[nodiscard]] bool isMeasure(ChannelId channel) const
-	{
-		auto &&ch = channels.at(channel);
-		auto hasMeasure = ch.hasMeasure();
-		auto handleMeasureAsDimension =
-		    hasMeasure && channel == mainAxisType()
-		    && ch.hasDimension()
-		    && ch.labelLevel < ch.dimensions().size()
-		    && geometry == ShapeType::rectangle;
-		return hasMeasure && !handleMeasureAsDimension;
-	}
-
-	[[nodiscard]] Channel::OptionalIndex labelSeries(
+	[[nodiscard]] std::optional<std::size_t> dimLabelIndex(
 	    ChannelId channel) const
 	{
 		auto &&ch = channels.at(channel);
-		if (!isMeasure(channel)
-		    && ch.labelLevel < ch.set.dimensionIds.size())
+		auto hasMeasure = ch.hasMeasure();
+		auto defaultLabelLevel =
+		    hasMeasure && channel == mainAxisType()
+		    && ch.hasDimension() && geometry == ShapeType::rectangle;
+		auto ll = ch.labelLevel.getValue(defaultLabelLevel);
+		if (hasMeasure && ll == 0) return {};
+		ll -= hasMeasure;
+		if (ll >= ch.dimensions().size()) return {};
+		return ll;
+	}
+
+	[[nodiscard]] bool isMeasure(ChannelId channel) const
+	{
+		return channels.at(channel).hasMeasure()
+		    && !dimLabelIndex(channel);
+	}
+
+	template <ChannelIdLike IdType>
+	[[nodiscard]] Channel::OptionalIndex labelSeries(
+	    IdType channel) const
+	{
+		auto &&ch = channels.at(channel);
+		if (auto dimIndex = dimLabelIndex(asChannel(channel)))
 			return *std::next(ch.set.dimensionIds.begin(),
-			    static_cast<std::intptr_t>(ch.labelLevel));
-		return ch.measure();
+			    static_cast<std::intptr_t>(*dimIndex));
+		return ch.labelLevel.getValue(0) == 0 ? ch.measure()
+		                                      : std::nullopt;
 	}
 
 	Channel &mainAxis() { return channels.at(mainAxisType()); }

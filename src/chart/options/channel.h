@@ -143,9 +143,6 @@ public:
 	[[nodiscard]] bool hasDimension() const;
 	[[nodiscard]] bool hasMeasure() const;
 	void collectDimensions(IndexSet &dimensions) const;
-	[[nodiscard]] std::pair<const DimensionIndices &,
-	    const std::size_t &>
-	dimensionsWithLevel() const;
 	[[nodiscard]] bool operator==(
 	    const Channel &other) const = default;
 
@@ -162,7 +159,7 @@ public:
 	bool stackable{};
 	ChannelSeriesList set{};
 	ChannelRange range{};
-	std::size_t labelLevel{};
+	Base::AutoParam<std::size_t> labelLevel{};
 	Base::AutoParam<std::string, true> title{};
 	Base::AutoBool axis{};
 	Base::AutoBool labels{};

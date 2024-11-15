@@ -96,7 +96,7 @@ private:
 	    const Data::DataCube &data,
 	    ChannelStats &stats,
 	    const Data::MultiIndex &index,
-	    const Data::MarkerId * = nullptr) const;
+	    const Data::MarkerId &) const;
 };
 
 }
