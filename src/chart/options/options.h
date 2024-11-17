@@ -207,7 +207,9 @@ private:
 	    []<std::size_t... Ix>(std::index_sequence<Ix...>)
 	    {
 		    return decltype(channels){
-		        Channel::makeChannel(static_cast<ChannelId>(Ix))...};
+		        {{Channel::makeChannel(
+		            static_cast<ChannelId>(Ix))...}},
+		        {}};
 	    }(std::make_index_sequence<
 	        std::tuple_size_v<decltype(channels)::base_array>>{})};
 

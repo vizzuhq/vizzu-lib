@@ -151,12 +151,6 @@ void Channel::reset()
 	set = {};
 	labelLevel = {};
 	title = {};
-	axis = Base::AutoBool();
-	labels = Base::AutoBool();
-	ticks = Base::AutoBool();
-	guides = Base::AutoBool();
-	markerGuides = Base::AutoBool();
-	interlacing = Base::AutoBool();
 }
 
 bool Channel::isEmpty() const

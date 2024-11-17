@@ -24,6 +24,11 @@
 - Fix Mekko charts: The main axis handled as dimension. 
 - LabelLevel can be used to handle measure axis as dimension axis.
 
+### Changed
+
+- Separate Channel properties to AxisChannel properties at config.
+- Channels 'set' rewrite doesn't clear AxisChannel properties.
+
 ## [0.15.0] - 2024-10-28
 
 ### Fixed
