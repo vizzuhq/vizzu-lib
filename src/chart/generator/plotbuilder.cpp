@@ -458,7 +458,7 @@ void PlotBuilder::calcAxis(const Data::DataTable &dataTable,
 
 void PlotBuilder::addAlignment(const Buckets &subBuckets) const
 {
-	if (static_cast<bool>(plot->getOptions()->split)) return;
+	if (plot->getOptions()->isSplit()) return;
 
 	auto &subAxisRange =
 	    plot->axises.at(plot->getOptions()->subAxisType())
@@ -498,7 +498,7 @@ void PlotBuilder::addAlignment(const Buckets &subBuckets) const
 void PlotBuilder::addSeparation(const Buckets &subBuckets,
     const std::size_t &mainBucketSize) const
 {
-	if (plot->getOptions()->split) {
+	if (plot->getOptions()->isSplit()) {
 		auto align = plot->getOptions()->align;
 
 		std::vector ranges{mainBucketSize,
