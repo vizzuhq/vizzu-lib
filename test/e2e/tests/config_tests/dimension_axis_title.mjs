@@ -26,7 +26,7 @@ const testSteps = [
 	(chart) =>
 		chart.animate({
 			x: { set: 'Baz' },
-			size: { set: 'Baz' }
+			size: { set: 'Baz', title: 'Bigness' }
 		})
 ]
 

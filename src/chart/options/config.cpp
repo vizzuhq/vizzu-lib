@@ -89,29 +89,25 @@ void Config::setChannelParam(const std::string &path,
 
 	if (property == "set") {
 		if (parts.size() == 3) {
-			channel.reset();
+			channel.set = {};
 			options.markersInfo.clear();
 			return;
 		}
 
-		if (auto &listParser = ChannelSeriesList::Parser::instance();
-		    parts.size() == 4) {
+		auto &listParser = ChannelSeriesList::Parser::instance();
+		if (parts.size() == 4) {
 			if (parts[3] == "begin") {
-				if (parts[2] == "set") channel.reset();
-
+				if (parts[2] == "set") channel.set = {};
 				options.markersInfo.clear();
 				listParser.table = &table.get();
 				listParser.channels.resize(std::stoull(value));
 				return;
 			}
-
 			listParser.current = std::nullopt;
-			listParser.path = parts;
 		}
-		else {
+		else
 			listParser.current = std::stoull(parts.at(3));
-			listParser.path = parts;
-		}
+		listParser.path = parts;
 	}
 
 	if (property == "range") property += "." + parts.at(3);

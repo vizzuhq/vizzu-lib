@@ -151,6 +151,7 @@ void Channel::reset()
 	set = {};
 	labelLevel = {};
 	title = {};
+	range = {};
 }
 
 bool Channel::isEmpty() const
