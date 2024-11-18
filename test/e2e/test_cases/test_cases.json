@@ -8,7 +8,7 @@
 			"refs": ["8d79239"]
 		},
 		"basic_animations/anim_order/rectangle_without_2_carte_bar": {
-			"refs": ["f55a535"]
+			"refs": ["55f2591"]
 		},
 		"basic_animations/anim_order/rectangle_without_2_carte_column": {
 			"refs": ["4bd7df7"]
@@ -17,7 +17,7 @@
 			"refs": ["9454b34"]
 		},
 		"basic_animations/anim_order/rectangle_without_2_polar_column": {
-			"refs": ["6ed4a66"]
+			"refs": ["5da565b"]
 		},
 		"basic_animations/coordsystems/area_carte_2_polar": {
 			"refs": ["3917702"]
@@ -359,7 +359,7 @@
 			"refs": ["93d074b"]
 		},
 		"static_chart_types/cartesian_coo_sys/marimekko_rectangle_1dis_2con": {
-			"refs": ["edfda70"]
+			"refs": ["50cf0b7"]
 		},
 		"static_chart_types/cartesian_coo_sys/marimekko_rectangle_2dis_2con": {
 			"refs": ["4b8e4cf"]
