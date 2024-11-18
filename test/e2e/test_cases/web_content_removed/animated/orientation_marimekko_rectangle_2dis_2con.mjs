@@ -9,7 +9,7 @@ const testSteps = [
 					x: ['Country', 'Value 2 (+)'],
 					y: ['Joy factors', 'Value 3 (+)'],
 					color: 'Joy factors',
-					label: 'Country',
+					label: 'Value 2 (+)',
 					lightness: 'Country'
 				},
 				title: 'Marimekko Chart',
@@ -22,7 +22,8 @@ const testSteps = [
 		chart.animate({
 			config: {
 				title: 'Marimekko with Other Orientation',
-				orientation: 'vertical'
+				orientation: 'vertical',
+				label: 'Value 3 (+)'
 			}
 		})
 ]

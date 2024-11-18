@@ -54,7 +54,7 @@ export const presetConfigs = {
 			x: { set: [{ name: 'x' }, { name: 'groupedBy' }] },
 			y: { set: [{ name: 'y' }, { name: 'stackedBy' }] },
 			color: { set: [{ name: 'stackedBy' }] },
-			label: { set: [{ name: 'groupedBy' }] }
+			label: { set: [{ name: 'x' }] }
 		}
 	},
 	marimekko: {
@@ -62,7 +62,7 @@ export const presetConfigs = {
 			x: { set: [{ name: 'x' }, { name: 'groupedBy' }] },
 			y: { set: [{ name: 'y' }, { name: 'stackedBy' }] },
 			color: { set: [{ name: 'stackedBy' }] },
-			label: { set: [{ name: 'groupedBy' }] }
+			label: { set: [{ name: 'x' }] }
 		},
 		align: 'stretch'
 	},

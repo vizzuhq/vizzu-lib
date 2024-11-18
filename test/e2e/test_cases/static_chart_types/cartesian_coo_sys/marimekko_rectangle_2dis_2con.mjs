@@ -15,7 +15,7 @@ const testSteps = [
 					y: ['Joy factors', 'Value 2 (+)'],
 					x: ['Country', 'Value 2 (+)'],
 					color: 'Joy factors',
-					label: ['Value 2 (+)', 'Country']
+					label: ['Value 2 (+)']
 				},
 				title: 'Stacked Mekko chart'
 			}
