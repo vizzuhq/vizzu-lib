@@ -237,11 +237,10 @@ std::string_view DataTable::getUnit(
 	return df.get_series_info(colIx, "unit");
 }
 
-MarkerId DataCube::getId(
-    const std::pair<const SeriesList &, const std::size_t &> &slwl,
+MarkerId DataCube::getId(const SeriesList &sl,
+    const std::optional<std::size_t> &ll,
     const MultiIndex &mi) const
 {
-	auto &&[sl, ll] = slwl;
 	MarkerId res{};
 	std::vector<std::pair<std::size_t, std::size_t>> v(sl.size());
 

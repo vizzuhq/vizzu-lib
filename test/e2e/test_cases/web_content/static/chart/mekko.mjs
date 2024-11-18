@@ -9,7 +9,7 @@ const testSteps = [
 					x: ['Country', 'Value 2 (+)'],
 					y: { set: ['Value 1 (+)'], range: { max: '110%' } },
 					color: 'Country',
-					label: ['Value 2 (+)', 'Country']
+					label: ['Value 2 (+)']
 				},
 				title: 'Mekko Chart'
 			}

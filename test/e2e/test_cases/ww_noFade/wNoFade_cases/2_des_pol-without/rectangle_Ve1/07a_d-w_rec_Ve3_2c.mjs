@@ -36,7 +36,7 @@ const testSteps = [
 		chart.animate({
 			config: {
 				channels: {
-					x: { set: ['Year', 'Value 3 (+)'] },
+					x: { set: ['Year', 'Value 3 (+)'], labelLevel: 0 },
 					y: { set: ['Country', 'Value 2 (+)'] },
 					color: null
 				},
@@ -50,7 +50,7 @@ const testSteps = [
 			{
 				config: {
 					channels: {
-						x: { set: ['Joy factors', 'Value 3 (+)'] },
+						x: { set: ['Joy factors', 'Value 3 (+)'], labelLevel: 0 },
 						y: { set: 'Value 2 (+)', range: { min: '0%', max: '100%' } }
 					},
 					title: 'Change Disc',

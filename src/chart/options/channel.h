@@ -140,14 +140,9 @@ public:
 	    const Data::SeriesIndex &index) const;
 	void reset();
 	[[nodiscard]] bool isEmpty() const;
-	[[nodiscard]] bool isDimension() const;
 	[[nodiscard]] bool hasDimension() const;
-	[[nodiscard]] bool isMeasure() const;
+	[[nodiscard]] bool hasMeasure() const;
 	void collectDimensions(IndexSet &dimensions) const;
-	[[nodiscard]] std::pair<const DimensionIndices &,
-	    const std::size_t &>
-	dimensionsWithLevel() const;
-	[[nodiscard]] OptionalIndex labelSeries() const;
 	[[nodiscard]] bool operator==(
 	    const Channel &other) const = default;
 
@@ -164,7 +159,7 @@ public:
 	bool stackable{};
 	ChannelSeriesList set{};
 	ChannelRange range{};
-	std::size_t labelLevel{};
+	Base::AutoParam<std::size_t> labelLevel{};
 	Base::AutoParam<std::string, true> title{};
 	Base::AutoBool axis{};
 	Base::AutoBool labels{};
@@ -175,12 +170,12 @@ public:
 	Base::AutoParam<double> step{};
 };
 
-[[nodiscard]] constexpr ChannelId asChannel(AxisId axis)
+[[nodiscard]] constexpr ChannelId operator-(const AxisId &axis)
 {
 	return static_cast<ChannelId>(axis);
 }
 
-[[nodiscard]] constexpr ChannelId asChannel(const LegendId &legend)
+[[nodiscard]] constexpr ChannelId operator-(const LegendId &legend)
 {
 	return static_cast<ChannelId>(legend);
 }
@@ -188,7 +183,7 @@ public:
 template <class T>
 concept ChannelIdLike = requires(const T &v) {
 	{
-		asChannel(v)
+		-v
 	} -> std::same_as<ChannelId>;
 };
 
@@ -196,7 +191,7 @@ template <ChannelIdLike T>
 [[nodiscard]] constexpr bool operator==(const T &l,
     const ChannelId &c)
 {
-	return asChannel(l) == c;
+	return -l == c;
 }
 
 template <ChannelIdLike T, ChannelIdLike U>

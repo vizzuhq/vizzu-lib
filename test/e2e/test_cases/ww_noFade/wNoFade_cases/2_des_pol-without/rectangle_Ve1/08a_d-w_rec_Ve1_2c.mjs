@@ -36,7 +36,7 @@ const testSteps = [
 			config: {
 				channels: {
 					x: { set: 'Value 1 (+)' },
-					y: { set: ['Year', 'Value 2 (+)'] },
+					y: { set: ['Year', 'Value 2 (+)'], labelLevel: 0 },
 					color: null
 				},
 				title: 'Stack Disc & Remove Color & Change Conti & Stretch & axisLabel off',
@@ -55,7 +55,7 @@ const testSteps = [
 				config: {
 					channels: {
 						x: { set: ['Value 1 (+)'] },
-						y: { set: ['Joy factors', 'Value 2 (+)'] }
+						y: { set: ['Joy factors', 'Value 2 (+)'], labelLevel: 0 }
 					},
 					title: 'Change Disc'
 				}

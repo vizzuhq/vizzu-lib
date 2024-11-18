@@ -155,7 +155,8 @@ public:
 
 	bool operator==(const Type &other) const
 	{
-		return hasOneValue() && values[first].value == other;
+		return !has_second && values[first].weight == 1.0
+		    && values[first].value == other;
 	}
 
 	template <class T> void visit(T &&branch) const

@@ -73,7 +73,9 @@ definitions:
                 description: |
                     Only one dimension can be shown on an axis or legend by
                     name. This index specifies which attached series should be used.
-                type: number
+                oneOf:
+                    - type: number
+                    - { type: string, enum: [auto] }
             axis:
                 description: Enables the axis line on axis channels.
                 $ref: AutoBool

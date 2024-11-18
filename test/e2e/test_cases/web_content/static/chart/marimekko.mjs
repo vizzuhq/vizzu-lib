@@ -9,7 +9,7 @@ const testSteps = [
 					x: ['Country', 'Value 2 (+)'],
 					y: ['Joy factors', 'Value 3 (+)'],
 					color: 'Joy factors',
-					label: ['Country', 'Value 2 (+)']
+					label: ['Value 2 (+)']
 				},
 				title: 'Marimekko Chart',
 				align: 'stretch',

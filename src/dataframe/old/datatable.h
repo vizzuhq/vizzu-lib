@@ -105,8 +105,8 @@ public:
 	[[nodiscard]] double valueAt(const MultiIndex &multiIndex,
 	    const SeriesIndex &seriesId) const;
 
-	[[nodiscard]] MarkerId getId(
-	    const std::pair<const SeriesList &, const std::size_t &> &,
+	[[nodiscard]] MarkerId getId(const SeriesList &,
+	    const std::optional<std::size_t> &,
 	    const MultiIndex &) const;
 
 	[[nodiscard]] std::string joinDimensionValues(

@@ -15,7 +15,7 @@ const testSteps = [
 					y: 'Value 1 (+)',
 					x: ['Country', 'Value 2 (+)'],
 					color: 'Country',
-					label: ['Value 2 (+)', 'Country']
+					label: ['Value 2 (+)']
 				},
 				title: 'Mekko chart'
 			}

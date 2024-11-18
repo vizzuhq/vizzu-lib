@@ -22,6 +22,8 @@
 - Different legend with same series are interpolated.
 - Invisible axis labels are not draw.
 - Fix chaotic axis labels on sorted chart with multiple dimension.
+- Fix Mekko charts: The main axis handled as dimension. 
+- LabelLevel can be used to handle measure axis as dimension axis.
 
 ## [0.15.0] - 2024-10-28
 

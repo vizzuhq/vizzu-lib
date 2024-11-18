@@ -471,7 +471,7 @@ const static auto tests =
 {
 	auto &&events = get_events(chart);
 
-	check->*events.count("plot-axis-draw") == 2u;
+	check->*events.count("plot-axis-draw") == 1u;
 	check->*events.count("plot-marker-draw") == 5u;
 
 	for (auto &&[beg, end] = events.equal_range("plot-marker-draw");
@@ -558,7 +558,7 @@ const static auto tests =
 {
 	auto &&events = get_events(chart);
 
-	check->*events.count("plot-axis-draw") == 2u;
+	check->*events.count("plot-axis-draw") == 1u;
 	check->*events.count("plot-marker-draw") == 5u;
 
 	for (auto &&[beg, end] = events.equal_range("plot-marker-draw");

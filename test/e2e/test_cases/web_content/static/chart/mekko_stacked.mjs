@@ -12,7 +12,7 @@ const testSteps = [
 						range: { max: '110%' }
 					},
 					color: 'Joy factors',
-					label: ['Value 2 (+)', 'Country']
+					label: ['Value 2 (+)']
 				},
 				title: 'Stacked Mekko Chart',
 				orientation: 'horizontal'

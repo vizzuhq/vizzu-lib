@@ -95,6 +95,39 @@ public:
 		return channels.at(subAxisType());
 	}
 
+	[[nodiscard]] std::optional<std::size_t> dimLabelIndex(
+	    ChannelId channel) const
+	{
+		auto &&ch = channels.at(channel);
+		auto hasMeasure = ch.hasMeasure();
+		auto defaultLabelLevel =
+		    hasMeasure && channel == mainAxisType()
+		    && ch.hasDimension() && geometry == ShapeType::rectangle;
+		auto ll = ch.labelLevel.getValue(defaultLabelLevel);
+		if (hasMeasure && ll == 0) return {};
+		ll -= hasMeasure;
+		if (ll >= ch.dimensions().size()) return {};
+		return ll;
+	}
+
+	[[nodiscard]] bool isMeasure(ChannelId channel) const
+	{
+		return channels.at(channel).hasMeasure()
+		    && !dimLabelIndex(channel);
+	}
+
+	template <ChannelIdLike IdType>
+	[[nodiscard]] Channel::OptionalIndex labelSeries(
+	    IdType channel) const
+	{
+		auto &&ch = channels.at(channel);
+		if (auto dimIndex = dimLabelIndex(-channel))
+			return *std::next(ch.set.dimensionIds.begin(),
+			    static_cast<std::intptr_t>(*dimIndex));
+		return ch.labelLevel.getValue(0) == 0 ? ch.measure()
+		                                      : std::nullopt;
+	}
+
 	Channel &mainAxis() { return channels.at(mainAxisType()); }
 
 	Channel &subAxis() { return channels.at(subAxisType()); }

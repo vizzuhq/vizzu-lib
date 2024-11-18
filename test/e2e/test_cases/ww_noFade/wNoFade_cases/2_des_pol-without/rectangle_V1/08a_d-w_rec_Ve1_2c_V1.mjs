@@ -36,11 +36,10 @@ const testSteps = [
 			config: {
 				channels: {
 					x: { set: 'Value 3 (+)' },
-					y: { set: ['Year', 'Country', 'Value 2 (+)'] },
+					y: { set: ['Year', 'Country', 'Value 2 (+)'], ticks: true },
 					color: null
 				},
-				title: 'Stack, Remove Conti & Remove Color',
-				align: 'stretch'
+				title: 'Stack, Remove Conti & Remove Color'
 			}
 		}),
 
@@ -50,11 +49,10 @@ const testSteps = [
 				config: {
 					channels: {
 						x: { set: 'Value 3 (+)' },
-						y: { set: ['Joy factors', 'Value 2 (+)'] },
+						y: { set: ['Joy factors', 'Value 2 (+)'], labelLevel: 0, ticks: true },
 						color: null
 					},
-					title: 'Change Discs',
-					orientation: 'auto'
+					title: 'Change Discs'
 				}
 			},
 			{

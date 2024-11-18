@@ -86,13 +86,13 @@ double Sheet::baseFontSize(const Geom::Size &size, bool rounded)
 void Sheet::setPlot()
 {
 	if (options->coordSystem.get() == Gen::CoordSystem::polar) {
-		defaultParams.plot.paddingLeft = Gfx::Length{0};
+		defaultParams.plot.paddingLeft = Gfx::Length{};
 	}
 	else if (!options->getChannels().anyAxisSet()) {
 		defaultParams.plot.paddingLeft =
 		    Gfx::Length::Emphemeral(45.0 / 12.0);
 	}
-	else if (options->getVerticalAxis().isDimension()) {
+	else if (!options->isMeasure(-options->getVerticalChannel())) {
 		defaultParams.plot.paddingLeft =
 		    Gfx::Length::Emphemeral(80.0 / 12.0);
 	}
@@ -115,9 +115,10 @@ void Sheet::setAxisLabels()
 		def.position = AxisLabel::Position::max_edge;
 		def.side = AxisLabel::Side::positive;
 	}
-	else if (const auto &xAxis =
-	             options->getChannels().at(Gen::AxisId::x);
-	         xAxis.isDimension() && xAxis.hasDimension()
+	else if (!options->isMeasure(Gen::ChannelId::x)
+	         && options->getChannels()
+	                .at(Gen::AxisId::x)
+	                .hasDimension()
 	         && options->angle == 0)
 		def.angle.reset();
 }
@@ -143,30 +144,30 @@ void Sheet::setMarkers()
 		defaultParams.plot.marker.borderOpacity = 0.7;
 	}
 	else {
-		if (options->geometry == Gen::ShapeType::circle
-		    && options->getChannels()
-		           .at(Gen::ChannelId::size)
-		           .isMeasure()
-		    && (options->mainAxis().isMeasure()
-		        || options->subAxis().isMeasure())) {
+		auto sizeMeasure = options->isMeasure(Gen::ChannelId::size);
+		auto mainMeasure =
+		    options->isMeasure(-options->mainAxisType());
+		auto subMeasure = options->isMeasure(-options->subAxisType());
+		if (options->geometry == Gen::ShapeType::circle && sizeMeasure
+		    && (mainMeasure || subMeasure)) {
 			defaultParams.plot.marker.borderWidth = 1;
 			defaultParams.plot.marker.fillOpacity = 0.8;
 		}
 		else if (options->geometry == Gen::ShapeType::rectangle) {
-			const auto &vertical = options->getVerticalAxis();
-			const auto &horizontal = options->getHorizontalAxis();
+			auto vIsMeasure =
+			    options->isMeasure(-options->getVerticalChannel());
+			auto hIsMeasure =
+			    options->isMeasure(-options->getHorizontalChannel());
 			if (auto polar = options->coordSystem.get()
 			              == Gen::CoordSystem::polar;
-			    polar && vertical.isEmpty())
+			    polar && options->getVerticalAxis().isEmpty())
 				defaultParams.plot.marker.rectangleSpacing = 0;
 			else if (auto needRectangleSpacing =
-			             vertical.isMeasure()
-			                 != horizontal.isMeasure()
-			             && (!polar || vertical.isDimension());
+			             vIsMeasure != hIsMeasure
+			             && (!polar || !vIsMeasure);
 			         !needRectangleSpacing) {
 				defaultParams.plot.marker.rectangleSpacing = 0;
-				if (vertical.isDimension()
-				    || horizontal.isDimension()) {
+				if (!vIsMeasure || !hIsMeasure) {
 					defaultParams.plot.marker.borderWidth = 0.5;
 					defaultParams.plot.marker.borderOpacity = 0.7;
 				}
