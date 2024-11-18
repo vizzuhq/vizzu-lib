@@ -25,7 +25,7 @@ const testSteps = [
 		}),
 	(chart) =>
 		chart.animate({
-			x: { set: 'Baz' },
+			x: { set: 'Baz', title: 'Who' },
 			size: { set: 'Baz', title: 'Bigness' }
 		})
 ]
