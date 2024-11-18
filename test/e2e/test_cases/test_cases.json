@@ -293,7 +293,7 @@
 			"refs": ["84b76d0"]
 		},
 		"operations/histogram_2_drilldown_negative_1dis_1con": {
-			"refs": ["d80d608"]
+			"refs": ["22c8738"]
 		},
 		"operations/orientation_tutorial_data/area_orientation": {
 			"refs": ["1de53d2"]
@@ -860,7 +860,7 @@
 			"refs": ["205401d"]
 		},
 		"web_content/infinite": {
-			"refs": ["e6ac495"]
+			"refs": ["2a37492"]
 		},
 		"web_content/presets/chart/column": {
 			"refs": ["4f73d47"]
