@@ -27,7 +27,7 @@ class ChannelExtrema :
     public Type::PhysicalValue<double, ChannelExtremaType>
 {
 public:
-	using Base = Type::PhysicalValue<double, ChannelExtremaType>;
+	using Base = PhysicalValue;
 	using Base::PhysicalValue;
 	explicit ChannelExtrema(const std::string &str);
 	explicit operator std::string() const;

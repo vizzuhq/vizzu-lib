@@ -6,10 +6,7 @@
 namespace Type
 {
 
-enum class SimpleUnit : std::uint8_t { none, relative, absolute };
-
-template <typename Value, typename Unit = SimpleUnit>
-class PhysicalValue
+template <typename Value, typename Unit> class PhysicalValue
 {
 public:
 	Value value;

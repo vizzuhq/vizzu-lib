@@ -232,7 +232,9 @@ definitions:
                     This works if you have at least one dimension and a measure on the same axis.In case 
                     both axes have measures and dimension(s) on them, this is determined by the 
                     `orientation` of the chart.
-                type: boolean
+                oneOf:
+                    - type: boolean
+                    - { type: string, mask: /:number:%/ }
             tooltip:
                 description: |
                     Unique identifier of the marker, the tooltip should be turned on. This parameter is
