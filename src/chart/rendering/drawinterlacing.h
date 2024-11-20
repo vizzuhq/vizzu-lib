@@ -1,19 +1,19 @@
 #ifndef DRAWINTERLACING_H
 #define DRAWINTERLACING_H
 
+#include "drawaxes.h"
 #include "drawingcontext.h"
 
 namespace Vizzu::Draw
 {
 
-class DrawInterlacing : public DrawingContext
+class DrawInterlacing
 {
 public:
 	void drawGeometries() const;
 	void drawTexts() const;
 
-	Gfx::ICanvas &canvas;
-	Painter &painter;
+	const DrawAxes &parent;
 
 private:
 	void draw(Gen::AxisId axisIndex, bool text) const;

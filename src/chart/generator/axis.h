@@ -237,15 +237,6 @@ struct Axises
 		return axises[axisType];
 	}
 
-	[[nodiscard]] const Axis &other(AxisId axisType) const
-	{
-		switch (axisType) {
-		default:
-		case AxisId::x: return at(AxisId::y);
-		case AxisId::y: return at(AxisId::x);
-		}
-	}
-
 	[[nodiscard]] Geom::Point origo() const;
 
 private:

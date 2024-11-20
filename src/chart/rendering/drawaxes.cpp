@@ -21,6 +21,7 @@
 #include "dataframe/old/types.h"
 
 #include "drawguides.h"
+#include "drawinterlacing.h"
 #include "drawlabel.h"
 #include "orientedlabel.h"
 #include "renderedchart.h"
@@ -30,17 +31,17 @@ namespace Vizzu::Draw
 
 void DrawAxes::drawGeometries() const
 {
-	interlacing.drawGeometries();
+	DrawInterlacing{*this}.drawGeometries();
 
 	drawAxis(Gen::AxisId::x);
 	drawAxis(Gen::AxisId::y);
 
-	DrawGuides{{ctx()}, canvas, painter}.draw();
+	DrawGuides{*this}.draw();
 }
 
 void DrawAxes::drawLabels() const
 {
-	interlacing.drawTexts();
+	DrawInterlacing{*this}.drawTexts();
 
 	drawDimensionLabels(Gen::AxisId::x);
 	drawDimensionLabels(Gen::AxisId::y);
@@ -49,9 +50,9 @@ void DrawAxes::drawLabels() const
 	drawTitle(Gen::AxisId::y);
 }
 
-Geom::Line DrawAxes::getAxis(Gen::AxisId axisIndex) const
+Geom::Line DrawAxes::getAxisLine(Gen::AxisId axisIndex) const
 {
-	auto offset = plot->axises.other(axisIndex).measure.origo();
+	auto offset = this->origo().getCoord(+!axisIndex);
 
 	auto direction = Geom::Point::Ident(+axisIndex);
 
@@ -64,7 +65,7 @@ Geom::Line DrawAxes::getAxis(Gen::AxisId axisIndex) const
 
 void DrawAxes::drawAxis(Gen::AxisId axisIndex) const
 {
-	if (auto line = getAxis(axisIndex); !line.isPoint()) {
+	if (auto line = getAxisLine(axisIndex); !line.isPoint()) {
 		auto lineColor =
 		    *rootStyle.plot.getAxis(axisIndex).color
 		    * static_cast<double>(plot->guides.at(axisIndex).axis);
@@ -104,9 +105,7 @@ Geom::Point DrawAxes::getTitleBasePos(Gen::AxisId axisIndex,
 	default:
 	case Pos::min_edge: break;
 	case Pos::max_edge: orthogonal = 1.0; break;
-	case Pos::axis:
-		orthogonal = plot->axises.other(axisIndex).measure.origo();
-		break;
+	case Pos::axis: orthogonal = origo().getCoord(+!axisIndex); break;
 	}
 
 	double parallel{0.0};
@@ -166,7 +165,7 @@ Geom::Point DrawAxes::getTitleOffset(Gen::AxisId axisIndex,
 
 void DrawAxes::drawTitle(Gen::AxisId axisIndex) const
 {
-	const auto &titleString = plot->axises.at(axisIndex).title;
+	const auto &titleString = getAxis(axisIndex).title;
 
 	const auto &titleStyle = rootStyle.plot.getAxis(axisIndex).title;
 
@@ -256,9 +255,8 @@ void DrawAxes::drawDimensionLabels(Gen::AxisId axisIndex) const
 	auto textColor = *labelStyle.color;
 	if (textColor.isTransparent()) return;
 
-	auto origo = plot->axises.origo();
-	const auto &axises = plot->axises;
-	const auto &axis = axises.at(axisIndex).dimension;
+	auto origo = this->origo();
+	const auto &axis = getAxis(axisIndex).dimension;
 
 	if (!axis.empty()) {
 		canvas.setFont(Gfx::Font{labelStyle});

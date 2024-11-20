@@ -27,10 +27,7 @@ void DrawPlot::draw(Gfx::ICanvas &canvas,
 
 	drawPlotArea(canvas, painter, false);
 
-	auto axes = DrawAxes{{ctx()},
-	    canvas,
-	    painter,
-	    {{ctx()}, canvas, painter}};
+	auto axes = DrawAxes{{ctx()}, canvas, painter};
 	axes.drawGeometries();
 
 	auto clip = rootStyle.plot.overflow == Styles::Overflow::hidden;

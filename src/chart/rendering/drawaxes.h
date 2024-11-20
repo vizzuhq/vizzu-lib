@@ -3,9 +3,9 @@
 
 #include "base/geom/line.h"
 #include "chart/generator/axis.h"
+#include "chart/generator/plot.h" // NOLINT(misc-include-cleaner)
 
 #include "drawingcontext.h"
-#include "drawinterlacing.h"
 
 namespace Vizzu::Draw
 {
@@ -18,10 +18,16 @@ public:
 
 	Gfx::ICanvas &canvas;
 	Painter &painter;
-	DrawInterlacing interlacing;
+
+	const Gen::Axis &getAxis(Gen::AxisId axisIndex) const
+	{
+		return plot->axises.at(axisIndex);
+	}
+
+	Geom::Point origo() const { return plot->axises.origo(); }
 
 private:
-	[[nodiscard]] Geom::Line getAxis(Gen::AxisId axisIndex) const;
+	[[nodiscard]] Geom::Line getAxisLine(Gen::AxisId axisIndex) const;
 	[[nodiscard]] Geom::Point getTitleBasePos(Gen::AxisId axisIndex,
 	    ::Anim::InterpolateIndex index) const;
 	[[nodiscard]] Geom::Point getTitleOffset(Gen::AxisId axisIndex,

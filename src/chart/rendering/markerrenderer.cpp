@@ -255,11 +255,6 @@ void MarkerRenderer::drawLabels(Gfx::ICanvas &canvas) const
 	}
 }
 
-bool MarkerRenderer::shouldDrawMarkerBody(const Gen::Marker &marker)
-{
-	return marker.enabled != false;
-}
-
 void MarkerRenderer::draw(Gfx::ICanvas &canvas,
     Painter &painter,
     const AbstractMarker &abstractMarker,
@@ -491,7 +486,7 @@ MarkerRenderer MarkerRenderer::create(const DrawingContext &ctx)
 {
 	MarkerRenderer res{{ctx}, {}};
 	for (auto &marker : res.plot->getMarkers()) {
-		if (!shouldDrawMarkerBody(marker)) continue;
+		if (marker.enabled == false) continue;
 
 		res.markers.push_back(AbstractMarker::createInterpolated(ctx,
 		    marker,

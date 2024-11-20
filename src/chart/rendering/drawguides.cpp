@@ -23,15 +23,16 @@ void DrawGuides::draw()
 
 void DrawGuides::draw(Gen::AxisId axisId)
 {
-	const auto &guideStyle = rootStyle.plot.getAxis(axisId).guides;
+	const auto &guideStyle =
+	    parent.rootStyle.plot.getAxis(axisId).guides;
 
 	auto baseColor = *guideStyle.color;
 
-	if (const auto &axis = plot->axises.at(axisId).dimension;
+	if (const auto &axis = parent.getAxis(axisId).dimension;
 	    !baseColor.isTransparent() && !axis.empty()
 	    && *guideStyle.lineWidth > 0
-	    && plot->guides.at(axisId).axisGuides != false) {
-		canvas.setLineWidth(*guideStyle.lineWidth);
+	    && parent.plot->guides.at(axisId).axisGuides != false) {
+		parent.canvas.setLineWidth(*guideStyle.lineWidth);
 
 		for (auto it = axis.begin(), end = std::prev(axis.end());
 		     it != end;
@@ -41,10 +42,11 @@ void DrawGuides::draw(Gen::AxisId axisId)
 				    (*it).range.getMax(),
 				    baseColor
 				        * Math::FuzzyBool::And<double>(weight,
-				            plot->guides.at(axisId).axisGuides));
+				            parent.plot->guides.at(axisId)
+				                .axisGuides));
 		}
 
-		canvas.setLineWidth(0);
+		parent.canvas.setLineWidth(0);
 	}
 }
 
@@ -58,12 +60,12 @@ void DrawGuides::drawGuide(Gen::AxisId axisId,
 	auto normal = Geom::Point::Ident(!+axisId);
 	auto relMax = ident * val;
 
-	canvas.setLineColor(color);
+	parent.canvas.setLineColor(color);
 	const Geom::Line line(relMax, relMax + normal);
-	if (rootEvents.draw.plot.axis.guide->invoke(
+	if (parent.rootEvents.draw.plot.axis.guide->invoke(
 	        Events::OnLineDrawEvent(*eventTarget, {line, true}))) {
-		painter.drawLine(line);
-		renderedChart.emplace(Draw::Line{line, true},
+		parent.painter.drawLine(line);
+		parent.renderedChart.emplace(Line{line, true},
 		    std::move(eventTarget));
 	}
 }
