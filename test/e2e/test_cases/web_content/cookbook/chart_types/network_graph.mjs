@@ -1,9 +1,9 @@
 function axisOptions(on) {
 	return {
-		axis: on,
+		axis: on ? 'auto' : on,
 		labels: on,
 		markerGuides: false,
-		interlacing: on,
+		interlacing: on ? 'auto' : on,
 		title: on ? 'auto' : null
 	}
 }
@@ -126,7 +126,7 @@ const testSteps = [
 
 	(chart) =>
 		chart.animate({
-			x: Object.assign(axisOptions(true), { set: 'node', interlacing: false }),
+			x: Object.assign({ set: 'node' }, axisOptions(true)),
 			y: Object.assign({ set: ['edge', 'part', 'data'] }, axisOptions(true)),
 			label: null,
 			noop: null,
