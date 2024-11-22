@@ -126,7 +126,7 @@ const testSteps = [
 
 	(chart) =>
 		chart.animate({
-			x: Object.assign({ set: 'node' }, axisOptions(true)),
+			x: Object.assign(axisOptions(true), { set: 'node', interlacing: false }),
 			y: Object.assign({ set: ['edge', 'part', 'data'] }, axisOptions(true)),
 			label: null,
 			noop: null,

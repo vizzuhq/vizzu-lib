@@ -13,6 +13,7 @@
 #include "base/gfx/colortransform.h"
 #include "base/gfx/font.h"
 #include "base/math/fuzzybool.h"
+#include "base/math/renard.h"
 #include "base/type/booliter.h"
 #include "chart/generator/plot.h" // NOLINT(misc-include-cleaner)
 #include "chart/main/events.h"
@@ -31,23 +32,170 @@ namespace Vizzu::Draw
 
 void DrawAxes::drawGeometries() const
 {
-	DrawInterlacing{*this}.drawGeometries();
+	DrawInterlacing{*this}.drawGeometries(Gen::AxisId::y);
+	DrawInterlacing{*this}.drawGeometries(Gen::AxisId::x);
 
 	drawAxis(Gen::AxisId::x);
 	drawAxis(Gen::AxisId::y);
 
-	DrawGuides{*this}.draw();
+	DrawGuides{*this}.draw(Gen::AxisId::x);
+	DrawGuides{*this}.draw(Gen::AxisId::y);
 }
 
 void DrawAxes::drawLabels() const
 {
-	DrawInterlacing{*this}.drawTexts();
+	DrawInterlacing{*this}.drawTexts(Gen::AxisId::y);
+	DrawInterlacing{*this}.drawTexts(Gen::AxisId::x);
 
 	drawDimensionLabels(Gen::AxisId::x);
 	drawDimensionLabels(Gen::AxisId::y);
 
 	drawTitle(Gen::AxisId::x);
 	drawTitle(Gen::AxisId::y);
+}
+
+const DrawAxes &&DrawAxes::init() &&
+{
+	for (auto axisIndex : Refl::enum_values<Gen::AxisId>()) {
+		auto &axis = getAxis(axisIndex);
+
+		auto &intervals = this->intervals[axisIndex];
+		auto &separators = this->separators[axisIndex];
+		const auto &guides = plot->guides.at(axisIndex);
+
+		for (auto &&[index, item] : axis.dimension.getValues()) {
+			auto weight = item.weight(axis.dimension.factor);
+			if (Math::Floating::is_zero(weight)) continue;
+
+			intervals.emplace_back(item.range,
+			    weight,
+			    Math::FuzzyBool::And<double>(
+			        Math::Niebloid::interpolate(
+			            (item.startPos ? *item.startPos
+			                           : *item.endPos)
+			                % 2,
+			            (item.endPos ? *item.endPos : *item.startPos)
+			                % 2,
+			            axis.dimension.factor),
+			        Math::FuzzyBool::more(weight),
+			        guides.interlacings.more()),
+			    Interval::DimLabel{index,
+			        item.label,
+			        !item.startPos.isAuto(),
+			        !item.endPos.isAuto()});
+
+			if (auto sepWeight = Math::Niebloid::interpolate(
+			        !item.startPos.isAuto() && *item.startPos,
+			        !item.endPos.isAuto() && *item.endPos,
+			        axis.dimension.factor);
+			    sepWeight > 0)
+				separators.emplace_back(item.range.getMin(),
+				    sepWeight);
+		}
+
+		auto enabled = axis.measure.enabled.combine<double>();
+		if (enabled == 0.0) continue;
+		auto step = axis.measure.step.combine();
+
+		auto &&[min, max] = std::minmax(
+		    axis.measure.step.get_or_first(::Anim::first).value,
+		    axis.measure.step.get_or_first(::Anim::second).value,
+		    Math::Floating::less);
+
+		auto stepHigh =
+		    std::clamp(Math::Renard::R5().ceil(step), min, max);
+		auto stepLow =
+		    std::clamp(Math::Renard::R5().floor(step), min, max);
+
+		if (Math::Floating::is_zero(axis.measure.range.size()))
+			step = stepHigh = stepLow = 1.0;
+
+		if (stepHigh == step || stepLow == step)
+			generateMeasure(axisIndex, step, enabled);
+		else {
+			auto highWeight =
+			    Math::Range<>::Raw(stepLow, stepHigh).rescale(step);
+
+			generateMeasure(axisIndex,
+			    stepLow,
+			    (1.0 - highWeight) * enabled);
+			generateMeasure(axisIndex,
+			    stepHigh,
+			    highWeight * enabled);
+		}
+	}
+
+	return std::move(*this);
+}
+
+void DrawAxes::generateMeasure(Gen::AxisId axisIndex,
+    double stepSize,
+    double weight)
+{
+	auto orientation = !+axisIndex;
+	const auto &meas = getAxis(axisIndex).measure;
+	auto rangeSize = meas.range.size();
+	bool singleLabelRange = Math::Floating::is_zero(rangeSize);
+
+	double stripWidth{};
+	if (!singleLabelRange) {
+		stripWidth = stepSize / rangeSize;
+		if (stripWidth <= 0) return;
+	}
+
+	const auto origo = this->origo();
+	auto axisBottom = origo.getCoord(!orientation) + stripWidth;
+
+	auto iMin = static_cast<int>(
+	    axisBottom > 0 ? std::floor(-origo.getCoord(!orientation)
+	                                / (2 * stripWidth))
+	                         * 2
+	                   : std::round((meas.range.getMin() - stepSize)
+	                                / stepSize));
+
+	if (axisBottom + iMin * stripWidth + stripWidth < 0.0)
+		iMin += 2
+		      * static_cast<int>(std::ceil(
+		          -(axisBottom + stripWidth) / (2 * stripWidth)));
+
+	auto Transform = [&](int x)
+	{
+		return std::pair{iMin + x * 2,
+		    axisBottom + (iMin + x * 2) * stripWidth};
+	};
+	constexpr static auto Predicate =
+	    [](const std::pair<int, double> &x)
+	{
+		return x.second <= 1.0;
+	};
+
+	auto &separators = this->separators[axisIndex];
+	auto &intervals = this->intervals[axisIndex];
+
+	for (auto &&[i, bottom] :
+	    std::views::iota(0) | std::views::transform(Transform)
+	        | std::views::take_while(Predicate)) {
+		if (!std::signbit(bottom)) {
+			separators.emplace_back(bottom,
+			    weight,
+			    (i + 1) * stepSize);
+		}
+
+		if (!singleLabelRange) {
+			intervals.emplace_back(
+			    Math::Range<>::Raw(bottom, bottom + stripWidth),
+			    weight,
+			    1.0);
+
+			if (!Math::Floating::less(1.0, bottom + stripWidth)) {
+				separators.emplace_back(bottom + stripWidth,
+				    weight,
+				    (i + 2) * stepSize);
+			}
+		}
+		else
+			break;
+	}
 }
 
 Geom::Line DrawAxes::getAxisLine(Gen::AxisId axisIndex) const
@@ -262,20 +410,20 @@ void DrawAxes::drawDimensionLabels(Gen::AxisId axisIndex) const
 		canvas.setFont(Gfx::Font{labelStyle});
 		const auto &enabled = plot->guides.at(axisIndex);
 
-		for (const auto &[slice, item] : axis.getValues())
+		for (const auto &interval : getIntervals(axisIndex)) {
+			if (!interval.label) continue;
 			drawDimensionLabel(axisIndex,
 			    origo,
-			    item,
-			    slice,
-			    Math::FuzzyBool::And<double>(item.weight(axis.factor),
+			    interval,
+			    Math::FuzzyBool::And<double>(interval.weight,
 			        enabled.labels));
+		}
 	}
 }
 
 void DrawAxes::drawDimensionLabel(Gen::AxisId axisIndex,
     const Geom::Point &origo,
-    const Gen::DimensionAxis::Item &item,
-    const Data::SliceIndex &index,
+    const Interval &interval,
     double weight) const
 {
 	if (weight == 0) return;
@@ -289,18 +437,17 @@ void DrawAxes::drawDimensionLabel(Gen::AxisId axisIndex,
 	        &axisIndex,
 	        &drawLabel,
 	        &labelStyle,
-	        &item,
+	        &interval,
 	        &orientation,
 	        &origo,
 	        ident = Geom::Point::Ident(orientation),
 	        normal = Geom::Point::Ident(!orientation),
-	        &text = item.label,
-	        &weight,
-	        &sindex = index](::Anim::InterpolateIndex index,
+	        &dimInfo = *interval.label,
+	        &weight](::Anim::InterpolateIndex index,
 	        const auto &position)
 	    {
 		    if (labelStyle.position->interpolates()
-		        && !item.presentAt(index))
+		        && !dimInfo.presentAt(index))
 			    return;
 
 		    Geom::Point refPos;
@@ -313,7 +460,7 @@ void DrawAxes::drawDimensionLabel(Gen::AxisId axisIndex,
 		    case Pos::min_edge: refPos = Geom::Point(); break;
 		    }
 
-		    auto relCenter = refPos + ident * item.range.middle();
+		    auto relCenter = refPos + ident * interval.range.middle();
 
 		    auto under =
 		        labelStyle.position->interpolates()
@@ -333,7 +480,7 @@ void DrawAxes::drawDimensionLabel(Gen::AxisId axisIndex,
 		    {
 			    if (!str.value) return;
 			    drawLabel.draw(canvas,
-			        sindex.value,
+			        dimInfo.index.value,
 			        posDir,
 			        labelStyle,
 			        0,
@@ -342,22 +489,22 @@ void DrawAxes::drawDimensionLabel(Gen::AxisId axisIndex,
 			                str.weight,
 			                plusWeight)),
 			        *rootEvents.draw.plot.axis.label,
-			        Events::Targets::dimAxisLabel(sindex.column,
-			            sindex.value,
+			        Events::Targets::dimAxisLabel(
+			            dimInfo.index.column,
+			            dimInfo.index.value,
 			            axisIndex));
 		    };
 
-		    if (text.interpolates()
+		    if (dimInfo.presented.interpolates()
 		        && !labelStyle.position->interpolates()) {
-			    draw(text.get_or_first(::Anim::first));
-			    draw(text.get_or_first(::Anim::second));
+			    draw(dimInfo.presented.get_or_first(::Anim::first));
+			    draw(dimInfo.presented.get_or_first(::Anim::second));
 		    }
-		    else {
-			    draw(text.get_or_first(index),
+		    else
+			    draw(dimInfo.presented.get_or_first(index),
 			        !labelStyle.position->interpolates()
 			            ? 1.0
 			            : position.weight);
-		    }
 	    });
 }
 

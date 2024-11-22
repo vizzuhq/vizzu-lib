@@ -452,6 +452,10 @@ void PlotBuilder::calcAxis(const Data::DataTable &dataTable,
 		    !axis.dimension.setLabels(scale.step.getValue(1.0))
 		    && series && isAutoTitle)
 			axis.title = series.value().getColIndex();
+		for (std::uint32_t pos{};
+		     DimensionAxis::Item & i : axis.dimension.sortedItems())
+			i.endPos = i.startPos =
+			    DimensionAxis::Item::PosType{pos++};
 	}
 }
 

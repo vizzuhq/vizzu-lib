@@ -14,13 +14,6 @@
 
 namespace Vizzu::Draw
 {
-
-void DrawGuides::draw()
-{
-	draw(Gen::AxisId::x);
-	draw(Gen::AxisId::y);
-}
-
 void DrawGuides::draw(Gen::AxisId axisId)
 {
 	const auto &guideStyle =
@@ -34,17 +27,12 @@ void DrawGuides::draw(Gen::AxisId axisId)
 	    && parent.plot->guides.at(axisId).axisGuides != false) {
 		parent.canvas.setLineWidth(*guideStyle.lineWidth);
 
-		for (auto it = axis.begin(), end = std::prev(axis.end());
-		     it != end;
-		     ++it) {
-			if (auto &&weight = (*it).weight(axis.factor); weight > 0)
-				drawGuide(axisId,
-				    (*it).range.getMax(),
-				    baseColor
-				        * Math::FuzzyBool::And<double>(weight,
-				            parent.plot->guides.at(axisId)
-				                .axisGuides));
-		}
+		for (const auto &sep : parent.getSeparators(axisId))
+			drawGuide(axisId,
+			    sep.position,
+			    baseColor
+			        * Math::FuzzyBool::And<double>(sep.weight,
+			            parent.plot->guides.at(axisId).axisGuides));
 
 		parent.canvas.setLineWidth(0);
 	}

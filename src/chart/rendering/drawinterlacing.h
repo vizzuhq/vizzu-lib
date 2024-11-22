@@ -10,21 +10,12 @@ namespace Vizzu::Draw
 class DrawInterlacing
 {
 public:
-	void drawGeometries() const;
-	void drawTexts() const;
+	void drawGeometries(Gen::AxisId axisIndex) const;
+	void drawTexts(Gen::AxisId axisIndex) const;
 
 	const DrawAxes &parent;
 
 private:
-	void draw(Gen::AxisId axisIndex, bool text) const;
-
-	void draw(const ::Anim::Interpolated<bool> &enabled,
-	    Gen::AxisId axisIndex,
-	    double stepSize,
-	    double weight,
-	    double rangeSize,
-	    bool text) const;
-
 	void drawDataLabel(const ::Anim::Interpolated<bool> &enabled,
 	    Gen::AxisId axisIndex,
 	    const Geom::Point &tickPos,

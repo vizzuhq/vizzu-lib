@@ -83,50 +83,43 @@ struct DimensionAxis
 		explicit Item() = default;
 
 	public:
-		bool start{};
-		bool end{};
+		using PosType = Base::AutoParam<std::uint32_t>;
+		PosType startPos{};
+		PosType endPos{};
 		Math::Range<> range;
-		::Anim::Interpolated<std::uint32_t> position;
 		::Anim::Interpolated<ColorBase> colorBase;
 		::Anim::Interpolated<bool> label;
 
 		Item(Math::Range<> range,
-		    const std::optional<std::uint32_t> &position,
+		    std::uint32_t position,
 		    const std::optional<ColorBase> &color,
 		    bool setCategoryAsLabel) :
-		    start(true),
-		    end(true),
+		    startPos(position),
+		    endPos(position),
 		    range(range),
 		    label(setCategoryAsLabel)
 		{
-			if (position) this->position = *position;
 			if (color) colorBase = *color;
 		}
 
 		Item(const Item &item, bool starter) :
-		    start(starter),
-		    end(!starter),
+		    startPos(starter ? item.startPos : PosType{}),
+		    endPos(starter ? PosType{} : item.endPos),
 		    range(item.range),
-		    position(item.position),
 		    colorBase(item.colorBase),
 		    label(item.label)
 		{}
 
 		bool operator==(const Item &other) const
 		{
-			return range == other.range && position == other.position;
-		}
-
-		[[nodiscard]] bool presentAt(
-		    ::Anim::InterpolateIndex index) const
-		{
-			return (index == ::Anim::first && start)
-			    || (index == ::Anim::second && end);
+			return range == other.range && startPos == other.startPos;
 		}
 
 		[[nodiscard]] double weight(double atEnd) const
 		{
-			return Math::Niebloid::interpolate(start, end, atEnd);
+			return Math::Niebloid::interpolate(!startPos.isAuto(),
+			    !endPos.isAuto(),
+			    atEnd);
 		}
 
 		friend Item
@@ -139,7 +132,7 @@ struct DimensionAxis
 	DimensionAxis() = default;
 	bool add(const Data::SliceIndex &index,
 	    const Math::Range<> &range,
-	    const std::optional<std::uint32_t> &position,
+	    std::uint32_t position,
 	    const std::optional<ColorBase> &color,
 	    bool label,
 	    bool merge);
@@ -166,6 +159,21 @@ struct DimensionAxis
 	bool setLabels(double step);
 
 	[[nodiscard]] const Values &getValues() const { return values; }
+
+	[[nodiscard]] auto sortedItems()
+	{
+		struct ItemSorterByRangeStart
+		{
+			[[nodiscard]] bool operator()(const Item &lhs,
+			    const Item &rhs) const
+			{
+				return Math::Floating::less(lhs.range.getMin(),
+				    rhs.range.getMin());
+			}
+		};
+		return std::multiset<std::reference_wrapper<Item>,
+		    ItemSorterByRangeStart>{begin(), end()};
+	}
 
 private:
 	Values values;

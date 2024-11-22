@@ -252,7 +252,7 @@ MeasureAxis interpolate(const MeasureAxis &op0,
 }
 bool DimensionAxis::add(const Data::SliceIndex &index,
     const Math::Range<> &range,
-    const std::optional<std::uint32_t> &position,
+    std::uint32_t position,
     const std::optional<ColorBase> &color,
     bool label,
     bool merge)
@@ -286,15 +286,7 @@ bool DimensionAxis::setLabels(double step)
 	step = std::max(step, 1.0, Math::Floating::less);
 	auto currStep = 0.0;
 
-	using SortedItems =
-		std::multiset<std::reference_wrapper<Item>, decltype(
-			[] (Item& lhs, Item &rhs)
-			{
-				return Math::Floating::less(lhs.range.getMin(), rhs.range.getMin());
-			})>;
-
-	for (auto curr = int{};
-	     auto &&item : SortedItems{begin(), end()}) {
+	for (auto curr = int{}; auto &&item : sortedItems()) {
 		if (++curr <= currStep) continue;
 		currStep += step;
 		item.get().label = true;
@@ -346,7 +338,7 @@ DimensionAxis interpolate(const DimensionAxis &op0,
 				res.values
 				    .emplace(key,
 				        interpolate(first1->second, latest, factor))
-				    ->second.end = false;
+				    ->second.endPos.makeAuto();
 
 			for (const auto &latest = std::prev(to1)->second;
 			     first2 != to2;
@@ -354,7 +346,7 @@ DimensionAxis interpolate(const DimensionAxis &op0,
 				res.values
 				    .emplace(key,
 				        interpolate(latest, first2->second, factor))
-				    ->second.start = false;
+				    ->second.startPos.makeAuto();
 		}
 
 	return res;
@@ -366,11 +358,11 @@ DimensionAxis::Item interpolate(const DimensionAxis::Item &op0,
 {
 	using Math::Niebloid::interpolate;
 	DimensionAxis::Item res;
-	res.start = res.end = true;
+	res.startPos = op0.startPos;
+	res.endPos = op1.endPos;
 	res.range = interpolate(op0.range, op1.range, factor);
 	res.colorBase = interpolate(op0.colorBase, op1.colorBase, factor);
 	res.label = interpolate(op0.label, op1.label, factor);
-	res.position = interpolate(op0.position, op1.position, factor);
 	return res;
 }
 

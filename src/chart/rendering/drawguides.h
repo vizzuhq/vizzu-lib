@@ -10,12 +10,11 @@ namespace Vizzu::Draw
 class DrawGuides
 {
 public:
-	void draw();
+	void draw(Gen::AxisId axisId);
 
 	const DrawAxes &parent;
 
 private:
-	void draw(Gen::AxisId axisId);
 	void drawGuide(Gen::AxisId axisId,
 	    double val,
 	    const Gfx::Color &color);

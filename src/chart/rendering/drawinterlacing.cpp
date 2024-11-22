@@ -26,218 +26,97 @@
 namespace Vizzu::Draw
 {
 
-void DrawInterlacing::drawGeometries() const
+void DrawInterlacing::drawGeometries(Gen::AxisId axisIndex) const
 {
-	draw(Gen::AxisId::y, false);
-	draw(Gen::AxisId::x, false);
-}
-
-void DrawInterlacing::drawTexts() const
-{
-	draw(Gen::AxisId::y, true);
-	draw(Gen::AxisId::x, true);
-}
-
-void DrawInterlacing::draw(Gen::AxisId axisIndex, bool text) const
-{
-	const auto &axis = parent.getAxis(axisIndex).measure;
-	auto enabled = axis.enabled.combine<double>();
-
-	if (enabled == 0.0) return;
-
-	auto step = axis.step.combine();
-
-	auto &&[min, max] =
-	    std::minmax(axis.step.get_or_first(::Anim::first).value,
-	        axis.step.get_or_first(::Anim::second).value,
-	        Math::Floating::less);
-
-	auto stepHigh =
-	    std::clamp(Math::Renard::R5().ceil(step), min, max);
-	auto stepLow =
-	    std::clamp(Math::Renard::R5().floor(step), min, max);
-
-	if (Math::Floating::is_zero(axis.range.size()))
-		step = stepHigh = stepLow = 1.0;
-
-	if (stepHigh == step) {
-		draw(axis.enabled,
-		    axisIndex,
-		    stepHigh,
-		    enabled,
-		    axis.range.size(),
-		    text);
-	}
-	else if (stepLow == step) {
-		draw(axis.enabled,
-		    axisIndex,
-		    stepLow,
-		    enabled,
-		    axis.range.size(),
-		    text);
-	}
-	else {
-		auto highWeight =
-		    Math::Range<>::Raw(stepLow, stepHigh).rescale(step);
-
-		auto lowWeight = (1.0 - highWeight) * enabled;
-		highWeight *= enabled;
-
-		draw(axis.enabled,
-		    axisIndex,
-		    stepLow,
-		    lowWeight,
-		    axis.range.size(),
-		    text);
-		draw(axis.enabled,
-		    axisIndex,
-		    stepHigh,
-		    highWeight,
-		    axis.range.size(),
-		    text);
-	}
-}
-
-void DrawInterlacing::draw(
-    const ::Anim::Interpolated<bool> &axisEnabled,
-    Gen::AxisId axisIndex,
-    double stepSize,
-    double weight,
-    double rangeSize,
-    bool text) const
-{
-	auto orientation = !+axisIndex;
 	const auto &guides = parent.plot->guides.at(axisIndex);
 	const auto &axisStyle = parent.rootStyle.plot.getAxis(axisIndex);
-	const auto &axis = parent.getAxis(axisIndex).measure;
+	if (axisStyle.interlacing.color->isTransparent()
+	    || guides.interlacings == false)
+		return;
 
-	auto interlacingColor =
-	    *axisStyle.interlacing.color
-	    * Math::FuzzyBool::And<double>(weight, guides.interlacings);
+	auto orientation = !+axisIndex;
+
+	parent.painter.setPolygonToCircleFactor(0);
+	parent.painter.setPolygonStraightFactor(0);
+
+	for (const auto &interval : parent.getIntervals(axisIndex)) {
+		if (Math::Floating::is_zero(interval.isSecond)) continue;
+		auto clippedBottom = std::max(interval.range.getMin(),
+		    0.0,
+		    Math::Floating::less);
+		auto clippedSize = std::min(interval.range.getMax(),
+		                       1.0,
+		                       Math::Floating::less)
+		                 - clippedBottom;
+		auto rect = Geom::Rect{
+		    Geom::Point::Coord(orientation, 0.0, clippedBottom),
+		    {Geom::Size::Coord(orientation, 1.0, clippedSize)}};
+
+		auto interlacingColor =
+		    *axisStyle.interlacing.color
+		    * Math::FuzzyBool::And<double>(interval.weight,
+		        interval.isSecond,
+		        guides.interlacings);
+
+		auto &canvas = parent.canvas;
+		canvas.save();
+		canvas.setLineColor(Gfx::Color::Transparent());
+		canvas.setBrushColor(interlacingColor);
+		if (auto &&eventTarget =
+		        Events::Targets::axisInterlacing(axisIndex);
+		    parent.rootEvents.draw.plot.axis.interlacing->invoke(
+		        Events::OnRectDrawEvent(*eventTarget,
+		            {rect, true}))) {
+			parent.painter.drawPolygon(rect.points());
+			parent.renderedChart.emplace(Rect{rect, true},
+			    std::move(eventTarget));
+		}
+		canvas.restore();
+	}
+}
+
+void DrawInterlacing::drawTexts(Gen::AxisId axisIndex) const
+{
+	const auto &axis = parent.getAxis(axisIndex).measure;
+	auto orientation = !+axisIndex;
+	auto origo = parent.origo().getCoord(orientation);
+	const auto &guides = parent.plot->guides.at(axisIndex);
+	const auto &axisStyle = parent.rootStyle.plot.getAxis(axisIndex);
 
 	auto tickLength = axisStyle.ticks.length->get(
 	    parent.coordSys.getRect().size.getCoord(orientation),
 	    axisStyle.label.calculatedSize());
 
-	auto tickColor =
-	    *axisStyle.ticks.color
-	    * Math::FuzzyBool::And<double>(weight, guides.axisSticks);
-
-	auto needTick = tickLength > 0 && !tickColor.isTransparent()
+	auto needTick = tickLength > 0
+	             && !axisStyle.ticks.color->isTransparent()
+	             && guides.axisSticks != false
 	             && *axisStyle.ticks.lineWidth > 0;
 
-	auto textAlpha =
-	    Math::FuzzyBool::And<double>(weight, guides.labels);
+	auto needText = !axisStyle.label.color->isTransparent()
+	             && guides.labels != false;
 
-	if ((!text && interlacingColor.isTransparent())
-	    || (text && !needTick && textAlpha == 0.0))
-		return;
+	if (!needText && !needTick) return;
 
-	auto singleLabelRange = Math::Floating::is_zero(rangeSize);
-	if (singleLabelRange && !text) return;
+	for (const auto &sep : parent.getSeparators(axisIndex)) {
+		if (!sep.label) continue;
+		auto tickPos =
+		    Geom::Point::Coord(orientation, origo, sep.position);
+		if (needText)
+			drawDataLabel(axis.enabled,
+			    axisIndex,
+			    tickPos,
+			    *sep.label,
+			    axis.unit,
+			    Math::FuzzyBool::And<double>(sep.weight,
+			        guides.labels));
 
-	double stripWidth{};
-	if (!singleLabelRange) {
-		stripWidth = stepSize / rangeSize;
-		if (stripWidth <= 0) return;
-	}
-
-	const auto origo = parent.origo();
-	auto axisBottom = origo.getCoord(!orientation) + stripWidth;
-
-	auto iMin = static_cast<int>(
-	    axisBottom > 0 ? std::floor(-origo.getCoord(!orientation)
-	                                / (2 * stripWidth))
-	                         * 2
-	                   : std::round((axis.range.getMin() - stepSize)
-	                                / stepSize));
-
-	if (axisBottom + iMin * stripWidth + stripWidth < 0.0)
-		iMin += 2
-		      * static_cast<int>(std::ceil(
-		          -(axisBottom + stripWidth) / (2 * stripWidth)));
-
-	if (!text) {
-		parent.painter.setPolygonToCircleFactor(0);
-		parent.painter.setPolygonStraightFactor(0);
-	}
-
-	auto Transform = [&](int x)
-	{
-		return std::pair{iMin + x * 2,
-		    axisBottom + (iMin + x * 2) * stripWidth};
-	};
-	constexpr static auto Predicate =
-	    [](const std::pair<int, double> &x)
-	{
-		return x.second <= 1.0;
-	};
-
-	for (auto &&[i, bottom] :
-	    std::views::iota(0) | std::views::transform(Transform)
-	        | std::views::take_while(Predicate)) {
-		auto clippedBottom =
-		    std::max(bottom, 0.0, Math::Floating::less);
-		auto clippedSize =
-		    std::min(bottom + stripWidth, 1.0, Math::Floating::less)
-		    - clippedBottom;
-		auto rect = Geom::Rect{
-		    Geom::Point::Coord(orientation, 0.0, clippedBottom),
-		    {Geom::Size::Coord(orientation, 1.0, clippedSize)}};
-
-		if (text) {
-			if (auto tickPos = rect.bottomLeft().comp(!orientation)
-			                 + origo.comp(orientation);
-			    bottom >= 0.0) {
-				if (textAlpha > 0)
-					drawDataLabel(axisEnabled,
-					    axisIndex,
-					    tickPos,
-					    (i + 1) * stepSize,
-					    axis.unit,
-					    textAlpha);
-
-				if (needTick)
-					drawSticks(tickLength,
-					    tickColor,
-					    axisIndex,
-					    tickPos);
-			}
-			if (singleLabelRange) break;
-			if (auto tickPos = rect.topRight().comp(!orientation)
-			                 + origo.comp(orientation);
-			    bottom + stripWidth <= 1.0) {
-				if (textAlpha > 0)
-					drawDataLabel(axisEnabled,
-					    axisIndex,
-					    tickPos,
-					    (i + 2) * stepSize,
-					    axis.unit,
-					    textAlpha);
-
-				if (needTick)
-					drawSticks(tickLength,
-					    tickColor,
-					    axisIndex,
-					    tickPos);
-			}
-		}
-		else {
-			auto &canvas = parent.canvas;
-			canvas.save();
-			canvas.setLineColor(Gfx::Color::Transparent());
-			canvas.setBrushColor(interlacingColor);
-			if (auto &&eventTarget =
-			        Events::Targets::axisInterlacing(axisIndex);
-			    parent.rootEvents.draw.plot.axis.interlacing->invoke(
-			        Events::OnRectDrawEvent(*eventTarget,
-			            {rect, true}))) {
-				parent.painter.drawPolygon(rect.points());
-				parent.renderedChart.emplace(Rect{rect, true},
-				    std::move(eventTarget));
-			}
-			canvas.restore();
-		}
+		if (needTick)
+			drawSticks(tickLength,
+			    *axisStyle.ticks.color
+			        * Math::FuzzyBool::And<double>(sep.weight,
+			            guides.axisSticks),
+			    axisIndex,
+			    tickPos);
 	}
 }
 

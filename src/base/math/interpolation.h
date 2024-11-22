@@ -28,7 +28,8 @@ template <class T> struct interpolatable_t
 		return requires(const T &a, const T &b, double factor) {
 			{
 				interpolate(a, b, factor)
-			} -> std::same_as<T>;
+			} -> std::same_as<
+			    std::conditional_t<std::is_integral_v<T>, double, T>>;
 		};
 	}
 };

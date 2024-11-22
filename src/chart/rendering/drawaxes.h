@@ -26,7 +26,54 @@ public:
 
 	Geom::Point origo() const { return plot->axises.origo(); }
 
+	struct Separator
+	{
+		double position;
+		double weight;
+		std::optional<double> label{};
+	};
+
+	struct Interval
+	{
+		struct DimLabel
+		{
+			const Data::SliceIndex &index;
+			const ::Anim::Interpolated<bool> &presented;
+			bool start;
+			bool end;
+
+			[[nodiscard]] bool presentAt(
+			    ::Anim::InterpolateIndex index) const
+			{
+				return (index == ::Anim::first && start)
+				    || (index == ::Anim::second && end);
+			}
+		};
+		Math::Range<> range;
+		double weight;
+		double isSecond;
+		std::optional<DimLabel> label{};
+	};
+
+	const DrawAxes &&init() &&;
+
+	Refl::EnumArray<Gen::AxisId, std::vector<Interval>> intervals;
+	Refl::EnumArray<Gen::AxisId, std::vector<Separator>> separators;
+
+	const auto &getIntervals(Gen::AxisId axisIndex) const
+	{
+		return intervals[axisIndex];
+	}
+
+	const auto &getSeparators(Gen::AxisId axisIndex) const
+	{
+		return separators[axisIndex];
+	}
+
 private:
+	void generateMeasure(Gen::AxisId axisIndex,
+	    double stepSize,
+	    double weight);
 	[[nodiscard]] Geom::Line getAxisLine(Gen::AxisId axisIndex) const;
 	[[nodiscard]] Geom::Point getTitleBasePos(Gen::AxisId axisIndex,
 	    ::Anim::InterpolateIndex index) const;
@@ -38,8 +85,7 @@ private:
 	void drawDimensionLabels(Gen::AxisId axisIndex) const;
 	void drawDimensionLabel(Gen::AxisId axisIndex,
 	    const Geom::Point &origo,
-	    const Gen::DimensionAxis::Item &item,
-	    const Data::SliceIndex &index,
+	    const Interval &interval,
 	    double weight) const;
 };
 
