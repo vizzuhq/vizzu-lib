@@ -155,20 +155,22 @@ const data = {
 const testSteps = [
 	(chart) => {
 		setupEvents(chart)
-		return chart.animate({
-			data,
-			config: {
-				color: 'Foo',
-				x: { set: 'Foo', guides: true, ticks: true, axis: true },
-				y: { set: 'Bar', guides: true, ticks: true, axis: true },
-				size: 'Baz',
-				label: 'Baz',
-				title: 'My Chart',
-				legend: 'size',
-				geometry: 'circle'
-			}
-		},
-		0)
+		return chart.animate(
+			{
+				data,
+				config: {
+					color: 'Foo',
+					x: { set: 'Foo', guides: true, ticks: true, axis: true },
+					y: { set: 'Bar', guides: true, ticks: true, axis: true },
+					size: 'Baz',
+					label: 'Baz',
+					title: 'My Chart',
+					legend: 'size',
+					geometry: 'circle'
+				}
+			},
+			0
+		)
 	}
 ]
 
