@@ -59,6 +59,7 @@ const DrawAxes &&DrawAxes::init() &&
 	for (auto axisIndex : Refl::enum_values<Gen::AxisId>()) {
 		auto &axis = getAxis(axisIndex);
 
+		auto measEnabled = axis.measure.enabled.combine<double>();
 		auto &intervals = this->intervals[axisIndex];
 		auto &separators = this->separators[axisIndex];
 		const auto &guides = plot->guides.at(axisIndex);
@@ -66,6 +67,12 @@ const DrawAxes &&DrawAxes::init() &&
 		for (auto &&[index, item] : axis.dimension.getValues()) {
 			auto weight = item.weight(axis.dimension.factor);
 			if (Math::Floating::is_zero(weight)) continue;
+
+			bool needInterlacing =
+			    measEnabled == 0.0
+			    || Math::FuzzyBool::And(Math::FuzzyBool::more(weight),
+			           guides.interlacings.more())
+			           != false;
 
 			intervals.emplace_back(item.range,
 			    weight,
@@ -77,24 +84,29 @@ const DrawAxes &&DrawAxes::init() &&
 			            (item.endPos ? *item.endPos : *item.startPos)
 			                % 2,
 			            axis.dimension.factor),
-			        Math::FuzzyBool::more(weight),
-			        guides.interlacings.more()),
+			        needInterlacing),
 			    Interval::DimLabel{index,
 			        item.label,
 			        !item.startPos.isAuto(),
 			        !item.endPos.isAuto()});
 
+			auto needSeparators =
+			    measEnabled == 0.0
+			    || Math::FuzzyBool::And(Math::FuzzyBool::more(weight),
+			           Math::FuzzyBool::Or(guides.axisSticks.more(),
+			               guides.axisGuides.more()))
+			           != false;
+
 			if (auto sepWeight = Math::Niebloid::interpolate(
 			        !item.startPos.isAuto() && *item.startPos,
 			        !item.endPos.isAuto() && *item.endPos,
 			        axis.dimension.factor);
-			    sepWeight > 0)
+			    needSeparators && sepWeight > 0)
 				separators.emplace_back(item.range.getMin(),
 				    sepWeight);
 		}
 
-		auto enabled = axis.measure.enabled.combine<double>();
-		if (enabled == 0.0) continue;
+		if (measEnabled == 0.0) continue;
 		auto step = axis.measure.step.combine();
 
 		auto &&[min, max] = std::minmax(
@@ -111,17 +123,17 @@ const DrawAxes &&DrawAxes::init() &&
 			step = stepHigh = stepLow = 1.0;
 
 		if (stepHigh == step || stepLow == step)
-			generateMeasure(axisIndex, step, enabled);
+			generateMeasure(axisIndex, step, measEnabled);
 		else {
 			auto highWeight =
 			    Math::Range<>::Raw(stepLow, stepHigh).rescale(step);
 
 			generateMeasure(axisIndex,
 			    stepLow,
-			    (1.0 - highWeight) * enabled);
+			    (1.0 - highWeight) * measEnabled);
 			generateMeasure(axisIndex,
 			    stepHigh,
-			    highWeight * enabled);
+			    highWeight * measEnabled);
 		}
 	}
 

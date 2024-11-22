@@ -98,10 +98,9 @@ void DrawInterlacing::drawTexts(Gen::AxisId axisIndex) const
 	if (!needText && !needTick) return;
 
 	for (const auto &sep : parent.getSeparators(axisIndex)) {
-		if (!sep.label) continue;
 		auto tickPos =
 		    Geom::Point::Coord(orientation, origo, sep.position);
-		if (needText)
+		if (needText && sep.label)
 			drawDataLabel(axis.enabled,
 			    axisIndex,
 			    tickPos,

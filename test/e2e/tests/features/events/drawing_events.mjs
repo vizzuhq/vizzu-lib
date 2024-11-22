@@ -124,7 +124,7 @@ function setupEvents(chart) {
 		})
 	})
 	chart.on('draw-complete', (e) => {
-		const references = [329751708, -2021415194]
+		const references = [-243018988]
 		receivedEvents.push(e)
 		const result = JSON.stringify(receivedEvents, null, 2)
 		const hash = (str) =>
@@ -167,7 +167,8 @@ const testSteps = [
 				legend: 'size',
 				geometry: 'circle'
 			}
-		})
+		},
+		0)
 	}
 ]
 
