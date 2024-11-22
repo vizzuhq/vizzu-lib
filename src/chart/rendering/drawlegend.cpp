@@ -329,7 +329,7 @@ Math::Range<> DrawLegend::markersLegendRange(const Info &info)
 {
 	auto res = Math::Range<>::Raw({}, {});
 
-	std::uint32_t measMax =
+	const std::uint32_t measMax =
 	    Math::Floating::is_zero(info.measureEnabled) ? 0 : 6;
 
 	std::uint32_t startMax{};

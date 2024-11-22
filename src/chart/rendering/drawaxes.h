@@ -10,6 +10,7 @@
 namespace Vizzu::Draw
 {
 
+// NOLINTNEXTLINE(cppcoreguidelines-pro-type-member-init)
 class DrawAxes : public DrawingContext
 {
 public:
@@ -19,17 +20,21 @@ public:
 	Gfx::ICanvas &canvas;
 	Painter &painter;
 
-	const Gen::Axis &getAxis(Gen::AxisId axisIndex) const
+	[[nodiscard]] const Gen::Axis &getAxis(
+	    Gen::AxisId axisIndex) const
 	{
 		return plot->axises.at(axisIndex);
 	}
 
-	Geom::Point origo() const { return plot->axises.origo(); }
+	[[nodiscard]] Geom::Point origo() const
+	{
+		return plot->axises.origo();
+	}
 
 	struct Separator
 	{
-		double position;
-		double weight;
+		double position{};
+		double weight{};
 		std::optional<double> label{};
 	};
 
@@ -49,23 +54,25 @@ public:
 				    || (index == ::Anim::second && end);
 			}
 		};
-		Math::Range<> range;
-		double weight;
-		double isSecond;
+		Math::Range<> range{};
+		double weight{};
+		double isSecond{};
 		std::optional<DimLabel> label{};
 	};
 
-	const DrawAxes &&init() &&;
+	[[nodiscard]] const DrawAxes &&init() &&;
 
 	Refl::EnumArray<Gen::AxisId, std::vector<Interval>> intervals;
 	Refl::EnumArray<Gen::AxisId, std::vector<Separator>> separators;
 
-	const auto &getIntervals(Gen::AxisId axisIndex) const
+	[[nodiscard]] const auto &getIntervals(
+	    Gen::AxisId axisIndex) const
 	{
 		return intervals[axisIndex];
 	}
 
-	const auto &getSeparators(Gen::AxisId axisIndex) const
+	[[nodiscard]] const auto &getSeparators(
+	    Gen::AxisId axisIndex) const
 	{
 		return separators[axisIndex];
 	}

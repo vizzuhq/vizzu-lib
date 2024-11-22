@@ -57,7 +57,7 @@ void DrawAxes::drawLabels() const
 const DrawAxes &&DrawAxes::init() &&
 {
 	for (auto axisIndex : Refl::enum_values<Gen::AxisId>()) {
-		auto &axis = getAxis(axisIndex);
+		const auto &axis = getAxis(axisIndex);
 
 		auto measEnabled = axis.measure.enabled.combine<double>();
 		auto &intervals = this->intervals[axisIndex];
@@ -147,7 +147,7 @@ void DrawAxes::generateMeasure(Gen::AxisId axisIndex,
 	auto orientation = !+axisIndex;
 	const auto &meas = getAxis(axisIndex).measure;
 	auto rangeSize = meas.range.size();
-	bool singleLabelRange = Math::Floating::is_zero(rangeSize);
+	auto singleLabelRange = Math::Floating::is_zero(rangeSize);
 
 	double stripWidth{};
 	if (!singleLabelRange) {
