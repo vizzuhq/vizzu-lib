@@ -68,7 +68,7 @@ const DrawAxes &&DrawAxes::init() &&
 			auto weight = item.weight(axis.dimension.factor);
 			if (Math::Floating::is_zero(weight)) continue;
 
-			bool needInterlacing =
+			auto needInterlacing =
 			    measEnabled == 0.0
 			    || Math::FuzzyBool::And(Math::FuzzyBool::more(weight),
 			           guides.interlacings.more())
