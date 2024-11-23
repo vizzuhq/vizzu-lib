@@ -21,9 +21,7 @@ void DrawGuides::draw(Gen::AxisId axisId)
 
 	auto baseColor = *guideStyle.color;
 
-	if (const auto &axis = parent.getAxis(axisId).dimension;
-	    !baseColor.isTransparent() && !axis.empty()
-	    && *guideStyle.lineWidth > 0
+	if (!baseColor.isTransparent() && *guideStyle.lineWidth > 0
 	    && parent.plot->guides.at(axisId).axisGuides != false) {
 		parent.canvas.setLineWidth(*guideStyle.lineWidth);
 

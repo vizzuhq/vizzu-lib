@@ -24,6 +24,9 @@
 - Fix chaotic axis labels on sorted chart with multiple dimension.
 - Fix Mekko charts: The main axis handled as dimension. 
 - LabelLevel can be used to handle measure axis as dimension axis.
+- Enable dimension axis ticks and interlacing.
+- Enable measure axis guides.
+- Fix dimension axis guides on sorted chart.
 
 ## [0.15.0] - 2024-10-28
 
