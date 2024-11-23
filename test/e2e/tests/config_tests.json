@@ -60,6 +60,9 @@
 		},
 		"channel_ranges/meas_axis": {
 			"refs": ["36a2537"]
+		},
+		"split": {
+			"refs": ["d21c2a7"]
 		}
 	}
 }

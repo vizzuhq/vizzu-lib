@@ -25,6 +25,10 @@
 - Fix Mekko charts: The main axis handled as dimension. 
 - LabelLevel can be used to handle measure axis as dimension axis.
 
+### Added
+
+- Split config can be set as markers full size percent.
+
 ## [0.15.0] - 2024-10-28
 
 ### Fixed
