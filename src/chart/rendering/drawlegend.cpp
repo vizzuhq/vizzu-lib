@@ -154,8 +154,10 @@ void DrawLegend::drawDimension(Info &info) const
 		if (weight <= 0) continue;
 
 		double pos{};
-		if (auto &&start = item.startPos, &&end = item.endPos;
-		    start && end)
+
+		auto &&start = item.startPos;
+		auto &&end = item.endPos;
+		if (start && end)
 			pos = Math::Niebloid::interpolate(*start,
 			    *end,
 			    info.axis.dimension.factor);
