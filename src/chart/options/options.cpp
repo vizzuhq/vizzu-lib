@@ -91,9 +91,9 @@ std::optional<ChannelId> Options::secondaryStackType() const
 	return std::nullopt;
 }
 
-bool Options::isStacked() const
+bool Options::hasDimensionToSplit() const
 {
-	auto dims = stackChannel().dimensions();
+	auto dims = subAxis().dimensions();
 	dims.split_by(mainAxis().dimensions());
 	return !dims.empty();
 }
