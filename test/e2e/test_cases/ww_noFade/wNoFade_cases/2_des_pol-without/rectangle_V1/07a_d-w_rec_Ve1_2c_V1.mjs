@@ -36,11 +36,10 @@ const testSteps = [
 			config: {
 				channels: {
 					x: { set: 'Value 3 (+)' },
-					y: { set: ['Year', 'Country', 'Value 2 (+)'] },
+					y: { set: ['Year', 'Country', 'Value 2 (+)'], ticks: true },
 					color: null
 				},
-				title: 'Stack Disc & Remove Color & Stretch & axisLabel off',
-				align: 'stretch'
+				title: 'Stack Disc & Remove Color & Stretch & axisLabel off'
 			},
 			style: {
 				plot: {
@@ -57,11 +56,13 @@ const testSteps = [
 						x: { set: 'Value 3 (+)' },
 						y: {
 							set: ['Joy factors', 'Value 2 (+)'],
-							range: { min: '0%', max: '100%' }
+							range: { min: '0%', max: '100%' },
+							labelLevel: 0
 						}
 					},
 					title: 'Change Disc',
-					orientation: 'auto'
+					orientation: 'auto',
+					align: 'stretch'
 				}
 			},
 			{

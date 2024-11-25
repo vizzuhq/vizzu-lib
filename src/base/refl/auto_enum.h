@@ -193,6 +193,16 @@ template <class E> constexpr E get_enum(const std::string_view &data)
 	return static_cast<E>(ix + first);
 }
 
+template <class E> consteval auto enum_values()
+{
+	constexpr auto first = Detail::from_to<E>().first;
+	constexpr auto n = std::size(enum_names<E>);
+	std::array<E, n> res{};
+	for (std::size_t i = 0; i < n; ++i)
+		res[i] = static_cast<E>(i + first);
+	return res;
+}
+
 template <class E, class V>
 struct EnumArray : std::array<V, std::size(enum_names<E>)>
 {

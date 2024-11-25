@@ -21,7 +21,8 @@ const testSteps = [
 					channels: {
 						x: { attach: ['Joy factors', 'index'] },
 						y: { attach: ['Value 2 (+)'] },
-						size: { detach: ['Value 2 (+)'] }
+						size: { detach: ['Value 2 (+)'] },
+						label: null
 					},
 					title: 'Y C, X D (X first) - Coxcomb',
 					coordSystem: 'polar'
@@ -46,7 +47,8 @@ const testSteps = [
 					channels: {
 						x: { detach: ['Joy factors', 'index'] },
 						y: { detach: ['Value 2 (+)'] },
-						size: { attach: ['Value 2 (+)'] }
+						size: { attach: ['Value 2 (+)'] },
+						label: { attach: ['Joy factors'] }
 					},
 					title: 'Y C, X D (Y first) - Treemap',
 					coordSystem: 'cartesian'
@@ -196,7 +198,7 @@ const testSteps = [
 					x: { attach: ['Joy factors', 'Value 1 (+)'] },
 					y: { attach: ['Value 2 (+)'] },
 					size: { detach: ['Value 2 (+)'] },
-					label: { detach: ['Joy factors'] }
+					label: 'Value 1 (+)'
 				},
 				title: 'Y C, X D+C (X first) - Coxcomb-Mekko',
 				coordSystem: 'polar'
@@ -206,7 +208,8 @@ const testSteps = [
 		chart.animate({
 			config: {
 				channels: {
-					x: { detach: ['Value 1 (+)'], attach: ['index'] }
+					x: { detach: ['Value 1 (+)'], attach: ['index'] },
+					label: null
 				},
 				title: 'Y C, X D (X first) - Coxcomb'
 			}

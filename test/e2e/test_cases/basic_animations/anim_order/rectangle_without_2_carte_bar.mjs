@@ -149,7 +149,8 @@ const testSteps = [
 				channels: {
 					y: { attach: ['Joy factors', 'Value 1 (+)'] },
 					x: { attach: ['Value 2 (+)'], range: { min: '0%', max: '110%' } },
-					size: { detach: ['Value 2 (+)'] }
+					size: { detach: ['Value 2 (+)'] },
+					label: { set: 'Value 1 (+)' }
 				},
 				title: 'X D+C, Y C (Y first) - Mekko'
 			}
@@ -159,7 +160,7 @@ const testSteps = [
 			config: {
 				channels: {
 					y: { detach: ['Value 1 (+)'] },
-					label: { detach: ['Joy factors'] }
+					label: { detach: ['Value 1 (+)'] }
 				},
 				title: 'X C, Y C (Y first) - Bar'
 			}

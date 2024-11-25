@@ -41,8 +41,7 @@ const testSteps = [
 			config: {
 				channels: {
 					y: { range: { min: 'auto', max: 'auto' } },
-					x: ['Country', 'Value 2 (+)'],
-					label: { attach: ['Country'] }
+					x: ['Country', 'Value 2 (+)']
 				},
 				title: 'Polar Coordinate',
 				angle: (Math.PI * 3) / 2,
