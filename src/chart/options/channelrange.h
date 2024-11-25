@@ -23,15 +23,8 @@ consteval auto unique_enum_names(ChannelExtremaType)
 	return ",%,min,max";
 }
 
-class ChannelExtrema :
-    public Type::PhysicalValue<double, ChannelExtremaType>
-{
-public:
-	using Base = Type::PhysicalValue<double, ChannelExtremaType>;
-	using Base::PhysicalValue;
-	explicit ChannelExtrema(const std::string &str);
-	explicit operator std::string() const;
-};
+using ChannelExtrema =
+    Type::PhysicalValue<double, ChannelExtremaType>;
 
 using OptionalChannelExtrema = Base::AutoParam<ChannelExtrema>;
 

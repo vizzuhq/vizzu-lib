@@ -245,6 +245,7 @@ struct Axis
 	Tick ticks;
 	Guide guides;
 	Interlacing interlacing;
+	Param<Gfx::Length> split;
 };
 
 struct MarkerLabelParams

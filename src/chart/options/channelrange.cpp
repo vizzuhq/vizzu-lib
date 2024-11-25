@@ -10,18 +10,6 @@
 namespace Vizzu::Gen
 {
 
-ChannelExtrema::ChannelExtrema(const std::string &str)
-{
-	const Text::ValueUnit vu(str);
-	value = vu.getValue();
-	unit = Conv::parse<ChannelExtremaType>(vu.getUnit());
-}
-
-ChannelExtrema::operator std::string() const
-{
-	return std::to_string(value) + std::string{Conv::toString(unit)};
-}
-
 Math::Range<> ChannelRange::getRange(
     const Math::Range<> &original) const
 {

@@ -42,9 +42,9 @@ struct OptionProperties
 	::Anim::Interpolated<ShapeType> geometry{ShapeType::rectangle};
 	Orientation orientation{OrientationType{}};
 	Sort sort{Sort::none};
-	Math::FuzzyBool reverse{false};
+	bool reverse{};
 	Base::Align::Type align{Base::Align::Type::none};
-	Math::FuzzyBool split;
+	bool split{};
 };
 
 class Options : public OptionProperties
