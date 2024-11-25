@@ -19,7 +19,7 @@ template <typename Value, Refl::is_enum Unit> struct PhysicalValue
 	template <std::same_as<double> = Value>
 	static PhysicalValue fromString(const std::string &str)
 	{
-		Text::ValueUnit vu{str};
+		const Text::ValueUnit vu{str};
 		return {vu.getValue(), Refl::get_enum<Unit>(vu.getUnit())};
 	}
 
