@@ -8,7 +8,7 @@ async function getTestSteps(dataFile, configName) {
 	const animations = (
 		await loadAnimations(
 			config.default,
-			`./docs/tutorial/${configName}`,
+			`${import.meta.url.replace('file://', '').replace('/tutorial.mjs', '')}/../../../../docs/tutorial/${configName}`,
 			`../../../../../../docs/tutorial/${configName}`
 		)
 	).map((obj) => obj.anims)

@@ -6,7 +6,7 @@ async function getTestSteps(dataFile, configName) {
 	const [data, config] = await Promise.all([dataLoaded, configLoaded])
 
 	const baseUrl = {
-		nodeBaseUrl: `./docs/tutorial/${configName}`,
+		nodeBaseUrl: `${import.meta.url.replace('file://', '').replace('/events.mjs', '')}/../../../../../docs/tutorial/${configName}`,
 		browserBaseUrl: `../../../../../docs/tutorial/${configName}`
 	}
 

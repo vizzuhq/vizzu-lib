@@ -10,7 +10,7 @@ const testSteps = [
 					x: ['Country', 'Value 2 (+)'],
 					y: ['Joy factors', 'Value 3 (+)'],
 					color: 'Joy factors',
-					label: 'Country',
+					label: 'Value 2 (+)',
 					lightness: 'Country'
 				},
 
@@ -22,7 +22,8 @@ const testSteps = [
 	(chart) =>
 		chart.animate({
 			config: {
-				orientation: 'vertical'
+				orientation: 'vertical',
+				label: 'Value 3 (+)'
 			}
 		})
 ]

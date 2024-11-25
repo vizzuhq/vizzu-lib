@@ -1,9 +1,9 @@
 function axisOptions(on) {
 	return {
-		axis: on,
+		axis: on ? 'auto' : on,
 		labels: on,
 		markerGuides: false,
-		interlacing: on,
+		interlacing: on ? 'auto' : on,
 		title: on ? 'auto' : null
 	}
 }

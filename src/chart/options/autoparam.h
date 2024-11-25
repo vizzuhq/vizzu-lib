@@ -45,7 +45,7 @@ template <typename Type, bool nullable = false> struct AutoParam
 			return Conv::toString(*value);
 	}
 
-	explicit operator bool() const
+	[[nodiscard]] explicit operator bool() const
 	{
 		return static_cast<bool>(value);
 	}
@@ -76,7 +76,12 @@ template <typename Type, bool nullable = false> struct AutoParam
 
 	bool operator==(const AutoParam &other) const = default;
 
-	const std::optional<Type> &getValueOrAuto() { return value; }
+	[[nodiscard]] const std::optional<Type> &getValueOrAuto() const
+	{
+		return value;
+	}
+
+	void makeAuto() { autoSet = true; }
 
 private:
 	bool autoSet{};

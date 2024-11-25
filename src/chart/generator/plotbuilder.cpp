@@ -456,12 +456,16 @@ void PlotBuilder::calcAxis(const Data::DataTable &dataTable,
 		    !axis.dimension.setLabels(axisProps.step.getValue(1.0))
 		    && series && isAutoTitle)
 			axis.title = series.value().getColIndex();
+		for (std::uint32_t pos{};
+		     DimensionAxis::Item & i : axis.dimension.sortedItems())
+			i.endPos = i.startPos =
+			    DimensionAxis::Item::PosType{pos++};
 	}
 }
 
 void PlotBuilder::addAlignment(const Buckets &subBuckets) const
 {
-	if (static_cast<bool>(plot->getOptions()->split)) return;
+	if (plot->getOptions()->isSplit()) return;
 
 	auto &subAxisRange =
 	    plot->axises.at(plot->getOptions()->subAxisType())
@@ -501,7 +505,7 @@ void PlotBuilder::addAlignment(const Buckets &subBuckets) const
 void PlotBuilder::addSeparation(const Buckets &subBuckets,
     const std::size_t &mainBucketSize) const
 {
-	if (plot->getOptions()->split) {
+	if (plot->getOptions()->isSplit()) {
 		auto align = plot->getOptions()->align;
 
 		std::vector ranges{mainBucketSize,

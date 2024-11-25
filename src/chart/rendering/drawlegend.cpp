@@ -153,8 +153,20 @@ void DrawLegend::drawDimension(Info &info) const
 		auto weight = item.weight(info.axis.dimension.factor);
 		if (weight <= 0) continue;
 
-		auto itemRect =
-		    getItemRect(info, item.position.combine<double>());
+		double pos{};
+
+		auto &&start = item.startPos;
+		auto &&end = item.endPos;
+		if (start && end)
+			pos = Math::Niebloid::interpolate(*start,
+			    *end,
+			    info.axis.dimension.factor);
+		else if (start)
+			pos = *start;
+		else
+			pos = *end;
+
+		auto itemRect = getItemRect(info, pos);
 
 		if (itemRect.y().getMin() > info.markerWindowRect.y().getMax()
 		    || itemRect.y().getMax()
@@ -319,12 +331,28 @@ Math::Range<> DrawLegend::markersLegendRange(const Info &info)
 {
 	auto res = Math::Range<>::Raw({}, {});
 
-	if (info.measureEnabled > 0.0) res.include(6.0 * info.itemHeight);
+	const std::uint32_t measMax =
+	    Math::Floating::is_zero(info.measureEnabled) ? 0 : 6;
 
-	for (const auto &item : info.axis.dimension)
-		res.include(
-		    (item.position.combine<double>() + 1) * info.itemHeight);
+	std::uint32_t startMax{};
+	std::uint32_t endMax{};
+	for (const auto &item : info.axis.dimension) {
+		if (auto &&start = item.startPos)
+			startMax = std::max(startMax, *start + 1);
+		if (auto &&end = item.endPos)
+			endMax = std::max(endMax, *end + 1);
+	}
 
+	if (auto &&[min, max] = std::minmax(startMax, endMax); !min)
+		res.include(Math::Niebloid::interpolate(measMax,
+		    max,
+		    Math::FuzzyBool::And<double>(1 - info.measureEnabled,
+		        info.axis.dimension.factor)));
+	else
+		res.include(Math::Niebloid::interpolate(startMax,
+		                endMax,
+		                info.axis.dimension.factor)
+		            * info.itemHeight);
 	return res;
 }
 

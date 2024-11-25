@@ -4,6 +4,7 @@
 
 ### Fixed
 
+- Fix align on fake-split charts
 - Do not interpolate hiding/showing legend
 - Fix aggregator interface for 'set' channel parameter:
   - From now not accepted the same dimension on the same channel.
@@ -23,6 +24,9 @@
 - Fix chaotic axis labels on sorted chart with multiple dimension.
 - Fix Mekko charts: The main axis handled as dimension. 
 - LabelLevel can be used to handle measure axis as dimension axis.
+- Enable dimension axis ticks and interlacing.
+- Enable measure axis guides.
+- Fix dimension axis guides on sorted chart.
 
 ### Changed
 
