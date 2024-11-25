@@ -316,9 +316,7 @@ void Options::setMeasureRange(Channel &channel, bool positive)
 	if (positive)
 		setRange(channel, 0.0_perc, 110.0_perc);
 	else
-		setRange(channel,
-		    ChannelExtrema(-10, ChannelExtremaType::relative),
-		    110.0_perc);
+		setRange(channel, operator""_perc(-10.0), 110.0_perc);
 }
 
 void Options::setRange(Channel &channel,
