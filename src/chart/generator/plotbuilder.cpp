@@ -406,7 +406,6 @@ void PlotBuilder::calcAxis(const Data::DataTable &dataTable,
 
 	auto &axisProps =
 	    plot->getOptions()->getChannels().axisPropsAt(type);
-	;
 
 	auto &axis = plot->axises.at(type);
 
