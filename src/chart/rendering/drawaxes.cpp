@@ -145,7 +145,7 @@ void DrawAxes::generateMeasure(Gen::AxisId axisIndex,
     double stepSize,
     double weight)
 {
-	auto orientation = ++!axisIndex;
+	auto orientation = !++axisIndex;
 	const auto &meas = getAxis(axisIndex).measure;
 	auto rangeSize = meas.range.size();
 	auto singleLabelRange = Math::Floating::is_zero(rangeSize);
@@ -213,7 +213,7 @@ void DrawAxes::generateMeasure(Gen::AxisId axisIndex,
 
 Geom::Line DrawAxes::getAxisLine(Gen::AxisId axisIndex) const
 {
-	auto offset = this->origo().getCoord(++!axisIndex);
+	auto offset = this->origo().getCoord(!++axisIndex);
 
 	auto direction = Geom::Point::Ident(++axisIndex);
 
@@ -267,7 +267,7 @@ Geom::Point DrawAxes::getTitleBasePos(Gen::AxisId axisIndex,
 	case Pos::min_edge: break;
 	case Pos::max_edge: orthogonal = 1.0; break;
 	case Pos::axis:
-		orthogonal = origo().getCoord(++!axisIndex);
+		orthogonal = origo().getCoord(!++axisIndex);
 		break;
 	}
 

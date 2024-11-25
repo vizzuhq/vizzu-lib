@@ -43,7 +43,7 @@ void DrawGuides::drawGuide(Gen::AxisId axisId,
 	auto eventTarget = Events::Targets::axisGuide(axisId);
 
 	auto ident = Geom::Point::Ident(++axisId);
-	auto normal = Geom::Point::Ident(++!axisId);
+	auto normal = Geom::Point::Ident(!++axisId);
 	auto relMax = ident * val;
 
 	parent.canvas.setLineColor(color);
