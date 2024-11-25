@@ -34,6 +34,37 @@ void DrawInterlacing::drawGeometries(Gen::AxisId axisIndex) const
 	    || guides.interlacings == false)
 		return;
 
+	std::map<double, double> othWeights{{0.0, 0.0}, {1.0, 0.0}};
+
+	const auto &othGuides = parent.plot->guides.at(!axisIndex);
+	const auto &othAxisStyle =
+	    parent.rootStyle.plot.getAxis(!axisIndex);
+	if (!othAxisStyle.interlacing.color->isTransparent()
+	    && othGuides.interlacings != false)
+		for (const auto &othInterval :
+		    parent.getIntervals(!axisIndex)) {
+			if (Math::Floating::is_zero(othInterval.isSecond))
+				continue;
+			auto min = std::max(othInterval.range.getMin(), 0.0);
+			auto max = std::min(othInterval.range.getMax(), 1.0);
+			auto mprev = std::prev(othWeights.upper_bound(min));
+			auto mnext = othWeights.lower_bound(max);
+
+			if (mprev->first < min)
+				mprev =
+				    othWeights.try_emplace(mprev, min, mprev->second);
+			if (mnext->first > max)
+				mnext = othWeights.try_emplace(mnext,
+				    max,
+				    std::prev(mnext)->second);
+
+			while (mprev != mnext)
+				mprev++->second +=
+				    Math::FuzzyBool::And<double>(othInterval.weight,
+				        othInterval.isSecond,
+				        othGuides.interlacings);
+		}
+
 	auto orientation = !+axisIndex;
 
 	parent.painter.setPolygonToCircleFactor(0);
@@ -48,30 +79,64 @@ void DrawInterlacing::drawGeometries(Gen::AxisId axisIndex) const
 		                       1.0,
 		                       Math::Floating::less)
 		                 - clippedBottom;
-		auto rect = Geom::Rect{
-		    Geom::Point::Coord(orientation, 0.0, clippedBottom),
-		    {Geom::Size::Coord(orientation, 1.0, clippedSize)}};
 
-		auto interlacingColor =
-		    *axisStyle.interlacing.color
-		    * Math::FuzzyBool::And<double>(interval.weight,
-		        interval.isSecond,
-		        guides.interlacings);
+		auto rect = [&](const double &from, const double &to)
+		{
+			return Geom::Rect{
+			    Geom::Point::Coord(orientation, from, clippedBottom),
+			    {Geom::Size::Coord(orientation,
+			        to - from,
+			        clippedSize)}};
+		};
 
-		auto &canvas = parent.canvas;
-		canvas.save();
-		canvas.setLineColor(Gfx::Color::Transparent());
-		canvas.setBrushColor(interlacingColor);
-		if (auto &&eventTarget =
-		        Events::Targets::axisInterlacing(axisIndex);
-		    parent.rootEvents.draw.plot.axis.interlacing->invoke(
-		        Events::OnRectDrawEvent(*eventTarget,
-		            {rect, true}))) {
-			parent.painter.drawPolygon(rect.points());
-			parent.renderedChart.emplace(Rect{rect, true},
-			    std::move(eventTarget));
+		auto weight = Math::FuzzyBool::And<double>(interval.weight,
+		    interval.isSecond,
+		    guides.interlacings);
+		auto interlacingColor = *axisStyle.interlacing.color * weight;
+
+		for (auto first = othWeights.begin(),
+		          next = std::next(first),
+		          last = othWeights.end();
+		     next != last;
+		     ++next, ++first) {
+			if (Math::Floating::is_zero(first->second))
+				drawInterlacing(axisIndex,
+				    interlacingColor,
+				    rect(first->first, next->first));
+			else if (axisIndex == Gen::AxisId::y) {
+				auto color =
+				    interlacingColor
+				    + *othAxisStyle.interlacing.color * first->second;
+
+				color.alpha =
+				    1
+				    - (1
+				          - axisStyle.interlacing.color->alpha
+				                * weight)
+				          * (1
+				              - othAxisStyle.interlacing.color->alpha
+				                    * first->second);
+
+				if (weight + first->second > 1.0)
+					color = Math::Niebloid::interpolate(
+					    color
+					        * std::max({std::abs(axisStyle.interlacing
+					                                 .color->red
+					                             - color.red),
+					            std::abs(
+					                axisStyle.interlacing.color->green
+					                - color.green),
+					            std::abs(
+					                axisStyle.interlacing.color->blue
+					                - color.blue)}),
+					    color,
+					    2.0 - (weight + first->second));
+				drawInterlacing(first->second > weight ? !axisIndex
+				                                       : axisIndex,
+				    color,
+				    rect(first->first, next->first));
+			}
 		}
-		canvas.restore();
 	}
 }
 
@@ -117,6 +182,26 @@ void DrawInterlacing::drawTexts(Gen::AxisId axisIndex) const
 			    axisIndex,
 			    tickPos);
 	}
+}
+
+void DrawInterlacing::drawInterlacing(Gen::AxisId axisIndex,
+    const Gfx::Color &interlacingColor,
+    const Geom::Rect &rect) const
+{
+	auto &canvas = parent.canvas;
+	canvas.save();
+	canvas.setLineColor(Gfx::Color::Transparent());
+	canvas.setLineWidth(0);
+	canvas.setBrushColor(interlacingColor);
+	if (auto &&eventTarget =
+	        Events::Targets::axisInterlacing(axisIndex);
+	    parent.rootEvents.draw.plot.axis.interlacing->invoke(
+	        Events::OnRectDrawEvent(*eventTarget, {rect, true}))) {
+		parent.painter.drawPolygon(rect.points());
+		parent.renderedChart.emplace(Rect{rect, true},
+		    std::move(eventTarget));
+	}
+	canvas.restore();
 }
 
 void DrawInterlacing::drawDataLabel(

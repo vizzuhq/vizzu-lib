@@ -16,6 +16,10 @@ public:
 	const DrawAxes &parent;
 
 private:
+	void drawInterlacing(Gen::AxisId axisIndex,
+	    const Gfx::Color &interlacingColor,
+	    const Geom::Rect &rect) const;
+
 	void drawDataLabel(const ::Anim::Interpolated<bool> &enabled,
 	    Gen::AxisId axisIndex,
 	    const Geom::Point &tickPos,

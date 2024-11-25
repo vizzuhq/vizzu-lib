@@ -48,13 +48,16 @@ PlotBuilder::PlotBuilder(const Data::DataTable &dataTable,
 	std::size_t mainBucketSize{};
 	auto &&subBuckets = generateMarkers(mainBucketSize);
 
-	if (!plot->getOptions()->getChannels().anyAxisSet())
+	if (!plot->getOptions()->getChannels().anyAxisSet()) {
 		addSpecLayout(subBuckets);
-	else
+		normalizeSizes();
+	}
+	else {
+		normalizeSizes();
 		addAxisLayout(subBuckets, mainBucketSize, dataTable);
+	}
 
 	normalizeColors();
-	normalizeSizes();
 	calcLegendAndLabel(dataTable);
 }
 
@@ -551,8 +554,11 @@ void PlotBuilder::normalizeSizes()
 	    || plot->getOptions()->geometry == ShapeType::line) {
 		Math::Range<> size;
 
-		for (auto &marker : plot->markers)
-			if (marker.enabled) size.include(marker.sizeFactor);
+		for (auto &marker : plot->markers) {
+			if (std::isnan(marker.sizeFactor)) marker.enabled = false;
+			if (!marker.enabled) continue;
+			size.include(marker.sizeFactor);
+		}
 
 		size = plot->getOptions()
 		           ->getChannels()

@@ -101,7 +101,8 @@ const DrawAxes &&DrawAxes::init() &&
 			        !item.startPos.isAuto() && *item.startPos,
 			        !item.endPos.isAuto() && *item.endPos,
 			        axis.dimension.factor);
-			    needSeparators && sepWeight > 0)
+			    needSeparators && sepWeight > 0
+			    && item.range.getMin() > 0)
 				separators.emplace_back(item.range.getMin(),
 				    sepWeight);
 		}

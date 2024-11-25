@@ -40,7 +40,8 @@ struct ChannelStats
 
 	void track(ChannelId at, const double &value)
 	{
-		std::get<0>(tracked[at]).include(value);
+		if (std::isfinite(value))
+			std::get<0>(tracked[at]).include(value);
 	}
 
 	template <ChannelIdLike Id>
