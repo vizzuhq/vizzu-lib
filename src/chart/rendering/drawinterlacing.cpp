@@ -26,217 +26,96 @@
 namespace Vizzu::Draw
 {
 
-void DrawInterlacing::drawGeometries() const
+void DrawInterlacing::drawGeometries(Gen::AxisId axisIndex) const
 {
-	draw(Gen::AxisId::y, false);
-	draw(Gen::AxisId::x, false);
-}
-
-void DrawInterlacing::drawTexts() const
-{
-	draw(Gen::AxisId::y, true);
-	draw(Gen::AxisId::x, true);
-}
-
-void DrawInterlacing::draw(Gen::AxisId axisIndex, bool text) const
-{
-	const auto &axis = plot->axises.at(axisIndex).measure;
-	auto enabled = axis.enabled.combine<double>();
-
-	if (enabled == 0.0) return;
-
-	auto step = axis.step.combine();
-
-	auto &&[min, max] =
-	    std::minmax(axis.step.get_or_first(::Anim::first).value,
-	        axis.step.get_or_first(::Anim::second).value,
-	        Math::Floating::less);
-
-	auto stepHigh =
-	    std::clamp(Math::Renard::R5().ceil(step), min, max);
-	auto stepLow =
-	    std::clamp(Math::Renard::R5().floor(step), min, max);
-
-	if (Math::Floating::is_zero(axis.range.size()))
-		step = stepHigh = stepLow = 1.0;
-
-	if (stepHigh == step) {
-		draw(axis.enabled,
-		    axisIndex,
-		    stepHigh,
-		    enabled,
-		    axis.range.size(),
-		    text);
-	}
-	else if (stepLow == step) {
-		draw(axis.enabled,
-		    axisIndex,
-		    stepLow,
-		    enabled,
-		    axis.range.size(),
-		    text);
-	}
-	else {
-		auto highWeight =
-		    Math::Range<>::Raw(stepLow, stepHigh).rescale(step);
-
-		auto lowWeight = (1.0 - highWeight) * enabled;
-		highWeight *= enabled;
-
-		draw(axis.enabled,
-		    axisIndex,
-		    stepLow,
-		    lowWeight,
-		    axis.range.size(),
-		    text);
-		draw(axis.enabled,
-		    axisIndex,
-		    stepHigh,
-		    highWeight,
-		    axis.range.size(),
-		    text);
-	}
-}
-
-void DrawInterlacing::draw(
-    const ::Anim::Interpolated<bool> &axisEnabled,
-    Gen::AxisId axisIndex,
-    double stepSize,
-    double weight,
-    double rangeSize,
-    bool text) const
-{
-	auto orientation = !+axisIndex;
-	const auto &guides = plot->guides.at(axisIndex);
-	const auto &axisStyle = rootStyle.plot.getAxis(axisIndex);
-	const auto &axis = plot->axises.at(axisIndex).measure;
-
-	auto interlacingColor =
-	    *axisStyle.interlacing.color
-	    * Math::FuzzyBool::And<double>(weight, guides.interlacings);
-
-	auto tickLength = axisStyle.ticks.length->get(
-	    coordSys.getRect().size.getCoord(orientation),
-	    axisStyle.label.calculatedSize());
-
-	auto tickColor =
-	    *axisStyle.ticks.color
-	    * Math::FuzzyBool::And<double>(weight, guides.axisSticks);
-
-	auto needTick = tickLength > 0 && !tickColor.isTransparent()
-	             && *axisStyle.ticks.lineWidth > 0;
-
-	auto textAlpha =
-	    Math::FuzzyBool::And<double>(weight, guides.labels);
-
-	if ((!text && interlacingColor.isTransparent())
-	    || (text && !needTick && textAlpha == 0.0))
+	const auto &guides = parent.plot->guides.at(axisIndex);
+	const auto &axisStyle = parent.rootStyle.plot.getAxis(axisIndex);
+	if (axisStyle.interlacing.color->isTransparent()
+	    || guides.interlacings == false)
 		return;
 
-	auto singleLabelRange = Math::Floating::is_zero(rangeSize);
-	if (singleLabelRange && !text) return;
+	auto orientation = !+axisIndex;
 
-	double stripWidth{};
-	if (!singleLabelRange) {
-		stripWidth = stepSize / rangeSize;
-		if (stripWidth <= 0) return;
-	}
+	parent.painter.setPolygonToCircleFactor(0);
+	parent.painter.setPolygonStraightFactor(0);
 
-	const auto origo = plot->axises.origo();
-	auto axisBottom = origo.getCoord(!orientation) + stripWidth;
-
-	auto iMin = static_cast<int>(
-	    axisBottom > 0 ? std::floor(-origo.getCoord(!orientation)
-	                                / (2 * stripWidth))
-	                         * 2
-	                   : std::round((axis.range.getMin() - stepSize)
-	                                / stepSize));
-
-	if (axisBottom + iMin * stripWidth + stripWidth < 0.0)
-		iMin += 2
-		      * static_cast<int>(std::ceil(
-		          -(axisBottom + stripWidth) / (2 * stripWidth)));
-
-	if (!text) {
-		painter.setPolygonToCircleFactor(0);
-		painter.setPolygonStraightFactor(0);
-	}
-
-	auto Transform = [&](int x)
-	{
-		return std::pair{iMin + x * 2,
-		    axisBottom + (iMin + x * 2) * stripWidth};
-	};
-	constexpr static auto Predicate =
-	    [](const std::pair<int, double> &x)
-	{
-		return x.second <= 1.0;
-	};
-
-	for (auto &&[i, bottom] :
-	    std::views::iota(0) | std::views::transform(Transform)
-	        | std::views::take_while(Predicate)) {
-		auto clippedBottom =
-		    std::max(bottom, 0.0, Math::Floating::less);
-		auto clippedSize =
-		    std::min(bottom + stripWidth, 1.0, Math::Floating::less)
-		    - clippedBottom;
+	for (const auto &interval : parent.getIntervals(axisIndex)) {
+		if (Math::Floating::is_zero(interval.isSecond)) continue;
+		auto clippedBottom = std::max(interval.range.getMin(),
+		    0.0,
+		    Math::Floating::less);
+		auto clippedSize = std::min(interval.range.getMax(),
+		                       1.0,
+		                       Math::Floating::less)
+		                 - clippedBottom;
 		auto rect = Geom::Rect{
 		    Geom::Point::Coord(orientation, 0.0, clippedBottom),
 		    {Geom::Size::Coord(orientation, 1.0, clippedSize)}};
 
-		if (text) {
-			if (auto tickPos = rect.bottomLeft().comp(!orientation)
-			                 + origo.comp(orientation);
-			    bottom >= 0.0) {
-				if (textAlpha > 0)
-					drawDataLabel(axisEnabled,
-					    axisIndex,
-					    tickPos,
-					    (i + 1) * stepSize,
-					    axis.unit,
-					    textAlpha);
+		auto interlacingColor =
+		    *axisStyle.interlacing.color
+		    * Math::FuzzyBool::And<double>(interval.weight,
+		        interval.isSecond,
+		        guides.interlacings);
 
-				if (needTick)
-					drawSticks(tickLength,
-					    tickColor,
-					    axisIndex,
-					    tickPos);
-			}
-			if (singleLabelRange) break;
-			if (auto tickPos = rect.topRight().comp(!orientation)
-			                 + origo.comp(orientation);
-			    bottom + stripWidth <= 1.0) {
-				if (textAlpha > 0)
-					drawDataLabel(axisEnabled,
-					    axisIndex,
-					    tickPos,
-					    (i + 2) * stepSize,
-					    axis.unit,
-					    textAlpha);
+		auto &canvas = parent.canvas;
+		canvas.save();
+		canvas.setLineColor(Gfx::Color::Transparent());
+		canvas.setBrushColor(interlacingColor);
+		if (auto &&eventTarget =
+		        Events::Targets::axisInterlacing(axisIndex);
+		    parent.rootEvents.draw.plot.axis.interlacing->invoke(
+		        Events::OnRectDrawEvent(*eventTarget,
+		            {rect, true}))) {
+			parent.painter.drawPolygon(rect.points());
+			parent.renderedChart.emplace(Rect{rect, true},
+			    std::move(eventTarget));
+		}
+		canvas.restore();
+	}
+}
 
-				if (needTick)
-					drawSticks(tickLength,
-					    tickColor,
-					    axisIndex,
-					    tickPos);
-			}
-		}
-		else {
-			canvas.save();
-			canvas.setLineColor(Gfx::Color::Transparent());
-			canvas.setBrushColor(interlacingColor);
-			if (auto &&eventTarget =
-			        Events::Targets::axisInterlacing(axisIndex);
-			    rootEvents.draw.plot.axis.interlacing->invoke(
-			        Events::OnRectDrawEvent(*eventTarget,
-			            {rect, true}))) {
-				painter.drawPolygon(rect.points());
-				renderedChart.emplace(Draw::Rect{rect, true},
-				    std::move(eventTarget));
-			}
-			canvas.restore();
-		}
+void DrawInterlacing::drawTexts(Gen::AxisId axisIndex) const
+{
+	const auto &axis = parent.getAxis(axisIndex).measure;
+	auto orientation = !+axisIndex;
+	auto origo = parent.origo().getCoord(orientation);
+	const auto &guides = parent.plot->guides.at(axisIndex);
+	const auto &axisStyle = parent.rootStyle.plot.getAxis(axisIndex);
+
+	auto tickLength = axisStyle.ticks.length->get(
+	    parent.coordSys.getRect().size.getCoord(orientation),
+	    axisStyle.label.calculatedSize());
+
+	auto needTick = tickLength > 0
+	             && !axisStyle.ticks.color->isTransparent()
+	             && guides.axisSticks != false
+	             && *axisStyle.ticks.lineWidth > 0;
+
+	auto needText = !axisStyle.label.color->isTransparent()
+	             && guides.labels != false;
+
+	if (!needText && !needTick) return;
+
+	for (const auto &sep : parent.getSeparators(axisIndex)) {
+		auto tickPos =
+		    Geom::Point::Coord(orientation, origo, sep.position);
+		if (needText && sep.label)
+			drawDataLabel(axis.enabled,
+			    axisIndex,
+			    tickPos,
+			    *sep.label,
+			    axis.unit,
+			    Math::FuzzyBool::And<double>(sep.weight,
+			        guides.labels));
+
+		if (needTick)
+			drawSticks(tickLength,
+			    *axisStyle.ticks.color
+			        * Math::FuzzyBool::And<double>(sep.weight,
+			            guides.axisSticks),
+			    axisIndex,
+			    tickPos);
 	}
 }
 
@@ -249,9 +128,10 @@ void DrawInterlacing::drawDataLabel(
     double alpha) const
 {
 	auto orientation = !+axisIndex;
-	const auto &labelStyle = rootStyle.plot.getAxis(axisIndex).label;
+	const auto &labelStyle =
+	    parent.rootStyle.plot.getAxis(axisIndex).label;
 
-	auto drawLabel = OrientedLabel{{ctx()}};
+	auto drawLabel = OrientedLabel{{parent.ctx()}};
 	auto interpolates =
 	    labelStyle.position->maxIndex() || unit.maxIndex();
 
@@ -278,7 +158,8 @@ void DrawInterlacing::drawDataLabel(
 		                   Styles::AxisLabel::Side::negative);
 
 		auto &&posDir =
-		    coordSys.convertDirectionAt({refPos, refPos + normal})
+		    parent.coordSys
+		        .convertDirectionAt({refPos, refPos + normal})
 		        .extend(1 - 2 * under);
 
 		auto &&wUnit = unit.get_or_first(index);
@@ -287,7 +168,7 @@ void DrawInterlacing::drawDataLabel(
 		    static_cast<size_t>(*labelStyle.maxFractionDigits),
 		    *labelStyle.numberScale,
 		    wUnit.value);
-		drawLabel.draw(canvas,
+		drawLabel.draw(parent.canvas,
 		    str,
 		    posDir,
 		    labelStyle,
@@ -295,7 +176,7 @@ void DrawInterlacing::drawDataLabel(
 		    Gfx::ColorTransform::Opacity(Math::FuzzyBool::And(alpha,
 		        position.weight,
 		        wUnit.weight)),
-		    *rootEvents.draw.plot.axis.label,
+		    *parent.rootEvents.draw.plot.axis.label,
 		    Events::Targets::measAxisLabel(str, axisIndex));
 	}
 }
@@ -305,7 +186,9 @@ void DrawInterlacing::drawSticks(double tickLength,
     Gen::AxisId axisIndex,
     const Geom::Point &tickPos) const
 {
-	const auto &tickStyle = rootStyle.plot.getAxis(axisIndex).ticks;
+	auto &canvas = parent.canvas;
+	const auto &tickStyle =
+	    parent.rootStyle.plot.getAxis(axisIndex).ticks;
 
 	canvas.save();
 
@@ -316,7 +199,7 @@ void DrawInterlacing::drawSticks(double tickLength,
 
 	auto tickLine = tickStyle.position->combine(
 	    [tickLine =
-	            coordSys
+	            parent.coordSys
 	                .convertDirectionAt({tickPos,
 	                    tickPos
 	                        + Geom::Point::Coord(!+axisIndex, -1.0)})
@@ -332,11 +215,11 @@ void DrawInterlacing::drawSticks(double tickLength,
 	    });
 
 	if (auto &&eventTarget = Events::Targets::axisTick(axisIndex);
-	    rootEvents.draw.plot.axis.tick->invoke(
+	    parent.rootEvents.draw.plot.axis.tick->invoke(
 	        Events::OnLineDrawEvent(*eventTarget,
 	            {tickLine, false}))) {
 		canvas.line(tickLine);
-		renderedChart.emplace(Line{tickLine, false},
+		parent.renderedChart.emplace(Line{tickLine, false},
 		    std::move(eventTarget));
 	}
 

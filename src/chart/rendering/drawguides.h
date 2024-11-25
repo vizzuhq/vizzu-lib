@@ -1,21 +1,20 @@
 #ifndef DRAWGUIDES_H
 #define DRAWGUIDES_H
 
+#include "drawaxes.h"
 #include "drawingcontext.h"
 
 namespace Vizzu::Draw
 {
 
-class DrawGuides : public DrawingContext
+class DrawGuides
 {
 public:
-	void draw();
+	void draw(Gen::AxisId axisId);
 
-	Gfx::ICanvas &canvas;
-	Painter &painter;
+	const DrawAxes &parent;
 
 private:
-	void draw(Gen::AxisId axisId);
 	void drawGuide(Gen::AxisId axisId,
 	    double val,
 	    const Gfx::Color &color);

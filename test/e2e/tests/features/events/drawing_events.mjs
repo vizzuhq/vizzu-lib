@@ -124,7 +124,7 @@ function setupEvents(chart) {
 		})
 	})
 	chart.on('draw-complete', (e) => {
-		const references = [329751708, -2021415194]
+		const references = [-1089061267, -1601698349]
 		receivedEvents.push(e)
 		const result = JSON.stringify(receivedEvents, null, 2)
 		const hash = (str) =>
@@ -155,19 +155,22 @@ const data = {
 const testSteps = [
 	(chart) => {
 		setupEvents(chart)
-		return chart.animate({
-			data,
-			config: {
-				color: 'Foo',
-				x: { set: 'Foo', guides: true, ticks: true, axis: true },
-				y: { set: 'Bar', guides: true, ticks: true, axis: true },
-				size: 'Baz',
-				label: 'Baz',
-				title: 'My Chart',
-				legend: 'size',
-				geometry: 'circle'
-			}
-		})
+		return chart.animate(
+			{
+				data,
+				config: {
+					color: 'Foo',
+					x: { set: 'Foo', guides: true, ticks: true, axis: true },
+					y: { set: 'Bar', guides: true, ticks: true, axis: true },
+					size: 'Baz',
+					label: 'Baz',
+					title: 'My Chart',
+					legend: 'size',
+					geometry: 'circle'
+				}
+			},
+			0
+		)
 	}
 ]
 
