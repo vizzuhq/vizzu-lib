@@ -17,13 +17,14 @@ template <typename Value, Refl::is_enum Unit> struct PhysicalValue
 	constexpr bool operator==(const PhysicalValue &) const = default;
 
 	template <std::same_as<double> = Value>
-	static PhysicalValue fromString(const std::string &str)
+	[[nodiscard]] static PhysicalValue fromString(
+	    const std::string &str)
 	{
 		const Text::ValueUnit vu{str};
 		return {vu.getValue(), Refl::get_enum<Unit>(vu.getUnit())};
 	}
 
-	std::string toString() const
+	[[nodiscard]] std::string toString() const
 	{
 		return Conv::toString(value)
 		     + std::string{Conv::toString(unit)};

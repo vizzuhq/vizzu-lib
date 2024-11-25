@@ -206,8 +206,8 @@ bool PlotBuilder::linkMarkers(const Buckets &buckets,
 	    std::numeric_limits<double>::lowest());
 
 	auto isAggregatable =
-	    !plot->getOptions()->isMeasure(-axisIndex)
-	    || (isMain && plot->getOptions()->isMeasure(-!axisIndex)
+	    !plot->getOptions()->isMeasure(+axisIndex)
+	    || (isMain && plot->getOptions()->isMeasure(+!axisIndex)
 	        && plot->getOptions()->geometry.get()
 	               == ShapeType::rectangle);
 
@@ -228,7 +228,7 @@ bool PlotBuilder::linkMarkers(const Buckets &buckets,
 				auto &marker = **it.base().base().base();
 				if (!marker.enabled) continue;
 				o = std::max(o,
-				    marker.size.getCoord(+axisIndex),
+				    marker.size.getCoord(++axisIndex),
 				    Math::Floating::less);
 			}
 			if (o == std::numeric_limits<double>::lowest()) o = 0.0;
@@ -274,7 +274,7 @@ bool PlotBuilder::linkMarkers(const Buckets &buckets,
 			                 : *it.base().base().base();
 
 			if (act)
-				prevPos = act->position.getCoord(+axisIndex) +=
+				prevPos = act->position.getCoord(++axisIndex) +=
 				    isAggregatable ? dimOffset[i] : prevPos;
 
 			hasConnection |=
@@ -350,7 +350,7 @@ void PlotBuilder::calcLegendAndLabel(const Data::DataTable &dataTable)
 		if (scale.title) calcLegend.title = *scale.title;
 
 		if (auto &&meas = scale.measure()) {
-			if (plot->getOptions()->isMeasure(-type)) {
+			if (plot->getOptions()->isMeasure(+type)) {
 				if (isAutoTitle)
 					calcLegend.title = dataCube.getName(*meas);
 				calcLegend.measure = {std::get<0>(stats.at(type)),
@@ -364,7 +364,7 @@ void PlotBuilder::calcLegendAndLabel(const Data::DataTable &dataTable)
 			auto merge =
 			    type == LegendId::size
 			    || (type == LegendId::lightness
-			        && plot->getOptions()->dimLabelIndex(-type) == 0);
+			        && plot->getOptions()->dimLabelIndex(+type) == 0);
 			for (std::uint32_t i{}, count{}; i < indices.size(); ++i)
 				if (const auto &sliceIndex = indices[i]) {
 					auto rangeId = static_cast<double>(i);
@@ -412,7 +412,7 @@ void PlotBuilder::calcAxis(const Data::DataTable &dataTable,
 	auto isAutoTitle = scale.title.isAuto();
 	if (scale.title) axis.title = *scale.title;
 
-	if (plot->getOptions()->isMeasure(-type)) {
+	if (plot->getOptions()->isMeasure(+type)) {
 		const auto &meas = *scale.measure();
 		if (isAutoTitle) axis.title = dataCube.getName(meas);
 
@@ -431,7 +431,7 @@ void PlotBuilder::calcAxis(const Data::DataTable &dataTable,
 	}
 	else {
 		for (auto merge =
-		         plot->getOptions()->dimLabelIndex(-type) == 0
+		         plot->getOptions()->dimLabelIndex(+type) == 0
 		         && (type != plot->getOptions()->mainAxisType()
 		             || plot->getOptions()->sort != Sort::byValue
 		             || scale.dimensions().size() == 1);
