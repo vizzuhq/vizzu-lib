@@ -3266,13 +3266,13 @@
 			"refs": ["a90a397"]
 		},
 		"web_content/cookbook/interactive/mouse_scroll": {
-			"refs": ["3a9eb3f"]
+			"refs": ["471ee8f"]
 		},
 		"web_content/cookbook/interactive/mouse_wheel_zoom": {
-			"refs": ["4091ab7"]
+			"refs": ["a80adf3"]
 		},
 		"web_content/cookbook/interactive/window_zoom": {
-			"refs": ["4322426"]
+			"refs": ["a0f08d6"]
 		},
 		"web_content/cookbook/interactive/data_selector_combobox": {
 			"refs": ["cd3f574"]
