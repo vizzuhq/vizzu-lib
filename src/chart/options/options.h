@@ -42,9 +42,9 @@ struct OptionProperties
 	::Anim::Interpolated<ShapeType> geometry{ShapeType::rectangle};
 	Orientation orientation{OrientationType{}};
 	Sort sort{Sort::none};
-	Math::FuzzyBool reverse{false};
+	bool reverse{};
 	Base::Align::Type align{Base::Align::Type::none};
-	Math::FuzzyBool split;
+	bool split{};
 };
 
 class Options : public OptionProperties
@@ -121,7 +121,7 @@ public:
 	    IdType channel) const
 	{
 		auto &&ch = channels.at(channel);
-		if (auto dimIndex = dimLabelIndex(-channel))
+		if (auto dimIndex = dimLabelIndex(+channel))
 			return *std::next(ch.set.dimensionIds.begin(),
 			    static_cast<std::intptr_t>(*dimIndex));
 		return ch.labelLevel.getValue(0) == 0 ? ch.measure()

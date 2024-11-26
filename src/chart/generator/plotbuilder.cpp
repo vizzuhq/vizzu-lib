@@ -48,13 +48,16 @@ PlotBuilder::PlotBuilder(const Data::DataTable &dataTable,
 	std::size_t mainBucketSize{};
 	auto &&subBuckets = generateMarkers(mainBucketSize);
 
-	if (!plot->getOptions()->getChannels().anyAxisSet())
+	if (!plot->getOptions()->getChannels().anyAxisSet()) {
 		addSpecLayout(subBuckets);
-	else
+		normalizeSizes();
+	}
+	else {
+		normalizeSizes();
 		addAxisLayout(subBuckets, mainBucketSize, dataTable);
+	}
 
 	normalizeColors();
-	normalizeSizes();
 	calcLegendAndLabel(dataTable);
 }
 
@@ -203,8 +206,8 @@ bool PlotBuilder::linkMarkers(const Buckets &buckets,
 	    std::numeric_limits<double>::lowest());
 
 	auto isAggregatable =
-	    !plot->getOptions()->isMeasure(-axisIndex)
-	    || (isMain && plot->getOptions()->isMeasure(-!axisIndex)
+	    !plot->getOptions()->isMeasure(+axisIndex)
+	    || (isMain && plot->getOptions()->isMeasure(+!axisIndex)
 	        && plot->getOptions()->geometry.get()
 	               == ShapeType::rectangle);
 
@@ -225,7 +228,7 @@ bool PlotBuilder::linkMarkers(const Buckets &buckets,
 				auto &marker = **it.base().base().base();
 				if (!marker.enabled) continue;
 				o = std::max(o,
-				    marker.size.getCoord(+axisIndex),
+				    marker.size.getCoord(++axisIndex),
 				    Math::Floating::less);
 			}
 			if (o == std::numeric_limits<double>::lowest()) o = 0.0;
@@ -271,7 +274,7 @@ bool PlotBuilder::linkMarkers(const Buckets &buckets,
 			                 : *it.base().base().base();
 
 			if (act)
-				prevPos = act->position.getCoord(+axisIndex) +=
+				prevPos = act->position.getCoord(++axisIndex) +=
 				    isAggregatable ? dimOffset[i] : prevPos;
 
 			hasConnection |=
@@ -347,7 +350,7 @@ void PlotBuilder::calcLegendAndLabel(const Data::DataTable &dataTable)
 		if (scale.title) calcLegend.title = *scale.title;
 
 		if (auto &&meas = scale.measure()) {
-			if (plot->getOptions()->isMeasure(-type)) {
+			if (plot->getOptions()->isMeasure(+type)) {
 				if (isAutoTitle)
 					calcLegend.title = dataCube.getName(*meas);
 				calcLegend.measure = {std::get<0>(stats.at(type)),
@@ -361,7 +364,7 @@ void PlotBuilder::calcLegendAndLabel(const Data::DataTable &dataTable)
 			auto merge =
 			    type == LegendId::size
 			    || (type == LegendId::lightness
-			        && plot->getOptions()->dimLabelIndex(-type) == 0);
+			        && plot->getOptions()->dimLabelIndex(+type) == 0);
 			for (std::uint32_t i{}, count{}; i < indices.size(); ++i)
 				if (const auto &sliceIndex = indices[i]) {
 					auto rangeId = static_cast<double>(i);
@@ -412,7 +415,7 @@ void PlotBuilder::calcAxis(const Data::DataTable &dataTable,
 	auto isAutoTitle = scale.title.isAuto();
 	if (scale.title) axis.title = *scale.title;
 
-	if (plot->getOptions()->isMeasure(-type)) {
+	if (plot->getOptions()->isMeasure(+type)) {
 		const auto &meas = *scale.measure();
 		if (isAutoTitle) axis.title = dataCube.getName(meas);
 
@@ -431,7 +434,7 @@ void PlotBuilder::calcAxis(const Data::DataTable &dataTable,
 	}
 	else {
 		for (auto merge =
-		         plot->getOptions()->dimLabelIndex(-type) == 0
+		         plot->getOptions()->dimLabelIndex(+type) == 0
 		         && (type != plot->getOptions()->mainAxisType()
 		             || plot->getOptions()->sort != Sort::byValue
 		             || scale.dimensions().size() == 1);
@@ -504,44 +507,45 @@ void PlotBuilder::addAlignment(const Buckets &subBuckets) const
 void PlotBuilder::addSeparation(const Buckets &subBuckets,
     const std::size_t &mainBucketSize) const
 {
-	if (plot->getOptions()->isSplit()) {
-		auto align = plot->getOptions()->align;
+	if (!plot->getOptions()->isSplit()) return;
 
-		std::vector ranges{mainBucketSize,
-		    Math::Range<>::Raw({}, {})};
-		std::vector<bool> anyEnabled(mainBucketSize);
+	auto align = plot->getOptions()->align;
 
-		auto &&subAxis = plot->getOptions()->subAxisType();
-		for (auto &&bucket : subBuckets)
-			for (std::size_t i{}, prIx{};
-			     auto &&[marker, idx] : bucket) {
-				(i += idx.itemId - std::exchange(prIx, idx.itemId)) %=
-				    ranges.size();
-				if (marker.enabled) {
-					ranges[i].include(
-					    marker.getSizeBy(subAxis).size());
-					anyEnabled[i] = true;
-				}
-			}
+	std::vector ranges{mainBucketSize, Math::Range<>::Raw({}, {})};
+	std::vector<bool> anyEnabled(mainBucketSize);
 
-		auto max = Math::Range<>::Raw({}, {});
-		for (auto i = 0U; i < ranges.size(); ++i)
-			if (anyEnabled[i]) max = max + ranges[i];
+	auto &&subAxis = plot->getOptions()->subAxisType();
+	for (auto &&bucket : subBuckets)
+		for (std::size_t i{}, prIx{}; auto &&[marker, idx] : bucket) {
+			if (!marker.enabled) continue;
+			(i += idx.itemId - std::exchange(prIx, idx.itemId)) %=
+			    ranges.size();
+			ranges[i].include(marker.getSizeBy(subAxis).size());
+			anyEnabled[i] = true;
+		}
 
-		for (auto i = 1U; i < ranges.size(); ++i)
-			ranges[i] = ranges[i] + ranges[i - 1].getMax()
-			          + (anyEnabled[i - 1] ? max.getMax() / 15 : 0);
+	auto max = Math::Range<>::Raw({}, {});
+	for (auto i = 0U; i < ranges.size(); ++i)
+		if (anyEnabled[i]) max = max + ranges[i];
 
-		for (auto &&bucket : subBuckets)
-			for (std::size_t i{}, prIx{};
-			     auto &&[marker, idx] : bucket) {
-				(i += idx.itemId - std::exchange(prIx, idx.itemId)) %=
-				    ranges.size();
-				marker.setSizeBy(subAxis,
-				    Base::Align{align, ranges[i]}.getAligned(
-				        marker.getSizeBy(subAxis)));
-			}
-	}
+	auto splitSpace =
+	    plot->getStyle()
+	        .plot.getAxis(plot->getOptions()->subAxisType())
+	        .split->get(max.getMax(),
+	            plot->getStyle().calculatedSize());
+
+	for (auto i = 1U; i < ranges.size(); ++i)
+		ranges[i] = ranges[i] + ranges[i - 1].getMax()
+		          + (anyEnabled[i - 1] ? splitSpace : 0);
+
+	for (auto &&bucket : subBuckets)
+		for (std::size_t i{}, prIx{}; auto &&[marker, idx] : bucket) {
+			(i += idx.itemId - std::exchange(prIx, idx.itemId)) %=
+			    ranges.size();
+			marker.setSizeBy(subAxis,
+			    Base::Align{align, ranges[i]}.getAligned(
+			        marker.getSizeBy(subAxis)));
+		}
 }
 
 void PlotBuilder::normalizeSizes()
@@ -554,8 +558,11 @@ void PlotBuilder::normalizeSizes()
 	    || plot->getOptions()->geometry == ShapeType::line) {
 		Math::Range<> size;
 
-		for (auto &marker : plot->markers)
-			if (marker.enabled) size.include(marker.sizeFactor);
+		for (auto &marker : plot->markers) {
+			if (std::isnan(marker.sizeFactor)) marker.enabled = false;
+			if (!marker.enabled) continue;
+			size.include(marker.sizeFactor);
+		}
 
 		size = plot->getOptions()
 		           ->getChannels()

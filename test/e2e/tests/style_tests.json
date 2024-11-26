@@ -304,6 +304,9 @@
 		"plot/borderWidth/static_100": {
 			"refs": ["5a62ac8"]
 		},
+		"plot/interlacing": {
+			"refs": ["82e891d"]
+		},
 		"plot/paddingBottom/animated_150-350": {
 			"refs": ["e618e56"]
 		},
@@ -351,6 +354,9 @@
 		},
 		"plot/paddingTop/static_350": {
 			"refs": ["bcfbd92"]
+		},
+		"plot/split": {
+			"refs": ["d21c2a7"]
 		},
 		"plot/xAxis/color/hexa/animated_yellowCustom_0.25-blueCustom_0.75": {
 			"refs": ["77b26be"]

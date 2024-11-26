@@ -581,7 +581,10 @@ auto &&m1t = df->set_aggregate("m1",
 	            ->*std::isnan(std::get<double>(
 	                df->get_data(std::size_t{2}, m1mi)))
 	    == "is nan"_is_true;
-	check->*df->get_data(std::size_t{2}, m1s) == 0.0;
+	check
+	            ->*std::isnan(std::get<double>(
+	                df->get_data(std::size_t{2}, m1s)))
+	    == "is nan"_is_true;
 	// check->*df->get_data(std::size_t{2}, m1t)
 	//     == std::numeric_limits<double>::max();
 

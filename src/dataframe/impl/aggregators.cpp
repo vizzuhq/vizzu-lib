@@ -38,14 +38,19 @@ get_aggregators() noexcept
 
 	auto &&aggrs = Refl::enum_names<aggregator_type>;
 	return {{{{aggrs[static_cast<std::size_t>(aggregator_type::sum)],
-	              empty_double,
+	              init_nan,
 	              [](custom_aggregator::id_type &id,
 	                  cell_reference const &cell) -> double
 	              {
 		              auto &ref = *std::get_if<double>(&id);
 		              const double &value =
 		                  *std::get_if<double>(&cell);
-		              if (std::isfinite(value)) ref += value;
+		              if (std::isfinite(value)) {
+			              if (std::isnan(ref))
+				              ref = value;
+			              else
+				              ref += value;
+		              }
 
 		              return ref;
 	              }},

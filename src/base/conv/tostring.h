@@ -19,7 +19,7 @@ concept ToStringMember =
 
 template <class From>
 constexpr inline static bool IsStringifiable =
-    ToStringMember<From> || std::is_enum_v<From>
+    ToStringMember<From> || Refl::is_enum<From>
     || (Type::is_optional_v<From>
         && IsStringifiable<Type::optional_t<From>>)
     || std::is_constructible_v<std::string, From>
@@ -32,7 +32,7 @@ template <typename From>
     requires IsStringifiable<From>
 [[nodiscard]] decltype(auto) toString(const From &value)
 {
-	if constexpr (std::is_enum_v<From>)
+	if constexpr (Refl::is_enum<From>)
 		return Refl::enum_name(value);
 	else if constexpr (Type::is_optional_v<From>) {
 		using T = std::remove_cvref_t<decltype(toString(*value))>;
