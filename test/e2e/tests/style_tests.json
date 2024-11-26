@@ -355,6 +355,9 @@
 		"plot/paddingTop/static_350": {
 			"refs": ["bcfbd92"]
 		},
+		"plot/spacing": {
+			"refs": ["d21c2a7"]
+		},
 		"plot/xAxis/color/hexa/animated_yellowCustom_0.25-blueCustom_0.75": {
 			"refs": ["77b26be"]
 		},

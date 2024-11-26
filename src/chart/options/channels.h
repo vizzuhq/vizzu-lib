@@ -29,12 +29,12 @@ struct Channels : Refl::EnumArray<ChannelId, Channel>
 	template <ChannelIdLike T>
 	[[nodiscard]] const Channel &at(const T &id) const
 	{
-		return at(-id);
+		return at(+id);
 	}
 
 	template <ChannelIdLike T> [[nodiscard]] Channel &at(const T &id)
 	{
-		return at(-id);
+		return at(+id);
 	}
 
 	void removeSeries(const Data::SeriesIndex &index);

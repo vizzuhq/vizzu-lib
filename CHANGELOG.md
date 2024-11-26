@@ -31,6 +31,10 @@
 - Add meaning to crossing interlacing.
 - Do not draw dimension axis labels when the middle of the text is off the plot.
 
+### Added
+
+- Add spacing property for plot axis style structure.
+
 ## [0.15.0] - 2024-10-28
 
 ### Fixed

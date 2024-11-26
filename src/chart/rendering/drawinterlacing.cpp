@@ -3,7 +3,8 @@
 #include <algorithm>
 #include <cmath>
 #include <cstddef>
-#include <ranges>
+#include <iterator>
+#include <map>
 #include <utility>
 
 #include "base/anim/interpolated.h"
@@ -12,8 +13,8 @@
 #include "base/gfx/colortransform.h"
 #include "base/math/floating.h"
 #include "base/math/fuzzybool.h"
+#include "base/math/interpolation.h"
 #include "base/math/range.h"
-#include "base/math/renard.h"
 #include "base/text/smartstring.h"
 #include "base/type/booliter.h"
 #include "chart/generator/plot.h" // NOLINT(misc-include-cleaner)
@@ -51,7 +52,8 @@ void DrawInterlacing::drawGeometries(Gen::AxisId axisIndex) const
 		                       Math::Floating::less)
 		                 - clippedBottom;
 
-		auto rect = [&, orientation = +axisIndex](const double &from,
+		auto rect = [&, orientation = orientation(axisIndex)](
+		                const double &from,
 		                const double &to)
 		{
 			return Geom::Rect{
@@ -92,7 +94,7 @@ void DrawInterlacing::drawGeometries(Gen::AxisId axisIndex) const
 void DrawInterlacing::drawTexts(Gen::AxisId axisIndex) const
 {
 	const auto &axis = parent.getAxis(axisIndex).measure;
-	auto orientation = !+axisIndex;
+	auto orientation = !Gen::orientation(axisIndex);
 	auto origo = parent.origo().getCoord(orientation);
 	const auto &guides = parent.plot->guides.at(axisIndex);
 	const auto &axisStyle = parent.rootStyle.plot.getAxis(axisIndex);
@@ -161,7 +163,7 @@ void DrawInterlacing::drawDataLabel(
     const ::Anim::String &unit,
     double alpha) const
 {
-	auto orientation = !+axisIndex;
+	auto orientation = !Gen::orientation(axisIndex);
 	const auto &labelStyle =
 	    parent.rootStyle.plot.getAxis(axisIndex).label;
 
@@ -232,12 +234,13 @@ void DrawInterlacing::drawSticks(double tickLength,
 	canvas.setLineWidth(*tickStyle.lineWidth);
 
 	auto tickLine = tickStyle.position->combine(
-	    [tickLine =
-	            parent.coordSys
-	                .convertDirectionAt({tickPos,
-	                    tickPos
-	                        + Geom::Point::Coord(!+axisIndex, -1.0)})
-	                .segment(0, tickLength)](const auto &position)
+	    [tickLine = parent.coordSys
+	                    .convertDirectionAt({tickPos,
+	                        tickPos
+	                            + Geom::Point::Coord(
+	                                !orientation(axisIndex),
+	                                -1.0)})
+	                    .segment(0, tickLength)](const auto &position)
 	    {
 		    switch (position) {
 			    using enum Styles::Tick::Position;
