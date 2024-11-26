@@ -530,7 +530,7 @@ void PlotBuilder::addSeparation(const Buckets &subBuckets,
 	auto splitSpace =
 	    plot->getStyle()
 	        .plot.getAxis(plot->getOptions()->subAxisType())
-	        .split->get(max.getMax(),
+	        .spacing->get(max.getMax(),
 	            plot->getStyle().calculatedSize());
 
 	for (auto i = 1U; i < ranges.size(); ++i)
