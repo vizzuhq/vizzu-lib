@@ -453,7 +453,7 @@ definitions:
                 $ref: Interlacing
                 nullable: true
             spacing:
-                type: string,
+                type: string
                 mask: /:number:%/
                 nullable: true
 
