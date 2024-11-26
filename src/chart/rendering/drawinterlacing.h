@@ -16,6 +16,10 @@ public:
 	const DrawAxes &parent;
 
 private:
+	void drawInterlacing(Gen::AxisId axisIndex,
+	    const Gfx::Color &interlacingColor,
+	    const Geom::Rect &rect) const;
+
 	void drawDataLabel(const ::Anim::Interpolated<bool> &enabled,
 	    Gen::AxisId axisIndex,
 	    const Geom::Point &tickPos,
@@ -27,6 +31,15 @@ private:
 	    const Gfx::Color &tickColor,
 	    Gen::AxisId axisIndex,
 	    const Geom::Point &tickPos) const;
+
+	[[nodiscard]] std::map<double, double> getInterlacingWeights(
+	    Gen::AxisId axisIndex) const;
+
+	[[nodiscard]] static Gfx::Color getCrossingInterlacingColor(
+	    const Gfx::Color &mainColor,
+	    double mainWeight,
+	    const Gfx::Color &otherColor,
+	    double otherWeight);
 };
 
 }

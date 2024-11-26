@@ -27,6 +27,9 @@
 - Enable dimension axis ticks and interlacing.
 - Enable measure axis guides.
 - Fix dimension axis guides on sorted chart.
+- Fix NaN handling on axes and size measures other aggregators than sum.
+- Add meaning to crossing interlacing.
+- Do not draw dimension axis labels when the middle of the text is off the plot.
 
 ## [0.15.0] - 2024-10-28
 

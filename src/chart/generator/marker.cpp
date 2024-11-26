@@ -140,6 +140,9 @@ Marker::Marker(const Options &options,
 		        data.joinDimensionValues(labelChannel.dimensions(),
 		            index)};
 	}
+
+	if (!std::isfinite(position.x) || !std::isfinite(position.y))
+		enabled = false;
 }
 
 bool Marker::connectMarkers(bool first,

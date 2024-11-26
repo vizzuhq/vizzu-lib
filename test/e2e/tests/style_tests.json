@@ -304,6 +304,9 @@
 		"plot/borderWidth/static_100": {
 			"refs": ["5a62ac8"]
 		},
+		"plot/interlacing": {
+			"refs": ["f14b366"]
+		},
 		"plot/paddingBottom/animated_150-350": {
 			"refs": ["e618e56"]
 		},
