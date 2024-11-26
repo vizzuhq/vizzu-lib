@@ -1,7 +1,9 @@
 #include "drawlegend.h"
 
+#include <algorithm>
 #include <cmath>
 #include <cstddef>
+#include <cstdint>
 #include <functional>
 #include <string>
 #include <utility>
@@ -15,7 +17,9 @@
 #include "base/gfx/colortransform.h"
 #include "base/gfx/draw/roundedrect.h"
 #include "base/gfx/lineargradient.h"
+#include "base/math/floating.h"
 #include "base/math/fuzzybool.h"
+#include "base/math/interpolation.h"
 #include "base/math/range.h"
 #include "base/text/smartstring.h"
 #include "chart/generator/axis.h"
