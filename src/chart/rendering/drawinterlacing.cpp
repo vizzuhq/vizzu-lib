@@ -34,35 +34,36 @@ void DrawInterlacing::drawGeometries(Gen::AxisId axisIndex) const
 	    || guides.interlacings == false)
 		return;
 
-	std::map<double, double> othWeights{{0.0, 0.0}, {1.0, 0.0}};
+	std::map<double, double> otherWeights{{0.0, 0.0}, {1.0, 0.0}};
 
-	const auto &othGuides = parent.plot->guides.at(!axisIndex);
-	const auto &othAxisStyle =
+	const auto &otherGuides = parent.plot->guides.at(!axisIndex);
+	const auto &otherAxisStyle =
 	    parent.rootStyle.plot.getAxis(!axisIndex);
-	if (!othAxisStyle.interlacing.color->isTransparent()
-	    && othGuides.interlacings != false)
-		for (const auto &othInterval :
+	if (!otherAxisStyle.interlacing.color->isTransparent()
+	    && otherGuides.interlacings != false)
+		for (const auto &otherInterval :
 		    parent.getIntervals(!axisIndex)) {
-			if (Math::Floating::is_zero(othInterval.isSecond))
+			if (Math::Floating::is_zero(otherInterval.isSecond))
 				continue;
-			auto min = std::max(othInterval.range.getMin(), 0.0);
-			auto max = std::min(othInterval.range.getMax(), 1.0);
-			auto mprev = std::prev(othWeights.upper_bound(min));
-			auto mnext = othWeights.lower_bound(max);
+			auto min = std::max(otherInterval.range.getMin(), 0.0);
+			auto max = std::min(otherInterval.range.getMax(), 1.0);
+			auto mprev = std::prev(otherWeights.upper_bound(min));
+			auto mnext = otherWeights.lower_bound(max);
 
 			if (mprev->first < min)
-				mprev =
-				    othWeights.try_emplace(mprev, min, mprev->second);
+				mprev = otherWeights.try_emplace(mprev,
+				    min,
+				    mprev->second);
 			if (mnext->first > max)
-				mnext = othWeights.try_emplace(mnext,
+				mnext = otherWeights.try_emplace(mnext,
 				    max,
 				    std::prev(mnext)->second);
 
 			while (mprev != mnext)
 				mprev++->second +=
-				    Math::FuzzyBool::And<double>(othInterval.weight,
-				        othInterval.isSecond,
-				        othGuides.interlacings);
+				    Math::FuzzyBool::And<double>(otherInterval.weight,
+				        otherInterval.isSecond,
+				        otherGuides.interlacings);
 		}
 
 	auto orientation = !+axisIndex;
@@ -94,9 +95,9 @@ void DrawInterlacing::drawGeometries(Gen::AxisId axisIndex) const
 		    guides.interlacings);
 		auto interlacingColor = *axisStyle.interlacing.color * weight;
 
-		for (auto first = othWeights.begin(),
+		for (auto first = otherWeights.begin(),
 		          next = std::next(first),
-		          last = othWeights.end();
+		          last = otherWeights.end();
 		     next != last;
 		     ++next, ++first) {
 			if (Math::Floating::is_zero(first->second))
@@ -104,18 +105,18 @@ void DrawInterlacing::drawGeometries(Gen::AxisId axisIndex) const
 				    interlacingColor,
 				    rect(first->first, next->first));
 			else if (axisIndex == Gen::AxisId::y) {
-				auto color =
-				    interlacingColor
-				    + *othAxisStyle.interlacing.color * first->second;
+				auto color = interlacingColor
+				           + *otherAxisStyle.interlacing.color
+				                 * first->second;
 
-				color.alpha =
-				    1
-				    - (1
-				          - axisStyle.interlacing.color->alpha
-				                * weight)
-				          * (1
-				              - othAxisStyle.interlacing.color->alpha
-				                    * first->second);
+				color.alpha = 1
+				            - (1
+				                  - axisStyle.interlacing.color->alpha
+				                        * weight)
+				                  * (1
+				                      - otherAxisStyle.interlacing
+				                                .color->alpha
+				                            * first->second);
 
 				if (weight + first->second > 1.0)
 					color = Math::Niebloid::interpolate(
