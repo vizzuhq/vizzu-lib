@@ -34,39 +34,9 @@ void DrawInterlacing::drawGeometries(Gen::AxisId axisIndex) const
 	    || guides.interlacings == false)
 		return;
 
-	std::map<double, double> otherWeights{{0.0, 0.0}, {1.0, 0.0}};
-
-	const auto &otherGuides = parent.plot->guides.at(!axisIndex);
-	const auto &otherAxisStyle =
-	    parent.rootStyle.plot.getAxis(!axisIndex);
-	if (!otherAxisStyle.interlacing.color->isTransparent()
-	    && otherGuides.interlacings != false)
-		for (const auto &otherInterval :
-		    parent.getIntervals(!axisIndex)) {
-			if (Math::Floating::is_zero(otherInterval.isSecond))
-				continue;
-			auto min = std::max(otherInterval.range.getMin(), 0.0);
-			auto max = std::min(otherInterval.range.getMax(), 1.0);
-			auto mprev = std::prev(otherWeights.upper_bound(min));
-			auto mnext = otherWeights.lower_bound(max);
-
-			if (mprev->first < min)
-				mprev = otherWeights.try_emplace(mprev,
-				    min,
-				    mprev->second);
-			if (mnext->first > max)
-				mnext = otherWeights.try_emplace(mnext,
-				    max,
-				    std::prev(mnext)->second);
-
-			while (mprev != mnext)
-				mprev++->second +=
-				    Math::FuzzyBool::And<double>(otherInterval.weight,
-				        otherInterval.isSecond,
-				        otherGuides.interlacings);
-		}
-
-	auto orientation = !+axisIndex;
+	auto otherWeights = getInterlacingWeights(!axisIndex);
+	auto &&otherInterlacingColor =
+	    *parent.rootStyle.plot.getAxis(!axisIndex).interlacing.color;
 
 	parent.painter.setPolygonToCircleFactor(0);
 	parent.painter.setPolygonStraightFactor(0);
@@ -81,13 +51,14 @@ void DrawInterlacing::drawGeometries(Gen::AxisId axisIndex) const
 		                       Math::Floating::less)
 		                 - clippedBottom;
 
-		auto rect = [&](const double &from, const double &to)
+		auto rect = [&, orientation = +axisIndex](const double &from,
+		                const double &to)
 		{
 			return Geom::Rect{
-			    Geom::Point::Coord(orientation, from, clippedBottom),
+			    Geom::Point::Coord(orientation, clippedBottom, from),
 			    {Geom::Size::Coord(orientation,
-			        to - from,
-			        clippedSize)}};
+			        clippedSize,
+			        to - from)}};
 		};
 
 		auto weight = Math::FuzzyBool::And<double>(interval.weight,
@@ -105,36 +76,13 @@ void DrawInterlacing::drawGeometries(Gen::AxisId axisIndex) const
 				    interlacingColor,
 				    rect(first->first, next->first));
 			else if (axisIndex == Gen::AxisId::y) {
-				auto color = interlacingColor
-				           + *otherAxisStyle.interlacing.color
-				                 * first->second;
-
-				color.alpha = 1
-				            - (1
-				                  - axisStyle.interlacing.color->alpha
-				                        * weight)
-				                  * (1
-				                      - otherAxisStyle.interlacing
-				                                .color->alpha
-				                            * first->second);
-
-				if (weight + first->second > 1.0)
-					color = Math::Niebloid::interpolate(
-					    color
-					        * std::max({std::abs(axisStyle.interlacing
-					                                 .color->red
-					                             - color.red),
-					            std::abs(
-					                axisStyle.interlacing.color->green
-					                - color.green),
-					            std::abs(
-					                axisStyle.interlacing.color->blue
-					                - color.blue)}),
-					    color,
-					    2.0 - (weight + first->second));
 				drawInterlacing(first->second > weight ? !axisIndex
 				                                       : axisIndex,
-				    color,
+				    getCrossingInterlacingColor(
+				        *axisStyle.interlacing.color,
+				        weight,
+				        otherInterlacingColor,
+				        first->second),
 				    rect(first->first, next->first));
 			}
 		}
@@ -310,6 +258,63 @@ void DrawInterlacing::drawSticks(double tickLength,
 	}
 
 	canvas.restore();
+}
+
+std::map<double, double> DrawInterlacing::getInterlacingWeights(
+    Gen::AxisId axisIndex) const
+{
+	std::map<double, double> weights{{0.0, 0.0}, {1.0, 0.0}};
+
+	auto &&guides = parent.plot->guides.at(axisIndex);
+	auto &&axisStyle = parent.rootStyle.plot.getAxis(axisIndex);
+	if (axisStyle.interlacing.color->isTransparent()
+	    || guides.interlacings == false)
+		return weights;
+
+	for (auto &&interval : parent.getIntervals(axisIndex)) {
+		if (Math::Floating::is_zero(interval.isSecond)) continue;
+		auto min = std::max(interval.range.getMin(), 0.0);
+		auto max = std::min(interval.range.getMax(), 1.0);
+		auto mprev = std::prev(weights.upper_bound(min));
+		auto mnext = weights.lower_bound(max);
+
+		if (mprev->first < min)
+			mprev = weights.try_emplace(mprev, min, mprev->second);
+		if (mnext->first > max)
+			mnext = weights.try_emplace(mnext,
+			    max,
+			    std::prev(mnext)->second);
+
+		while (mprev != mnext)
+			mprev++->second +=
+			    Math::FuzzyBool::And<double>(interval.weight,
+			        interval.isSecond,
+			        guides.interlacings);
+	}
+	return weights;
+}
+
+Gfx::Color DrawInterlacing::getCrossingInterlacingColor(
+    const Gfx::Color &mainColor,
+    double mainWeight,
+    const Gfx::Color &otherColor,
+    double otherWeight)
+{
+	auto color = mainColor * mainWeight + otherColor * otherWeight;
+
+	color.alpha = 1
+	            - (1 - mainColor.alpha * mainWeight)
+	                  * (1 - otherColor.alpha * otherWeight);
+
+	if (mainWeight + otherWeight > 1.0)
+		color = Math::Niebloid::interpolate(color,
+		    color
+		        * std::max({std::abs(mainColor.red - otherColor.red),
+		            std::abs(mainColor.green - otherColor.green),
+		            std::abs(mainColor.blue - otherColor.blue)}),
+		    mainWeight + otherWeight - 1.0);
+
+	return color;
 }
 
 }
