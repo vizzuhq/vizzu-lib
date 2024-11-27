@@ -33,6 +33,7 @@
 
 ### Added
 
+- Add new sorting strategy: 'byLabel'.
 - Add spacing property for plot axis style structure.
 
 ### Changed
