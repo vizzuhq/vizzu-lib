@@ -65,7 +65,8 @@ Guides::Guides(const Options &options)
 
 	auto stretchedPolar =
 	    isPolar && !yIsMeasure
-	    && (options.align == Base::Align::Type::stretch);
+	    && (options.getChannels().axisPropsAt(AxisId::x).align
+	        == Base::Align::Type::stretch);
 
 	y.labels = yOpt.labels.getValue(
 	    !stretchedPolar

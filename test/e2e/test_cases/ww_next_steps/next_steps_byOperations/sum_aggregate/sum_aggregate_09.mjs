@@ -8,11 +8,10 @@ const testSteps = [
 			config: {
 				channels: {
 					x: 'Year',
-					y: ['Country', 'Value 2 (+)'],
+					y: { set: ['Country', 'Value 2 (+)'], align: 'stretch' },
 					color: 'Country'
 				},
-				title: 'Percentage Stacked Column',
-				align: 'stretch'
+				title: 'Percentage Stacked Column'
 			}
 		}),
 
@@ -20,7 +19,7 @@ const testSteps = [
 		chart.animate({
 			config: {
 				title: 'Align min to Sum of the Values(Components?)',
-				align: 'none'
+				y: { align: 'none' }
 			}
 		}),
 	(chart) => {

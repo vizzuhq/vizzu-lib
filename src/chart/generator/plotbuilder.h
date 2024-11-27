@@ -47,7 +47,7 @@ private:
 	void normalizeSizes();
 	void normalizeColors();
 	[[nodiscard]] std::vector<BucketInfo>
-	sortedBuckets(const Buckets &buckets, bool main) const;
+	sortedBuckets(const Buckets &buckets, AxisId axisIndex) const;
 	void addSpecLayout(Buckets &buckets);
 	void addAxisLayout(Buckets &subBuckets,
 	    const std::size_t &mainBucketSize,

@@ -21,11 +21,11 @@ const testSteps = [
 	},
 	(chart) =>
 		chart.animate({
-			align: 'stretch'
+			y: { align: 'stretch' }
 		}),
 	(chart) =>
 		chart.animate({
-			align: 'none'
+			y: { align: 'none' }
 		}),
 	(chart) =>
 		chart.animate({

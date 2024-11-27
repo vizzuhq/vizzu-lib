@@ -24,11 +24,10 @@ const testSteps = [
 			data,
 			config: {
 				x: ['Days', 'Helper'],
-				y: 'Task',
+				y: { set: 'Task', reverse: true },
 				color: 'Helper',
 				title: 'Gant Chart',
-				legend: null,
-				reverse: true
+				legend: null
 			},
 			style: {
 				'plot.marker.colorPalette': '#ffffff00 #01abf6ff'

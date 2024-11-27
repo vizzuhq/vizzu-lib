@@ -13,8 +13,7 @@ const testSteps = [
 					noop: 'Year'
 				},
 				title: 'Scatter plot',
-				geometry: 'circle',
-				split: false
+				geometry: 'circle'
 			}
 		}),
 	(chart) =>
@@ -22,13 +21,12 @@ const testSteps = [
 			config: {
 				channels: {
 					x: 'Year',
-					y: ['Country', 'Value 2 (+)'],
+					y: { set: ['Country', 'Value 2 (+)'], split: true },
 					noop: null,
 					label: 'Value 2 (+)'
 				},
 				title: 'If Remove a Measure, then a Splitted Column is Better',
-				geometry: 'rectangle',
-				split: true
+				geometry: 'rectangle'
 			},
 			style: {
 				plot: {

@@ -7,12 +7,11 @@ const testSteps = [
 			config: {
 				channels: {
 					x: ['Country', 'Value 2 (+)'],
-					y: ['Joy factors', 'Value 3 (+)'],
+					y: { set: ['Joy factors', 'Value 3 (+)'], align: 'stretch' },
 					color: 'Joy factors',
 					label: ['Value 2 (+)']
 				},
 				title: 'Marimekko Chart',
-				align: 'stretch',
 				orientation: 'horizontal'
 			},
 			style: {

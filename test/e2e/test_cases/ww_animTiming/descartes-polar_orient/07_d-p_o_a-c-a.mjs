@@ -48,8 +48,7 @@ const testSteps = [
 					title: 'Spider Dot Chart',
 					geometry: 'circle',
 					coordSystem: 'polar',
-					orientation: 'horizontal',
-					split: false
+					orientation: 'horizontal'
 				}
 			},
 			{

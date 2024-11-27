@@ -13,8 +13,7 @@ const testSteps = [
 	(chart) =>
 		chart.animate({
 			x: { set: ['Bar'] },
-			y: { set: ['Baz', 'Foo'], labelLevel: 0 },
-			split: true
+			y: { set: ['Baz', 'Foo'], labelLevel: 0, split: true }
 		}),
 	(chart) =>
 		chart.animate({

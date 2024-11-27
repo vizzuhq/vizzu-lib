@@ -29,7 +29,6 @@ const testSteps = [
 				},
 				title: '2 Stacked Column / Sum(?) sub-elements',
 				geometry: 'rectangle',
-				split: false,
 				legend: 'color'
 			}
 		}),
@@ -61,8 +60,7 @@ const testSteps = [
 						label: { set: ['Value 2 (+)'] }
 					},
 					title: '5 Stacked Column / Aggregate(?), Sum(?), - Discrete(?) elements',
-					geometry: 'rectangle',
-					split: false
+					geometry: 'rectangle'
 				}
 			},
 			{
@@ -100,12 +98,12 @@ const testSteps = [
 						x: { set: 'Year' },
 						y: {
 							set: ['Country', 'Value 2 (+)'],
-							range: { min: '0%', max: '100%' }
+							range: { min: '0%', max: '100%' },
+							align: 'stretch'
 						},
 						color: { set: 'Country' }
 					},
 					title: '8 Stacked Percentage Column / Ratio%(?)',
-					align: 'stretch',
 					legend: 'color'
 				}
 			},
@@ -121,11 +119,10 @@ const testSteps = [
 				config: {
 					channels: {
 						x: { set: ['Year', 'Country'] },
-						y: { set: 'Value 2 (+)', range: { min: '0%', max: '110%' } },
+						y: { set: 'Value 2 (+)', range: { min: '0%', max: '110%' }, align: 'none' },
 						color: { set: 'Country' }
 					},
-					title: '9 Groupped Column / Comparison(?), Group(?)',
-					align: 'none'
+					title: '9 Groupped Column / Comparison(?), Group(?)'
 				}
 			},
 			{
@@ -145,7 +142,6 @@ const testSteps = [
 						label: { set: 'Value 2 (+)' }
 					},
 					title: '11 Column / Total(?) Aggregate(?) - Discrete(?)',
-					align: 'none',
 					legend: null
 				}
 			},
@@ -166,7 +162,6 @@ const testSteps = [
 						label: null
 					},
 					title: '13 Groupped Column / Comparison(?), Group(?)',
-					align: 'none',
 					legend: 'color'
 				}
 			},
@@ -186,8 +181,7 @@ const testSteps = [
 						color: { set: 'Country' },
 						label: { set: 'Value 2 (+)' }
 					},
-					title: '15 Stacked Bar / Sum(?)',
-					align: 'none'
+					title: '15 Stacked Bar / Sum(?)'
 				},
 				style: {
 					plot: {

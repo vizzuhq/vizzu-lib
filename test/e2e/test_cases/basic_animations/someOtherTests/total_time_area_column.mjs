@@ -19,7 +19,7 @@ const testSteps = [
 		chart.animate({
 			config: {
 				title: 'Split Area Chart',
-				split: true
+				y: { split: true }
 			}
 		}),
 
@@ -27,12 +27,11 @@ const testSteps = [
 		chart.animate({
 			config: {
 				channels: {
-					y: ['Value 2 (+)', 'Year'],
+					y: { set: ['Value 2 (+)', 'Year'], split: false },
 					x: 'Joy factors'
 				},
 				title: 'Column Chart',
-				geometry: 'rectangle',
-				split: false
+				geometry: 'rectangle'
 			}
 		}),
 
@@ -45,8 +44,7 @@ const testSteps = [
 					label: 'Value 2 (+)'
 				},
 				title: 'Column Chart',
-				geometry: 'rectangle',
-				split: false
+				geometry: 'rectangle'
 			}
 		})
 ]

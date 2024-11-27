@@ -20,12 +20,11 @@ const testSteps = [
 			config: {
 				channels: {
 					x: { set: 'Year', range: { max: '48' } }, // 48 = years in this time period
-					y: ['Revenue', 'Format'],
+					y: { set: ['Revenue', 'Format'], align: 'center' },
 					color: 'Format'
 				},
 
-				geometry: 'area',
-				align: 'center'
+				geometry: 'area'
 			},
 			style: {
 				plot: {

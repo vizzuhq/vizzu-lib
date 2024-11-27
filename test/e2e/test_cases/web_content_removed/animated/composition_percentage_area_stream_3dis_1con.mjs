@@ -19,7 +19,7 @@ const testSteps = [
 		chart.animate({
 			config: {
 				title: '100% Stacked Area Chart',
-				align: 'stretch'
+				y: { align: 'stretch' }
 			}
 		}),
 
@@ -32,12 +32,12 @@ const testSteps = [
                     as the default value is now 110% */
 						range: {
 							max: '100%'
-						}
+						},
+						align: 'none',
+						split: true
 					}
 				},
-				title: 'Split Area Chart',
-				align: 'none',
-				split: true
+				title: 'Split Area Chart'
 			}
 		})
 ]

@@ -26,9 +26,7 @@ const testSteps = [
 				},
 				title: 'Stacked Column Chart',
 				geometry: 'rectangle',
-				coordSystem: 'polar',
-				//            orientation: 'horizontal',
-				split: false
+				coordSystem: 'polar'
 			}
 		}),
 

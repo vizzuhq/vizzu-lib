@@ -39,8 +39,7 @@ const testSteps = [
 					title: 'Radial Line Vertical',
 					geometry: 'line',
 					coordSystem: 'polar',
-					orientation: 'horizontal',
-					split: false
+					orientation: 'horizontal'
 				}
 			},
 			{

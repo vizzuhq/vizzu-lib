@@ -80,12 +80,11 @@ const testSteps = [
 				config: {
 					channels: {
 						x: { set: 'Year' },
-						y: { set: ['Value 2 (+)', 'Country'] },
+						y: { set: ['Value 2 (+)', 'Country'], split: true },
 						color: { set: 'Country' }
 					},
 					title: 'Trellis Area / Trellis(?), Components(?), Part-to-whole(?) (sort???)',
-					geometry: 'area',
-					split: true
+					geometry: 'area'
 				}
 			},
 			{
@@ -99,12 +98,11 @@ const testSteps = [
 				config: {
 					channels: {
 						x: { set: 'Year' },
-						y: { set: ['Value 2 (+)', 'Country'] },
+						y: { set: ['Value 2 (+)', 'Country'], split: false },
 						color: { set: 'Country' }
 					},
 					title: 'Stacked Area / Trellis off(?), Merge(?)',
-					geometry: 'area',
-					split: false
+					geometry: 'area'
 				}
 			},
 			{
@@ -118,12 +116,11 @@ const testSteps = [
 				config: {
 					channels: {
 						x: { set: 'Year' },
-						y: { set: ['Value 2 (+)', 'Country'] },
+						y: { set: ['Value 2 (+)', 'Country'], align: 'stretch' },
 						color: { set: 'Country' }
 					},
 					title: 'Stacked Area / Ratio(?)',
-					geometry: 'area',
-					align: 'stretch'
+					geometry: 'area'
 				}
 			},
 			{
@@ -155,13 +152,11 @@ const testSteps = [
 				config: {
 					channels: {
 						x: { set: 'Year' },
-						y: { set: ['Value 2 (+)', 'Country'] },
+						y: { set: ['Value 2 (+)', 'Country'], align: 'none' },
 						color: { set: 'Country' }
 					},
 					title: 'Stacked Area / Ratio off(?)',
-					geometry: 'area',
-					align: 'none',
-					split: false
+					geometry: 'area'
 				}
 			},
 			{
@@ -177,14 +172,13 @@ const testSteps = [
 						x: { set: 'Year' },
 						y: {
 							set: ['Value 2 (+)', 'Country'],
-							range: { min: '0%', max: '100%' }
+							range: { min: '0%', max: '100%' },
+							split: true
 						},
 						color: { set: 'Country' }
 					},
 					title: 'Bar / Sum(?)',
-					geometry: 'area',
-					align: 'none',
-					split: true
+					geometry: 'area'
 				}
 			},
 			{
@@ -199,13 +193,11 @@ const testSteps = [
 				config: {
 					channels: {
 						x: { set: ['Year', 'Value 2 (+)'] },
-						y: { set: ['Country'] },
+						y: { set: ['Country'], split: false },
 						color: { set: null }
 					},
 					title: 'Bar / Sum(?)',
-					geometry: 'rectangle',
-					align: 'none',
-					split: false
+					geometry: 'rectangle'
 				}
 			},
 			{
@@ -242,9 +234,7 @@ const testSteps = [
 						label: { set: 'Value 2 (+)' }
 					},
 					title: 'Bar / Sum(?)',
-					geometry: 'rectangle',
-					align: 'none',
-					split: false
+					geometry: 'rectangle'
 				}
 			},
 			{
@@ -264,9 +254,7 @@ const testSteps = [
 						label: { set: null }
 					},
 					title: 'Bar / Sum(?)',
-					geometry: 'rectangle',
-					align: 'none',
-					split: false
+					geometry: 'rectangle'
 				}
 			},
 			{
@@ -300,14 +288,13 @@ const testSteps = [
 						x: { set: 'Year' },
 						y: {
 							set: ['Value 2 (+)', 'Country'],
-							range: { min: '0%', max: '110%' }
+							range: { min: '0%', max: '110%' },
+							split: true
 						},
 						color: { set: 'Country' }
 					},
 					title: 'Area / Time distribution(?)',
-					geometry: 'area',
-					align: 'none',
-					split: true
+					geometry: 'area'
 				}
 			},
 			{
@@ -322,13 +309,11 @@ const testSteps = [
 				config: {
 					channels: {
 						x: { set: 'Year' },
-						y: { set: ['Value 2 (+)', 'Country'] },
+						y: { set: ['Value 2 (+)', 'Country'], split: false },
 						color: { set: 'Country' }
 					},
 					title: 'Stacked Area / Time distribution(?)',
-					geometry: 'area',
-					align: 'none',
-					split: false
+					geometry: 'area'
 				}
 			},
 			{
@@ -346,9 +331,7 @@ const testSteps = [
 						color: { set: null }
 					},
 					title: 'Area / Total timeseries(?)',
-					geometry: 'area',
-					align: 'none',
-					split: false
+					geometry: 'area'
 				}
 			},
 			{
@@ -366,9 +349,7 @@ const testSteps = [
 						color: { set: 'Country' }
 					},
 					title: 'Stacked Area / Time distribution(?)',
-					geometry: 'area',
-					align: 'none',
-					split: false
+					geometry: 'area'
 				}
 			},
 			{
@@ -386,9 +367,7 @@ const testSteps = [
 						color: { set: 'Country' }
 					},
 					title: '16 Lollipop / Distribution(?)',
-					geometry: 'circle',
-					align: 'none',
-					split: false
+					geometry: 'circle'
 				}
 			},
 			{
@@ -424,9 +403,7 @@ const testSteps = [
 						color: { set: 'Country' }
 					},
 					title: 'Stacked Area / Sum(?), Sum timeseries(?)',
-					geometry: 'area',
-					align: 'none',
-					split: false
+					geometry: 'area'
 				}
 			},
 			{

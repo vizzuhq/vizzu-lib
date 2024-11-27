@@ -1,8 +1,8 @@
 chart.animate({
 	config: {
-		align: 'none',
 		channels: {
 			y: {
+				align: 'none',
 				labels: true
 			}
 		}

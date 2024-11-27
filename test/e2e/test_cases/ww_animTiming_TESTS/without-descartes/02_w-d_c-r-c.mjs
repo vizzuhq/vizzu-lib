@@ -41,9 +41,7 @@ const testSteps = [
 					color: { set: ['Country'] }
 				},
 				title: 'Stacked Column Chart',
-				geometry: 'rectangle',
-				//            orientation: 'horizontal',
-				split: false
+				geometry: 'rectangle'
 			}
 		}),
 	(chart) =>

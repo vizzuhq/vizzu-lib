@@ -43,9 +43,7 @@ const testSteps = [
 						color: { set: ['Country'] }
 					},
 					title: 'Line Chart',
-					geometry: 'line',
-					//            orientation: 'horizontal',
-					split: false
+					geometry: 'line'
 				}
 			},
 			{

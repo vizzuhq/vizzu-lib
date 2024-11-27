@@ -16,7 +16,6 @@ const testSteps = [
 				},
 				title: 'Range area chart',
 				geometry: 'area',
-				align: 'none',
 				legend: null
 			},
 			style: {

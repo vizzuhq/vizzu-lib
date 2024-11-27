@@ -15,12 +15,11 @@ const testSteps = [
 			config: {
 				channels: {
 					x: 'Year',
-					y: ['Country', 'Value 2 (+)'],
+					y: { set: ['Country', 'Value 2 (+)'], split: true },
 					color: 'Country'
 				},
 				title: 'Split Area Chart (Ridgeline plot)',
-				geometry: 'area',
-				split: true
+				geometry: 'area'
 			}
 		}),
 	(chart) => {

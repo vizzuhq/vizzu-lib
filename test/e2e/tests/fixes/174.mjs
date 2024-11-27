@@ -12,10 +12,9 @@ const testSteps = [
 	},
 	(chart) =>
 		chart.animate({
-			x: { set: 'Foo', title: 'Valami', ticks: true, guides: true },
+			x: { set: 'Foo', title: 'Valami', ticks: true, guides: true, sort: 'byValue' },
 			y: { set: 'Bar', title: 'Valami', ticks: true, guides: true, interlacing: false },
-			geometry: 'circle',
-			sort: 'byValue'
+			geometry: 'circle'
 		})
 ]
 

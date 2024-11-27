@@ -15,8 +15,6 @@ const testSteps = [
 					},
 					title: 'Donat Chart',
 					coordSystem: 'polar'
-					//            sort: 'byValue',
-					//            reverse: true
 				}
 			}
 			//    {regroupStrategy: 'fade'}

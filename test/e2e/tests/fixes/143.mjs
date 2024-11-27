@@ -31,9 +31,8 @@ const testSteps = [
 	(chart) =>
 		chart.animate(
 			{
-				y: 'Val',
-				x: 'Letters',
-				split: true
+				y: { set: 'Val', split: true },
+				x: { set: 'Letters', split: true }
 			},
 			{ regroupStrategy: 'drilldown' }
 		)

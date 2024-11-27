@@ -8,12 +8,11 @@ const testSteps = [
 			config: {
 				channels: {
 					x: 'Year',
-					y: ['Country', 'Value 2 (+)'],
+					y: { set: ['Country', 'Value 2 (+)'], split: true },
 					color: 'Country',
 					label: 'Value 2 (+)'
 				},
-				title: 'Splitted Column',
-				split: true
+				title: 'Splitted Column'
 			},
 			style: {
 				plot: {
@@ -32,13 +31,12 @@ const testSteps = [
 			config: {
 				channels: {
 					x: 'Value 5 (+/-)',
-					y: 'Value 2 (+)',
+					y: { set: 'Value 2 (+)', split: false },
 					noop: 'Year',
 					label: null
 				},
 				title: 'Change Geom. to See Distribution by a New Measure',
-				geometry: 'circle',
-				split: false
+				geometry: 'circle'
 			}
 		}),
 	(chart) => {

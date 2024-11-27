@@ -8,11 +8,10 @@ const testSteps = [
 			config: {
 				channels: {
 					x: 'Year',
-					y: ['Country', 'Value 2 (+)'],
+					y: { set: ['Country', 'Value 2 (+)'], align: 'stretch' },
 					color: 'Country'
 				},
-				title: 'Stacked Column',
-				align: 'stretch'
+				title: 'Stacked Column'
 			}
 		}),
 
@@ -21,10 +20,9 @@ const testSteps = [
 			config: {
 				channels: {
 					x: ['Year', 'Country'],
-					y: 'Value 2 (+)'
+					y: { set: 'Value 2 (+)', align: 'none' }
 				},
-				title: 'Group and Align min Markers to Compare Values',
-				align: 'none'
+				title: 'Group and Align min Markers to Compare Values'
 			}
 		}),
 	(chart) => {

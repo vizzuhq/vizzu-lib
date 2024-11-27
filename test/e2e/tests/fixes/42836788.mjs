@@ -31,10 +31,9 @@ const testSteps = [
 	(chart) =>
 		chart.animate({
 			x: 'Genres',
-			y: ['Kinds', 'Genres'],
+			y: { set: ['Kinds', 'Genres'], split: true },
 			color: 'Kinds',
-			lightness: 'Genres',
-			split: true
+			lightness: 'Genres'
 		})
 ]
 

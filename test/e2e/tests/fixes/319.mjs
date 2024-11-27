@@ -21,7 +21,7 @@ const testSteps = [
 		}),
 	(chart) =>
 		chart.animate({
-			sort: 'byValue'
+			x: { sort: 'byValue' }
 		}),
 	(chart) =>
 		chart.animate({
@@ -30,7 +30,7 @@ const testSteps = [
 		}),
 	(chart) =>
 		chart.animate({
-			sort: 'none'
+			x: { sort: 'none' }
 		})
 ]
 

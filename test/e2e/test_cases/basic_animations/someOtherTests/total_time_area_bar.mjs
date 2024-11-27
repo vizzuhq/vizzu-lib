@@ -23,11 +23,11 @@ const testSteps = [
                        the y-axis as the default value is now 110% */
 						range: {
 							max: '100%'
-						}
+						},
+						split: true
 					}
 				},
-				title: 'Trellis Area Chart',
-				split: true
+				title: 'Trellis Area Chart'
 			}
 		}),
 	(chart) =>
@@ -35,11 +35,10 @@ const testSteps = [
 			config: {
 				channels: {
 					x: ['Value 2 (+)', 'Year'],
-					y: 'Country'
+					y: { set: 'Country', split: false }
 				},
 				title: 'Bar Chart',
-				geometry: 'rectangle',
-				split: false
+				geometry: 'rectangle'
 			}
 		}),
 

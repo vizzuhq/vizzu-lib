@@ -10,17 +10,19 @@ const testSteps = [
 			config: {
 				channels: {
 					x: 'Year',
-					y: ['Country', 'Value 2 (+)'],
-					color: 'Country'
-				},
+					y: {
+						set: ['Country', 'Value 2 (+)'],
 
-				align: 'stretch'
+						align: 'stretch'
+					},
+					color: 'Country'
+				}
 			}
 		}),
 
 	(chart) =>
 		chart.animate({
-			config: {
+			y: {
 				align: 'none'
 			}
 		}),

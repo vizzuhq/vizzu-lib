@@ -27,8 +27,7 @@ const testSteps = [
 					},
 					title: 'Stacked Area Chart Vertical',
 					geometry: 'area',
-					coordSystem: 'polar',
-					split: false
+					coordSystem: 'polar'
 				}
 			},
 			{
