@@ -1,6 +1,6 @@
 chart.animate({
 	// config: {
-	y : {
+	y: {
 		align: 'stretch'
 	}
 	// }

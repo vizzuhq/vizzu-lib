@@ -5,7 +5,7 @@ chart.animate({
 		channels: {
 			y: {
 				set: ['Popularity', 'Kinds'],
-				align: 'stretch',
+				align: 'stretch'
 			},
 			x: ['Genres'],
 			label: ['Popularity']
