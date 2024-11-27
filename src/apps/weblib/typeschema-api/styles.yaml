@@ -452,8 +452,9 @@ definitions:
             interlacing:
                 $ref: Interlacing
                 nullable: true
-            split:
-                $ref: Length
+            spacing:
+                type: string
+                mask: /:number:%/
                 nullable: true
 
     Plot:

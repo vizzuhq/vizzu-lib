@@ -17,6 +17,7 @@
 #include "base/anim/interpolated.h"
 #include "base/math/floating.h"
 #include "base/math/range.h"
+#include "base/refl/auto_enum.h"
 #include "chart/main/style.h"
 #include "chart/options/align.h"
 #include "chart/options/channel.h"
@@ -233,7 +234,7 @@ bool PlotBuilder::linkMarkers(const Buckets &buckets,
 				auto &marker = **it.base().base().base();
 				if (!marker.enabled) continue;
 				o = std::max(o,
-				    marker.size.getCoord(++axisIndex),
+				    marker.size.getCoord(orientation(axisIndex)),
 				    Math::Floating::less);
 			}
 			if (o == std::numeric_limits<double>::lowest()) o = 0.0;
@@ -279,7 +280,8 @@ bool PlotBuilder::linkMarkers(const Buckets &buckets,
 			                 : *it.base().base().base();
 
 			if (act)
-				prevPos = act->position.getCoord(++axisIndex) +=
+				prevPos =
+				    act->position.getCoord(orientation(axisIndex)) +=
 				    isAggregatable ? dimOffset[i] : prevPos;
 
 			hasConnection |=
@@ -542,7 +544,7 @@ void PlotBuilder::addSeparation(const Buckets &subBuckets,
 	auto splitSpace =
 	    plot->getStyle()
 	        .plot.getAxis(plot->getOptions()->subAxisType())
-	        .split->get(max.getMax(),
+	        .spacing->get(max.getMax(),
 	            plot->getStyle().calculatedSize());
 
 	for (auto i = 1U; i < ranges.size(); ++i)

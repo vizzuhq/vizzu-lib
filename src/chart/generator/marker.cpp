@@ -1,5 +1,6 @@
 #include "marker.h"
 
+#include <cmath>
 #include <cstdint>
 #include <optional>
 #include <utility>
@@ -225,14 +226,14 @@ void Marker::fromRectangle(const Geom::Rect &rect)
 
 Math::Range<> Marker::getSizeBy(AxisId axisId) const
 {
-	return isHorizontal(++axisId) ? toRectangle().hSize()
-	                              : toRectangle().vSize();
+	return isHorizontal(orientation(axisId)) ? toRectangle().hSize()
+	                                         : toRectangle().vSize();
 }
 
 void Marker::setSizeBy(AxisId axisId, const Math::Range<> range)
 {
 	auto rect = toRectangle();
-	if (isHorizontal(++axisId))
+	if (isHorizontal(orientation(axisId)))
 		rect.setHSize(range);
 	else
 		rect.setVSize(range);

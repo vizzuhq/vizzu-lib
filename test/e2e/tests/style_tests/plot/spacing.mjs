@@ -23,7 +23,7 @@ const testSteps = [
 			style: {
 				plot: {
 					yAxis: {
-						split: '15%'
+						spacing: '15%'
 					}
 				}
 			}

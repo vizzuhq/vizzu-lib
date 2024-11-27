@@ -202,6 +202,7 @@ template <class E> consteval auto enum_values()
 	constexpr auto n = std::size(enum_names<E>);
 	std::array<E, n> res{};
 	for (std::size_t i = 0; i < n; ++i)
+		// NOLINTNEXTLINE(clang-analyzer-optin.core.EnumCastOutOfRange)
 		res[i] = static_cast<E>(i + first);
 	return res;
 }

@@ -280,7 +280,7 @@ Chart Chart::def()
 						.interlacing = {
 							.color = Gfx::Color::Gray(0.97)
 						},
-						.split = Gfx::Length::Relative(1 / 15.)
+						.spacing = Gfx::Length::Relative(1 / 15.)
 					},
 					.yAxis = {
 						.color = Gfx::Color::Gray(0.8),
@@ -372,7 +372,7 @@ Chart Chart::def()
 						.interlacing = {
 							.color = Gfx::Color::Gray(0.97)
 						},
-						.split = Gfx::Length::Relative(1 / 15.)
+						.spacing = Gfx::Length::Relative(1 / 15.)
 					},
 					.areaColor = Gfx::Color::Transparent(),
 					.overflow = ::Anim::Interpolated<Overflow>(Overflow::hidden)

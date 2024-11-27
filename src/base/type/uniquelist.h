@@ -237,7 +237,7 @@ public:
 	struct CommonIterateVal
 	{
 		const T &value;
-		const std::size_t *othIx;
+		const std::size_t *otherIx;
 	};
 
 	struct common_iterator

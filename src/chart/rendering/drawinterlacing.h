@@ -31,6 +31,15 @@ private:
 	    const Gfx::Color &tickColor,
 	    Gen::AxisId axisIndex,
 	    const Geom::Point &tickPos) const;
+
+	[[nodiscard]] std::map<double, double> getInterlacingWeights(
+	    Gen::AxisId axisIndex) const;
+
+	[[nodiscard]] static Gfx::Color getCrossingInterlacingColor(
+	    const Gfx::Color &mainColor,
+	    double mainWeight,
+	    const Gfx::Color &otherColor,
+	    double otherWeight);
 };
 
 }

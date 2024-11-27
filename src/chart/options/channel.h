@@ -65,7 +65,7 @@ static_assert(std::ranges::all_of(Refl::enum_names<LegendId>,
 	            Refl::get_enum<ChannelId>(name));
     }));
 
-[[nodiscard]] constexpr Geom::Orientation operator++(
+[[nodiscard]] constexpr Geom::Orientation orientation(
     const AxisId &axis)
 {
 	return axis == AxisId::x ? Geom::Orientation::horizontal
