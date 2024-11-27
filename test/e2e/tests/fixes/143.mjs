@@ -36,6 +36,12 @@ const testSteps = [
 				split: true
 			},
 			{ regroupStrategy: 'drilldown' }
+		),
+	(chart) =>
+		chart.animate(
+			{
+				y: ['Colors', 'Val']
+			}
 		)
 ]
 

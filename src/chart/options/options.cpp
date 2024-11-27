@@ -139,7 +139,8 @@ void Options::intersection(const Options &other)
 bool Options::looksTheSame(const Options &other) const
 {
 	if (channels.anyAxisSet()
-	    && channels.at(Gen::ChannelId::label).isEmpty()) {
+	    && channels.at(ChannelId::label).isEmpty()
+	    && isSplit() == other.isSplit()) {
 		auto thisCopy = *this;
 		thisCopy.simplify();
 
@@ -155,6 +156,7 @@ bool Options::looksTheSame(const Options &other) const
 void Options::simplify()
 {
 	//	remove all dimensions, only used at the end of stack
+	auto split = isSplit();
 	auto &stackChannel = this->stackChannel();
 
 	auto dimensions = stackChannel.dimensions();
@@ -168,6 +170,8 @@ void Options::simplify()
 	     ++dim) {
 		stackChannel.removeSeries(*dim);
 	}
+	if (split && !stackChannel.hasDimension())
+		stackChannel.addSeries(*dimensions.begin());
 }
 
 bool Options::operator==(const Options &other) const
