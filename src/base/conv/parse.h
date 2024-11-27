@@ -16,7 +16,7 @@ concept Parsable = !std::is_void_v<decltype(T::fromString(
 
 template <class To>
 constexpr inline static bool IsParsable =
-    std::is_enum_v<To> || Parsable<To>
+    Refl::is_enum<To> || Parsable<To>
     || (Type::is_optional_v<To> && IsParsable<Type::optional_t<To>>)
     || std::is_constructible_v<To, std::string>
     || std::is_same_v<To, bool> || std::is_floating_point_v<To>
@@ -28,7 +28,7 @@ template <typename To>
     requires IsParsable<To>
 [[nodiscard]] decltype(auto) parse(const std::string &string)
 {
-	if constexpr (std::is_enum_v<To>)
+	if constexpr (Refl::is_enum<To>)
 		return Refl::get_enum<To>(string);
 	else if constexpr (Parsable<To>)
 		return To::fromString(string);

@@ -44,9 +44,10 @@ struct Buckets
 			    });
 		}
 
-		[[nodiscard]] bool operator!=(const const_iterator &oth) const
+		[[nodiscard]] bool operator!=(
+		    const const_iterator &other) const
 		{
-			return data.data() != oth.data.data();
+			return data.data() != other.data.data();
 		}
 
 		const_iterator &operator++();

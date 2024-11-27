@@ -58,14 +58,14 @@ struct custom_aggregator
 	id_type (*create)();
 	double (*add)(id_type &, cell_reference const &);
 
-	auto operator<=>(const custom_aggregator &oth) const
+	auto operator<=>(const custom_aggregator &other) const
 	{
-		return name <=> oth.name;
+		return name <=> other.name;
 	}
 
-	auto operator==(const custom_aggregator &oth) const
+	auto operator==(const custom_aggregator &other) const
 	{
-		return name == oth.name;
+		return name == other.name;
 	}
 };
 

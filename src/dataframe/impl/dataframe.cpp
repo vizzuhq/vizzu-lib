@@ -347,7 +347,7 @@ void dataframe::add_series_by_other(std::string_view,
     const std::function<cell_value(record_type, cell_reference)> &,
     std::span<const std::pair<const char *, const char *>>) &
 {
-	if (as_if()) error(error_type::unimplemented, "by oth");
+	if (as_if()) error(error_type::unimplemented, "by other");
 }
 
 void dataframe::remove_series(

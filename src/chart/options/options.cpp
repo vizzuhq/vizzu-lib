@@ -74,7 +74,7 @@ ChannelId Options::stackChannelType() const
 	if (channels.anyAxisSet()) {
 		switch (geometry.get()) {
 		case ShapeType::area:
-		case ShapeType::rectangle: return -subAxisType();
+		case ShapeType::rectangle: return +subAxisType();
 		default:
 		case ShapeType::circle:
 		case ShapeType::line: return ChannelId::size;
@@ -86,7 +86,7 @@ ChannelId Options::stackChannelType() const
 std::optional<ChannelId> Options::secondaryStackType() const
 {
 	if (channels.anyAxisSet() && geometry == ShapeType::line)
-		return -subAxisType();
+		return +subAxisType();
 
 	return std::nullopt;
 }
@@ -122,7 +122,7 @@ void Options::drilldownTo(const Options &other)
 {
 	auto &stackChannel = this->stackChannel();
 
-	if (this->split && !isSplit()) this->split = false;
+	if (this->split && !isSplit()) this->split = {};
 
 	for (auto &&dim : other.getChannels().getDimensions())
 		if (!getChannels().isSeriesUsed(dim))
@@ -316,9 +316,7 @@ void Options::setMeasureRange(Channel &channel, bool positive)
 	if (positive)
 		setRange(channel, 0.0_perc, 110.0_perc);
 	else
-		setRange(channel,
-		    ChannelExtrema(-10, ChannelExtremaType::relative),
-		    110.0_perc);
+		setRange(channel, operator""_perc(-10.0), 110.0_perc);
 }
 
 void Options::setRange(Channel &channel,

@@ -193,12 +193,16 @@ template <class E> constexpr E get_enum(const std::string_view &data)
 	return static_cast<E>(ix + first);
 }
 
+template <class E>
+concept is_enum = std::is_enum_v<E> && Detail::count<E>() > 0;
+
 template <class E> consteval auto enum_values()
 {
 	constexpr auto first = Detail::from_to<E>().first;
 	constexpr auto n = std::size(enum_names<E>);
 	std::array<E, n> res{};
 	for (std::size_t i = 0; i < n; ++i)
+		// NOLINTNEXTLINE(clang-analyzer-optin.core.EnumCastOutOfRange)
 		res[i] = static_cast<E>(i + first);
 	return res;
 }
@@ -258,9 +262,8 @@ struct EnumArray : std::array<V, std::size(enum_names<E>)>
 	bool operator==(const EnumArray &) const = default;
 };
 
-template <class E, class... Args>
-    requires(std::is_enum_v<E>
-             && sizeof...(Args) == Detail::count<E>()
+template <is_enum E, class... Args>
+    requires(sizeof...(Args) == Detail::count<E>()
              && Detail::from_to<E>().first == 0)
 struct EnumVariant : std::variant<Args...>
 {

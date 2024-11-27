@@ -125,7 +125,7 @@ private:
 		const DataCube *parent{};
 		MultiIndex index;
 
-		[[nodiscard]] bool operator!=(const iterator_t &oth) const;
+		[[nodiscard]] bool operator!=(const iterator_t &other) const;
 
 		void operator++();
 

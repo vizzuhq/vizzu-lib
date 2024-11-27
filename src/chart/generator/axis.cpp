@@ -7,7 +7,6 @@
 #include <iterator>
 #include <limits>
 #include <optional>
-#include <set>
 #include <string>
 #include <string_view>
 #include <tuple>
@@ -287,7 +286,9 @@ bool DimensionAxis::setLabels(double step)
 	auto currStep = 0.0;
 
 	for (auto curr = int{}; auto &&item : sortedItems()) {
-		if (++curr <= currStep) continue;
+		if (auto mid = item.get().range.middle();
+		    std::signbit(mid) || mid > 1.0 || ++curr <= currStep)
+			continue;
 		currStep += step;
 		item.get().label = true;
 		hasLabel = true;

@@ -75,7 +75,7 @@ struct JSON
 		else if constexpr (std::is_arithmetic_v<T>) {
 			json += toString(val);
 		}
-		else if constexpr (std::is_enum_v<T>
+		else if constexpr (Refl::is_enum<T>
 		                   || std::is_same_v<T, bool>) {
 			json += '\"';
 			json += toString(val);

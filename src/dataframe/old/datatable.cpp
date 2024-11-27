@@ -6,6 +6,7 @@
 #include <cstdint>
 #include <initializer_list>
 #include <memory>
+#include <optional>
 #include <span>
 #include <string>
 #include <string_view>
@@ -55,9 +56,9 @@ void DataTable::pushRow(const std::span<const char *const> &cells)
 
 std::string DataTable::getInfos() const { return df.as_string(); }
 
-bool DataCube::iterator_t::operator!=(const iterator_t &oth) const
+bool DataCube::iterator_t::operator!=(const iterator_t &other) const
 {
-	return parent != oth.parent;
+	return parent != other.parent;
 }
 
 void DataCube::iterator_t::operator++() { parent->incr(*this); }

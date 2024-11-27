@@ -452,6 +452,10 @@ definitions:
             interlacing:
                 $ref: Interlacing
                 nullable: true
+            spacing:
+                type: string
+                mask: /:number:%/
+                nullable: true
 
     Plot:
         $extends: [Padding, Box]

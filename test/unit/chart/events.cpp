@@ -434,7 +434,8 @@ const static auto tests =
 	using Axis = Vizzu::Events::Targets::Axis;
 	for (auto &&[beg, end] = events.equal_range("plot-axis-draw");
 	     const auto &[j, t, l] : values(subrange(beg, end)))
-		if (!isHorizontal(+static_cast<Axis const &>(*t).axis))
+		if (!isHorizontal(
+		        orientation(static_cast<Axis const &>(*t).axis)))
 			xCenter = std::get<Vizzu::Draw::Line>(l).line.begin.x;
 
 	std::set<double> zero_count{};
@@ -608,9 +609,11 @@ const static auto tests =
                 testcase_2})
 {
 	chart.getOptions().getChannels().at(y).range.min =
-	    Vizzu::Base::AutoParam{Vizzu::Gen::ChannelExtrema("110%")};
+	    Vizzu::Base::AutoParam{
+	        Vizzu::Gen::ChannelExtrema::fromString("110%")};
 	chart.getOptions().getChannels().at(y).range.max =
-	    Vizzu::Base::AutoParam{Vizzu::Gen::ChannelExtrema("0%")};
+	    Vizzu::Base::AutoParam{
+	        Vizzu::Gen::ChannelExtrema::fromString("0%")};
 	auto &&events = get_events(chart);
 
 	check->*events.count("plot-axis-draw") == 1u;
@@ -627,13 +630,17 @@ const static auto tests =
                 testcase_0})
 {
 	chart.getOptions().getChannels().at(y).range.min =
-	    Vizzu::Base::AutoParam{Vizzu::Gen::ChannelExtrema("0.0")};
+	    Vizzu::Base::AutoParam{
+	        Vizzu::Gen::ChannelExtrema::fromString("0.0")};
 	chart.getOptions().getChannels().at(y).range.max =
-	    Vizzu::Base::AutoParam{Vizzu::Gen::ChannelExtrema("1.0")};
+	    Vizzu::Base::AutoParam{
+	        Vizzu::Gen::ChannelExtrema::fromString("1.0")};
 	chart.getOptions().getChannels().at(x).range.min =
-	    Vizzu::Base::AutoParam{Vizzu::Gen::ChannelExtrema("0.0")};
+	    Vizzu::Base::AutoParam{
+	        Vizzu::Gen::ChannelExtrema::fromString("0.0")};
 	chart.getOptions().getChannels().at(x).range.max =
-	    Vizzu::Base::AutoParam{Vizzu::Gen::ChannelExtrema("1.0")};
+	    Vizzu::Base::AutoParam{
+	        Vizzu::Gen::ChannelExtrema::fromString("1.0")};
 
 	auto &&events = get_events(chart);
 
