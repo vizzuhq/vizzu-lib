@@ -43,35 +43,41 @@ const testSteps = [
 			{ regroupStrategy: 'drilldown' }
 		),
 	(chart) =>
+		chart.animate(
+			{
+				y: ['Letters2', 'Colors', 'Val']
+			},
+			{ regroupStrategy: 'drilldown' }
+		),
+	(chart) =>
+		chart.animate({
+			config: {
+				y: 'Colors',
+				x: 'Val'
+			}
+		}),
+	(chart) =>
+		chart.animate({
+			config: {
+				y: ['Letters2', 'Val'],
+				x: 'Letters'
+			}
+		}),
+	(chart) =>
+		chart.animate({
+			y: ['Letters2', 'Val']
+		}),
+	(chart) =>
 		chart.animate({
 			y: ['Letters2', 'Colors', 'Val']
-		},
-		{ regroupStrategy: 'drilldown' }
-		),
-	(chart) => chart.animate({
-		config: {
-			y: 'Colors',
-			x: 'Val'
-		}
-	}),
-	(chart) => chart.animate({
-		config: {
-			y: ['Letters2', 'Val'],
-			x: 'Letters',
-		}
-	}),
-	(chart) => chart.animate({
-		y: ['Letters2', 'Val']
-	}),
-	(chart) => chart.animate({
-		y: ['Letters2', 'Colors', 'Val']
-	}),
-	(chart) => chart.animate({
-		config: {
-			y: ['Letters2', 'Colors'],
-			x: 'Val'
-		}
-	})
+		}),
+	(chart) =>
+		chart.animate({
+			config: {
+				y: ['Letters2', 'Colors'],
+				x: 'Val'
+			}
+		})
 ]
 
 export default testSteps
