@@ -85,6 +85,15 @@ void SeriesIndex::setAggr(const std::string &aggr)
 	aggregator = Refl::get_enum<dataframe::aggregator_type>(aggr);
 }
 
+std::string SeriesIndex::toJSON() const
+{
+	std::string res;
+	Conv::JSONObj obj{res};
+	obj("name", name);
+	if (aggregator) obj("aggregator", Conv::toString(*aggregator));
+	return res;
+}
+
 DataCube::iterator_t DataCube::begin() const
 {
 	iterator_t res{this,

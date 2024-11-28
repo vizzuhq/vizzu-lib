@@ -69,11 +69,7 @@ public:
 
 	[[nodiscard]] bool isDimension() const { return !aggregator; }
 
-	[[nodiscard]] consteval static auto members()
-	{
-		return std::tuple{&SeriesIndex::name,
-		    &SeriesIndex::aggregator};
-	}
+	[[nodiscard]] std::string toJSON() const;
 };
 
 using SeriesList = Type::UniqueList<SeriesIndex>;
