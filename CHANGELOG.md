@@ -2,40 +2,45 @@
 
 ## [Unreleased]
 
+## [0.16.0] - 2024-11-28
+
 ### Fixed
 
 - Fix align on fake-split charts
 - Drilldown on split chart is fade.
 - Fix aggregate on split chart.
 - Do not interpolate hiding/showing legend
-- Fix aggregator interface for 'set' channel parameter:
+- Remove rare fantom empty marker space on scrollable legend.
+- Same legend with different series are not interpolated.
+- Different legend with same series are interpolated.
+- Invisible axis labels are not draw.
+- Fix chaotic axis labels on sorted chart with multiple dimension.
+- Fix dimension axis guides on sorted chart.
+- Fix NaN handling on axes and size measures other aggregators than sum.
+- Do not draw dimension axis labels when the middle of the text is off the plot.
+
+### Changed
+
+- Mekko charts: The main axis handled as dimension.
+- Change aggregator interface for 'set' channel parameter:
   - From now not accepted the same dimension on the same channel.
   - From now, it is prohibited to set multiple measure on one channel.
   - From now, it is prohibited to set only aggregator without series name.
   - Fix series parsing when aggregator comes first.
-  - Fix disappearing dimension when aggregated dimension was already set. 
-- Fix legend with multiple dimension duplicated markers:
+  - Fix disappearing dimension when aggregated dimension was already set.
+- Change legend with multiple dimension duplicated markers:
   - Markers of color are never merged.
   - Markers of size are always merged.
   - Markers of lightness are only merged when labelLevel == 0.
     - When merge happens, the marker shows the middle value of lightness.
-- Remove rare fantom empty marker space on scrollable legend.
-- Same legend with different series are not interpolated. 
-- Different legend with same series are interpolated.
-- Invisible axis labels are not draw.
-- Fix chaotic axis labels on sorted chart with multiple dimension.
-- Fix Mekko charts: The main axis handled as dimension. 
-- LabelLevel can be used to handle measure axis as dimension axis.
-- Enable dimension axis ticks and interlacing.
-- Enable measure axis guides.
-- Fix dimension axis guides on sorted chart.
-- Fix NaN handling on axes and size measures other aggregators than sum.
-- Add meaning to crossing interlacing.
-- Do not draw dimension axis labels when the middle of the text is off the plot.
 
 ### Added
 
 - Add spacing property for plot axis style structure.
+- LabelLevel can be used to handle measure axis as dimension axis.
+- Enable dimension axis ticks and interlacing.
+- Enable measure axis guides.
+- Add meaning to crossing interlacing.
 
 ## [0.15.0] - 2024-10-28
 
