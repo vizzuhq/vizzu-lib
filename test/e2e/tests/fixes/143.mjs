@@ -29,23 +29,49 @@ const testSteps = [
 			data,
 			config: {
 				y: 'Colors',
-				x: 'Val'
+				x: 'Val',
+				split: true
 			}
 		})
 	},
 	(chart) =>
 		chart.animate(
 			{
-				y: 'Val',
-				x: 'Letters',
-				split: true
+				y: ['Letters2', 'Val'],
+				x: 'Letters'
 			},
 			{ regroupStrategy: 'drilldown' }
 		),
 	(chart) =>
 		chart.animate({
-			y: ['Colors', 'Letters2', 'Val']
-		})
+			y: ['Letters2', 'Colors', 'Val']
+		},
+		{ regroupStrategy: 'drilldown' }
+		),
+	(chart) => chart.animate({
+		config: {
+			y: 'Colors',
+			x: 'Val'
+		}
+	}),
+	(chart) => chart.animate({
+		config: {
+			y: ['Letters2', 'Val'],
+			x: 'Letters',
+		}
+	}),
+	(chart) => chart.animate({
+		y: ['Letters2', 'Val']
+	}),
+	(chart) => chart.animate({
+		y: ['Letters2', 'Colors', 'Val']
+	}),
+	(chart) => chart.animate({
+		config: {
+			y: ['Letters2', 'Colors'],
+			x: 'Val'
+		}
+	})
 ]
 
 export default testSteps
