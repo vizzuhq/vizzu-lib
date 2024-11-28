@@ -128,7 +128,7 @@ void Animation::addKeyframe(const Gen::PlotPtr &next,
 	auto begin = std::ref(intermediate0 ? intermediate0 : target);
 
 	auto &&intermediate1Instant =
-	    intermediate1 && strategy == RegroupStrategy::aggregate
+	    intermediate1 && strategy != RegroupStrategy::fade
 	    && begin.get()->getOptions()->looksTheSame(
 	        *intermediate1->getOptions());
 	begin = intermediate1 ? std::ref(intermediate1) : begin;
