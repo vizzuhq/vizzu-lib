@@ -1,5 +1,10 @@
 chart.animate({
 	config: {
-		align: 'stretch'
+		align: 'stretch',
+		channels: {
+			y: {
+				labels: true
+			}
+		}
 	}
 })
