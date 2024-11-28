@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+## [0.16.0] - 2024-11-28
+
 ### Fixed
 
 - Fix align on fake-split charts
