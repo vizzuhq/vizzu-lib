@@ -111,7 +111,8 @@ Channels Options::shadowChannels() const
 	          &ch2 = shadow.at(ChannelId::noop);
 	     auto &&stacker : shadow.getDimensions({data(stackChannels),
 	         std::size_t{1} + secondary.has_value()})) {
-		ch1.removeSeries(stacker);
+		if (stackChannelType() != subAxisType() || !isSplit())
+			ch1.removeSeries(stacker);
 		ch2.removeSeries(stacker);
 	}
 
@@ -122,7 +123,7 @@ void Options::drilldownTo(const Options &other)
 {
 	auto &stackChannel = this->stackChannel();
 
-	if (!isSplit())
+	if (!isSplit() || !other.isSplit())
 		getChannels().axisPropsAt(subAxisType()).split = {};
 
 	for (auto &&dim : other.getChannels().getDimensions())
@@ -135,12 +136,14 @@ void Options::intersection(const Options &other)
 	for (auto &&dim : getChannels().getDimensions())
 		if (!other.getChannels().isSeriesUsed(dim))
 			getChannels().removeSeries(dim);
+
+	getChannels().axisPropsAt(subAxisType()).split = {};
 }
 
 bool Options::looksTheSame(const Options &other) const
 {
 	if (channels.anyAxisSet()
-	    && channels.at(Gen::ChannelId::label).isEmpty()) {
+	    && channels.at(ChannelId::label).isEmpty()) {
 		auto thisCopy = *this;
 		thisCopy.simplify();
 
@@ -155,6 +158,8 @@ bool Options::looksTheSame(const Options &other) const
 
 void Options::simplify()
 {
+	if (isSplit()) return;
+
 	//	remove all dimensions, only used at the end of stack
 	auto &stackChannel = this->stackChannel();
 
