@@ -322,10 +322,11 @@ void Interface::addDimension(ObjectRegistryHandle chart,
     std::uint32_t categoryIndicesCount,
     bool isContiguous)
 {
-	getChart(chart)->getTable().addColumn(name,
+	getChart(chart)->getTable().add_dimension(
 	    {categories, categoriesCount},
 	    {categoryIndices, categoryIndicesCount},
-	    isContiguous);
+	    name,
+	    {{{"isContiguous", isContiguous ? "true" : "false"}}});
 }
 
 void Interface::addMeasure(ObjectRegistryHandle chart,
@@ -334,22 +335,22 @@ void Interface::addMeasure(ObjectRegistryHandle chart,
     const double *values,
     std::uint32_t count)
 {
-	getChart(chart)->getTable().addColumn(name,
-	    unit,
-	    {values, count});
+	getChart(chart)->getTable().add_measure({values, count},
+	    name,
+	    {{std::pair{"unit", unit}}});
 }
 
 void Interface::addRecord(ObjectRegistryHandle chart,
     const char *const *cells,
     std::uint32_t count)
 {
-	getChart(chart)->getTable().pushRow({cells, count});
+	getChart(chart)->getTable().add_record({cells, count});
 }
 
 const char *Interface::dataMetaInfo(ObjectRegistryHandle chart)
 {
 	thread_local std::string res;
-	res = getChart(chart)->getTable().getInfos();
+	res = getChart(chart)->getTable().as_string();
 	return res.c_str();
 }
 

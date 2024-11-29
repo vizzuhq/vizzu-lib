@@ -26,15 +26,13 @@ void TestChart::prepareData()
 	std::vector<double>
 	    val{1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0};
 	auto &table = chart.getChart().getTable();
-	table.addColumn("Cat1",
-	    std::span(cat1),
+	table.add_dimension(cat1,
 	    std::array{0u, 0u, 0u, 1u, 1u, 1u, 2u, 2u, 2u},
-	    false);
-	table.addColumn("Cat2",
-	    std::span(cat2),
+	    "Cat1");
+	table.add_dimension(cat2,
 	    std::array{0u, 1u, 2u, 3u, 4u, 5u, 6u, 7u, 8u},
-	    false);
-	table.addColumn("Val", "", std::span(val));
+	    "Cat2");
+	table.add_measure(val, "Val");
 
 	chart.getChart()
 	    .getEventDispatcher()

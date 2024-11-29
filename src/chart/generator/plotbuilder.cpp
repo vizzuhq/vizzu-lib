@@ -369,7 +369,8 @@ void PlotBuilder::calcLegendAndLabel(const Data::DataTable &dataTable)
 					calcLegend.title = dataCube.getName(*meas);
 				calcLegend.measure = {std::get<0>(stats.at(type)),
 				    meas->getColIndex(),
-				    dataTable.getUnit(meas->getColIndex()),
+				    dataTable.get_series_info(meas->getColIndex(),
+				        "unit"),
 				    scale.step.getValue()};
 			}
 		}
@@ -410,8 +411,9 @@ void PlotBuilder::calcLegendAndLabel(const Data::DataTable &dataTable)
 	                      .at(ChannelId::label)
 	                      .measure())
 		plot->axises.label = {
-		    ::Anim::String{
-		        std::string{dataTable.getUnit(meas->getColIndex())}},
+		    ::Anim::String{std::string{
+		        dataTable.get_series_info(meas->getColIndex(),
+		            "unit")}},
 		    ::Anim::String{meas->getColIndex()}};
 }
 
@@ -440,7 +442,7 @@ void PlotBuilder::calcAxis(const Data::DataTable &dataTable,
 		else
 			axis.measure = {std::get<0>(stats.at(type)),
 			    meas.getColIndex(),
-			    dataTable.getUnit(meas.getColIndex()),
+			    dataTable.get_series_info(meas.getColIndex(), "unit"),
 			    scale.step.getValue()};
 	}
 	else {

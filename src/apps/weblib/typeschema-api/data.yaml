@@ -75,7 +75,6 @@ definitions:
                     like timestamps.
                 type: boolean
 
-
     IndexDimension:
         $extends: SeriesBase
         description: Name of a dimension data series.

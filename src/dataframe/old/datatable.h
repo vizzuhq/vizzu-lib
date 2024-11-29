@@ -19,39 +19,6 @@ enum class ChannelId : std::uint8_t;
 namespace Vizzu::Data
 {
 
-class DataTable
-{
-public:
-	using Type = dataframe::series_type;
-
-	void addColumn(std::string_view name,
-	    std::string_view unit,
-	    const std::span<const double> &values);
-
-	void addColumn(std::string_view name,
-	    const std::span<const char *const> &categories,
-	    const std::span<const std::uint32_t> &values,
-	    bool isContiguous);
-
-	void pushRow(const std::span<const char *const> &cells);
-
-	[[nodiscard]] std::string_view getUnit(
-	    std::string_view const &colIx) const;
-
-	[[nodiscard]] bool getIsContiguous(
-	    std::string_view const &colIx) const;
-
-	[[nodiscard]] std::string getInfos() const;
-
-	[[nodiscard]] const dataframe::dataframe &getDf() const
-	{
-		return df;
-	}
-
-private:
-	dataframe::dataframe df;
-};
-
 class DataCube
 {
 	struct iterator_t;
