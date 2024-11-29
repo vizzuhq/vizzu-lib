@@ -33,7 +33,7 @@ Window::Window(QWidget *parent) :
 void Window::animStep()
 {
 	auto now = std::chrono::steady_clock::now();
-	chart.getChart().getChart().getAnimControl().update(now);
+	chart.getChart().getChart().getAnimControl()->update(now);
 #ifndef __clang_analyzer__
 	return QTimer::singleShot(25,
 	    [this]
