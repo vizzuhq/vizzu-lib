@@ -69,6 +69,12 @@ definitions:
                 type: array
                 items:
                     $ref: DimensionValue
+            isContiguous:
+                description: |
+                    If set to true, the dimension handled as a contiguous dimension 
+                    like timestamps.
+                type: boolean
+
 
     IndexDimension:
         $extends: SeriesBase
@@ -97,6 +103,11 @@ definitions:
                 type: array
                 items:
                     type: number
+            isContiguous:
+                description: |
+                    If set to true, the dimension handled as a contiguous dimension 
+                    like timestamps.
+                type: boolean
         required: [categories]
 
     ImplicitStringDimension:
@@ -238,7 +249,11 @@ definitions:
             length:
                 description: Count of values in the series.
                 type: number
-        required: [type, categories, length]
+            isContiguous:
+                description: |
+                    The dimension handled as a contiguous dimension like timestamps.
+                type: boolean
+        required: [type, categories, length, isContiguous]
 
     MeasureInfo:
         $extends: SeriesBase
