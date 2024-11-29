@@ -93,12 +93,17 @@ Buckets PlotBuilder::generateMarkers(std::size_t &mainBucketSize)
 		plot->markers.reserve(dataCube.df->get_record_count());
 	}
 
-	using CmpBySec = decltype(
-		[] (const std::pair<const Options::MarkerInfoId, Marker::MarkerIndex>& lhs,
-			const std::pair<const Options::MarkerInfoId, Marker::MarkerIndex>& rhs)
+	struct CmpBySec
+	{
+		[[nodiscard]] bool operator()(
+		    const std::pair<const Options::MarkerInfoId,
+		        Marker::MarkerIndex> &lhs,
+		    const std::pair<const Options::MarkerInfoId,
+		        Marker::MarkerIndex> &rhs) const
 		{
 			return lhs.second < rhs.second;
-		});
+		}
+	};
 
 	auto &&set =
 	    std::multiset<std::reference_wrapper<
