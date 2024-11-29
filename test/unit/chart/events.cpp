@@ -58,41 +58,40 @@ struct MyCanvas final : Gfx::ICanvas, Vizzu::Draw::Painter
 
 auto testcase_0 = [](Vizzu::Data::DataTable &table)
 {
-	table.addColumn("Index",
-	    std::initializer_list<const char *>{},
-	    std::initializer_list<std::uint32_t>{});
-	table.addColumn("x", "", std::initializer_list<double>{});
-	table.addColumn("y", "", std::initializer_list<double>{});
+	table.add_dimension(std::initializer_list<const char *>{},
+	    std::initializer_list<std::uint32_t>{},
+	    "Index");
+	table.add_measure(std::initializer_list<double>{}, "x");
+	table.add_measure(std::initializer_list<double>{}, "y");
 };
 
 auto testcase_1 = [](Vizzu::Data::DataTable &table)
 {
-	table.addColumn("Dim5",
-	    {{"A", "B", "C", "D", "E"}},
-	    {{0, 0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 4}});
-	table.addColumn("Dim2",
-	    {{"a", "b"}},
-	    {{0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1}});
-	table.addColumn("Dim3",
-	    {{"a", "b", "c"}},
-	    {{0, 0, 1, 1, 0, 0, 1, 1, 2, 2, 1, 0, 2, 2, 1, 0}});
-	table.addColumn("Meas1",
-	    "",
-	    {{1, 2, 4, 3, 3, 4, 2, 1, 4, 3, 1, 2, 2, 1, 3, 4}});
-	table.addColumn("Meas2",
-	    "",
-	    {{0, -1, 5, 6, 6, 5, -1, 0, 5, 6, 0, -1, -1, 0, 6, -5}});
+	table.add_dimension({{"A", "B", "C", "D", "E"}},
+	    {{0, 0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 4}},
+	    "Dim5");
+	table.add_dimension({{"a", "b"}},
+	    {{0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1}},
+	    "Dim2");
+	table.add_dimension({{"a", "b", "c"}},
+	    {{0, 0, 1, 1, 0, 0, 1, 1, 2, 2, 1, 0, 2, 2, 1, 0}},
+	    "Dim3");
+	table.add_measure(
+	    {{1, 2, 4, 3, 3, 4, 2, 1, 4, 3, 1, 2, 2, 1, 3, 4}},
+	    "Meas1");
+	table.add_measure(
+	    {{0, -1, 5, 6, 6, 5, -1, 0, 5, 6, 0, -1, -1, 0, 6, -5}},
+	    "Meas2");
 };
 
 auto testcase_2 = [](Vizzu::Data::DataTable &table)
 {
-	table.addColumn("Channel title for long names",
-	    {{
-	        "Long name wich has no end",
-	        R"(Raw
+	table.add_dimension({{
+	                        "Long name wich has no end",
+	                        R"(Raw
 break)",
-	        R"(キャラクターセット)",
-	    }},
+	                        R"(キャラクターセット)",
+	                    }},
 	    {{0,
 	        0,
 	        0,
@@ -140,20 +139,20 @@ break)",
 	        2,
 	        2,
 	        2,
-	        2}});
+	        2}},
+	    "Channel title for long names");
 
-	table.addColumn("Childs of long names which have no end",
-	    {{"Very long label of this element",
-	        "",
-	        "It is also long enough",
-	        "Short one",
-	        "Jap",
-	        "キャラクターセット",
-	        R"(Raw
+	table.add_dimension({{"Very long label of this element",
+	                        "",
+	                        "It is also long enough",
+	                        "Short one",
+	                        "Jap",
+	                        "キャラクターセット",
+	                        R"(Raw
 break)",
-	        "h",
-	        "i",
-	        "j"}},
+	                        "h",
+	                        "i",
+	                        "j"}},
 	    {{
 	        0,
 	        1,
@@ -196,58 +195,58 @@ break)",
 	        8,
 	        9,
 
-	    }});
+	    }},
+	    "Childs of long names which have no end");
 
-	table.addColumn("値3",
-	    "",
-	    {{639,
-	        354,
-	        278,
-	        312,
-	        1241,
-	        1512,
-	        863,
-	        789,
-	        765,
-	        653,
-	        542,
-	        497,
-	        673,
-	        412,
-	        308,
-	        345,
-	        1329,
-	        1671,
-	        962,
-	        821,
-	        798,
-	        681,
-	        584,
-	        518,
-	        706,
-	        432,
-	        326,
-	        358,
-	        1382,
-	        1715,
-	        1073,
-	        912,
-	        821,
-	        721,
-	        618,
-	        542,
-	        721,
-	        462,
-	        372,
-	        367,
-	        1404,
-	        1729,
-	        1142,
-	        941,
-	        834,
-	        778,
-	        651,
-	        598}});
+	table.add_measure({{639,
+	                      354,
+	                      278,
+	                      312,
+	                      1241,
+	                      1512,
+	                      863,
+	                      789,
+	                      765,
+	                      653,
+	                      542,
+	                      497,
+	                      673,
+	                      412,
+	                      308,
+	                      345,
+	                      1329,
+	                      1671,
+	                      962,
+	                      821,
+	                      798,
+	                      681,
+	                      584,
+	                      518,
+	                      706,
+	                      432,
+	                      326,
+	                      358,
+	                      1382,
+	                      1715,
+	                      1073,
+	                      912,
+	                      821,
+	                      721,
+	                      618,
+	                      542,
+	                      721,
+	                      462,
+	                      372,
+	                      367,
+	                      1404,
+	                      1729,
+	                      1142,
+	                      941,
+	                      834,
+	                      778,
+	                      651,
+	                      598}},
+	    "値3");
 };
 
 struct chart_setup

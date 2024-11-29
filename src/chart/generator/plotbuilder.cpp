@@ -93,11 +93,26 @@ Buckets PlotBuilder::generateMarkers(std::size_t &mainBucketSize)
 		plot->markers.reserve(dataCube.df->get_record_count());
 	}
 
-	std::multimap<Marker::MarkerIndex, Options::MarkerInfoId> map;
-	for (auto &&[ix, mid] : plot->getOptions()->markersInfo)
-		map.emplace(mid, ix);
+	struct CmpBySec
+	{
+		[[nodiscard]] bool operator()(
+		    const std::pair<const Options::MarkerInfoId,
+		        Marker::MarkerIndex> &lhs,
+		    const std::pair<const Options::MarkerInfoId,
+		        Marker::MarkerIndex> &rhs) const
+		{
+			return lhs.second < rhs.second;
+		}
+	};
 
-	for (auto first = map.begin(); auto &&index : dataCube)
+	auto &&set =
+	    std::multiset<std::reference_wrapper<
+	                      const std::pair<const Options::MarkerInfoId,
+	                          Marker::MarkerIndex>>,
+	        CmpBySec>{plot->getOptions()->markersInfo.begin(),
+	        plot->getOptions()->markersInfo.end()};
+
+	for (auto first = set.begin(); auto &&index : dataCube)
 		for (auto &marker =
 		         plot->markers.emplace_back(*plot->getOptions(),
 		             dataCube,
@@ -105,10 +120,12 @@ Buckets PlotBuilder::generateMarkers(std::size_t &mainBucketSize)
 		             mainIds,
 		             subIds,
 		             index,
-		             map.contains(index.marker_id));
-		     first != map.end() && first->first == marker.idx;
+		             first != set.end()
+		                 && first->get().second == index.marker_id);
+		     first != set.end()
+		     && first->get().second == index.marker_id;
 		     ++first)
-			plot->markersInfo.insert({first->second,
+			plot->markersInfo.insert({first->get().first,
 			    Plot::MarkerInfo{Plot::MarkerInfoContent{marker}}});
 
 	if (!std::ranges::is_sorted(plot->markers, {}, &Marker::idx))
@@ -357,7 +374,8 @@ void PlotBuilder::calcLegendAndLabel(const Data::DataTable &dataTable)
 					calcLegend.title = dataCube.getName(*meas);
 				calcLegend.measure = {std::get<0>(stats.at(type)),
 				    meas->getColIndex(),
-				    dataTable.getUnit(meas->getColIndex()),
+				    dataTable.get_series_info(meas->getColIndex(),
+				        "unit"),
 				    scale.step.getValue()};
 			}
 		}
@@ -398,8 +416,9 @@ void PlotBuilder::calcLegendAndLabel(const Data::DataTable &dataTable)
 	                      .at(ChannelId::label)
 	                      .measure())
 		plot->axises.label = {
-		    ::Anim::String{
-		        std::string{dataTable.getUnit(meas->getColIndex())}},
+		    ::Anim::String{std::string{
+		        dataTable.get_series_info(meas->getColIndex(),
+		            "unit")}},
 		    ::Anim::String{meas->getColIndex()}};
 }
 
@@ -428,7 +447,7 @@ void PlotBuilder::calcAxis(const Data::DataTable &dataTable,
 		else
 			axis.measure = {std::get<0>(stats.at(type)),
 			    meas.getColIndex(),
-			    dataTable.getUnit(meas.getColIndex()),
+			    dataTable.get_series_info(meas.getColIndex(), "unit"),
 			    scale.step.getValue()};
 	}
 	else {

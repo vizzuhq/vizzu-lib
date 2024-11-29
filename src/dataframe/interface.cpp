@@ -66,26 +66,26 @@ void dataframe_interface::add_dimension(
     std::span<const char *const> dimension_categories,
     std::span<const std::uint32_t> dimension_values,
     std::string_view name,
-    adding_type adding_strategy,
-    std::span<const std::pair<const char *, const char *>> info) &
+    std::span<const std::pair<const char *, const char *>> info,
+    adding_type adding_strategy) &
 {
 	as_impl(this).add_dimension(dimension_categories,
 	    dimension_values,
 	    name,
-	    adding_strategy,
-	    info);
+	    info,
+	    adding_strategy);
 }
 
 void dataframe_interface::add_measure(
     std::span<const double> measure_values,
     std::string_view name,
-    adding_type adding_strategy,
-    std::span<const std::pair<const char *, const char *>> info) &
+    std::span<const std::pair<const char *, const char *>> info,
+    adding_type adding_strategy) &
 {
 	as_impl(this).add_measure(measure_values,
 	    name,
-	    adding_strategy,
-	    info);
+	    info,
+	    adding_strategy);
 }
 
 void dataframe_interface::add_series_by_other(

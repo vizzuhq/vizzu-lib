@@ -103,7 +103,8 @@ export interface CVizzu {
 		categories: CArrayPtr,
 		categoriesCount: number,
 		categoryIndices: CArrayPtr,
-		categoryIndicesCount: number
+		categoryIndicesCount: number,
+		isContiguous: boolean
 	): void
 	_data_addMeasure(
 		chart: CChartPtr,

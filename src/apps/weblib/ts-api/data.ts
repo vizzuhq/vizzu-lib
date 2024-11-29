@@ -83,19 +83,25 @@ export class Data {
 
 		if (this._isIndexedDimension(series)) {
 			this._validateIndexedDimension(series)
-			this._addDimension(series.name, series.values ?? [], series.categories)
+			this._addDimension(
+				series.name,
+				series.values ?? [],
+				series.categories,
+				series.isContiguous ?? false
+			)
 		} else {
 			const values = series?.values ?? ([] as DataTypes[])
 			const seriesType = series?.type ?? this._detectType(values)
 
-			if (seriesType === 'dimension') {
+			if (this._isDetectedDimension(series, seriesType)) {
 				const { indexes, categories } = this._convertDimension(values)
-				this._addDimension(series.name, indexes, categories)
+				this._addDimension(series.name, indexes, categories, series.isContiguous ?? false)
 			} else if (this._isMeasure(series, seriesType)) {
 				if (!series.unit) series.unit = ''
 				this._addMeasure(series.name, series.unit, values)
 			} else {
-				throw new Error('invalid series type: ' + series.type)
+				const seriesBase = series as D.SeriesBase
+				throw new Error('invalid series type: ' + seriesBase.type)
 			}
 		}
 	}
@@ -107,11 +113,15 @@ export class Data {
 		return true
 	}
 
+	private _isDetectedDimension(series: D.Series, type: string | null): series is D.Dimension {
+		return (
+			type === 'dimension' ||
+			('isContiguous' in series && typeof series.isContiguous === 'boolean')
+		)
+	}
+
 	private _isMeasure(series: D.Series, type: string | null): series is D.Measure {
-		if (type === 'measure' || ('unit' in series && typeof series.unit === 'string')) {
-			return true
-		}
-		return false
+		return type === 'measure' || ('unit' in series && typeof series.unit === 'string')
 	}
 
 	private _validateIndexedDimension(series: D.IndexDimension): void {
@@ -151,7 +161,12 @@ export class Data {
 		return null
 	}
 
-	private _addDimension(name: string, indexes: number[], categories: string[]): void {
+	private _addDimension(
+		name: string,
+		indexes: number[],
+		categories: string[],
+		isContiguous: boolean
+	): void {
 		if (typeof name !== 'string') {
 			throw new Error('first parameter should be string')
 		}
@@ -164,6 +179,10 @@ export class Data {
 			throw new Error('third parameter should be an array')
 		}
 
+		if (typeof isContiguous !== 'boolean') {
+			throw new Error('fourth parameter should be boolean')
+		}
+
 		if (!this._isStringArray(categories)) {
 			throw new Error('third parameter should be an array of strings')
 		}
@@ -172,7 +191,7 @@ export class Data {
 			throw new Error('the measure index array element should be number')
 		}
 
-		this._cData.addDimension(name, indexes, categories)
+		this._cData.addDimension(name, indexes, categories, isContiguous)
 	}
 
 	private _isStringArray(values: unknown[]): values is string[] {
