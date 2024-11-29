@@ -60,7 +60,8 @@ auto testcase_0 = [](Vizzu::Data::DataTable &table)
 {
 	table.addColumn("Index",
 	    std::initializer_list<const char *>{},
-	    std::initializer_list<std::uint32_t>{});
+	    std::initializer_list<std::uint32_t>{},
+	    false);
 	table.addColumn("x", "", std::initializer_list<double>{});
 	table.addColumn("y", "", std::initializer_list<double>{});
 };
@@ -69,13 +70,16 @@ auto testcase_1 = [](Vizzu::Data::DataTable &table)
 {
 	table.addColumn("Dim5",
 	    {{"A", "B", "C", "D", "E"}},
-	    {{0, 0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 4}});
+	    {{0, 0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 4}},
+	    false);
 	table.addColumn("Dim2",
 	    {{"a", "b"}},
-	    {{0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1}});
+	    {{0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1}},
+	    false);
 	table.addColumn("Dim3",
 	    {{"a", "b", "c"}},
-	    {{0, 0, 1, 1, 0, 0, 1, 1, 2, 2, 1, 0, 2, 2, 1, 0}});
+	    {{0, 0, 1, 1, 0, 0, 1, 1, 2, 2, 1, 0, 2, 2, 1, 0}},
+	    false);
 	table.addColumn("Meas1",
 	    "",
 	    {{1, 2, 4, 3, 3, 4, 2, 1, 4, 3, 1, 2, 2, 1, 3, 4}});
@@ -140,7 +144,8 @@ break)",
 	        2,
 	        2,
 	        2,
-	        2}});
+	        2}},
+	    false);
 
 	table.addColumn("Childs of long names which have no end",
 	    {{"Very long label of this element",
@@ -196,7 +201,8 @@ break)",
 	        8,
 	        9,
 
-	    }});
+	    }},
+	    false);
 
 	table.addColumn("値3",
 	    "",

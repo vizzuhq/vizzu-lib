@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+### Added
+
+- Add 'isContiguous' property for dimension series
+
 ## [0.16.0] - 2024-11-28
 
 ### Fixed
