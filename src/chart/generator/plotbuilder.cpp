@@ -100,11 +100,11 @@ Buckets PlotBuilder::generateMarkers(std::size_t &mainBucketSize)
 			return lhs.second < rhs.second;
 		});
 
-	std::multiset<std::reference_wrapper<
-	                  const std::pair<const Options::MarkerInfoId,
-	                      Marker::MarkerIndex>>,
-	    CmpBySec>
-	    set{plot->getOptions()->markersInfo.begin(),
+	auto &&set =
+	    std::multiset<std::reference_wrapper<
+	                      const std::pair<const Options::MarkerInfoId,
+	                          Marker::MarkerIndex>>,
+	        CmpBySec>{plot->getOptions()->markersInfo.begin(),
 	        plot->getOptions()->markersInfo.end()};
 
 	for (auto first = set.begin(); auto &&index : dataCube)
