@@ -47,29 +47,35 @@ PlotBuilder::PlotBuilder(const Data::DataTable &dataTable,
 	initDimensionTrackers();
 
 	std::size_t mainBucketSize{};
-	auto &&subBuckets = generateMarkers(mainBucketSize);
+	std::size_t subBucketSize{};
+	auto &&buckets = generateMarkers(mainBucketSize, subBucketSize);
 
 	if (!plot->getOptions()->getChannels().anyAxisSet()) {
-		addSpecLayout(subBuckets);
+		addSpecLayout(buckets);
 		normalizeSizes();
 	}
 	else {
 		normalizeSizes();
-		addAxisLayout(subBuckets, mainBucketSize, dataTable);
+		addAxisLayout(buckets,
+		    mainBucketSize,
+		    subBucketSize,
+		    dataTable);
 	}
 
 	normalizeColors();
 	calcLegendAndLabel(dataTable);
 }
 
-void PlotBuilder::addAxisLayout(Buckets &subBuckets,
+void PlotBuilder::addAxisLayout(Buckets &buckets,
     const std::size_t &mainBucketSize,
+    const std::size_t &subBucketSize,
     const Data::DataTable &dataTable)
 {
-	linkMarkers(subBuckets);
-	addSeparation(subBuckets, mainBucketSize);
+	linkMarkers(buckets, mainBucketSize, subBucketSize);
 	calcAxises(dataTable);
-	addAlignment(subBuckets);
+	addAlignment(buckets, plot->getOptions()->subAxisType());
+	addAlignment(buckets.sort(&Marker::mainId),
+	    plot->getOptions()->mainAxisType());
 }
 
 void PlotBuilder::initDimensionTrackers()
@@ -81,7 +87,8 @@ void PlotBuilder::initDimensionTrackers()
 			    dataCube.combinedSizeOf(ch.dimensions()).second);
 }
 
-Buckets PlotBuilder::generateMarkers(std::size_t &mainBucketSize)
+Buckets PlotBuilder::generateMarkers(std::size_t &mainBucketSize,
+    std::size_t &subBucketSize)
 {
 	const auto &mainIds(plot->getOptions()->mainAxis().dimensions());
 	auto subIds(plot->getOptions()->subAxis().dimensions());
@@ -90,6 +97,7 @@ Buckets PlotBuilder::generateMarkers(std::size_t &mainBucketSize)
 			subIds.split_by(mainIds);
 
 		mainBucketSize = dataCube.combinedSizeOf(mainIds).first;
+		subBucketSize = dataCube.combinedSizeOf(subIds).first;
 		plot->markers.reserve(dataCube.df->get_record_count());
 	}
 
@@ -179,13 +187,21 @@ void PlotBuilder::addSpecLayout(Buckets &buckets)
 	}
 }
 
-void PlotBuilder::linkMarkers(Buckets &buckets)
+void PlotBuilder::linkMarkers(Buckets &buckets,
+    const std::size_t &mainBucketSize,
+    const std::size_t &subBucketSize)
 {
 	auto &&hasMarkerConnection =
 	    linkMarkers(buckets.sort(&Marker::mainId),
 	        plot->getOptions()->mainAxisType());
+	addSeparation(buckets,
+	    plot->getOptions()->mainAxisType(),
+	    subBucketSize);
 	std::ignore = linkMarkers(buckets.sort(&Marker::subId),
 	    plot->getOptions()->subAxisType());
+	addSeparation(buckets,
+	    plot->getOptions()->subAxisType(),
+	    mainBucketSize);
 
 	if (hasMarkerConnection
 	    && plot->getOptions()->geometry.get() == ShapeType::line
@@ -471,69 +487,65 @@ void PlotBuilder::calcAxis(const Data::DataTable &dataTable,
 	}
 }
 
-void PlotBuilder::addAlignment(const Buckets &subBuckets) const
+void PlotBuilder::addAlignment(const Buckets &buckets,
+    AxisId axisIndex) const
 {
-	if (plot->getOptions()->isSplit()) return;
+	if (plot->getOptions()->isSplit(axisIndex)) return;
 
-	auto &subAxisRange =
-	    plot->axises.at(plot->getOptions()->subAxisType())
-	        .measure.range;
-	if (std::signbit(subAxisRange.getMin())
-	    || std::signbit(subAxisRange.getMax()))
+	auto &axisRange = plot->axises.at(axisIndex).measure.range;
+	if (std::signbit(axisRange.getMin())
+	    || std::signbit(axisRange.getMax()))
 		return;
 
 	const auto &axisProps =
-	    plot->getOptions()->getChannels().axisPropsAt(
-	        plot->getOptions()->subAxisType());
+	    plot->getOptions()->getChannels().axisPropsAt(axisIndex);
 
 	if (axisProps.align == Base::Align::Type::none) return;
 
 	if (axisProps.align == Base::Align::Type::center) {
-		auto &&halfSize = subAxisRange.size() / 2.0;
+		auto &&halfSize = axisRange.size() / 2.0;
 		if (!Math::Floating::is_zero(halfSize))
-			subAxisRange =
-			    Math::Range<>::Raw(subAxisRange.getMin() - halfSize,
-			        subAxisRange.getMax() - halfSize);
+			axisRange =
+			    Math::Range<>::Raw(axisRange.getMin() - halfSize,
+			        axisRange.getMax() - halfSize);
 	}
 
-	auto &&subAxis = plot->getOptions()->subAxisType();
 	const Base::Align align{axisProps.align,
 	    Math::Range<>::Raw(0.0, 1.0)};
-	for (auto &&bucket : subBuckets) {
+	for (auto &&bucket : buckets) {
 		Math::Range<> range;
 
 		for (auto &&[marker, idx] : bucket)
 			if (marker.enabled)
-				range.include(marker.getSizeBy(subAxis));
+				range.include(marker.getSizeBy(axisIndex));
 
 		auto &&transform = align.getAligned(range) / range;
 
 		for (auto &&[marker, idx] : bucket)
-			marker.setSizeBy(subAxis,
-			    marker.getSizeBy(subAxis) * transform);
+			marker.setSizeBy(axisIndex,
+			    marker.getSizeBy(axisIndex) * transform);
 	}
 }
 
-void PlotBuilder::addSeparation(const Buckets &subBuckets,
-    const std::size_t &mainBucketSize) const
+void PlotBuilder::addSeparation(const Buckets &buckets,
+    AxisId axisIndex,
+    const std::size_t &otherBucketSize) const
 {
-	if (!plot->getOptions()->isSplit()) return;
+	if (!plot->getOptions()->isSplit(axisIndex)) return;
 
 	const auto &axisProps =
-	    plot->getOptions()->getChannels().axisPropsAt(
-	        plot->getOptions()->subAxisType());
+	    plot->getOptions()->getChannels().axisPropsAt(axisIndex);
 	auto align = axisProps.align;
 
-	std::vector ranges{mainBucketSize, Math::Range<>::Raw({}, {})};
-	std::vector<bool> anyEnabled(mainBucketSize);
+	std::vector ranges{otherBucketSize, Math::Range<>::Raw({}, {})};
+	std::vector<bool> anyEnabled(otherBucketSize);
 
-	auto &&subAxis = plot->getOptions()->subAxisType();
-	for (auto &&bucket : subBuckets)
+	for (auto &&bucket : buckets)
 		for (std::size_t i{}, prIx{}; auto &&[marker, idx] : bucket) {
 			if (!marker.enabled) continue;
 			(i += idx.itemId - std::exchange(prIx, idx.itemId)) %=
 			    ranges.size();
-			ranges[i].include(marker.getSizeBy(subAxis).size());
+			ranges[i].include(marker.getSizeBy(axisIndex).size());
 			anyEnabled[i] = true;
 		}
 
@@ -542,22 +554,21 @@ void PlotBuilder::addSeparation(const Buckets &subBuckets,
 		if (anyEnabled[i]) max = max + ranges[i];
 
 	auto splitSpace =
-	    plot->getStyle()
-	        .plot.getAxis(plot->getOptions()->subAxisType())
-	        .spacing->get(max.getMax(),
-	            plot->getStyle().calculatedSize());
+	    plot->getStyle().plot.getAxis(axisIndex).spacing->get(
+	        max.getMax(),
+	        plot->getStyle().calculatedSize());
 
 	for (auto i = 1U; i < ranges.size(); ++i)
 		ranges[i] = ranges[i] + ranges[i - 1].getMax()
 		          + (anyEnabled[i - 1] ? splitSpace : 0);
 
-	for (auto &&bucket : subBuckets)
+	for (auto &&bucket : buckets)
 		for (std::size_t i{}, prIx{}; auto &&[marker, idx] : bucket) {
 			(i += idx.itemId - std::exchange(prIx, idx.itemId)) %=
 			    ranges.size();
-			marker.setSizeBy(subAxis,
+			marker.setSizeBy(axisIndex,
 			    Base::Align{align, ranges[i]}.getAligned(
-			        marker.getSizeBy(subAxis)));
+			        marker.getSizeBy(axisIndex)));
 		}
 }
 

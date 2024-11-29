@@ -34,23 +34,28 @@ private:
 	};
 
 	void initDimensionTrackers();
-	Buckets generateMarkers(std::size_t &mainBucketSize);
-	void linkMarkers(Buckets &subBuckets);
+	Buckets generateMarkers(std::size_t &mainBucketSize,
+	    std::size_t &subBucketSize);
+	void linkMarkers(Buckets &buckets,
+	    const std::size_t &mainBucketSize,
+	    const std::size_t &subBucketSize);
 	[[nodiscard]] bool linkMarkers(const Buckets &buckets,
 	    AxisId axisIndex) const;
 	void calcAxises(const Data::DataTable &dataTable);
 	void calcLegendAndLabel(const Data::DataTable &dataTable);
 	void calcAxis(const Data::DataTable &dataTable, AxisId type);
-	void addAlignment(const Buckets &subBuckets) const;
-	void addSeparation(const Buckets &subBuckets,
-	    const std::size_t &mainBucketSize) const;
+	void addAlignment(const Buckets &buckets, AxisId axisIndex) const;
+	void addSeparation(const Buckets &buckets,
+	    AxisId axisIndex,
+	    const std::size_t &otherBucketSize) const;
 	void normalizeSizes();
 	void normalizeColors();
 	[[nodiscard]] std::vector<BucketInfo>
 	sortedBuckets(const Buckets &buckets, AxisId axisIndex) const;
 	void addSpecLayout(Buckets &buckets);
-	void addAxisLayout(Buckets &subBuckets,
+	void addAxisLayout(Buckets &buckets,
 	    const std::size_t &mainBucketSize,
+	    const std::size_t &subBucketSize,
 	    const Data::DataTable &dataTable);
 };
 }

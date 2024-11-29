@@ -7,6 +7,10 @@
 - Separate Channel properties to AxisChannel properties at config.
 - Channels 'set' rewrite doesn't clear AxisChannel properties.
 
+### Added
+
+- Enable split and align on mainAxis.
+
 ## [0.16.0] - 2024-11-28
 
 ### Fixed

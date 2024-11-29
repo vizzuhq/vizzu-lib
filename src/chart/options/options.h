@@ -140,11 +140,11 @@ public:
 		return channels.at(stackChannelType());
 	}
 
-	[[nodiscard]] bool hasDimensionToSplit() const;
-	[[nodiscard]] bool isSplit() const
+	[[nodiscard]] bool hasDimensionToSplit(AxisId at) const;
+	[[nodiscard]] bool isSplit(AxisId byAxis) const
 	{
-		return getChannels().axisPropsAt(subAxisType()).split
-		    && hasDimensionToSplit();
+		return getChannels().axisPropsAt(byAxis).split
+		    && hasDimensionToSplit(byAxis);
 	}
 	Data::Filter dataFilter;
 	std::optional<MarkerIndex> tooltip;
