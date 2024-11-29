@@ -30,11 +30,15 @@ public:
 
 	void addColumn(std::string_view name,
 	    const std::span<const char *const> &categories,
-	    const std::span<const std::uint32_t> &values);
+	    const std::span<const std::uint32_t> &values,
+	    bool isContiguous);
 
 	void pushRow(const std::span<const char *const> &cells);
 
 	[[nodiscard]] std::string_view getUnit(
+	    std::string_view const &colIx) const;
+
+	[[nodiscard]] bool getIsContiguous(
 	    std::string_view const &colIx) const;
 
 	[[nodiscard]] std::string getInfos() const;

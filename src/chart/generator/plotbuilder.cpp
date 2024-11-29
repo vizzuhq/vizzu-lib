@@ -93,11 +93,21 @@ Buckets PlotBuilder::generateMarkers(std::size_t &mainBucketSize)
 		plot->markers.reserve(dataCube.df->get_record_count());
 	}
 
-	std::multimap<Marker::MarkerIndex, Options::MarkerInfoId> map;
-	for (auto &&[ix, mid] : plot->getOptions()->markersInfo)
-		map.emplace(mid, ix);
+	using CmpBySec = decltype(
+		[] (const std::pair<const Options::MarkerInfoId, Marker::MarkerIndex>& lhs,
+			const std::pair<const Options::MarkerInfoId, Marker::MarkerIndex>& rhs)
+		{
+			return lhs.second < rhs.second;
+		});
 
-	for (auto first = map.begin(); auto &&index : dataCube)
+	std::multiset<std::reference_wrapper<
+	                  const std::pair<const Options::MarkerInfoId,
+	                      Marker::MarkerIndex>>,
+	    CmpBySec>
+	    set{plot->getOptions()->markersInfo.begin(),
+	        plot->getOptions()->markersInfo.end()};
+
+	for (auto first = set.begin(); auto &&index : dataCube)
 		for (auto &marker =
 		         plot->markers.emplace_back(*plot->getOptions(),
 		             dataCube,
@@ -105,10 +115,12 @@ Buckets PlotBuilder::generateMarkers(std::size_t &mainBucketSize)
 		             mainIds,
 		             subIds,
 		             index,
-		             map.contains(index.marker_id));
-		     first != map.end() && first->first == marker.idx;
+		             first != set.end()
+		                 && first->get().second == index.marker_id);
+		     first != set.end()
+		     && first->get().second == index.marker_id;
 		     ++first)
-			plot->markersInfo.insert({first->second,
+			plot->markersInfo.insert({first->get().first,
 			    Plot::MarkerInfo{Plot::MarkerInfoContent{marker}}});
 
 	if (!std::ranges::is_sorted(plot->markers, {}, &Marker::idx))

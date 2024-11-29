@@ -40,13 +40,14 @@ void DataTable::addColumn(std::string_view name,
 
 void DataTable::addColumn(std::string_view name,
     const std::span<const char *const> &categories,
-    const std::span<const std::uint32_t> &values)
+    const std::span<const std::uint32_t> &values,
+    bool isContiguous)
 {
 	df.add_dimension(categories,
 	    values,
 	    name.data(),
 	    dataframe::adding_type::create_or_override,
-	    {});
+	    {{std::pair{"contiguous", isContiguous ? "true" : "false"}}});
 }
 
 void DataTable::pushRow(const std::span<const char *const> &cells)
@@ -245,6 +246,11 @@ std::string_view DataTable::getUnit(
     std::string_view const &colIx) const
 {
 	return df.get_series_info(colIx, "unit");
+}
+
+bool DataTable::getIsContiguous(std::string_view const &colIx) const
+{
+	return df.get_series_info(colIx, "contiguous") == "true";
 }
 
 MarkerId DataCube::getId(const SeriesList &sl,

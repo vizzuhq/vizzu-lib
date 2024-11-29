@@ -28,10 +28,12 @@ void TestChart::prepareData()
 	auto &table = chart.getChart().getTable();
 	table.addColumn("Cat1",
 	    std::span(cat1),
-	    std::array{0u, 0u, 0u, 1u, 1u, 1u, 2u, 2u, 2u});
+	    std::array{0u, 0u, 0u, 1u, 1u, 1u, 2u, 2u, 2u},
+	    false);
 	table.addColumn("Cat2",
 	    std::span(cat2),
-	    std::array{0u, 1u, 2u, 3u, 4u, 5u, 6u, 7u, 8u});
+	    std::array{0u, 1u, 2u, 3u, 4u, 5u, 6u, 7u, 8u},
+	    false);
 	table.addColumn("Val", "", std::span(val));
 
 	chart.getChart()

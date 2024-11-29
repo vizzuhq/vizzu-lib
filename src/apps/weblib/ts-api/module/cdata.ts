@@ -35,11 +35,15 @@ export class CData extends CObject {
 		return { series: JSON.parse(info) }
 	}
 
-	addDimension(name: string, indexes: number[], categories: string[]): void {
+	addDimension(
+		name: string,
+		indexes: number[],
+		categories: string[],
+		isContiguous: boolean
+	): void {
 		const categoriesPointer = new Uint32Array(categories.length)
 		for (let i = 0; i < categories.length; i++) {
-			const categoryPointer = this._toCString(categories[i]!)
-			categoriesPointer[i] = categoryPointer
+			categoriesPointer[i] = this._toCString(categories[i]!)
 		}
 
 		const categoriesPointerArrayLen = categories.length * 4
@@ -66,7 +70,8 @@ export class CData extends CObject {
 				categoriesPtrArr,
 				categories.length,
 				indexesArr,
-				indexes.length
+				indexes.length,
+				isContiguous
 			)
 		} finally {
 			this._wasm._free(cname)

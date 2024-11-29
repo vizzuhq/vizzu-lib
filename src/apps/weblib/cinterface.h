@@ -82,7 +82,8 @@ extern void data_addDimension(APIHandles::Chart chart,
     const char **categories,
     std::uint32_t categoriesCount,
     const std::uint32_t *categoryIndices,
-    std::uint32_t categoryIndicesCount);
+    std::uint32_t categoryIndicesCount,
+    bool isContiguous);
 extern void data_addMeasure(APIHandles::Chart chart,
     const char *name,
     const char *unit,

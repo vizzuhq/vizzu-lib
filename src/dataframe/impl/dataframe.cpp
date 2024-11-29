@@ -656,9 +656,9 @@ std::string dataframe::as_string() const &
 		default: error(error_type::series_not_found, name);
 		case dimension: {
 			const auto &[name, dim] = unsafe_get<dimension>(ser);
-			obj("name", name)("type", "dimension")("unit",
-			    "")("length", dim.values.size())("categories",
-			    dim.categories);
+			obj("name", name)("type", "dimension")("isContiguous",
+			    dim.info.at("isContiguous"))("length",
+			    dim.values.size())("categories", dim.categories);
 			break;
 		}
 		case measure: {

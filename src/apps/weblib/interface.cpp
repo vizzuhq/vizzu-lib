@@ -319,13 +319,13 @@ void Interface::addDimension(ObjectRegistryHandle chart,
     const char **categories,
     std::uint32_t categoriesCount,
     const std::uint32_t *categoryIndices,
-    std::uint32_t categoryIndicesCount)
+    std::uint32_t categoryIndicesCount,
+    bool isContiguous)
 {
-	if (categories) {
-		getChart(chart)->getTable().addColumn(name,
-		    {categories, categoriesCount},
-		    {categoryIndices, categoryIndicesCount});
-	}
+	getChart(chart)->getTable().addColumn(name,
+	    {categories, categoriesCount},
+	    {categoryIndices, categoryIndicesCount},
+	    isContiguous);
 }
 
 void Interface::addMeasure(ObjectRegistryHandle chart,
