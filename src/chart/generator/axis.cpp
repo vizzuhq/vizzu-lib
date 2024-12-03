@@ -12,6 +12,7 @@
 #include <tuple>
 #include <utility>
 
+#include "base/alg/union_foreach.h"
 #include "base/anim/interpolated.h"
 #include "base/geom/point.h"
 #include "base/math/floating.h"
@@ -295,52 +296,32 @@ DimensionAxis interpolate(const DimensionAxis &op0,
 	DimensionAxis res;
 
 	res.factor = factor;
-
-	for (auto first1 = op0.values.begin(),
-	          first2 = op1.values.begin(),
-	          last1 = op0.values.end(),
-	          last2 = op1.values.end();
-	     first1 != last1 || first2 != last2;)
-		if (first2 == last2
-		    || (first1 != last1 && first1->first < first2->first)) {
-			res.values.emplace(std::piecewise_construct,
-			    std::tuple{first1->first},
-			    std::forward_as_tuple(first1->second, true));
-			++first1;
-		}
-		else if (first1 == last1 || first2->first < first1->first) {
-			res.values.emplace(std::piecewise_construct,
-			    std::tuple{first2->first},
-			    std::forward_as_tuple(first2->second, false));
-			++first2;
-		}
-		else {
-			auto key = first1->first;
-			auto to1 = op0.values.upper_bound(key);
-			auto to2 = op1.values.upper_bound(key);
-
-			while (first1 != to1 && first2 != to2)
-				res.values.emplace(key,
-				    interpolate(first1++->second,
-				        first2++->second,
-				        factor));
-
-			for (const auto &latest = std::prev(to2)->second;
-			     first1 != to1;
-			     ++first1)
-				res.values
-				    .emplace(key,
-				        interpolate(first1->second, latest, factor))
-				    ->second.endPos.makeAuto();
-
-			for (const auto &latest = std::prev(to1)->second;
-			     first2 != to2;
-			     ++first2)
-				res.values
-				    .emplace(key,
-				        interpolate(latest, first2->second, factor))
-				    ->second.startPos.makeAuto();
-		}
+	using Ptr = DimensionAxis::Values::const_pointer;
+	Alg::union_foreach(
+	    op0.values,
+	    op1.values,
+	    [&res](Ptr v1, Ptr v2, Alg::union_call_t type)
+	    {
+		    if (!v2)
+			    res.values.emplace(std::piecewise_construct,
+			        std::tuple{v1->first},
+			        std::forward_as_tuple(v1->second, true));
+		    else if (!v1)
+			    res.values.emplace(std::piecewise_construct,
+			        std::tuple{v2->first},
+			        std::forward_as_tuple(v2->second, false));
+		    else if (auto &&val = res.values
+		                              .emplace(v1->first,
+		                                  interpolate(v1->second,
+		                                      v2->second,
+		                                      res.factor))
+		                              ->second;
+		             type == Alg::union_call_t::only_left)
+			    val.endPos.makeAuto();
+		    else if (type == Alg::union_call_t::only_right)
+			    val.startPos.makeAuto();
+	    },
+	    res.values.value_comp());
 
 	return res;
 }
