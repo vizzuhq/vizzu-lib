@@ -96,8 +96,8 @@ Buckets PlotBuilder::generateMarkers(std::size_t &mainBucketSize,
 		if (plot->getOptions()->geometry == ShapeType::area)
 			subIds.split_by(mainIds);
 
-		mainBucketSize = dataCube.combinedSizeOf(mainIds).first;
-		subBucketSize = dataCube.combinedSizeOf(subIds).first;
+		mainBucketSize = dataCube.combinedSizeOf(subIds).second;
+		subBucketSize = dataCube.combinedSizeOf(mainIds).second;
 		plot->markers.reserve(dataCube.df->get_record_count());
 	}
 
@@ -543,10 +543,9 @@ PlotBuilder::addSeparation(const Buckets &buckets,
 	std::vector<bool> anyEnabled(otherBucketSize);
 
 	for (auto &&bucket : buckets)
-		for (std::size_t i{}, prIx{}; auto &&[marker, idx] : bucket) {
+		for (auto &&[marker, idx] : bucket) {
 			if (!marker.enabled) continue;
-			(i += idx.itemId - std::exchange(prIx, idx.itemId)) %=
-			    ranges.size();
+			auto i = idx.itemId;
 			ranges[i].include(marker.getSizeBy(axisIndex).size());
 			anyEnabled[i] = true;
 		}
@@ -565,13 +564,10 @@ PlotBuilder::addSeparation(const Buckets &buckets,
 		          + (anyEnabled[i - 1] ? splitSpace : 0);
 
 	for (auto &&bucket : buckets)
-		for (std::size_t i{}, prIx{}; auto &&[marker, idx] : bucket) {
-			(i += idx.itemId - std::exchange(prIx, idx.itemId)) %=
-			    ranges.size();
+		for (auto &&[marker, idx] : bucket)
 			marker.setSizeBy(axisIndex,
-			    Base::Align{align, ranges[i]}.getAligned(
+			    Base::Align{align, ranges[idx.itemId]}.getAligned(
 			        marker.getSizeBy(axisIndex)));
-		}
 
 	return {ranges, max};
 }
