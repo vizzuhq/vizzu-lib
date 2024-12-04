@@ -46,17 +46,25 @@ template <typename T, class CRTP> struct SegmentedFunction
 		Alg::union_foreach(
 		    self.stops,
 		    other.stops,
-		    [&](const Stop *lhs, const Stop *rhs)
+		    [&](const Stop *lhs,
+		        const Stop *rhs,
+		        Alg::union_call_t type)
 		    {
-			    if (!rhs)
+			    switch (type) {
+			    case Alg::union_call_t::only_left:
 				    res.stops.emplace_back(lhs->pos,
 				        lhs->value + other(lhs->pos));
-			    else if (!lhs)
+				    break;
+			    case Alg::union_call_t::only_right:
 				    res.stops.emplace_back(rhs->pos,
 				        rhs->value + self(rhs->pos));
-			    else
+				    break;
+			    case Alg::union_call_t::both:
+			    default:
 				    res.stops.emplace_back(lhs->pos,
 				        lhs->value + rhs->value);
+				    break;
+			    }
 		    },
 		    {},
 		    &Stop::pos,

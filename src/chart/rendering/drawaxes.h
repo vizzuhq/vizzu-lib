@@ -64,6 +64,9 @@ public:
 
 	Refl::EnumArray<Gen::AxisId, std::vector<Interval>> intervals;
 	Refl::EnumArray<Gen::AxisId, std::vector<Separator>> separators;
+	Refl::EnumArray<Gen::AxisId,
+	    std::ranges::subrange<Gen::SplitAxis::Parts::const_iterator>>
+	    splits;
 
 	[[nodiscard]] const auto &getIntervals(
 	    Gen::AxisId axisIndex) const
@@ -87,12 +90,19 @@ private:
 	[[nodiscard]] Geom::Point getTitleOffset(Gen::AxisId axisIndex,
 	    ::Anim::InterpolateIndex index,
 	    bool fades) const;
-	void drawAxis(Gen::AxisId axisIndex) const;
-	void drawTitle(Gen::AxisId axisIndex) const;
-	void drawDimensionLabels(Gen::AxisId axisIndex) const;
+	void drawAxis(Gen::AxisId axisIndex,
+	    const Geom::AffineTransform &tr,
+	    double w) const;
+	void drawTitle(Gen::AxisId axisIndex,
+	    const Geom::AffineTransform &tr,
+	    double w) const;
+	void drawDimensionLabels(Gen::AxisId axisIndex,
+	    const Geom::AffineTransform &tr,
+	    double w) const;
 	void drawDimensionLabel(Gen::AxisId axisIndex,
 	    const Geom::Point &origo,
 	    const Interval &interval,
+	    const Geom::AffineTransform &tr,
 	    double weight) const;
 };
 

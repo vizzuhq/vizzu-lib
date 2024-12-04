@@ -340,4 +340,92 @@ DimensionAxis::Item interpolate(const DimensionAxis::Item &op0,
 	return res;
 }
 
+SplitAxis
+interpolate(const SplitAxis &op0, const SplitAxis &op1, double factor)
+{
+	using Math::Niebloid::interpolate;
+	SplitAxis res;
+	static_cast<Axis &>(res) =
+	    interpolate(static_cast<const Axis &>(op0),
+	        static_cast<const Axis &>(op1),
+	        factor);
+	if (!op0.parts.empty() && !op1.parts.empty()) {
+		using PartPair = const decltype(res.parts)::value_type;
+		Alg::union_foreach(
+		    op0.parts,
+		    op1.parts,
+		    [&res, &factor](PartPair *lhs,
+		        PartPair *rhs,
+		        Alg::union_call_t type)
+		    {
+			    switch (type) {
+			    case Alg::union_call_t::only_left: {
+				    auto from = lhs->second.range.getMin();
+				    res.parts[lhs->first] = {
+				        .weight = interpolate(lhs->second.weight,
+				            0.0,
+				            factor),
+				        .range = interpolate(lhs->second.range,
+				            Math::Range<>::Raw(from, from),
+				            factor)};
+				    break;
+			    }
+			    case Alg::union_call_t::only_right: {
+				    auto from = rhs->second.range.getMin();
+				    res.parts[rhs->first] = {
+				        .weight = interpolate(0.0,
+				            rhs->second.weight,
+				            factor),
+				        .range = interpolate(
+				            Math::Range<>::Raw(from, from),
+				            rhs->second.range,
+				            factor)};
+				    break;
+			    }
+			    default:
+			    case Alg::union_call_t::both: {
+				    res.parts[lhs->first] =
+				        interpolate(lhs->second, rhs->second, factor);
+				    break;
+			    }
+			    }
+		    },
+		    res.parts.value_comp());
+	}
+	else if (!op0.parts.empty()) {
+		auto begin = op0.parts.begin();
+		res.parts[begin->first] = {
+		    .weight = interpolate(begin->second.weight, 1.0, factor),
+		    .range = interpolate(begin->second.range,
+		        Math::Range<>::Raw(0, 1),
+		        factor)};
+		while (++begin != op0.parts.end()) {
+			res.parts[begin->first] = {
+			    .weight =
+			        interpolate(begin->second.weight, 0.0, factor),
+			    .range = interpolate(begin->second.range,
+			        Math::Range<>::Raw(0, 1),
+			        factor)};
+		}
+	}
+	else if (!op1.parts.empty()) {
+		auto begin = op1.parts.begin();
+		res.parts[begin->first] = {
+		    .weight = interpolate(1.0, begin->second.weight, factor),
+		    .range = interpolate(Math::Range<>::Raw(0, 1),
+		        begin->second.range,
+		        factor)};
+		while (++begin != op1.parts.end()) {
+			res.parts[begin->first] = {
+			    .weight =
+			        interpolate(0.0, begin->second.weight, factor),
+			    .range = interpolate(Math::Range<>::Raw(0, 1),
+			        begin->second.range,
+			        factor)};
+		}
+	}
+
+	return res;
+}
+
 }

@@ -77,6 +77,17 @@ invoke(Fun &&f, Arg1 &&arg1, Arg2 &&arg2, union_call_t val)
 		    std::forward<Arg1>(arg1),
 		    std::forward<Arg2>(arg2));
 }
+
+template <class Exp, class Fun, class Arg>
+constexpr const Arg &assignIfSame([[maybe_unused]] Arg &to,
+    const Arg &from)
+{
+	if constexpr (std::same_as<Exp, Fun>)
+		return to = from;
+	else
+		return from;
+}
+
 }
 
 using Impl::multi;
@@ -104,11 +115,10 @@ constexpr void union_foreach(It1 first1,
     Proj2 proj2 = {})
 {
 	using enum union_call_t;
+	using Impl::assignIfSame;
 	using Impl::invoke;
-	constexpr static std::add_pointer_t<std::iter_value_t<It1>>
-	    value1_nullptr{nullptr};
-	constexpr static std::add_pointer_t<std::iter_value_t<It2>>
-	    value2_nullptr{nullptr};
+	const std::iter_value_t<It1> *lastValid1{};
+	const std::iter_value_t<It2> *lastValid2{};
 	while (first1 != last1 || first2 != last2)
 		if (first2 == last2
 		    || (first1 != last1
@@ -116,24 +126,24 @@ constexpr void union_foreach(It1 first1,
 		            std::invoke(proj1, *first1),
 		            std::invoke(proj2, *first2))))
 			invoke(f,
-			    std::to_address(first1++),
-			    value2_nullptr,
+			    assignIfSame<Impl::single_t, Prop>(lastValid1,
+			        std::to_address(first1++)),
+			    lastValid2,
 			    only_left);
 		else if (first1 == last1
 		         || std::invoke(comp,
 		             std::invoke(proj2, *first2),
 		             std::invoke(proj1, *first1)))
 			invoke(f,
-			    value1_nullptr,
-			    std::to_address(first2++),
+			    lastValid1,
+			    assignIfSame<Impl::single_t, Prop>(lastValid2,
+			        std::to_address(first2++)),
 			    only_right);
 		else {
-			auto last1SameKey = std::to_address(first1);
-			auto last2SameKey = std::to_address(first2);
 			auto &&key = std::invoke(proj1, *first1);
 			invoke(f,
-			    std::to_address(first1++),
-			    std::to_address(first2++),
+			    lastValid1 = std::to_address(first1++),
+			    lastValid2 = std::to_address(first2++),
 			    both);
 
 			if constexpr (std::is_same_v<Impl::multi_t, Prop>) {
@@ -145,8 +155,8 @@ constexpr void union_foreach(It1 first1,
 				           key,
 				           std::invoke(proj2, *first2)))
 					invoke(f,
-					    last1SameKey = std::to_address(first1++),
-					    last2SameKey = std::to_address(first2++),
+					    lastValid1 = std::to_address(first1++),
+					    lastValid2 = std::to_address(first2++),
 					    both);
 
 				while (first1 != last1
@@ -155,7 +165,7 @@ constexpr void union_foreach(It1 first1,
 				           std::invoke(proj1, *first1)))
 					invoke(f,
 					    std::to_address(first1++),
-					    last2SameKey,
+					    lastValid2,
 					    only_left);
 
 				while (first2 != last2
@@ -163,9 +173,12 @@ constexpr void union_foreach(It1 first1,
 				           key,
 				           std::invoke(proj2, *first2)))
 					invoke(f,
-					    last1SameKey,
+					    lastValid1,
 					    std::to_address(first2++),
 					    only_right);
+
+				lastValid1 = nullptr;
+				lastValid2 = nullptr;
 			}
 		}
 }

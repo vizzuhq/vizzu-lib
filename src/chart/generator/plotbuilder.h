@@ -36,16 +36,18 @@ private:
 	void initDimensionTrackers();
 	Buckets generateMarkers(std::size_t &mainBucketSize,
 	    std::size_t &subBucketSize);
-	void linkMarkers(Buckets &buckets,
-	    const std::size_t &mainBucketSize,
-	    const std::size_t &subBucketSize);
+	void linkMarkers(Buckets &buckets);
 	[[nodiscard]] bool linkMarkers(const Buckets &buckets,
 	    AxisId axisIndex) const;
-	void calcAxises(const Data::DataTable &dataTable);
+	void calcAxises(const Data::DataTable &dataTable,
+	    Buckets &buckets,
+	    const std::size_t &mainBucketSize,
+	    const std::size_t &subBucketSize);
 	void calcLegendAndLabel(const Data::DataTable &dataTable);
 	void calcAxis(const Data::DataTable &dataTable, AxisId type);
 	void addAlignment(const Buckets &buckets, AxisId axisIndex) const;
-	void addSeparation(const Buckets &buckets,
+	[[nodiscard]] std::pair<std::vector<Math::Range<>>, Math::Range<>>
+	addSeparation(const Buckets &buckets,
 	    AxisId axisIndex,
 	    const std::size_t &otherBucketSize) const;
 	void normalizeSizes();

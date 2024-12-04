@@ -71,11 +71,11 @@ void PlotBuilder::addAxisLayout(Buckets &buckets,
     const std::size_t &subBucketSize,
     const Data::DataTable &dataTable)
 {
-	linkMarkers(buckets, mainBucketSize, subBucketSize);
-	calcAxises(dataTable);
-	addAlignment(buckets, plot->getOptions()->subAxisType());
-	addAlignment(buckets.sort(&Marker::mainId),
-	    plot->getOptions()->mainAxisType());
+	linkMarkers(buckets);
+	calcAxises(dataTable, buckets, mainBucketSize, subBucketSize);
+	addAlignment(buckets, plot->getOptions()->mainAxisType());
+	addAlignment(buckets.sort(&Marker::subId),
+	    plot->getOptions()->subAxisType());
 }
 
 void PlotBuilder::initDimensionTrackers()
@@ -187,21 +187,13 @@ void PlotBuilder::addSpecLayout(Buckets &buckets)
 	}
 }
 
-void PlotBuilder::linkMarkers(Buckets &buckets,
-    const std::size_t &mainBucketSize,
-    const std::size_t &subBucketSize)
+void PlotBuilder::linkMarkers(Buckets &buckets)
 {
 	auto &&hasMarkerConnection =
 	    linkMarkers(buckets.sort(&Marker::mainId),
 	        plot->getOptions()->mainAxisType());
-	addSeparation(buckets,
-	    plot->getOptions()->mainAxisType(),
-	    subBucketSize);
 	std::ignore = linkMarkers(buckets.sort(&Marker::subId),
 	    plot->getOptions()->subAxisType());
-	addSeparation(buckets,
-	    plot->getOptions()->subAxisType(),
-	    mainBucketSize);
 
 	if (hasMarkerConnection
 	    && plot->getOptions()->geometry.get() == ShapeType::line
@@ -311,8 +303,20 @@ bool PlotBuilder::linkMarkers(const Buckets &buckets,
 	return hasConnection;
 }
 
-void PlotBuilder::calcAxises(const Data::DataTable &dataTable)
+void PlotBuilder::calcAxises(const Data::DataTable &dataTable,
+    Buckets &buckets,
+    const std::size_t &mainBucketSize,
+    const std::size_t &subBucketSize)
 {
+	auto &&[subRanges, subMax] = addSeparation(buckets,
+	    plot->getOptions()->subAxisType(),
+	    mainBucketSize);
+
+	auto &&[mainRanges, mainMax] =
+	    addSeparation(buckets.sort(&Marker::mainId),
+	        plot->getOptions()->mainAxisType(),
+	        subBucketSize);
+
 	const auto &xrange =
 	    plot->getOptions()->getHorizontalAxis().range;
 	const auto &yrange = plot->getOptions()->getVerticalAxis().range;
@@ -524,11 +528,12 @@ void PlotBuilder::addAlignment(const Buckets &buckets,
 	}
 }
 
-void PlotBuilder::addSeparation(const Buckets &buckets,
+std::pair<std::vector<Math::Range<>>, Math::Range<>>
+PlotBuilder::addSeparation(const Buckets &buckets,
     AxisId axisIndex,
     const std::size_t &otherBucketSize) const
 {
-	if (!plot->getOptions()->isSplit(axisIndex)) return;
+	if (!plot->getOptions()->isSplit(axisIndex)) return {};
 
 	const auto &axisProps =
 	    plot->getOptions()->getChannels().axisPropsAt(axisIndex);
@@ -551,7 +556,8 @@ void PlotBuilder::addSeparation(const Buckets &buckets,
 		if (anyEnabled[i]) max = max + ranges[i];
 
 	auto splitSpace =
-	    plot->getStyle().plot.getAxis(axisIndex).spacing->get(max.max,
+	    plot->getStyle().plot.getAxis(axisIndex).spacing->get(
+	        max.size(),
 	        plot->getStyle().calculatedSize());
 
 	for (auto i = 1U; i < ranges.size(); ++i)
@@ -566,6 +572,8 @@ void PlotBuilder::addSeparation(const Buckets &buckets,
 			    Base::Align{align, ranges[i]}.getAligned(
 			        marker.getSizeBy(axisIndex)));
 		}
+
+	return {ranges, max};
 }
 
 void PlotBuilder::normalizeSizes()
