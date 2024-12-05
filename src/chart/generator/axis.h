@@ -54,7 +54,7 @@ struct ChannelStats
 struct MeasureAxis
 {
 	::Anim::Interpolated<bool> enabled{false};
-	Math::Range<> range = Math::Range<>(0, 1);
+	Math::Range<> range{0, 1};
 	std::string series;
 	::Anim::String unit;
 	::Anim::Interpolated<double> step{1.0};

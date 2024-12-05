@@ -63,7 +63,7 @@ template <std::floating_point T = double> struct Range
 
 	[[nodiscard]] Range scale(const Range &range) const
 	{
-		return Range(scale(range.min), scale(range.max));
+		return {scale(range.min), scale(range.max)};
 	}
 
 	[[nodiscard]] T normalize(const T &value) const
@@ -73,7 +73,7 @@ template <std::floating_point T = double> struct Range
 
 	[[nodiscard]] Range normalize(const Range &range) const
 	{
-		return Range(normalize(range.min), normalize(range.max));
+		return {normalize(range.min), normalize(range.max)};
 	}
 
 	bool operator==(const Range &other) const
@@ -83,27 +83,27 @@ template <std::floating_point T = double> struct Range
 
 	Range operator+(double shift) const
 	{
-		return Range(min + shift, max + shift);
+		return {min + shift, max + shift};
 	}
 
 	Range operator+(const Range &other) const
 	{
-		return Range(min + other.min, max + other.max);
+		return {min + other.min, max + other.max};
 	}
 
 	Range operator-(double shift) const
 	{
-		return Range(min - shift, max - shift);
+		return {min - shift, max - shift};
 	}
 
 	Range operator*(double factor) const
 	{
-		return Range(min * factor, max * factor);
+		return {min * factor, max * factor};
 	}
 
 	Range operator/(double factor) const
 	{
-		return Range(min / factor, max / factor);
+		return {min / factor, max / factor};
 	}
 
 	Range operator*(const Transform &transf)
