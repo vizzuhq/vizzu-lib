@@ -8,8 +8,8 @@ namespace Vizzu::Gen
 Math::Range<> ChannelRange::getRange(
     const Math::Range<> &original) const
 {
-	return Math::Range<>(getExtrema(min, original.min, original),
-	    getExtrema(max, original.max, original));
+	return {getExtrema(min, original.min, original),
+	    getExtrema(max, original.max, original)};
 }
 
 double ChannelRange::getExtrema(const OptionalChannelExtrema &extrema,

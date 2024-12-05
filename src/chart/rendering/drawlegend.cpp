@@ -322,7 +322,7 @@ Geom::Rect DrawLegend::getBarRect(const Info &info)
 
 Math::Range<> DrawLegend::markersLegendRange(const Info &info)
 {
-	auto res = Math::Range<>({}, {});
+	auto res = Math::Range<>{{}, {}};
 
 	const std::uint32_t measMax =
 	    Math::Floating::is_zero(info.measureEnabled) ? 0 : 6;

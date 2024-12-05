@@ -132,7 +132,7 @@ const DrawAxes &&DrawAxes::init() &&
 			generateMeasure(axisIndex, step, measEnabled);
 		else {
 			auto highWeight =
-			    Math::Range<>(stepLow, stepHigh).rescale(step);
+			    Math::Range<>{stepLow, stepHigh}.rescale(step);
 
 			generateMeasure(axisIndex,
 			    stepLow,
@@ -201,7 +201,7 @@ void DrawAxes::generateMeasure(Gen::AxisId axisIndex,
 
 		if (!singleLabelRange) {
 			intervals.emplace_back(
-			    Math::Range<>(bottom, bottom + stripWidth),
+			    Math::Range<>{bottom, bottom + stripWidth},
 			    weight,
 			    1.0);
 

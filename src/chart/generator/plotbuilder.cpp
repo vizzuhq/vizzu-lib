@@ -331,9 +331,9 @@ void PlotBuilder::calcAxises(const Data::DataTable &dataTable)
 		}
 
 		stats.setIfRange(AxisId::x,
-		    Math::Range<>(boundRect.left(), boundRect.right()));
+		    {boundRect.left(), boundRect.right()});
 		stats.setIfRange(AxisId::y,
-		    Math::Range<>(boundRect.bottom(), boundRect.top()));
+		    {boundRect.bottom(), boundRect.top()});
 	}
 
 	for (const AxisId &ch : {AxisId::x, AxisId::y})
@@ -421,7 +421,7 @@ void PlotBuilder::calcAxis(const Data::DataTable &dataTable,
 		if (type == plot->getOptions()->subAxisType()
 		    && plot->getOptions()->align
 		           == Base::Align::Type::stretch)
-			axis.measure = {Math::Range<>(0, 100),
+			axis.measure = {{0, 100},
 			    meas.getColIndex(),
 			    "%",
 			    scale.step.getValue()};
@@ -480,13 +480,12 @@ void PlotBuilder::addAlignment(const Buckets &subBuckets) const
 	if (plot->getOptions()->align == Base::Align::Type::center) {
 		auto &&halfSize = subAxisRange.size() / 2.0;
 		if (!Math::Floating::is_zero(halfSize))
-			subAxisRange = Math::Range<>(subAxisRange.min - halfSize,
-			    subAxisRange.max - halfSize);
+			subAxisRange = {subAxisRange.min - halfSize,
+			    subAxisRange.max - halfSize};
 	}
 
 	auto &&subAxis = plot->getOptions()->subAxisType();
-	const Base::Align align{plot->getOptions()->align,
-	    Math::Range<>(0.0, 1.0)};
+	const Base::Align align{plot->getOptions()->align, {0.0, 1.0}};
 	for (auto &&bucket : subBuckets) {
 		Math::Range<> range;
 
@@ -509,7 +508,7 @@ void PlotBuilder::addSeparation(const Buckets &subBuckets,
 
 	auto align = plot->getOptions()->align;
 
-	std::vector ranges{mainBucketSize, Math::Range<>({}, {})};
+	std::vector ranges{mainBucketSize, Math::Range<>{{}, {}}};
 	std::vector<bool> anyEnabled(mainBucketSize);
 
 	auto &&subAxis = plot->getOptions()->subAxisType();
@@ -522,7 +521,7 @@ void PlotBuilder::addSeparation(const Buckets &subBuckets,
 			anyEnabled[i] = true;
 		}
 
-	auto max = Math::Range<>({}, {});
+	auto max = Math::Range<>{{}, {}};
 	for (auto i = 0U; i < ranges.size(); ++i)
 		if (anyEnabled[i]) max = max + ranges[i];
 
