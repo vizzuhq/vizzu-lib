@@ -105,7 +105,7 @@ MeasureAxis::MeasureAxis(const Math::Range<> &interval,
     const std::string_view &unit,
     const std::optional<double> &step) :
     enabled(true),
-    range(interval.isReal() ? interval : Math::Range<>::Raw({}, {})),
+    range(interval.isReal() ? interval : Math::Range<>({}, {})),
     series(std::move(series)),
     unit(std::string{unit}),
     step(step ? *step : Math::Renard::R5().ceil(range.size() / 5.0))
@@ -120,7 +120,7 @@ MeasureAxis::MeasureAxis(const Math::Range<> &interval,
 double MeasureAxis::origo() const
 {
 	if (range.size() == 0) return 0;
-	return -range.getMin() / range.size();
+	return -range.min / range.size();
 }
 
 MeasureAxis interpolate(const MeasureAxis &op0,
@@ -140,12 +140,11 @@ MeasureAxis interpolate(const MeasureAxis &op0,
 
 		if (auto s0Zero = is_zero(s0), s1Zero = is_zero(s1);
 		    s0Zero && s1Zero) {
-			res.range = Math::Range<>::Raw(
-			    Math::interpolate(op0.range.getMin(),
-			        op1.range.getMin(),
-			        factor),
-			    Math::interpolate(op0.range.getMax(),
-			        op1.range.getMax(),
+			res.range = Math::Range<>(Math::interpolate(op0.range.min,
+			                              op1.range.min,
+			                              factor),
+			    Math::interpolate(op0.range.max,
+			        op1.range.max,
 			        factor));
 			res.step = interpolate(op0.step, op1.step, factor);
 		}
@@ -157,8 +156,8 @@ MeasureAxis interpolate(const MeasureAxis &op0,
 			    0.0,
 			    factor);
 
-			res.range = Math::Range<>::Raw(op1.range.middle()
-			                                   - middleAt * size,
+			res.range = Math::Range<>(op1.range.middle()
+			                              - middleAt * size,
 			    op1.range.middle()
 			        + (factor == 1.0 ? 0.0 : (1 - middleAt) * size));
 
@@ -167,8 +166,7 @@ MeasureAxis interpolate(const MeasureAxis &op0,
 
 			res.step = interpolate(op0.step,
 			    Anim::Interpolated{max},
-			    Math::Range<>::Raw(op0.step.get(), max)
-			        .rescale(step));
+			    Math::Range<>(op0.step.get(), max).rescale(step));
 		}
 		else if (s0Zero) {
 			auto size = factor == 0.0 ? MAX : s1 / factor;
@@ -177,8 +175,8 @@ MeasureAxis interpolate(const MeasureAxis &op0,
 			    op1.range.rescale(op0.range.middle()),
 			    factor);
 
-			res.range = Math::Range<>::Raw(op0.range.middle()
-			                                   - middleAt * size,
+			res.range = Math::Range<>(op0.range.middle()
+			                              - middleAt * size,
 			    op0.range.middle()
 			        + (factor == 0.0 ? 0.0 : (1 - middleAt) * size));
 
@@ -187,8 +185,7 @@ MeasureAxis interpolate(const MeasureAxis &op0,
 
 			res.step = interpolate(op1.step,
 			    Anim::Interpolated{max},
-			    Math::Range<>::Raw(op1.step.get(), max)
-			        .rescale(step));
+			    Math::Range<>(op1.step.get(), max).rescale(step));
 		}
 		else {
 			auto s0Inv = 1 / s0;
@@ -199,15 +196,15 @@ MeasureAxis interpolate(const MeasureAxis &op0,
 
 			const auto size = is_zero(interp) ? MAX : 1 / interp;
 
-			res.range = Math::Range<>::Raw(
-			    Math::interpolate(op0.range.getMin() * s0Inv,
-			        op1.range.getMin() * s1Inv,
-			        factor)
-			        * size,
-			    Math::interpolate(op0.range.getMax() * s0Inv,
-			        op1.range.getMax() * s1Inv,
-			        factor)
-			        * size);
+			res.range =
+			    Math::Range<>(Math::interpolate(op0.range.min * s0Inv,
+			                      op1.range.min * s1Inv,
+			                      factor)
+			                      * size,
+			        Math::interpolate(op0.range.max * s0Inv,
+			            op1.range.max * s1Inv,
+			            factor)
+			            * size);
 
 			auto step = Math::interpolate(op0.step.get() * s0Inv,
 			                op1.step.get() * s1Inv,
@@ -218,19 +215,17 @@ MeasureAxis interpolate(const MeasureAxis &op0,
 			    op0sign == std::signbit(op1.step.get()))
 				res.step = interpolate(op0.step,
 				    op1.step,
-				    Math::Range<>::Raw(op0.step.get(), op1.step.get())
+				    Math::Range<>(op0.step.get(), op1.step.get())
 				        .rescale(step));
 			else if (auto max = std::copysign(MAX, step);
 			         op0sign == std::signbit(step))
 				res.step = interpolate(op0.step,
 				    Anim::Interpolated{max},
-				    Math::Range<>::Raw(op0.step.get(), max)
-				        .rescale(step));
+				    Math::Range<>(op0.step.get(), max).rescale(step));
 			else
 				res.step = interpolate(op1.step,
 				    Anim::Interpolated{max},
-				    Math::Range<>::Raw(op1.step.get(), max)
-				        .rescale(step));
+				    Math::Range<>(op1.step.get(), max).rescale(step));
 		}
 
 		res.unit = interpolate(op0.unit, op1.unit, factor);
