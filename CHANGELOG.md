@@ -5,7 +5,6 @@
 ### Fixed
 
 - Fix invalid read/write when animation is contiguous (onFinish callback calls setKeyframe)
-- Waterfall chart preset not aligned
 
 ## [0.16.0] - 2024-11-28
 
