@@ -54,7 +54,7 @@ struct ChannelStats
 struct MeasureAxis
 {
 	::Anim::Interpolated<bool> enabled{false};
-	Math::Range<> range = Math::Range<>::Raw(0, 1);
+	Math::Range<> range{0, 1};
 	std::string series;
 	::Anim::String unit;
 	::Anim::Interpolated<double> step{1.0};
@@ -168,8 +168,8 @@ struct DimensionAxis
 			[[nodiscard]] bool operator()(const Item &lhs,
 			    const Item &rhs) const
 			{
-				return Math::Floating::less(lhs.range.getMin(),
-				    rhs.range.getMin());
+				return Math::Floating::less(lhs.range.min,
+				    rhs.range.min);
 			}
 		};
 		return std::multiset<std::reference_wrapper<Item>,

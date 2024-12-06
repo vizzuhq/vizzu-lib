@@ -81,8 +81,7 @@ void DrawLegend::draw(Gfx::ICanvas &canvas,
 	    info.properties.scrollHeight - markerWindowHeight;
 	if (std::signbit(yOverflow)) yOverflow = 0.0;
 	info.properties.scrollTop =
-	    style.translateY->get(yOverflow, info.itemHeight)
-	    + range.getMin();
+	    style.translateY->get(yOverflow, info.itemHeight) + range.min;
 
 	DrawBackground{{ctx()}}.draw(canvas,
 	    legendLayout,
@@ -172,17 +171,15 @@ void DrawLegend::drawDimension(Info &info) const
 
 		auto itemRect = getItemRect(info, pos);
 
-		if (itemRect.y().getMin() > info.markerWindowRect.y().getMax()
-		    || itemRect.y().getMax()
-		           < info.markerWindowRect.y().getMin())
+		if (itemRect.y().min > info.markerWindowRect.y().max
+		    || itemRect.y().max < info.markerWindowRect.y().min)
 			continue;
 
 		const auto needGradient =
-		    itemRect.y().getMax()
-		        > info.markerWindowRect.y().getMax() - info.fadeHeight
-		    || itemRect.y().getMin()
-		           < info.markerWindowRect.y().getMin()
-		                 + info.fadeHeight;
+		    itemRect.y().max
+		        > info.markerWindowRect.y().max - info.fadeHeight
+		    || itemRect.y().min
+		           < info.markerWindowRect.y().min + info.fadeHeight;
 
 		const auto alpha = Math::FuzzyBool::And(weight, info.weight);
 
@@ -278,16 +275,8 @@ void DrawLegend::drawMeasure(const Info &info) const
 	const auto &[unit, weight] =
 	    info.axis.measure.unit.get_or_first(::Anim::first);
 
-	extremaLabel(info,
-	    info.axis.measure.range.getMax(),
-	    unit,
-	    0,
-	    weight);
-	extremaLabel(info,
-	    info.axis.measure.range.getMin(),
-	    unit,
-	    5,
-	    weight);
+	extremaLabel(info, info.axis.measure.range.max, unit, 0, weight);
+	extremaLabel(info, info.axis.measure.range.min, unit, 5, weight);
 
 	auto bar = getBarRect(info);
 
@@ -333,7 +322,7 @@ Geom::Rect DrawLegend::getBarRect(const Info &info)
 
 Math::Range<> DrawLegend::markersLegendRange(const Info &info)
 {
-	auto res = Math::Range<>::Raw({}, {});
+	auto res = Math::Range<>{{}, {}};
 
 	const std::uint32_t measMax =
 	    Math::Floating::is_zero(info.measureEnabled) ? 0 : 6;

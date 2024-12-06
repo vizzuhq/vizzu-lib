@@ -108,10 +108,8 @@ const DrawAxes &&DrawAxes::init() &&
 			        !item.startPos.isAuto() && *item.startPos,
 			        !item.endPos.isAuto() && *item.endPos,
 			        axis.dimension.factor);
-			    needSeparators && sepWeight > 0
-			    && item.range.getMin() > 0)
-				separators.emplace_back(item.range.getMin(),
-				    sepWeight);
+			    needSeparators && sepWeight > 0 && item.range.min > 0)
+				separators.emplace_back(item.range.min, sepWeight);
 		}
 
 		if (measEnabled == 0.0) continue;
@@ -134,7 +132,7 @@ const DrawAxes &&DrawAxes::init() &&
 			generateMeasure(axisIndex, step, measEnabled);
 		else {
 			auto highWeight =
-			    Math::Range<>::Raw(stepLow, stepHigh).rescale(step);
+			    Math::Range<>{stepLow, stepHigh}.rescale(step);
 
 			generateMeasure(axisIndex,
 			    stepLow,
@@ -167,11 +165,11 @@ void DrawAxes::generateMeasure(Gen::AxisId axisIndex,
 	auto axisBottom = origo.getCoord(!orientation) + stripWidth;
 
 	auto iMin = static_cast<int>(
-	    axisBottom > 0 ? std::floor(-origo.getCoord(!orientation)
-	                                / (2 * stripWidth))
-	                         * 2
-	                   : std::round((meas.range.getMin() - stepSize)
-	                                / stepSize));
+	    axisBottom > 0
+	        ? std::floor(
+	              -origo.getCoord(!orientation) / (2 * stripWidth))
+	              * 2
+	        : std::round((meas.range.min - stepSize) / stepSize));
 
 	if (axisBottom + iMin * stripWidth + stripWidth < 0.0)
 		iMin += 2
@@ -203,7 +201,7 @@ void DrawAxes::generateMeasure(Gen::AxisId axisIndex,
 
 		if (!singleLabelRange) {
 			intervals.emplace_back(
-			    Math::Range<>::Raw(bottom, bottom + stripWidth),
+			    Math::Range<>{bottom, bottom + stripWidth},
 			    weight,
 			    1.0);
 

@@ -306,7 +306,7 @@ void PlotBuilder::calcAxises(const Data::DataTable &dataTable)
 		stats.setIfRange(AxisId::y, xrange.getRange({0.0, 0.0}));
 	}
 	else {
-		auto boundRect = markerIt->toRectangle();
+		auto boundRect = markerIt->toRectangle().positive();
 
 		while (++markerIt != plot->markers.end()) {
 			if (!markerIt->enabled) continue;
@@ -314,8 +314,8 @@ void PlotBuilder::calcAxises(const Data::DataTable &dataTable)
 		}
 
 		plot->getOptions()->setAutoRange(
-		    !std::signbit(boundRect.hSize().getMin()),
-		    !std::signbit(boundRect.vSize().getMin()));
+		    !std::signbit(boundRect.hSize().min),
+		    !std::signbit(boundRect.vSize().min));
 
 		boundRect.setHSize(xrange.getRange(boundRect.hSize()));
 		boundRect.setVSize(yrange.getRange(boundRect.vSize()));
@@ -331,9 +331,9 @@ void PlotBuilder::calcAxises(const Data::DataTable &dataTable)
 		}
 
 		stats.setIfRange(AxisId::x,
-		    Math::Range<>::Raw(boundRect.left(), boundRect.right()));
+		    {boundRect.left(), boundRect.right()});
 		stats.setIfRange(AxisId::y,
-		    Math::Range<>::Raw(boundRect.bottom(), boundRect.top()));
+		    {boundRect.bottom(), boundRect.top()});
 	}
 
 	for (const AxisId &ch : {AxisId::x, AxisId::y})
@@ -421,7 +421,7 @@ void PlotBuilder::calcAxis(const Data::DataTable &dataTable,
 		if (type == plot->getOptions()->subAxisType()
 		    && plot->getOptions()->align
 		           == Base::Align::Type::stretch)
-			axis.measure = {Math::Range<>::Raw(0, 100),
+			axis.measure = {{0, 100},
 			    meas.getColIndex(),
 			    "%",
 			    scale.step.getValue()};
@@ -471,8 +471,8 @@ void PlotBuilder::addAlignment(const Buckets &subBuckets) const
 	auto &subAxisRange =
 	    plot->axises.at(plot->getOptions()->subAxisType())
 	        .measure.range;
-	if (std::signbit(subAxisRange.getMin())
-	    || std::signbit(subAxisRange.getMax()))
+	if (std::signbit(subAxisRange.min)
+	    || std::signbit(subAxisRange.max))
 		return;
 
 	if (plot->getOptions()->align == Base::Align::Type::none) return;
@@ -480,14 +480,12 @@ void PlotBuilder::addAlignment(const Buckets &subBuckets) const
 	if (plot->getOptions()->align == Base::Align::Type::center) {
 		auto &&halfSize = subAxisRange.size() / 2.0;
 		if (!Math::Floating::is_zero(halfSize))
-			subAxisRange =
-			    Math::Range<>::Raw(subAxisRange.getMin() - halfSize,
-			        subAxisRange.getMax() - halfSize);
+			subAxisRange = {subAxisRange.min - halfSize,
+			    subAxisRange.max - halfSize};
 	}
 
 	auto &&subAxis = plot->getOptions()->subAxisType();
-	const Base::Align align{plot->getOptions()->align,
-	    Math::Range<>::Raw(0.0, 1.0)};
+	const Base::Align align{plot->getOptions()->align, {0.0, 1.0}};
 	for (auto &&bucket : subBuckets) {
 		Math::Range<> range;
 
@@ -510,7 +508,7 @@ void PlotBuilder::addSeparation(const Buckets &subBuckets,
 
 	auto align = plot->getOptions()->align;
 
-	std::vector ranges{mainBucketSize, Math::Range<>::Raw({}, {})};
+	std::vector ranges{mainBucketSize, Math::Range<>{{}, {}}};
 	std::vector<bool> anyEnabled(mainBucketSize);
 
 	auto &&subAxis = plot->getOptions()->subAxisType();
@@ -523,18 +521,17 @@ void PlotBuilder::addSeparation(const Buckets &subBuckets,
 			anyEnabled[i] = true;
 		}
 
-	auto max = Math::Range<>::Raw({}, {});
+	auto max = Math::Range<>{{}, {}};
 	for (auto i = 0U; i < ranges.size(); ++i)
 		if (anyEnabled[i]) max = max + ranges[i];
 
 	auto splitSpace =
 	    plot->getStyle()
 	        .plot.getAxis(plot->getOptions()->subAxisType())
-	        .spacing->get(max.getMax(),
-	            plot->getStyle().calculatedSize());
+	        .spacing->get(max.max, plot->getStyle().calculatedSize());
 
 	for (auto i = 1U; i < ranges.size(); ++i)
-		ranges[i] = ranges[i] + ranges[i - 1].getMax()
+		ranges[i] = ranges[i] + ranges[i - 1].max
 		          + (anyEnabled[i - 1] ? splitSpace : 0);
 
 	for (auto &&bucket : subBuckets)
@@ -569,7 +566,7 @@ void PlotBuilder::normalizeSizes()
 		           .range.getRange(size);
 
 		for (auto &marker : plot->markers)
-			marker.sizeFactor = size.getMax() == size.getMin()
+			marker.sizeFactor = size.max == size.min
 			                      ? 0
 			                      : size.normalize(marker.sizeFactor);
 
