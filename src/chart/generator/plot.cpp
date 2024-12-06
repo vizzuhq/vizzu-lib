@@ -68,19 +68,19 @@ bool Plot::isEmpty() const
 	return options->getChannels().isEmpty();
 }
 
-Geom::Rect Plot::getMarkersBounds() const
+Math::Range<> Plot::getMarkersBounds(AxisId axisId) const
 {
 	auto markerIt = markers.begin();
 	while (markerIt != markers.end()
 	       && !static_cast<bool>(markerIt->enabled))
 		++markerIt;
 
-	if (markerIt == markers.end()) return {};
+	if (markerIt == markers.end()) return {{}, {}};
 
-	auto boundRect = markerIt->toRectangle().positive();
+	auto boundRect = markerIt->getSizeBy(axisId).positive();
 	while (++markerIt != markers.end())
 		if (markerIt->enabled)
-			boundRect = boundRect.boundary(markerIt->toRectangle());
+			boundRect.include(markerIt->getSizeBy(axisId));
 	return boundRect;
 }
 

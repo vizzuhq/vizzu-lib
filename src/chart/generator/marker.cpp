@@ -213,14 +213,11 @@ double Marker::getValueForChannel(const Channels &channels,
 	return value;
 }
 
-Geom::Rect Marker::toRectangle() const
-{
-	return {position - size, {size}};
-}
-
 Math::Range<> Marker::getSizeBy(AxisId axisId) const
 {
-	return toRectangle().oSize(orientation(axisId));
+	auto o = orientation(axisId);
+	return {position.getCoord(o) - size.getCoord(o),
+	    position.getCoord(o)};
 }
 
 void Marker::setSizeBy(AxisId axisId, const Math::Range<> range)

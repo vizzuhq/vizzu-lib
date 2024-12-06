@@ -46,8 +46,8 @@ private:
 	void calcLegendAndLabel(const Data::DataTable &dataTable);
 	void calcAxis(const Data::DataTable &dataTable, AxisId type);
 	void addAlignment(const Buckets &buckets, AxisId axisIndex) const;
-	[[nodiscard]] std::pair<std::vector<Math::Range<>>, Math::Range<>>
-	addSeparation(const Buckets &buckets,
+	[[nodiscard]] std::vector<Math::Range<>> addSeparation(
+	    const Buckets &buckets,
 	    AxisId axisIndex,
 	    const std::size_t &otherBucketSize) const;
 	void normalizeSizes();

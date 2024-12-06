@@ -189,7 +189,7 @@ const testSteps = [
 			config: {
 				channels: {
 					y: { detach: ['Value 2 (+)'], range: { min: 'auto', max: 'auto' } },
-					x: { attach: ['Value 2 (+)'] },
+					x: { attach: ['Value 2 (+)'], range: { max: '100%' } },
 					label: { attach: ['Country'] }
 				},
 				title: 'Polar Coordinate',
@@ -340,7 +340,7 @@ const testSteps = [
 		chart.animate({
 			config: {
 				channels: {
-					x: { detach: ['Value 2 (+)', 'Country'] },
+					x: { detach: ['Value 2 (+)', 'Country'], range: { max: 'auto' } },
 					size: { attach: ['Value 2 (+)'] }
 				},
 				title: 'Without Coordinate',

@@ -258,7 +258,7 @@ void Sheet::setAfterStyles(Gen::Plot &plot, const Geom::Size &size)
 			        ranges.end(),
 			        [&next_range](const Math::Range<> &other)
 			        {
-				        return other.includes(next_range);
+				        return other.intersects(next_range);
 			        })) {
 				has_collision = true;
 				break;

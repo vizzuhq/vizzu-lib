@@ -84,7 +84,7 @@ public:
 	void detachOptions();
 	[[nodiscard]] bool isEmpty() const;
 
-	[[nodiscard]] Geom::Rect getMarkersBounds() const;
+	[[nodiscard]] Math::Range<> getMarkersBounds(AxisId axisId) const;
 
 	static bool dimensionMatch(const Plot &a, const Plot &b);
 	static bool hasMarkerChange(const Plot &source,

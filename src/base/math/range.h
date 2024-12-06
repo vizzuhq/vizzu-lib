@@ -45,15 +45,10 @@ template <std::floating_point T = double> struct Range
 		return !less(value, min) && !less(max, value);
 	}
 
-	[[nodiscard]] bool includes(const Range &range) const
-	{
-		return !less(range.max, min) && !less(max, range.min);
-	}
-
-	[[nodiscard]] T rescale(const T &value) const
+	[[nodiscard]] T rescale(const T &value, T def = 0.5) const
 	{
 		auto s = size();
-		return is_zero(s) ? 0.5 : (value - min) / s;
+		return is_zero(s) ? def : (value - min) / s;
 	}
 
 	[[nodiscard]] T scale(const T &value) const
@@ -69,11 +64,6 @@ template <std::floating_point T = double> struct Range
 	[[nodiscard]] T normalize(const T &value) const
 	{
 		return is_zero(max) ? 0 : value / max;
-	}
-
-	[[nodiscard]] Range normalize(const Range &range) const
-	{
-		return {normalize(range.min), normalize(range.max)};
 	}
 
 	bool operator==(const Range &other) const
@@ -134,6 +124,12 @@ template <std::floating_point T = double> struct Range
 		        && !is_zero(range.size()));
 
 		return !isOutside;
+	}
+
+	[[nodiscard]] Range positive() const
+	{
+		auto &&[min, max] = std::minmax(this->min, this->max, less);
+		return {min, max};
 	}
 
 	T min{std::numeric_limits<T>::max()};

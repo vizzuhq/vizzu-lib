@@ -38,22 +38,22 @@
 			"refs": ["e187f48"]
 		},
 		"basic_animations/labels/marker/area_2dis_3con": {
-			"refs": ["3711b35"]
+			"refs": ["b543e3d"]
 		},
 		"basic_animations/labels/marker/circle_negative_2dis_3con": {
-			"refs": ["6df75bb"]
+			"refs": ["7c4e5cc"]
 		},
 		"basic_animations/labels/marker/line_2dis_3con": {
-			"refs": ["9427821"]
+			"refs": ["fc92094"]
 		},
 		"basic_animations/labels/marker/padding_test_rectangle_negative_2dis_3con": {
-			"refs": ["005e51c"]
+			"refs": ["68d1990"]
 		},
 		"basic_animations/labels/marker/rectangle_negative_2dis_3con": {
-			"refs": ["da55724"]
+			"refs": ["cf62886"]
 		},
 		"basic_animations/labels/rectangle_labels_rotated_charts": {
-			"refs": ["ab6aa1d"]
+			"refs": ["3e62c90"]
 		},
 		"basic_animations/legend_transitions/color_2discrete_anim": {
 			"refs": ["fed1ebe"]
@@ -395,7 +395,7 @@
 			"refs": ["d8ffda3"]
 		},
 		"static_chart_types/polar_coo_sys/coxcomb_stacked_rectangle_2dis_2con": {
-			"refs": ["80fac6a"]
+			"refs": ["19ccbba"]
 		},
 		"static_chart_types/polar_coo_sys/radial_rectangle_1dis_1con": {
 			"refs": ["ffbd29a"]

@@ -326,41 +326,45 @@ void PlotBuilder::calcAxises(const Data::DataTable &dataTable,
     const std::size_t &subBucketSize)
 {
 	auto mainAxis = plot->getOptions()->mainAxisType();
-	auto &&[subRanges, subMax] = addSeparation(buckets,
-	    plot->getOptions()->subAxisType(),
-	    mainBucketSize);
+	auto &&subRanges =
+	    addSeparation(buckets, !mainAxis, mainBucketSize);
 
-	auto &&[mainRanges, mainMax] =
-	    addSeparation(buckets.sort(&Marker::mainId),
-	        mainAxis,
-	        subBucketSize);
+	auto &&mainRanges = addSeparation(buckets.sort(&Marker::mainId),
+	    mainAxis,
+	    subBucketSize);
 
-	const auto &xrange =
-	    plot->getOptions()->getHorizontalAxis().range;
-	const auto &yrange = plot->getOptions()->getVerticalAxis().range;
+	auto mainBoundRect = plot->getMarkersBounds(mainAxis);
+	auto subBoundRect = plot->getMarkersBounds(!mainAxis);
+	if (mainAxis != AxisId::x) std::swap(mainBoundRect, subBoundRect);
 
-	auto boundRect = plot->getMarkersBounds();
+	plot->getOptions()->setAutoRange(!std::signbit(mainBoundRect.min),
+	    !std::signbit(subBoundRect.min));
 
-	plot->getOptions()->setAutoRange(
-	    !std::signbit(boundRect.hSize().min),
-	    !std::signbit(boundRect.vSize().min));
+	if (mainAxis != AxisId::x) std::swap(mainBoundRect, subBoundRect);
 
-	boundRect.setHSize(xrange.getRange(boundRect.hSize()));
-	boundRect.setVSize(yrange.getRange(boundRect.vSize()));
+	mainBoundRect =
+	    plot->getOptions()->getChannels().at(mainAxis).range.getRange(
+	        mainBoundRect);
+	subBoundRect = plot->getOptions()
+	                   ->getChannels()
+	                   .at(!mainAxis)
+	                   .range.getRange(subBoundRect);
 
-	for (auto &&[axis, ranges] :
-	    {std::pair{mainAxis, &mainRanges}, {!mainAxis, &subRanges}}) {
-		auto o = orientation(axis);
+	for (auto &&[axis, ranges, boundSize] :
+	    {std::tuple{mainAxis, &mainRanges, std::move(mainBoundRect)},
+	        {!mainAxis, &subRanges, std::move(subBoundRect)}}) {
 		for (auto &marker : plot->markers) {
-			if (!boundRect.positive().oSize(o).intersects(
-			        marker.toRectangle().positive().oSize(o)))
+			auto &&markerSize = marker.getSizeBy(axis);
+			if (!boundSize.positive().intersects(
+			        markerSize.positive()))
 				marker.enabled = false;
 
 			marker.setSizeBy(axis,
-			    boundRect.normalize(marker.toRectangle()).oSize(o));
+			    {boundSize.rescale(markerSize.min, 0.0),
+			        boundSize.rescale(markerSize.max, 0.0)});
 		}
 
-		stats.setIfRange(axis, boundRect.oSize(o));
+		stats.setIfRange(axis, boundSize);
 	}
 
 	for (const AxisId &ch : {AxisId::x, AxisId::y})
@@ -530,8 +534,8 @@ void PlotBuilder::addAlignment(const Buckets &buckets,
 	}
 }
 
-std::pair<std::vector<Math::Range<>>, Math::Range<>>
-PlotBuilder::addSeparation(const Buckets &buckets,
+std::vector<Math::Range<>> PlotBuilder::addSeparation(
+    const Buckets &buckets,
     AxisId axisIndex,
     const std::size_t &otherBucketSize) const
 {
@@ -575,7 +579,7 @@ PlotBuilder::addSeparation(const Buckets &buckets,
 			    Base::Align{align, ranges[idx.itemId]}.getAligned(
 			        marker.getSizeBy(axisIndex)));
 
-	return {ranges, max};
+	return ranges;
 }
 
 void PlotBuilder::normalizeSizes()
