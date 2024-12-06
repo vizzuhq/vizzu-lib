@@ -82,7 +82,7 @@ template <typename T, class CRTP> struct SegmentedFunction
 		    });
 		return interpolate(it->value,
 		    std::next(it)->value,
-		    Range{it->pos, std::next(it)->pos}.rescale(pos));
+		    Range<>{it->pos, std::next(it)->pos}.rescale(pos));
 	}
 
 protected:

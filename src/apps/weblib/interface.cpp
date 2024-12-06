@@ -267,25 +267,25 @@ void Interface::setAnimControlValue(ObjectRegistryHandle chart,
     const char *value)
 {
 	auto &&chartPtr = getChart(chart);
-	auto &ctrl = chartPtr->getAnimControl();
+	auto &&ctrl = chartPtr->getAnimControl();
 
-	if (path == "seek") { ctrl.seek(value); }
+	if (path == "seek") { ctrl->seek(value); }
 	else if (path == "cancel") {
-		ctrl.cancel();
+		ctrl->cancel();
 	}
 	else if (path == "stop") {
-		ctrl.stop();
+		ctrl->stop();
 	}
 	else if (auto &&set_accessor =
 	             Refl::Access::getAccessor<::Anim::Control::Option>(
 	                 path)
 	                 .set) {
-		set_accessor(ctrl.getOptions(), value);
+		set_accessor(ctrl->getOptions(), value);
 	}
 	else {
 		throw std::logic_error("invalid animation command");
 	}
-	ctrl.update();
+	ctrl->update();
 }
 
 const char *Interface::getAnimControlValue(ObjectRegistryHandle chart,
@@ -294,12 +294,12 @@ const char *Interface::getAnimControlValue(ObjectRegistryHandle chart,
 	thread_local std::string res;
 
 	auto &&chartPtr = getChart(chart);
-	auto &ctrl = chartPtr->getAnimControl();
+	auto &&ctrl = chartPtr->getAnimControl();
 
 	if (auto &&get_accessor =
 	        Refl::Access::getAccessor<::Anim::Control::Option>(path)
 	            .get) {
-		res = get_accessor(ctrl.getOptions());
+		res = get_accessor(ctrl->getOptions());
 	}
 	else
 		throw std::logic_error("invalid animation command");
@@ -396,7 +396,7 @@ void Interface::update(ObjectRegistryHandle chart, double timeInMSecs)
 	    std::chrono::duration_cast<std::chrono::nanoseconds>(
 	        std::chrono::duration<double, std::milli>{timeInMSecs});
 
-	widget->getChart().getAnimControl().update(
+	widget->getChart().getAnimControl()->update(
 	    ::Anim::TimePoint{nanoSecs});
 }
 

@@ -12,5 +12,5 @@ Promise.all([mdChartLoaded, dataLoaded, configLoaded]).then((results) => {
 	const config = results[2].default
 	const MdChart = results[0].default
 	const mdchart = new MdChart(data, 'tutorial')
-	mdchart.create(config)
+	mdchart.createFromConfig(config)
 })

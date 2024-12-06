@@ -383,10 +383,10 @@ std::multimap<std::string, event_as, std::less<>> get_events(
 	}
 
 	using clock_t = std::chrono::steady_clock;
-	chart.getAnimControl().update(clock_t::now());
+	chart.getAnimControl()->update(clock_t::now());
 	chart.setBoundRect(chart.getLayout().boundary);
 	chart.draw(MyCanvas{}.getCanvas());
-	chart.getAnimControl().update(clock_t::now());
+	chart.getAnimControl()->update(clock_t::now());
 
 	skip->*ends == "finished"_is_true;
 	return events;
