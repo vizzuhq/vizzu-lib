@@ -101,11 +101,26 @@ Buckets PlotBuilder::generateMarkers(std::size_t &mainBucketSize,
 		plot->markers.reserve(dataCube.df->get_record_count());
 	}
 
-	std::multimap<Marker::MarkerIndex, Options::MarkerInfoId> map;
-	for (auto &&[ix, mid] : plot->getOptions()->markersInfo)
-		map.emplace(mid, ix);
+	struct CmpBySec
+	{
+		[[nodiscard]] bool operator()(
+		    const std::pair<const Options::MarkerInfoId,
+		        Marker::MarkerIndex> &lhs,
+		    const std::pair<const Options::MarkerInfoId,
+		        Marker::MarkerIndex> &rhs) const
+		{
+			return lhs.second < rhs.second;
+		}
+	};
 
-	for (auto first = map.begin(); auto &&index : dataCube)
+	auto &&set =
+	    std::multiset<std::reference_wrapper<
+	                      const std::pair<const Options::MarkerInfoId,
+	                          Marker::MarkerIndex>>,
+	        CmpBySec>{plot->getOptions()->markersInfo.begin(),
+	        plot->getOptions()->markersInfo.end()};
+
+	for (auto first = set.begin(); auto &&index : dataCube)
 		for (auto &marker =
 		         plot->markers.emplace_back(*plot->getOptions(),
 		             dataCube,
@@ -113,10 +128,12 @@ Buckets PlotBuilder::generateMarkers(std::size_t &mainBucketSize,
 		             mainIds,
 		             subIds,
 		             index,
-		             map.contains(index.marker_id));
-		     first != map.end() && first->first == marker.idx;
+		             first != set.end()
+		                 && first->get().second == index.marker_id);
+		     first != set.end()
+		     && first->get().second == index.marker_id;
 		     ++first)
-			plot->markersInfo.insert({first->second,
+			plot->markersInfo.insert({first->get().first,
 			    Plot::MarkerInfo{Plot::MarkerInfoContent{marker}}});
 
 	if (!std::ranges::is_sorted(plot->markers, {}, &Marker::idx))
@@ -308,58 +325,43 @@ void PlotBuilder::calcAxises(const Data::DataTable &dataTable,
     const std::size_t &mainBucketSize,
     const std::size_t &subBucketSize)
 {
+	auto mainAxis = plot->getOptions()->mainAxisType();
 	auto &&[subRanges, subMax] = addSeparation(buckets,
 	    plot->getOptions()->subAxisType(),
 	    mainBucketSize);
 
 	auto &&[mainRanges, mainMax] =
 	    addSeparation(buckets.sort(&Marker::mainId),
-	        plot->getOptions()->mainAxisType(),
+	        mainAxis,
 	        subBucketSize);
 
 	const auto &xrange =
 	    plot->getOptions()->getHorizontalAxis().range;
 	const auto &yrange = plot->getOptions()->getVerticalAxis().range;
 
-	auto markerIt = plot->markers.begin();
-	while (markerIt != plot->markers.end()
-	       && !static_cast<bool>(markerIt->enabled))
-		++markerIt;
+	auto boundRect = plot->getMarkersBounds();
 
-	if (markerIt == plot->markers.end()) {
-		stats.setIfRange(AxisId::x, xrange.getRange({0.0, 0.0}));
-		stats.setIfRange(AxisId::y, xrange.getRange({0.0, 0.0}));
+	plot->getOptions()->setAutoRange(
+	    !std::signbit(boundRect.hSize().min),
+	    !std::signbit(boundRect.vSize().min));
+
+	boundRect.setHSize(xrange.getRange(boundRect.hSize()));
+	boundRect.setVSize(yrange.getRange(boundRect.vSize()));
+
+	for (auto &marker : plot->markers) {
+		if (!boundRect.positive().intersects(
+		        marker.toRectangle().positive()))
+			marker.enabled = false;
+
+		auto rect = marker.toRectangle();
+		auto newRect = boundRect.normalize(rect);
+		marker.fromRectangle(newRect);
 	}
-	else {
-		auto boundRect = markerIt->toRectangle().positive();
 
-		while (++markerIt != plot->markers.end()) {
-			if (!markerIt->enabled) continue;
-			boundRect = boundRect.boundary(markerIt->toRectangle());
-		}
-
-		plot->getOptions()->setAutoRange(
-		    !std::signbit(boundRect.hSize().min),
-		    !std::signbit(boundRect.vSize().min));
-
-		boundRect.setHSize(xrange.getRange(boundRect.hSize()));
-		boundRect.setVSize(yrange.getRange(boundRect.vSize()));
-
-		for (auto &marker : plot->markers) {
-			if (!boundRect.positive().intersects(
-			        marker.toRectangle().positive()))
-				marker.enabled = false;
-
-			auto rect = marker.toRectangle();
-			auto newRect = boundRect.normalize(rect);
-			marker.fromRectangle(newRect);
-		}
-
-		stats.setIfRange(AxisId::x,
-		    {boundRect.left(), boundRect.right()});
-		stats.setIfRange(AxisId::y,
-		    {boundRect.bottom(), boundRect.top()});
-	}
+	stats.setIfRange(AxisId::x,
+	    {boundRect.left(), boundRect.right()});
+	stats.setIfRange(AxisId::y,
+	    {boundRect.bottom(), boundRect.top()});
 
 	for (const AxisId &ch : {AxisId::x, AxisId::y})
 		calcAxis(dataTable, ch);

@@ -48,10 +48,10 @@ void DrawAxes::drawGeometries() const
 
 			Geom::AffineTransform tr{xSplit.range.size(),
 			    0.0,
-			    xSplit.range.getMin(),
+			    xSplit.range.min,
 			    0.0,
 			    ySplit.range.size(),
-			    ySplit.range.getMin()};
+			    ySplit.range.min};
 
 			DrawInterlacing{*this}.drawGeometries(Gen::AxisId::y,
 			    tr,
@@ -79,10 +79,10 @@ void DrawAxes::drawLabels() const
 
 			Geom::AffineTransform tr{xSplit.range.size(),
 			    0.0,
-			    xSplit.range.getMin(),
+			    xSplit.range.min,
 			    0.0,
 			    ySplit.range.size(),
-			    ySplit.range.getMin()};
+			    ySplit.range.min};
 
 			DrawInterlacing{*this}.drawTexts(Gen::AxisId::y,
 			    tr,

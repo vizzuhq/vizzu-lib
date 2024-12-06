@@ -360,26 +360,26 @@ interpolate(const SplitAxis &op0, const SplitAxis &op1, double factor)
 		    {
 			    switch (type) {
 			    case Alg::union_call_t::only_left: {
-				    auto from = lhs->second.range.getMin();
+				    auto from = lhs->second.range.min;
 				    res.parts[lhs->first] = {
 				        .weight = interpolate(lhs->second.weight,
 				            0.0,
 				            factor),
 				        .range = interpolate(lhs->second.range,
-				            Math::Range<>::Raw(from, from),
+				            Math::Range<>{from, from},
 				            factor)};
 				    break;
 			    }
 			    case Alg::union_call_t::only_right: {
-				    auto from = rhs->second.range.getMin();
+				    auto from = rhs->second.range.min;
 				    res.parts[rhs->first] = {
 				        .weight = interpolate(0.0,
 				            rhs->second.weight,
 				            factor),
-				        .range = interpolate(
-				            Math::Range<>::Raw(from, from),
-				            rhs->second.range,
-				            factor)};
+				        .range =
+				            interpolate(Math::Range<>{from, from},
+				                rhs->second.range,
+				                factor)};
 				    break;
 			    }
 			    default:
@@ -397,14 +397,14 @@ interpolate(const SplitAxis &op0, const SplitAxis &op1, double factor)
 		res.parts[begin->first] = {
 		    .weight = interpolate(begin->second.weight, 1.0, factor),
 		    .range = interpolate(begin->second.range,
-		        Math::Range<>::Raw(0, 1),
+		        Math::Range<>{0, 1},
 		        factor)};
 		while (++begin != op0.parts.end()) {
 			res.parts[begin->first] = {
 			    .weight =
 			        interpolate(begin->second.weight, 0.0, factor),
 			    .range = interpolate(begin->second.range,
-			        Math::Range<>::Raw(0, 1),
+			        Math::Range<>{0, 1},
 			        factor)};
 		}
 	}
@@ -412,14 +412,14 @@ interpolate(const SplitAxis &op0, const SplitAxis &op1, double factor)
 		auto begin = op1.parts.begin();
 		res.parts[begin->first] = {
 		    .weight = interpolate(1.0, begin->second.weight, factor),
-		    .range = interpolate(Math::Range<>::Raw(0, 1),
+		    .range = interpolate(Math::Range<>{0, 1},
 		        begin->second.range,
 		        factor)};
 		while (++begin != op1.parts.end()) {
 			res.parts[begin->first] = {
 			    .weight =
 			        interpolate(0.0, begin->second.weight, factor),
-			    .range = interpolate(Math::Range<>::Raw(0, 1),
+			    .range = interpolate(Math::Range<>{0, 1},
 			        begin->second.range,
 			        factor)};
 		}

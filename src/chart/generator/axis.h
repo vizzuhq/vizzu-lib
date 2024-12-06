@@ -201,7 +201,7 @@ struct SplitAxis : Axis
 	struct Part
 	{
 		double weight{1.0};
-		Math::Range<> range = Math::Range<>::Raw(0, 1);
+		Math::Range<> range{0, 1};
 
 		[[nodiscard]] bool operator==(
 		    const Part &other) const = default;

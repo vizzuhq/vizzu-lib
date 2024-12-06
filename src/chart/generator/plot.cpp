@@ -68,6 +68,22 @@ bool Plot::isEmpty() const
 	return options->getChannels().isEmpty();
 }
 
+Geom::Rect Plot::getMarkersBounds() const
+{
+	auto markerIt = markers.begin();
+	while (markerIt != markers.end()
+	       && !static_cast<bool>(markerIt->enabled))
+		++markerIt;
+
+	if (markerIt == markers.end()) return {};
+
+	auto boundRect = markerIt->toRectangle().positive();
+	while (++markerIt != markers.end())
+		if (markerIt->enabled)
+			boundRect = boundRect.boundary(markerIt->toRectangle());
+	return boundRect;
+}
+
 void Plot::prependMarkers(const Plot &plot)
 {
 	auto it = markers.insert(markers.begin(),

@@ -226,17 +226,14 @@ void Marker::fromRectangle(const Geom::Rect &rect)
 
 Math::Range<> Marker::getSizeBy(AxisId axisId) const
 {
-	return isHorizontal(orientation(axisId)) ? toRectangle().hSize()
-	                                         : toRectangle().vSize();
+	return toRectangle().oSize(orientation(axisId));
+	;
 }
 
 void Marker::setSizeBy(AxisId axisId, const Math::Range<> range)
 {
 	auto rect = toRectangle();
-	if (isHorizontal(orientation(axisId)))
-		rect.setHSize(range);
-	else
-		rect.setVSize(range);
+	rect.setOSize(orientation(axisId), range);
 	fromRectangle(rect);
 }
 

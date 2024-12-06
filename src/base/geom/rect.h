@@ -56,6 +56,11 @@ struct Rect
 		return {bottom(), top()};
 	}
 
+	[[nodiscard]] Math::Range<> oSize(Orientation o)
+	{
+		return isHorizontal(o) ? hSize() : vSize();
+	}
+
 	[[nodiscard]] Math::Range<> x() const
 	{
 		return {pos.x, pos.x + size.x};
@@ -99,6 +104,14 @@ struct Rect
 	{
 		setBottom(range.min);
 		setTop(range.max);
+	}
+
+	void setOSize(Orientation o, const Math::Range<> &range)
+	{
+		if (isHorizontal(o))
+			setHSize(range);
+		else
+			setVSize(range);
 	}
 
 	[[nodiscard]] Rect bottomHalf() const
