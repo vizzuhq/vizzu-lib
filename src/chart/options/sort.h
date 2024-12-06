@@ -6,7 +6,7 @@
 namespace Vizzu::Gen
 {
 
-enum class Sort : std::uint8_t { none, byValue };
+enum class Sort : std::uint8_t { none, byValue, byLabel };
 
 }
 
