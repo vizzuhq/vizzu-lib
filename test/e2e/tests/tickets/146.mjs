@@ -15,7 +15,7 @@ const testSteps = [
 				{
 					name: 'Val',
 					type: 'measure',
-					values: [3, -5, 4, -4, 6, 5, -5, 7, 6]
+					values: [3, -5, 4, -4, 6, 5, -3, 7, 6]
 				}
 			]
 		}

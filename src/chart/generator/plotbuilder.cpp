@@ -561,9 +561,13 @@ PlotBuilder::addSeparation(const Buckets &buckets,
 	        max.size(),
 	        plot->getStyle().calculatedSize());
 
-	for (auto i = 1U; i < ranges.size(); ++i)
-		ranges[i] = ranges[i] + ranges[i - 1].max
-		          + (anyEnabled[i - 1] ? splitSpace : 0);
+	auto onMax = ranges[0].max;
+	ranges[0] = ranges[0] - ranges[0].min;
+	for (auto i = 1U; i < ranges.size(); ++i) {
+		onMax += anyEnabled[i - 1] ? splitSpace : 0;
+		ranges[i] = ranges[i] + onMax - ranges[i].min * 2;
+		onMax += ranges[i].size();
+	}
 
 	for (auto &&bucket : buckets)
 		for (auto &&[marker, idx] : bucket)
