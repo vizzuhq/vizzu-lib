@@ -46,8 +46,7 @@ export const presetConfigs = {
 			y: { set: [{ name: 'y' }, { name: 'x' }] },
 			label: { set: [{ name: 'y' }] },
 			color: { set: [{ name: 'y' }] }
-		},
-		align: 'stretch'
+		}
 	},
 	mekko: {
 		channels: {
