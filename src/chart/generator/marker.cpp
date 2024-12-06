@@ -218,23 +218,16 @@ Geom::Rect Marker::toRectangle() const
 	return {position - size, {size}};
 }
 
-void Marker::fromRectangle(const Geom::Rect &rect)
-{
-	position = rect.pos + rect.size;
-	size = rect.size;
-}
-
 Math::Range<> Marker::getSizeBy(AxisId axisId) const
 {
 	return toRectangle().oSize(orientation(axisId));
-	;
 }
 
 void Marker::setSizeBy(AxisId axisId, const Math::Range<> range)
 {
-	auto rect = toRectangle();
-	rect.setOSize(orientation(axisId), range);
-	fromRectangle(rect);
+	auto o = orientation(axisId);
+	position.getCoord(o) = range.max;
+	size.getCoord(o) = range.size();
 }
 
 bool Marker::Label::operator==(const Label &other) const

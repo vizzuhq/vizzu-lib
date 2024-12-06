@@ -122,6 +122,20 @@ template <std::floating_point T = double> struct Range
 
 	[[nodiscard]] T size() const { return max - min; }
 
+	[[nodiscard]] bool intersects(const Range<> &range) const
+	{
+		using Floating::is_zero;
+		auto first = std::strong_order(max, range.min);
+		auto second = std::strong_order(range.max, min);
+
+		auto isOutside =
+		    is_lt(first) || is_lt(second)
+		    || ((is_eq(first) || is_eq(second)) && !is_zero(size())
+		        && !is_zero(range.size()));
+
+		return !isOutside;
+	}
+
 	T min{std::numeric_limits<T>::max()};
 	T max{std::numeric_limits<T>::lowest()};
 };

@@ -38,13 +38,13 @@
 			"refs": ["e187f48"]
 		},
 		"basic_animations/labels/marker/area_2dis_3con": {
-			"refs": ["cd8bd6d"]
+			"refs": ["3711b35"]
 		},
 		"basic_animations/labels/marker/circle_negative_2dis_3con": {
 			"refs": ["6df75bb"]
 		},
 		"basic_animations/labels/marker/line_2dis_3con": {
-			"refs": ["097888e"]
+			"refs": ["9427821"]
 		},
 		"basic_animations/labels/marker/padding_test_rectangle_negative_2dis_3con": {
 			"refs": ["005e51c"]
@@ -53,7 +53,7 @@
 			"refs": ["da55724"]
 		},
 		"basic_animations/labels/rectangle_labels_rotated_charts": {
-			"refs": ["10761b9"]
+			"refs": ["ab6aa1d"]
 		},
 		"basic_animations/legend_transitions/color_2discrete_anim": {
 			"refs": ["fed1ebe"]
@@ -1367,7 +1367,7 @@
 			"refs": ["0093ba5"]
 		},
 		"ww_animTiming/without-polar/02_w-p_c-r-c": {
-			"refs": ["0b783fc"]
+			"refs": ["611dc70"]
 		},
 		"ww_animTiming/without-polar/05_w-p_r-c-r": {
 			"refs": ["b02225c"]
@@ -3092,7 +3092,7 @@
 			"refs": ["b91f870"]
 		},
 		"ww_samples_for_presets/polar_coo_sys/41_P_R_multi-level_pie_chart": {
-			"refs": ["cb896ab"]
+			"refs": ["0471993"]
 		},
 		"web_content/presets_config/chart/column_polar_stacked": {
 			"refs": ["369b38b"]

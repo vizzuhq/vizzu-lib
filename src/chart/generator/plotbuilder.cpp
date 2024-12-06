@@ -348,20 +348,20 @@ void PlotBuilder::calcAxises(const Data::DataTable &dataTable,
 	boundRect.setHSize(xrange.getRange(boundRect.hSize()));
 	boundRect.setVSize(yrange.getRange(boundRect.vSize()));
 
-	for (auto &marker : plot->markers) {
-		if (!boundRect.positive().intersects(
-		        marker.toRectangle().positive()))
-			marker.enabled = false;
+	for (auto &&[axis, ranges] :
+	    {std::pair{mainAxis, &mainRanges}, {!mainAxis, &subRanges}}) {
+		auto o = orientation(axis);
+		for (auto &marker : plot->markers) {
+			if (!boundRect.positive().oSize(o).intersects(
+			        marker.toRectangle().positive().oSize(o)))
+				marker.enabled = false;
 
-		auto rect = marker.toRectangle();
-		auto newRect = boundRect.normalize(rect);
-		marker.fromRectangle(newRect);
+			marker.setSizeBy(axis,
+			    boundRect.normalize(marker.toRectangle()).oSize(o));
+		}
+
+		stats.setIfRange(axis, boundRect.oSize(o));
 	}
-
-	stats.setIfRange(AxisId::x,
-	    {boundRect.left(), boundRect.right()});
-	stats.setIfRange(AxisId::y,
-	    {boundRect.bottom(), boundRect.top()});
 
 	for (const AxisId &ch : {AxisId::x, AxisId::y})
 		calcAxis(dataTable, ch);
