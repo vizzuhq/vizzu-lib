@@ -335,24 +335,23 @@ void PlotBuilder::calcAxises(const Data::DataTable &dataTable,
 
 	auto mainBoundRect = plot->getMarkersBounds(mainAxis);
 	auto subBoundRect = plot->getMarkersBounds(!mainAxis);
-	if (mainAxis != AxisId::x) std::swap(mainBoundRect, subBoundRect);
 
-	plot->getOptions()->setAutoRange(!std::signbit(mainBoundRect.min),
-	    !std::signbit(subBoundRect.min));
-
-	if (mainAxis != AxisId::x) std::swap(mainBoundRect, subBoundRect);
+	plot->getOptions()->setAutoRange(
+	    !std::signbit(
+	        (mainAxis == AxisId::x ? mainBoundRect : subBoundRect)
+	            .min),
+	    !std::signbit(
+	        (mainAxis == AxisId::x ? subBoundRect : mainBoundRect)
+	            .min));
 
 	mainBoundRect =
-	    plot->getOptions()->getChannels().at(mainAxis).range.getRange(
-	        mainBoundRect);
-	subBoundRect = plot->getOptions()
-	                   ->getChannels()
-	                   .at(!mainAxis)
-	                   .range.getRange(subBoundRect);
+	    plot->getOptions()->mainAxis().range.getRange(mainBoundRect);
+	subBoundRect =
+	    plot->getOptions()->subAxis().range.getRange(subBoundRect);
 
 	for (auto &&[axis, ranges, boundSize] :
-	    {std::tuple{mainAxis, &mainRanges, std::move(mainBoundRect)},
-	        {!mainAxis, &subRanges, std::move(subBoundRect)}}) {
+	    {std::tuple{mainAxis, &mainRanges, mainBoundRect},
+	        {!mainAxis, &subRanges, subBoundRect}}) {
 		for (auto &marker : plot->markers) {
 			auto &&markerSize = marker.getSizeBy(axis);
 			if (!boundSize.positive().intersects(

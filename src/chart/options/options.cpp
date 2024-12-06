@@ -220,8 +220,7 @@ AxisId Options::getHorizontalChannel() const
 
 AxisId Options::getVerticalChannel() const
 {
-	return getHorizontalChannel() == AxisId::x ? AxisId::y
-	                                           : AxisId::x;
+	return !getHorizontalChannel();
 }
 
 bool Options::isShapeValid(const ShapeType &shapeType) const

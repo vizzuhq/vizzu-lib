@@ -39,14 +39,14 @@ namespace Vizzu::Draw
 
 void DrawAxes::drawGeometries() const
 {
-	for (auto &xSplit : std::views::values(splits[Gen::AxisId::x]))
-		for (auto &ySplit :
+	for (auto &&xSplit : std::views::values(splits[Gen::AxisId::x]))
+		for (auto &&ySplit :
 		    std::views::values(splits[Gen::AxisId::y])) {
-			double weight =
+			auto weight =
 			    Math::FuzzyBool::And(xSplit.weight, ySplit.weight);
 			if (Math::Floating::is_zero(weight)) continue;
 
-			Geom::AffineTransform tr{xSplit.range.size(),
+			const Geom::AffineTransform tr{xSplit.range.size(),
 			    0.0,
 			    xSplit.range.min,
 			    0.0,
@@ -70,14 +70,14 @@ void DrawAxes::drawGeometries() const
 
 void DrawAxes::drawLabels() const
 {
-	for (auto &xSplit : std::views::values(splits[Gen::AxisId::x]))
-		for (auto &ySplit :
+	for (auto &&xSplit : std::views::values(splits[Gen::AxisId::x]))
+		for (auto &&ySplit :
 		    std::views::values(splits[Gen::AxisId::y])) {
-			double weight =
+			auto weight =
 			    Math::FuzzyBool::And(xSplit.weight, ySplit.weight);
 			if (Math::Floating::is_zero(weight)) continue;
 
-			Geom::AffineTransform tr{xSplit.range.size(),
+			const Geom::AffineTransform tr{xSplit.range.size(),
 			    0.0,
 			    xSplit.range.min,
 			    0.0,

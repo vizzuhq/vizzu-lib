@@ -1,6 +1,7 @@
 #ifndef ALG_UNION_FOREACH_H
 #define ALG_UNION_FOREACH_H
 
+#include <functional>
 #include <ranges>
 
 #include "union_foreach.h"
