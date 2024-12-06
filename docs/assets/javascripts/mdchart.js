@@ -7,12 +7,15 @@ class MdChart {
 		this.id = id
 	}
 
+	async createFromConfig(snippets) {
+		this.create(await loadAnimations(snippets))
+	}
+
 	async create(snippets) {
-		const animations = await loadAnimations(snippets)
 		let chart = Promise.resolve()
-		for (let i = 0; i < animations.length; i++) {
+		for (let i = 0; i < snippets.length; i++) {
 			const number = i + 1
-			chart = this.animate(('0' + number).slice(-2), animations[i], chart)
+			chart = this.animate(('0' + number).slice(-2), snippets[i], chart)
 		}
 	}
 
