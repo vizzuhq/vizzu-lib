@@ -53,7 +53,7 @@
 			"refs": ["cf62886"]
 		},
 		"basic_animations/labels/rectangle_labels_rotated_charts": {
-			"refs": ["b79fb18"]
+			"refs": ["4b7c849"]
 		},
 		"basic_animations/legend_transitions/color_2discrete_anim": {
 			"refs": ["fed1ebe"]
@@ -2441,7 +2441,7 @@
 			"refs": ["ecb5f2b"]
 		},
 		"ww_noFade/wNoFade_Tests/Marker_label_problem/rotated_bar_to_donut": {
-			"refs": ["9196915"]
+			"refs": ["7f75c64"]
 		},
 		"ww_noFade/wNoFade_Tests/Marker_transition_problem/Bubble_Stacked_Bubble_to_Area": {
 			"refs": ["295cd11"]

@@ -105,7 +105,8 @@ const DrawAxes &&DrawAxes::init() &&
 	for (auto axisIndex : Refl::enum_values<Gen::AxisId>()) {
 		const auto &axis = plot->axises.at(axisIndex);
 
-		const static Gen::SplitAxis::Parts oneSized{{}};
+		const static Gen::SplitAxis::Parts oneSized{
+		    {std::size_t{}, Gen::SplitAxis::Part{}}};
 		splits[axisIndex] =
 		    axis.parts.empty() ? oneSized : axis.parts;
 
