@@ -38,22 +38,22 @@
 			"refs": ["e187f48"]
 		},
 		"basic_animations/labels/marker/area_2dis_3con": {
-			"refs": ["cd8bd6d"]
+			"refs": ["b543e3d"]
 		},
 		"basic_animations/labels/marker/circle_negative_2dis_3con": {
-			"refs": ["6df75bb"]
+			"refs": ["7c4e5cc"]
 		},
 		"basic_animations/labels/marker/line_2dis_3con": {
-			"refs": ["097888e"]
+			"refs": ["fc92094"]
 		},
 		"basic_animations/labels/marker/padding_test_rectangle_negative_2dis_3con": {
-			"refs": ["005e51c"]
+			"refs": ["68d1990"]
 		},
 		"basic_animations/labels/marker/rectangle_negative_2dis_3con": {
-			"refs": ["da55724"]
+			"refs": ["cf62886"]
 		},
 		"basic_animations/labels/rectangle_labels_rotated_charts": {
-			"refs": ["10761b9"]
+			"refs": ["4b7c849"]
 		},
 		"basic_animations/legend_transitions/color_2discrete_anim": {
 			"refs": ["fed1ebe"]
@@ -395,7 +395,7 @@
 			"refs": ["d8ffda3"]
 		},
 		"static_chart_types/polar_coo_sys/coxcomb_stacked_rectangle_2dis_2con": {
-			"refs": ["80fac6a"]
+			"refs": ["19ccbba"]
 		},
 		"static_chart_types/polar_coo_sys/radial_rectangle_1dis_1con": {
 			"refs": ["ffbd29a"]
@@ -1367,7 +1367,7 @@
 			"refs": ["0093ba5"]
 		},
 		"ww_animTiming/without-polar/02_w-p_c-r-c": {
-			"refs": ["0b783fc"]
+			"refs": ["611dc70"]
 		},
 		"ww_animTiming/without-polar/05_w-p_r-c-r": {
 			"refs": ["b02225c"]
@@ -2441,7 +2441,7 @@
 			"refs": ["ecb5f2b"]
 		},
 		"ww_noFade/wNoFade_Tests/Marker_label_problem/rotated_bar_to_donut": {
-			"refs": ["6000b24"]
+			"refs": ["7f75c64"]
 		},
 		"ww_noFade/wNoFade_Tests/Marker_transition_problem/Bubble_Stacked_Bubble_to_Area": {
 			"refs": ["295cd11"]
@@ -3092,7 +3092,7 @@
 			"refs": ["b91f870"]
 		},
 		"ww_samples_for_presets/polar_coo_sys/41_P_R_multi-level_pie_chart": {
-			"refs": ["cb896ab"]
+			"refs": ["0471993"]
 		},
 		"web_content/presets_config/chart/column_polar_stacked": {
 			"refs": ["369b38b"]

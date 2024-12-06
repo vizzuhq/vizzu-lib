@@ -8,6 +8,7 @@
 #include <utility>
 
 #include "base/anim/interpolated.h"
+#include "base/geom/affinetransform.h"
 #include "base/geom/point.h"
 #include "base/geom/rect.h"
 #include "base/gfx/colortransform.h"
@@ -27,7 +28,9 @@
 namespace Vizzu::Draw
 {
 
-void DrawInterlacing::drawGeometries(Gen::AxisId axisIndex) const
+void DrawInterlacing::drawGeometries(Gen::AxisId axisIndex,
+    const Geom::AffineTransform &tr,
+    double w) const
 {
 	const auto &guides = parent.plot->guides.at(axisIndex);
 	const auto &axisStyle = parent.rootStyle.plot.getAxis(axisIndex);
@@ -54,14 +57,16 @@ void DrawInterlacing::drawGeometries(Gen::AxisId axisIndex) const
 		                const double &from,
 		                const double &to)
 		{
-			return Geom::Rect{
-			    Geom::Point::Coord(orientation, clippedBottom, from),
-			    {Geom::Size::Coord(orientation,
+			return Geom::Rect{tr(Geom::Point::Coord(orientation,
+			                      clippedBottom,
+			                      from)),
+			    tr(Geom::Size::Oriented(orientation,
 			        clippedSize,
-			        to - from)}};
+			        to - from))};
 		};
 
-		auto weight = Math::FuzzyBool::And<double>(interval.weight,
+		auto weight = Math::FuzzyBool::And<double>(w,
+		    interval.weight,
 		    interval.isSecond,
 		    guides.interlacings);
 		auto interlacingColor = *axisStyle.interlacing.color * weight;
@@ -89,7 +94,9 @@ void DrawInterlacing::drawGeometries(Gen::AxisId axisIndex) const
 	}
 }
 
-void DrawInterlacing::drawTexts(Gen::AxisId axisIndex) const
+void DrawInterlacing::drawTexts(Gen::AxisId axisIndex,
+    const Geom::AffineTransform &tr,
+    double w) const
 {
 	const auto &axis = parent.getAxis(axisIndex).measure;
 	auto orientation = !Gen::orientation(axisIndex);
@@ -118,18 +125,22 @@ void DrawInterlacing::drawTexts(Gen::AxisId axisIndex) const
 			drawDataLabel(axis.enabled,
 			    axisIndex,
 			    tickPos,
+			    tr,
 			    *sep.label,
 			    axis.unit,
-			    Math::FuzzyBool::And<double>(sep.weight,
+			    Math::FuzzyBool::And<double>(w,
+			        sep.weight,
 			        guides.labels));
 
 		if (needTick)
 			drawSticks(tickLength,
 			    *axisStyle.ticks.color
-			        * Math::FuzzyBool::And<double>(sep.weight,
+			        * Math::FuzzyBool::And<double>(w,
+			            sep.weight,
 			            guides.axisSticks),
 			    axisIndex,
-			    tickPos);
+			    tickPos,
+			    tr);
 	}
 }
 
@@ -157,6 +168,7 @@ void DrawInterlacing::drawDataLabel(
     const ::Anim::Interpolated<bool> &axisEnabled,
     Gen::AxisId axisIndex,
     const Geom::Point &tickPos,
+    const Geom::AffineTransform &tr,
     double value,
     const ::Anim::String &unit,
     double alpha) const
@@ -191,10 +203,10 @@ void DrawInterlacing::drawDataLabel(
 		               : labelStyle.side->factor(
 		                   Styles::AxisLabel::Side::negative);
 
-		auto &&posDir =
-		    parent.coordSys
-		        .convertDirectionAt({refPos, refPos + normal})
-		        .extend(1 - 2 * under);
+		auto &&posDir = parent.coordSys
+		                    .convertDirectionAt(tr(
+		                        Geom::Line{refPos, refPos + normal}))
+		                    .extend(1 - 2 * under);
 
 		auto &&wUnit = unit.get_or_first(index);
 		auto str = Text::SmartString::fromPhysicalValue(value,
@@ -218,7 +230,8 @@ void DrawInterlacing::drawDataLabel(
 void DrawInterlacing::drawSticks(double tickLength,
     const Gfx::Color &tickColor,
     Gen::AxisId axisIndex,
-    const Geom::Point &tickPos) const
+    const Geom::Point &tickPos,
+    const Geom::AffineTransform &tr) const
 {
 	auto &canvas = parent.canvas;
 	const auto &tickStyle =
@@ -233,11 +246,11 @@ void DrawInterlacing::drawSticks(double tickLength,
 
 	auto tickLine = tickStyle.position->combine(
 	    [tickLine = parent.coordSys
-	                    .convertDirectionAt({tickPos,
+	                    .convertDirectionAt(tr(Geom::Line{tickPos,
 	                        tickPos
 	                            + Geom::Point::Coord(
 	                                !orientation(axisIndex),
-	                                -1.0)})
+	                                -1.0)}))
 	                    .segment(0, tickLength)](const auto &position)
 	    {
 		    switch (position) {

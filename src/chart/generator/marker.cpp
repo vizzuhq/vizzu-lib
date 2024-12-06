@@ -6,9 +6,7 @@
 #include <utility>
 
 #include "base/conv/auto_json.h"
-#include "base/geom/orientation.h"
 #include "base/geom/point.h"
-#include "base/geom/rect.h"
 #include "base/math/range.h"
 #include "base/refl/auto_enum.h"
 #include "chart/options/align.h"
@@ -213,31 +211,18 @@ double Marker::getValueForChannel(const Channels &channels,
 	return value;
 }
 
-Geom::Rect Marker::toRectangle() const
-{
-	return {position - size, {size}};
-}
-
-void Marker::fromRectangle(const Geom::Rect &rect)
-{
-	position = rect.pos + rect.size;
-	size = rect.size;
-}
-
 Math::Range<> Marker::getSizeBy(AxisId axisId) const
 {
-	return isHorizontal(orientation(axisId)) ? toRectangle().hSize()
-	                                         : toRectangle().vSize();
+	auto o = orientation(axisId);
+	return {position.getCoord(o) - size.getCoord(o),
+	    position.getCoord(o)};
 }
 
 void Marker::setSizeBy(AxisId axisId, const Math::Range<> range)
 {
-	auto rect = toRectangle();
-	if (isHorizontal(orientation(axisId)))
-		rect.setHSize(range);
-	else
-		rect.setVSize(range);
-	fromRectangle(rect);
+	auto o = orientation(axisId);
+	position.getCoord(o) = range.max;
+	size.getCoord(o) = range.size();
 }
 
 bool Marker::Label::operator==(const Label &other) const

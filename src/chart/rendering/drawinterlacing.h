@@ -10,8 +10,12 @@ namespace Vizzu::Draw
 class DrawInterlacing
 {
 public:
-	void drawGeometries(Gen::AxisId axisIndex) const;
-	void drawTexts(Gen::AxisId axisIndex) const;
+	void drawGeometries(Gen::AxisId axisIndex,
+	    const Geom::AffineTransform &tr,
+	    double w) const;
+	void drawTexts(Gen::AxisId axisIndex,
+	    const Geom::AffineTransform &tr,
+	    double w) const;
 
 	const DrawAxes &parent;
 
@@ -23,6 +27,7 @@ private:
 	void drawDataLabel(const ::Anim::Interpolated<bool> &enabled,
 	    Gen::AxisId axisIndex,
 	    const Geom::Point &tickPos,
+	    const Geom::AffineTransform &tr,
 	    double value,
 	    const ::Anim::String &unit,
 	    double alpha) const;
@@ -30,7 +35,8 @@ private:
 	void drawSticks(double tickLength,
 	    const Gfx::Color &tickColor,
 	    Gen::AxisId axisIndex,
-	    const Geom::Point &tickPos) const;
+	    const Geom::Point &tickPos,
+	    const Geom::AffineTransform &tr) const;
 
 	[[nodiscard]] std::map<double, double> getInterlacingWeights(
 	    Gen::AxisId axisIndex) const;

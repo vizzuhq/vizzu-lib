@@ -92,7 +92,7 @@ void Sheet::setPlot()
 		defaultParams.plot.paddingLeft =
 		    Gfx::Length::Emphemeral(45.0 / 12.0);
 	}
-	else if (!options->isMeasure(+options->getVerticalChannel())) {
+	else if (!options->isMeasure(+!options->getHorizontalChannel())) {
 		defaultParams.plot.paddingLeft =
 		    Gfx::Length::Emphemeral(80.0 / 12.0);
 	}
@@ -115,11 +115,10 @@ void Sheet::setAxisLabels()
 		def.position = AxisLabel::Position::max_edge;
 		def.side = AxisLabel::Side::positive;
 	}
-	else if (!options->isMeasure(Gen::ChannelId::x)
+	else if (!options->isMeasure(+options->getHorizontalChannel())
 	         && options->getChannels()
-	                .at(Gen::AxisId::x)
-	                .hasDimension()
-	         && options->angle == 0)
+	                .at(+options->getHorizontalChannel())
+	                .hasDimension())
 		def.angle.reset();
 }
 
@@ -154,13 +153,14 @@ void Sheet::setMarkers()
 			defaultParams.plot.marker.fillOpacity = 0.8;
 		}
 		else if (options->geometry == Gen::ShapeType::rectangle) {
-			auto vIsMeasure =
-			    options->isMeasure(+options->getVerticalChannel());
-			auto hIsMeasure =
-			    options->isMeasure(+options->getHorizontalChannel());
+			auto vIsMeasure = options->isMeasure(Gen::ChannelId::y);
+			auto hIsMeasure = options->isMeasure(Gen::ChannelId::x);
 			if (auto polar = options->coordSystem.get()
 			              == Gen::CoordSystem::polar;
-			    polar && options->getVerticalAxis().isEmpty())
+			    polar
+			    && options->getChannels()
+			           .at(Gen::ChannelId::y)
+			           .isEmpty())
 				defaultParams.plot.marker.rectangleSpacing = 0;
 			else if (auto needRectangleSpacing =
 			             vIsMeasure != hIsMeasure
@@ -221,7 +221,11 @@ void Sheet::setAfterStyles(Gen::Plot &plot, const Geom::Size &size)
 	auto &style = plot.getStyle();
 	style.setup();
 
-	if (auto &xLabel = style.plot.xAxis.label; !xLabel.angle) {
+	if (auto &xLabel =
+	        style.plot
+	            .getAxis(plot.getOptions()->getHorizontalChannel())
+	            .label;
+	    !xLabel.angle) {
 		auto plotX = size.x;
 
 		auto em = style.calculatedSize();
@@ -258,7 +262,7 @@ void Sheet::setAfterStyles(Gen::Plot &plot, const Geom::Size &size)
 			        ranges.end(),
 			        [&next_range](const Math::Range<> &other)
 			        {
-				        return other.includes(next_range);
+				        return other.intersects(next_range);
 			        })) {
 				has_collision = true;
 				break;

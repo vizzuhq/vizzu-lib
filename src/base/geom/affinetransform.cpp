@@ -70,28 +70,31 @@ AffineTransform &AffineTransform::operator*=(
 	return *this;
 }
 
-Geom::Point AffineTransform::operator()(
-    const Geom::Point &original) const
+Point AffineTransform::operator()(const Point &original) const
 {
 	return {original.x * m[0][0] + original.y * m[0][1] + m[0][2],
 	    original.x * m[1][0] + original.y * m[1][1] + m[1][2]};
 }
 
-Geom::Line AffineTransform::operator()(
-    const Geom::Line &original) const
+Line AffineTransform::operator()(const Line &original) const
 {
 	return {(*this)(original.begin), (*this)(original.end)};
 }
 
-Geom::Polygon AffineTransform::operator()(
-    const Geom::Polygon &original) const
+Polygon AffineTransform::operator()(const Polygon &original) const
 {
-	Geom::Polygon res;
+	Polygon res;
 	for (auto point : original.points) res.add((*this)(point));
 	return res;
 }
 
-void AffineTransform::shift(const Geom::Point &offset)
+Size AffineTransform::operator()(const Size &original) const
+{
+	return {original.x * m[0][0] + original.y * m[0][1],
+	    original.x * m[1][0] + original.y * m[1][1]};
+}
+
+void AffineTransform::shift(const Point &offset)
 {
 	m[0][2] += offset.x;
 	m[1][2] += offset.y;

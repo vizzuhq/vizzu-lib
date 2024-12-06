@@ -236,6 +236,12 @@ struct Point
 
 struct Size : Point
 {
+	[[nodiscard]] static Size Oriented(Orientation orientation,
+	    double value,
+	    double other = 0.0)
+	{
+		return {Point::Coord(orientation, value, other)};
+	}
 
 	static Size Square(double size) { return {size, size}; }
 
