@@ -25,7 +25,7 @@ const testSteps = [
 		chart.animate({
 			config: {
 				title: 'Split Bars to Show/See Values of 2nd Categories',
-				split: true
+				x: { split: true }
 			}
 		})
 ]

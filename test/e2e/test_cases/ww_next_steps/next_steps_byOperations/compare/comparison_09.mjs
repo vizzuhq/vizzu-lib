@@ -8,12 +8,11 @@ const testSteps = [
 			config: {
 				channels: {
 					x: 'Year',
-					y: ['Value 2 (+)', 'Country'],
+					y: { set: ['Value 2 (+)', 'Country'], split: true },
 					color: 'Country'
 				},
 				title: 'Trellis Area',
-				geometry: 'area',
-				split: true
+				geometry: 'area'
 			}
 		}),
 
@@ -21,11 +20,10 @@ const testSteps = [
 		chart.animate({
 			config: {
 				channels: {
-					y: 'Value 2 (+)'
+					y: { set: 'Value 2 (+)', split: false }
 				},
 				title: 'CHG Geom., Split off & Unstack to Compare Components',
-				geometry: 'line',
-				split: false
+				geometry: 'line'
 			}
 		}),
 	(chart) => {

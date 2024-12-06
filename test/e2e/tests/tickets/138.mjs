@@ -14,8 +14,7 @@ const testSteps = [
 		chart.animate({
 			x: 'Foo',
 			color: 'Foo2',
-			y: { set: ['Bar', 'Foo2'], range: { max: 1.2 } },
-			align: 'stretch'
+			y: { set: ['Bar', 'Foo2'], range: { max: 1.2 }, align: 'stretch' }
 		})
 ]
 

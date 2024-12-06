@@ -24,9 +24,8 @@ const testSteps = [
 	},
 	(chart) =>
 		chart.animate({
-			y: ['Colors', 'Val'],
-			x: 'Letters',
-			split: true
+			y: { set: ['Colors', 'Val'], split: true },
+			x: 'Letters'
 		})
 ]
 

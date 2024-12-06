@@ -22,12 +22,11 @@ const testSteps = [
 		chart.animate({
 			config: {
 				channels: {
-					x: ['Value 1 (+)', 'Country']
+					x: { set: ['Value 1 (+)', 'Country'], split: true }
 				},
 				title: 'Split Components to See them Separately',
 				geometry: 'circle',
-				orientation: 'vertical',
-				split: true
+				orientation: 'vertical'
 			}
 		}),
 	(chart) => {

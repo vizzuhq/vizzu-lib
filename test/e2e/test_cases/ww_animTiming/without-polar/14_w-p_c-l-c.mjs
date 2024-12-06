@@ -44,9 +44,7 @@ const testSteps = [
 					},
 					title: 'Line Chart',
 					geometry: 'line',
-					coordSystem: 'polar',
-					//            orientation: 'horizontal',
-					split: false
+					coordSystem: 'polar'
 				}
 			},
 			{

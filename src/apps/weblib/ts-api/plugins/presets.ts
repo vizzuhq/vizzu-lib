@@ -31,20 +31,81 @@ export default class Presets {
 
 	private _nullConfig(): Config.Chart {
 		return {
-			align: 'none',
+			/*
+			title: null,
+			subtitle: null,
+			caption: null,
+			legend: 'auto',
+			 */
 			coordSystem: 'cartesian',
 			orientation: 'auto',
 			angle: 0,
-			split: false,
 			geometry: 'rectangle',
 			channels: {
-				x: { set: null },
-				y: { set: null },
-				color: { set: null },
-				lightness: { set: null },
-				size: { set: null },
-				noop: { set: null },
-				label: { set: null }
+				x: {
+					set: null,
+					title: 'auto',
+					// range: { min: 'auto', max: 'auto' },
+					labelLevel: 'auto',
+					axis: 'auto',
+					labels: 'auto',
+					ticks: 'auto',
+					interlacing: 'auto',
+					guides: 'auto',
+					markerGuides: 'auto',
+					step: 'auto',
+					// sort: 'none',
+					// reverse: false,
+					align: 'none',
+					split: false
+				},
+				y: {
+					set: null,
+					title: 'auto',
+					// range: { min: 'auto', max: 'auto' },
+					labelLevel: 'auto',
+					axis: 'auto',
+					labels: 'auto',
+					ticks: 'auto',
+					interlacing: 'auto',
+					guides: 'auto',
+					markerGuides: 'auto',
+					step: 'auto',
+					// sort: 'none',
+					// reverse: false,
+					align: 'none',
+					split: false
+				},
+				color: {
+					set: null,
+					title: 'auto',
+					// range: { min: 'auto', max: 'auto' },
+					labelLevel: 'auto'
+				},
+				lightness: {
+					set: null,
+					title: 'auto',
+					// range: { min: 'auto', max: 'auto' },
+					labelLevel: 'auto'
+				},
+				size: {
+					set: null,
+					title: 'auto',
+					// range: { min: 'auto', max: 'auto' },
+					labelLevel: 'auto'
+				},
+				noop: {
+					set: null,
+					title: 'auto',
+					// range: { min: 'auto', max: 'auto' },
+					labelLevel: 'auto'
+				},
+				label: {
+					set: null,
+					title: 'auto',
+					// range: { min: 'auto', max: 'auto' },
+					labelLevel: 'auto'
+				}
 			}
 		}
 	}
@@ -102,17 +163,43 @@ export default class Presets {
 		}
 	}
 
-	private _setupUserParams(base: Config.Chart, config: Config.Chart): void {
-		;['legend', 'title', 'subtitle', 'caption', 'reverse', 'sort'].forEach((key) => {
+	private _setupUserParams(
+		base: Config.Chart,
+		config: Config.Chart,
+		mainAxis: keyof Config.Channels
+	): void {
+		;['legend', 'title', 'subtitle', 'caption'].forEach((key) => {
 			const prop = key as keyof Config.Chart
 			this._assignProperty(base, config, prop)
 		})
+		;['reverse', 'sort'].forEach((key) => {
+			this._assignProperty(
+				base.channels?.[mainAxis] as Config.Channel,
+				config as Config.Channel,
+				key as keyof Config.Channel
+			)
+		})
+	}
+
+	private _getMainAxis(presetConfig: Config.Chart): keyof Config.Channels {
+		const channel = presetConfig.channels?.x
+		if (
+			this._isChannel(channel) &&
+			channel.set?.find((series) => {
+				return series.name === 'stackedBy' || series.name === 'splittedBy'
+			})
+		) {
+			return 'y' as keyof Config.Channels
+		}
+
+		return 'x' as keyof Config.Channels
 	}
 
 	private _buildPresetConfig(presetName: PresetNames, config: Config.Chart): Config.Chart {
 		const presetConfig = this._createPresetConfig(presetName)
+		const mainAxis = this._getMainAxis(presetConfig)
 		this._fillChannels(presetConfig, config)
-		this._setupUserParams(presetConfig, config)
+		this._setupUserParams(presetConfig, config, mainAxis)
 		return presetConfig
 	}
 }

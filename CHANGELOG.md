@@ -6,7 +6,16 @@
 
 - Fix invalid read/write when animation is contiguous (onFinish callback calls setKeyframe).
 - Waterfall chart preset not aligned.
-- Split chart count negative values too. 
+- Split chart count negative values too.
+
+### Changed
+
+- Separate Channel properties to AxisChannel properties at config.
+- Channels 'set' rewrite doesn't clear AxisChannel properties.
+
+### Added
+
+- Enable split and align on mainAxis.
 
 ## [0.16.0] - 2024-11-28
 

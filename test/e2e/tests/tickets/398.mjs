@@ -13,11 +13,10 @@ const testSteps = [
 	},
 	(chart) =>
 		chart.animate({
-			x: ['Foo', 'Foo2'],
+			x: { set: ['Foo', 'Foo2'], sort: 'byValue' },
 			y: 'Baz',
 			color: 'Foo',
-			geometry: 'circle',
-			sort: 'byValue'
+			geometry: 'circle'
 		}),
 	(chart) =>
 		chart.animate({

@@ -1,5 +1,5 @@
 chart.animate({
 	config: {
-		sort: 'byValue'
+		x: { sort: 'byValue' }
 	}
 })

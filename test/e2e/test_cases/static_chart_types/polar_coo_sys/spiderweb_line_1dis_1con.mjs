@@ -11,7 +11,6 @@ const testSteps = [
 					label: 'Value 2 (+)'
 				},
 				title: 'Spiderweb 1Line (fake. no multiaxes)',
-				align: 'none',
 				geometry: 'line',
 				coordSystem: 'polar'
 			},

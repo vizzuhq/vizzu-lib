@@ -10,8 +10,7 @@ const testSteps = [
 					y: { attach: ['Value 2 (+)'], range: { min: '0%', max: '110%' } },
 					label: { attach: ['Value 2 (+)'] }
 				},
-				title: 'Histogram with (-) Nums',
-				align: 'none'
+				title: 'Histogram with (-) Nums'
 			}
 		}),
 	(chart) =>
@@ -37,8 +36,7 @@ const testSteps = [
 					x: { attach: ['Joy factors'] },
 					label: { detach: ['Value 2 (+)'], attach: ['Value 5 (+/-)'] }
 				},
-				title: 'Grouped with (-) Nums',
-				split: true
+				title: 'Grouped with (-) Nums'
 			},
 			style: {
 				plot: {

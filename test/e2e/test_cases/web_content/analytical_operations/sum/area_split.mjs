@@ -9,19 +9,18 @@ const testSteps = [
 			config: {
 				channels: {
 					x: 'Year',
-					y: ['Value 2 (+)', 'Country'],
+					y: { set: ['Value 2 (+)', 'Country'], split: true },
 					color: 'Country'
 				},
 
-				geometry: 'area',
-				split: true
+				geometry: 'area'
 			}
 		}),
 
 	(chart) =>
 		chart.animate({
 			config: {
-				split: false
+				y: { split: false }
 			}
 		}),
 	(chart) => {

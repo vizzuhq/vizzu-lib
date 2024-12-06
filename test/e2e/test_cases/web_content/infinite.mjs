@@ -11,7 +11,6 @@ const testSteps = [
 						y: { attach: ['Ver'], range: { max: '375' } },
 						color: { set: ['Joy factors'] }
 					},
-					align: 'none',
 					geometry: 'circle',
 					legend: null
 				},
@@ -539,12 +538,11 @@ const testSteps = [
 						x: { set: ['Joy factors', 'Country code'], range: { max: '100%' } },
 						y: {
 							set: ['Value 1', 'Age group'],
-							range: { min: '0%', max: '100%' }
+							range: { min: '0%', max: '100%' },
+							split: true
 						}
 					},
-					title: '24',
-					split: true
-					//           legend: 'color'
+					title: '24'
 				},
 				style: {
 					plot: {
@@ -564,13 +562,13 @@ const testSteps = [
 						x: { set: ['Joy factors', 'Country code'], range: { max: '100%' } },
 						y: {
 							set: ['Value 1', 'Age group'],
-							range: { min: '0%', max: '100%' }
+							range: { min: '0%', max: '100%' },
+							align: 'stretch',
+							split: false
 						}
 					},
 					title: '25',
-					geometry: 'area',
-					align: 'stretch',
-					split: false
+					geometry: 'area'
 				},
 				style: {
 					plot: {
@@ -590,13 +588,13 @@ const testSteps = [
 						x: { set: ['Joy factors', 'Country code'], range: { max: '100%' } },
 						y: {
 							set: ['Value 1', 'Age group'],
-							range: { min: '0%', max: '100%' }
+							range: { min: '0%', max: '100%' },
+							align: 'center',
+							split: true
 						}
 					},
 					title: '26',
-					geometry: 'area',
-					align: 'center',
-					split: true
+					geometry: 'area'
 				},
 				style: {
 					plot: {
@@ -622,9 +620,7 @@ const testSteps = [
 						color: { set: ['Joy factors'] }
 					},
 					title: '27',
-					geometry: 'circle',
-					align: 'center',
-					split: true
+					geometry: 'circle'
 				},
 				style: {
 					plot: {
@@ -668,16 +664,19 @@ const testSteps = [
 				config: {
 					channels: {
 						x: { set: ['Joy factors'], range: { min: '0%', max: '100%' } },
-						y: { set: ['Value 1'], range: { min: '0%', max: '100%' } },
+						y: {
+							set: ['Value 1'],
+							range: { min: '0%', max: '100%' },
+							align: 'none',
+							split: false
+						},
 						color: { set: ['Joy factors'] },
 						lightness: { set: ['Value 3'] },
 						noop: { set: ['Country code', 'Age group'] },
 						size: { set: ['Value 2' /*, 'Age group' */] }
 					},
 					title: '29',
-					geometry: 'circle',
-					align: 'none',
-					split: false
+					geometry: 'circle'
 				},
 				style: {
 					plot: {
@@ -705,9 +704,7 @@ const testSteps = [
 						size: { set: ['Value 2' /*, 'Age group' */] }
 					},
 					title: '30',
-					geometry: 'circle',
-					align: 'none',
-					split: false
+					geometry: 'circle'
 				},
 				style: {
 					plot: {
@@ -735,9 +732,7 @@ const testSteps = [
 						size: { set: ['Value 1'] }
 					},
 					title: '30a',
-					geometry: 'circle',
-					align: 'none',
-					split: false
+					geometry: 'circle'
 				},
 				style: {
 					plot: {
@@ -767,9 +762,7 @@ const testSteps = [
 						size: { set: ['Value 1', 'Country code'] }
 					},
 					title: '31',
-					geometry: 'circle',
-					align: 'none',
-					split: false
+					geometry: 'circle'
 				},
 				style: {
 					plot: {
@@ -799,9 +792,7 @@ const testSteps = [
 						size: { set: ['Value 1', 'Country code', 'Age group'] }
 					},
 					title: '32',
-					geometry: 'circle',
-					align: 'none',
-					split: false
+					geometry: 'circle'
 				},
 				style: {
 					plot: {
@@ -832,9 +823,7 @@ const testSteps = [
 						size: { set: ['Value 1'] }
 					},
 					title: '33',
-					geometry: 'circle',
-					align: 'none',
-					split: false
+					geometry: 'circle'
 				},
 				style: {
 					plot: {
@@ -862,7 +851,6 @@ const testSteps = [
 						label: { set: null }
 					},
 					title: null,
-					align: 'none',
 					geometry: 'circle',
 					legend: null
 				},

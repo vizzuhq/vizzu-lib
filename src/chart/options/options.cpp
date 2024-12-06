@@ -91,10 +91,10 @@ std::optional<ChannelId> Options::secondaryStackType() const
 	return std::nullopt;
 }
 
-bool Options::hasDimensionToSplit() const
+bool Options::hasDimensionToSplit(AxisId at) const
 {
-	auto dims = subAxis().dimensions();
-	dims.split_by(mainAxis().dimensions());
+	auto dims = getChannels().at(at).dimensions();
+	dims.split_by(getChannels().at(!at).dimensions());
 	return !dims.empty();
 }
 
@@ -111,7 +111,8 @@ Channels Options::shadowChannels() const
 	          &ch2 = shadow.at(ChannelId::noop);
 	     auto &&stacker : shadow.getDimensions({data(stackChannels),
 	         std::size_t{1} + secondary.has_value()})) {
-		if (stackChannelType() != subAxisType() || !isSplit())
+		if (stackChannelType() != subAxisType()
+		    || !isSplit(subAxisType()))
 			ch1.removeSeries(stacker);
 		ch2.removeSeries(stacker);
 	}
@@ -123,7 +124,9 @@ void Options::drilldownTo(const Options &other)
 {
 	auto &stackChannel = this->stackChannel();
 
-	if (!isSplit() || !other.isSplit()) this->split = {};
+	for (auto &&axis : Refl::enum_values<AxisId>())
+		if (!isSplit(axis) || !other.isSplit(axis))
+			getChannels().axisPropsAt(axis).split = {};
 
 	for (auto &&dim : other.getChannels().getDimensions())
 		if (!getChannels().isSeriesUsed(dim))
@@ -136,7 +139,8 @@ void Options::intersection(const Options &other)
 		if (!other.getChannels().isSeriesUsed(dim))
 			getChannels().removeSeries(dim);
 
-	split = {};
+	getChannels().axisPropsAt(subAxisType()).split = {};
+	getChannels().axisPropsAt(mainAxisType()).split = {};
 }
 
 bool Options::looksTheSame(const Options &other) const
@@ -157,7 +161,7 @@ bool Options::looksTheSame(const Options &other) const
 
 void Options::simplify()
 {
-	if (isSplit()) return;
+	if (isSplit(subAxisType())) return;
 
 	//	remove all dimensions, only used at the end of stack
 	auto &stackChannel = this->stackChannel();
@@ -196,9 +200,9 @@ bool Options::sameShadowAttribs(const Options &other) const
 
 	return shape == shapeOther && coordSystem == other.coordSystem
 	    && angle == other.angle && orientation == other.orientation
-	    && isSplit() == other.isSplit()
-	    && dataFilter == other.dataFilter && align == other.align
-	    && sort == other.sort && reverse == other.reverse;
+	    && isSplit(mainAxisType()) == other.isSplit(mainAxisType())
+	    && isSplit(subAxisType()) == other.isSplit(subAxisType())
+	    && dataFilter == other.dataFilter;
 }
 
 bool Options::sameAttributes(const Options &other) const

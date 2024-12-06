@@ -11,7 +11,6 @@ const testSteps = [
 					color: 'Country'
 				},
 				title: 'Lollipop Chart',
-				align: 'none',
 				geometry: 'circle'
 			}
 		}),

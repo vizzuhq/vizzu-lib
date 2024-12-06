@@ -8,13 +8,12 @@ const testSteps = [
 			config: {
 				channels: {
 					x: ['Country', 'Value 2 (+)'],
-					y: ['Joy factors', 'Value 3 (+)'],
+					y: { set: ['Joy factors', 'Value 3 (+)'], align: 'stretch' },
 					color: 'Joy factors',
 					label: 'Value 2 (+)',
 					lightness: 'Country'
 				},
 
-				align: 'stretch',
 				orientation: 'horizontal'
 			}
 		}),
@@ -22,6 +21,8 @@ const testSteps = [
 	(chart) =>
 		chart.animate({
 			config: {
+				x: { align: 'stretch' },
+				y: { align: 'none' },
 				orientation: 'vertical',
 				label: 'Value 3 (+)'
 			}
