@@ -3,7 +3,6 @@
 #include <algorithm>
 #include <array>
 #include <cmath>
-#include <compare>
 
 #include "base/math/floating.h"
 

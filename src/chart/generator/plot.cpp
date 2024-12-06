@@ -9,7 +9,9 @@
 #include <vector>
 
 #include "base/anim/interpolated.h"
+#include "base/math/range.h"
 #include "chart/main/style.h"
+#include "chart/options/channel.h"
 #include "chart/options/options.h"
 
 #include "marker.h"

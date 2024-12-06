@@ -8,6 +8,7 @@
 #include <utility>
 
 #include "base/anim/interpolated.h"
+#include "base/geom/affinetransform.h"
 #include "base/geom/point.h"
 #include "base/geom/rect.h"
 #include "base/gfx/colortransform.h"
@@ -59,7 +60,7 @@ void DrawInterlacing::drawGeometries(Gen::AxisId axisIndex,
 			return Geom::Rect{tr(Geom::Point::Coord(orientation,
 			                      clippedBottom,
 			                      from)),
-			    tr(Geom::Size::Coord(orientation,
+			    tr(Geom::Size::Oriented(orientation,
 			        clippedSize,
 			        to - from))};
 		};

@@ -8,6 +8,7 @@
 
 #include "base/geom/orientation.h"
 #include "base/math/trig.h"
+#include "base/refl/auto_enum.h"
 #include "dataframe/old/types.h"
 
 #include "channel.h"
@@ -218,11 +219,6 @@ AxisId Options::getHorizontalChannel() const
 	return Math::rad2quadrant(angle) % 2 == 0 ? AxisId::x : AxisId::y;
 }
 
-AxisId Options::getVerticalChannel() const
-{
-	return !getHorizontalChannel();
-}
-
 bool Options::isShapeValid(const ShapeType &shapeType) const
 {
 	if (mainAxis().hasDimension()) return true;
@@ -299,10 +295,10 @@ std::optional<LegendId> Options::getAutoLegend() const
 
 void Options::setAutoRange(bool hPositive, bool vPositive)
 {
-	auto &v = getVerticalAxis();
-	auto &h = getHorizontalAxis();
-	auto vHasMeasure = getVerticalAxis().hasMeasure();
-	auto hHasMeasure = getHorizontalAxis().hasMeasure();
+	auto &v = getChannels().at(AxisId::y);
+	auto &h = getChannels().at(AxisId::x);
+	auto vHasMeasure = v.hasMeasure();
+	auto hHasMeasure = h.hasMeasure();
 	auto &&cart = coordSystem.get() == CoordSystem::cartesian;
 	auto &&nrect = geometry != ShapeType::rectangle;
 

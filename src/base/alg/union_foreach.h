@@ -1,10 +1,9 @@
 #ifndef ALG_UNION_FOREACH_H
 #define ALG_UNION_FOREACH_H
 
+#include <cstdint>
 #include <functional>
 #include <ranges>
-
-#include "union_foreach.h"
 
 namespace Alg
 {
@@ -192,8 +191,8 @@ template <std::ranges::forward_range R,
         std::ranges::less,
     Impl::address_binary_invocable<std::ranges::iterator_t<R>> Fun,
     Impl::Property Prop = Impl::default_property_t<R>>
-constexpr void union_foreach(R &&r1,
-    R &&r2,
+constexpr void union_foreach(const R &r1,
+    const R &r2,
     Fun f,
     Comp comp = {},
     Proj proj = {},

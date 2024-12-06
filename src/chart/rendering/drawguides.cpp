@@ -2,6 +2,7 @@
 
 #include <utility>
 
+#include "base/geom/affinetransform.h"
 #include "base/geom/line.h"
 #include "base/geom/point.h"
 #include "base/math/fuzzybool.h"

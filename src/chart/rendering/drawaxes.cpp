@@ -22,6 +22,7 @@
 #include "base/math/renard.h"
 #include "base/refl/auto_enum.h"
 #include "base/type/booliter.h"
+#include "chart/generator/axis.h"
 #include "chart/generator/plot.h" // NOLINT(misc-include-cleaner)
 #include "chart/main/events.h"
 #include "chart/main/style.h"
