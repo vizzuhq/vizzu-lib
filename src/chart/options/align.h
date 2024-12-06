@@ -17,7 +17,7 @@ struct Align : private Math::Range<>
 	[[nodiscard]] Range getAligned(const Range &range) const
 	{
 		switch (type) {
-		case Type::none: return range - range.getMin() + min;
+		case Type::none: return range - range.min + min;
 		case Type::center: return range - range.middle() + middle();
 		case Type::stretch: return static_cast<const Range &>(*this);
 		}

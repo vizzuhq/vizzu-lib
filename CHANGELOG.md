@@ -2,6 +2,12 @@
 
 ## [Unreleased]
 
+### Fixed
+
+- Fix invalid read/write when animation is contiguous (onFinish callback calls setKeyframe).
+- Waterfall chart preset not aligned.
+- Split chart count negative values too.
+
 ### Changed
 
 - Separate Channel properties to AxisChannel properties at config.

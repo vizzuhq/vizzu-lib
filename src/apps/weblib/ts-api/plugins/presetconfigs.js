@@ -41,7 +41,7 @@ export const presetConfigs = {
 	waterfall: {
 		channels: {
 			x: { set: [{ name: 'x' }] },
-			y: { set: [{ name: 'y' }, { name: 'x' }], align: 'stretch' },
+			y: { set: [{ name: 'y' }, { name: 'x' }] },
 			label: { set: [{ name: 'y' }] },
 			color: { set: [{ name: 'y' }] }
 		}

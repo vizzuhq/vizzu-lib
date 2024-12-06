@@ -327,7 +327,7 @@ void PlotBuilder::calcAxises(const Data::DataTable &dataTable)
 		stats.setIfRange(AxisId::y, xrange.getRange({0.0, 0.0}));
 	}
 	else {
-		auto boundRect = markerIt->toRectangle();
+		auto boundRect = markerIt->toRectangle().positive();
 
 		while (++markerIt != plot->markers.end()) {
 			if (!markerIt->enabled) continue;
@@ -335,8 +335,8 @@ void PlotBuilder::calcAxises(const Data::DataTable &dataTable)
 		}
 
 		plot->getOptions()->setAutoRange(
-		    !std::signbit(boundRect.hSize().getMin()),
-		    !std::signbit(boundRect.vSize().getMin()));
+		    !std::signbit(boundRect.hSize().min),
+		    !std::signbit(boundRect.vSize().min));
 
 		boundRect.setHSize(xrange.getRange(boundRect.hSize()));
 		boundRect.setVSize(yrange.getRange(boundRect.vSize()));
@@ -352,9 +352,9 @@ void PlotBuilder::calcAxises(const Data::DataTable &dataTable)
 		}
 
 		stats.setIfRange(AxisId::x,
-		    Math::Range<>::Raw(boundRect.left(), boundRect.right()));
+		    {boundRect.left(), boundRect.right()});
 		stats.setIfRange(AxisId::y,
-		    Math::Range<>::Raw(boundRect.bottom(), boundRect.top()));
+		    {boundRect.bottom(), boundRect.top()});
 	}
 
 	for (const AxisId &ch : {AxisId::x, AxisId::y})
@@ -444,7 +444,7 @@ void PlotBuilder::calcAxis(const Data::DataTable &dataTable,
 
 		if (type == plot->getOptions()->subAxisType()
 		    && axisProps.align == Base::Align::Type::stretch)
-			axis.measure = {Math::Range<>::Raw(0, 100),
+			axis.measure = {{0, 100},
 			    meas.getColIndex(),
 			    "%",
 			    axisProps.step.getValue()};
@@ -493,8 +493,7 @@ void PlotBuilder::addAlignment(const Buckets &buckets,
 	if (plot->getOptions()->isSplit(axisIndex)) return;
 
 	auto &axisRange = plot->axises.at(axisIndex).measure.range;
-	if (std::signbit(axisRange.getMin())
-	    || std::signbit(axisRange.getMax()))
+	if (std::signbit(axisRange.min) || std::signbit(axisRange.max))
 		return;
 
 	const auto &axisProps =
@@ -505,13 +504,11 @@ void PlotBuilder::addAlignment(const Buckets &buckets,
 	if (axisProps.align == Base::Align::Type::center) {
 		auto &&halfSize = axisRange.size() / 2.0;
 		if (!Math::Floating::is_zero(halfSize))
-			axisRange =
-			    Math::Range<>::Raw(axisRange.getMin() - halfSize,
-			        axisRange.getMax() - halfSize);
+			axisRange = {axisRange.min - halfSize,
+			    axisRange.max - halfSize};
 	}
 
-	const Base::Align align{axisProps.align,
-	    Math::Range<>::Raw(0.0, 1.0)};
+	const Base::Align align{axisProps.align, {0.0, 1.0}};
 	for (auto &&bucket : buckets) {
 		Math::Range<> range;
 
@@ -537,7 +534,7 @@ void PlotBuilder::addSeparation(const Buckets &buckets,
 	    plot->getOptions()->getChannels().axisPropsAt(axisIndex);
 	auto align = axisProps.align;
 
-	std::vector ranges{otherBucketSize, Math::Range<>::Raw({}, {})};
+	std::vector ranges{otherBucketSize, Math::Range<>{{}, {}}};
 	std::vector<bool> anyEnabled(otherBucketSize);
 
 	for (auto &&bucket : buckets)
@@ -549,17 +546,16 @@ void PlotBuilder::addSeparation(const Buckets &buckets,
 			anyEnabled[i] = true;
 		}
 
-	auto max = Math::Range<>::Raw({}, {});
+	auto max = Math::Range<>{{}, {}};
 	for (auto i = 0U; i < ranges.size(); ++i)
 		if (anyEnabled[i]) max = max + ranges[i];
 
 	auto splitSpace =
-	    plot->getStyle().plot.getAxis(axisIndex).spacing->get(
-	        max.getMax(),
+	    plot->getStyle().plot.getAxis(axisIndex).spacing->get(max.max,
 	        plot->getStyle().calculatedSize());
 
 	for (auto i = 1U; i < ranges.size(); ++i)
-		ranges[i] = ranges[i] + ranges[i - 1].getMax()
+		ranges[i] = ranges[i] + ranges[i - 1].max
 		          + (anyEnabled[i - 1] ? splitSpace : 0);
 
 	for (auto &&bucket : buckets)
@@ -594,7 +590,7 @@ void PlotBuilder::normalizeSizes()
 		           .range.getRange(size);
 
 		for (auto &marker : plot->markers)
-			marker.sizeFactor = size.getMax() == size.getMin()
+			marker.sizeFactor = size.max == size.min
 			                      ? 0
 			                      : size.normalize(marker.sizeFactor);
 

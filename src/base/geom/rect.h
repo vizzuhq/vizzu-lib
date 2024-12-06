@@ -91,14 +91,14 @@ struct Rect
 
 	void setHSize(const Math::Range<> &range)
 	{
-		setLeft(range.getMin());
-		setRight(range.getMax());
+		setLeft(range.min);
+		setRight(range.max);
 	}
 
 	void setVSize(const Math::Range<> &range)
 	{
-		setBottom(range.getMin());
-		setTop(range.getMax());
+		setBottom(range.min);
+		setTop(range.max);
 	}
 
 	[[nodiscard]] Rect bottomHalf() const

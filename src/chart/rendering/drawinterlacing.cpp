@@ -44,13 +44,11 @@ void DrawInterlacing::drawGeometries(Gen::AxisId axisIndex) const
 
 	for (const auto &interval : parent.getIntervals(axisIndex)) {
 		if (Math::Floating::is_zero(interval.isSecond)) continue;
-		auto clippedBottom = std::max(interval.range.getMin(),
-		    0.0,
-		    Math::Floating::less);
-		auto clippedSize = std::min(interval.range.getMax(),
-		                       1.0,
-		                       Math::Floating::less)
-		                 - clippedBottom;
+		auto clippedBottom =
+		    std::max(interval.range.min, 0.0, Math::Floating::less);
+		auto clippedSize =
+		    std::min(interval.range.max, 1.0, Math::Floating::less)
+		    - clippedBottom;
 
 		auto rect = [&, orientation = orientation(axisIndex)](
 		                const double &from,
@@ -276,8 +274,8 @@ std::map<double, double> DrawInterlacing::getInterlacingWeights(
 
 	for (auto &&interval : parent.getIntervals(axisIndex)) {
 		if (Math::Floating::is_zero(interval.isSecond)) continue;
-		auto min = std::max(interval.range.getMin(), 0.0);
-		auto max = std::min(interval.range.getMax(), 1.0);
+		auto min = std::max(interval.range.min, 0.0);
+		auto max = std::min(interval.range.max, 1.0);
 		auto mprev = std::prev(weights.upper_bound(min));
 		auto mnext = weights.lower_bound(max);
 
