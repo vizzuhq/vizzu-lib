@@ -202,12 +202,14 @@ struct SplitAxis : Axis
 	{
 		double weight{1.0};
 		Math::Range<> range{0, 1};
+		Math::Range<> measureRange{0, 1};
 
 		[[nodiscard]] bool operator==(
 		    const Part &other) const = default;
 	};
 
-	using Parts = std::map<std::size_t, Part>;
+	using Parts =
+	    std::multimap<std::optional<Data::SliceIndex>, Part>;
 	Parts parts;
 
 	[[nodiscard]] bool operator==(

@@ -55,49 +55,61 @@ void DrawAxes::drawGeometries() const
 			    ySplit.range.min};
 
 			DrawInterlacing{*this}.drawGeometries(Gen::AxisId::y,
+			    ySplit.measureRange,
 			    tr,
 			    weight);
 			DrawInterlacing{*this}.drawGeometries(Gen::AxisId::x,
+			    xSplit.measureRange,
 			    tr,
 			    weight);
 
 			drawAxis(Gen::AxisId::x, tr, weight);
 			drawAxis(Gen::AxisId::y, tr, weight);
 
-			DrawGuides{*this}.draw(Gen::AxisId::x, tr, weight);
-			DrawGuides{*this}.draw(Gen::AxisId::y, tr, weight);
+			DrawGuides{*this}.draw(Gen::AxisId::x,
+			    xSplit.measureRange,
+			    tr,
+			    weight);
+			DrawGuides{*this}.draw(Gen::AxisId::y,
+			    ySplit.measureRange,
+			    tr,
+			    weight);
 		}
 }
 
 void DrawAxes::drawLabels() const
 {
-	for (auto &&xSplit : std::views::values(splits[Gen::AxisId::x]))
-		for (auto &&ySplit :
-		    std::views::values(splits[Gen::AxisId::y])) {
-			auto weight =
-			    Math::FuzzyBool::And(xSplit.weight, ySplit.weight);
-			if (Math::Floating::is_zero(weight)) continue;
+	for (auto &&ySplit : std::views::values(splits[Gen::AxisId::y])) {
+		const Geom::AffineTransform tr{1,
+		    0.0,
+		    0,
+		    0.0,
+		    ySplit.range.size(),
+		    ySplit.range.min};
+		DrawInterlacing{*this}.drawTexts(Gen::AxisId::y,
+		    ySplit.measureRange,
+		    tr,
+		    ySplit.weight);
+	}
 
-			const Geom::AffineTransform tr{xSplit.range.size(),
-			    0.0,
-			    xSplit.range.min,
-			    0.0,
-			    ySplit.range.size(),
-			    ySplit.range.min};
+	for (auto &&xSplit : std::views::values(splits[Gen::AxisId::x])) {
+		const Geom::AffineTransform tr{xSplit.range.size(),
+		    0.0,
+		    xSplit.range.min,
+		    0.0,
+		    1,
+		    0};
+		DrawInterlacing{*this}.drawTexts(Gen::AxisId::x,
+		    xSplit.measureRange,
+		    tr,
+		    xSplit.weight);
+	}
 
-			DrawInterlacing{*this}.drawTexts(Gen::AxisId::y,
-			    tr,
-			    weight);
-			DrawInterlacing{*this}.drawTexts(Gen::AxisId::x,
-			    tr,
-			    weight);
+	drawDimensionLabels(Gen::AxisId::x);
+	drawDimensionLabels(Gen::AxisId::y);
 
-			drawDimensionLabels(Gen::AxisId::x, tr, weight);
-			drawDimensionLabels(Gen::AxisId::y, tr, weight);
-
-			drawTitle(Gen::AxisId::x, tr, weight);
-			drawTitle(Gen::AxisId::y, tr, weight);
-		}
+	drawTitle(Gen::AxisId::x);
+	drawTitle(Gen::AxisId::y);
 }
 
 const DrawAxes &&DrawAxes::init() &&
@@ -106,7 +118,7 @@ const DrawAxes &&DrawAxes::init() &&
 		const auto &axis = plot->axises.at(axisIndex);
 
 		const static Gen::SplitAxis::Parts oneSized{
-		    {std::size_t{}, Gen::SplitAxis::Part{}}};
+		    {std::nullopt, Gen::SplitAxis::Part{}}};
 		splits[axisIndex] =
 		    axis.parts.empty() ? oneSized : axis.parts;
 
@@ -125,7 +137,7 @@ const DrawAxes &&DrawAxes::init() &&
 			           guides.interlacings.more())
 			           != false;
 
-			intervals.emplace_back(item.range,
+			intervals.emplace_back(item.range.positive(),
 			    weight,
 			    Math::FuzzyBool::And<double>(
 			        Math::Niebloid::interpolate(
@@ -245,7 +257,7 @@ void DrawAxes::generateMeasure(Gen::AxisId axisIndex,
 
 		if (!singleLabelRange) {
 			intervals.emplace_back(
-			    Math::Range<>{bottom, bottom + stripWidth},
+			    Math::Range<>{bottom, bottom + stripWidth}.positive(),
 			    weight,
 			    1.0);
 

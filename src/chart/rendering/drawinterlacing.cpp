@@ -29,6 +29,7 @@ namespace Vizzu::Draw
 {
 
 void DrawInterlacing::drawGeometries(Gen::AxisId axisIndex,
+    const Math::Range<> &filter,
     const Geom::AffineTransform &tr,
     double w) const
 {
@@ -45,13 +46,16 @@ void DrawInterlacing::drawGeometries(Gen::AxisId axisIndex,
 	parent.painter.setPolygonToCircleFactor(0);
 	parent.painter.setPolygonStraightFactor(0);
 
-	for (const auto &interval : parent.getIntervals(axisIndex)) {
+	for (const auto &interval :
+	    parent.getIntervals(axisIndex, filter)) {
 		if (Math::Floating::is_zero(interval.isSecond)) continue;
-		auto clippedBottom =
-		    std::max(interval.range.min, 0.0, Math::Floating::less);
-		auto clippedSize =
-		    std::min(interval.range.max, 1.0, Math::Floating::less)
-		    - clippedBottom;
+		auto clippedBottom = std::max(interval.range.min,
+		    filter.min,
+		    Math::Floating::less);
+		auto clippedSize = std::min(interval.range.max,
+		                       filter.max,
+		                       Math::Floating::less)
+		                 - clippedBottom;
 
 		auto rect = [&, orientation = orientation(axisIndex)](
 		                const double &from,
@@ -95,6 +99,7 @@ void DrawInterlacing::drawGeometries(Gen::AxisId axisIndex,
 }
 
 void DrawInterlacing::drawTexts(Gen::AxisId axisIndex,
+    const Math::Range<> &filter,
     const Geom::AffineTransform &tr,
     double w) const
 {
@@ -118,7 +123,7 @@ void DrawInterlacing::drawTexts(Gen::AxisId axisIndex,
 
 	if (!needText && !needTick) return;
 
-	for (const auto &sep : parent.getSeparators(axisIndex)) {
+	for (const auto &sep : parent.getSeparators(axisIndex, filter)) {
 		auto tickPos =
 		    Geom::Point::Coord(orientation, origo, sep.position);
 		if (needText && sep.label)

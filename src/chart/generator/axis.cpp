@@ -348,7 +348,8 @@ interpolate(const SplitAxis &op0, const SplitAxis &op1, double factor)
 	    interpolate(static_cast<const Axis &>(op0),
 	        static_cast<const Axis &>(op1),
 	        factor);
-	if (!op0.parts.empty() && !op1.parts.empty()) {
+	if (!op0.parts.empty() && !op1.parts.empty()
+	    && op0.seriesName() == op1.seriesName()) {
 		using PartPair = const decltype(res.parts)::value_type;
 		Alg::union_foreach(
 		    op0.parts,
@@ -360,69 +361,128 @@ interpolate(const SplitAxis &op0, const SplitAxis &op1, double factor)
 			    switch (type) {
 			    case Alg::union_call_t::only_left: {
 				    auto from = lhs->second.range.min;
-				    res.parts[lhs->first] = {
-				        .weight = interpolate(lhs->second.weight,
-				            0.0,
-				            factor),
-				        .range = interpolate(lhs->second.range,
-				            Math::Range<>{from, from},
-				            factor)};
+				    res.parts.insert({lhs->first,
+				        {.weight = interpolate(lhs->second.weight,
+				             0.0,
+				             factor),
+				            .range = interpolate(lhs->second.range,
+				                Math::Range<>{from, from},
+				                factor),
+				            .measureRange =
+				                interpolate(lhs->second.measureRange,
+				                    Math::Range<>{0, 1},
+				                    factor)}});
 				    break;
 			    }
 			    case Alg::union_call_t::only_right: {
 				    auto from = rhs->second.range.min;
-				    res.parts[rhs->first] = {
-				        .weight = interpolate(0.0,
-				            rhs->second.weight,
-				            factor),
-				        .range =
-				            interpolate(Math::Range<>{from, from},
-				                rhs->second.range,
-				                factor)};
+				    res.parts.insert({rhs->first,
+				        {.weight = interpolate(0.0,
+				             rhs->second.weight,
+				             factor),
+				            .range =
+				                interpolate(Math::Range<>{from, from},
+				                    rhs->second.range,
+				                    factor),
+				            .measureRange =
+				                interpolate(Math::Range<>{0, 1},
+				                    rhs->second.measureRange,
+				                    factor)}});
 				    break;
 			    }
 			    default:
 			    case Alg::union_call_t::both: {
-				    res.parts[lhs->first] =
-				        interpolate(lhs->second, rhs->second, factor);
+				    res.parts.insert({lhs->first,
+				        interpolate(lhs->second,
+				            rhs->second,
+				            factor)});
 				    break;
 			    }
 			    }
 		    },
 		    res.parts.value_comp());
+
+		return res;
 	}
-	else if (!op0.parts.empty()) {
-		auto begin = op0.parts.begin();
-		res.parts[begin->first] = {
-		    .weight = interpolate(begin->second.weight, 1.0, factor),
-		    .range = interpolate(begin->second.range,
-		        Math::Range<>{0, 1},
-		        factor)};
-		while (++begin != op0.parts.end()) {
-			res.parts[begin->first] = {
-			    .weight =
-			        interpolate(begin->second.weight, 0.0, factor),
-			    .range = interpolate(begin->second.range,
-			        Math::Range<>{0, 1},
-			        factor)};
+
+	if (!op0.parts.empty()) {
+		if (op0.seriesName() != op1.seriesName()) {
+			for (auto &&[index, part] : op0.parts)
+				res.parts.insert({index,
+				    {.weight = part.weight * (1 - factor),
+				        .range = part.range,
+				        .measureRange = part.measureRange}});
+		}
+		else {
+			auto begin = op0.parts.begin();
+			res.parts.insert({begin->first,
+			    {.weight = interpolate(begin->second.weight,
+			         1.0,
+			         factor),
+			        .range = interpolate(begin->second.range,
+			            Math::Range<>{0, 1},
+			            factor),
+			        .measureRange =
+			            interpolate(begin->second.measureRange,
+			                Math::Range<>{0, 1},
+			                factor)}});
+			while (++begin != op0.parts.end()) {
+				res.parts.insert({begin->first,
+				    {.weight = interpolate(begin->second.weight,
+				         0.0,
+				         factor),
+				        .range = interpolate(begin->second.range,
+				            Math::Range<>{0, 1},
+				            factor),
+				        .measureRange =
+				            interpolate(begin->second.measureRange,
+				                Math::Range<>{0, 1},
+				                factor)}});
+			}
 		}
 	}
-	else if (!op1.parts.empty()) {
-		auto begin = op1.parts.begin();
-		res.parts[begin->first] = {
-		    .weight = interpolate(1.0, begin->second.weight, factor),
-		    .range = interpolate(Math::Range<>{0, 1},
-		        begin->second.range,
-		        factor)};
-		while (++begin != op1.parts.end()) {
-			res.parts[begin->first] = {
-			    .weight =
-			        interpolate(0.0, begin->second.weight, factor),
-			    .range = interpolate(Math::Range<>{0, 1},
-			        begin->second.range,
-			        factor)};
+	else if (!op1.parts.empty()
+	         && op0.seriesName() != op1.seriesName())
+		res.parts.insert({std::nullopt, {.weight = 1 - factor}});
+
+	if (!op1.parts.empty()) {
+		if (op0.seriesName() != op1.seriesName()) {
+			for (auto &&[index, part] : op1.parts)
+				res.parts.insert({index,
+				    {.weight = part.weight * factor,
+				        .range = part.range,
+				        .measureRange = part.measureRange}});
+		}
+		else {
+			auto begin = op1.parts.begin();
+			res.parts.insert({begin->first,
+			    {.weight = interpolate(1.0,
+			         begin->second.weight,
+			         factor),
+			        .range = interpolate(Math::Range<>{0, 1},
+			            begin->second.range,
+			            factor),
+			        .measureRange = interpolate(Math::Range<>{0, 1},
+			            begin->second.measureRange,
+			            factor)}});
+			while (++begin != op1.parts.end()) {
+				res.parts.insert({begin->first,
+				    {.weight = interpolate(0.0,
+				         begin->second.weight,
+				         factor),
+				        .range = interpolate(Math::Range<>{0, 1},
+				            begin->second.range,
+				            factor),
+				        .measureRange =
+				            interpolate(Math::Range<>{0, 1},
+				                begin->second.measureRange,
+				                factor)}});
+			}
 		}
 	}
+	else if (!op0.parts.empty()
+	         && op0.seriesName() != op1.seriesName())
+		res.parts.insert({std::nullopt, {.weight = factor}});
 
 	return res;
 }
