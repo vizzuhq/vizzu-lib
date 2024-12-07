@@ -20,7 +20,7 @@ const testSteps = [
 		chart.animate({
 			config: {
 				title: 'Stretch Markers to See Ratio of Categories',
-				align: 'stretch'
+				y: { align: 'stretch' }
 			}
 		}),
 	(chart) => {

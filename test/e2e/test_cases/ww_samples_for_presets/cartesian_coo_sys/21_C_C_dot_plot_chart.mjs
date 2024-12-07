@@ -10,7 +10,6 @@ const testSteps = [
 					y: { set: 'Index', range: { max: '110%' } }
 				},
 				title: 'Dot plot Chart',
-				align: 'none',
 				geometry: 'circle'
 			}
 		}),

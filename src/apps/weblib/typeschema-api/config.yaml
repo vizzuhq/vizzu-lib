@@ -108,6 +108,29 @@ definitions:
                 oneOf:
                     - type: number
                     - { type: string, enum: [auto] }
+            sort:
+                description: |
+                    - 'none': markers are sorted in the order as the corresponding data 
+                              appear in the data set.
+                    - 'byValue': markers will be sorted by the corresponding measure (if present)
+                    in decreasing order.
+                type: string
+                enum: [none, byValue]
+            reverse:
+                description: Reverts the order of the markers if set.
+                type: boolean
+            align:
+                description: |
+                    Sets the alignment of the markers with relation to the main-axis only depending
+                    on where the measure is. In case both axes have measures on them, this is determined 
+                    by the `orientation` of the chart. On sub-axis this settings has no effect.
+                type: string
+                enum: [none, center, stretch]
+            split:
+                description: |
+                    If set to true, markers will be split by the dimension(s) along the main-axis.
+                    On sub-axis this settings has no effect.
+                type: boolean
 
     Channels:
         description: |
@@ -218,31 +241,6 @@ definitions:
                     are oriented to.
                 type: string
                 enum: [auto, horizontal, vertical]
-            sort:
-                description: |
-                    - 'none': markers are sorted in the order as the corresponding data 
-                              appear in the data set.
-                    - 'byValue': markers will be sorted by the corresponding measure (if present)
-                    in decreasing order.
-                type: string
-                enum: [none, byValue]
-            reverse:
-                description: Reverts the order of the markers if set.
-                type: boolean
-            align:
-                description: |
-                    Sets the alignment of the markers with relation to the x- or the y-axis depending
-                    on where the measure is. In case both axes have measures on them, this is determined 
-                    by the `orientation` of the chart.
-                type: string
-                enum: [none, center, stretch]
-            split:
-                description: |
-                    If set to true, markers will be split by the dimension(s) along the axis.
-                    This works if you have at least one dimension and a measure on the same axis.In case 
-                    both axes have measures and dimension(s) on them, this is determined by the 
-                    `orientation` of the chart.
-                type: boolean
             tooltip:
                 description: |
                     Unique identifier of the marker, the tooltip should be turned on. This parameter is

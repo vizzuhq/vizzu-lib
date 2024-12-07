@@ -19,12 +19,11 @@ const testSteps = [
 		chart.animate({
 			config: {
 				channels: {
-					y: 'Joy factors',
+					y: { set: 'Joy factors', sort: 'byValue' },
 					x: ['Value 2 (+)', 'Year']
 				},
 				title: 'Bar Chart',
-				geometry: 'rectangle',
-				sort: 'byValue'
+				geometry: 'rectangle'
 			}
 		}),
 

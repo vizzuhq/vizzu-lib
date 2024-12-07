@@ -36,12 +36,11 @@ const testSteps = [
 		chart.animate({
 			config: {
 				channels: {
-					x: { set: ['Year', 'Value 3 (+)'] },
+					x: { set: ['Year', 'Value 3 (+)'], align: 'stretch' },
 					y: { set: ['Country', 'Value 2 (+)'] },
 					color: { set: 'Country' }
 				},
 				title: 'Stretch & axisLabel off',
-				align: 'stretch',
 				orientation: 'vertical'
 			},
 			style: {
@@ -84,13 +83,12 @@ const testSteps = [
 		chart.animate({
 			config: {
 				channels: {
-					x: { set: ['Joy factors', 'Value 3 (+)'] },
+					x: { set: ['Joy factors', 'Value 3 (+)'], align: 'none' },
 					y: { set: ['Country', 'Value 1 (+)'] },
 					color: { set: 'Country' }
 				},
 				title: 'Stretch off & axisLabel on',
-				orientation: 'horizontal',
-				align: 'none'
+				orientation: 'horizontal'
 			}
 		}),
 

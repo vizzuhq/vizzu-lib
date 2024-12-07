@@ -48,8 +48,7 @@ const testSteps = [
 						color: { set: 'Country' }
 					},
 					title: '3 Line / Comparison(?), Components(?)',
-					geometry: 'line',
-					split: false
+					geometry: 'line'
 				}
 			},
 			{
@@ -63,12 +62,11 @@ const testSteps = [
 				config: {
 					channels: {
 						x: { set: 'Year' },
-						y: { set: ['Value 2 (+)', 'Country'] },
+						y: { set: ['Value 2 (+)', 'Country'], split: true },
 						color: { set: 'Country' }
 					},
 					title: '4 Trellis Area / Trellis(?), Components(?), Part-to-whole(?) (sort???)',
-					geometry: 'area',
-					split: true
+					geometry: 'area'
 				}
 			},
 			{
@@ -82,12 +80,11 @@ const testSteps = [
 				config: {
 					channels: {
 						x: { set: 'Year' },
-						y: { set: 'Value 2 (+)' },
+						y: { set: 'Value 2 (+)', split: false },
 						color: { set: 'Country' }
 					},
 					title: '5 Line / Comparison(?)',
-					geometry: 'line',
-					split: false
+					geometry: 'line'
 				}
 			},
 			{
@@ -100,12 +97,11 @@ const testSteps = [
 			config: {
 				channels: {
 					x: { set: 'Year' },
-					y: { set: ['Value 2 (+)', 'Country'] },
+					y: { set: ['Value 2 (+)', 'Country'], align: 'stretch' },
 					color: { set: 'Country' }
 				},
 				title: '6 Stacked Area / Ratio(?)',
-				geometry: 'area',
-				align: 'stretch'
+				geometry: 'area'
 			}
 		}),
 
@@ -115,12 +111,11 @@ const testSteps = [
 				config: {
 					channels: {
 						x: { set: 'Year' },
-						y: { set: 'Value 2 (+)' },
+						y: { set: 'Value 2 (+)', align: 'none' },
 						color: { set: 'Country' }
 					},
 					title: '7 Line / Comparison(?), Components(?)',
-					geometry: 'line',
-					align: 'none'
+					geometry: 'line'
 				}
 			},
 			{
@@ -139,8 +134,7 @@ const testSteps = [
 						color: { set: null }
 					},
 					title: '8 Line / Aggregate(?), - Discrete(?)',
-					geometry: 'line',
-					align: 'none'
+					geometry: 'line'
 				}
 			},
 			{
@@ -159,8 +153,7 @@ const testSteps = [
 						size: { set: null }
 					},
 					title: '9 Line / Drill down(?), + Discrete(?)',
-					geometry: 'line',
-					align: 'none'
+					geometry: 'line'
 				}
 			},
 			{
@@ -178,7 +171,6 @@ const testSteps = [
 				},
 				title: '10 Bar / Sum(?)',
 				geometry: 'rectangle',
-				align: 'none',
 				legend: null
 			}
 		}),
@@ -195,7 +187,6 @@ const testSteps = [
 					},
 					title: '11 Bar / Sum(?)',
 					geometry: 'rectangle',
-					align: 'none',
 					legend: null
 				}
 			},
@@ -216,7 +207,6 @@ const testSteps = [
 					},
 					title: '12 Bar / Sum(?)',
 					geometry: 'rectangle',
-					align: 'none',
 					legend: null
 				}
 			},
@@ -236,7 +226,6 @@ const testSteps = [
 				},
 				title: '13 Line / Drill down timeseries(?), + Discrete(?)',
 				geometry: 'line',
-				align: 'none',
 				legend: 'color'
 			}
 		}),
@@ -251,7 +240,6 @@ const testSteps = [
 				},
 				title: '14 Stacked Column / Sum(?), Stack(?)',
 				geometry: 'rectangle',
-				align: 'none',
 				legend: 'color'
 			}
 		}),
@@ -265,8 +253,7 @@ const testSteps = [
 					color: { set: 'Country' }
 				},
 				title: '15 Line / Comparison(?), + Components(?)',
-				geometry: 'line',
-				align: 'none'
+				geometry: 'line'
 			}
 		}),
 
@@ -275,12 +262,11 @@ const testSteps = [
 			config: {
 				channels: {
 					x: { set: 'Year' },
-					y: { set: ['Country', 'Value 2 (+)'] },
+					y: { set: ['Country', 'Value 2 (+)'], split: true },
 					color: { set: 'Country' }
 				},
 				title: '16 Line / Comparison(?), + Components(?)',
-				geometry: 'line',
-				split: true
+				geometry: 'line'
 			}
 		}),
 
@@ -289,14 +275,13 @@ const testSteps = [
 			config: {
 				channels: {
 					x: { set: 'Year' },
-					y: { set: 'Country' },
+					y: { set: 'Country', split: false },
 					color: { set: null },
 					lightness: { set: 'Value 2 (+)' }
 				},
 				title: '17 Heatmap / (?), (?), (sort???)',
 				geometry: 'rectangle',
-				legend: null,
-				split: false
+				legend: null
 			}
 		})
 ]

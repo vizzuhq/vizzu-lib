@@ -28,8 +28,7 @@ const testSteps = [
 				title: 'Radial Line Chart Vertical',
 				geometry: 'line',
 				coordSystem: 'polar',
-				orientation: 'vertical',
-				split: false
+				orientation: 'vertical'
 			}
 		}),
 

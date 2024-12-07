@@ -11,13 +11,11 @@ const testSteps = [
 			config: {
 				channels: {
 					x: 'Year',
-					y: ['Format', 'Revenue'],
+					y: { set: ['Format', 'Revenue'], align: 'center', split: true },
 					color: 'Format'
 				},
 				title: 'Violin Graph',
-				geometry: 'area',
-				align: 'center',
-				split: true
+				geometry: 'area'
 			},
 			style: {
 				plot: {

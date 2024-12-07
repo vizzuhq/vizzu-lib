@@ -22,7 +22,7 @@ const testSteps = [
 		chart.animate({
 			config: {
 				title: 'Operations: Rectangle - Splitted.',
-				split: true
+				y: { split: true }
 			},
 			style: { plot: { marker: { label: { position: 'top' } } } }
 		}),
@@ -30,7 +30,7 @@ const testSteps = [
 		chart.animate({
 			config: {
 				title: 'Operations: Rectangle - Merged.',
-				split: false
+				y: { split: false }
 			},
 			style: { plot: { marker: { label: { position: null } } } }
 		})

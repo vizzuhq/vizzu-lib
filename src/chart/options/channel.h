@@ -9,8 +9,10 @@
 #include "base/geom/orientation.h"
 #include "dataframe/old/types.h"
 
+#include "align.h"
 #include "autoparam.h"
 #include "channelrange.h"
+#include "sort.h"
 
 namespace Vizzu::Gen
 {
@@ -127,9 +129,19 @@ struct AxisChannelProperties
 	Base::AutoBool guides{};
 	Base::AutoBool markerGuides{};
 	Base::AutoParam<double> step{};
+	Sort sort{Sort::none};
+	bool reverse{};
+	Base::Align::Type align{Base::Align::Type::none};
+	bool split{};
 
 	[[nodiscard]] bool operator==(
-	    const AxisChannelProperties &) const = default;
+	    const AxisChannelProperties &oth) const
+	{
+		return axis == oth.axis && labels == oth.labels
+		    && ticks == oth.ticks && interlacing == oth.interlacing
+		    && guides == oth.guides
+		    && markerGuides == oth.markerGuides && step == oth.step;
+	}
 };
 
 struct Channel

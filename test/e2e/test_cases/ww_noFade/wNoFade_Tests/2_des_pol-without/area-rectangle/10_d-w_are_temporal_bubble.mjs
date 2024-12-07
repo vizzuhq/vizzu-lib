@@ -8,15 +8,13 @@ const testSteps = [
 			config: {
 				channels: {
 					x: 'Year',
-					y: ['Joy factors', 'Value 2 (+)'],
+					y: { set: ['Joy factors', 'Value 2 (+)'], align: 'center', split: true },
 					color: 'Joy factors',
 					noop: 'Year',
 					size: 'Value 2 (+)'
 				},
 				title: 'Stacked Area Chart',
-				geometry: 'area',
-				align: 'center',
-				split: true
+				geometry: 'area'
 			}
 		}),
 

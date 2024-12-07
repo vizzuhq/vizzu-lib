@@ -44,8 +44,7 @@ const testSteps = [
 				},
 				title: 'Stacked Area Chart Vertical',
 				geometry: 'line',
-				orientation: 'vertical',
-				split: false
+				orientation: 'vertical'
 			}
 		}),
 	(chart) =>

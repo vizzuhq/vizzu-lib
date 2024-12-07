@@ -124,8 +124,7 @@ const testSteps = [
 			},
 			config: {
 				x: { guides: true, range: { max: '133%' } },
-				y: { guides: true, range: { max: '150%' } },
-				reverse: true
+				y: { guides: true, range: { max: '150%' }, reverse: true }
 			}
 		})
 ]

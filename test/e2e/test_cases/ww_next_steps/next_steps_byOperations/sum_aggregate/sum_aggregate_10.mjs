@@ -8,12 +8,11 @@ const testSteps = [
 			config: {
 				channels: {
 					x: 'Year',
-					y: ['Country', 'Value 2 (+)'],
+					y: { set: ['Country', 'Value 2 (+)'], split: true },
 					color: 'Country',
 					label: 'Value 2 (+)'
 				},
-				title: 'Splitted Column',
-				split: true
+				title: 'Splitted Column'
 			},
 			style: {
 				plot: {
@@ -31,10 +30,10 @@ const testSteps = [
 		chart.animate({
 			config: {
 				channels: {
-					label: null
+					label: null,
+					y: { split: false }
 				},
-				title: 'Split off to Sum of Components(Values?)',
-				split: false
+				title: 'Split off to Sum of Components(Values?)'
 			}
 		}),
 	(chart) => {

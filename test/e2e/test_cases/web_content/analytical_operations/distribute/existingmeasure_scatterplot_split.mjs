@@ -9,14 +9,13 @@ const testSteps = [
 
 			config: {
 				channels: {
-					x: ['Value 1 (+)', 'Country'],
+					x: { set: ['Value 1 (+)', 'Country'], split: true },
 					y: 'Value 3 (+)',
 					noop: 'Year',
 					color: 'Country'
 				},
 
 				geometry: 'circle',
-				split: true,
 				orientation: 'vertical'
 			}
 		}),
@@ -25,10 +24,8 @@ const testSteps = [
 		chart.animate({
 			config: {
 				channels: {
-					x: 'Value 1 (+)'
-				},
-
-				split: false
+					x: { set: 'Value 1 (+)', split: false }
+				}
 			}
 		}),
 	(chart) => {

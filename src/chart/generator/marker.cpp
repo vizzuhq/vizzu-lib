@@ -96,10 +96,11 @@ Marker::Marker(const Options &options,
 	    index,
 	    horizontal ? mainId : subId);
 
-	auto yChannelRectDim =
-	    !yHasMeas && channels.at(AxisId::y).hasDimension()
-	    && options.geometry == ShapeType::rectangle
-	    && options.align != Base::Align::Type::stretch;
+	auto yChannelRectDim = !yHasMeas
+	                    && channels.at(AxisId::y).hasDimension()
+	                    && options.geometry == ShapeType::rectangle
+	                    && channels.axisPropsAt(AxisId::y).align
+	                           != Base::Align::Type::stretch;
 
 	spacing.x =
 	    (horizontal || (lineOrCircle && !polar) || yChannelRectDim)
@@ -114,10 +115,11 @@ Marker::Marker(const Options &options,
 	    index,
 	    !horizontal ? mainId : subId);
 
-	auto xChannelRectDim =
-	    !xHasMeas && channels.at(AxisId::x).hasDimension()
-	    && options.geometry == ShapeType::rectangle
-	    && options.align != Base::Align::Type::stretch;
+	auto xChannelRectDim = !xHasMeas
+	                    && channels.at(AxisId::x).hasDimension()
+	                    && options.geometry == ShapeType::rectangle
+	                    && channels.axisPropsAt(AxisId::x).align
+	                           != Base::Align::Type::stretch;
 
 	spacing.y = (!horizontal || lineOrCircle || xChannelRectDim)
 	                 && options.getChannels().anyAxisSet()

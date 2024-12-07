@@ -19,10 +19,9 @@ const testSteps = [
 		chart.animate({
 			config: {
 				channels: {
-					label: 'Value 2 (+)'
-				},
-
-				split: true
+					label: 'Value 2 (+)',
+					y: { split: true }
+				}
 			},
 			style: {
 				plot: {

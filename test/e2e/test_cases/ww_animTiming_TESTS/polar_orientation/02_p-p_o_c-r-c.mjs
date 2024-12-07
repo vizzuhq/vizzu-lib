@@ -43,8 +43,7 @@ const testSteps = [
 				},
 				title: 'Stacked Coxcomb',
 				geometry: 'rectangle',
-				orientation: 'vertical',
-				split: false
+				orientation: 'vertical'
 			}
 		}),
 	(chart) =>

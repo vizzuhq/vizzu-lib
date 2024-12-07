@@ -18,7 +18,7 @@ const testSteps = [
 		chart.animate({
 			config: {
 				title: 'Split Bar Chart',
-				split: true
+				x: { split: true }
 			}
 		})
 ]

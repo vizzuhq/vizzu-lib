@@ -10,15 +10,13 @@ const testSteps = [
 			data,
 			config: {
 				channels: {
-					x: ['Format', 'Revenue'],
+					x: { set: ['Format', 'Revenue'], align: 'center', split: true },
 					y: 'Year',
 					color: 'Format'
 				},
 				title: 'Polar Stream Graph',
 				geometry: 'area',
-				coordSystem: 'polar',
-				align: 'center',
-				split: true
+				coordSystem: 'polar'
 			}
 		})
 	},

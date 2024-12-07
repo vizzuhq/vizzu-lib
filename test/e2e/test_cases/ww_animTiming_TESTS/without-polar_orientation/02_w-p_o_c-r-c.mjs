@@ -53,8 +53,7 @@ const testSteps = [
 				},
 				title: 'Stacked Column Chart',
 				geometry: 'rectangle',
-				coordSystem: 'polar',
-				split: false
+				coordSystem: 'polar'
 			}
 		}),
 	(chart) =>

@@ -22,8 +22,7 @@ const testSteps = [
 					x: { set: 'Year' },
 					y: { set: ['Joy factors', 'Value 3 (+)'] }
 				},
-				title: 'Add Conti',
-				align: 'none'
+				title: 'Add Conti'
 			}
 		})
 ]

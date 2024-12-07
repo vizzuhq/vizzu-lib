@@ -37,8 +37,7 @@ const testSteps = [
 				},
 				title: 'Radial Line Vertical',
 				geometry: 'line',
-				coordSystem: 'polar',
-				split: false
+				coordSystem: 'polar'
 			}
 		}),
 
