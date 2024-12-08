@@ -40,6 +40,7 @@ namespace Vizzu::Draw
 
 void DrawAxes::drawGeometries() const
 {
+	auto origo = this->origo();
 	for (auto &&xSplit : std::views::values(splits[Gen::AxisId::x]))
 		for (auto &&ySplit :
 		    std::views::values(splits[Gen::AxisId::y])) {
@@ -63,8 +64,12 @@ void DrawAxes::drawGeometries() const
 			    tr,
 			    weight);
 
-			drawAxis(Gen::AxisId::x, tr, weight);
-			drawAxis(Gen::AxisId::y, tr, weight);
+			if (ySplit.measureRange.includes(
+			        origo.getCoord(orientation(Gen::AxisId::y))))
+				drawAxis(Gen::AxisId::x, tr, weight);
+			if (xSplit.measureRange.includes(
+			        origo.getCoord(orientation(Gen::AxisId::x))))
+				drawAxis(Gen::AxisId::y, tr, weight);
 
 			DrawGuides{*this}.draw(Gen::AxisId::x,
 			    xSplit.measureRange,

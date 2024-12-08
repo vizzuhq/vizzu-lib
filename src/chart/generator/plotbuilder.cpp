@@ -526,9 +526,8 @@ void PlotBuilder::addAlignment(const Buckets &buckets,
 
 	if (axisProps.align == Base::Align::Type::center) {
 		auto &&halfSize = axisRange.size() / 2.0;
-		if (!Math::Floating::is_zero(halfSize))
-			axisRange = {axisRange.min - halfSize,
-			    axisRange.max - halfSize};
+		axisRange = {axisRange.min - halfSize,
+		    axisRange.max - halfSize};
 	}
 
 	const Base::Align align{axisProps.align, {0.0, 1.0}};
@@ -586,35 +585,42 @@ PlotBuilder::addSeparation(const Buckets &buckets,
 	        plot->getStyle().calculatedSize());
 
 	res[0].atRange =
-	    res[0].containsValues - res[0].containsValues.min * 2;
+	    res[0].containsValues - res[0].containsValues.min;
 	auto onMax = res[0].containsValues.size();
 	for (auto i = 1U; i < res.size(); ++i) {
-		onMax += res[i - 1].enabled ? splitSpace : 0;
-		res[i].atRange = res[i].containsValues + onMax
-		               - res[i].containsValues.min * 2;
+		if (!res[i].enabled) continue;
+		onMax += splitSpace;
+		res[i].atRange =
+		    res[i].containsValues + onMax - res[i].containsValues.min;
 		onMax += res[i].containsValues.size();
 	}
 
 	for (auto &&bucket : buckets)
-		for (auto &&[marker, idx] : bucket)
+		for (auto &&[marker, idx] : bucket) {
+			auto buc = res[idx.itemId];
+			auto markerSize = marker.getSizeBy(axisIndex);
+
 			marker.setSizeBy(axisIndex,
-			    Base::Align{align, res.at(idx.itemId).atRange}
-			        .getAligned(marker.getSizeBy(axisIndex)));
+			    Base::Align{align,
+			        buc.atRange - buc.atRange.min
+			            + buc.containsValues.min}
+			            .getAligned(markerSize - markerSize.min)
+			        + buc.atRange.min - buc.containsValues.min);
+		}
 
-	auto alignedRange =
-	    Base::Align{align, {maxRange.min, maxRange.min}}.getAligned(
-	        maxRange);
+	auto alignedRange = maxRange;
+	if (align == Base::Align::Type::center) {
+		auto &&halfSize = maxRange.size() / 2.0;
+		alignedRange = {maxRange.min - halfSize,
+		    maxRange.max - halfSize};
+	}
 
-	res[0].atRange = res[0].atRange
-	               - maxRange.min * res[0].containsValues.size()
-	                     / maxRange.size();
 	for (auto &resItem : res) {
 		if (!resItem.enabled) continue;
 
 		resItem.atRange =
-		    ((resItem.atRange + resItem.containsValues.min
-		         - resItem.atRange.min)
-		            * maxRange.size() / resItem.containsValues.size()
+		    ((resItem.atRange - resItem.atRange.min) * maxRange.size()
+		            / resItem.containsValues.size()
 		        + resItem.atRange.min - resItem.containsValues.min
 		        + maxRange.min)
 		    / onMax;
