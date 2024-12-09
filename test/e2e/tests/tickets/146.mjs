@@ -25,7 +25,16 @@ const testSteps = [
 	(chart) =>
 		chart.animate({
 			y: { set: ['Colors', 'Val'], split: true },
-			x: 'Letters'
+			x: 'Letters',
+			label: 'Val'
+		}),
+	(chart) =>
+		chart.animate({
+			y: { align: 'center' }
+		}),
+	(chart) =>
+		chart.animate({
+			y: { align: 'stretch' }
 		})
 ]
 
