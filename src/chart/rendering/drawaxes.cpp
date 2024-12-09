@@ -176,15 +176,19 @@ const DrawAxes &&DrawAxes::init() &&
 		if (measEnabled == 0.0) continue;
 		auto step = axis.measure.step.combine();
 
+		using Math::Floating::less;
+
 		auto &&[min, max] = std::minmax(
 		    axis.measure.step.get_or_first(::Anim::first).value,
 		    axis.measure.step.get_or_first(::Anim::second).value,
-		    Math::Floating::less);
+		    less);
 
 		auto stepHigh =
-		    std::clamp(Math::Renard::R5().ceil(step), min, max);
-		auto stepLow =
-		    std::clamp(Math::Renard::R5().floor(step), min, max);
+		    std::clamp(Math::Renard::R5().ceil(step), min, max, less);
+		auto stepLow = std::clamp(Math::Renard::R5().floor(step),
+		    min,
+		    max,
+		    less);
 
 		if (Math::Floating::is_zero(axis.measure.range.size()))
 			step = stepHigh = stepLow = 1.0;
