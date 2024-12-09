@@ -74,7 +74,7 @@ public:
 	    const Math::Range<> &filter = {0.0, 1.0}) const
 	{
 		return std::views::filter(intervals[axisIndex],
-		    [&filter](const Interval &interval) -> bool
+		    [filter](const Interval &interval) -> bool
 		    {
 			    return filter.intersects(interval.range);
 		    });
