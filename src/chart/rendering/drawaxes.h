@@ -65,40 +65,52 @@ public:
 	Refl::EnumArray<Gen::AxisId, std::vector<Interval>> intervals;
 	Refl::EnumArray<Gen::AxisId, std::vector<Separator>> separators;
 	Refl::EnumArray<Gen::AxisId,
-	    std::ranges::subrange<Gen::SplitAxis::Parts::const_iterator>>
+	    std::ranges::subrange<Gen::SplitAxis::Parts::const_iterator,
+	        Gen::SplitAxis::Parts::const_iterator,
+	        std::ranges::subrange_kind::sized>>
 	    splits;
 
-	[[nodiscard]] const auto &getIntervals(
-	    Gen::AxisId axisIndex) const
+	[[nodiscard]] auto getIntervals(Gen::AxisId axisIndex,
+	    const Math::Range<> &filter = {0.0, 1.0}) const
 	{
-		return intervals[axisIndex];
+		return std::views::filter(intervals[axisIndex],
+		    [filter](const Interval &interval) -> bool
+		    {
+			    return filter.intersects(interval.range);
+		    });
 	}
 
-	[[nodiscard]] const auto &getSeparators(
-	    Gen::AxisId axisIndex) const
+	[[nodiscard]] auto getSeparators(Gen::AxisId axisIndex,
+	    const Math::Range<> &filter) const
 	{
-		return separators[axisIndex];
+		return std::views::filter(separators[axisIndex],
+		    [&filter](const Separator &sep) -> bool
+		    {
+			    return filter.includes(sep.position);
+		    });
 	}
 
 private:
 	void generateMeasure(Gen::AxisId axisIndex,
 	    double stepSize,
 	    double weight);
-	[[nodiscard]] Geom::Line getAxisLine(Gen::AxisId axisIndex) const;
+	[[nodiscard]] Geom::Line getAxisLine(Gen::AxisId axisIndex,
+	    const Math::Range<> &filter) const;
 	[[nodiscard]] Geom::Point getTitleBasePos(Gen::AxisId axisIndex,
 	    ::Anim::InterpolateIndex index) const;
 	[[nodiscard]] Geom::Point getTitleOffset(Gen::AxisId axisIndex,
 	    ::Anim::InterpolateIndex index,
 	    bool fades) const;
 	void drawAxis(Gen::AxisId axisIndex,
+	    const Math::Range<> &filter,
 	    const Geom::AffineTransform &tr,
 	    double w) const;
 	void drawTitle(Gen::AxisId axisIndex,
-	    const Geom::AffineTransform &tr,
-	    double w) const;
+	    const Geom::AffineTransform &tr = {},
+	    double w = 1.0) const;
 	void drawDimensionLabels(Gen::AxisId axisIndex,
-	    const Geom::AffineTransform &tr,
-	    double w) const;
+	    const Geom::AffineTransform &tr = {},
+	    double w = 1.0) const;
 	void drawDimensionLabel(Gen::AxisId axisIndex,
 	    const Geom::Point &origo,
 	    const Interval &interval,

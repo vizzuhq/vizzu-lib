@@ -11,6 +11,7 @@ class DrawGuides
 {
 public:
 	void draw(Gen::AxisId axisId,
+	    const Math::Range<> &filter,
 	    const Geom::AffineTransform &tr,
 	    double w);
 

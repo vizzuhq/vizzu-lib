@@ -42,7 +42,8 @@ template <std::floating_point T = double> struct Range
 
 	[[nodiscard]] bool includes(const T &value) const
 	{
-		return !less(value, min) && !less(max, value);
+		return !is_lt(std::weak_order(value, min))
+		    && !is_lt(std::weak_order(max, value));
 	}
 
 	[[nodiscard]] T rescale(const T &value, T def = 0.5) const
