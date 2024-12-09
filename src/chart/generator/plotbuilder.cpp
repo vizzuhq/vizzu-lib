@@ -572,6 +572,18 @@ PlotBuilder::addSeparation(const Buckets &buckets,
 	auto maxRange = Math::Range<>{{}, {}};
 	for (auto &resItem : res) {
 		if (!resItem.enabled) continue;
+
+		auto onlyPositive = !std::signbit(resItem.containsValues.min);
+		plot->getOptions()->setAutoRange(onlyPositive,
+		    onlyPositive,
+		    true);
+
+		resItem.containsValues =
+		    plot->getOptions()
+		        ->getChannels()
+		        .at(axisIndex)
+		        .range.getRange(resItem.containsValues);
+
 		max = max + resItem.containsValues;
 		maxRange.include(resItem.containsValues);
 	}
