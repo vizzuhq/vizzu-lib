@@ -66,10 +66,16 @@ void DrawAxes::drawGeometries() const
 
 			if (ySplit.measureRange.includes(
 			        origo.getCoord(orientation(Gen::AxisId::y))))
-				drawAxis(Gen::AxisId::x, tr, weight);
+				drawAxis(Gen::AxisId::x,
+				    xSplit.measureRange,
+				    tr,
+				    weight);
 			if (xSplit.measureRange.includes(
 			        origo.getCoord(orientation(Gen::AxisId::x))))
-				drawAxis(Gen::AxisId::y, tr, weight);
+				drawAxis(Gen::AxisId::y,
+				    ySplit.measureRange,
+				    tr,
+				    weight);
 
 			DrawGuides{*this}.draw(Gen::AxisId::x,
 			    xSplit.measureRange,
@@ -281,24 +287,24 @@ void DrawAxes::generateMeasure(Gen::AxisId axisIndex,
 	}
 }
 
-Geom::Line DrawAxes::getAxisLine(Gen::AxisId axisIndex) const
+Geom::Line DrawAxes::getAxisLine(Gen::AxisId axisIndex,
+    const Math::Range<> &filter) const
 {
-	auto offset = this->origo().getCoord(!orientation(axisIndex));
-
-	auto direction = Geom::Point::Ident(orientation(axisIndex));
-
-	auto p0 = direction.flip() * offset;
-	auto p1 = p0 + direction;
-
-	if (offset >= 0 && offset <= 1) return {p0, p1};
+	auto o = orientation(axisIndex);
+	if (auto offset = this->origo().getCoord(!o);
+	    Math::Range<>{0.0, 1.0}.includes(offset))
+		return {Geom::Point::Coord(o, filter.min, offset),
+		    Geom::Point::Coord(o, filter.max, offset)};
 	return {};
 }
 
 void DrawAxes::drawAxis(Gen::AxisId axisIndex,
+    const Math::Range<> &filter,
     const Geom::AffineTransform &tr,
     double w) const
 {
-	if (auto line = tr(getAxisLine(axisIndex)); !line.isPoint()) {
+	if (auto line = tr(getAxisLine(axisIndex, filter));
+	    !line.isPoint()) {
 		auto lineColor = *rootStyle.plot.getAxis(axisIndex).color
 		               * Math::FuzzyBool::And<double>(w,
 		                   plot->guides.at(axisIndex).axis);

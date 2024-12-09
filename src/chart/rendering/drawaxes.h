@@ -94,13 +94,15 @@ private:
 	void generateMeasure(Gen::AxisId axisIndex,
 	    double stepSize,
 	    double weight);
-	[[nodiscard]] Geom::Line getAxisLine(Gen::AxisId axisIndex) const;
+	[[nodiscard]] Geom::Line getAxisLine(Gen::AxisId axisIndex,
+	    const Math::Range<> &filter) const;
 	[[nodiscard]] Geom::Point getTitleBasePos(Gen::AxisId axisIndex,
 	    ::Anim::InterpolateIndex index) const;
 	[[nodiscard]] Geom::Point getTitleOffset(Gen::AxisId axisIndex,
 	    ::Anim::InterpolateIndex index,
 	    bool fades) const;
 	void drawAxis(Gen::AxisId axisIndex,
+	    const Math::Range<> &filter,
 	    const Geom::AffineTransform &tr,
 	    double w) const;
 	void drawTitle(Gen::AxisId axisIndex,

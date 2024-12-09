@@ -345,10 +345,6 @@ void PlotBuilder::calcAxises(const Data::DataTable &dataTable,
 	        (mainAxis == AxisId::x ? subBoundRect : mainBoundRect)
 	            .min));
 
-	if (!mainRanges.empty())
-		plot->getOptions()->mainAxis().range = {};
-	if (!subRanges.empty()) plot->getOptions()->subAxis().range = {};
-
 	mainBoundRect =
 	    plot->getOptions()->mainAxis().range.getRange(mainBoundRect);
 	subBoundRect =
@@ -526,7 +522,7 @@ void PlotBuilder::addAlignment(const Buckets &buckets,
 	if (axisProps.align == Base::Align::Type::none) return;
 
 	if (axisProps.align == Base::Align::Type::center) {
-		auto &&halfSize = axisRange.size() / 2.0;
+		auto &&halfSize = axisRange.middle();
 		axisRange = {axisRange.min - halfSize,
 		    axisRange.max - halfSize};
 	}
@@ -585,19 +581,21 @@ PlotBuilder::addSeparation(const Buckets &buckets,
 	        max.size(),
 	        plot->getStyle().calculatedSize());
 
-	res[0].atRange =
-	    res[0].containsValues - res[0].containsValues.min;
-	auto onMax = res[0].containsValues.size();
-	for (auto i = 1U; i < res.size(); ++i) {
-		if (!res[i].enabled) continue;
-		onMax += splitSpace;
-		res[i].atRange =
-		    res[i].containsValues + onMax - res[i].containsValues.min;
-		onMax += res[i].containsValues.size();
+	double onMax = 0.0;
+	bool first = true;
+	for (auto &&resItem : res) {
+		if (!resItem.enabled) continue;
+		if (first)
+			first = false;
+		else
+			onMax += splitSpace;
+		resItem.atRange = resItem.containsValues + onMax
+		                - resItem.containsValues.min;
+		onMax += resItem.containsValues.size();
 	}
 
 	if (plot->getOptions()->coordSystem == CoordSystem::polar
-	    && axisIndex == AxisId::x)
+	    && axisIndex == AxisId::x && !first)
 		onMax += splitSpace;
 
 	for (auto &&bucket : buckets)
@@ -616,7 +614,7 @@ PlotBuilder::addSeparation(const Buckets &buckets,
 
 	auto alignedRange = maxRange;
 	if (align == Base::Align::Type::center) {
-		auto &&halfSize = maxRange.size() / 2.0;
+		auto &&halfSize = maxRange.middle();
 		alignedRange = {maxRange.min - halfSize,
 		    maxRange.max - halfSize};
 	}
@@ -624,16 +622,17 @@ PlotBuilder::addSeparation(const Buckets &buckets,
 	for (auto &resItem : res) {
 		if (!resItem.enabled) continue;
 
-		resItem.atRange =
-		    ((resItem.atRange - resItem.atRange.min) * maxRange.size()
-		            / resItem.containsValues.size()
-		        + resItem.atRange.min - resItem.containsValues.min
-		        + maxRange.min)
-		    / onMax;
+		auto aligned =
+		    Base::Align{align, resItem.containsValues}.getAligned(
+		        maxRange);
+
+		resItem.atRange = (aligned + resItem.atRange.min
+		                      - resItem.containsValues.min)
+		                / onMax;
 
 		resItem.containsValues = {
-		    maxRange.rescale(resItem.containsValues.min),
-		    maxRange.rescale(resItem.containsValues.max)};
+		    aligned.rescale(resItem.containsValues.min),
+		    aligned.rescale(resItem.containsValues.max)};
 	}
 
 	stats.setIfRange(axisIndex, alignedRange);
