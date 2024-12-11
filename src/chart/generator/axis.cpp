@@ -4,7 +4,6 @@
 #include <cmath>
 #include <cstdint>
 #include <functional>
-#include <iterator>
 #include <limits>
 #include <optional>
 #include <string>
@@ -12,6 +11,7 @@
 #include <tuple>
 #include <utility>
 
+#include "base/alg/merge.h"
 #include "base/anim/interpolated.h"
 #include "base/geom/point.h"
 #include "base/math/floating.h"
@@ -295,52 +295,50 @@ DimensionAxis interpolate(const DimensionAxis &op0,
 	DimensionAxis res;
 
 	res.factor = factor;
+	res.hasMarker = !Math::Floating::is_zero(
+	    Math::Niebloid::interpolate(op0.hasMarker,
+	        op1.hasMarker,
+	        factor));
+	using Val = DimensionAxis::Values::value_type;
 
-	for (auto first1 = op0.values.begin(),
-	          first2 = op1.values.begin(),
-	          last1 = op0.values.end(),
-	          last2 = op1.values.end();
-	     first1 != last1 || first2 != last2;)
-		if (first2 == last2
-		    || (first1 != last1 && first1->first < first2->first)) {
-			res.values.emplace(std::piecewise_construct,
-			    std::tuple{first1->first},
-			    std::forward_as_tuple(first1->second, true));
-			++first1;
-		}
-		else if (first1 == last1 || first2->first < first1->first) {
-			res.values.emplace(std::piecewise_construct,
-			    std::tuple{first2->first},
-			    std::forward_as_tuple(first2->second, false));
-			++first2;
-		}
-		else {
-			auto key = first1->first;
-			auto to1 = op0.values.upper_bound(key);
-			auto to2 = op1.values.upper_bound(key);
+	const Val *latest1{};
+	const Val *latest2{};
 
-			while (first1 != to1 && first2 != to2)
-				res.values.emplace(key,
-				    interpolate(first1++->second,
-				        first2++->second,
-				        factor));
+	auto &&merger = [&](const Val &lhs, const Val &rhs) -> Val
+	{
+		latest1 = std::addressof(lhs);
+		latest2 = std::addressof(rhs);
+		return {lhs.first,
+		    interpolate(lhs.second, rhs.second, factor)};
+	};
 
-			for (const auto &latest = std::prev(to2)->second;
-			     first1 != to1;
-			     ++first1)
-				res.values
-				    .emplace(key,
-				        interpolate(first1->second, latest, factor))
-				    ->second.endPos.makeAuto();
+	auto &&one_side =
+	    [&merger](bool first,
+	        DimensionAxis::Item::PosType DimensionAxis::Item::*pos,
+	        const Val *&paramOther)
+	{
+		return [&, first, pos](const Val &val) -> Val
+		{
+			if (paramOther && paramOther->first == val.first) {
+				auto &&res = first ? merger(val, *paramOther)
+				                   : merger(*paramOther, val);
+				(res.second.*pos).makeAuto();
+				return res;
+			}
+			return {val.first, {val.second, first}};
+		};
+	};
 
-			for (const auto &latest = std::prev(to1)->second;
-			     first2 != to2;
-			     ++first2)
-				res.values
-				    .emplace(key,
-				        interpolate(latest, first2->second, factor))
-				    ->second.startPos.makeAuto();
-		}
+	Alg::merge(op0.values,
+	    op1.values,
+	    res.values,
+	    Alg::merge_args{.projection = &Val::first,
+	        .transformer_1 =
+	            one_side(true, &DimensionAxis::Item::endPos, latest2),
+	        .transformer_2 = one_side(false,
+	            &DimensionAxis::Item::startPos,
+	            latest1),
+	        .merger = merger});
 
 	return res;
 }
@@ -356,6 +354,78 @@ DimensionAxis::Item interpolate(const DimensionAxis::Item &op0,
 	res.range = interpolate(op0.range, op1.range, factor);
 	res.colorBase = interpolate(op0.colorBase, op1.colorBase, factor);
 	res.label = interpolate(op0.label, op1.label, factor);
+	return res;
+}
+
+SplitAxis
+interpolate(const SplitAxis &op0, const SplitAxis &op1, double factor)
+{
+	using Math::Niebloid::interpolate;
+	SplitAxis res;
+	static_cast<Axis &>(res) =
+	    interpolate(static_cast<const Axis &>(op0),
+	        static_cast<const Axis &>(op1),
+	        factor);
+
+	using PartPair = SplitAxis::Parts::value_type;
+
+	auto needMerge = op0.seriesName() == op1.seriesName();
+
+	auto &&merger = [](double factor)
+	{
+		return [factor](const PartPair &lhs,
+		           const PartPair &rhs) -> PartPair
+		{
+			return {lhs.first,
+			    interpolate(lhs.second, rhs.second, factor)};
+		};
+	};
+
+	auto &&one_side = [needMerge](const decltype(merger(0.0)) &merger,
+	                      bool needOther)
+	{
+		return
+		    [needMerge, &merger, needOther, firstSpecial = needOther](
+		        const PartPair &val) mutable -> PartPair
+		{
+			if (needMerge) {
+				if (firstSpecial) {
+					firstSpecial = false;
+					return merger(val, {});
+				}
+
+				Math::Range<> range{0.0, 1.0};
+				if (!needOther)
+					range = {val.second.range.max,
+					    val.second.range.max};
+
+				return merger(val, {{}, {0.0, range}});
+			}
+			return merger(val,
+			    {{},
+			        {0.0,
+			            val.second.range,
+			            val.second.measureRange}});
+		};
+	};
+
+	Alg::merge(op0.parts,
+	    op1.parts,
+	    res.parts,
+	    Alg::merge_args{.projection = &PartPair::first,
+	        .transformer_1 =
+	            one_side(merger(factor), op1.parts.size() <= 1),
+	        .transformer_2 =
+	            one_side(merger(1 - factor), op0.parts.size() <= 1),
+	        .need_merge = {needMerge},
+	        .merger = merger(factor)});
+
+	if (!needMerge && op0.parts.empty() != op1.parts.empty()
+	    && (op0.dimension.hasMarker || op0.measure.enabled.get())
+	    && (op1.dimension.hasMarker || op1.measure.enabled.get()))
+		res.parts.insert({std::nullopt,
+		    {.weight = op0.parts.empty() ? 1 - factor : factor}});
+
 	return res;
 }
 

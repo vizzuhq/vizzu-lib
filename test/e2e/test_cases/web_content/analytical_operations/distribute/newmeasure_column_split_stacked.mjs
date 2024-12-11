@@ -13,12 +13,10 @@ const testSteps = [
 			config: {
 				channels: {
 					x: 'Year',
-					y: ['Country', 'Value 2 (+)'],
+					y: { set: ['Country', 'Value 2 (+)'], split: true },
 					color: 'Country',
 					label: 'Value 2 (+)'
-				},
-
-				split: true
+				}
 			},
 			style: {
 				plot: {
@@ -37,12 +35,11 @@ const testSteps = [
 			config: {
 				channels: {
 					x: 'Value 5 (+/-)',
-					y: 'Value 2 (+)',
+					y: { set: 'Value 2 (+)', split: false },
 					label: 'Year'
 				},
 
-				geometry: 'circle',
-				split: false
+				geometry: 'circle'
 			}
 		}),
 	(chart) => {

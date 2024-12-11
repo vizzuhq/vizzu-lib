@@ -1,5 +1,7 @@
 chart.animate({
 	config: {
-		align: 'none'
+		y: {
+			align: 'none'
+		}
 	}
 })

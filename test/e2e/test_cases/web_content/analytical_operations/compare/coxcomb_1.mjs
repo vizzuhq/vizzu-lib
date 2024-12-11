@@ -22,10 +22,8 @@ const testSteps = [
 			config: {
 				channels: {
 					x: 'Year',
-					y: ['Country', 'Value 2 (+)']
-				},
-
-				split: true
+					y: { set: ['Country', 'Value 2 (+)'], split: true }
+				}
 			}
 		}),
 	(chart) => {

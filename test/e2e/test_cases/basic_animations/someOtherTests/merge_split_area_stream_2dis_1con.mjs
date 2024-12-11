@@ -7,12 +7,11 @@ const testSteps = [
 			config: {
 				channels: {
 					x: 'Year',
-					y: ['Revenue', 'Format'],
+					y: { set: ['Revenue', 'Format'], align: 'center' },
 					color: 'Format'
 				},
 				title: 'Stacked Streamgraph',
-				geometry: 'area',
-				align: 'center'
+				geometry: 'area'
 			},
 			style: {
 				plot: {
@@ -34,12 +33,12 @@ const testSteps = [
 					y: {
 						range: {
 							max: '100%'
-						}
+						},
+						split: true,
+						align: 'none'
 					}
 				},
-				title: 'Split Area Chart',
-				split: true,
-				align: 'none'
+				title: 'Split Area Chart'
 			}
 		}),
 
@@ -48,12 +47,10 @@ const testSteps = [
 			config: {
 				channels: {
 					x: ['Revenue', 'Year'],
-					y: 'Format'
+					y: { set: 'Format', split: false }
 				},
 				title: 'Bar Chart',
-				geometry: 'rectangle',
-				split: false,
-				align: 'none'
+				geometry: 'rectangle'
 			},
 			style: {
 				plot: {

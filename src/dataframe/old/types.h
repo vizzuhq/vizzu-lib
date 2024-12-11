@@ -127,13 +127,8 @@ struct SliceIndex
 	std::string column;
 	std::string value;
 
-	[[nodiscard]] bool operator<(const SliceIndex &rhs) const
-	{
-		return column < rhs.column
-		    || (column == rhs.column && value < rhs.value);
-	}
-
-	[[nodiscard]] bool operator==(const SliceIndex &) const = default;
+	[[nodiscard]] auto operator<=>(
+	    const SliceIndex &rhs) const = default;
 };
 
 struct CellInfo

@@ -6,13 +6,12 @@ const testSteps = [
 			data,
 			config: {
 				channels: {
-					y: ['Value 2 (+)', 'Joy factors'],
+					y: { set: ['Value 2 (+)', 'Joy factors'], split: true },
 					x: 'Year',
 					color: 'Joy factors',
 					label: 'Value 2 (+)'
 				},
-				title: 'Split Column Chart',
-				split: true
+				title: 'Split Column Chart'
 			}
 		}),
 

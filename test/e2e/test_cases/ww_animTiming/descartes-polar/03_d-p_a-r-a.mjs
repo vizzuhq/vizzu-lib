@@ -27,9 +27,7 @@ const testSteps = [
 					},
 					title: 'Coxcomb',
 					geometry: 'rectangle',
-					coordSystem: 'polar',
-					//            orientation: 'horizontal',
-					split: false
+					coordSystem: 'polar'
 				}
 			},
 			{

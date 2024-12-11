@@ -22,14 +22,14 @@ const testSteps = [
 		chart.animate({
 			config: {
 				title: 'Operations: Area - Splitted.',
-				split: true
+				y: { split: true }
 			}
 		}),
 	(chart) =>
 		chart.animate({
 			config: {
 				title: 'Operations: Area - Merged.',
-				split: false
+				y: { split: false }
 			}
 		})
 ]

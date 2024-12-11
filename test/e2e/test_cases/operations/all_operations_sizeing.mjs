@@ -178,7 +178,7 @@ const testSteps = [
 		chart.animate({
 			config: {
 				title: 'Comparing ratios is just another option out of many more...',
-				align: 'stretch'
+				y: { align: 'stretch' }
 			}
 		})
 ]

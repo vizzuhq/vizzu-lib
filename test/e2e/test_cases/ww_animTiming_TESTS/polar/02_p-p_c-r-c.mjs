@@ -42,8 +42,7 @@ const testSteps = [
 					y: { set: ['Country', 'Value 2 (+)'] }
 				},
 				title: 'Stacked Coxcomb',
-				geometry: 'rectangle',
-				split: false
+				geometry: 'rectangle'
 			}
 		}),
 	(chart) =>

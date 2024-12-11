@@ -9,7 +9,9 @@
 #include <vector>
 
 #include "base/anim/interpolated.h"
+#include "base/math/range.h"
 #include "chart/main/style.h"
+#include "chart/options/channel.h"
 #include "chart/options/options.h"
 
 #include "marker.h"
@@ -66,6 +68,22 @@ void Plot::detachOptions()
 bool Plot::isEmpty() const
 {
 	return options->getChannels().isEmpty();
+}
+
+Math::Range<> Plot::getMarkersBounds(AxisId axisId) const
+{
+	auto markerIt = markers.begin();
+	while (markerIt != markers.end()
+	       && !static_cast<bool>(markerIt->enabled))
+		++markerIt;
+
+	if (markerIt == markers.end()) return {{}, {}};
+
+	auto boundRect = markerIt->getSizeBy(axisId).positive();
+	while (++markerIt != markers.end())
+		if (markerIt->enabled)
+			boundRect.include(markerIt->getSizeBy(axisId));
+	return boundRect;
 }
 
 void Plot::prependMarkers(const Plot &plot)

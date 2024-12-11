@@ -1,8 +1,8 @@
 chart.animate({
 	config: {
-		align: 'center',
 		channels: {
 			y: {
+				align: 'center',
 				labels: false
 			}
 		}

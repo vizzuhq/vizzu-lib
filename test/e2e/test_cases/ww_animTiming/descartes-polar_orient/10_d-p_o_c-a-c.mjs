@@ -38,8 +38,7 @@ const testSteps = [
 					},
 					title: 'Radial Area Chart Vertical',
 					geometry: 'area',
-					coordSystem: 'polar',
-					split: false
+					coordSystem: 'polar'
 				}
 			},
 			{

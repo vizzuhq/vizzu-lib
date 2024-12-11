@@ -38,8 +38,7 @@ const testSteps = [
 						color: { set: ['Country'] }
 					},
 					title: 'Radial Line Chart Vertical',
-					geometry: 'circle',
-					split: false
+					geometry: 'circle'
 				}
 			},
 			{

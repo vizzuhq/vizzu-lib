@@ -43,8 +43,7 @@ const testSteps = [
 				},
 				title: 'Line Chart',
 				geometry: 'line',
-				orientation: 'horizontal',
-				split: false
+				orientation: 'horizontal'
 			}
 		}),
 	(chart) =>

@@ -8,12 +8,10 @@
 #include <cstdlib>
 #include <functional>
 #include <memory>
-#include <new>
 #include <optional>
 #include <span>
 #include <string>
 #include <string_view>
-#include <type_traits>
 #include <utility>
 #include <variant>
 #include <vector>
@@ -29,54 +27,38 @@ namespace Vizzu::dataframe
 {
 using Refl::unsafe_get;
 
+template <class... Ts>
+[[nodiscard]] std::shared_ptr<dataframe_interface> create_interface(
+    Ts &&...ts)
+{
+	auto &&iptr = std::make_unique<dataframe_interface>();
+	auto &&ptr = std::unique_ptr<dataframe, void (&)(dataframe *)>{
+	    new (iptr->data) dataframe(std::forward<Ts>(ts)...),
+	    std::destroy_at<dataframe>};
+	return {iptr.release(),
+	    [newly = std::move(ptr), deleter = iptr.get_deleter()](
+	        dataframe_interface *df) mutable
+	    {
+		    newly.reset();
+		    deleter(df);
+	    }};
+}
+
 std::shared_ptr<dataframe_interface> dataframe::copy(
     bool inherit_sorting) const &
 {
-	auto &&uptr = std::make_unique<dataframe_interface>();
-	void *&&data = uptr->data;
-	auto &&my_deleter = [data](dataframe *df)
-	{
-		df->~dataframe();
-		::operator delete(data, df);
-	};
-	using ptr_t = std::unique_ptr<dataframe,
-	    std::remove_reference_t<decltype(my_deleter)>>;
-
 	const auto *&&cp = get_if<source_type::copying>(&source);
-	return {uptr.release(),
-	    [newly = ptr_t{new (data) dataframe(
-	                       cp ? cp->other
-	                          : unsafe_get<source_type::owning>(
-	                              source),
-	                       cp && cp->pre_remove ? &*cp->pre_remove
-	                                            : nullptr,
-	                       cp && inherit_sorting && cp->sorted_indices
-	                           ? &*cp->sorted_indices
-	                           : nullptr),
-	         std::move(my_deleter)}](dataframe_interface *df) mutable
-	    {
-		    newly.reset();
-		    std::default_delete<dataframe_interface>{}(df);
-	    }};
+	return create_interface(
+	    cp ? cp->other : unsafe_get<source_type::owning>(source),
+	    cp && cp->pre_remove ? &*cp->pre_remove : nullptr,
+	    cp && inherit_sorting && cp->sorted_indices
+	        ? &*cp->sorted_indices
+	        : nullptr);
 }
 
 std::shared_ptr<dataframe_interface> dataframe::create_new()
 {
-	auto &&uptr = std::make_unique<dataframe_interface>();
-	auto my_deleter = [p = uptr.get()](dataframe *df)
-	{
-		df->~dataframe();
-		::operator delete(p, df);
-	};
-	auto &&uptr2 = std::unique_ptr<dataframe, decltype(my_deleter)>{
-	    new (uptr->data) dataframe(),
-	    std::move(my_deleter)};
-	return {uptr.release(),
-	    [rm = std::move(uptr2)](dataframe_interface *df) mutable
-	    {
-		    rm.reset();
-		    std::default_delete<dataframe_interface>{}(df);
-	    }};
+	return create_interface();
 }
 
 dataframe::dataframe(std::shared_ptr<const data_source> other,

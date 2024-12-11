@@ -26,8 +26,7 @@ const testSteps = [
 					color: { set: ['Country'] }
 				},
 				title: 'Spider Line Fake',
-				geometry: 'line',
-				split: false
+				geometry: 'line'
 			}
 		}),
 

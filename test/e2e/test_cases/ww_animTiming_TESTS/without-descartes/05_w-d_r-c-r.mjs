@@ -43,8 +43,7 @@ const testSteps = [
 					color: { set: ['Joy factors'] }
 				},
 				title: 'Dotplot vs. Scatter plot',
-				geometry: 'circle',
-				split: false
+				geometry: 'circle'
 			}
 		}),
 	(chart) =>

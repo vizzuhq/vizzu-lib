@@ -37,11 +37,9 @@ const testSteps = [
 			{
 				config: {
 					channels: {
-						y: { range: { max: '100%' } }
+						y: { range: { max: '100%' }, align: 'center', split: true }
 					},
-					title: 'Splitted Area Chart',
-					align: 'center',
-					split: true
+					title: 'Splitted Area Chart'
 				}
 			},
 			{
@@ -61,13 +59,11 @@ const testSteps = [
 				config: {
 					channels: {
 						x: { set: ['Value 2 (+)', 'Year'] },
-						y: { set: ['Country'] },
+						y: { set: ['Country'], align: 'none', split: false },
 						color: { set: ['Country'] }
 					},
 					title: 'Bar Chart',
-					geometry: 'rectangle',
-					align: 'none',
-					split: false
+					geometry: 'rectangle'
 				}
 			},
 			{
@@ -95,12 +91,10 @@ const testSteps = [
 				config: {
 					channels: {
 						x: { set: ['Year'] },
-						y: { set: ['Country', 'Value 2 (+)'] }
+						y: { set: ['Country', 'Value 2 (+)'], align: 'center', split: true }
 					},
 					title: 'Splitted Area Chart',
-					geometry: 'area',
-					align: 'center',
-					split: true
+					geometry: 'area'
 				}
 			},
 			{
@@ -127,13 +121,11 @@ const testSteps = [
 			{
 				config: {
 					channels: {
-						y: { range: { max: '110%' } }
+						y: { range: { max: '110%' }, align: 'none', split: false }
 					},
 					title: 'Stacked Area Chart',
 					geometry: 'area',
-					legend: null,
-					align: 'none',
-					split: false
+					legend: null
 				}
 			},
 			{

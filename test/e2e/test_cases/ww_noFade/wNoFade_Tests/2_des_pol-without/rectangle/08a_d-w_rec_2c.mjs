@@ -41,8 +41,7 @@ const testSteps = [
 					size: { set: 'Value 2 (+)' },
 					lightness: { set: 'Value 1 (+)' }
 				},
-				title: 'Change CoordSys',
-				align: 'none'
+				title: 'Change CoordSys'
 			}
 		})
 ]

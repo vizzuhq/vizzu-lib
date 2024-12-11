@@ -10,8 +10,7 @@ const testSteps = [
 					y: 'Value 5 (+/-)',
 					label: 'Value 5 (+/-)'
 				},
-				title: 'Histogram',
-				align: 'none'
+				title: 'Histogram'
 			},
 			/* Spaces between markers should be
     eliminated on this chart. */

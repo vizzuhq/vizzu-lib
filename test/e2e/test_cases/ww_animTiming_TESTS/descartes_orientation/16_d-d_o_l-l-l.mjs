@@ -43,8 +43,7 @@ const testSteps = [
 				},
 				title: 'Line Chart Vertical',
 				geometry: 'line',
-				orientation: 'vertical',
-				split: false
+				orientation: 'vertical'
 			}
 		}),
 

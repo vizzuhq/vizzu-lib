@@ -20,11 +20,9 @@ const testSteps = [
 		chart.animate({
 			config: {
 				channels: {
-					y: { set: ['Country', 'Value 2 (+)'] }
+					y: { set: ['Country', 'Value 2 (+)'], split: true }
 				},
-				title: 'Stacked Line Chart',
-				//            align: 'center',
-				split: true
+				title: 'Stacked Line Chart'
 			}
 		}),
 
@@ -33,13 +31,11 @@ const testSteps = [
 			config: {
 				channels: {
 					x: { set: ['Value 2 (+)', 'Year'] },
-					y: { set: ['Country'] },
+					y: { set: ['Country'], split: false },
 					color: { set: ['Country'] }
 				},
 				title: 'Bar Chart',
-				geometry: 'rectangle',
-				//           align: 'none',
-				split: false
+				geometry: 'rectangle'
 			}
 		})
 ]

@@ -12,12 +12,11 @@ const testSteps = [
 			config: {
 				channels: {
 					x: ['Year', 'Joy factors'],
-					y: ['Value 3 (+)', 'Country_code'],
+					y: { set: ['Value 3 (+)', 'Country_code'], align: 'center' },
 					color: 'Country_code'
 				},
 				title: 'Stacked Stream Graph',
-				geometry: 'area',
-				align: 'center'
+				geometry: 'area'
 			}
 		})
 ]

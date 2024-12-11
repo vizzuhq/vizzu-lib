@@ -8,23 +8,23 @@ const testSteps = [
 			config: {
 				channels: {
 					x: 'Year',
-					y: ['Country', 'Value 2 (+)'],
+					y: { set: ['Country', 'Value 2 (+)'], align: 'stretch' },
 					color: 'Country'
 				},
-				title: 'Stacked Percentage Column',
-				align: 'stretch',
-				split: false
+				title: 'Stacked Percentage Column'
 			}
 		}),
 	(chart) =>
 		chart.animate({
 			config: {
 				channels: {
-					label: 'Value 2 (+)'
+					label: 'Value 2 (+)',
+					y: {
+						align: 'none',
+						split: true
+					}
 				},
-				title: 'ALign min & Split Components to See them Separately',
-				align: 'none',
-				split: true
+				title: 'ALign min & Split Components to See them Separately'
 			},
 			style: {
 				plot: {
