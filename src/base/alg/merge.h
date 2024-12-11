@@ -167,7 +167,7 @@ template <class Proj1 = std::identity,
     class Transform2 = std::identity,
     class NeedMerge = always,
     class Merge = get_first>
-struct args
+struct merge_args
 {
 	[[no_unique_address]] Proj1 projection_1{};
 	[[no_unique_address]] Proj2 projection_2{};
@@ -201,7 +201,7 @@ constexpr std::ranges::in_in_out_result<It1, It2, Out> merge(
     It2 first2,
     End2 last2,
     Out result,
-    args<Proj1,
+    merge_args<Proj1,
         Proj2,
         Proj,
         Comp,
@@ -259,7 +259,7 @@ constexpr std::ranges::in_in_out_result<
 merge(R1 &&range1,
     R2 &&range2,
     Out &&result,
-    args<Args...> &&args = {})
+    merge_args<Args...> &&args = {})
 {
 	if constexpr (std::weakly_incrementable<
 	                  std::remove_cvref_t<Out>>) {
@@ -282,7 +282,7 @@ merge(R1 &&range1,
 }
 
 using Merge::merge;
-template <class... Args> using merge_args = Merge::args<Args...>;
+using Merge::merge_args;
 
 }
 
