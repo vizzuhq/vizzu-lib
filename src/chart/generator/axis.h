@@ -129,6 +129,7 @@ struct DimensionAxis
 	using Values = std::multimap<Data::SliceIndex, Item>;
 
 	double factor{};
+	bool hasMarker{};
 
 	DimensionAxis() = default;
 	bool add(const Data::SliceIndex &index,

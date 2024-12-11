@@ -295,6 +295,10 @@ DimensionAxis interpolate(const DimensionAxis &op0,
 	DimensionAxis res;
 
 	res.factor = factor;
+	res.hasMarker = !Math::Floating::is_zero(
+	    Math::Niebloid::interpolate(op0.hasMarker,
+	        op1.hasMarker,
+	        factor));
 	using Val = DimensionAxis::Values::value_type;
 
 	const Val *latest1{};
@@ -387,7 +391,7 @@ interpolate(const SplitAxis &op0, const SplitAxis &op1, double factor)
 			if (needMerge) {
 				if (firstSpecial) {
 					firstSpecial = false;
-					return merger(val, {{}, {1.0}});
+					return merger(val, {});
 				}
 
 				Math::Range<> range{0.0, 1.0};
@@ -410,15 +414,15 @@ interpolate(const SplitAxis &op0, const SplitAxis &op1, double factor)
 	    res.parts,
 	    Alg::merge_args{.projection = &PartPair::first,
 	        .transformer_1 =
-	            one_side(merger(factor), op1.parts.empty()),
+	            one_side(merger(factor), op1.parts.size() <= 1),
 	        .transformer_2 =
-	            one_side(merger(1 - factor), op0.parts.empty()),
+	            one_side(merger(1 - factor), op0.parts.size() <= 1),
 	        .need_merge = {needMerge},
 	        .merger = merger(factor)});
 
 	if (!needMerge && op0.parts.empty() != op1.parts.empty()
-	    && (!op0.dimension.empty() || op0.measure.enabled.get())
-	    && (!op1.dimension.empty() || op1.measure.enabled.get()))
+	    && (op0.dimension.hasMarker || op0.measure.enabled.get())
+	    && (op1.dimension.hasMarker || op1.measure.enabled.get()))
 		res.parts.insert({std::nullopt,
 		    {.weight = op0.parts.empty() ? 1 - factor : factor}});
 

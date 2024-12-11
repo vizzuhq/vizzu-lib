@@ -55,8 +55,8 @@ ConnectingMarker::ConnectingMarker(const DrawingContext &ctx,
 	linear = !polar || horizontal
 	      || Math::FuzzyBool::And(
 	          !isHorizontal
-	              && !ctx.plot->axises.at(Gen::AxisId::x)
-	                      .dimension.empty(),
+	              && ctx.plot->axises.at(Gen::AxisId::x)
+	                     .dimension.hasMarker,
 	          ctx.plot->axises.at(Gen::AxisId::x)
 	              .measure.enabled.factor(false),
 	          !horizontal);

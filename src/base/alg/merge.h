@@ -1,6 +1,7 @@
 #ifndef ALG_MERGE_H
 #define ALG_MERGE_H
 
+#include <algorithm>
 #include <cstdint>
 #include <functional>
 #include <ranges>
