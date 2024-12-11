@@ -7,7 +7,7 @@
 - Fix invalid read/write when animation is contiguous (onFinish callback calls setKeyframe).
 - Waterfall chart preset not aligned.
 - Split chart count negative values too.
-- Split chart when same dimension on main and sub axis.
+- Split chart handled when same dimension on main and sub axis.
 
 ### Changed
 
@@ -17,7 +17,6 @@
   - axis line multiplication.
   - axis labels multiplication.
   - axis range interpretation differently for all split part.
-  - negative values are handled correctly.
   - align center / stretch fix.
 
 ### Added

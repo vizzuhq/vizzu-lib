@@ -4,7 +4,7 @@
 #include <initializer_list>
 #include <vector>
 
-#include "base/alg/union_foreach.h"
+#include "base/alg/merge.h"
 
 #include "interpolation.h"
 #include "range.h"
@@ -43,32 +43,23 @@ template <typename T, class CRTP> struct SegmentedFunction
 	{
 		CRTP res;
 
-		Alg::union_foreach(
-		    self.stops,
+		auto &&transformer = [](auto &&another)
+		{
+			return [&another](const Stop &item)
+			{
+				return Stop{item.pos, item.value + another(item.pos)};
+			};
+		};
+		Alg::merge(self.stops,
 		    other.stops,
-		    [&](const Stop *lhs,
-		        const Stop *rhs,
-		        Alg::union_call_t type)
-		    {
-			    switch (type) {
-			    case Alg::union_call_t::only_left:
-				    res.stops.emplace_back(lhs->pos,
-				        lhs->value + other(lhs->pos));
-				    break;
-			    case Alg::union_call_t::only_right:
-				    res.stops.emplace_back(rhs->pos,
-				        rhs->value + self(rhs->pos));
-				    break;
-			    case Alg::union_call_t::both:
-			    default:
-				    res.stops.emplace_back(lhs->pos,
-				        lhs->value + rhs->value);
-				    break;
-			    }
-		    },
-		    {},
-		    &Stop::pos,
-		    Alg::single);
+		    res.stops,
+		    Alg::merge_args{.projection = &Stop::pos,
+		        .transformer_1 = transformer(other),
+		        .transformer_2 = transformer(self),
+		        .merger = [](const Stop &item1, const Stop &item2)
+		        {
+			        return Stop{item1.pos, item1.value + item2.value};
+		        }});
 		return res;
 	}
 

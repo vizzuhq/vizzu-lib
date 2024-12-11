@@ -11,7 +11,7 @@
 #include <tuple>
 #include <utility>
 
-#include "base/alg/union_foreach.h"
+#include "base/alg/merge.h"
 #include "base/anim/interpolated.h"
 #include "base/geom/point.h"
 #include "base/math/floating.h"
@@ -295,32 +295,46 @@ DimensionAxis interpolate(const DimensionAxis &op0,
 	DimensionAxis res;
 
 	res.factor = factor;
-	using Ptr = DimensionAxis::Values::const_pointer;
-	Alg::union_foreach(
-	    op0.values,
+	using Val = DimensionAxis::Values::value_type;
+
+	const Val *latest1{};
+	const Val *latest2{};
+
+	auto &&merger = [&](const Val &lhs, const Val &rhs) -> Val
+	{
+		latest1 = std::addressof(lhs);
+		latest2 = std::addressof(rhs);
+		return {lhs.first,
+		    interpolate(lhs.second, rhs.second, factor)};
+	};
+
+	auto &&one_side =
+	    [&merger](bool first,
+	        DimensionAxis::Item::PosType DimensionAxis::Item::*pos,
+	        const Val *&paramOther)
+	{
+		return [&, first, pos](const Val &val) -> Val
+		{
+			if (paramOther && paramOther->first == val.first) {
+				auto &&res = first ? merger(val, *paramOther)
+				                   : merger(*paramOther, val);
+				(res.second.*pos).makeAuto();
+				return res;
+			}
+			return {val.first, {val.second, first}};
+		};
+	};
+
+	Alg::merge(op0.values,
 	    op1.values,
-	    [&res](Ptr v1, Ptr v2, Alg::union_call_t type)
-	    {
-		    if (!v2)
-			    res.values.emplace(std::piecewise_construct,
-			        std::tuple{v1->first},
-			        std::forward_as_tuple(v1->second, true));
-		    else if (!v1)
-			    res.values.emplace(std::piecewise_construct,
-			        std::tuple{v2->first},
-			        std::forward_as_tuple(v2->second, false));
-		    else if (auto &&val = res.values
-		                              .emplace(v1->first,
-		                                  interpolate(v1->second,
-		                                      v2->second,
-		                                      res.factor))
-		                              ->second;
-		             type == Alg::union_call_t::only_left)
-			    val.endPos.makeAuto();
-		    else if (type == Alg::union_call_t::only_right)
-			    val.startPos.makeAuto();
-	    },
-	    res.values.value_comp());
+	    res.values,
+	    Alg::merge_args{.projection = &Val::first,
+	        .transformer_1 =
+	            one_side(true, &DimensionAxis::Item::endPos, latest2),
+	        .transformer_2 = one_side(false,
+	            &DimensionAxis::Item::startPos,
+	            latest1),
+	        .merger = merger});
 
 	return res;
 }
@@ -348,141 +362,65 @@ interpolate(const SplitAxis &op0, const SplitAxis &op1, double factor)
 	    interpolate(static_cast<const Axis &>(op0),
 	        static_cast<const Axis &>(op1),
 	        factor);
-	if (!op0.parts.empty() && !op1.parts.empty()
-	    && op0.seriesName() == op1.seriesName()) {
-		using PartPair = const decltype(res.parts)::value_type;
-		Alg::union_foreach(
-		    op0.parts,
-		    op1.parts,
-		    [&res, &factor](PartPair *lhs,
-		        PartPair *rhs,
-		        Alg::union_call_t type)
-		    {
-			    switch (type) {
-			    case Alg::union_call_t::only_left: {
-				    auto from = lhs->second.range.min;
-				    res.parts.insert({lhs->first,
-				        {.weight = interpolate(lhs->second.weight,
-				             0.0,
-				             factor),
-				            .range = interpolate(lhs->second.range,
-				                Math::Range<>{from, from},
-				                factor),
-				            .measureRange =
-				                interpolate(lhs->second.measureRange,
-				                    Math::Range<>{0, 1},
-				                    factor)}});
-				    break;
-			    }
-			    case Alg::union_call_t::only_right: {
-				    auto from = rhs->second.range.min;
-				    res.parts.insert({rhs->first,
-				        {.weight = interpolate(0.0,
-				             rhs->second.weight,
-				             factor),
-				            .range =
-				                interpolate(Math::Range<>{from, from},
-				                    rhs->second.range,
-				                    factor),
-				            .measureRange =
-				                interpolate(Math::Range<>{0, 1},
-				                    rhs->second.measureRange,
-				                    factor)}});
-				    break;
-			    }
-			    default:
-			    case Alg::union_call_t::both: {
-				    res.parts.insert({lhs->first,
-				        interpolate(lhs->second,
-				            rhs->second,
-				            factor)});
-				    break;
-			    }
-			    }
-		    },
-		    res.parts.value_comp());
 
-		return res;
-	}
+	using PartPair = SplitAxis::Parts::value_type;
 
-	if (!op0.parts.empty()) {
-		if (op0.seriesName() != op1.seriesName()) {
-			for (auto &&[index, part] : op0.parts)
-				res.parts.insert({index,
-				    {.weight = part.weight * (1 - factor),
-				        .range = part.range,
-				        .measureRange = part.measureRange}});
-		}
-		else {
-			auto begin = op0.parts.begin();
-			res.parts.insert({begin->first,
-			    {.weight = interpolate(begin->second.weight,
-			         1.0,
-			         factor),
-			        .range = interpolate(begin->second.range,
-			            Math::Range<>{0, 1},
-			            factor),
-			        .measureRange =
-			            interpolate(begin->second.measureRange,
-			                Math::Range<>{0, 1},
-			                factor)}});
-			while (++begin != op0.parts.end()) {
-				res.parts.insert({begin->first,
-				    {.weight = interpolate(begin->second.weight,
-				         0.0,
-				         factor),
-				        .range = interpolate(begin->second.range,
-				            Math::Range<>{0, 1},
-				            factor),
-				        .measureRange =
-				            interpolate(begin->second.measureRange,
-				                Math::Range<>{0, 1},
-				                factor)}});
+	auto needMerge = op0.seriesName() == op1.seriesName();
+
+	auto &&merger = [](double factor)
+	{
+		return [factor](const PartPair &lhs,
+		           const PartPair &rhs) -> PartPair
+		{
+			return {lhs.first,
+			    interpolate(lhs.second, rhs.second, factor)};
+		};
+	};
+
+	auto &&one_side = [needMerge](const decltype(merger(0.0)) &merger,
+	                      bool needOther)
+	{
+		return
+		    [needMerge, &merger, needOther, firstSpecial = needOther](
+		        const PartPair &val) mutable -> PartPair
+		{
+			if (needMerge) {
+				if (firstSpecial) {
+					firstSpecial = false;
+					return merger(val, {{}, {1.0}});
+				}
+
+				Math::Range<> range{0.0, 1.0};
+				if (!needOther)
+					range = {val.second.range.max,
+					    val.second.range.max};
+
+				return merger(val, {{}, {0.0, range}});
 			}
-		}
-	}
-	else if (!op1.parts.empty()
-	         && op0.seriesName() != op1.seriesName())
-		res.parts.insert({std::nullopt, {.weight = 1 - factor}});
+			return merger(val,
+			    {{},
+			        {0.0,
+			            val.second.range,
+			            val.second.measureRange}});
+		};
+	};
 
-	if (!op1.parts.empty()) {
-		if (op0.seriesName() != op1.seriesName()) {
-			for (auto &&[index, part] : op1.parts)
-				res.parts.insert({index,
-				    {.weight = part.weight * factor,
-				        .range = part.range,
-				        .measureRange = part.measureRange}});
-		}
-		else {
-			auto begin = op1.parts.begin();
-			res.parts.insert({begin->first,
-			    {.weight = interpolate(1.0,
-			         begin->second.weight,
-			         factor),
-			        .range = interpolate(Math::Range<>{0, 1},
-			            begin->second.range,
-			            factor),
-			        .measureRange = interpolate(Math::Range<>{0, 1},
-			            begin->second.measureRange,
-			            factor)}});
-			while (++begin != op1.parts.end()) {
-				res.parts.insert({begin->first,
-				    {.weight = interpolate(0.0,
-				         begin->second.weight,
-				         factor),
-				        .range = interpolate(Math::Range<>{0, 1},
-				            begin->second.range,
-				            factor),
-				        .measureRange =
-				            interpolate(Math::Range<>{0, 1},
-				                begin->second.measureRange,
-				                factor)}});
-			}
-		}
-	}
-	else if (!op0.parts.empty()
-	         && op0.seriesName() != op1.seriesName())
-		res.parts.insert({std::nullopt, {.weight = factor}});
+	Alg::merge(op0.parts,
+	    op1.parts,
+	    res.parts,
+	    Alg::merge_args{.projection = &PartPair::first,
+	        .transformer_1 =
+	            one_side(merger(factor), op1.parts.empty()),
+	        .transformer_2 =
+	            one_side(merger(1 - factor), op0.parts.empty()),
+	        .need_merge = {needMerge},
+	        .merger = merger(factor)});
+
+	if (!needMerge && op0.parts.empty() != op1.parts.empty()
+	    && (!op0.dimension.empty() || op0.measure.enabled.get())
+	    && (!op1.dimension.empty() || op1.measure.enabled.get()))
+		res.parts.insert({std::nullopt,
+		    {.weight = op0.parts.empty() ? 1 - factor : factor}});
 
 	return res;
 }
