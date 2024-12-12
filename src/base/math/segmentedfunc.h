@@ -43,7 +43,12 @@ template <typename T, class CRTP> struct SegmentedFunction
 	{
 		CRTP res;
 
-		auto &&transformer = [](auto &&another)
+		auto merger = [](const Stop &item1, const Stop &item2)
+		{
+			return Stop{item1.pos, item1.value + item2.value};
+		};
+
+		auto &&transformer = [](const CRTP &another)
 		{
 			return [&another](const Stop &item)
 			{
@@ -53,13 +58,21 @@ template <typename T, class CRTP> struct SegmentedFunction
 		Alg::merge(self.stops,
 		    other.stops,
 		    res.stops,
-		    Alg::merge_args{.projection = &Stop::pos,
+		    Alg::merge_args
+		    // { Remove when clang-16 not used
+		    <std::identity,
+		        std::identity,
+		        double Stop::*,
+		        decltype(std::weak_order),
+		        decltype(transformer(other)),
+		        decltype(transformer(self)),
+		        Alg::Merge::always,
+		        decltype(merger)>
+		    // }
+		    {.projection = &Stop::pos,
 		        .transformer_1 = transformer(other),
 		        .transformer_2 = transformer(self),
-		        .merger = [](const Stop &item1, const Stop &item2)
-		        {
-			        return Stop{item1.pos, item1.value + item2.value};
-		        }});
+		        .merger = merger});
 		return res;
 	}
 

@@ -304,7 +304,7 @@ DimensionAxis interpolate(const DimensionAxis &op0,
 	const Val *latest1{};
 	const Val *latest2{};
 
-	auto &&merger = [&](const Val &lhs, const Val &rhs) -> Val
+	auto merger = [&](const Val &lhs, const Val &rhs) -> Val
 	{
 		latest1 = std::addressof(lhs);
 		latest2 = std::addressof(rhs);
@@ -332,7 +332,18 @@ DimensionAxis interpolate(const DimensionAxis &op0,
 	Alg::merge(op0.values,
 	    op1.values,
 	    res.values,
-	    Alg::merge_args{.projection = &Val::first,
+	    Alg::merge_args
+	    // { Remove when clang-16 not used
+	    <std::identity,
+	        std::identity,
+	        const Data::SliceIndex Val::*,
+	        decltype(std::weak_order),
+	        decltype(one_side({}, {}, latest1)),
+	        decltype(one_side({}, {}, latest1)),
+	        Alg::Merge::always,
+	        decltype(merger)>
+	    // }
+	    {.projection = &Val::first,
 	        .transformer_1 =
 	            one_side(true, &DimensionAxis::Item::endPos, latest2),
 	        .transformer_2 = one_side(false,
@@ -381,8 +392,9 @@ interpolate(const SplitAxis &op0, const SplitAxis &op1, double factor)
 		};
 	};
 
-	auto &&one_side = [needMerge](const decltype(merger(0.0)) &merger,
-	                      bool needOther)
+	using MergerType = decltype(merger(0.0));
+	auto &&one_side =
+	    [needMerge](const MergerType &merger, bool needOther)
 	{
 		return
 		    [needMerge, &merger, needOther, firstSpecial = needOther](
@@ -391,7 +403,8 @@ interpolate(const SplitAxis &op0, const SplitAxis &op1, double factor)
 			if (needMerge) {
 				if (firstSpecial) {
 					firstSpecial = false;
-					return merger(val, {});
+					return merger(val,
+					    PartPair{std::nullopt, SplitAxis::Part{}});
 				}
 
 				Math::Range<> range{0.0, 1.0};
@@ -412,7 +425,18 @@ interpolate(const SplitAxis &op0, const SplitAxis &op1, double factor)
 	Alg::merge(op0.parts,
 	    op1.parts,
 	    res.parts,
-	    Alg::merge_args{.projection = &PartPair::first,
+	    Alg::merge_args
+	    // { Remove when clang-16 not used
+	    <std::identity,
+	        std::identity,
+	        const std::optional<Data::SliceIndex> PartPair::*,
+	        decltype(std::weak_order),
+	        decltype(one_side(merger({}), {})),
+	        decltype(one_side(merger({}), {})),
+	        Alg::Merge::always,
+	        const MergerType &>
+	    // }
+	    {.projection = &PartPair::first,
 	        .transformer_1 =
 	            one_side(merger(factor), op1.parts.size() <= 1),
 	        .transformer_2 =
