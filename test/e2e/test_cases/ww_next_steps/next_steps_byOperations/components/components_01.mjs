@@ -20,11 +20,10 @@ const testSteps = [
 			config: {
 				channels: {
 					x: 'Year',
-					y: ['Country', 'Value 2 (+)'],
+					y: { set: ['Country', 'Value 2 (+)'], split: true },
 					label: 'Value 2 (+)'
 				},
-				title: 'Split Components to See them Separately',
-				split: true
+				title: 'Split Components to See them Separately'
 			},
 			style: {
 				plot: {

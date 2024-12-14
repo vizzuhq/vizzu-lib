@@ -25,12 +25,11 @@ const testSteps = [
 			config: {
 				channels: {
 					x: 'Year',
-					y: ['Revenue', 'Format'],
+					y: { set: ['Revenue', 'Format'], align: 'center' },
 					color: 'Format'
 				},
 
-				geometry: 'area',
-				align: 'center'
+				geometry: 'area'
 			},
 			style: {
 				plot: {
@@ -50,7 +49,7 @@ const testSteps = [
 
 	(chart) =>
 		chart.animate({
-			config: {
+			y: {
 				align: 'none',
 				split: true
 			}
@@ -61,10 +60,12 @@ const testSteps = [
 			config: {
 				channels: {
 					x: ['Format', 'Year'],
-					y: 'Revenue'
-				},
+					y: {
+						set: 'Revenue',
 
-				split: false
+						split: false
+					}
+				}
 			},
 			style: {
 				plot: {

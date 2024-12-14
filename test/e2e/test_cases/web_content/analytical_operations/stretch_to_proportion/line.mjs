@@ -23,11 +23,10 @@ const testSteps = [
 		chart.animate({
 			config: {
 				channels: {
-					y: ['Value 2 (+)', 'Country']
+					y: { set: ['Value 2 (+)', 'Country'], align: 'stretch' }
 				},
 
-				geometry: 'area',
-				align: 'stretch'
+				geometry: 'area'
 			}
 		}),
 	(chart) => {

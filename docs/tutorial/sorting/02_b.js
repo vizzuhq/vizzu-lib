@@ -1,5 +1,5 @@
 chart.animate({
 	config: {
-		reverse: true
+		x: { reverse: true }
 	}
 })

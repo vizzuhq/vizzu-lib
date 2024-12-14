@@ -368,6 +368,11 @@ struct Plot : Padding, Box, PlotParams
 	{
 		return id == Gen::AxisId::x ? xAxis : yAxis;
 	}
+
+	[[nodiscard]] Axis &getAxis(Gen::AxisId id)
+	{
+		return id == Gen::AxisId::x ? xAxis : yAxis;
+	}
 };
 
 struct LogoParams

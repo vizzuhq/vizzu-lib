@@ -54,9 +54,7 @@ const testSteps = [
 				},
 				title: 'Dotplot vs. Scatter plot',
 				geometry: 'circle',
-				coordSystem: 'polar',
-				//            orientation: 'horizontal',
-				split: false
+				coordSystem: 'polar'
 			}
 		}),
 	(chart) =>

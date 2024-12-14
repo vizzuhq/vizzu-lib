@@ -25,8 +25,7 @@ const testSteps = [
 				},
 				title: 'Spider Line Fake',
 				geometry: 'line',
-				coordSystem: 'polar',
-				split: false
+				coordSystem: 'polar'
 			}
 		}),
 

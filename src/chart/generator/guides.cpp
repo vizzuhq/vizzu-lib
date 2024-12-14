@@ -20,15 +20,18 @@ bool GuidesByAxis::operator==(const GuidesByAxis &other) const
 
 Guides::Guides(const Options &options)
 {
-	const auto &xOpt = options.getChannels().at(AxisId::x);
-	const auto &yOpt = options.getChannels().at(AxisId::y);
-	if (xOpt.isEmpty() && yOpt.isEmpty()) return;
+	const auto &xChannel = options.getChannels().at(AxisId::x);
+	const auto &yChannel = options.getChannels().at(AxisId::y);
+	if (xChannel.isEmpty() && yChannel.isEmpty()) return;
 
 	auto xIsMeasure = options.isMeasure(ChannelId::x);
 	auto yIsMeasure = options.isMeasure(ChannelId::y);
 	auto isPolar = options.coordSystem.get() == CoordSystem::polar;
 	auto isCircle = options.geometry.get() == ShapeType::circle;
 	auto isHorizontal = options.isHorizontal();
+
+	const auto &xOpt = options.getChannels().axisPropsAt(AxisId::x);
+	const auto &yOpt = options.getChannels().axisPropsAt(AxisId::y);
 
 	x.axis = xOpt.axis.getValue(yIsMeasure);
 	y.axis = yOpt.axis.getValue(xIsMeasure && !isPolar);
@@ -58,16 +61,17 @@ Guides::Guides(const Options &options)
 	x.labels = xOpt.labels.getValue(
 	    (!isPolar || yIsMeasure)
 	    && ((xIsMeasure && (x.axisSticks || x.interlacings))
-	        || (!xIsMeasure && !xOpt.isEmpty())));
+	        || (!xIsMeasure && !xChannel.isEmpty())));
 
 	auto stretchedPolar =
 	    isPolar && !yIsMeasure
-	    && (options.align == Base::Align::Type::stretch);
+	    && (options.getChannels().axisPropsAt(AxisId::x).align
+	        == Base::Align::Type::stretch);
 
 	y.labels = yOpt.labels.getValue(
 	    !stretchedPolar
 	    && ((yIsMeasure && (y.axisSticks || y.interlacings))
-	        || (!yIsMeasure && !yOpt.isEmpty())));
+	        || (!yIsMeasure && !yChannel.isEmpty())));
 }
 
 GuidesByAxis &Guides::at(AxisId channel)

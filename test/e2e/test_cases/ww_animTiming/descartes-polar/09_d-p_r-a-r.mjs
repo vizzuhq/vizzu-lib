@@ -27,9 +27,7 @@ const testSteps = [
 					},
 					title: 'Radial Area Chart',
 					geometry: 'area',
-					coordSystem: 'polar',
-					//            orientation: 'horizontal',
-					split: false
+					coordSystem: 'polar'
 				}
 			},
 			{

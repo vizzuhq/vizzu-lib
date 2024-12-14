@@ -43,8 +43,7 @@ const testSteps = [
 					},
 					title: 'Radial Stacked Area Chart Vertical',
 					geometry: 'area',
-					coordSystem: 'polar',
-					split: false
+					coordSystem: 'polar'
 				}
 			},
 			{

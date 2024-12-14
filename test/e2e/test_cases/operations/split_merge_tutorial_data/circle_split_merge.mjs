@@ -20,22 +20,19 @@ const testSteps = [
 		chart.animate({
 			config: {
 				channels: {
-					y: { attach: ['Categ. Parent'] }
+					y: { attach: ['Categ. Parent'], split: true }
 				},
 				title: 'Operations: Circle - Splitted.',
-				orientation: 'horizontal',
-				split: true,
-				align: 'none'
+				orientation: 'horizontal'
 			}
 		}),
 	(chart) =>
 		chart.animate({
 			config: {
 				channels: {
-					y: { detach: ['Categ. Parent'] }
+					y: { detach: ['Categ. Parent'], split: false }
 				},
-				title: 'Operations: Circle - Merged.',
-				split: false
+				title: 'Operations: Circle - Merged.'
 			}
 		})
 ]

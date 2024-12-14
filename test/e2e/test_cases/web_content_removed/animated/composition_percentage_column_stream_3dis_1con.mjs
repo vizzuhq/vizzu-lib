@@ -25,13 +25,13 @@ const testSteps = [
                     as the default value is now 110% */
 						range: {
 							max: '100%'
-						}
+						},
+						split: true
 					},
 					color: 'Country',
 					noop: null
 				},
-				title: 'Split Column Chart',
-				split: true
+				title: 'Split Column Chart'
 			}
 		}),
 
@@ -43,11 +43,11 @@ const testSteps = [
 						/* Setting back the y-axis range to the default value. */
 						range: {
 							max: 'auto'
-						}
+						},
+						split: false
 					}
 				},
-				title: 'Stacked Column Chart',
-				split: false
+				title: 'Stacked Column Chart'
 			}
 		}),
 
@@ -55,7 +55,7 @@ const testSteps = [
 		chart.animate({
 			config: {
 				title: '100% Column Chart',
-				align: 'stretch'
+				y: { align: 'stretch' }
 			}
 		})
 ]

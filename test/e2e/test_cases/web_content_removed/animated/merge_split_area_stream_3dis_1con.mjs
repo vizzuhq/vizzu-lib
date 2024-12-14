@@ -7,12 +7,11 @@ const testSteps = [
 			config: {
 				channels: {
 					x: ['Year', 'Joy factors'],
-					y: ['Value 3 (+)', 'Country'],
+					y: { set: ['Value 3 (+)', 'Country'], align: 'center' },
 					color: 'Country'
 				},
 				title: 'Stacked Streamgraph',
-				geometry: 'area',
-				align: 'center'
+				geometry: 'area'
 			}
 		}),
 
@@ -25,12 +24,12 @@ const testSteps = [
                         the y-axis as the default value is now 110% */
 						range: {
 							max: '100%'
-						}
+						},
+						split: true,
+						align: 'none'
 					}
 				},
-				title: 'Split Area Chart',
-				split: true,
-				align: 'none'
+				title: 'Split Area Chart'
 			}
 		})
 ]

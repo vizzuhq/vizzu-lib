@@ -29,10 +29,9 @@ const testSteps = [
 			data,
 			config: {
 				x: 'Revenue',
-				y: 'Format',
+				y: { set: 'Format', sort: 'byValue' },
 				color: 'Format',
 				label: 'Revenue',
-				sort: 'byValue',
 				title: 'Filter with slider'
 			}
 		})

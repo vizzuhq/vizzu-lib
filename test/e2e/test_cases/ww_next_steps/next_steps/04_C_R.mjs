@@ -15,7 +15,6 @@ const testSteps = [
 				},
 				title: 'Stacked Column',
 				geometry: 'rectangle',
-				split: false,
 				legend: 'color'
 			}
 		}),
@@ -34,7 +33,6 @@ const testSteps = [
 					},
 					title: 'Stacked Column / Aggregate(?), Sum(?), - Discrete(?)',
 					geometry: 'rectangle',
-					split: false,
 					legend: 'color'
 				}
 			},
@@ -57,8 +55,7 @@ const testSteps = [
 						label: { set: ['Value 2 (+)'] }
 					},
 					title: 'Stacked Column / Aggregate(?), Sum(?), - Discrete(?)',
-					geometry: 'rectangle',
-					split: false
+					geometry: 'rectangle'
 				}
 			},
 			{
@@ -81,7 +78,6 @@ const testSteps = [
 					},
 					title: 'Stacked Column / Drill down(?), + Discrete(?)',
 					geometry: 'rectangle',
-					split: false,
 					legend: 'color'
 				}
 			},
@@ -104,7 +100,6 @@ const testSteps = [
 				},
 				title: 'Stacked Column',
 				geometry: 'rectangle',
-				split: false,
 				legend: 'color'
 			}
 		}),
@@ -119,7 +114,6 @@ const testSteps = [
 					},
 					title: 'Bar / Aggregate(?), Sum(?)',
 					geometry: 'rectangle',
-					split: false,
 					legend: null
 				}
 			},
@@ -155,7 +149,6 @@ const testSteps = [
 					},
 					title: 'Bar / Aggregate(?), Sum(?)',
 					geometry: 'rectangle',
-					split: false,
 					legend: null
 				}
 			},
@@ -176,7 +169,6 @@ const testSteps = [
 					},
 					title: 'Bar / Aggregate(?), Sum(?)',
 					geometry: 'rectangle',
-					split: false,
 					legend: null
 				}
 			},
@@ -198,7 +190,6 @@ const testSteps = [
 				},
 				title: 'Stacked Column / Drill down(?), + Discrete(?)',
 				geometry: 'rectangle',
-				split: false,
 				legend: 'color'
 			}
 		}),
@@ -214,7 +205,6 @@ const testSteps = [
 					},
 					title: '1 Column / Total(?), Aggregate',
 					geometry: 'rectangle',
-					split: false,
 					legend: null
 				}
 			},
@@ -249,7 +239,6 @@ const testSteps = [
 					},
 					title: '2 Column / Total(?), Aggregate',
 					geometry: 'rectangle',
-					split: false,
 					legend: null
 				}
 			},
@@ -281,7 +270,6 @@ const testSteps = [
 					},
 					title: '3 Column / Total(?), Aggregate',
 					geometry: 'rectangle',
-					split: false,
 					legend: null
 				}
 			},
@@ -303,7 +291,6 @@ const testSteps = [
 					},
 					title: '1 Column / Sum(?)',
 					geometry: 'rectangle',
-					split: false,
 					legend: null
 				}
 			},
@@ -325,7 +312,6 @@ const testSteps = [
 					},
 					title: '2 Stacked Column / Drill down(?), + Discrete(?)',
 					geometry: 'rectangle',
-					split: false,
 					legend: 'color'
 				}
 			},
@@ -347,7 +333,6 @@ const testSteps = [
 					},
 					title: '3 Stacked Column / Drill down(?), + Discrete(?)',
 					geometry: 'rectangle',
-					split: false,
 					legend: null
 				}
 			},
@@ -371,7 +356,6 @@ const testSteps = [
 					},
 					title: '4 Stacked Column / Drill down(?), + Discrete(?)',
 					geometry: 'rectangle',
-					split: false,
 					legend: 'color'
 				}
 			},
@@ -392,7 +376,6 @@ const testSteps = [
 					},
 					title: 'Groupped Column / Comparison(?), Group(?)',
 					geometry: 'rectangle',
-					split: false,
 					legend: null
 				}
 			},
@@ -416,7 +399,6 @@ const testSteps = [
 					},
 					title: 'Stacked Column / Sum(?), Stack(?)',
 					geometry: 'rectangle',
-					split: false,
 					legend: 'color'
 				}
 			},
@@ -432,13 +414,13 @@ const testSteps = [
 					x: { set: 'Year' },
 					y: {
 						set: ['Country', 'Value 2 (+)'],
-						range: { min: '0%', max: '110%' }
+						range: { min: '0%', max: '110%' },
+						split: true
 					},
 					color: { set: 'Country' }
 				},
 				title: 'Splitted Column / Components(?)',
 				geometry: 'rectangle',
-				split: true,
 				legend: 'color'
 			}
 		}),
@@ -451,13 +433,13 @@ const testSteps = [
 						x: { set: 'Year' },
 						y: {
 							set: ['Country', 'Value 2 (+)'],
-							range: { min: '0%', max: '110%' }
+							range: { min: '0%', max: '110%' },
+							split: false
 						},
 						color: { set: 'Country' }
 					},
 					title: 'Stacked Column / Sum(?), Stack(?)',
 					geometry: 'rectangle',
-					split: false,
 					legend: 'color'
 				}
 			},
@@ -473,12 +455,12 @@ const testSteps = [
 					x: { set: 'Year' },
 					y: {
 						set: ['Country', 'Value 2 (+)'],
-						range: { min: '0%', max: '100%' }
+						range: { min: '0%', max: '100%' },
+						align: 'stretch'
 					},
 					color: { set: 'Country' }
 				},
-				title: 'Stacked Percentage Column / Ratio%(?)',
-				align: 'stretch'
+				title: 'Stacked Percentage Column / Ratio%(?)'
 			}
 		}),
 
@@ -490,15 +472,14 @@ const testSteps = [
 						x: { set: 'Year' },
 						y: {
 							set: ['Country', 'Value 2 (+)'],
-							range: { min: '0%', max: '110%' }
+							range: { min: '0%', max: '110%' },
+							align: 'none'
 						},
 						color: { set: 'Country' }
 					},
 					title: 'Stacked Column / Sum(?), Stack(?)',
 					geometry: 'rectangle',
-					split: false,
-					legend: 'color',
-					align: 'none'
+					legend: 'color'
 				}
 			},
 			{
@@ -517,9 +498,7 @@ const testSteps = [
 					},
 					title: 'Scatter plot / + Continuous(?)',
 					geometry: 'circle',
-					split: false,
-					legend: 'color',
-					align: 'none'
+					legend: 'color'
 				}
 			},
 			{
@@ -558,9 +537,7 @@ const testSteps = [
 					},
 					title: 'Stacked Column / - Continuous(?)',
 					geometry: 'rectangle',
-					split: false,
-					legend: 'color',
-					align: 'none'
+					legend: 'color'
 				}
 			},
 			{
@@ -596,8 +573,7 @@ const testSteps = [
 						color: { set: 'Country' }
 					},
 					title: 'Lollipop / Distribute(?)',
-					geometry: 'circle',
-					split: false
+					geometry: 'circle'
 				}
 			},
 			{
