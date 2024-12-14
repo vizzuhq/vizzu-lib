@@ -12,12 +12,14 @@ class DrawInterlacing
 public:
 	void drawGeometries(Gen::AxisId axisIndex,
 	    const Math::Range<> &filter,
+	    const Math::Range<> &otherFilter,
 	    const Geom::AffineTransform &tr,
 	    double w) const;
 	void drawTexts(Gen::AxisId axisIndex,
 	    const Math::Range<> &filter,
 	    const Geom::AffineTransform &tr,
-	    double w) const;
+	    double w,
+	    bool onlyOne) const;
 
 	const DrawAxes &parent;
 
@@ -41,7 +43,8 @@ private:
 	    const Geom::AffineTransform &tr) const;
 
 	[[nodiscard]] std::map<double, double> getInterlacingWeights(
-	    Gen::AxisId axisIndex) const;
+	    Gen::AxisId axisIndex,
+	    const Math::Range<> &filter) const;
 
 	[[nodiscard]] static Gfx::Color getCrossingInterlacingColor(
 	    const Gfx::Color &mainColor,

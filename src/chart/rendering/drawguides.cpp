@@ -16,6 +16,7 @@ namespace Vizzu::Draw
 {
 void DrawGuides::draw(Gen::AxisId axisId,
     const Math::Range<> &filter,
+    const Math::Range<> &otherFilter,
     const Geom::AffineTransform &tr,
     double w)
 {
@@ -31,6 +32,7 @@ void DrawGuides::draw(Gen::AxisId axisId,
 		for (const auto &sep : parent.getSeparators(axisId, filter))
 			drawGuide(axisId,
 			    sep.position,
+			    otherFilter,
 			    tr,
 			    baseColor
 			        * Math::FuzzyBool::And<double>(w,
@@ -43,15 +45,15 @@ void DrawGuides::draw(Gen::AxisId axisId,
 
 void DrawGuides::drawGuide(Gen::AxisId axisId,
     double val,
+    const Math::Range<> &otherFilter,
     const Geom::AffineTransform &tr,
     const Gfx::Color &color)
 {
-	auto ident = Geom::Point::Ident(orientation(axisId));
-	auto normal = Geom::Point::Ident(!orientation(axisId));
-	auto relMax = ident * val;
-
+	auto o = orientation(axisId);
 	parent.canvas.setLineColor(color);
-	auto line = tr(Geom::Line{relMax, relMax + normal});
+	auto line =
+	    tr(Geom::Line{Geom::Point::Coord(o, val, otherFilter.min),
+	        Geom::Point::Coord(o, val, otherFilter.max)});
 	if (auto &&eventTarget = Events::Targets::axisGuide(axisId);
 	    parent.rootEvents.draw.plot.axis.guide->invoke(
 	        Events::OnLineDrawEvent(*eventTarget, {line, true}))) {

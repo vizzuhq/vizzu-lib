@@ -380,7 +380,8 @@ interpolate(const SplitAxis &op0, const SplitAxis &op1, double factor)
 
 	using PartPair = SplitAxis::Parts::value_type;
 
-	auto needMerge = op0.seriesName() == op1.seriesName();
+	auto needMerge = op0.seriesName() == op1.seriesName()
+	              && op0.measure.unit == op1.measure.unit;
 
 	auto &&merger = [](double factor)
 	{
@@ -393,27 +394,20 @@ interpolate(const SplitAxis &op0, const SplitAxis &op1, double factor)
 	};
 
 	using MergerType = decltype(merger(0.0));
-	auto &&one_side =
-	    [needMerge](const MergerType &merger, bool needOther)
+	auto &&one_side = [](const MergerType &merger,
+	                      bool needOther,
+	                      const Math::Range<>::Transform &transform)
 	{
-		return
-		    [needMerge, &merger, needOther, firstSpecial = needOther](
-		        const PartPair &val) mutable -> PartPair
+		return [&merger, &transform, needOther](
+		           const PartPair &val) -> PartPair
 		{
-			if (needMerge) {
-				if (firstSpecial) {
-					firstSpecial = false;
-					return merger(val,
-					    PartPair{std::nullopt, SplitAxis::Part{}});
-				}
-
-				Math::Range<> range{0.0, 1.0};
-				if (!needOther)
-					range = {val.second.range.max,
-					    val.second.range.max};
-
-				return merger(val, {{}, {0.0, range}});
-			}
+			if (needOther)
+				return merger(val,
+				    {{},
+				        {0.0,
+				            (Math::Range<>{0, 1} * transform),
+				            (val.second.measureRange * 1.000001
+				                * transform)}});
 			return merger(val,
 			    {{},
 			        {0.0,
@@ -431,24 +425,45 @@ interpolate(const SplitAxis &op0, const SplitAxis &op1, double factor)
 	        std::identity,
 	        const std::optional<Data::SliceIndex> PartPair::*,
 	        decltype(std::weak_order),
-	        decltype(one_side(merger({}), {})),
-	        decltype(one_side(merger({}), {})),
+	        decltype(one_side(merger({}), {}, {})),
+	        decltype(one_side(merger({}), {}, {})),
 	        Alg::Merge::always,
 	        const MergerType &>
 	    // }
 	    {.projection = &PartPair::first,
-	        .transformer_1 =
-	            one_side(merger(factor), op1.parts.size() <= 1),
-	        .transformer_2 =
-	            one_side(merger(1 - factor), op0.parts.size() <= 1),
+	        .transformer_1 = one_side(merger(factor),
+	            needMerge && op1.parts.empty(),
+	            (op0.measure.range - op0.measure.range.min)
+	                / (op1.measure.range - op1.measure.range.min)),
+	        .transformer_2 = one_side(merger(1 - factor),
+	            needMerge && op0.parts.empty(),
+	            (op1.measure.range - op1.measure.range.min)
+	                / (op0.measure.range - op0.measure.range.min)),
 	        .need_merge = {needMerge},
 	        .merger = merger(factor)});
 
-	if (!needMerge && op0.parts.empty() != op1.parts.empty()
+	if (op0.parts.empty() != op1.parts.empty()
 	    && (op0.dimension.hasMarker || op0.measure.enabled.get())
-	    && (op1.dimension.hasMarker || op1.measure.enabled.get()))
-		res.parts.insert({std::nullopt,
-		    {.weight = op0.parts.empty() ? 1 - factor : factor}});
+	    && (op1.dimension.hasMarker || op1.measure.enabled.get())) {
+		if (needMerge) {
+			const auto &ref =
+			    (op0.parts.empty() ? op1.parts : op0.parts)
+			        .begin()
+			        ->second.range;
+			res.parts
+			    .insert(
+			        merger(op0.parts.empty()
+			                   ? 1 - factor
+			                   : factor)({{}, {0.0, ref}}, {{}, {}}))
+			    ->second.unique = true;
+		}
+		else
+			res.parts
+			    .insert({std::nullopt,
+			        {.weight =
+			                op0.parts.empty() ? 1 - factor : factor}})
+			    ->second.unique = true;
+	}
 
 	return res;
 }

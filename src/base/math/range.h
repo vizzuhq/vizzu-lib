@@ -46,7 +46,7 @@ template <std::floating_point T = double> struct Range
 		    && !is_lt(std::weak_order(max, value));
 	}
 
-	[[nodiscard]] T rescale(const T &value, T def = 0.5) const
+	[[nodiscard]] T rescale(const T &value, T def = T{0.5}) const
 	{
 		auto s = size();
 		return is_zero(s) ? def : (value - min) / s;
@@ -64,7 +64,7 @@ template <std::floating_point T = double> struct Range
 
 	[[nodiscard]] T normalize(const T &value) const
 	{
-		return is_zero(max) ? 0 : value / max;
+		return is_zero(max) ? T{} : value / max;
 	}
 
 	bool operator==(const Range &other) const
@@ -97,14 +97,15 @@ template <std::floating_point T = double> struct Range
 		return {min / factor, max / factor};
 	}
 
-	Range operator*(const Transform &transf)
+	[[nodiscard]] Range operator*(const Transform &transf) const
 	{
 		return *this * transf.factor + transf.shift;
 	}
 
-	Transform operator/(const Range range)
+	[[nodiscard]] Transform operator/(const Range range) const
 	{
-		auto factor = range.size() != 0 ? size() / range.size() : 0;
+		auto factor =
+		    is_zero(range.size()) ? T{} : size() / range.size();
 		auto shift = min - range.min * factor;
 		return Transform{factor, shift};
 	}

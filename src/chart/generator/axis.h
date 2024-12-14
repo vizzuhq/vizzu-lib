@@ -204,9 +204,18 @@ struct SplitAxis : Axis
 		double weight{1.0};
 		Math::Range<> range{0, 1};
 		Math::Range<> measureRange{0, 1};
+		bool unique{};
 
 		[[nodiscard]] bool operator==(
 		    const Part &other) const = default;
+
+		[[nodiscard]] consteval static auto members()
+		{
+			return std::tuple{&Part::weight,
+			    &Part::range,
+			    &Part::measureRange,
+			    std::ignore};
+		}
 	};
 
 	using Parts =

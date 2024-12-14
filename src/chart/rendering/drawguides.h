@@ -12,6 +12,7 @@ class DrawGuides
 public:
 	void draw(Gen::AxisId axisId,
 	    const Math::Range<> &filter,
+	    const Math::Range<> &otherFilter,
 	    const Geom::AffineTransform &tr,
 	    double w);
 
@@ -20,6 +21,7 @@ public:
 private:
 	void drawGuide(Gen::AxisId axisId,
 	    double val,
+	    const Math::Range<> &otherFilter,
 	    const Geom::AffineTransform &tr,
 	    const Gfx::Color &color);
 };
