@@ -162,6 +162,19 @@ void Options::simplify()
 	//	remove all dimensions, only used at the end of stack
 	auto &stackChannel = this->stackChannel();
 
+	if (auto &&meas = stackChannel.measure())
+		if (meas->getAggr() != dataframe::aggregator_type::sum)
+			return;
+
+	if (auto &&meas = this->mainAxis().measure())
+		if (meas->getAggr() != dataframe::aggregator_type::sum)
+			return;
+
+	if (auto &&leg = this->legend.get())
+		if (auto &&meas = this->channels.at(*leg).measure())
+			if (meas->getAggr() != dataframe::aggregator_type::sum)
+				return;
+
 	auto dimensions = stackChannel.dimensions();
 
 	auto copy = getChannels();

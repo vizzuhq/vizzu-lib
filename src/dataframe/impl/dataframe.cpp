@@ -411,7 +411,8 @@ void dataframe::add_record(std::span<const char *const> values) &
 	auto &s = *unsafe_get<source_type::owning>(source);
 	s.normalize_sizes();
 
-	std::vector<double> measures(s.measure_names.size());
+	std::vector measures(s.measure_names.size(),
+	    std::numeric_limits<double>::quiet_NaN());
 	std::vector<std::string_view> dimensions(
 	    s.dimension_names.size());
 	for (const auto *it = values.data(); const auto &col : *vec) {
@@ -425,8 +426,10 @@ void dataframe::add_record(std::span<const char *const> values) &
 			break;
 		case measure:
 			char *eof{};
-			measures[&unsafe_get<measure>(ser).second
-			         - s.measures.data()] = std::strtod(*it, &eof);
+			if (**it != '\0')
+				measures[&unsafe_get<measure>(ser).second
+				         - s.measures.data()] =
+				    std::strtod(*it, &eof);
 			if (eof == *it) error(error_type::nan, *it);
 			break;
 		}

@@ -6,7 +6,9 @@
 
 - Fix invalid read/write when animation is contiguous (onFinish callback calls setKeyframe).
 - Waterfall chart preset not aligned.
-- Split chart count negative values too. 
+- Split chart count negative values too.
+- Visible non-sum aggregated value jumped.
+- Add record didn't handle when a measure got an empty string.
 
 ## [0.16.0] - 2024-11-28
 
