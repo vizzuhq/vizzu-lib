@@ -185,8 +185,8 @@ private:
 		        {{Channel::makeChannel(
 		            static_cast<ChannelId>(Ix))...}},
 		        {}};
-	    }(std::make_index_sequence<
-	        std::tuple_size_v<decltype(channels)::base_array>>{})};
+	    }(std::make_index_sequence<std::size(
+	            Refl::enum_values<ChannelId>())>())};
 
 	[[nodiscard]] Geom::Orientation getAutoOrientation() const;
 	[[nodiscard]] std::optional<LegendId> getAutoLegend() const;

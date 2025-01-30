@@ -12,10 +12,11 @@
 namespace Vizzu::Gen
 {
 
-struct Channels : Refl::EnumArray<ChannelId, Channel>
+struct Channels
 {
 	using IndexSet = std::set<Data::SeriesIndex>;
-	EnumArray<AxisId, AxisChannelProperties> axisProps;
+	Refl::EnumArray<ChannelId, Channel> genProps;
+	Refl::EnumArray<AxisId, AxisChannelProperties> axisProps;
 
 	[[nodiscard]] bool anyAxisSet() const;
 	[[nodiscard]] bool isEmpty() const;
@@ -25,7 +26,15 @@ struct Channels : Refl::EnumArray<ChannelId, Channel>
 	[[nodiscard]] IndexSet getDimensions(
 	    const std::span<const ChannelId> &channelTypes) const;
 
-	using EnumArray::at;
+	[[nodiscard]] constexpr Channel &at(ChannelId value)
+	{
+		return genProps.at(value);
+	}
+
+	[[nodiscard]] constexpr const Channel &at(ChannelId value) const
+	{
+		return genProps.at(value);
+	}
 
 	template <ChannelIdLike T>
 	[[nodiscard]] const Channel &at(const T &id) const
