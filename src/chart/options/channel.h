@@ -118,9 +118,22 @@ struct ChannelSeriesList
 	bool removeSeries(const Data::SeriesIndex &index);
 };
 
-class Channel
+struct AxisChannelProperties
 {
-public:
+	Base::AutoBool axis{};
+	Base::AutoBool labels{};
+	Base::AutoBool ticks{};
+	Base::AutoBool interlacing{};
+	Base::AutoBool guides{};
+	Base::AutoBool markerGuides{};
+	Base::AutoParam<double> step{};
+
+	[[nodiscard]] bool operator==(
+	    const AxisChannelProperties &) const = default;
+};
+
+struct Channel
+{
 	using OptionalIndex = ChannelSeriesList::OptionalIndex;
 	using IndexSet = std::set<Data::SeriesIndex>;
 	using DimensionIndices = ChannelSeriesList::DimensionIndices;
@@ -161,13 +174,6 @@ public:
 	ChannelRange range{};
 	Base::AutoParam<std::size_t> labelLevel{};
 	Base::AutoParam<std::string, true> title{};
-	Base::AutoBool axis{};
-	Base::AutoBool labels{};
-	Base::AutoBool ticks{};
-	Base::AutoBool guides{};
-	Base::AutoBool markerGuides{};
-	Base::AutoBool interlacing{};
-	Base::AutoParam<double> step{};
 };
 
 [[nodiscard]] constexpr ChannelId operator+(const AxisId &axis)

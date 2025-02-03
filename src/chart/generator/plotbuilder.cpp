@@ -358,7 +358,7 @@ void PlotBuilder::calcLegendAndLabel(const Data::DataTable &dataTable)
 				calcLegend.measure = {std::get<0>(stats.at(type)),
 				    meas->getColIndex(),
 				    dataTable.getUnit(meas->getColIndex()),
-				    scale.step.getValue()};
+				    {1}};
 			}
 		}
 		else if (!scale.isEmpty()) {
@@ -409,6 +409,9 @@ void PlotBuilder::calcAxis(const Data::DataTable &dataTable,
 	const auto &scale = plot->getOptions()->getChannels().at(type);
 	if (scale.isEmpty()) return;
 
+	auto &axisProps =
+	    plot->getOptions()->getChannels().axisPropsAt(type);
+
 	auto &axis = plot->axises.at(type);
 
 	auto isAutoTitle = scale.title.isAuto();
@@ -424,12 +427,12 @@ void PlotBuilder::calcAxis(const Data::DataTable &dataTable,
 			axis.measure = {{0, 100},
 			    meas.getColIndex(),
 			    "%",
-			    scale.step.getValue()};
+			    axisProps.step.getValue()};
 		else
 			axis.measure = {std::get<0>(stats.at(type)),
 			    meas.getColIndex(),
 			    dataTable.getUnit(meas.getColIndex()),
-			    scale.step.getValue()};
+			    axisProps.step.getValue()};
 	}
 	else {
 		for (auto merge =
@@ -454,7 +457,7 @@ void PlotBuilder::calcAxis(const Data::DataTable &dataTable,
 				    merge);
 		}
 		if (auto &&series = plot->getOptions()->labelSeries(type);
-		    !axis.dimension.setLabels(scale.step.getValue(1.0))
+		    !axis.dimension.setLabels(axisProps.step.getValue(1.0))
 		    && series && isAutoTitle)
 			axis.title = series.value().getColIndex();
 		for (std::uint32_t pos{};
