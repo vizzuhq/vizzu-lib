@@ -448,6 +448,7 @@ void PlotBuilder::calcLegendAndLabel(const Data::DataTable &dataTable)
 					        true,
 					        merge))
 						++count;
+					calcLegend.dimension.hasMarker = true;
 				}
 
 			if (auto &&series = plot->getOptions()->labelSeries(type);
@@ -470,7 +471,6 @@ void PlotBuilder::calcAxis(const Data::DataTable &dataTable,
     AxisId type)
 {
 	const auto &scale = plot->getOptions()->getChannels().at(type);
-	if (scale.isEmpty()) return;
 
 	auto &axisProps =
 	    plot->getOptions()->getChannels().axisPropsAt(type);
@@ -517,6 +517,8 @@ void PlotBuilder::calcAxis(const Data::DataTable &dataTable,
 				    {},
 				    false,
 				    merge);
+
+			axis.dimension.hasMarker = true;
 		}
 		if (auto &&series = plot->getOptions()->labelSeries(type);
 		    !axis.dimension.setLabels(axisProps.step.getValue(1.0))

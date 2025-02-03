@@ -57,10 +57,12 @@ void DrawAxes::drawGeometries() const
 
 			DrawInterlacing{*this}.drawGeometries(Gen::AxisId::y,
 			    ySplit.measureRange,
+			    xSplit.measureRange,
 			    tr,
 			    weight);
 			DrawInterlacing{*this}.drawGeometries(Gen::AxisId::x,
 			    xSplit.measureRange,
+			    ySplit.measureRange,
 			    tr,
 			    weight);
 
@@ -79,10 +81,12 @@ void DrawAxes::drawGeometries() const
 
 			DrawGuides{*this}.draw(Gen::AxisId::x,
 			    xSplit.measureRange,
+			    ySplit.measureRange,
 			    tr,
 			    weight);
 			DrawGuides{*this}.draw(Gen::AxisId::y,
 			    ySplit.measureRange,
+			    xSplit.measureRange,
 			    tr,
 			    weight);
 		}
@@ -90,30 +94,34 @@ void DrawAxes::drawGeometries() const
 
 void DrawAxes::drawLabels() const
 {
-	for (auto &&ySplit : std::views::values(splits[Gen::AxisId::y])) {
+	auto &&yValues = std::views::values(splits[Gen::AxisId::y]);
+	for (auto &&ySplit : yValues) {
 		const Geom::AffineTransform tr{1,
 		    0.0,
-		    0,
+		    0.0,
 		    0.0,
 		    ySplit.range.size(),
 		    ySplit.range.min};
 		DrawInterlacing{*this}.drawTexts(Gen::AxisId::y,
 		    ySplit.measureRange,
 		    tr,
-		    ySplit.weight);
+		    ySplit.weight,
+		    yValues.size() > 1 && !ySplit.unique);
 	}
 
-	for (auto &&xSplit : std::views::values(splits[Gen::AxisId::x])) {
+	auto &&xValues = std::views::values(splits[Gen::AxisId::x]);
+	for (auto &&xSplit : xValues) {
 		const Geom::AffineTransform tr{xSplit.range.size(),
 		    0.0,
 		    xSplit.range.min,
 		    0.0,
-		    1,
-		    0};
+		    1.0,
+		    0.0};
 		DrawInterlacing{*this}.drawTexts(Gen::AxisId::x,
 		    xSplit.measureRange,
 		    tr,
-		    xSplit.weight);
+		    xSplit.weight,
+		    xValues.size() > 1 && !xSplit.unique);
 	}
 
 	drawDimensionLabels(Gen::AxisId::x);
