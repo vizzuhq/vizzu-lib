@@ -124,15 +124,12 @@ definitions:
                 type: boolean
             align:
                 description: |
-                    Sets the alignment of the markers with relation to the main-axis only depending
-                    on where the measure is. In case both axes have measures on them, this is determined 
-                    by the `orientation` of the chart. On sub-axis this settings has no effect.
+                    Sets the alignment of the markers along the axis.
                 type: string
                 enum: [none, center, stretch]
             split:
                 description: |
-                    If set to true, markers will be split by the dimension(s) along the main-axis.
-                    On sub-axis this settings has no effect.
+                    If set to true, markers will be split by the dimension(s) along the axis.
                 type: boolean
 
     Channels:
