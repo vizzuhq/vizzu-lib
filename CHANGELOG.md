@@ -9,6 +9,7 @@
 - Split chart count negative values too.
 - Split chart handled when same dimension on main and sub axis.
 - Add record didn't handle when a measure got an empty string.
+- Fix no fontparent set bug.
 
 ### Changed
 

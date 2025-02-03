@@ -71,6 +71,7 @@ void Keyframe::prepareActual()
 	prepareActualMarkersInfo();
 
 	actual = std::make_shared<Gen::Plot>(*source);
+	actual->getStyle().setup();
 	actual->detachOptions();
 }
 
@@ -92,6 +93,7 @@ void Keyframe::copyTarget()
 	if (!targetCopy) {
 		targetCopy = target;
 		target = std::make_shared<Gen::Plot>(*targetCopy);
+		target->getStyle().setup();
 		target->detachOptions();
 	}
 }

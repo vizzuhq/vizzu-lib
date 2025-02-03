@@ -27,7 +27,12 @@ class Sheet : public Style::Sheet<Chart>
 {
 public:
 	using Base = Style::Sheet<Chart>;
-	using Base::Sheet;
+
+	Sheet(Chart &&defaultParams, Chart &activeParams) :
+	    Base(std::move(defaultParams), activeParams)
+	{
+		this->defaultParams.setup();
+	}
 
 	Chart getFullParams(const Gen::PlotOptionsPtr &options,
 	    const Geom::Size &size);

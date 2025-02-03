@@ -58,7 +58,9 @@ Plot::Plot(PlotOptionsPtr opts, Styles::Chart style) :
     guides(*opts),
     options(std::move(opts)),
     style(std::move(style))
-{}
+{
+	this->style.setup();
+}
 
 void Plot::detachOptions()
 {

@@ -401,7 +401,7 @@ struct Chart : Padding, Box, Font, ChartParams
 	static const Gfx::ColorPalette &getDefaultColorPalette();
 	static Chart def();
 
-	void setup();
+	void setup() &;
 };
 
 }
