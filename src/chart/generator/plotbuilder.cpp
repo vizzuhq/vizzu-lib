@@ -18,6 +18,7 @@
 #include "base/math/floating.h"
 #include "base/math/range.h"
 #include "base/refl/auto_enum.h"
+#include "base/text/naturalcmp.h"
 #include "chart/main/style.h"
 #include "chart/options/align.h"
 #include "chart/options/channel.h"
@@ -143,19 +144,40 @@ std::vector<PlotBuilder::BucketInfo> PlotBuilder::sortedBuckets(
 			    {},
 			    &BucketInfo::index);
 			if (it == sorted.end() || it->index != idx.itemId)
-				it = sorted.emplace(it, idx.itemId, 0.0);
+				it = sorted.emplace(it,
+				    idx.itemId,
+				    0.0,
+				    (marker.*buckets.marker_id_get).label
+				        ? &(marker.*buckets.marker_id_get)
+				               .label->value
+				        : nullptr);
 
 			it->size += marker.size.getCoord(
 			    !plot->getOptions()->getOrientation());
 		}
 
-	if (plot->getOptions()->getChannels().axisPropsAt(axisIndex).sort
-	    == Sort::byValue)
+	switch (plot->getOptions()
+	            ->getChannels()
+	            .axisPropsAt(axisIndex)
+	            .sort) {
+	case Sort::byValue:
 		std::ranges::stable_sort(sorted,
 		    [](const BucketInfo &lhs, const BucketInfo &rhs)
 		    {
 			    return Math::Floating::less(lhs.size, rhs.size);
 		    });
+		break;
+	case Sort::byLabel:
+		std::ranges::stable_sort(sorted,
+		    [](const BucketInfo &lhs, const BucketInfo &rhs)
+		    {
+			    if (rhs.label == nullptr || lhs.label == nullptr)
+				    return lhs.label != nullptr;
+			    return Text::NaturalCmp{}(*lhs.label, *rhs.label);
+		    });
+		break;
+	default: break;
+	}
 
 	if (plot->getOptions()
 	        ->getChannels()
@@ -456,10 +478,10 @@ void PlotBuilder::calcAxis(const Data::DataTable &dataTable,
 	}
 	else {
 		for (auto merge =
-		         plot->getOptions()->dimLabelIndex(+type) == 0
-		         && (type != plot->getOptions()->mainAxisType()
-		             || axisProps.sort != Sort::byValue
-		             || scale.dimensions().size() == 1);
+		         axisProps.sort == Sort::byLabel
+		         || (plot->getOptions()->dimLabelIndex(+type) == 0
+		             && (axisProps.sort == Sort::none
+		                 || scale.dimensions().size() == 1));
 		     const auto &marker : plot->markers) {
 			if (!marker.enabled) continue;
 
