@@ -293,7 +293,9 @@ std::optional<LegendId> Options::getAutoLegend() const
 	return std::nullopt;
 }
 
-void Options::setAutoRange(bool hPositive, bool vPositive)
+void Options::setAutoRange(bool hPositive,
+    bool vPositive,
+    bool isSplit)
 {
 	auto &v = getChannels().at(AxisId::y);
 	auto &h = getChannels().at(AxisId::x);
@@ -302,7 +304,7 @@ void Options::setAutoRange(bool hPositive, bool vPositive)
 	auto &&cart = coordSystem.get() == CoordSystem::cartesian;
 	auto &&nrect = geometry != ShapeType::rectangle;
 
-	if (cart && hHasMeasure && (!vHasMeasure || nrect))
+	if ((cart || isSplit) && hHasMeasure && (!vHasMeasure || nrect))
 		setMeasureRange(h, hPositive);
 	else if (!cart && hHasMeasure && !vHasMeasure && v.hasDimension())
 		setRange(h, 0.0_perc, 133.0_perc);

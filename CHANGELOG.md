@@ -12,6 +12,12 @@
 ### Changed
 
 - Channels 'set' rewrite doesn't clear AxisChannel properties.
+- Split charts 
+  - axis line multiplication.
+  - axis labels multiplication.
+  - axis range interpretation differently for all split part.
+  - negative values are handled correctly.
+  - align center / stretch fix.
 
 ### Added
 

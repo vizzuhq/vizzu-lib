@@ -15,6 +15,7 @@
 namespace Vizzu::Draw
 {
 void DrawGuides::draw(Gen::AxisId axisId,
+    const Math::Range<> &filter,
     const Geom::AffineTransform &tr,
     double w)
 {
@@ -27,7 +28,7 @@ void DrawGuides::draw(Gen::AxisId axisId,
 	    && parent.plot->guides.at(axisId).axisGuides != false) {
 		parent.canvas.setLineWidth(*guideStyle.lineWidth);
 
-		for (const auto &sep : parent.getSeparators(axisId))
+		for (const auto &sep : parent.getSeparators(axisId, filter))
 			drawGuide(axisId,
 			    sep.position,
 			    tr,

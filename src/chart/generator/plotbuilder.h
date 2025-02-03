@@ -27,11 +27,19 @@ private:
 	PlotPtr plot;
 	ChannelStats stats;
 
-	struct BucketInfo
+	struct BucketSortInfo
 	{
 		std::size_t index{};
 		double size{};
 		const std::string *label{};
+	};
+
+	struct BucketSeparationInfo
+	{
+		std::optional<Data::SliceIndex> index{};
+		bool enabled{};
+		Math::Range<> containsValues{0.0, 0.0};
+		Math::Range<> atRange{0.0, 0.0};
 	};
 
 	void initDimensionTrackers();
@@ -47,13 +55,13 @@ private:
 	void calcLegendAndLabel(const Data::DataTable &dataTable);
 	void calcAxis(const Data::DataTable &dataTable, AxisId type);
 	void addAlignment(const Buckets &buckets, AxisId axisIndex) const;
-	[[nodiscard]] std::vector<Math::Range<>> addSeparation(
+	[[nodiscard]] std::vector<BucketSeparationInfo> addSeparation(
 	    const Buckets &buckets,
 	    AxisId axisIndex,
-	    const std::size_t &otherBucketSize) const;
+	    const std::size_t &otherBucketSize);
 	void normalizeSizes();
 	void normalizeColors();
-	[[nodiscard]] std::vector<BucketInfo>
+	[[nodiscard]] std::vector<BucketSortInfo>
 	sortedBuckets(const Buckets &buckets, AxisId axisIndex) const;
 	void addSpecLayout(Buckets &buckets);
 	void addAxisLayout(Buckets &buckets,

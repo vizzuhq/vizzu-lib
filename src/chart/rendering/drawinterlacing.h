@@ -11,9 +11,11 @@ class DrawInterlacing
 {
 public:
 	void drawGeometries(Gen::AxisId axisIndex,
+	    const Math::Range<> &filter,
 	    const Geom::AffineTransform &tr,
 	    double w) const;
 	void drawTexts(Gen::AxisId axisIndex,
+	    const Math::Range<> &filter,
 	    const Geom::AffineTransform &tr,
 	    double w) const;
 

@@ -146,11 +146,11 @@ Buckets PlotBuilder::generateMarkers(std::size_t &mainBucketSize,
 	return Buckets{plot->markers};
 }
 
-std::vector<PlotBuilder::BucketInfo> PlotBuilder::sortedBuckets(
+std::vector<PlotBuilder::BucketSortInfo> PlotBuilder::sortedBuckets(
     const Buckets &buckets,
     AxisId axisIndex) const
 {
-	std::vector<BucketInfo> sorted;
+	std::vector<BucketSortInfo> sorted;
 
 	for (auto &&bucket : buckets)
 		for (auto &&[marker, idx] : bucket) {
@@ -160,7 +160,7 @@ std::vector<PlotBuilder::BucketInfo> PlotBuilder::sortedBuckets(
 			auto it = std::ranges::lower_bound(sorted,
 			    idx.itemId,
 			    {},
-			    &BucketInfo::index);
+			    &BucketSortInfo::index);
 			if (it == sorted.end() || it->index != idx.itemId)
 				it = sorted.emplace(it,
 				    idx.itemId,
@@ -180,7 +180,7 @@ std::vector<PlotBuilder::BucketInfo> PlotBuilder::sortedBuckets(
 	            .sort) {
 	case Sort::byValue:
 		std::ranges::stable_sort(sorted,
-		    [](const BucketInfo &lhs, const BucketInfo &rhs)
+		    [](const BucketSortInfo &lhs, const BucketSortInfo &rhs)
 		    {
 			    return Math::Floating::less(lhs.size, rhs.size);
 		    });
@@ -372,9 +372,11 @@ void PlotBuilder::calcAxises(const Data::DataTable &dataTable,
 	subBoundRect =
 	    plot->getOptions()->subAxis().range.getRange(subBoundRect);
 
-	for (auto &&[axis, ranges, boundSize] :
-	    {std::tuple{mainAxis, &mainRanges, mainBoundRect},
-	        {!mainAxis, &subRanges, subBoundRect}}) {
+	for (auto &&[axis, needRanges, boundSize] :
+	    {std::tuple{mainAxis, mainRanges.empty(), mainBoundRect},
+	        {!mainAxis, subRanges.empty(), subBoundRect}}) {
+		if (!needRanges) continue;
+
 		for (auto &marker : plot->markers) {
 			auto &&markerSize = marker.getSizeBy(axis);
 			if (!boundSize.positive().intersects(
@@ -385,12 +387,20 @@ void PlotBuilder::calcAxises(const Data::DataTable &dataTable,
 			    {boundSize.rescale(markerSize.min, 0.0),
 			        boundSize.rescale(markerSize.max, 0.0)});
 		}
-
 		stats.setIfRange(axis, boundSize);
 	}
 
-	for (const AxisId &ch : {AxisId::x, AxisId::y})
+	for (auto &&[ch, ranges] :
+	    {std::pair{mainAxis, &mainRanges}, {!mainAxis, &subRanges}}) {
 		calcAxis(dataTable, ch);
+		if (ranges->empty()) continue;
+
+		auto &axis = plot->axises.at(ch);
+		for (auto &&range : *ranges)
+			if (range.enabled)
+				axis.parts.insert({range.index,
+				    {1.0, range.atRange, range.containsValues}});
+	}
 }
 
 void PlotBuilder::calcLegendAndLabel(const Data::DataTable &dataTable)
@@ -534,10 +544,9 @@ void PlotBuilder::addAlignment(const Buckets &buckets,
 	if (axisProps.align == Base::Align::Type::none) return;
 
 	if (axisProps.align == Base::Align::Type::center) {
-		auto &&halfSize = axisRange.size() / 2.0;
-		if (!Math::Floating::is_zero(halfSize))
-			axisRange = {axisRange.min - halfSize,
-			    axisRange.max - halfSize};
+		auto &&halfSize = axisRange.middle();
+		axisRange = {axisRange.min - halfSize,
+		    axisRange.max - halfSize};
 	}
 
 	const Base::Align align{axisProps.align, {0.0, 1.0}};
@@ -556,10 +565,10 @@ void PlotBuilder::addAlignment(const Buckets &buckets,
 	}
 }
 
-std::vector<Math::Range<>> PlotBuilder::addSeparation(
-    const Buckets &buckets,
+std::vector<PlotBuilder::BucketSeparationInfo>
+PlotBuilder::addSeparation(const Buckets &buckets,
     AxisId axisIndex,
-    const std::size_t &otherBucketSize) const
+    const std::size_t &otherBucketSize)
 {
 	if (!plot->getOptions()->isSplit(axisIndex)) return {};
 
@@ -567,41 +576,101 @@ std::vector<Math::Range<>> PlotBuilder::addSeparation(
 	    plot->getOptions()->getChannels().axisPropsAt(axisIndex);
 	auto align = axisProps.align;
 
-	std::vector ranges{otherBucketSize, Math::Range<>{{}, {}}};
-	std::vector<bool> anyEnabled(otherBucketSize);
+	std::vector<BucketSeparationInfo> res(otherBucketSize);
 
 	for (auto &&bucket : buckets)
 		for (auto &&[marker, idx] : bucket) {
 			if (!marker.enabled) continue;
-			auto i = idx.itemId;
-			ranges[i].include(marker.getSizeBy(axisIndex).size());
-			anyEnabled[i] = true;
+			auto &resItem = res[idx.itemId];
+			if (!resItem.index && idx.label)
+				resItem.index = idx.label;
+
+			resItem.containsValues.include(
+			    marker.getSizeBy(axisIndex).size());
+			resItem.enabled = true;
 		}
 
 	auto max = Math::Range<>{{}, {}};
-	for (auto i = 0U; i < ranges.size(); ++i)
-		if (anyEnabled[i]) max = max + ranges[i];
+	auto maxRange = Math::Range<>{{}, {}};
+	for (auto &resItem : res) {
+		if (!resItem.enabled) continue;
+
+		auto onlyPositive = !std::signbit(resItem.containsValues.min);
+		plot->getOptions()->setAutoRange(onlyPositive,
+		    onlyPositive,
+		    true);
+
+		resItem.containsValues =
+		    plot->getOptions()
+		        ->getChannels()
+		        .at(axisIndex)
+		        .range.getRange(resItem.containsValues);
+
+		max = max + resItem.containsValues;
+		maxRange.include(resItem.containsValues);
+	}
 
 	auto splitSpace =
 	    plot->getStyle().plot.getAxis(axisIndex).spacing->get(
 	        max.size(),
 	        plot->getStyle().calculatedSize());
 
-	auto onMax = ranges[0].max;
-	ranges[0] = ranges[0] - ranges[0].min;
-	for (auto i = 1U; i < ranges.size(); ++i) {
-		onMax += anyEnabled[i - 1] ? splitSpace : 0;
-		ranges[i] = ranges[i] + onMax - ranges[i].min * 2;
-		onMax += ranges[i].size();
+	double onMax = 0.0;
+	bool first = true;
+	for (auto &&resItem : res) {
+		if (!resItem.enabled) continue;
+		if (first)
+			first = false;
+		else
+			onMax += splitSpace;
+		resItem.atRange = resItem.containsValues + onMax
+		                - resItem.containsValues.min;
+		onMax += resItem.containsValues.size();
 	}
 
-	for (auto &&bucket : buckets)
-		for (auto &&[marker, idx] : bucket)
-			marker.setSizeBy(axisIndex,
-			    Base::Align{align, ranges[idx.itemId]}.getAligned(
-			        marker.getSizeBy(axisIndex)));
+	if (plot->getOptions()->coordSystem == CoordSystem::polar
+	    && axisIndex == AxisId::x && !first)
+		onMax += splitSpace;
 
-	return ranges;
+	for (auto &&bucket : buckets)
+		for (auto &&[marker, idx] : bucket) {
+			auto buc = res[idx.itemId];
+			auto markerSize = marker.getSizeBy(axisIndex);
+
+			marker.setSizeBy(axisIndex,
+			    (Base::Align{align,
+			         buc.atRange - buc.atRange.min
+			             + buc.containsValues.min}
+			            .getAligned(markerSize - markerSize.min)
+			        + buc.atRange.min - buc.containsValues.min)
+			        / onMax);
+		}
+
+	auto alignedRange = maxRange;
+	if (align == Base::Align::Type::center) {
+		auto &&halfSize = maxRange.middle();
+		alignedRange = {maxRange.min - halfSize,
+		    maxRange.max - halfSize};
+	}
+
+	for (auto &resItem : res) {
+		if (!resItem.enabled) continue;
+
+		auto aligned =
+		    Base::Align{align, resItem.containsValues}.getAligned(
+		        maxRange);
+
+		resItem.atRange = (aligned + resItem.atRange.min
+		                      - resItem.containsValues.min)
+		                / onMax;
+
+		resItem.containsValues = {
+		    aligned.rescale(resItem.containsValues.min),
+		    aligned.rescale(resItem.containsValues.max)};
+	}
+
+	stats.setIfRange(axisIndex, alignedRange);
+	return res;
 }
 
 void PlotBuilder::normalizeSizes()

@@ -168,7 +168,9 @@ public:
 	static MarkerInfoId generateMarkerInfoId();
 
 	void setAutoParameters();
-	void setAutoRange(bool hPositive, bool vPositive);
+	void setAutoRange(bool hPositive,
+	    bool vPositive,
+	    bool isSplit = false);
 
 	[[nodiscard]] bool labelsShownFor(
 	    const Data::SeriesIndex &series) const;
