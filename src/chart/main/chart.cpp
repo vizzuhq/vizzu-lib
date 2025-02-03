@@ -29,6 +29,7 @@ Chart::Chart() :
         *events.animation.begin,
         *events.animation.complete)
 {
+	computedStyles.setup();
 	animator.onDraw.attach(
 	    [this](const Gen::PlotPtr &actPlot)
 	    {
@@ -72,8 +73,9 @@ void Chart::animate(Anim::Animation::OnComplete &&onComplete)
 		    }
 		    else {
 			    *nextOptions = prevOptions;
-			    actStyles = prevStyles;
+			    setStyles(prevStyles);
 			    computedStyles = plot->getStyle();
+			    computedStyles.setup();
 		    }
 	    });
 
@@ -132,6 +134,7 @@ Gen::PlotPtr Chart::plot(const Gen::PlotOptionsPtr &options)
 	Styles::Sheet::setAfterStyles(*res, layout.boundary.size);
 
 	computedStyles = res->getStyle();
+	computedStyles.setup();
 
 	return res;
 }

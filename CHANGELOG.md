@@ -9,6 +9,7 @@
 - Split chart count negative values too.
 - Visible non-sum aggregated value jumped.
 - Add record didn't handle when a measure got an empty string.
+- Fix no fontparent set bug.
 
 ## [0.16.0] - 2024-11-28
 
