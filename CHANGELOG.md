@@ -7,6 +7,7 @@
 - Fix invalid read/write when animation is contiguous (onFinish callback calls setKeyframe).
 - Waterfall chart preset not aligned.
 - Split chart count negative values too.
+- Split chart when same dimension on main and sub axis.
 
 ### Changed
 

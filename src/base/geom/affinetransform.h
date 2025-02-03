@@ -28,7 +28,7 @@ public:
 	    double m10,
 	    double m11,
 	    double m12);
-	explicit AffineTransform(Geom::Point offset,
+	explicit AffineTransform(Point offset,
 	    double scale = 1.0,
 	    double angle = 0.0);
 
@@ -36,7 +36,7 @@ public:
 
 	[[nodiscard]] AffineTransform inverse() const;
 	[[nodiscard]] bool transforms() const;
-	void shift(const Geom::Point &offset);
+	void shift(const Point &offset);
 
 	friend AffineTransform operator*(AffineTransform lhs,
 	    const AffineTransform &rhs)
@@ -46,9 +46,10 @@ public:
 	AffineTransform &operator*=(const AffineTransform &other);
 	bool operator==(const AffineTransform &other) const = default;
 
-	Geom::Point operator()(const Geom::Point &original) const;
-	Geom::Line operator()(const Geom::Line &original) const;
-	Geom::Polygon operator()(const Geom::Polygon &original) const;
+	Point operator()(const Point &original) const;
+	Line operator()(const Line &original) const;
+	Polygon operator()(const Polygon &original) const;
+	Size operator()(const Size &original) const;
 
 	[[nodiscard]] std::string toJSON() const;
 

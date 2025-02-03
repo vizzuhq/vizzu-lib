@@ -4,7 +4,6 @@
 #include <cmath>
 #include <cstdint>
 #include <functional>
-#include <iterator>
 #include <limits>
 #include <optional>
 #include <string>
@@ -12,6 +11,7 @@
 #include <tuple>
 #include <utility>
 
+#include "base/alg/union_foreach.h"
 #include "base/anim/interpolated.h"
 #include "base/geom/point.h"
 #include "base/math/floating.h"
@@ -295,52 +295,32 @@ DimensionAxis interpolate(const DimensionAxis &op0,
 	DimensionAxis res;
 
 	res.factor = factor;
-
-	for (auto first1 = op0.values.begin(),
-	          first2 = op1.values.begin(),
-	          last1 = op0.values.end(),
-	          last2 = op1.values.end();
-	     first1 != last1 || first2 != last2;)
-		if (first2 == last2
-		    || (first1 != last1 && first1->first < first2->first)) {
-			res.values.emplace(std::piecewise_construct,
-			    std::tuple{first1->first},
-			    std::forward_as_tuple(first1->second, true));
-			++first1;
-		}
-		else if (first1 == last1 || first2->first < first1->first) {
-			res.values.emplace(std::piecewise_construct,
-			    std::tuple{first2->first},
-			    std::forward_as_tuple(first2->second, false));
-			++first2;
-		}
-		else {
-			auto key = first1->first;
-			auto to1 = op0.values.upper_bound(key);
-			auto to2 = op1.values.upper_bound(key);
-
-			while (first1 != to1 && first2 != to2)
-				res.values.emplace(key,
-				    interpolate(first1++->second,
-				        first2++->second,
-				        factor));
-
-			for (const auto &latest = std::prev(to2)->second;
-			     first1 != to1;
-			     ++first1)
-				res.values
-				    .emplace(key,
-				        interpolate(first1->second, latest, factor))
-				    ->second.endPos.makeAuto();
-
-			for (const auto &latest = std::prev(to1)->second;
-			     first2 != to2;
-			     ++first2)
-				res.values
-				    .emplace(key,
-				        interpolate(latest, first2->second, factor))
-				    ->second.startPos.makeAuto();
-		}
+	using Ptr = DimensionAxis::Values::const_pointer;
+	Alg::union_foreach(
+	    op0.values,
+	    op1.values,
+	    [&res](Ptr v1, Ptr v2, Alg::union_call_t type)
+	    {
+		    if (!v2)
+			    res.values.emplace(std::piecewise_construct,
+			        std::tuple{v1->first},
+			        std::forward_as_tuple(v1->second, true));
+		    else if (!v1)
+			    res.values.emplace(std::piecewise_construct,
+			        std::tuple{v2->first},
+			        std::forward_as_tuple(v2->second, false));
+		    else if (auto &&val = res.values
+		                              .emplace(v1->first,
+		                                  interpolate(v1->second,
+		                                      v2->second,
+		                                      res.factor))
+		                              ->second;
+		             type == Alg::union_call_t::only_left)
+			    val.endPos.makeAuto();
+		    else if (type == Alg::union_call_t::only_right)
+			    val.startPos.makeAuto();
+	    },
+	    res.values.value_comp());
 
 	return res;
 }
@@ -356,6 +336,94 @@ DimensionAxis::Item interpolate(const DimensionAxis::Item &op0,
 	res.range = interpolate(op0.range, op1.range, factor);
 	res.colorBase = interpolate(op0.colorBase, op1.colorBase, factor);
 	res.label = interpolate(op0.label, op1.label, factor);
+	return res;
+}
+
+SplitAxis
+interpolate(const SplitAxis &op0, const SplitAxis &op1, double factor)
+{
+	using Math::Niebloid::interpolate;
+	SplitAxis res;
+	static_cast<Axis &>(res) =
+	    interpolate(static_cast<const Axis &>(op0),
+	        static_cast<const Axis &>(op1),
+	        factor);
+	if (!op0.parts.empty() && !op1.parts.empty()) {
+		using PartPair = const decltype(res.parts)::value_type;
+		Alg::union_foreach(
+		    op0.parts,
+		    op1.parts,
+		    [&res, &factor](PartPair *lhs,
+		        PartPair *rhs,
+		        Alg::union_call_t type)
+		    {
+			    switch (type) {
+			    case Alg::union_call_t::only_left: {
+				    auto from = lhs->second.range.min;
+				    res.parts[lhs->first] = {
+				        .weight = interpolate(lhs->second.weight,
+				            0.0,
+				            factor),
+				        .range = interpolate(lhs->second.range,
+				            Math::Range<>{from, from},
+				            factor)};
+				    break;
+			    }
+			    case Alg::union_call_t::only_right: {
+				    auto from = rhs->second.range.min;
+				    res.parts[rhs->first] = {
+				        .weight = interpolate(0.0,
+				            rhs->second.weight,
+				            factor),
+				        .range =
+				            interpolate(Math::Range<>{from, from},
+				                rhs->second.range,
+				                factor)};
+				    break;
+			    }
+			    default:
+			    case Alg::union_call_t::both: {
+				    res.parts[lhs->first] =
+				        interpolate(lhs->second, rhs->second, factor);
+				    break;
+			    }
+			    }
+		    },
+		    res.parts.value_comp());
+	}
+	else if (!op0.parts.empty()) {
+		auto begin = op0.parts.begin();
+		res.parts[begin->first] = {
+		    .weight = interpolate(begin->second.weight, 1.0, factor),
+		    .range = interpolate(begin->second.range,
+		        Math::Range<>{0, 1},
+		        factor)};
+		while (++begin != op0.parts.end()) {
+			res.parts[begin->first] = {
+			    .weight =
+			        interpolate(begin->second.weight, 0.0, factor),
+			    .range = interpolate(begin->second.range,
+			        Math::Range<>{0, 1},
+			        factor)};
+		}
+	}
+	else if (!op1.parts.empty()) {
+		auto begin = op1.parts.begin();
+		res.parts[begin->first] = {
+		    .weight = interpolate(1.0, begin->second.weight, factor),
+		    .range = interpolate(Math::Range<>{0, 1},
+		        begin->second.range,
+		        factor)};
+		while (++begin != op1.parts.end()) {
+			res.parts[begin->first] = {
+			    .weight =
+			        interpolate(0.0, begin->second.weight, factor),
+			    .range = interpolate(Math::Range<>{0, 1},
+			        begin->second.range,
+			        factor)};
+		}
+	}
+
 	return res;
 }
 

@@ -4,6 +4,8 @@
 #include <initializer_list>
 #include <vector>
 
+#include "base/alg/union_foreach.h"
+
 #include "interpolation.h"
 #include "range.h"
 
@@ -40,28 +42,33 @@ template <typename T, class CRTP> struct SegmentedFunction
 	    const CRTP &other)
 	{
 		CRTP res;
-		auto &stops = self.stops;
 
-		for (auto it0 = stops.begin(), it1 = other.stops.begin();
-		     it0 != stops.end() || it1 != other.stops.end();) {
-			if (it1 == other.stops.end()
-			    || (it0 != stops.end() && it0->pos < it1->pos)) {
-				res.stops.emplace_back(it0->pos,
-				    it0->value + other(it0->pos));
-				++it0;
-			}
-			else if (it0 == stops.end() || it1->pos < it0->pos) {
-				res.stops.emplace_back(it1->pos,
-				    it1->value + self(it1->pos));
-				++it1;
-			}
-			else {
-				res.stops.emplace_back(it0->pos,
-				    it0->value + it1->value);
-				++it1;
-				++it0;
-			}
-		}
+		Alg::union_foreach(
+		    self.stops,
+		    other.stops,
+		    [&](const Stop *lhs,
+		        const Stop *rhs,
+		        Alg::union_call_t type)
+		    {
+			    switch (type) {
+			    case Alg::union_call_t::only_left:
+				    res.stops.emplace_back(lhs->pos,
+				        lhs->value + other(lhs->pos));
+				    break;
+			    case Alg::union_call_t::only_right:
+				    res.stops.emplace_back(rhs->pos,
+				        rhs->value + self(rhs->pos));
+				    break;
+			    case Alg::union_call_t::both:
+			    default:
+				    res.stops.emplace_back(lhs->pos,
+				        lhs->value + rhs->value);
+				    break;
+			    }
+		    },
+		    {},
+		    &Stop::pos,
+		    Alg::single);
 		return res;
 	}
 

@@ -56,6 +56,11 @@ struct Rect
 		return {bottom(), top()};
 	}
 
+	[[nodiscard]] Math::Range<> oSize(Orientation o) const
+	{
+		return isHorizontal(o) ? hSize() : vSize();
+	}
+
 	[[nodiscard]] Math::Range<> x() const
 	{
 		return {pos.x, pos.x + size.x};
@@ -101,6 +106,14 @@ struct Rect
 		setTop(range.max);
 	}
 
+	void setOSize(Orientation o, const Math::Range<> &range)
+	{
+		if (isHorizontal(o))
+			setHSize(range);
+		else
+			setVSize(range);
+	}
+
 	[[nodiscard]] Rect bottomHalf() const
 	{
 		return {pos, size.verticalHalf()};
@@ -138,7 +151,6 @@ struct Rect
 	[[nodiscard]] Rect intersection(const Rect &rect) const;
 
 	[[nodiscard]] bool contains(const Point &p) const;
-	[[nodiscard]] bool intersects(const Rect &r) const;
 	[[nodiscard]] Point center() const;
 
 	[[nodiscard]] Rect outline(const Geom::Size &margin) const

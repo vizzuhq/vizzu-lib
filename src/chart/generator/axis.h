@@ -196,6 +196,28 @@ struct Axis
 	[[nodiscard]] bool operator==(const Axis &other) const = default;
 };
 
+struct SplitAxis : Axis
+{
+	struct Part
+	{
+		double weight{1.0};
+		Math::Range<> range{0, 1};
+
+		[[nodiscard]] bool operator==(
+		    const Part &other) const = default;
+	};
+
+	using Parts = std::map<std::size_t, Part>;
+	Parts parts;
+
+	[[nodiscard]] bool operator==(
+	    const SplitAxis &other) const = default;
+
+	friend SplitAxis interpolate(const SplitAxis &op0,
+	    const SplitAxis &op1,
+	    double factor);
+};
+
 struct Axises
 {
 	struct CalculatedLegend
@@ -206,7 +228,7 @@ struct Axises
 	};
 	std::array<std::optional<CalculatedLegend>, 2> leftLegend;
 
-	Refl::EnumArray<AxisId, Axis> axises;
+	Refl::EnumArray<AxisId, SplitAxis> axises;
 	struct Label
 	{
 		::Anim::String unit;
@@ -236,12 +258,12 @@ struct Axises
 		return leftLegend[0].emplace(legendType).calc;
 	}
 
-	[[nodiscard]] const Axis &at(AxisId axisType) const
+	[[nodiscard]] const SplitAxis &at(AxisId axisType) const
 	{
 		return axises[axisType];
 	}
 
-	[[nodiscard]] Axis &at(AxisId axisType)
+	[[nodiscard]] SplitAxis &at(AxisId axisType)
 	{
 		return axises[axisType];
 	}

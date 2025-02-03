@@ -26,7 +26,7 @@ const testSteps = [
 			data,
 			config: {
 				channels: {
-					y: { set: ['Value 5 (+/-)'], range: { min: '0%', max: '110%' } },
+					y: { set: ['Value 5 (+/-)'] },
 					x: 'Country',
 					color: 'Country',
 					label: 'Value 5 (+/-)'
@@ -40,7 +40,6 @@ const testSteps = [
 		chart.animate({
 			config: {
 				channels: {
-					y: { range: { min: 'auto', max: 'auto' } },
 					x: ['Country', 'Value 2 (+)']
 				},
 				title: 'Polar Coordinate',

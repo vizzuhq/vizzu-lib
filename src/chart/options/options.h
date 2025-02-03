@@ -161,27 +161,6 @@ public:
 	void simplify();
 
 	[[nodiscard]] AxisId getHorizontalChannel() const;
-	[[nodiscard]] AxisId getVerticalChannel() const;
-
-	[[nodiscard]] const Channel &getHorizontalAxis() const
-	{
-		return channels.at(getHorizontalChannel());
-	}
-
-	[[nodiscard]] const Channel &getVerticalAxis() const
-	{
-		return channels.at(getVerticalChannel());
-	}
-
-	Channel &getHorizontalAxis()
-	{
-		return channels.at(getHorizontalChannel());
-	}
-
-	Channel &getVerticalAxis()
-	{
-		return channels.at(getVerticalChannel());
-	}
 
 	[[nodiscard]] bool isShapeValid(const ShapeType &) const;
 	[[nodiscard]] std::optional<MarkerInfoId> getMarkerInfoId(
