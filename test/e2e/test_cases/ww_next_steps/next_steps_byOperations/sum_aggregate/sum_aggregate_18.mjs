@@ -8,12 +8,11 @@ const testSteps = [
 			config: {
 				channels: {
 					x: 'Year',
-					y: ['Value 2 (+)', 'Country'],
+					y: { set: ['Value 2 (+)', 'Country'], split: true },
 					color: 'Country'
 				},
 				title: 'Splitted Area',
-				geometry: 'area',
-				split: true
+				geometry: 'area'
 			}
 		}),
 
@@ -21,7 +20,7 @@ const testSteps = [
 		chart.animate({
 			config: {
 				title: 'Split off to Sum of the Components',
-				split: false
+				y: { split: false }
 			}
 		}),
 	(chart) => {

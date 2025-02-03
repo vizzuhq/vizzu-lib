@@ -119,8 +119,9 @@ Buckets PlotBuilder::generateMarkers(std::size_t &mainBucketSize)
 	return Buckets{plot->markers};
 }
 
-std::vector<PlotBuilder::BucketInfo>
-PlotBuilder::sortedBuckets(const Buckets &buckets, bool main) const
+std::vector<PlotBuilder::BucketInfo> PlotBuilder::sortedBuckets(
+    const Buckets &buckets,
+    AxisId axisIndex) const
 {
 	std::vector<BucketInfo> sorted;
 
@@ -140,14 +141,18 @@ PlotBuilder::sortedBuckets(const Buckets &buckets, bool main) const
 			    !plot->getOptions()->getOrientation());
 		}
 
-	if (main && plot->getOptions()->sort == Sort::byValue)
+	if (plot->getOptions()->getChannels().axisPropsAt(axisIndex).sort
+	    == Sort::byValue)
 		std::ranges::stable_sort(sorted,
 		    [](const BucketInfo &lhs, const BucketInfo &rhs)
 		    {
 			    return Math::Floating::less(lhs.size, rhs.size);
 		    });
 
-	if (main && plot->getOptions()->reverse)
+	if (plot->getOptions()
+	        ->getChannels()
+	        .axisPropsAt(axisIndex)
+	        .reverse)
 		std::reverse(sorted.begin(), sorted.end());
 
 	return sorted;
@@ -201,7 +206,7 @@ bool PlotBuilder::linkMarkers(const Buckets &buckets,
     AxisId axisIndex) const
 {
 	auto isMain = axisIndex == plot->getOptions()->mainAxisType();
-	auto &&sorted = sortedBuckets(buckets, isMain);
+	auto &&sorted = sortedBuckets(buckets, axisIndex);
 
 	std::vector dimOffset(sorted.size(),
 	    std::numeric_limits<double>::lowest());
@@ -422,8 +427,7 @@ void PlotBuilder::calcAxis(const Data::DataTable &dataTable,
 		if (isAutoTitle) axis.title = dataCube.getName(meas);
 
 		if (type == plot->getOptions()->subAxisType()
-		    && plot->getOptions()->align
-		           == Base::Align::Type::stretch)
+		    && axisProps.align == Base::Align::Type::stretch)
 			axis.measure = {{0, 100},
 			    meas.getColIndex(),
 			    "%",
@@ -438,7 +442,7 @@ void PlotBuilder::calcAxis(const Data::DataTable &dataTable,
 		for (auto merge =
 		         plot->getOptions()->dimLabelIndex(+type) == 0
 		         && (type != plot->getOptions()->mainAxisType()
-		             || plot->getOptions()->sort != Sort::byValue
+		             || axisProps.sort != Sort::byValue
 		             || scale.dimensions().size() == 1);
 		     const auto &marker : plot->markers) {
 			if (!marker.enabled) continue;
@@ -478,9 +482,13 @@ void PlotBuilder::addAlignment(const Buckets &subBuckets) const
 	    || std::signbit(subAxisRange.max))
 		return;
 
-	if (plot->getOptions()->align == Base::Align::Type::none) return;
+	const auto &axisProps =
+	    plot->getOptions()->getChannels().axisPropsAt(
+	        plot->getOptions()->subAxisType());
 
-	if (plot->getOptions()->align == Base::Align::Type::center) {
+	if (axisProps.align == Base::Align::Type::none) return;
+
+	if (axisProps.align == Base::Align::Type::center) {
 		auto &&halfSize = subAxisRange.size() / 2.0;
 		if (!Math::Floating::is_zero(halfSize))
 			subAxisRange = {subAxisRange.min - halfSize,
@@ -488,7 +496,7 @@ void PlotBuilder::addAlignment(const Buckets &subBuckets) const
 	}
 
 	auto &&subAxis = plot->getOptions()->subAxisType();
-	const Base::Align align{plot->getOptions()->align, {0.0, 1.0}};
+	const Base::Align align{axisProps.align, {0.0, 1.0}};
 	for (auto &&bucket : subBuckets) {
 		Math::Range<> range;
 
@@ -509,7 +517,10 @@ void PlotBuilder::addSeparation(const Buckets &subBuckets,
 {
 	if (!plot->getOptions()->isSplit()) return;
 
-	auto align = plot->getOptions()->align;
+	const auto &axisProps =
+	    plot->getOptions()->getChannels().axisPropsAt(
+	        plot->getOptions()->subAxisType());
+	auto align = axisProps.align;
 
 	std::vector ranges{mainBucketSize, Math::Range<>{{}, {}}};
 	std::vector<bool> anyEnabled(mainBucketSize);

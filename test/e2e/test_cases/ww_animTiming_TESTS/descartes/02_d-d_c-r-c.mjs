@@ -41,9 +41,7 @@ const testSteps = [
 					y: ['Country', 'Value 2 (+)']
 				},
 				title: 'Bar Chart',
-				geometry: 'rectangle',
-				//            orientation: 'horizontal',
-				split: false
+				geometry: 'rectangle'
 			}
 		}),
 	(chart) =>

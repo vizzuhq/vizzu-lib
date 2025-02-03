@@ -3,9 +3,12 @@ chart.animate(
 		style: null,
 		config: {
 			title: 'Store function',
-			align: 'stretch',
+
 			channels: {
-				y: ['Popularity', 'Kinds'],
+				y: {
+					set: ['Popularity', 'Kinds'],
+					align: 'stretch'
+				},
 				x: ['Genres'],
 				label: ['Popularity']
 			},

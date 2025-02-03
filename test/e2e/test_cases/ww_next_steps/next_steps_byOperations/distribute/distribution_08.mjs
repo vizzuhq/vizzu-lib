@@ -7,14 +7,13 @@ const testSteps = [
 
 			config: {
 				channels: {
-					x: ['Value 1 (+)', 'Country'],
+					x: { set: ['Value 1 (+)', 'Country'], split: true },
 					y: 'Value 3 (+)',
 					noop: 'Year',
 					color: 'Country'
 				},
 				title: 'Trellis Scatter plot',
 				geometry: 'circle',
-				split: true,
 				orientation: 'vertical'
 			}
 		}),

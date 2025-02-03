@@ -55,8 +55,7 @@ const testSteps = [
 					},
 					title: 'Dotplot',
 					geometry: 'circle',
-					orientation: 'horizontal',
-					split: false
+					orientation: 'horizontal'
 				}
 			},
 			{

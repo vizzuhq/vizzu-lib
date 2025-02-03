@@ -21,11 +21,10 @@ const testSteps = [
 				config: {
 					channels: {
 						y: ['Value 2 (+)', 'Year'],
-						x: 'Joy factors'
+						x: { set: 'Joy factors', sort: 'byValue' }
 					},
 					title: 'Column Chart',
-					geometry: 'rectangle',
-					sort: 'byValue'
+					geometry: 'rectangle'
 				}
 			},
 			{

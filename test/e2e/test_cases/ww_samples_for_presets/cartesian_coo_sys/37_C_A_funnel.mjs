@@ -6,14 +6,13 @@ const testSteps = [
 			data,
 			config: {
 				channels: {
-					x: 'Num',
+					x: { set: 'Num', align: 'center' },
 					y: 'Phase',
 					color: 'Phase',
 					label: ['Phase', 'Num']
 				},
 				title: 'Funnel',
-				geometry: 'area',
-				align: 'center'
+				geometry: 'area'
 			},
 			style: {
 				plot: {

@@ -27,14 +27,12 @@ const testSteps = [
 				config: {
 					channels: {
 						x: { set: 'Year' },
-						y: { set: ['Country', 'Value 2 (+)'] }
+						y: { set: ['Country', 'Value 2 (+)'], align: 'stretch' }
 					},
 					title: 'Value',
 					geometry: 'area',
 					legend: null,
-					orientation: 'horizontal',
-					align: 'stretch',
-					split: false
+					orientation: 'horizontal'
 				}
 			},
 			{
@@ -63,13 +61,12 @@ const testSteps = [
 				config: {
 					channels: {
 						x: { set: ['Year'] },
-						y: { set: ['Country', 'Value 2 (+)'] },
+						y: { set: ['Country', 'Value 2 (+)'], align: 'none' },
 						color: { set: 'Country' }
 					},
 					title: 'Stacked Area Chart',
 					geometry: 'area',
 					orientation: 'horizontal',
-					align: 'none',
 					legend: null
 				}
 			},
@@ -107,7 +104,6 @@ const testSteps = [
 					title: 'Overlay Area Chart',
 					geometry: 'area',
 					orientation: 'horizontal',
-					align: 'none',
 					legend: null
 				},
 				style: {
@@ -147,14 +143,12 @@ const testSteps = [
 				config: {
 					channels: {
 						x: { set: ['Year'] },
-						y: { set: ['Country', 'Value 2 (+)'] },
+						y: { set: ['Country', 'Value 2 (+)'], split: true },
 						color: { set: 'Country' }
 					},
 					title: 'Splitted Area Chart',
 					geometry: 'area',
 					orientation: 'horizontal',
-					align: 'none',
-					split: true,
 					legend: null
 				},
 				style: {
@@ -193,14 +187,12 @@ const testSteps = [
 				config: {
 					channels: {
 						x: { set: ['Year'] },
-						y: { set: ['Value 2 (+)'] },
+						y: { set: ['Value 2 (+)'], split: false },
 						color: { set: 'Country' }
 					},
 					title: 'Line Chart',
 					geometry: 'line',
 					orientation: 'horizontal',
-					align: 'none',
-					split: false,
 					legend: null
 				}
 			},

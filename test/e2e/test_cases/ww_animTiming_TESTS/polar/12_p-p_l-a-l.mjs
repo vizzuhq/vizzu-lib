@@ -26,9 +26,7 @@ const testSteps = [
 					color: { set: ['Country'] }
 				},
 				title: 'Polar Stacked Area Chart',
-				geometry: 'area',
-				//            orientation: 'horizontal',
-				split: false
+				geometry: 'area'
 			}
 		}),
 

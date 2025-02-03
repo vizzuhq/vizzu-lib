@@ -123,7 +123,8 @@ void Options::drilldownTo(const Options &other)
 {
 	auto &stackChannel = this->stackChannel();
 
-	if (!isSplit() || !other.isSplit()) this->split = {};
+	if (!isSplit() || !other.isSplit())
+		getChannels().axisPropsAt(subAxisType()).split = {};
 
 	for (auto &&dim : other.getChannels().getDimensions())
 		if (!getChannels().isSeriesUsed(dim))
@@ -136,7 +137,7 @@ void Options::intersection(const Options &other)
 		if (!other.getChannels().isSeriesUsed(dim))
 			getChannels().removeSeries(dim);
 
-	split = {};
+	getChannels().axisPropsAt(subAxisType()).split = {};
 }
 
 bool Options::looksTheSame(const Options &other) const
@@ -197,8 +198,7 @@ bool Options::sameShadowAttribs(const Options &other) const
 	return shape == shapeOther && coordSystem == other.coordSystem
 	    && angle == other.angle && orientation == other.orientation
 	    && isSplit() == other.isSplit()
-	    && dataFilter == other.dataFilter && align == other.align
-	    && sort == other.sort && reverse == other.reverse;
+	    && dataFilter == other.dataFilter;
 }
 
 bool Options::sameAttributes(const Options &other) const

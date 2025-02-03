@@ -1,5 +1,5 @@
 chart.animate({
 	config: {
-		split: true
+		x: { split: true }
 	}
 })

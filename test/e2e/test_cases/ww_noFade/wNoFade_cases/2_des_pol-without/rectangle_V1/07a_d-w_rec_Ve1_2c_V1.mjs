@@ -53,7 +53,7 @@ const testSteps = [
 			{
 				config: {
 					channels: {
-						x: { set: 'Value 3 (+)' },
+						x: { set: 'Value 3 (+)', align: 'stretch' },
 						y: {
 							set: ['Joy factors', 'Value 2 (+)'],
 							range: { min: '0%', max: '100%' },
@@ -61,8 +61,7 @@ const testSteps = [
 						}
 					},
 					title: 'Change Disc',
-					orientation: 'auto',
-					align: 'stretch'
+					orientation: 'auto'
 				}
 			},
 			{

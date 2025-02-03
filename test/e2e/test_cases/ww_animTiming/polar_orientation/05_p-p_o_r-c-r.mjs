@@ -55,8 +55,7 @@ const testSteps = [
 					},
 					title: 'Radial Dot plot',
 					geometry: 'circle',
-					orientation: 'horizontal',
-					split: false
+					orientation: 'horizontal'
 				}
 			},
 			{

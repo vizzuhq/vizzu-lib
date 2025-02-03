@@ -24,11 +24,10 @@ const testSteps = [
 		chart.animate({
 			config: {
 				channels: {
-					y: { set: ['Country', 'Value 2 (+)'], range: { min: '-20%' } }
+					y: { set: ['Country', 'Value 2 (+)'], range: { min: '-20%' }, split: true }
 				},
 
-				geometry: 'area',
-				split: true
+				geometry: 'area'
 			}
 		}),
 	(chart) => {

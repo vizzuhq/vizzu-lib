@@ -21,10 +21,8 @@ const testSteps = [
 			config: {
 				channels: {
 					x: 'Year',
-					y: ['Country', 'Value 2 (+)']
-				},
-
-				align: 'stretch'
+					y: { set: ['Country', 'Value 2 (+)'], align: 'stretch' }
+				}
 			}
 		}),
 	(chart) => {

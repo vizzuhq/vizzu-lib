@@ -10,7 +10,6 @@ const testSteps = [
 					y: { set: 'Index', range: { max: '110%' } }
 				},
 				title: 'Dot plot',
-				align: 'none',
 				geometry: 'circle'
 			}
 		}),
@@ -19,14 +18,12 @@ const testSteps = [
 		chart.animate({
 			config: {
 				channels: {
-					x: 'Year',
+					x: { set: 'Year', split: true },
 					y: { set: 'IMDb Rating', range: { max: '110%' } },
 					noop: 'Index'
 				},
 				title: 'Dot plot / + Continuous(?), Distribution(?)',
-				align: 'none',
 				orientation: 'vertical',
-				split: true,
 				geometry: 'circle'
 			}
 		}),

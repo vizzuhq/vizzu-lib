@@ -20,7 +20,7 @@ const testSteps = [
 		chart.animate({
 			config: {
 				title: 'Split Components to See them Separately',
-				split: true
+				y: { split: true }
 			}
 		}),
 	(chart) => {

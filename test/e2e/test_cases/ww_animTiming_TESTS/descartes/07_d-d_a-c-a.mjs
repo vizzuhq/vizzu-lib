@@ -41,9 +41,7 @@ const testSteps = [
 					color: { set: ['Country'] }
 				},
 				title: 'Scatter plot',
-				geometry: 'circle',
-				//            orientation: 'horizontal',
-				split: false
+				geometry: 'circle'
 			}
 		}),
 

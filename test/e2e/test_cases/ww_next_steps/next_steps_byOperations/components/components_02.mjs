@@ -11,8 +11,7 @@ const testSteps = [
 					y: 'Value 2 (+)',
 					color: 'Country'
 				},
-				title: 'Groupped Column by Countries and Time',
-				split: false
+				title: 'Groupped Column by Countries and Time'
 			}
 		}),
 	(chart) =>
@@ -20,11 +19,10 @@ const testSteps = [
 			config: {
 				channels: {
 					x: 'Year',
-					y: ['Country', 'Value 2 (+)'],
+					y: { set: ['Country', 'Value 2 (+)'], split: true },
 					label: 'Value 2 (+)'
 				},
-				title: 'Split Components to Compare Components Year by Year',
-				split: true
+				title: 'Split Components to Compare Components Year by Year'
 			},
 			style: {
 				plot: {

@@ -27,9 +27,7 @@ const testSteps = [
 						color: { set: ['Country'] }
 					},
 					title: 'Radial Bar Chart',
-					geometry: 'rectangle',
-					//            orientation: 'horizontal',
-					split: false
+					geometry: 'rectangle'
 				}
 			},
 			{

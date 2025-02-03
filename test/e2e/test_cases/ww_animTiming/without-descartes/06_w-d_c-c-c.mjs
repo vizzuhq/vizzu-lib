@@ -44,8 +44,7 @@ const testSteps = [
 						color: { set: ['Country'] }
 					},
 					title: 'Dotplot vs. Scatter plot',
-					geometry: 'circle',
-					split: false
+					geometry: 'circle'
 				}
 			},
 			{

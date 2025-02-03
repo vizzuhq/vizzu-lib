@@ -22,11 +22,11 @@ const testSteps = [
 			config: {
 				channels: {
 					y: { set: 'IMDb Rating', range: { max: '105%' } },
+					x: { split: true },
 					noop: 'Index'
 				},
 
-				orientation: 'vertical',
-				split: true
+				orientation: 'vertical'
 			}
 		}),
 	(chart) => {

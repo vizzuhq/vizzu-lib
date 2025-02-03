@@ -9,14 +9,14 @@ const testSteps = [
 					x: { set: 'Year' },
 					y: {
 						set: ['Country', 'Value 2 (+)'],
-						range: { min: '0%', max: '100%' }
+						range: { min: '0%', max: '100%' },
+						split: true
 					},
 					color: { set: 'Country' }
 				},
 				title: '1 Splitted Column',
 				geometry: 'rectangle',
-				orientation: 'horizontal',
-				split: true
+				orientation: 'horizontal'
 			}
 		}),
 
@@ -25,13 +25,12 @@ const testSteps = [
 			config: {
 				channels: {
 					x: { set: ['Year', 'Country'] },
-					y: { set: ['Value 2 (+)'], range: { min: '0%', max: '100%' } },
+					y: { set: ['Value 2 (+)'], range: { min: '0%', max: '100%' }, split: false },
 					color: { set: 'Country' }
 				},
 				title: '2 Groupped Column / Comparison(?), Group(?)',
 				geometry: 'rectangle',
-				orientation: 'horizontal',
-				split: false
+				orientation: 'horizontal'
 			},
 			style: {
 				title: {
@@ -47,14 +46,14 @@ const testSteps = [
 						x: { set: 'Year' },
 						y: {
 							set: ['Country', 'Value 2 (+)'],
-							range: { min: '0%', max: '100%' }
+							range: { min: '0%', max: '100%' },
+							split: true
 						},
 						color: { set: 'Country' }
 					},
 					title: '3 Splitted Column / Components(?), Part-to-whole(?), Split(?)',
 					geometry: 'rectangle',
-					orientation: 'horizontal',
-					split: true
+					orientation: 'horizontal'
 				}
 			},
 			{
@@ -67,13 +66,12 @@ const testSteps = [
 			config: {
 				channels: {
 					x: { set: ['Country', 'Year'] },
-					y: { set: ['Value 2 (+)'], range: { min: '0%', max: '100%' } },
+					y: { set: ['Value 2 (+)'], range: { min: '0%', max: '100%' }, split: false },
 					color: { set: 'Country' }
 				},
 				title: '4 Groupped Column / Comparison(?), Group(?)',
 				geometry: 'rectangle',
-				orientation: 'horizontal',
-				split: false
+				orientation: 'horizontal'
 			}
 		}),
 	(chart) =>
@@ -84,14 +82,14 @@ const testSteps = [
 						x: { set: 'Year' },
 						y: {
 							set: ['Country', 'Value 2 (+)'],
-							range: { min: '0%', max: '100%' }
+							range: { min: '0%', max: '100%' },
+							split: true
 						},
 						color: { set: 'Country' }
 					},
 					title: '5 Splitted Column / Components(?), Part-to-whole(?), Split(?)',
 					geometry: 'rectangle',
-					orientation: 'horizontal',
-					split: true
+					orientation: 'horizontal'
 				}
 			},
 			{
@@ -105,14 +103,14 @@ const testSteps = [
 					x: { set: 'Year' },
 					y: {
 						set: ['Country', 'Value 2 (+)'],
-						range: { min: '0%', max: '100%' }
+						range: { min: '0%', max: '100%' },
+						split: false
 					},
 					color: { set: 'Country' }
 				},
 				title: '6 Stacked Column / Sum(?), Stack(?)',
 				geometry: 'rectangle',
-				orientation: 'horizontal',
-				split: false
+				orientation: 'horizontal'
 			}
 		}),
 	(chart) =>
@@ -123,14 +121,14 @@ const testSteps = [
 						x: { set: 'Year' },
 						y: {
 							set: ['Country', 'Value 2 (+)'],
-							range: { min: '0%', max: '100%' }
+							range: { min: '0%', max: '100%' },
+							split: true
 						},
 						color: { set: 'Country' }
 					},
 					title: '7 Splitted Column / Components(?), Part-to-whole(?), Split(?)',
 					geometry: 'rectangle',
-					orientation: 'horizontal',
-					split: true
+					orientation: 'horizontal'
 				}
 			},
 			{
@@ -143,13 +141,11 @@ const testSteps = [
 			config: {
 				channels: {
 					x: { set: 'Year' },
-					y: { set: ['Country', 'Value 2 (+)'] }
+					y: { set: ['Country', 'Value 2 (+)'], align: 'stretch', split: false }
 				},
 				title: '8 Stacked Percentage Column / Ratio%(?)',
 				geometry: 'rectangle',
-				orientation: 'horizontal',
-				align: 'stretch',
-				split: false
+				orientation: 'horizontal'
 			}
 		}),
 	(chart) =>
@@ -160,15 +156,15 @@ const testSteps = [
 						x: { set: 'Year' },
 						y: {
 							set: ['Country', 'Value 2 (+)'],
-							range: { min: '0%', max: '100%' }
+							range: { min: '0%', max: '100%' },
+							align: 'none',
+							split: true
 						},
 						color: { set: 'Country' }
 					},
 					title: '9 Splitted Column / Components(?), Part-to-whole(?), Split(?)',
 					geometry: 'rectangle',
-					orientation: 'horizontal',
-					align: 'none',
-					split: true
+					orientation: 'horizontal'
 				}
 			},
 			{
@@ -181,15 +177,13 @@ const testSteps = [
 			config: {
 				channels: {
 					x: { set: 'Value 5 (+/-)' },
-					y: { set: 'Value 2 (+)', range: { min: '0%', max: '110%' } },
+					y: { set: 'Value 2 (+)', range: { min: '0%', max: '110%' }, split: false },
 					color: { set: 'Country' },
 					noop: { set: 'Year' }
 				},
 				title: '10 Scatter plot / + Continuous(?)',
 				geometry: 'circle',
-				orientation: 'horizontal',
-				align: 'none',
-				split: false
+				orientation: 'horizontal'
 			}
 		}),
 	(chart) =>
@@ -199,16 +193,15 @@ const testSteps = [
 					x: { set: 'Year' },
 					y: {
 						set: ['Country', 'Value 2 (+)'],
-						range: { min: '0%', max: '100%' }
+						range: { min: '0%', max: '100%' },
+						split: true
 					},
 					color: { set: 'Country' },
 					noop: { set: null }
 				},
 				title: '11 Splitted Column / - Continuous(?), Components(?), Part-to-whole(?), Split(?)',
 				geometry: 'rectangle',
-				orientation: 'horizontal',
-				align: 'none',
-				split: true
+				orientation: 'horizontal'
 			},
 			style: {
 				title: {

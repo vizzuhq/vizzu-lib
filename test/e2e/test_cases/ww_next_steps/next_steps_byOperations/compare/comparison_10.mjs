@@ -24,8 +24,7 @@ const testSteps = [
 						y: 'Value 2 (+)'
 					},
 					title: 'Change Geom. & Unstack to Compare Components',
-					geometry: 'line',
-					align: 'none'
+					geometry: 'line'
 				}
 			},
 			{

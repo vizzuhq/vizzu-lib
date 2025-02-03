@@ -22,8 +22,7 @@ const testSteps = [
 					x: 'Country_code',
 					y: 'Joy factors'
 				},
-				title: 'Remove Conti',
-				align: 'stretch'
+				title: 'Remove Conti'
 			}
 		}),
 
@@ -50,8 +49,7 @@ const testSteps = [
 					x: 'Year',
 					y: ['Joy factors', 'Value 3 (+)']
 				},
-				title: 'Add Conti',
-				align: 'none'
+				title: 'Add Conti'
 			}
 		})
 ]

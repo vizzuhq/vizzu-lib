@@ -41,9 +41,7 @@ const testSteps = [
 					noop: { set: ['Year'] }
 				},
 				title: 'Treemap',
-				geometry: 'rectangle',
-				//            orientation: 'horizontal',
-				split: false
+				geometry: 'rectangle'
 			}
 		}),
 	(chart) =>

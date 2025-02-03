@@ -8,12 +8,11 @@ const testSteps = [
 			config: {
 				channels: {
 					x: 'Year',
-					y: ['Country', 'Value 2 (+)'],
+					y: { set: ['Country', 'Value 2 (+)'], split: true },
 					color: 'Country',
 					label: 'Value 2 (+)'
 				},
-				title: 'Splitted Column',
-				split: true
+				title: 'Splitted Column'
 			},
 			style: {
 				plot: {
@@ -32,11 +31,10 @@ const testSteps = [
 			config: {
 				channels: {
 					x: ['Country', 'Year'],
-					y: 'Value 2 (+)',
+					y: { set: 'Value 2 (+)', split: false },
 					label: null
 				},
-				title: 'Split off & Group Markers to See Trends by Components',
-				split: false
+				title: 'Split off & Group Markers to See Trends by Components'
 			}
 		}),
 	(chart) => {

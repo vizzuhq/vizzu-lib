@@ -10,13 +10,12 @@ const testSteps = [
 			data,
 			config: {
 				channels: {
-					x: ['Format', 'Revenue'],
+					x: { set: ['Format', 'Revenue'], align: 'center' },
 					y: 'Year',
 					color: 'Format'
 				},
 				title: 'Stream Graph Vertical',
-				geometry: 'area',
-				align: 'center'
+				geometry: 'area'
 			},
 			style: {
 				plot: {

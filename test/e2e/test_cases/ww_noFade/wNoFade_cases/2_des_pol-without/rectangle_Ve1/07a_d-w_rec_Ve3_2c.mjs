@@ -37,11 +37,10 @@ const testSteps = [
 			config: {
 				channels: {
 					x: { set: ['Year', 'Value 3 (+)'], labelLevel: 0 },
-					y: { set: ['Country', 'Value 2 (+)'] },
+					y: { set: ['Country', 'Value 2 (+)'], align: 'stretch' },
 					color: null
 				},
-				title: '1 Tile Stretch & Remove Color',
-				align: 'stretch'
+				title: '1 Tile Stretch & Remove Color'
 			}
 		}),
 

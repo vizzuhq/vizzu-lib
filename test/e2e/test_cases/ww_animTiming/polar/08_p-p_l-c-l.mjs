@@ -37,9 +37,7 @@ const testSteps = [
 						color: { set: ['Country'] }
 					},
 					title: 'Polar Scatter plot',
-					geometry: 'circle',
-					//            orientation: 'horizontal',
-					split: false
+					geometry: 'circle'
 				}
 			},
 			{

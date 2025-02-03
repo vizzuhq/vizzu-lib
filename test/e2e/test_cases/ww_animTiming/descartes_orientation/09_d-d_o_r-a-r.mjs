@@ -42,8 +42,7 @@ const testSteps = [
 						color: { set: ['Country'] }
 					},
 					title: 'Stacked Area Chart',
-					geometry: 'area',
-					split: false
+					geometry: 'area'
 				}
 			},
 			{

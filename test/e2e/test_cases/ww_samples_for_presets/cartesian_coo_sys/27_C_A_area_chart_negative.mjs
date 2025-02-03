@@ -10,7 +10,6 @@ const testSteps = [
 					y: { set: ['Value 5 (+/-)'], range: { min: '0%', max: '110%' } }
 				},
 				title: 'Area Chart with (-) Nums',
-				align: 'none',
 				geometry: 'area'
 			}
 		}),

@@ -14,12 +14,10 @@
 #include "base/math/range.h"
 #include "dataframe/old/types.h"
 
-#include "align.h"
 #include "autoparam.h"
 #include "channels.h"
 #include "coordsystem.h"
 #include "shapetype.h"
-#include "sort.h"
 
 namespace Vizzu::Gen
 {
@@ -41,10 +39,6 @@ struct OptionProperties
 	double angle{};
 	::Anim::Interpolated<ShapeType> geometry{ShapeType::rectangle};
 	Orientation orientation{OrientationType{}};
-	Sort sort{Sort::none};
-	bool reverse{};
-	Base::Align::Type align{Base::Align::Type::none};
-	bool split{};
 };
 
 class Options : public OptionProperties
@@ -149,7 +143,8 @@ public:
 	[[nodiscard]] bool hasDimensionToSplit() const;
 	[[nodiscard]] bool isSplit() const
 	{
-		return split && hasDimensionToSplit();
+		return getChannels().axisPropsAt(subAxisType()).split
+		    && hasDimensionToSplit();
 	}
 	Data::Filter dataFilter;
 	std::optional<MarkerIndex> tooltip;

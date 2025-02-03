@@ -7,12 +7,11 @@ const testSteps = [
 			config: {
 				channels: {
 					x: 'Year',
-					y: ['Country', 'Value 2 (+)'],
+					y: { set: ['Country', 'Value 2 (+)'], align: 'stretch' },
 					color: 'Country'
 				},
 				title: 'Percentage Stacked Area Chart',
-				geometry: 'area',
-				align: 'stretch'
+				geometry: 'area'
 			}
 		}),
 	(chart) => {

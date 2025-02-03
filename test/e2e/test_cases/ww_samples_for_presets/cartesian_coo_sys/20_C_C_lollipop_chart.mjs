@@ -11,7 +11,6 @@ const testSteps = [
 					label: 'Value 2 (+)'
 				},
 				title: 'Lollipop Chart',
-				align: 'none',
 				geometry: 'circle'
 			}
 		}),

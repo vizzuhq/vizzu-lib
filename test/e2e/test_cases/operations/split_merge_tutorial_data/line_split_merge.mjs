@@ -19,20 +19,18 @@ const testSteps = [
 		chart.animate({
 			config: {
 				channels: {
-					y: { attach: ['Categ. Parent'] }
+					y: { attach: ['Categ. Parent'], split: true }
 				},
-				title: 'Operations: Area - Splitted.',
-				split: true
+				title: 'Operations: Area - Splitted.'
 			}
 		}),
 	(chart) =>
 		chart.animate({
 			config: {
 				channels: {
-					y: { detach: ['Categ. Parent'] }
+					y: { detach: ['Categ. Parent'], split: false }
 				},
-				title: 'Operations: Area - Merged.',
-				split: false
+				title: 'Operations: Area - Merged.'
 			}
 		})
 ]

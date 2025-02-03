@@ -18,7 +18,7 @@ const testSteps = [
 	(chart) =>
 		chart.animate({
 			config: {
-				align: 'stretch'
+				y: { align: 'stretch' }
 			}
 		}),
 	(chart) => {
