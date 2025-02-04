@@ -31,6 +31,7 @@ private:
 	{
 		std::size_t index{};
 		double size{};
+		const std::string *label{};
 	};
 
 	struct BucketSeparationInfo
