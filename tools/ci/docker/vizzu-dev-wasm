@@ -2,9 +2,10 @@ FROM ubuntu:24.04
 
 RUN apt-get update
 
-RUN apt-get install -y git wget curl gnupg
+RUN apt-get install -y git wget curl gnupg software-properties-common
 
-RUN apt-get install -y python3.13 python3.13-venv \
+RUN add-apt-repository ppa:deadsnakes/ppa \
+    && apt-get install -y python3.13 python3.13-venv \
     && ln -s /usr/bin/python3.13 /usr/bin/python
 
 RUN mkdir -p /etc/apt/keyrings \
