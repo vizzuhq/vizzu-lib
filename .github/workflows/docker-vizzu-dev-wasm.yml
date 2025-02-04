@@ -24,6 +24,6 @@ jobs:
             - name: Build and Publish
               run: |
                   IMAGE="vizzu-dev-wasm"
-                  IMAGE_NAME="vizzu/$IMAGE:0.16"
+                  IMAGE_NAME="vizzu/$IMAGE:0.16next"
                   docker build -t $IMAGE_NAME -f tools/ci/docker/$IMAGE .
                   docker push $IMAGE_NAME
