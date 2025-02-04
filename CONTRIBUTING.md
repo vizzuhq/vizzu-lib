@@ -23,7 +23,7 @@ mind, that's awesome and we are very interested in hearing about it.
 ### Development environment
 
 The following steps demonstrate how to set up the development environment on an
-`Ubuntu` `22.04` operating system. However, the process can be adapted for other
+`Ubuntu` `24.04` operating system. However, the process can be adapted for other
 operating systems as well.
 
 To contribute to the `JavaScript` part of the project, it is recommended to use
