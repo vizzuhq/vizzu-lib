@@ -186,8 +186,8 @@ void dataframe::add_dimension(
     std::span<const char *const> dimension_categories,
     std::span<const std::uint32_t> dimension_values,
     std::string_view name,
-    adding_type adding_strategy,
-    std::span<const std::pair<const char *, const char *>> info) &
+    std::span<const std::pair<const char *, const char *>> info,
+    adding_type adding_strategy) &
 {
 	change_state_to(state_type::modifying,
 	    state_modification_reason::needs_series_type);
@@ -258,8 +258,8 @@ void dataframe::add_dimension(
 
 void dataframe::add_measure(std::span<const double> measure_values,
     std::string_view name,
-    adding_type adding_strategy,
-    std::span<const std::pair<const char *, const char *>> info) &
+    std::span<const std::pair<const char *, const char *>> info,
+    adding_type adding_strategy) &
 {
 	change_state_to(state_type::modifying,
 	    state_modification_reason::needs_series_type);
@@ -638,17 +638,18 @@ std::string dataframe::as_string() const &
 		default: error(error_type::series_not_found, name);
 		case dimension: {
 			const auto &[name, dim] = unsafe_get<dimension>(ser);
-			obj("name", name)("type", "dimension")("unit",
-			    "")("length", dim.values.size())("categories",
-			    dim.categories);
+			obj("name", name)("type", "dimension")("length",
+			    dim.values.size())("categories", dim.categories)
+			    .mergeObj<false>(dim.info);
 			break;
 		}
 		case measure: {
 			const auto &[name, mea] = unsafe_get<measure>(ser);
 			auto &&[min, max] = mea.get_min_max();
-			obj("name", name)("type", "measure")("unit",
-			    mea.info.at("unit"))("length", mea.values.size())
-			    .nested("range")("min", min)("max", max);
+			obj("name", name)("type", "measure")("length",
+			    mea.values.size())
+			    .nested("range")("min", min)("max", max)
+			    .mergeObj<false>(mea.info);
 			break;
 		}
 		}

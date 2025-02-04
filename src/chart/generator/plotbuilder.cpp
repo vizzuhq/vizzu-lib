@@ -187,7 +187,7 @@ std::vector<PlotBuilder::BucketSortInfo> PlotBuilder::sortedBuckets(
 		break;
 	case Sort::byLabel:
 		std::ranges::stable_sort(sorted,
-		    [](const BucketInfo &lhs, const BucketInfo &rhs)
+		    [](const BucketSortInfo &lhs, const BucketSortInfo &rhs)
 		    {
 			    if (rhs.label == nullptr || lhs.label == nullptr)
 				    return lhs.label != nullptr;
@@ -420,7 +420,8 @@ void PlotBuilder::calcLegendAndLabel(const Data::DataTable &dataTable)
 					calcLegend.title = dataCube.getName(*meas);
 				calcLegend.measure = {std::get<0>(stats.at(type)),
 				    meas->getColIndex(),
-				    dataTable.getUnit(meas->getColIndex()),
+				    dataTable.get_series_info(meas->getColIndex(),
+				        "unit"),
 				    {1}};
 			}
 		}
@@ -462,8 +463,9 @@ void PlotBuilder::calcLegendAndLabel(const Data::DataTable &dataTable)
 	                      .at(ChannelId::label)
 	                      .measure())
 		plot->axises.label = {
-		    ::Anim::String{
-		        std::string{dataTable.getUnit(meas->getColIndex())}},
+		    ::Anim::String{std::string{
+		        dataTable.get_series_info(meas->getColIndex(),
+		            "unit")}},
 		    ::Anim::String{meas->getColIndex()}};
 }
 
@@ -493,7 +495,7 @@ void PlotBuilder::calcAxis(const Data::DataTable &dataTable,
 		else
 			axis.measure = {std::get<0>(stats.at(type)),
 			    meas.getColIndex(),
-			    dataTable.getUnit(meas.getColIndex()),
+			    dataTable.get_series_info(meas.getColIndex(), "unit"),
 			    axisProps.step.getValue()};
 	}
 	else {

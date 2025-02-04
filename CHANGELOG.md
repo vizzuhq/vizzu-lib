@@ -24,6 +24,7 @@
 - Move split align sort and reverse to AxisChannel
 - Add new sorting strategy: 'byLabel'.
 - Enable split and align on mainAxis.
+- Add 'isContiguous' property for dimension series
 
 ## [0.16.0] - 2024-11-28
 
