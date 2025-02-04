@@ -4,12 +4,12 @@ RUN apt-get update
 
 RUN apt-get install -y git wget curl gnupg
 
-RUN apt-get install -y python3.10 python3.10-venv \
-    && ln -s /usr/bin/python3.10 /usr/bin/python
+RUN apt-get install -y python3.13 python3.13-venv \
+    && ln -s /usr/bin/python3.13 /usr/bin/python
 
 RUN mkdir -p /etc/apt/keyrings \
     && curl -fsSL https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key | gpg --dearmor -o /etc/apt/keyrings/nodesource.gpg \
-    && echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_18.x nodistro main" | tee /etc/apt/sources.list.d/nodesource.list \
+    && echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_22.x nodistro main" | tee /etc/apt/sources.list.d/nodesource.list \
     && apt-get update \
     && apt-get install -y nodejs
 

@@ -27,7 +27,7 @@ The following steps demonstrate how to set up the development environment on an
 operating systems as well.
 
 To contribute to the `JavaScript` part of the project, it is recommended to use
-`Node.js` `18`.
+`Node.js` `22`.
 
 Run the following command to install the `JavaScript` development dependencies:
 
@@ -41,7 +41,7 @@ the command `npm run lock:js`.
 
 However, for the documentation we are also using `Python`. If you plan to
 contribute to this part of the project, you will need `Python`, preferably
-version `3.10`.
+version `3.13`.
 
 Run the following command to install the `Python` development dependencies:
 
