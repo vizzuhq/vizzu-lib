@@ -187,7 +187,7 @@ std::vector<PlotBuilder::BucketSortInfo> PlotBuilder::sortedBuckets(
 		break;
 	case Sort::byLabel:
 		std::ranges::stable_sort(sorted,
-		    [](const BucketInfo &lhs, const BucketInfo &rhs)
+		    [](const BucketSortInfo &lhs, const BucketSortInfo &rhs)
 		    {
 			    if (rhs.label == nullptr || lhs.label == nullptr)
 				    return lhs.label != nullptr;

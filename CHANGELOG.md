@@ -22,8 +22,8 @@
 
 ### Added
 
-- Separate Channel properties to AxisChannel properties at config.
-- Move split align sort and reverse to AxisChannel
+- Separate AxisChannel properties from Channel properties at config.
+- Move split align sort and reverse from config to AxisChannel config.
 - Add new sorting strategy: 'byLabel'.
 - Enable split and align on mainAxis.
 
