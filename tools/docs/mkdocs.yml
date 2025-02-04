@@ -2,7 +2,7 @@ strict: true
 
 site_name: vizzu
 site_url: https://lib.vizzuhq.com
-copyright: Copyright &copy; 2021-2024 Vizzu Inc.
+copyright: Copyright &copy; 2021-2025 Vizzu Inc.
 
 docs_dir: ../../docs
 site_dir: ../../site
