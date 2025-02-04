@@ -9,8 +9,7 @@ const testSteps = [
 					x: 'Year',
 					y: { set: 'Index', range: { max: '100%' } }
 				},
-				title: 'Matrix Chart',
-				align: 'none'
+				title: 'Matrix Chart'
 			},
 			style: {
 				plot: {

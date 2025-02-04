@@ -24,7 +24,6 @@ const testSteps = [
 					y: 'Joy factors'
 				},
 				title: 'Remove Conti',
-				align: 'stretch',
 				orientation: 'horizontal'
 			}
 		}),
@@ -54,7 +53,6 @@ const testSteps = [
 					y: ['Joy factors', 'Value 2 (+)']
 				},
 				title: 'Add previous Conti',
-				align: 'none',
 				orientation: 'horizontal'
 			}
 		})

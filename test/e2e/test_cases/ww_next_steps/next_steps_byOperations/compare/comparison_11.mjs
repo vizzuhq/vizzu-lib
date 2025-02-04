@@ -8,12 +8,11 @@ const testSteps = [
 			config: {
 				channels: {
 					x: 'Year',
-					y: ['Value 2 (+)', 'Country'],
+					y: { set: ['Value 2 (+)', 'Country'], align: 'stretch' },
 					color: 'Country'
 				},
 				title: 'Percentage Stacked Area',
-				geometry: 'area',
-				align: 'stretch'
+				geometry: 'area'
 			}
 		}),
 
@@ -21,11 +20,10 @@ const testSteps = [
 		chart.animate({
 			config: {
 				channels: {
-					y: 'Value 2 (+)'
+					y: { set: 'Value 2 (+)', align: 'none' }
 				},
 				title: 'Align min, CHG Geom. & Unstack to Comp. Components',
-				geometry: 'line',
-				align: 'none'
+				geometry: 'line'
 			}
 		}),
 	(chart) => {

@@ -28,8 +28,7 @@ const testSteps = [
 					},
 					title: 'Spider Dotplot Fake',
 					geometry: 'circle',
-					coordSystem: 'polar',
-					split: false
+					coordSystem: 'polar'
 				}
 			},
 			{

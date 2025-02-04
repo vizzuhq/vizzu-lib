@@ -51,8 +51,7 @@ const testSteps = [
 						color: { set: ['Country'] }
 					},
 					title: 'Bar Chart',
-					geometry: 'rectangle',
-					split: false
+					geometry: 'rectangle'
 				}
 			},
 			{

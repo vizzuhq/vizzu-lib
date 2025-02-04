@@ -27,30 +27,46 @@ private:
 	PlotPtr plot;
 	ChannelStats stats;
 
-	struct BucketInfo
+	struct BucketSortInfo
 	{
 		std::size_t index{};
 		double size{};
+		const std::string *label{};
+	};
+
+	struct BucketSeparationInfo
+	{
+		std::optional<Data::SliceIndex> index{};
+		bool enabled{};
+		Math::Range<> containsValues{0.0, 0.0};
+		Math::Range<> atRange{0.0, 0.0};
 	};
 
 	void initDimensionTrackers();
-	Buckets generateMarkers(std::size_t &mainBucketSize);
-	void linkMarkers(Buckets &subBuckets);
+	Buckets generateMarkers(std::size_t &mainBucketSize,
+	    std::size_t &subBucketSize);
+	void linkMarkers(Buckets &buckets);
 	[[nodiscard]] bool linkMarkers(const Buckets &buckets,
 	    AxisId axisIndex) const;
-	void calcAxises(const Data::DataTable &dataTable);
+	void calcAxises(const Data::DataTable &dataTable,
+	    Buckets &buckets,
+	    const std::size_t &mainBucketSize,
+	    const std::size_t &subBucketSize);
 	void calcLegendAndLabel(const Data::DataTable &dataTable);
 	void calcAxis(const Data::DataTable &dataTable, AxisId type);
-	void addAlignment(const Buckets &subBuckets) const;
-	void addSeparation(const Buckets &subBuckets,
-	    const std::size_t &mainBucketSize) const;
+	void addAlignment(const Buckets &buckets, AxisId axisIndex) const;
+	[[nodiscard]] std::vector<BucketSeparationInfo> addSeparation(
+	    const Buckets &buckets,
+	    AxisId axisIndex,
+	    const std::size_t &otherBucketSize);
 	void normalizeSizes();
 	void normalizeColors();
-	[[nodiscard]] std::vector<BucketInfo>
-	sortedBuckets(const Buckets &buckets, bool main) const;
+	[[nodiscard]] std::vector<BucketSortInfo>
+	sortedBuckets(const Buckets &buckets, AxisId axisIndex) const;
 	void addSpecLayout(Buckets &buckets);
-	void addAxisLayout(Buckets &subBuckets,
+	void addAxisLayout(Buckets &buckets,
 	    const std::size_t &mainBucketSize,
+	    const std::size_t &subBucketSize,
 	    const Data::DataTable &dataTable);
 };
 }

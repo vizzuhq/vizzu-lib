@@ -31,7 +31,7 @@ const testSteps = [
 		chart.animate({
 			config: {
 				title: 'Split Radial Bar Chart',
-				split: true
+				x: { split: true }
 			}
 		})
 ]

@@ -82,9 +82,6 @@ public:
 	    bool main,
 	    bool polarConnection);
 
-	[[nodiscard]] Geom::Rect toRectangle() const;
-	void fromRectangle(const Geom::Rect &rect);
-
 	[[nodiscard]] Math::Range<> getSizeBy(AxisId axisId) const;
 	void setSizeBy(AxisId axisId, Math::Range<> range);
 

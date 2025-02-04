@@ -11,12 +11,11 @@ const testSteps = [
 			config: {
 				channels: {
 					x: 'Year',
-					y: ['Value 2 (+)', 'Country'],
+					y: { set: ['Value 2 (+)', 'Country'], split: true },
 					color: 'Country'
 				},
 
-				geometry: 'area',
-				split: true
+				geometry: 'area'
 			}
 		}),
 
@@ -24,11 +23,10 @@ const testSteps = [
 		chart.animate({
 			config: {
 				channels: {
-					y: 'Value 2 (+)'
+					y: { set: 'Value 2 (+)', split: false }
 				},
 
-				geometry: 'line',
-				split: false
+				geometry: 'line'
 			}
 		}),
 	(chart) => {

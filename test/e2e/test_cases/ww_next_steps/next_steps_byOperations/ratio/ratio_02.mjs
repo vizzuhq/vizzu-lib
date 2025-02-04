@@ -20,10 +20,9 @@ const testSteps = [
 			config: {
 				channels: {
 					x: 'Year',
-					y: ['Country', 'Value 2 (+)']
+					y: { set: ['Country', 'Value 2 (+)'], align: 'stretch' }
 				},
-				title: 'Stack & Stretch Markers to See Ratio of Categories',
-				align: 'stretch'
+				title: 'Stack & Stretch Markers to See Ratio of Categories'
 			}
 		}),
 	(chart) => {

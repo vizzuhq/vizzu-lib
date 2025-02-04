@@ -382,10 +382,10 @@ std::multimap<std::string, event_as, std::less<>> get_events(
 	}
 
 	using clock_t = std::chrono::steady_clock;
-	chart.getAnimControl().update(clock_t::now());
+	chart.getAnimControl()->update(clock_t::now());
 	chart.setBoundRect(chart.getLayout().boundary);
 	chart.draw(MyCanvas{}.getCanvas());
-	chart.getAnimControl().update(clock_t::now());
+	chart.getAnimControl()->update(clock_t::now());
 
 	skip->*ends == "finished"_is_true;
 	return events;
@@ -433,8 +433,8 @@ const static auto tests =
 	using Axis = Vizzu::Events::Targets::Axis;
 	for (auto &&[beg, end] = events.equal_range("plot-axis-draw");
 	     const auto &[j, t, l] : values(subrange(beg, end)))
-		if (!isHorizontal(
-		        orientation(static_cast<Axis const &>(*t).axis)))
+		if (static_cast<Axis const &>(*t).axis
+		    == Vizzu::Gen::AxisId::y)
 			xCenter = std::get<Vizzu::Draw::Line>(l).line.begin.x;
 
 	std::set<double> zero_count{};

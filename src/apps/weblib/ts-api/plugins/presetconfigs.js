@@ -25,20 +25,18 @@ export const presetConfigs = {
 	splittedColumn: {
 		channels: {
 			x: { set: [{ name: 'x' }] },
-			y: { set: [{ name: 'y' }, { name: 'splittedBy' }] },
+			y: { set: [{ name: 'y' }, { name: 'splittedBy' }], split: true },
 			color: { set: [{ name: 'splittedBy' }] },
 			label: { set: [{ name: 'y' }] }
-		},
-		split: true
+		}
 	},
 	percentageColumn: {
 		channels: {
 			x: { set: [{ name: 'x' }] },
-			y: { set: [{ name: 'y' }, { name: 'stackedBy' }] },
+			y: { set: [{ name: 'y' }, { name: 'stackedBy' }], align: 'stretch' },
 			color: { set: [{ name: 'stackedBy' }] },
 			label: { set: [{ name: 'y' }] }
-		},
-		align: 'stretch'
+		}
 	},
 	waterfall: {
 		channels: {
@@ -46,8 +44,7 @@ export const presetConfigs = {
 			y: { set: [{ name: 'y' }, { name: 'x' }] },
 			label: { set: [{ name: 'y' }] },
 			color: { set: [{ name: 'y' }] }
-		},
-		align: 'stretch'
+		}
 	},
 	mekko: {
 		channels: {
@@ -60,11 +57,10 @@ export const presetConfigs = {
 	marimekko: {
 		channels: {
 			x: { set: [{ name: 'x' }, { name: 'groupedBy' }] },
-			y: { set: [{ name: 'y' }, { name: 'stackedBy' }] },
+			y: { set: [{ name: 'y' }, { name: 'stackedBy' }], align: 'stretch' },
 			color: { set: [{ name: 'stackedBy' }] },
 			label: { set: [{ name: 'x' }] }
-		},
-		align: 'stretch'
+		}
 	},
 	bar: {
 		channels: {
@@ -91,21 +87,19 @@ export const presetConfigs = {
 	},
 	splittedBar: {
 		channels: {
-			x: { set: [{ name: 'x' }, { name: 'splittedBy' }] },
+			x: { set: [{ name: 'x' }, { name: 'splittedBy' }], split: true },
 			y: { set: [{ name: 'y' }] },
 			color: { set: [{ name: 'splittedBy' }] },
 			label: { set: [{ name: 'x' }] }
-		},
-		split: true
+		}
 	},
 	percentageBar: {
 		channels: {
-			x: { set: [{ name: 'x' }, { name: 'stackedBy' }] },
+			x: { set: [{ name: 'x' }, { name: 'stackedBy' }], align: 'stretch' },
 			y: { set: [{ name: 'y' }] },
 			color: { set: [{ name: 'stackedBy' }] },
 			label: { set: [{ name: 'x' }] }
-		},
-		align: 'stretch'
+		}
 	},
 	lollipop: {
 		channels: {
@@ -152,58 +146,50 @@ export const presetConfigs = {
 	percentageArea: {
 		channels: {
 			x: { set: [{ name: 'x' }] },
-			y: { set: [{ name: 'y' }, { name: 'stackedBy' }] },
+			y: { set: [{ name: 'y' }, { name: 'stackedBy' }], align: 'stretch' },
 			color: { set: [{ name: 'stackedBy' }] }
 		},
-		align: 'stretch',
 		geometry: 'area'
 	},
 	splittedArea: {
 		channels: {
 			x: { set: [{ name: 'x' }] },
-			y: { set: [{ name: 'y' }, { name: 'splittedBy' }] },
+			y: { set: [{ name: 'y' }, { name: 'splittedBy' }], split: true },
 			color: { set: [{ name: 'splittedBy' }] }
 		},
-		split: true,
 		geometry: 'area'
 	},
 	stream: {
 		channels: {
 			x: { set: [{ name: 'x' }] },
-			y: { set: [{ name: 'y' }, { name: 'stackedBy' }] },
+			y: { set: [{ name: 'y' }, { name: 'stackedBy' }], align: 'center' },
 			color: { set: [{ name: 'stackedBy' }] }
 		},
-		geometry: 'area',
-		align: 'center'
+		geometry: 'area'
 	},
 	verticalStream: {
 		channels: {
-			x: { set: [{ name: 'x' }, { name: 'stackedBy' }] },
+			x: { set: [{ name: 'x' }, { name: 'stackedBy' }], align: 'center' },
 			y: { set: [{ name: 'y' }] },
 			color: { set: [{ name: 'stackedBy' }] }
 		},
-		geometry: 'area',
-		align: 'center'
+		geometry: 'area'
 	},
 	violin: {
 		channels: {
 			x: { set: [{ name: 'x' }] },
-			y: { set: [{ name: 'y' }, { name: 'splittedBy' }] },
+			y: { set: [{ name: 'y' }, { name: 'splittedBy' }], align: 'center', split: true },
 			color: { set: [{ name: 'splittedBy' }] }
 		},
-		geometry: 'area',
-		align: 'center',
-		split: true
+		geometry: 'area'
 	},
 	verticalViolin: {
 		channels: {
-			x: { set: [{ name: 'x' }, { name: 'splittedBy' }] },
+			x: { set: [{ name: 'x' }, { name: 'splittedBy' }], align: 'center', split: true },
 			y: { set: [{ name: 'y' }] },
 			color: { set: [{ name: 'splittedBy' }] }
 		},
-		geometry: 'area',
-		align: 'center',
-		split: true
+		geometry: 'area'
 	},
 	line: {
 		channels: {
@@ -281,13 +267,12 @@ export const presetConfigs = {
 	},
 	nestedDonut: {
 		channels: {
-			x: { set: [{ name: 'angle' }, { name: 'stackedBy' }] },
+			x: { set: [{ name: 'angle' }, { name: 'stackedBy' }], align: 'stretch' },
 			y: { set: [{ name: 'radius' }], range: { min: '-50%' } },
 			color: { set: [{ name: 'stackedBy' }] },
 			label: { set: [{ name: 'angle' }] }
 		},
-		coordSystem: 'polar',
-		align: 'stretch'
+		coordSystem: 'polar'
 	},
 	polarScatter: {
 		channels: {

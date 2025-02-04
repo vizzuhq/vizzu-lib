@@ -42,8 +42,7 @@ const testSteps = [
 					color: { set: ['Country'] }
 				},
 				title: 'Line Vertical',
-				geometry: 'line',
-				split: false
+				geometry: 'line'
 			}
 		}),
 

@@ -38,8 +38,7 @@ const testSteps = [
 						color: { set: ['Country'] }
 					},
 					title: 'Area Chart Vertical',
-					geometry: 'area',
-					split: false
+					geometry: 'area'
 				}
 			},
 			{

@@ -151,7 +151,7 @@ const testSteps = [
 		chart.animate({
 			config: {
 				channels: {
-					x: { set: ['Value 1 (+)', 'Country'] },
+					x: { set: ['Value 1 (+)', 'Country'], split: true },
 					y: { set: 'Value 3 (+)' },
 					noop: { set: 'Year' },
 					color: { set: 'Country' }
@@ -160,8 +160,7 @@ const testSteps = [
 				legend: 'color',
 				geometry: 'circle',
 				coordSystem: 'cartesian',
-				orientation: 'vertical',
-				split: true
+				orientation: 'vertical'
 			}
 		}),
 	(chart) =>
@@ -264,7 +263,7 @@ const testSteps = [
 			{
 				config: {
 					channels: {
-						x: { set: 'Value 1 (+)' },
+						x: { set: 'Value 1 (+)', split: false },
 						y: { set: 'Value 3 (+)' },
 						noop: { set: 'Year' },
 						size: { set: ['Country', 'Value 2 (+)'] },
@@ -273,8 +272,7 @@ const testSteps = [
 					title: '16 Scatter plot / Merge(?), Aggregate(?), - Discrete(?)',
 					legend: 'color',
 					geometry: 'circle',
-					coordSystem: 'cartesian',
-					split: false
+					coordSystem: 'cartesian'
 				}
 			},
 			{

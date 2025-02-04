@@ -18,12 +18,12 @@ const testSteps = [
 		chart.animate({
 			config: {
 				channels: {
+					x: { split: true },
 					y: { set: 'IMDb Rating', range: { max: '105%' } },
 					noop: 'Index'
 				},
 				title: "Let's See the Distribution by a New Measure",
-				orientation: 'vertical',
-				split: true
+				orientation: 'vertical'
 			}
 		}),
 	(chart) => {

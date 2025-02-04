@@ -2,8 +2,28 @@
 
 ## [Unreleased]
 
+### Fixed
+
+- Fix invalid read/write when animation is contiguous (onFinish callback calls setKeyframe).
+- Waterfall chart preset not aligned.
+- Split chart count negative values too.
+- Split chart handled when same dimension on main and sub axis.
+
+### Changed
+
+- Channels 'set' rewrite doesn't clear AxisChannel properties.
+- Split charts 
+  - axis line multiplication.
+  - axis labels multiplication.
+  - axis range interpretation differently for all split part.
+  - align center / stretch fix.
+
 ### Added
 
+- Separate Channel properties to AxisChannel properties at config.
+- Move split align sort and reverse to AxisChannel
+- Add new sorting strategy: 'byLabel'.
+- Enable split and align on mainAxis.
 - Add 'isContiguous' property for dimension series
 
 ## [0.16.0] - 2024-11-28

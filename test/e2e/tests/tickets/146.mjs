@@ -15,7 +15,7 @@ const testSteps = [
 				{
 					name: 'Val',
 					type: 'measure',
-					values: [3, -5, 4, -4, 6, 5, -5, 7, 6]
+					values: [3, -5, 4, -4, 6, 5, -3, 7, 6]
 				}
 			]
 		}
@@ -24,9 +24,17 @@ const testSteps = [
 	},
 	(chart) =>
 		chart.animate({
-			y: ['Colors', 'Val'],
+			y: { set: ['Colors', 'Val'], split: true },
 			x: 'Letters',
-			split: true
+			label: 'Val'
+		}),
+	(chart) =>
+		chart.animate({
+			y: { align: 'center' }
+		}),
+	(chart) =>
+		chart.animate({
+			y: { align: 'stretch' }
 		})
 ]
 

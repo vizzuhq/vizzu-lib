@@ -54,9 +54,9 @@ public:
 	{
 		return actPlot;
 	}
-	::Anim::Control &getAnimControl()
+	std::shared_ptr<::Anim::Control> getAnimControl()
 	{
-		return animator.getControl();
+		return animator.getActAnimation();
 	}
 	Anim::AnimationPtr getAnimation()
 	{

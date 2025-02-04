@@ -54,7 +54,7 @@ struct ChannelStats
 struct MeasureAxis
 {
 	::Anim::Interpolated<bool> enabled{false};
-	Math::Range<> range = Math::Range<>::Raw(0, 1);
+	Math::Range<> range{0, 1};
 	std::string series;
 	::Anim::String unit;
 	::Anim::Interpolated<double> step{1.0};
@@ -129,6 +129,7 @@ struct DimensionAxis
 	using Values = std::multimap<Data::SliceIndex, Item>;
 
 	double factor{};
+	bool hasMarker{};
 
 	DimensionAxis() = default;
 	bool add(const Data::SliceIndex &index,
@@ -168,8 +169,8 @@ struct DimensionAxis
 			[[nodiscard]] bool operator()(const Item &lhs,
 			    const Item &rhs) const
 			{
-				return Math::Floating::less(lhs.range.getMin(),
-				    rhs.range.getMin());
+				return Math::Floating::less(lhs.range.min,
+				    rhs.range.min);
 			}
 		};
 		return std::multiset<std::reference_wrapper<Item>,
@@ -196,6 +197,39 @@ struct Axis
 	[[nodiscard]] bool operator==(const Axis &other) const = default;
 };
 
+struct SplitAxis : Axis
+{
+	struct Part
+	{
+		double weight{1.0};
+		Math::Range<> range{0, 1};
+		Math::Range<> measureRange{0, 1};
+		bool unique{};
+
+		[[nodiscard]] bool operator==(
+		    const Part &other) const = default;
+
+		[[nodiscard]] consteval static auto members()
+		{
+			return std::tuple{&Part::weight,
+			    &Part::range,
+			    &Part::measureRange,
+			    std::ignore};
+		}
+	};
+
+	using Parts =
+	    std::multimap<std::optional<Data::SliceIndex>, Part>;
+	Parts parts;
+
+	[[nodiscard]] bool operator==(
+	    const SplitAxis &other) const = default;
+
+	friend SplitAxis interpolate(const SplitAxis &op0,
+	    const SplitAxis &op1,
+	    double factor);
+};
+
 struct Axises
 {
 	struct CalculatedLegend
@@ -206,7 +240,7 @@ struct Axises
 	};
 	std::array<std::optional<CalculatedLegend>, 2> leftLegend;
 
-	Refl::EnumArray<AxisId, Axis> axises;
+	Refl::EnumArray<AxisId, SplitAxis> axises;
 	struct Label
 	{
 		::Anim::String unit;
@@ -236,12 +270,12 @@ struct Axises
 		return leftLegend[0].emplace(legendType).calc;
 	}
 
-	[[nodiscard]] const Axis &at(AxisId axisType) const
+	[[nodiscard]] const SplitAxis &at(AxisId axisType) const
 	{
 		return axises[axisType];
 	}
 
-	[[nodiscard]] Axis &at(AxisId axisType)
+	[[nodiscard]] SplitAxis &at(AxisId axisType)
 	{
 		return axises[axisType];
 	}

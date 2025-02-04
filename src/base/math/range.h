@@ -21,24 +21,6 @@ template <std::floating_point T = double> struct Range
 	constexpr static auto less = Floating::less;
 	constexpr static auto is_zero = Floating::is_zero;
 
-	constexpr static Range<T> Raw(const T &min, const T &max)
-	{
-		Range<T> range;
-		range.min = min;
-		range.max = max;
-		return range;
-	}
-
-	constexpr Range() :
-	    min(std::numeric_limits<T>::max()),
-	    max(std::numeric_limits<T>::lowest())
-	{}
-
-	Range(const T &x, const T &y) :
-	    min(std::min(x, y, less)),
-	    max(std::max(x, y, less))
-	{}
-
 	[[nodiscard]] bool isReal() const
 	{
 		return min != std::numeric_limits<T>::max()
@@ -52,7 +34,7 @@ template <std::floating_point T = double> struct Range
 		min = std::min(min, value, less);
 	}
 
-	void include(const Range<T> &range)
+	void include(const Range &range)
 	{
 		include(range.min);
 		include(range.max);
@@ -60,18 +42,14 @@ template <std::floating_point T = double> struct Range
 
 	[[nodiscard]] bool includes(const T &value) const
 	{
-		return !less(value, min) && !less(max, value);
+		return !is_lt(std::weak_order(value, min))
+		    && !is_lt(std::weak_order(max, value));
 	}
 
-	[[nodiscard]] bool includes(const Range<T> &range) const
-	{
-		return !less(range.max, min) && !less(max, range.min);
-	}
-
-	[[nodiscard]] T rescale(const T &value) const
+	[[nodiscard]] T rescale(const T &value, T def = T{0.5}) const
 	{
 		auto s = size();
-		return is_zero(s) ? 0.5 : (value - min) / s;
+		return is_zero(s) ? def : (value - min) / s;
 	}
 
 	[[nodiscard]] T scale(const T &value) const
@@ -79,59 +57,55 @@ template <std::floating_point T = double> struct Range
 		return value * size() + min;
 	}
 
-	[[nodiscard]] Range<T> scale(const Range<T> &range) const
+	[[nodiscard]] Range scale(const Range &range) const
 	{
-		return Range<T>(scale(range.min), scale(range.max));
+		return {scale(range.min), scale(range.max)};
 	}
 
 	[[nodiscard]] T normalize(const T &value) const
 	{
-		return is_zero(max) ? 0 : value / max;
+		return is_zero(max) ? T{} : value / max;
 	}
 
-	[[nodiscard]] Range<T> normalize(const Range<T> &range) const
-	{
-		return Range<T>(normalize(range.min), normalize(range.max));
-	}
-
-	bool operator==(const Range<T> &other) const
+	bool operator==(const Range &other) const
 	{
 		return min == other.min && max == other.max;
 	}
 
-	Range<T> operator+(double shift) const
+	Range operator+(double shift) const
 	{
-		return Range<T>(min + shift, max + shift);
+		return {min + shift, max + shift};
 	}
 
-	Range<T> operator+(const Range<T> &other) const
+	Range operator+(const Range &other) const
 	{
-		return Range<T>(min + other.min, max + other.max);
+		return {min + other.min, max + other.max};
 	}
 
-	Range<T> operator-(double shift) const
+	Range operator-(double shift) const
 	{
-		return Range<T>(min - shift, max - shift);
+		return {min - shift, max - shift};
 	}
 
-	Range<T> operator*(double factor) const
+	Range operator*(double factor) const
 	{
-		return Range<T>(min * factor, max * factor);
+		return {min * factor, max * factor};
 	}
 
-	Range<T> operator/(double factor) const
+	Range operator/(double factor) const
 	{
-		return Range<T>(min / factor, max / factor);
+		return {min / factor, max / factor};
 	}
 
-	Range<T> operator*(const Transform &transf)
+	[[nodiscard]] Range operator*(const Transform &transf) const
 	{
 		return *this * transf.factor + transf.shift;
 	}
 
-	Transform operator/(const Range<T> range)
+	[[nodiscard]] Transform operator/(const Range range) const
 	{
-		auto factor = range.size() != 0 ? size() / range.size() : 0;
+		auto factor =
+		    is_zero(range.size()) ? T{} : size() / range.size();
 		auto shift = min - range.min * factor;
 		return Transform{factor, shift};
 	}
@@ -140,17 +114,28 @@ template <std::floating_point T = double> struct Range
 
 	[[nodiscard]] T size() const { return max - min; }
 
-	[[nodiscard]] T getMin() const { return min; }
-	[[nodiscard]] T getMax() const { return max; }
-
-	consteval static auto members()
+	[[nodiscard]] bool intersects(const Range<> &range) const
 	{
-		return std::tuple{&Range::min, &Range::max};
+		using Floating::is_zero;
+		auto first = std::strong_order(max, range.min);
+		auto second = std::strong_order(range.max, min);
+
+		auto isOutside =
+		    is_lt(first) || is_lt(second)
+		    || ((is_eq(first) || is_eq(second)) && !is_zero(size())
+		        && !is_zero(range.size()));
+
+		return !isOutside;
 	}
 
-protected:
-	T min;
-	T max;
+	[[nodiscard]] Range positive() const
+	{
+		auto &&[min, max] = std::minmax(this->min, this->max, less);
+		return {min, max};
+	}
+
+	T min{std::numeric_limits<T>::max()};
+	T max{std::numeric_limits<T>::lowest()};
 };
 
 }

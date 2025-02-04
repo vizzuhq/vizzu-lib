@@ -76,6 +76,12 @@ definitions:
                 oneOf:
                     - type: number
                     - { type: string, enum: [auto] }
+
+    AxisChannel:
+        description: |
+            AxisChannels are special channel settings for the positional channels.
+        type: object
+        properties:
             axis:
                 description: Enables the axis line on axis channels.
                 $ref: AutoBool
@@ -102,6 +108,29 @@ definitions:
                 oneOf:
                     - type: number
                     - { type: string, enum: [auto] }
+            sort:
+                description: |
+                    - 'none': markers are sorted in the order as the corresponding data 
+                              appear in the data set.
+                    - 'byValue': markers will be sorted by the corresponding measure (if present)
+                    in decreasing order.
+                    - 'byLabel': markers will be sorted by the corresponding shown categories 
+                    (if present) in natural order (ASCII case-insensitive, space-insensitive 
+                    alphabetical order and numbers are compared by value).
+                type: string
+                enum: [none, byValue, byLabel]
+            reverse:
+                description: Reverts the order of the markers if set.
+                type: boolean
+            align:
+                description: |
+                    Sets the alignment of the markers along the axis.
+                type: string
+                enum: [none, center, stretch]
+            split:
+                description: |
+                    If set to true, markers will be split by the dimension(s) along the axis.
+                type: boolean
 
     Channels:
         description: |
@@ -109,14 +138,18 @@ definitions:
         type: object
         properties:
             x:
-                $ref: Channel
+                allOf:
+                    - $ref: Channel
+                    - $ref: AxisChannel
                 description: |
                     Parameters for the X-axis, determining the position of the markers on the 
                     x-axis - or their angle when using polar coordinates. 
                     Note: leaving x and y channels empty will result in a 
                     chart "without coordinates" like a Treemap or a Bubble Chart.
             y:
-                $ref: Channel
+                allOf:
+                    - $ref: Channel
+                    - $ref: AxisChannel
                 description: |
                     Parameters for the Y-axis, determining the position of the markers on the 
                     y-axis - or their radius when using polar coordinates) .
@@ -208,31 +241,6 @@ definitions:
                     are oriented to.
                 type: string
                 enum: [auto, horizontal, vertical]
-            sort:
-                description: |
-                    - 'none': markers are sorted in the order as the corresponding data 
-                              appear in the data set.
-                    - 'byValue': markers will be sorted by the corresponding measure (if present)
-                    in decreasing order.
-                type: string
-                enum: [none, byValue]
-            reverse:
-                description: Reverts the order of the markers if set.
-                type: boolean
-            align:
-                description: |
-                    Sets the alignment of the markers with relation to the x- or the y-axis depending
-                    on where the measure is. In case both axes have measures on them, this is determined 
-                    by the `orientation` of the chart.
-                type: string
-                enum: [none, center, stretch]
-            split:
-                description: |
-                    If set to true, markers will be split by the dimension(s) along the axis.
-                    This works if you have at least one dimension and a measure on the same axis.In case 
-                    both axes have measures and dimension(s) on them, this is determined by the 
-                    `orientation` of the chart.
-                type: boolean
             tooltip:
                 description: |
                     Unique identifier of the marker, the tooltip should be turned on. This parameter is

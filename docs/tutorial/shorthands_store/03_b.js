@@ -9,10 +9,10 @@ chart
 			},
 			// y: { detach: [ 'Kinds' ] },
 			y: {
-				detach: 'Kinds'
+				detach: 'Kinds',
+				align: 'none'
 			}
-		},
-		align: 'none'
+		}
 	})
 	.activated.then((control) => {
 		animation = control.store()

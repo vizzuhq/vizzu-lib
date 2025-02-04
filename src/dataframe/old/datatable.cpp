@@ -16,6 +16,7 @@
 
 #include "base/conv/auto_json.h"
 #include "base/conv/numtostr.h"
+#include "base/conv/tostring.h"
 #include "base/refl/auto_enum.h"
 #include "base/text/smartstring.h"
 #include "chart/options/options.h"

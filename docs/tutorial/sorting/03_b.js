@@ -1,6 +1,8 @@
 chart.animate({
 	config: {
-		sort: 'none',
-		reverse: false
+		x: {
+			sort: 'none',
+			reverse: false
+		}
 	}
 })

@@ -35,12 +35,11 @@ const testSteps = [
 		chart.animate({
 			config: {
 				channels: {
-					x: { set: 'Value 1 (+)' },
+					x: { set: 'Value 1 (+)', align: 'stretch' },
 					y: { set: ['Year', 'Value 2 (+)'], labelLevel: 0 },
 					color: null
 				},
-				title: 'Stack Disc & Remove Color & change Conti & Stretch & axisLabel off',
-				align: 'stretch'
+				title: 'Stack Disc & Remove Color & change Conti & Stretch & axisLabel off'
 			},
 			style: {
 				plot: {
@@ -69,12 +68,11 @@ const testSteps = [
 		chart.animate({
 			config: {
 				channels: {
-					x: { set: ['Joy factors', 'Value 1 (+)'] },
+					x: { set: ['Joy factors', 'Value 1 (+)'], align: 'none' },
 					y: { set: 'Value 2 (+)' },
 					color: { set: 'Joy factors' }
 				},
-				title: 'Group new Disc & Add new Disc Color & Stretch off & axisLabel on',
-				align: 'none'
+				title: 'Group new Disc & Add new Disc Color & Stretch off & axisLabel on'
 			},
 			style: {
 				plot: {

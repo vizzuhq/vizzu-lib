@@ -33,6 +33,12 @@ std::string Config::paramsJson()
 		for (const auto &param : channelParams)
 			arr << "channels." + std::string{channelName} + "."
 			           + std::string{param};
+
+		if (channelName == "x" || channelName == "y")
+			for (const auto &param :
+			    getAccessorNames<AxisChannelProperties>())
+				arr << "channels." + std::string{channelName} + "."
+				           + std::string{param};
 	}
 	return res;
 }
@@ -83,35 +89,39 @@ void Config::setChannelParam(const std::string &path,
 
 	if (property == "set") {
 		if (parts.size() == 3) {
-			channel.reset();
+			channel.set = {};
 			options.markersInfo.clear();
 			return;
 		}
 
-		if (auto &listParser = ChannelSeriesList::Parser::instance();
-		    parts.size() == 4) {
+		auto &listParser = ChannelSeriesList::Parser::instance();
+		if (parts.size() == 4) {
 			if (parts[3] == "begin") {
-				if (parts[2] == "set") channel.reset();
-
+				if (parts[2] == "set") channel.set = {};
 				options.markersInfo.clear();
 				listParser.table = &table.get();
 				listParser.channels.resize(std::stoull(value));
 				return;
 			}
-
 			listParser.current = std::nullopt;
-			listParser.path = parts;
 		}
-		else {
+		else
 			listParser.current = std::stoull(parts.at(3));
-			listParser.path = parts;
-		}
+		listParser.path = parts;
 	}
 
 	if (property == "range") property += "." + parts.at(3);
 
 	if (auto &&accessor = getAccessor<Channel>(property).set)
 		accessor(channel, value);
+	else if (auto &&axisAccessor =
+	             getAccessor<AxisChannelProperties>(property).set;
+	         (channelId == AxisId::x || channelId == AxisId::y)
+	         && axisAccessor)
+		axisAccessor(
+		    options.getChannels().axisPropsAt(
+		        channelId == AxisId::x ? AxisId::x : AxisId::y),
+		    value);
 	else
 		throw std::logic_error(
 		    path + "/" + value
@@ -130,6 +140,11 @@ std::string Config::getChannelParam(const std::string &path) const
 
 	if (auto &&accessor = getAccessor<Channel>(property).get)
 		return accessor(channel);
+	if (auto &&axisAccessor =
+	        getAccessor<AxisChannelProperties>(property).get;
+	    (id == AxisId::x || id == AxisId::y) && axisAccessor)
+		return axisAccessor(options.get().getChannels().axisPropsAt(
+		    id == AxisId::x ? AxisId::x : AxisId::y));
 
 	throw std::logic_error(path + ": invalid channel parameter");
 }

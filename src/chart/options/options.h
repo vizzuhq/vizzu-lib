@@ -14,12 +14,10 @@
 #include "base/math/range.h"
 #include "dataframe/old/types.h"
 
-#include "align.h"
 #include "autoparam.h"
 #include "channels.h"
 #include "coordsystem.h"
 #include "shapetype.h"
-#include "sort.h"
 
 namespace Vizzu::Gen
 {
@@ -41,10 +39,6 @@ struct OptionProperties
 	double angle{};
 	::Anim::Interpolated<ShapeType> geometry{ShapeType::rectangle};
 	Orientation orientation{OrientationType{}};
-	Sort sort{Sort::none};
-	bool reverse{};
-	Base::Align::Type align{Base::Align::Type::none};
-	bool split{};
 };
 
 class Options : public OptionProperties
@@ -146,10 +140,11 @@ public:
 		return channels.at(stackChannelType());
 	}
 
-	[[nodiscard]] bool hasDimensionToSplit() const;
-	[[nodiscard]] bool isSplit() const
+	[[nodiscard]] bool hasDimensionToSplit(AxisId at) const;
+	[[nodiscard]] bool isSplit(AxisId byAxis) const
 	{
-		return split && hasDimensionToSplit();
+		return getChannels().axisPropsAt(byAxis).split
+		    && hasDimensionToSplit(byAxis);
 	}
 	Data::Filter dataFilter;
 	std::optional<MarkerIndex> tooltip;
@@ -166,27 +161,6 @@ public:
 	void simplify();
 
 	[[nodiscard]] AxisId getHorizontalChannel() const;
-	[[nodiscard]] AxisId getVerticalChannel() const;
-
-	[[nodiscard]] const Channel &getHorizontalAxis() const
-	{
-		return channels.at(getHorizontalChannel());
-	}
-
-	[[nodiscard]] const Channel &getVerticalAxis() const
-	{
-		return channels.at(getVerticalChannel());
-	}
-
-	Channel &getHorizontalAxis()
-	{
-		return channels.at(getHorizontalChannel());
-	}
-
-	Channel &getVerticalAxis()
-	{
-		return channels.at(getVerticalChannel());
-	}
 
 	[[nodiscard]] bool isShapeValid(const ShapeType &) const;
 	[[nodiscard]] std::optional<MarkerInfoId> getMarkerInfoId(
@@ -194,7 +168,9 @@ public:
 	static MarkerInfoId generateMarkerInfoId();
 
 	void setAutoParameters();
-	void setAutoRange(bool hPositive, bool vPositive);
+	void setAutoRange(bool hPositive,
+	    bool vPositive,
+	    bool isSplit = false);
 
 	[[nodiscard]] bool labelsShownFor(
 	    const Data::SeriesIndex &series) const;
@@ -206,7 +182,9 @@ private:
 	    []<std::size_t... Ix>(std::index_sequence<Ix...>)
 	    {
 		    return decltype(channels){
-		        Channel::makeChannel(static_cast<ChannelId>(Ix))...};
+		        {{Channel::makeChannel(
+		            static_cast<ChannelId>(Ix))...}},
+		        {}};
 	    }(std::make_index_sequence<
 	        std::tuple_size_v<decltype(channels)::base_array>>{})};
 

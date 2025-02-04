@@ -35,7 +35,7 @@ const testSteps = [
 		chart.animate({
 			config: {
 				channels: {
-					y: { set: 'Joy factors', range: { min: '-30%' } },
+					y: { set: 'Joy factors', range: { min: '-30%' }, sort: 'byValue' },
 					x: ['Country_code', 'Value 2 (+)'],
 					label: null,
 					/* The stacking is eliminated when we remove
@@ -44,8 +44,7 @@ const testSteps = [
 				},
 
 				geometry: 'rectangle',
-				coordSystem: 'polar',
-				sort: 'byValue'
+				coordSystem: 'polar'
 			}
 		}),
 

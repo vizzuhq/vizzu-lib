@@ -15,6 +15,7 @@ namespace Vizzu::Gen
 struct Channels : Refl::EnumArray<ChannelId, Channel>
 {
 	using IndexSet = std::set<Data::SeriesIndex>;
+	EnumArray<AxisId, AxisChannelProperties> axisProps;
 
 	[[nodiscard]] bool anyAxisSet() const;
 	[[nodiscard]] bool isEmpty() const;
@@ -35,6 +36,17 @@ struct Channels : Refl::EnumArray<ChannelId, Channel>
 	template <ChannelIdLike T> [[nodiscard]] Channel &at(const T &id)
 	{
 		return at(+id);
+	}
+
+	[[nodiscard]] const AxisChannelProperties &axisPropsAt(
+	    const AxisId &id) const
+	{
+		return axisProps[id];
+	}
+
+	[[nodiscard]] AxisChannelProperties &axisPropsAt(const AxisId &id)
+	{
+		return axisProps[id];
 	}
 
 	void removeSeries(const Data::SeriesIndex &index);

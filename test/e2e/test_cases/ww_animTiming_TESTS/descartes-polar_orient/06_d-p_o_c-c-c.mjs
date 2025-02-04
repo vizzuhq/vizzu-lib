@@ -45,8 +45,7 @@ const testSteps = [
 				title: 'Radial Dot',
 				geometry: 'circle',
 				coordSystem: 'polar',
-				orientation: 'horizontal',
-				split: false
+				orientation: 'horizontal'
 			}
 		}),
 

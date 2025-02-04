@@ -5,11 +5,11 @@ const testSteps = [
 				series: [
 					{
 						name: 'Foo',
-						values: ['Alice', 'Bob', 'Ted', 'Alice', 'Bob', 'Ted', 'Alice']
+						values: ['Ted', 'Alice', 'Bob', 'Ted', 'Alice', 'Bob', 'Ted']
 					},
 					{ name: 'Foo2', values: ['A', 'A', 'A', 'B', 'B', 'B', 'A'] },
 					{ name: 'Foo3', values: ['X', 'Y', 'Z', 'X', 'Y', 'Z', 'Y'] },
-					{ name: 'Bar', values: [15, 32, 12, 23, 41, 31, 1] }
+					{ name: 'Bar', values: [23, 32, 12, 15, 41, 31, 1] }
 				]
 			}
 		}),
@@ -21,7 +21,7 @@ const testSteps = [
 		}),
 	(chart) =>
 		chart.animate({
-			sort: 'byValue'
+			x: { sort: 'byValue' }
 		}),
 	(chart) =>
 		chart.animate({
@@ -30,7 +30,8 @@ const testSteps = [
 		}),
 	(chart) =>
 		chart.animate({
-			sort: 'none'
+			x: { set: ['Foo2', 'Foo'], labelLevel: 1, sort: 'byLabel' },
+			y: { reverse: true }
 		})
 ]
 

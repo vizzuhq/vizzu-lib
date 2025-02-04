@@ -302,7 +302,7 @@ struct DataPoint
 
 	[[nodiscard]] Math::Range<> lightnessRange() const
 	{
-		return Math::Range<>::Raw(*minLightness, *maxLightness);
+		return {*minLightness, *maxLightness};
 	}
 };
 
@@ -365,6 +365,11 @@ struct PlotParams
 struct Plot : Padding, Box, PlotParams
 {
 	[[nodiscard]] const Axis &getAxis(Gen::AxisId id) const
+	{
+		return id == Gen::AxisId::x ? xAxis : yAxis;
+	}
+
+	[[nodiscard]] Axis &getAxis(Gen::AxisId id)
 	{
 		return id == Gen::AxisId::x ? xAxis : yAxis;
 	}

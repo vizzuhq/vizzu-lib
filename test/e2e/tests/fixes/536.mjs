@@ -11,11 +11,10 @@ const testSteps = [
 	(chart) =>
 		chart.animate({
 			channels: {
-				x: 'Foo',
+				x: { set: 'Foo', reverse: true },
 				y: 'Bar'
 			},
-			geometry: 'area',
-			reverse: true
+			geometry: 'area'
 		}),
 
 	(chart) =>
@@ -24,13 +23,13 @@ const testSteps = [
 		}),
 	(chart) =>
 		chart.animate({
+			x: { sort: 'byValue' },
 			coordSystem: 'cartesian',
-			geometry: 'line',
-			sort: 'byValue'
+			geometry: 'line'
 		}),
 	(chart) =>
 		chart.animate({
-			reverse: false
+			x: { reverse: false }
 		})
 ]
 

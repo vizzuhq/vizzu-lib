@@ -8,6 +8,7 @@
 #include <utility>
 
 #include "base/anim/interpolated.h"
+#include "base/geom/affinetransform.h"
 #include "base/geom/point.h"
 #include "base/geom/rect.h"
 #include "base/gfx/colortransform.h"
@@ -27,28 +28,35 @@
 namespace Vizzu::Draw
 {
 
-void DrawInterlacing::drawGeometries(Gen::AxisId axisIndex) const
+void DrawInterlacing::drawGeometries(Gen::AxisId axisIndex,
+    const Math::Range<> &filter,
+    const Math::Range<> &otherFilter,
+    const Geom::AffineTransform &tr,
+    double w) const
 {
 	const auto &guides = parent.plot->guides.at(axisIndex);
 	const auto &axisStyle = parent.rootStyle.plot.getAxis(axisIndex);
 	if (axisStyle.interlacing.color->isTransparent()
-	    || guides.interlacings == false)
+	    || guides.interlacings == false
+	    || Math::Floating::is_zero(otherFilter.size()))
 		return;
 
-	auto otherWeights = getInterlacingWeights(!axisIndex);
+	auto otherWeights =
+	    getInterlacingWeights(!axisIndex, otherFilter);
 	auto &&otherInterlacingColor =
 	    *parent.rootStyle.plot.getAxis(!axisIndex).interlacing.color;
 
 	parent.painter.setPolygonToCircleFactor(0);
 	parent.painter.setPolygonStraightFactor(0);
 
-	for (const auto &interval : parent.getIntervals(axisIndex)) {
+	for (const auto &interval :
+	    parent.getIntervals(axisIndex, filter)) {
 		if (Math::Floating::is_zero(interval.isSecond)) continue;
-		auto clippedBottom = std::max(interval.range.getMin(),
-		    0.0,
+		auto clippedBottom = std::max(interval.range.min,
+		    filter.min,
 		    Math::Floating::less);
-		auto clippedSize = std::min(interval.range.getMax(),
-		                       1.0,
+		auto clippedSize = std::min(interval.range.max,
+		                       filter.max,
 		                       Math::Floating::less)
 		                 - clippedBottom;
 
@@ -56,14 +64,16 @@ void DrawInterlacing::drawGeometries(Gen::AxisId axisIndex) const
 		                const double &from,
 		                const double &to)
 		{
-			return Geom::Rect{
-			    Geom::Point::Coord(orientation, clippedBottom, from),
-			    {Geom::Size::Coord(orientation,
+			return Geom::Rect{tr(Geom::Point::Coord(orientation,
+			                      clippedBottom,
+			                      from)),
+			    tr(Geom::Size::Oriented(orientation,
 			        clippedSize,
-			        to - from)}};
+			        to - from))};
 		};
 
-		auto weight = Math::FuzzyBool::And<double>(interval.weight,
+		auto weight = Math::FuzzyBool::And<double>(w,
+		    interval.weight,
 		    interval.isSecond,
 		    guides.interlacings);
 		auto interlacingColor = *axisStyle.interlacing.color * weight;
@@ -91,7 +101,11 @@ void DrawInterlacing::drawGeometries(Gen::AxisId axisIndex) const
 	}
 }
 
-void DrawInterlacing::drawTexts(Gen::AxisId axisIndex) const
+void DrawInterlacing::drawTexts(Gen::AxisId axisIndex,
+    const Math::Range<> &filter,
+    const Geom::AffineTransform &tr,
+    double w,
+    bool onlyOne) const
 {
 	const auto &axis = parent.getAxis(axisIndex).measure;
 	auto orientation = !Gen::orientation(axisIndex);
@@ -113,25 +127,64 @@ void DrawInterlacing::drawTexts(Gen::AxisId axisIndex) const
 
 	if (!needText && !needTick) return;
 
-	for (const auto &sep : parent.getSeparators(axisIndex)) {
+	std::array<std::array<const DrawAxes::Separator *, 2>, 2>
+	    latests{};
+
+	if (needText && onlyOne)
+		for (const auto &sep :
+		    parent.getSeparators(axisIndex, filter)) {
+			if (!sep.label) continue;
+			if (auto &&cmp = std::weak_order(*sep.label, 0.0);
+			    !is_eq(cmp)
+			    && (!latests[is_lt(cmp)][0]
+			        || std::abs(*latests[is_lt(cmp)][0]->label)
+			               < std::abs(*sep.label))) {
+				auto &[f, s] = latests[is_lt(cmp)];
+				if (!s)
+					s = std::addressof(sep);
+				else if (std::abs(*s->label) < std::abs(*sep.label)) {
+					if (Math::AddTolerance(s->weight + sep.weight)
+					    == 1.0)
+						f = s;
+					else if (f
+					         && Math::AddTolerance(
+					                f->weight + sep.weight)
+					                > 1.0)
+						f = nullptr;
+					s = std::addressof(sep);
+				}
+				else if (Math::AddTolerance(s->weight + sep.weight)
+				         == 1.0)
+					f = std::addressof(sep);
+			}
+		}
+
+	for (const auto &sep : parent.getSeparators(axisIndex, filter)) {
 		auto tickPos =
 		    Geom::Point::Coord(orientation, origo, sep.position);
-		if (needText && sep.label)
+		if (needText && sep.label
+		    && (!onlyOne || &sep == latests[0][0]
+		        || &sep == latests[0][1] || &sep == latests[1][0]
+		        || &sep == latests[1][1]))
 			drawDataLabel(axis.enabled,
 			    axisIndex,
 			    tickPos,
+			    tr,
 			    *sep.label,
 			    axis.unit,
-			    Math::FuzzyBool::And<double>(sep.weight,
+			    Math::FuzzyBool::And<double>(w,
+			        sep.weight,
 			        guides.labels));
 
 		if (needTick)
 			drawSticks(tickLength,
 			    *axisStyle.ticks.color
-			        * Math::FuzzyBool::And<double>(sep.weight,
+			        * Math::FuzzyBool::And<double>(w,
+			            sep.weight,
 			            guides.axisSticks),
 			    axisIndex,
-			    tickPos);
+			    tickPos,
+			    tr);
 	}
 }
 
@@ -159,6 +212,7 @@ void DrawInterlacing::drawDataLabel(
     const ::Anim::Interpolated<bool> &axisEnabled,
     Gen::AxisId axisIndex,
     const Geom::Point &tickPos,
+    const Geom::AffineTransform &tr,
     double value,
     const ::Anim::String &unit,
     double alpha) const
@@ -193,10 +247,10 @@ void DrawInterlacing::drawDataLabel(
 		               : labelStyle.side->factor(
 		                   Styles::AxisLabel::Side::negative);
 
-		auto &&posDir =
-		    parent.coordSys
-		        .convertDirectionAt({refPos, refPos + normal})
-		        .extend(1 - 2 * under);
+		auto &&posDir = parent.coordSys
+		                    .convertDirectionAt(tr(
+		                        Geom::Line{refPos, refPos + normal}))
+		                    .extend(1 - 2 * under);
 
 		auto &&wUnit = unit.get_or_first(index);
 		auto str = Text::SmartString::fromPhysicalValue(value,
@@ -220,7 +274,8 @@ void DrawInterlacing::drawDataLabel(
 void DrawInterlacing::drawSticks(double tickLength,
     const Gfx::Color &tickColor,
     Gen::AxisId axisIndex,
-    const Geom::Point &tickPos) const
+    const Geom::Point &tickPos,
+    const Geom::AffineTransform &tr) const
 {
 	auto &canvas = parent.canvas;
 	const auto &tickStyle =
@@ -235,11 +290,11 @@ void DrawInterlacing::drawSticks(double tickLength,
 
 	auto tickLine = tickStyle.position->combine(
 	    [tickLine = parent.coordSys
-	                    .convertDirectionAt({tickPos,
+	                    .convertDirectionAt(tr(Geom::Line{tickPos,
 	                        tickPos
 	                            + Geom::Point::Coord(
 	                                !orientation(axisIndex),
-	                                -1.0)})
+	                                -1.0)}))
 	                    .segment(0, tickLength)](const auto &position)
 	    {
 		    switch (position) {
@@ -264,9 +319,11 @@ void DrawInterlacing::drawSticks(double tickLength,
 }
 
 std::map<double, double> DrawInterlacing::getInterlacingWeights(
-    Gen::AxisId axisIndex) const
+    Gen::AxisId axisIndex,
+    const Math::Range<> &filter) const
 {
-	std::map<double, double> weights{{0.0, 0.0}, {1.0, 0.0}};
+	std::map<double, double> weights{{filter.min, 0.0},
+	    {filter.max, 0.0}};
 
 	auto &&guides = parent.plot->guides.at(axisIndex);
 	auto &&axisStyle = parent.rootStyle.plot.getAxis(axisIndex);
@@ -275,9 +332,12 @@ std::map<double, double> DrawInterlacing::getInterlacingWeights(
 		return weights;
 
 	for (auto &&interval : parent.getIntervals(axisIndex)) {
-		if (Math::Floating::is_zero(interval.isSecond)) continue;
-		auto min = std::max(interval.range.getMin(), 0.0);
-		auto max = std::min(interval.range.getMax(), 1.0);
+		if (Math::Floating::is_zero(interval.isSecond)
+		    || !interval.range.intersects(filter))
+			continue;
+		auto min = std::max(interval.range.min, filter.min);
+		auto max = std::min(interval.range.max, filter.max);
+
 		auto mprev = std::prev(weights.upper_bound(min));
 		auto mnext = weights.lower_bound(max);
 

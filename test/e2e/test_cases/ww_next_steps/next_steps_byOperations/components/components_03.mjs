@@ -11,18 +11,17 @@ const testSteps = [
 					y: ['Country', 'Value 2 (+)'],
 					color: 'Country'
 				},
-				title: 'Stacked Column',
-				split: false
+				title: 'Stacked Column'
 			}
 		}),
 	(chart) =>
 		chart.animate({
 			config: {
 				channels: {
-					label: 'Value 2 (+)'
+					label: 'Value 2 (+)',
+					y: { split: true }
 				},
-				title: 'Split Components to See them Separately',
-				split: true
+				title: 'Split Components to See them Separately'
 			},
 			style: {
 				plot: {

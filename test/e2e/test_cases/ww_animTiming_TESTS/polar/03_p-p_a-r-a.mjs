@@ -26,9 +26,7 @@ const testSteps = [
 					color: { set: ['Country'] }
 				},
 				title: 'Stacked Coxcomb',
-				geometry: 'rectangle',
-				//            orientation: 'horizontal',
-				split: false
+				geometry: 'rectangle'
 			}
 		}),
 

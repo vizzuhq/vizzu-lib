@@ -22,6 +22,7 @@
 #include "base/math/renard.h"
 #include "base/refl/auto_enum.h"
 #include "base/type/booliter.h"
+#include "chart/generator/axis.h"
 #include "chart/generator/plot.h" // NOLINT(misc-include-cleaner)
 #include "chart/main/events.h"
 #include "chart/main/style.h"
@@ -39,20 +40,89 @@ namespace Vizzu::Draw
 
 void DrawAxes::drawGeometries() const
 {
-	DrawInterlacing{*this}.drawGeometries(Gen::AxisId::y);
-	DrawInterlacing{*this}.drawGeometries(Gen::AxisId::x);
+	auto origo = this->origo();
+	for (auto &&xSplit : std::views::values(splits[Gen::AxisId::x]))
+		for (auto &&ySplit :
+		    std::views::values(splits[Gen::AxisId::y])) {
+			auto weight =
+			    Math::FuzzyBool::And(xSplit.weight, ySplit.weight);
+			if (Math::Floating::is_zero(weight)) continue;
 
-	drawAxis(Gen::AxisId::x);
-	drawAxis(Gen::AxisId::y);
+			const Geom::AffineTransform tr{xSplit.range.size(),
+			    0.0,
+			    xSplit.range.min,
+			    0.0,
+			    ySplit.range.size(),
+			    ySplit.range.min};
 
-	DrawGuides{*this}.draw(Gen::AxisId::x);
-	DrawGuides{*this}.draw(Gen::AxisId::y);
+			DrawInterlacing{*this}.drawGeometries(Gen::AxisId::y,
+			    ySplit.measureRange,
+			    xSplit.measureRange,
+			    tr,
+			    weight);
+			DrawInterlacing{*this}.drawGeometries(Gen::AxisId::x,
+			    xSplit.measureRange,
+			    ySplit.measureRange,
+			    tr,
+			    weight);
+
+			if (ySplit.measureRange.includes(
+			        origo.getCoord(orientation(Gen::AxisId::y))))
+				drawAxis(Gen::AxisId::x,
+				    xSplit.measureRange,
+				    tr,
+				    weight);
+			if (xSplit.measureRange.includes(
+			        origo.getCoord(orientation(Gen::AxisId::x))))
+				drawAxis(Gen::AxisId::y,
+				    ySplit.measureRange,
+				    tr,
+				    weight);
+
+			DrawGuides{*this}.draw(Gen::AxisId::x,
+			    xSplit.measureRange,
+			    ySplit.measureRange,
+			    tr,
+			    weight);
+			DrawGuides{*this}.draw(Gen::AxisId::y,
+			    ySplit.measureRange,
+			    xSplit.measureRange,
+			    tr,
+			    weight);
+		}
 }
 
 void DrawAxes::drawLabels() const
 {
-	DrawInterlacing{*this}.drawTexts(Gen::AxisId::y);
-	DrawInterlacing{*this}.drawTexts(Gen::AxisId::x);
+	auto &&yValues = std::views::values(splits[Gen::AxisId::y]);
+	for (auto &&ySplit : yValues) {
+		const Geom::AffineTransform tr{1,
+		    0.0,
+		    0.0,
+		    0.0,
+		    ySplit.range.size(),
+		    ySplit.range.min};
+		DrawInterlacing{*this}.drawTexts(Gen::AxisId::y,
+		    ySplit.measureRange,
+		    tr,
+		    ySplit.weight,
+		    yValues.size() > 1 && !ySplit.unique);
+	}
+
+	auto &&xValues = std::views::values(splits[Gen::AxisId::x]);
+	for (auto &&xSplit : xValues) {
+		const Geom::AffineTransform tr{xSplit.range.size(),
+		    0.0,
+		    xSplit.range.min,
+		    0.0,
+		    1.0,
+		    0.0};
+		DrawInterlacing{*this}.drawTexts(Gen::AxisId::x,
+		    xSplit.measureRange,
+		    tr,
+		    xSplit.weight,
+		    xValues.size() > 1 && !xSplit.unique);
+	}
 
 	drawDimensionLabels(Gen::AxisId::x);
 	drawDimensionLabels(Gen::AxisId::y);
@@ -64,7 +134,12 @@ void DrawAxes::drawLabels() const
 const DrawAxes &&DrawAxes::init() &&
 {
 	for (auto axisIndex : Refl::enum_values<Gen::AxisId>()) {
-		const auto &axis = getAxis(axisIndex);
+		const auto &axis = plot->axises.at(axisIndex);
+
+		const static Gen::SplitAxis::Parts oneSized{
+		    {std::nullopt, Gen::SplitAxis::Part{}}};
+		splits[axisIndex] =
+		    axis.parts.empty() ? oneSized : axis.parts;
 
 		auto measEnabled = axis.measure.enabled.combine<double>();
 		auto &intervals = this->intervals[axisIndex];
@@ -81,7 +156,7 @@ const DrawAxes &&DrawAxes::init() &&
 			           guides.interlacings.more())
 			           != false;
 
-			intervals.emplace_back(item.range,
+			intervals.emplace_back(item.range.positive(),
 			    weight,
 			    Math::FuzzyBool::And<double>(
 			        Math::Niebloid::interpolate(
@@ -108,24 +183,26 @@ const DrawAxes &&DrawAxes::init() &&
 			        !item.startPos.isAuto() && *item.startPos,
 			        !item.endPos.isAuto() && *item.endPos,
 			        axis.dimension.factor);
-			    needSeparators && sepWeight > 0
-			    && item.range.getMin() > 0)
-				separators.emplace_back(item.range.getMin(),
-				    sepWeight);
+			    needSeparators && sepWeight > 0 && item.range.min > 0)
+				separators.emplace_back(item.range.min, sepWeight);
 		}
 
 		if (measEnabled == 0.0) continue;
 		auto step = axis.measure.step.combine();
 
+		using Math::Floating::less;
+
 		auto &&[min, max] = std::minmax(
 		    axis.measure.step.get_or_first(::Anim::first).value,
 		    axis.measure.step.get_or_first(::Anim::second).value,
-		    Math::Floating::less);
+		    less);
 
 		auto stepHigh =
-		    std::clamp(Math::Renard::R5().ceil(step), min, max);
-		auto stepLow =
-		    std::clamp(Math::Renard::R5().floor(step), min, max);
+		    std::clamp(Math::Renard::R5().ceil(step), min, max, less);
+		auto stepLow = std::clamp(Math::Renard::R5().floor(step),
+		    min,
+		    max,
+		    less);
 
 		if (Math::Floating::is_zero(axis.measure.range.size()))
 			step = stepHigh = stepLow = 1.0;
@@ -134,7 +211,7 @@ const DrawAxes &&DrawAxes::init() &&
 			generateMeasure(axisIndex, step, measEnabled);
 		else {
 			auto highWeight =
-			    Math::Range<>::Raw(stepLow, stepHigh).rescale(step);
+			    Math::Range<>{stepLow, stepHigh}.rescale(step);
 
 			generateMeasure(axisIndex,
 			    stepLow,
@@ -167,11 +244,11 @@ void DrawAxes::generateMeasure(Gen::AxisId axisIndex,
 	auto axisBottom = origo.getCoord(!orientation) + stripWidth;
 
 	auto iMin = static_cast<int>(
-	    axisBottom > 0 ? std::floor(-origo.getCoord(!orientation)
-	                                / (2 * stripWidth))
-	                         * 2
-	                   : std::round((meas.range.getMin() - stepSize)
-	                                / stepSize));
+	    axisBottom > 0
+	        ? std::floor(
+	              -origo.getCoord(!orientation) / (2 * stripWidth))
+	              * 2
+	        : std::round((meas.range.min - stepSize) / stepSize));
 
 	if (axisBottom + iMin * stripWidth + stripWidth < 0.0)
 		iMin += 2
@@ -203,7 +280,7 @@ void DrawAxes::generateMeasure(Gen::AxisId axisIndex,
 
 		if (!singleLabelRange) {
 			intervals.emplace_back(
-			    Math::Range<>::Raw(bottom, bottom + stripWidth),
+			    Math::Range<>{bottom, bottom + stripWidth}.positive(),
 			    weight,
 			    1.0);
 
@@ -218,25 +295,27 @@ void DrawAxes::generateMeasure(Gen::AxisId axisIndex,
 	}
 }
 
-Geom::Line DrawAxes::getAxisLine(Gen::AxisId axisIndex) const
+Geom::Line DrawAxes::getAxisLine(Gen::AxisId axisIndex,
+    const Math::Range<> &filter) const
 {
-	auto offset = this->origo().getCoord(!orientation(axisIndex));
-
-	auto direction = Geom::Point::Ident(orientation(axisIndex));
-
-	auto p0 = direction.flip() * offset;
-	auto p1 = p0 + direction;
-
-	if (offset >= 0 && offset <= 1) return {p0, p1};
+	auto o = orientation(axisIndex);
+	if (auto offset = this->origo().getCoord(!o);
+	    Math::Range<>{0.0, 1.0}.includes(offset))
+		return {Geom::Point::Coord(o, filter.min, offset),
+		    Geom::Point::Coord(o, filter.max, offset)};
 	return {};
 }
 
-void DrawAxes::drawAxis(Gen::AxisId axisIndex) const
+void DrawAxes::drawAxis(Gen::AxisId axisIndex,
+    const Math::Range<> &filter,
+    const Geom::AffineTransform &tr,
+    double w) const
 {
-	if (auto line = getAxisLine(axisIndex); !line.isPoint()) {
-		auto lineColor =
-		    *rootStyle.plot.getAxis(axisIndex).color
-		    * static_cast<double>(plot->guides.at(axisIndex).axis);
+	if (auto line = tr(getAxisLine(axisIndex, filter));
+	    !line.isPoint()) {
+		auto lineColor = *rootStyle.plot.getAxis(axisIndex).color
+		               * Math::FuzzyBool::And<double>(w,
+		                   plot->guides.at(axisIndex).axis);
 
 		if (lineColor.isTransparent()) return;
 
@@ -333,7 +412,9 @@ Geom::Point DrawAxes::getTitleOffset(Gen::AxisId axisIndex,
 	         : Geom::Point{orthogonal, -parallel};
 }
 
-void DrawAxes::drawTitle(Gen::AxisId axisIndex) const
+void DrawAxes::drawTitle(Gen::AxisId axisIndex,
+    const Geom::AffineTransform &tr,
+    double w) const
 {
 	const auto &titleString = getAxis(axisIndex).title;
 
@@ -347,7 +428,8 @@ void DrawAxes::drawTitle(Gen::AxisId axisIndex) const
 		auto title = titleString.get_or_first(index);
 		if (title.value.empty()) continue;
 
-		auto weight = Math::FuzzyBool::And(title.weight,
+		auto weight = Math::FuzzyBool::And(w,
+		    title.weight,
 		    titleStyle.position->get_or_first(index).weight,
 		    titleStyle.vposition->get_or_first(index).weight);
 
@@ -365,7 +447,7 @@ void DrawAxes::drawTitle(Gen::AxisId axisIndex) const
 		    getTitleOffset(axisIndex, index, fades == ::Anim::second);
 
 		auto posDir = coordSys.convertDirectionAt(
-		    {relCenter, relCenter + normal});
+		    tr(Geom::Line{relCenter, relCenter + normal}));
 
 		auto posAngle = posDir.getDirection().angle();
 
@@ -418,7 +500,9 @@ void DrawAxes::drawTitle(Gen::AxisId axisIndex) const
 	}
 }
 
-void DrawAxes::drawDimensionLabels(Gen::AxisId axisIndex) const
+void DrawAxes::drawDimensionLabels(Gen::AxisId axisIndex,
+    const Geom::AffineTransform &tr,
+    double w) const
 {
 	const auto &labelStyle = rootStyle.plot.getAxis(axisIndex).label;
 
@@ -437,7 +521,9 @@ void DrawAxes::drawDimensionLabels(Gen::AxisId axisIndex) const
 			drawDimensionLabel(axisIndex,
 			    origo,
 			    interval,
-			    Math::FuzzyBool::And<double>(interval.weight,
+			    tr,
+			    Math::FuzzyBool::And<double>(w,
+			        interval.weight,
 			        enabled.labels));
 		}
 	}
@@ -446,6 +532,7 @@ void DrawAxes::drawDimensionLabels(Gen::AxisId axisIndex) const
 void DrawAxes::drawDimensionLabel(Gen::AxisId axisIndex,
     const Geom::Point &origo,
     const Interval &interval,
+    const Geom::AffineTransform &tr,
     double weight) const
 {
 	if (weight == 0) return;
@@ -456,6 +543,7 @@ void DrawAxes::drawDimensionLabel(Gen::AxisId axisIndex,
 	auto drawLabel = OrientedLabel{{ctx()}};
 	labelStyle.position->visit(
 	    [this,
+	        &tr,
 	        &axisIndex,
 	        &drawLabel,
 	        &labelStyle,
@@ -491,14 +579,14 @@ void DrawAxes::drawDimensionLabel(Gen::AxisId axisIndex,
 		            : labelStyle.side->factor(
 		                Styles::AxisLabel::Side::negative);
 
-		    auto draw =
-		        [&,
-		            posDir = coordSys
-		                         .convertDirectionAt(
-		                             {relCenter, relCenter + normal})
-		                         .extend(1 - 2 * under)](
-		            const ::Anim::Weighted<bool> &str,
-		            double plusWeight = 1.0)
+		    auto draw = [&,
+		                    posDir = coordSys
+		                                 .convertDirectionAt(
+		                                     tr(Geom::Line{relCenter,
+		                                         relCenter + normal}))
+		                                 .extend(1 - 2 * under)](
+		                    const ::Anim::Weighted<bool> &str,
+		                    double plusWeight = 1.0)
 		    {
 			    if (!str.value) return;
 			    drawLabel.draw(canvas,

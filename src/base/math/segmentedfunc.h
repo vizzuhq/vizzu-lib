@@ -4,6 +4,8 @@
 #include <initializer_list>
 #include <vector>
 
+#include "base/alg/merge.h"
+
 #include "interpolation.h"
 #include "range.h"
 
@@ -40,28 +42,37 @@ template <typename T, class CRTP> struct SegmentedFunction
 	    const CRTP &other)
 	{
 		CRTP res;
-		auto &stops = self.stops;
 
-		for (auto it0 = stops.begin(), it1 = other.stops.begin();
-		     it0 != stops.end() || it1 != other.stops.end();) {
-			if (it1 == other.stops.end()
-			    || (it0 != stops.end() && it0->pos < it1->pos)) {
-				res.stops.emplace_back(it0->pos,
-				    it0->value + other(it0->pos));
-				++it0;
-			}
-			else if (it0 == stops.end() || it1->pos < it0->pos) {
-				res.stops.emplace_back(it1->pos,
-				    it1->value + self(it1->pos));
-				++it1;
-			}
-			else {
-				res.stops.emplace_back(it0->pos,
-				    it0->value + it1->value);
-				++it1;
-				++it0;
-			}
-		}
+		auto merger = [](const Stop &item1, const Stop &item2)
+		{
+			return Stop{item1.pos, item1.value + item2.value};
+		};
+
+		auto &&transformer = [](const CRTP &another)
+		{
+			return [&another](const Stop &item)
+			{
+				return Stop{item.pos, item.value + another(item.pos)};
+			};
+		};
+		Alg::merge(self.stops,
+		    other.stops,
+		    res.stops,
+		    Alg::merge_args
+		    // { Remove when clang-16 not used
+		    <std::identity,
+		        std::identity,
+		        double Stop::*,
+		        decltype(std::weak_order),
+		        decltype(transformer(other)),
+		        decltype(transformer(self)),
+		        Alg::Merge::always,
+		        decltype(merger)>
+		    // }
+		    {.projection = &Stop::pos,
+		        .transformer_1 = transformer(other),
+		        .transformer_2 = transformer(self),
+		        .merger = merger});
 		return res;
 	}
 
@@ -82,7 +93,7 @@ template <typename T, class CRTP> struct SegmentedFunction
 		    });
 		return interpolate(it->value,
 		    std::next(it)->value,
-		    Range{it->pos, std::next(it)->pos}.rescale(pos));
+		    Range<>{it->pos, std::next(it)->pos}.rescale(pos));
 	}
 
 protected:
