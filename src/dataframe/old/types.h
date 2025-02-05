@@ -10,12 +10,13 @@
 namespace Vizzu::dataframe
 {
 struct series_meta_t;
+class dataframe;
 }
 
 namespace Vizzu::Data
 {
 
-class DataTable;
+using DataTable = dataframe::dataframe;
 class DataCube;
 
 struct RowWrapper

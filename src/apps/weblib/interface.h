@@ -100,7 +100,8 @@ public:
 	    const char **categories,
 	    std::uint32_t categoriesCount,
 	    const std::uint32_t *categoryIndices,
-	    std::uint32_t categoryIndicesCount);
+	    std::uint32_t categoryIndicesCount,
+	    bool isContiguous);
 	void addMeasure(ObjectRegistryHandle chart,
 	    const char *name,
 	    const char *unit,

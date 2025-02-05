@@ -106,15 +106,13 @@ public:
 	    std::span<const char *const> dimension_categories,
 	    std::span<const std::uint32_t> dimension_values,
 	    std::string_view name,
-	    adding_type adding_strategy,
-	    std::span<const std::pair<const char *, const char *>> info)
-	    &;
+	    std::span<const std::pair<const char *, const char *>> info,
+	    adding_type adding_strategy) &;
 
 	void add_measure(std::span<const double> measure_values,
 	    std::string_view name,
-	    adding_type adding_strategy,
-	    std::span<const std::pair<const char *, const char *>> info)
-	    &;
+	    std::span<const std::pair<const char *, const char *>> info,
+	    adding_type adding_strategy) &;
 
 	void add_series_by_other(std::string_view curr_series,
 	    std::string_view name,

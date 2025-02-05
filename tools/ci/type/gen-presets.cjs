@@ -100,7 +100,7 @@ function genSchema(presets) {
 					},
 					sort: {
 						type: 'string',
-						enum: ['none', 'byValue']
+						enum: ['none', 'byValue', 'byLabel']
 					}
 				}
 			}

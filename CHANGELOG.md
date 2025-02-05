@@ -13,7 +13,6 @@
 
 ### Changed
 
-- Separate Channel properties to AxisChannel properties at config.
 - Channels 'set' rewrite doesn't clear AxisChannel properties.
 - Split charts 
   - axis line multiplication.
@@ -23,7 +22,11 @@
 
 ### Added
 
+- Separate AxisChannel properties from Channel properties at config.
+- Move split align sort and reverse from config to AxisChannel config.
+- Add new sorting strategy: 'byLabel'.
 - Enable split and align on mainAxis.
+- Add 'isContiguous' property for dimension series
 
 ## [0.16.0] - 2024-11-28
 

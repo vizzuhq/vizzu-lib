@@ -336,11 +336,15 @@ struct JSONObj : protected JSONRepeat<'{', '}'>
 		return std::move(*this);
 	}
 
-	template <class T> JSONObj &&mergeObj(const T &obj) &&
+	template <bool isStatic = true, class T>
+	JSONObj &mergeObj(const T &obj)
 	{
 		auto pre_size = json.size();
 
-		staticObj(obj);
+		if constexpr (isStatic)
+			staticObj(obj);
+		else
+			dynamicObj(obj);
 
 		json.pop_back();
 
@@ -351,7 +355,7 @@ struct JSONObj : protected JSONRepeat<'{', '}'>
 		else
 			was = true;
 
-		return std::move(*this);
+		return *this;
 	}
 };
 

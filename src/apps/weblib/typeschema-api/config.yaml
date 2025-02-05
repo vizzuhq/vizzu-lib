@@ -115,8 +115,11 @@ definitions:
                               appear in the data set.
                     - 'byValue': markers will be sorted by the corresponding measure (if present)
                     in decreasing order.
+                    - 'byLabel': markers will be sorted by the corresponding shown categories 
+                    (if present) in natural order (ASCII case-insensitive, space-insensitive 
+                    alphabetical order and numbers are compared by value).
                 type: string
-                enum: [none, byValue]
+                enum: [none, byValue, byLabel]
             reverse:
                 description: Reverts the order of the markers if set.
                 type: boolean

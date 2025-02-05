@@ -28,35 +28,6 @@
 
 namespace Vizzu::Data
 {
-
-void DataTable::addColumn(std::string_view name,
-    std::string_view unit,
-    const std::span<const double> &values)
-{
-	df.add_measure(values,
-	    name.data(),
-	    dataframe::adding_type::create_or_override,
-	    {{std::pair{"unit", unit.data()}}});
-}
-
-void DataTable::addColumn(std::string_view name,
-    const std::span<const char *const> &categories,
-    const std::span<const std::uint32_t> &values)
-{
-	df.add_dimension(categories,
-	    values,
-	    name.data(),
-	    dataframe::adding_type::create_or_override,
-	    {});
-}
-
-void DataTable::pushRow(const std::span<const char *const> &cells)
-{
-	df.add_record(cells);
-}
-
-std::string DataTable::getInfos() const { return df.as_string(); }
-
 bool DataCube::iterator_t::operator!=(const iterator_t &other) const
 {
 	return parent != other.parent;
@@ -78,7 +49,7 @@ SeriesIndex::SeriesIndex(dataframe::series_meta_t const &meta) :
 
 SeriesIndex::SeriesIndex(std::string const &str,
     const DataTable &table) :
-    SeriesIndex(table.getDf().get_series_meta(str))
+    SeriesIndex(table.get_series_meta(str))
 {}
 
 void SeriesIndex::setAggr(const std::string &aggr)
@@ -137,7 +108,7 @@ DataCube::DataCube(const DataTable &table,
 	auto empty = dimensions.empty() && measures.empty();
 
 	df = {empty ? dataframe::dataframe::create_new()
-	            : table.getDf().copy(false)};
+	            : table.copy(false)};
 
 	if (empty) {
 		df->finalize();
@@ -240,12 +211,6 @@ const std::string &DataCube::getName(
 {
 	return measure_names.at(
 	    {seriesId.getColIndex(), seriesId.getAggr()});
-}
-
-std::string_view DataTable::getUnit(
-    std::string_view const &colIx) const
-{
-	return df.get_series_info(colIx, "unit");
 }
 
 MarkerId DataCube::getId(const SeriesList &sl,

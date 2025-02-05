@@ -224,7 +224,7 @@ public:
 			void appendToJSON(Conv::JSONObj &&jsonObj) const override
 			{
 				Element::appendToJSON(
-				    std::move(jsonObj).mergeObj(properties));
+				    std::move(jsonObj.mergeObj(properties)));
 			}
 		};
 
