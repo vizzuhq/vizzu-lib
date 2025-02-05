@@ -78,6 +78,7 @@ definitions:
                     - { type: string, enum: [auto] }
 
     AxisChannel:
+        $extends: Channel
         description: |
             AxisChannels are special channel settings for the positional channels.
         type: object
@@ -138,18 +139,14 @@ definitions:
         type: object
         properties:
             x:
-                allOf:
-                    - $ref: Channel
-                    - $ref: AxisChannel
+                $ref: AxisChannel
                 description: |
                     Parameters for the X-axis, determining the position of the markers on the 
                     x-axis - or their angle when using polar coordinates. 
                     Note: leaving x and y channels empty will result in a 
                     chart "without coordinates" like a Treemap or a Bubble Chart.
             y:
-                allOf:
-                    - $ref: Channel
-                    - $ref: AxisChannel
+                $ref: AxisChannel
                 description: |
                     Parameters for the Y-axis, determining the position of the markers on the 
                     y-axis - or their radius when using polar coordinates) .

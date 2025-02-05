@@ -1,7 +1,7 @@
 name: Docker publish vizzu-dev-desktop
 
 on:
-    push:
+    pull_request:
         branches-ignore:
             - main
         paths:

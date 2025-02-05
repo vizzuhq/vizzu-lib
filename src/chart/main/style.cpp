@@ -584,7 +584,7 @@ struct FontParentSetter
 	{}
 };
 
-void Chart::setup()
+void Chart::setup() &
 {
 	Refl::visit(FontParentSetter{this}, *this);
 	fontParent = &getDefaultFont();

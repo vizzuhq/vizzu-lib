@@ -51,6 +51,7 @@ Chart Sheet::getFullParams(const Gen::PlotOptionsPtr &options,
 void Sheet::calcDefaults(const Geom::Size &size)
 {
 	defaultParams = Chart::def();
+	defaultParams.setup();
 
 	defaultParams.fontSize = Gfx::Length{baseFontSize(size, true)};
 
@@ -219,7 +220,6 @@ void Sheet::setData()
 void Sheet::setAfterStyles(Gen::Plot &plot, const Geom::Size &size)
 {
 	auto &style = plot.getStyle();
-	style.setup();
 
 	if (auto &xLabel =
 	        style.plot

@@ -8,6 +8,8 @@
 - Waterfall chart preset not aligned.
 - Split chart count negative values too.
 - Split chart handled when same dimension on main and sub axis.
+- Add record didn't handle when a measure got an empty string.
+- Fix no fontparent set bug.
 
 ### Changed
 
@@ -20,8 +22,8 @@
 
 ### Added
 
-- Separate Channel properties to AxisChannel properties at config.
-- Move split align sort and reverse to AxisChannel
+- Separate AxisChannel properties from Channel properties at config.
+- Move split align sort and reverse from config to AxisChannel config.
 - Add new sorting strategy: 'byLabel'.
 - Enable split and align on mainAxis.
 - Add 'isContiguous' property for dimension series
