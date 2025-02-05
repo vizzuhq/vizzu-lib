@@ -18,8 +18,8 @@ RUN apt-get install -y cmake build-essential \
     && cd /root \
     && git clone https://github.com/emscripten-core/emsdk.git \
     && cd /root/emsdk \
-    && ./emsdk install 4.0.2 \
-    && ./emsdk activate 4.0.2 \
+    && ./emsdk install 3.1.74 \
+    && ./emsdk activate 3.1.74 \
     && echo "source \"/root/emsdk/emsdk_env.sh\"" >> /root/.bashrc
 
 # Note: this installs the necessary libs to make the bundled version of Chromium that Puppeteer

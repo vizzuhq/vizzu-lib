@@ -49,7 +49,7 @@ IndentExternBlock: NoIndent
 KeepEmptyLinesAtTheStartOfBlocks: true
 SpacesInContainerLiterals: false
 SpaceAfterTemplateKeyword: true
-AllowShortLambdasOnASingleLine: None
+AllowShortLambdasOnASingleLine: Empty
 AlignAfterOpenBracket: DontAlign
 
 IncludeCategories:

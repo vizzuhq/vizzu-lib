@@ -2,9 +2,11 @@
 
 #include <algorithm>
 #include <cmath>
+#include <compare>
 #include <cstdint>
 #include <functional>
 #include <limits>
+#include <memory>
 #include <optional>
 #include <string>
 #include <string_view>

@@ -7,7 +7,7 @@
 #include "base/anim/control.h"
 #include "base/util/eventdispatcher.h"
 #include "chart/generator/plotptr.h"
-#include "dataframe/old/datatable.h"
+#include "dataframe/old/types.h"
 
 #include "animation.h"
 #include "options.h"

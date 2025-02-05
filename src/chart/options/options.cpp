@@ -21,7 +21,7 @@ namespace Vizzu::Gen
 
 namespace
 {
-ChannelExtrema operator"" _perc(long double percent)
+ChannelExtrema operator""_perc(long double percent)
 {
 	return {static_cast<double>(percent),
 	    ChannelExtremaType::relative};

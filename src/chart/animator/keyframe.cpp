@@ -9,6 +9,7 @@
 #include "chart/generator/plotptr.h"
 #include "chart/options/options.h"
 #include "dataframe/old/datatable.h"
+#include "dataframe/old/types.h"
 
 #include "options.h"
 

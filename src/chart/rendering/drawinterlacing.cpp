@@ -1,10 +1,13 @@
 #include "drawinterlacing.h"
 
 #include <algorithm>
+#include <array>
 #include <cmath>
+#include <compare>
 #include <cstddef>
 #include <iterator>
 #include <map>
+#include <memory>
 #include <utility>
 
 #include "base/anim/interpolated.h"

@@ -2,8 +2,6 @@
 #ifndef DATAFRAME_OLD_TYPES_H
 #define DATAFRAME_OLD_TYPES_H
 
-#include <set>
-
 #include "../interface.h"
 #include "base/type/uniquelist.h"
 

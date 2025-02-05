@@ -133,13 +133,13 @@ template <class U, class T = std::remove_reference_t<U>>
 concept insertable_range_or_iterator =
     std::weakly_incrementable<std::remove_cv_t<T>>
     || (std::ranges::range<U>
+        && std::weakly_incrementable<std::ranges::iterator_t<U>>
         && std::weakly_incrementable<std::insert_iterator<T>>
         && requires(U &cont,
             std::ranges::iterator_t<U> i,
             const std::ranges::range_value_t<U> &v) {
 	           std::inserter(cont, std::ranges::end(cont));
 	           i = cont.insert(i, v);
-	           ++i;
            });
 
 template <class T>
@@ -201,14 +201,14 @@ constexpr std::ranges::in_in_out_result<It1, It2, Out> merge(
     It2 first2,
     End2 last2,
     Out result,
-    merge_args<Proj1,
+    const merge_args<Proj1,
         Proj2,
         Proj,
         Comp,
         Transform1,
         Transform2,
         NeedMerge,
-        Merge> &&args = {})
+        Merge> &args = {})
 {
 	while (first1 != last1 && first2 != last2)
 		if (auto cmp = std::invoke(args.comparator,
@@ -256,10 +256,10 @@ constexpr std::ranges::in_in_out_result<
     std::ranges::borrowed_iterator_t<R1>,
     std::ranges::borrowed_iterator_t<R2>,
     borrowed_inserter_or_self_t<Out>>
-merge(R1 &&range1,
-    R2 &&range2,
+merge(const R1 &range1,
+    const R2 &range2,
     Out &&result,
-    merge_args<Args...> &&args = {})
+    const merge_args<Args...> &args = {})
 {
 	if constexpr (std::weakly_incrementable<
 	                  std::remove_cvref_t<Out>>) {
@@ -267,16 +267,17 @@ merge(R1 &&range1,
 		    std::ranges::end(range1),
 		    std::ranges::begin(range2),
 		    std::ranges::end(range2),
-		    result,
-		    std::move(args));
+		    std::forward<Out>(result),
+		    args);
 	}
 	else {
 		return ::Alg::Merge::merge(std::ranges::begin(range1),
 		    std::ranges::end(range1),
 		    std::ranges::begin(range2),
 		    std::ranges::end(range2),
-		    std::inserter(result, std::ranges::end(result)),
-		    std::move(args));
+		    std::inserter(std::forward<Out>(result),
+		        std::ranges::end(result)),
+		    args);
 	}
 }
 }
