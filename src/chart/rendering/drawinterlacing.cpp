@@ -245,7 +245,7 @@ void DrawInterlacing::drawDataLabel(
 		               ? labelStyle.side->get_or_first(index).value
 		                     == Styles::AxisLabel::Side::negative
 		               : labelStyle.side->factor(
-		                   Styles::AxisLabel::Side::negative);
+		                     Styles::AxisLabel::Side::negative);
 
 		auto &&posDir = parent.coordSys
 		                    .convertDirectionAt(tr(

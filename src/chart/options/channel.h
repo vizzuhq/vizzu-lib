@@ -200,9 +200,7 @@ struct Channel
 
 template <class T>
 concept ChannelIdLike = requires(const T &v) {
-	{
-		+v
-	} -> std::same_as<ChannelId>;
+	{ +v } -> std::same_as<ChannelId>;
 };
 
 template <ChannelIdLike T>
