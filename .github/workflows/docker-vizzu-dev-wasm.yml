@@ -1,15 +1,11 @@
 name: Docker publish vizzu-dev-wasm
 
 on:
-    pull_request:
-        paths:
-            - '**/vizzu-dev-wasm'
-            - '**/docker-vizzu-dev-wasm.yml'
+    workflow_dispatch:
 
 jobs:
     publish:
         runs-on: ubuntu-24.04
-        environment: dev-docker-upgrade
 
         steps:
             - name: Checkout repo

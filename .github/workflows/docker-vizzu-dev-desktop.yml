@@ -1,15 +1,11 @@
 name: Docker publish vizzu-dev-desktop
 
 on:
-    pull_request:
-        paths:
-            - '**/vizzu-dev-desktop'
-            - '**/docker-vizzu-dev-desktop.yml'
+    workflow_dispatch:
 
 jobs:
     publish:
         runs-on: ubuntu-24.04
-        environment: dev-docker-upgrade
 
         steps:
             - name: Checkout repo
