@@ -158,9 +158,7 @@ void TestChart::run()
 				                   row->get_value("Cat2"))
 				                   == std::string_view{"b"};
 			        },
-			        +[](bool(const Vizzu::Data::RowWrapper *))
-			        {
-			        }}};
+			        +[](bool(const Vizzu::Data::RowWrapper *)) {}}};
 			options.title = "VIZZU Chart - Phase 1b";
 			styles.legend.marker.type =
 			    Vizzu::Styles::Legend::Marker::Type::circle;
