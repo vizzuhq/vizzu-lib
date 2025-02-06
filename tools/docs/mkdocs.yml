@@ -77,7 +77,6 @@ plugins:
     - exclude:
           glob:
               - tutorial/assets/**.md
-              - tutorial/.eslintrc.cjs
     - mike:
           version_selector: true
           alias_type: symlink
