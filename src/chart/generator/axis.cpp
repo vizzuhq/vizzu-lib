@@ -103,7 +103,7 @@ Geom::Point Axises::origo() const
 }
 
 MeasureAxis::MeasureAxis(const Math::Range<> &interval,
-    std::string series,
+    std::string &&series,
     const std::string_view &unit,
     const std::optional<double> &step) :
     enabled(true),
