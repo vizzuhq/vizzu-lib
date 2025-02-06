@@ -1,9 +1,8 @@
 name: Docker publish vizzu-dev-desktop
 
 on:
+    workflow_dispatch:
     pull_request:
-        branches-ignore:
-            - main
         paths:
             - '**/vizzu-dev-desktop'
             - '**/docker-vizzu-dev-desktop.yml'

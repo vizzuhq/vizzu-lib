@@ -1,9 +1,8 @@
 name: Docker publish vizzu-dev-wasm
 
 on:
+    workflow_dispatch:
     pull_request:
-        branches-ignore:
-            - main
         paths:
             - '**/vizzu-dev-wasm'
             - '**/docker-vizzu-dev-wasm.yml'
