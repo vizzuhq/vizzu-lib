@@ -59,6 +59,14 @@ To contribute to the `C++` part of the project, it is recommended to use
 `Docker`, but based on the `Dockerfiles` below, you can also configure the
 necessary dependencies on your local machine.
 
+**Note:** If you need to change the environment you need to manually update the
+docker images:
+
+```sh
+gh workflow run "Docker publish vizzu-dev-desktop" --ref <branch>
+gh workflow run "Docker publish vizzu-dev-wasm" --ref <branch>
+```
+
 Run the following commands to build and run the `Desktop` version's development
 environment
 
