@@ -32,6 +32,13 @@ export default [
         }
     },
     {
+        files: ['docs/tutorial/shorthands_store/03_b.js'],
+        rules: {
+            'no-var': 'off',
+            'no-unused-vars': 'off'
+        }
+    },
+    {
         files: ['src/**'],
         languageOptions: {
             globals: {
@@ -54,6 +61,21 @@ export default [
                 mjslive: true,
                 Module: true,
                 tinycolor: true
+            }
+        }
+    },
+    {
+        files: ['docs/**'],
+        languageOptions: {
+            globals: {
+                chart: true,
+                Vizzu: true,
+                assets: true,
+                image: true,
+                clickHandler: true,
+                labelDrawHandler: true,
+                logoDrawHandler: true,
+                backgroundImageHandler: true
             }
         }
     },
