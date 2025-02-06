@@ -58,18 +58,7 @@ template <typename T, class CRTP> struct SegmentedFunction
 		Alg::merge(self.stops,
 		    other.stops,
 		    res.stops,
-		    Alg::merge_args
-		    // { Remove when clang-16 not used
-		    <std::identity,
-		        std::identity,
-		        double Stop::*,
-		        decltype(std::weak_order),
-		        decltype(transformer(other)),
-		        decltype(transformer(self)),
-		        Alg::Merge::always,
-		        decltype(merger)>
-		    // }
-		    {.projection = &Stop::pos,
+		    Alg::merge_args{.projection = &Stop::pos,
 		        .transformer_1 = transformer(other),
 		        .transformer_2 = transformer(self),
 		        .merger = merger});

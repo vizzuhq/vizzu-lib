@@ -2,7 +2,6 @@
 
 #include <algorithm>
 #include <cmath>
-#include <compare>
 #include <cstdint>
 #include <functional>
 #include <limits>
@@ -334,18 +333,7 @@ DimensionAxis interpolate(const DimensionAxis &op0,
 	Alg::merge(op0.values,
 	    op1.values,
 	    res.values,
-	    Alg::merge_args
-	    // { Remove when clang-16 not used
-	    <std::identity,
-	        std::identity,
-	        const Data::SliceIndex Val::*,
-	        decltype(std::weak_order),
-	        decltype(one_side({}, {}, latest1)),
-	        decltype(one_side({}, {}, latest1)),
-	        Alg::Merge::always,
-	        decltype(merger)>
-	    // }
-	    {.projection = &Val::first,
+	    Alg::merge_args{.projection = &Val::first,
 	        .transformer_1 =
 	            one_side(true, &DimensionAxis::Item::endPos, latest2),
 	        .transformer_2 = one_side(false,
@@ -421,18 +409,7 @@ interpolate(const SplitAxis &op0, const SplitAxis &op1, double factor)
 	Alg::merge(op0.parts,
 	    op1.parts,
 	    res.parts,
-	    Alg::merge_args
-	    // { Remove when clang-16 not used
-	    <std::identity,
-	        std::identity,
-	        const std::optional<Data::SliceIndex> PartPair::*,
-	        decltype(std::weak_order),
-	        decltype(one_side(merger({}), {}, {})),
-	        decltype(one_side(merger({}), {}, {})),
-	        Alg::Merge::always,
-	        const MergerType &>
-	    // }
-	    {.projection = &PartPair::first,
+	    Alg::merge_args{.projection = &PartPair::first,
 	        .transformer_1 = one_side(merger(factor),
 	            needMerge && op1.parts.empty(),
 	            (op0.measure.range - op0.measure.range.min)
