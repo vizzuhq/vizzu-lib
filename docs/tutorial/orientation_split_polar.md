@@ -51,6 +51,7 @@ easily compare the values shown. If you want to return to the default cartesian
 coordinates, just set the `coordSystem` parameter to `'cartesian'`.
 
 !!! info
+
     The range of the x-axis is automatically set to `max:133%` as this is the
     standard way to show radial charts.
 

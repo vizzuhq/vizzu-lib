@@ -22,15 +22,15 @@ underlying data, the chart's style settings, and the animation options:
 Keyframe:
 
 - [Anim.Target](./interfaces/types_anim.Target.md)
-  - [Data.Set](./modules/types_data.md#Set)
-  - [Config.Chart](./interfaces/types_config.Chart.md)
-    - [Config.Channels](./interfaces/types_config.Channel.md)
-  - [Styles.Chart](./interfaces/types_styles.Chart.md)
-    - [Styles.Plot](./interfaces/types_styles.Plot.md)
-      - [Styles.Marker](./interfaces/types_styles.Marker.md)
-      - [Styles.Axis](./interfaces/types_styles.Axis.md)
-    - [Styles.Legend](./interfaces/types_styles.Legend.md)
-    - [Styles.Tooltip](./interfaces/types_styles.Tooltip.md)
+    - [Data.Set](./modules/types_data.md#Set)
+    - [Config.Chart](./interfaces/types_config.Chart.md)
+        - [Config.Channels](./interfaces/types_config.Channel.md)
+    - [Styles.Chart](./interfaces/types_styles.Chart.md)
+        - [Styles.Plot](./interfaces/types_styles.Plot.md)
+            - [Styles.Marker](./interfaces/types_styles.Marker.md)
+            - [Styles.Axis](./interfaces/types_styles.Axis.md)
+        - [Styles.Legend](./interfaces/types_styles.Legend.md)
+        - [Styles.Tooltip](./interfaces/types_styles.Tooltip.md)
 - [Anim.Options](interfaces/types_anim.Options.md)
 
 You can find all interface declarations and types under these modules:

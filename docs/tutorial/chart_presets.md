@@ -53,6 +53,7 @@ method's parameter.
 ```
 
 !!! info
+
     You can also access presets via a `chart` promise, for example
     `Vizzu.presets.radialBar` is equivalent to
     `chart.constructor.presets.radialBar`.

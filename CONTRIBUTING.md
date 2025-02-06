@@ -131,9 +131,10 @@ Run the following script in the running `vizzu-dev-wasm` container to build the
 **Note:** To debug WASM version under Chrome:
 
 - set Chrome/DevTools/Settings/Experiments/'WebAssembly Debugging: Enable DWARF
-  support' to true
-- set \[repo\]/project/cmake/emcc.txt: CMAKE_EXE_LINKER_FLAGS_DEBUG
-  --source-map-base to the URL where the browser can find cvizzu.wasm.map file.
+    support' to true
+- set [repo]/project/cmake/emcc.txt: CMAKE_EXE_LINKER_FLAGS_DEBUG
+    --source-map-base to the URL where the browser can find cvizzu.wasm.map
+    file.
 
 #### Building npm package
 
@@ -250,17 +251,17 @@ sometimes unstable changes.
 
 - build from the `HEAD` commit of the main branch:
 
-  https://vizzu-lib-main.storage.googleapis.com/lib/vizzu.js
+    https://vizzu-lib-main.storage.googleapis.com/lib/vizzu.js
 
-  and the minified, boundled version:
+    and the minified, boundled version:
 
-  https://vizzu-lib-main.storage.googleapis.com/lib/vizzu.min.js
+    https://vizzu-lib-main.storage.googleapis.com/lib/vizzu.min.js
 
 - all builds of the past 30 days:
 
-  https://vizzu-lib-main-sha.storage.googleapis.com/lib-HASH/vizzu.js
+    https://vizzu-lib-main-sha.storage.googleapis.com/lib-HASH/vizzu.js
 
-  where `HASH` is the first 7 character of the commit's git hash.
+    where `HASH` is the first 7 character of the commit's git hash.
 
 ### Documentation
 
@@ -297,12 +298,12 @@ To release `Vizzu`, follow the steps below:
 - You should increase the version number in `src/chart/main/version.cpp`.
 
 - If the major or minor version has changed, increase the version in
-  `.github/workflows/docker-vizzu-dev-desktop.yml`,
-  `.github/workflows/docker-vizzu-dev-wasm.yml`,
-  `tools/ci/gcp/cloudbuild/cloudbuild.yaml` and `CONTRIBUTING.md`.
+    `.github/workflows/docker-vizzu-dev-desktop.yml`,
+    `.github/workflows/docker-vizzu-dev-wasm.yml`,
+    `tools/ci/gcp/cloudbuild/cloudbuild.yaml` and `CONTRIBUTING.md`.
 
 - Set the release and release date in `CHANGELOG.md`, under the `Unreleased`
-  title.
+    title.
 
 - Create the release notes from `CHANGELOG.md` and publish the new release on
-  [Releases](https://github.com/vizzuhq/vizzu-lib/releases).
+    [Releases](https://github.com/vizzuhq/vizzu-lib/releases).
