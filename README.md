@@ -139,7 +139,7 @@ We welcome contributions to the project, visit our contributing
 
 - Join our Slack:
   [vizzu-community.slack.com](https://join.slack.com/t/vizzu-community/shared_invite/zt-w2nqhq44-2CCWL4o7qn2Ns1EFSf9kEg)
-- Drop us a line at hello@vizzuhq.com
+- Drop us a line at hello@vizzu.io
 - Follow us on Twitter:
   [https://twitter.com/VizzuHQ](https://twitter.com/VizzuHQ)
 

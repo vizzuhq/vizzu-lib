@@ -16,6 +16,5 @@ test -f ~/.netrc && chmod u+rw,u-x,go-rwx ~/.netrc
 
 $PYTHON -m venv --copies ".venv"
 source .venv/bin/activate
-pip install "setuptools<72.0.0"
-pip install pdm==2.10.3
+pip install pdm==2.22.3
 pdm install -p tools/ci --no-isolation

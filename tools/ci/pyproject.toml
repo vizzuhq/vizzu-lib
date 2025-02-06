@@ -3,7 +3,7 @@ name = "vizzu-dev"
 version = "0.1.0"
 description = ""
 authors = [
-    {name = "Vizzu Inc.", email = "hello@vizzuhq.com"},
+    {name = "Vizzu Inc.", email = "hello@vizzu.io"},
 ]
 dependencies = []
 requires-python = ">=3.13"
@@ -16,13 +16,14 @@ codequality = [
     "mypy",
 ]
 docs = [
+    "setuptools",
     "mdformat",
     "mdformat-beautysh",
     "mdformat-black",
     "mdformat-configurable-black",
     "mdformat-config",
     "mdformat-web",
-    "mdformat-admon < 0.2.0",
+    "mdformat-mkdocs",
     "mdformat-gfm",
     "mdformat-tables",
     "mdformat-footnote",
