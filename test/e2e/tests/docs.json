@@ -26,7 +26,7 @@
 			"refs": ["93a235c"]
 		},
 		"chart_presets": {
-			"refs": ["4dfa5ac"]
+			"refs": ["545fbcb"]
 		},
 		"color_palette_fonts": {
 			"refs": ["c6d06d7"]
@@ -38,13 +38,13 @@
 			"refs": ["1207ccf"]
 		},
 		"geometry": {
-			"refs": ["50d8151"]
+			"refs": ["b52988b"]
 		},
 		"group_stack": {
 			"refs": ["981e902"]
 		},
 		"orientation_split_polar": {
-			"refs": ["3f79f32"]
+			"refs": ["cab8225"]
 		},
 		"shorthands_store": {
 			"refs": ["df4002a"]
