@@ -12,6 +12,10 @@ struct ICanvas;
 
 namespace Vizzu
 {
+namespace Data
+{
+struct DataTable;
+}
 namespace UI
 {
 class ChartWidget;
@@ -26,7 +30,7 @@ public:
 
 	Interface();
 	static const char *version();
-	ObjectRegistryHandle createChart();
+	ObjectRegistryHandle createChart(ObjectRegistryHandle data);
 	ObjectRegistryHandle createCanvas();
 	static void setLogging(bool enable);
 	void pointerMove(ObjectRegistryHandle chart,
@@ -139,7 +143,11 @@ private:
 
 	std::shared_ptr<Chart> getChart(ObjectRegistryHandle chart);
 
-	ObjectRegistry<Snapshot, Animation, Gfx::ICanvas, UI::ChartWidget>
+	ObjectRegistry<Snapshot,
+	    Animation,
+	    Gfx::ICanvas,
+	    UI::ChartWidget,
+	    Data::DataTable>
 	    objects;
 };
 

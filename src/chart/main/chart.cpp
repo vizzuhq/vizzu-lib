@@ -20,13 +20,13 @@
 namespace Vizzu
 {
 
-Chart::Chart() :
-    table{dataframe::dataframe::create_new()},
+Chart::Chart(const std::shared_ptr<Data::DataTable> &table) :
+    table{table},
     nextOptions(std::make_shared<Gen::Options>()),
     stylesheet(Styles::Chart::def(), actStyles),
     computedStyles(stylesheet.getDefaultParams()),
     events(eventDispatcher),
-    animator(table,
+    animator(*table,
         *events.animation.begin,
         *events.animation.complete)
 {
@@ -99,7 +99,7 @@ void Chart::setAnimation(const Anim::AnimationPtr &animation)
 
 Gen::Config Chart::getConfig()
 {
-	return Gen::Config{getOptions(), table};
+	return Gen::Config{getOptions(), *table};
 }
 
 void Chart::draw(Gfx::ICanvas &canvas)
@@ -127,7 +127,7 @@ Gen::PlotPtr Chart::plot(const Gen::PlotOptionsPtr &options)
 {
 	options->setAutoParameters();
 
-	auto res = Gen::PlotBuilder{table,
+	auto res = Gen::PlotBuilder{*table,
 	    options,
 	    stylesheet.getFullParams(options, layout.boundary.size)}
 	               .build();

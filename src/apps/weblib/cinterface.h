@@ -14,6 +14,7 @@ namespace APIHandles
 {
 using Any = const void *;
 using Chart = const void *;
+using DataTable = const void *;
 using Snapshot = const void *;
 using Event = Util::EventDispatcher::Params *;
 using Animation = const void *;

@@ -354,9 +354,12 @@ const char *Interface::dataMetaInfo(ObjectRegistryHandle chart)
 	return res.c_str();
 }
 
-ObjectRegistryHandle Interface::createChart()
+ObjectRegistryHandle Interface::createChart(ObjectRegistryHandle data)
 {
-	auto &&widget = std::make_shared<UI::ChartWidget>();
+	auto &&widget = std::make_shared<UI::ChartWidget>(
+	    data ? objects.get<Data::DataTable>(data)
+	         : std::make_shared<Data::DataTableImpl>(
+	               dataframe::dataframe::create_new()));
 
 	auto &openUrl = widget->openUrl;
 	auto &doChange = widget->getChart().onChanged;

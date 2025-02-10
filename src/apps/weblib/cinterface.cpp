@@ -125,7 +125,7 @@ void vizzu_setLogging(bool enable) { Interface::setLogging(enable); }
 
 APIHandles::Chart vizzu_createChart()
 {
-	return Interface::getInstance().createChart();
+	return Interface::getInstance().createChart({});
 }
 
 APIHandles::Canvas vizzu_createCanvas()

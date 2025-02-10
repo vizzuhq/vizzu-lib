@@ -28,12 +28,12 @@ class Chart
 public:
 	Util::Event<> onChanged;
 
-	Chart();
+	Chart(const std::shared_ptr<Data::DataTable> &table);
 	Chart(Chart &&) noexcept = delete;
 	void draw(Gfx::ICanvas &canvas);
 	void setBoundRect(const Geom::Rect &rect);
 
-	Data::DataTable &getTable() { return table; }
+	Data::DataTable &getTable() const { return *table; }
 	Styles::Sheet &getStylesheet() { return stylesheet; }
 	Styles::Chart &getStyles() { return actStyles; }
 	[[nodiscard]] const Styles::Chart &getComputedStyles() const
@@ -81,7 +81,7 @@ public:
 
 private:
 	Layout layout;
-	Data::DataTableImpl table;
+	std::shared_ptr<Data::DataTable> table;
 	Gen::PlotPtr actPlot;
 	Gen::PlotOptionsPtr nextOptions;
 	Gen::Options prevOptions;
