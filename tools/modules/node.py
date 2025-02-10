@@ -21,11 +21,7 @@ class Node:
         env["NODE_OPTIONS"] = "--no-deprecation"
 
         with Popen(
-            [exe, script, *params],
-            stdin=PIPE,
-            stdout=PIPE,
-            stderr=PIPE,
-            env=env
+            [exe, script, *params], stdin=PIPE, stdout=PIPE, stderr=PIPE, env=env
         ) as node:
             outs, errs = node.communicate()
 
