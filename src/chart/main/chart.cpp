@@ -21,6 +21,7 @@ namespace Vizzu
 {
 
 Chart::Chart() :
+    table{dataframe::dataframe::create_new()},
     nextOptions(std::make_shared<Gen::Options>()),
     stylesheet(Styles::Chart::def(), actStyles),
     computedStyles(stylesheet.getDefaultParams()),
@@ -105,9 +106,9 @@ void Chart::draw(Gfx::ICanvas &canvas)
 {
 	renderedChart = Draw::RenderedChart{
 	    actPlot ? Draw::CoordinateSystem{layout.plotArea,
-	        actPlot->getOptions()->angle,
-	        actPlot->getOptions()->coordSystem,
-	        actPlot->keepAspectRatio}
+	                  actPlot->getOptions()->angle,
+	                  actPlot->getOptions()->coordSystem,
+	                  actPlot->keepAspectRatio}
 	            : Draw::CoordinateSystem{layout.plotArea},
 	    actPlot};
 

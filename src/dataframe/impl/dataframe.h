@@ -120,7 +120,7 @@ public:
 	    const std::string_view &dimension) const &;
 
 	[[nodiscard]] series_meta_t get_series_meta(
-	    const std::string &id) const;
+	    const std::string &id) const &;
 
 	[[nodiscard]] std::string_view get_series_info(
 	    const std::string_view &id,

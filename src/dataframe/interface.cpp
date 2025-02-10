@@ -176,6 +176,12 @@ std::size_t dataframe_interface::get_record_count() const &
 	return as_impl(this).get_record_count();
 }
 
+series_meta_t dataframe_interface::get_series_meta(
+    const std::string &id) const &
+{
+	return as_impl(this).get_series_meta(id);
+}
+
 std::string_view dataframe_interface::get_series_info(
     const std::string_view &id,
     const char *key) const &
@@ -199,6 +205,11 @@ std::string dataframe_interface::get_record_id(
     std::size_t my_record) &
 {
 	return as_impl(this).get_record_id(my_record);
+}
+
+[[nodiscard]] std::string dataframe_interface::as_string() const &
+{
+	return as_impl(this).as_string();
 }
 
 }

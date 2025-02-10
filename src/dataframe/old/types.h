@@ -15,8 +15,7 @@ class dataframe;
 
 namespace Vizzu::Data
 {
-
-using DataTable = dataframe::dataframe;
+struct DataTable;
 class DataCube;
 
 struct RowWrapper
@@ -164,6 +163,134 @@ struct MarkerId
 		return itemId <=> id.itemId;
 	}
 };
+
+struct DataTable
+{
+	[[nodiscard]] virtual std::string_view get_series_info(
+	    const std::string_view &id,
+	    const char *key) const & = 0;
+
+	[[nodiscard]] virtual dataframe::series_meta_t get_series_meta(
+	    const std::string &id) const & = 0;
+
+	virtual void add_dimension(
+	    std::span<const char *const> dimension_categories,
+	    std::span<const std::uint32_t> dimension_values,
+	    std::string_view name,
+	    std::span<const std::pair<const char *, const char *>> info =
+	        {},
+	    dataframe::adding_type adding_strategy =
+	        dataframe::adding_type::create_or_override) & = 0;
+
+	virtual void add_measure(std::span<const double> measure_values,
+	    std::string_view name,
+	    std::span<const std::pair<const char *, const char *>> info =
+	        {},
+	    dataframe::adding_type adding_strategy =
+	        dataframe::adding_type::create_or_override) & = 0;
+
+	virtual void add_record(
+	    std::span<const char *const> values) & = 0;
+
+	[[nodiscard]] virtual std::string as_string() const & = 0;
+
+	[[nodiscard]] virtual std::pair<
+	    std::shared_ptr<dataframe::dataframe_interface>,
+	    std::map<SeriesIndex, std::string>>
+	aggregate(const Filter &filter,
+	    const std::set<SeriesIndex> &aggregate_by,
+	    const std::set<SeriesIndex> &aggregating) const & = 0;
+
+	virtual ~DataTable() = default;
+};
+
+struct DataTableImpl final : DataTable
+{
+	std::shared_ptr<dataframe::dataframe_interface> df;
+
+	explicit DataTableImpl(
+	    std::shared_ptr<dataframe::dataframe_interface> &&df) noexcept
+	    :
+	    df(std::move(df))
+	{}
+
+	[[nodiscard]] std::string_view get_series_info(
+	    const std::string_view &id,
+	    const char *key) const & override
+	{
+		return df->get_series_info(id, key);
+	}
+
+	[[nodiscard]] dataframe::series_meta_t get_series_meta(
+	    const std::string &id) const & override
+	{
+		return df->get_series_meta(id);
+	}
+
+	void add_dimension(
+	    std::span<const char *const> dimension_categories,
+	    std::span<const std::uint32_t> dimension_values,
+	    std::string_view name,
+	    std::span<const std::pair<const char *, const char *>> info,
+	    dataframe::adding_type adding_strategy)
+	    & override
+	{
+		df->add_dimension(dimension_categories,
+		    dimension_values,
+		    name,
+		    info,
+		    adding_strategy);
+	}
+
+	void add_measure(std::span<const double> measure_values,
+	    std::string_view name,
+	    std::span<const std::pair<const char *, const char *>> info,
+	    dataframe::adding_type adding_strategy)
+	    & override
+	{
+		df->add_measure(measure_values, name, info, adding_strategy);
+	}
+
+	void add_record(std::span<const char *const> values) & override
+	{
+		df->add_record(values);
+	}
+
+	[[nodiscard]] std::string as_string() const & override
+	{
+		return df->as_string();
+	}
+
+	[[nodiscard]] std::pair<
+	    std::shared_ptr<dataframe::dataframe_interface>,
+	    std::map<SeriesIndex, std::string>>
+	aggregate(const Filter &filter,
+	    const std::set<SeriesIndex> &aggregate_by,
+	    const std::set<SeriesIndex> &aggregating) const & override
+	{
+		auto &&res = std::pair{df->copy(false),
+		    std::map<SeriesIndex, std::string>{}};
+
+		res.first->remove_records(filter.getFunction());
+
+		for (const auto &dim : aggregate_by)
+			res.first->aggregate_by(dim.getColIndex());
+
+		for (const auto &meas : aggregating)
+			res.second.try_emplace(meas,
+			    res.first->set_aggregate(meas.getColIndex(),
+			        meas.getAggr()));
+
+		for (const auto &dim : aggregate_by)
+			res.first->set_sort(dim.getColIndex(),
+			    dataframe::sort_type::less,
+			    dataframe::na_position::first);
+
+		res.first->finalize();
+		return res;
+	}
+};
+
 }
 
 #endif

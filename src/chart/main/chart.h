@@ -81,7 +81,7 @@ public:
 
 private:
 	Layout layout;
-	Data::DataTable table;
+	Data::DataTableImpl table;
 	Gen::PlotPtr actPlot;
 	Gen::PlotOptionsPtr nextOptions;
 	Gen::Options prevOptions;

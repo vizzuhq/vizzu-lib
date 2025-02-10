@@ -21,6 +21,14 @@ namespace Vizzu::dataframe
 using cell_value = std::variant<double, std::string_view>;
 using cell_reference = std::variant<double, const std::string *>;
 
+enum class series_type : std::uint8_t { unknown, dimension, measure };
+
+struct series_meta_t
+{
+	std::string name;
+	series_type type{};
+};
+
 enum class aggregator_type : std::uint8_t {
 	sum,
 	min,
@@ -154,6 +162,9 @@ public:
 
 	[[nodiscard]] std::size_t get_record_count() const &;
 
+	[[nodiscard]] series_meta_t get_series_meta(
+	    const std::string &id) const &;
+
 	[[nodiscard]] std::string_view get_series_info(
 	    const std::string_view &id,
 	    const char *key) const &;
@@ -165,6 +176,8 @@ public:
 	    std::span<const std::string> dimensions) const &;
 
 	[[nodiscard]] std::string get_record_id(std::size_t my_record) &;
+
+	[[nodiscard]] std::string as_string() const &;
 
 	// NOLINTNEXTLINE(cppcoreguidelines-avoid-c-arrays,modernize-avoid-c-arrays)
 	alignas(align_impl) std::byte data[max_size_impl];

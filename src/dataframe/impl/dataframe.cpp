@@ -723,7 +723,8 @@ std::string dataframe::get_record_id(std::size_t my_record) &
 	return my_record < ids.size() ? ids[my_record] : std::string{};
 }
 
-series_meta_t dataframe::get_series_meta(const std::string &id) const
+series_meta_t dataframe::get_series_meta(
+    const std::string &id) const &
 {
 	switch (auto &&ser = get_data_source().get_series(id)) {
 		using enum series_type;
