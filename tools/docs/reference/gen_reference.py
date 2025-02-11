@@ -45,6 +45,8 @@ class Reference:
 
         for path in Path(tmp_dir).rglob("*.md"):
             with open(path, "rt", encoding="utf8") as f_src:
+                if (Path(tmp_dir) / "README.md").resolve() == path.resolve():
+                    continue
                 content = f_src.read()
                 content = content.replace("##### ", "").replace("#### ", "")
                 content = Vizzu.set_version(content)

@@ -22,7 +22,6 @@ async function reference() {
 			disableSources: true,
 			excludeNotDocumented: true,
 			excludePrivate: true,
-			readme: path.join(repoPath, 'docs', 'reference', 'index.md'),
 			theme: 'markdown'
 		},
 		[new TypeDoc.TSConfigReader()]
