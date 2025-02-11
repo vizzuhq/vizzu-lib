@@ -64,7 +64,6 @@ extra:
 markdown_extensions:
     - pymdownx.tasklist:
           custom_checkbox: true
-    - mdx_truly_sane_lists
     - attr_list
     - md_in_html
     - admonition

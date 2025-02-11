@@ -3,9 +3,9 @@
 
 [metadata]
 groups = ["codequality", "docs"]
-strategy = ["cross_platform"]
+strategy = []
 lock_version = "4.5.0"
-content_hash = "sha256:2909d433714be68bd0b65ab30a5674fde46af5bdd10c56fbedb79b5d2e0dd5ee"
+content_hash = "sha256:bd96d8c930cb3361fb7d5b03b68ed2b4f9ca3a2af92771db91214122cd8f0e0a"
 
 [[metadata.targets]]
 requires_python = ">=3.13"
@@ -157,15 +157,16 @@ files = [
 
 [[package]]
 name = "cssbeautifier"
-version = "1.15.1"
-summary = ""
+version = "1.15.3"
+summary = "CSS unobfuscator and beautifier."
 dependencies = [
     "editorconfig>=0.12.2",
     "jsbeautifier",
     "six>=1.13.0",
 ]
 files = [
-    {file = "cssbeautifier-1.15.1.tar.gz", hash = "sha256:9f7064362aedd559c55eeecf6b6bed65e05f33488dcbe39044f0403c26e1c006"},
+    {file = "cssbeautifier-1.15.3-py3-none-any.whl", hash = "sha256:0dcaf5ce197743a79b3a160b84ea58fcbd9e3e767c96df1171e428125b16d410"},
+    {file = "cssbeautifier-1.15.3.tar.gz", hash = "sha256:406b04d09e7d62c0be084fbfa2cba5126fe37359ea0d8d9f7b963a6354fc8303"},
 ]
 
 [[package]]
@@ -261,14 +262,15 @@ files = [
 
 [[package]]
 name = "jsbeautifier"
-version = "1.15.1"
-summary = ""
+version = "1.15.3"
+summary = "JavaScript unobfuscator and beautifier."
 dependencies = [
     "editorconfig>=0.12.2",
     "six>=1.13.0",
 ]
 files = [
-    {file = "jsbeautifier-1.15.1.tar.gz", hash = "sha256:ebd733b560704c602d744eafc839db60a1ee9326e30a2a80c4adb8718adc1b24"},
+    {file = "jsbeautifier-1.15.3-py3-none-any.whl", hash = "sha256:b207a15ab7529eee4a35ae7790e9ec4e32a2b5026d51e2d0386c3a65e6ecfc91"},
+    {file = "jsbeautifier-1.15.3.tar.gz", hash = "sha256:5f1baf3d4ca6a615bb5417ee861b34b77609eeb12875555f8bbfabd9bf2f3457"},
 ]
 
 [[package]]
@@ -524,18 +526,6 @@ files = [
 ]
 
 [[package]]
-name = "mdx-truly-sane-lists"
-version = "1.3"
-summary = "Extension for Python-Markdown that makes lists truly sane. Custom indents for nested lists and fix for messy linebreaks."
-dependencies = [
-    "Markdown>=2.6",
-]
-files = [
-    {file = "mdx_truly_sane_lists-1.3-py3-none-any.whl", hash = "sha256:b9546a4c40ff8f1ab692f77cee4b6bfe8ddf9cccf23f0a24e71f3716fe290a37"},
-    {file = "mdx_truly_sane_lists-1.3.tar.gz", hash = "sha256:b661022df7520a1e113af7c355c62216b384c867e4f59fb8ee7ad511e6e77f45"},
-]
-
-[[package]]
 name = "mergedeep"
 version = "1.3.4"
 requires_python = ">=3.6"
@@ -608,7 +598,7 @@ files = [
 [[package]]
 name = "mkdocs-exclude"
 version = "1.0.2"
-summary = ""
+summary = "A mkdocs plugin that lets you exclude files or trees."
 dependencies = [
     "mkdocs",
 ]
@@ -647,7 +637,7 @@ files = [
 
 [[package]]
 name = "mkdocs-include-markdown-plugin"
-version = "7.1.3"
+version = "7.1.4"
 requires_python = ">=3.9"
 summary = "Mkdocs Markdown includer plugin."
 dependencies = [
@@ -655,8 +645,8 @@ dependencies = [
     "wcmatch",
 ]
 files = [
-    {file = "mkdocs_include_markdown_plugin-7.1.3-py3-none-any.whl", hash = "sha256:dbc641d262d14a4b71bd8895bdcdf7f2dcfbb0152f63581bda282992379a741f"},
-    {file = "mkdocs_include_markdown_plugin-7.1.3.tar.gz", hash = "sha256:121aba8116b995bbb91fa9d38028897f41d2f23a9f278e88f176908be901ec98"},
+    {file = "mkdocs_include_markdown_plugin-7.1.4-py3-none-any.whl", hash = "sha256:9c7046490ef89f7645d10a8b5db9f36ed0d5b8730c8dc55d4ded8e285f6c0baa"},
+    {file = "mkdocs_include_markdown_plugin-7.1.4.tar.gz", hash = "sha256:0aacae5b328b015569f13e55f8aaa35998ece3f9a41dcd5dc105825fc1aa89b0"},
 ]
 
 [[package]]
@@ -674,7 +664,7 @@ files = [
 
 [[package]]
 name = "mkdocs-material"
-version = "9.6.2"
+version = "9.6.3"
 requires_python = ">=3.8"
 summary = "Documentation that simply works"
 dependencies = [
@@ -691,8 +681,8 @@ dependencies = [
     "requests~=2.26",
 ]
 files = [
-    {file = "mkdocs_material-9.6.2-py3-none-any.whl", hash = "sha256:71d90dbd63b393ad11a4d90151dfe3dcbfcd802c0f29ce80bebd9bbac6abc753"},
-    {file = "mkdocs_material-9.6.2.tar.gz", hash = "sha256:a3de1c5d4c745f10afa78b1a02f917b9dce0808fb206adc0f5bb48b58c1ca21f"},
+    {file = "mkdocs_material-9.6.3-py3-none-any.whl", hash = "sha256:1125622067e26940806701219303b27c0933e04533560725d97ec26fd16a39cf"},
+    {file = "mkdocs_material-9.6.3.tar.gz", hash = "sha256:c87f7d1c39ce6326da5e10e232aed51bae46252e646755900f4b0fc9192fa832"},
 ]
 
 [[package]]
