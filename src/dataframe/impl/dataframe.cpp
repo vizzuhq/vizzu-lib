@@ -852,8 +852,7 @@ const data_source &dataframe::get_data_source() const
 	                        : *unsafe_get<copying>(source).other;
 }
 
-std::string_view dataframe::get_series_info(
-    const std::string_view &id,
+std::string_view dataframe::get_series_info(const std::string &id,
     const char *key) const &
 {
 	switch (auto &&ser = get_data_source().get_series(id)) {

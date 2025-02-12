@@ -123,9 +123,34 @@ const char *vizzu_version() { return Interface::version(); }
 
 void vizzu_setLogging(bool enable) { Interface::setLogging(enable); }
 
-APIHandles::Chart vizzu_createChart()
+APIHandles::DataTable vizzu_createData()
 {
-	return Interface::getInstance().createChart({});
+	return Interface::getInstance().createData();
+}
+
+APIHandles::DataTable vizzu_createExternalData(
+    void (*stringDeleter)(const char *),
+    bool (*seriesMeta)(const char *),
+    const char *(*seriesInfo)(const char *, const char *),
+    void (*aggregator)(APIHandles::DataTable,
+        bool (*)(const Vizzu::Data::RowWrapper *),
+        bool (*)(const Vizzu::Data::RowWrapper *),
+        std::uint32_t,
+        const char *const *,
+        std::uint32_t,
+        const char *const *,
+        const char *const *,
+        const char **),
+    void (*deleter)())
+{
+	return Interface::getInstance().createExternalData(
+	    {{stringDeleter, seriesMeta, seriesInfo, aggregator},
+	        deleter});
+}
+
+APIHandles::Chart vizzu_createChart(APIHandles::DataTable data)
+{
+	return Interface::getInstance().createChart(data);
 }
 
 APIHandles::Canvas vizzu_createCanvas()
@@ -295,7 +320,7 @@ const Value *record_getValue(const Vizzu::Data::RowWrapper *record,
 
 void data_addDimension(APIHandles::Chart chart,
     const char *name,
-    const char **categories,
+    const char *const *categories,
     std::uint32_t categoriesCount,
     const std::uint32_t *categoryIndices,
     std::uint32_t categoryIndicesCount,

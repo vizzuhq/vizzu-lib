@@ -1,4 +1,4 @@
-import { CVizzu } from '../cvizzu.types'
+import { CPointer, CVizzu } from '../cvizzu.types';
 
 import { ObjectRegistry } from './objregistry.js'
 import { CEnv } from './cenv.js'
@@ -45,10 +45,6 @@ export class Module extends CEnv {
 		this._callStatic(this._wasm._vizzu_setLogging)(enabled)
 	}
 
-	getData(cChart: CChart): CData {
-		return new CData(cChart.getId, this)
-	}
-
 	getCoordSystem(cChart: CChart): CCoordSystem {
 		return new CCoordSystem(cChart.getId, this)
 	}
@@ -57,8 +53,13 @@ export class Module extends CEnv {
 		return new CAnimControl(cChart.getId, this)
 	}
 
-	createChart(): CChart {
-		return new CChart(this, this._getStatic(this._wasm._vizzu_createChart))
+	createData(): CData {
+		return new CData(this._getStatic(this._wasm._vizzu_createData), this)
+	}
+
+	createChart(data : CData): CChart {
+		const cPointer = this._callStatic(this._wasm._vizzu_createChart)(data.getId())
+		return new CChart(this, (): CPointer => cPointer)
 	}
 
 	createCanvas(): CCanvas {

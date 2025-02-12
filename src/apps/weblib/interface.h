@@ -2,7 +2,7 @@
 #define LIB_INTERFACE_H
 
 #include "cinterface.h"
-#include "jsfunctionwrapper.h"
+#include "jswrappers.h"
 #include "objectregistry.h"
 
 namespace Gfx
@@ -12,6 +12,10 @@ struct ICanvas;
 
 namespace Vizzu
 {
+namespace dataframe
+{
+class alignas(alignof(double)) dataframe_interface;
+}
 namespace Data
 {
 struct DataTable;
@@ -26,10 +30,31 @@ class Chart;
 class Interface
 {
 public:
+	struct ExternalData
+	{
+		void (*stringDeleter)(const char *);
+		bool (*seriesMeta)(const char *);
+		const char *(*seriesInfo)(const char *, const char *);
+		void (*aggregator)(ObjectRegistryHandle,
+		    bool (*)(const Data::RowWrapper *),
+		    bool (*)(const Data::RowWrapper *),
+		    std::uint32_t,
+		    const char *const *,
+		    std::uint32_t,
+		    const char *const *,
+		    const char *const *,
+		    const char **);
+	};
+
 	static Interface &getInstance();
 
 	Interface();
 	static const char *version();
+	ObjectRegistryHandle createExternalData(
+	    JsCompositionWrapper<ExternalData> &&externalData);
+	ObjectRegistryHandle createData(
+	    std::shared_ptr<dataframe::dataframe_interface> *df =
+	        nullptr);
 	ObjectRegistryHandle createChart(ObjectRegistryHandle data);
 	ObjectRegistryHandle createCanvas();
 	static void setLogging(bool enable);
@@ -99,22 +124,23 @@ public:
 	    double &rx,
 	    double &ry);
 
-	void addDimension(ObjectRegistryHandle chart,
+	void addDimension(ObjectRegistryHandle table,
 	    const char *name,
-	    const char **categories,
+	    const char *const *categories,
 	    std::uint32_t categoriesCount,
 	    const std::uint32_t *categoryIndices,
 	    std::uint32_t categoryIndicesCount,
 	    bool isContiguous);
-	void addMeasure(ObjectRegistryHandle chart,
+	void addMeasure(ObjectRegistryHandle table,
 	    const char *name,
 	    const char *unit,
 	    const double *values,
 	    std::uint32_t count);
-	void addRecord(ObjectRegistryHandle chart,
+	void addRecord(ObjectRegistryHandle table,
 	    const char *const *cells,
 	    std::uint32_t count);
-	const char *dataMetaInfo(ObjectRegistryHandle chart);
+	const char *dataMetaInfo(ObjectRegistryHandle table);
+
 	void addEventListener(ObjectRegistryHandle chart,
 	    const char *event,
 	    void (*callback)(APIHandles::Event, const char *));
@@ -136,6 +162,9 @@ public:
 	static std::variant<double, const std::string *> getRecordValue(
 	    const Data::RowWrapper &record,
 	    const char *column);
+
+	std::shared_ptr<Data::DataTable> getTable(
+	    ObjectRegistryHandle data);
 
 private:
 	struct Snapshot;

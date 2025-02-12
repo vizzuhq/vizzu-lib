@@ -165,9 +165,8 @@ public:
 	[[nodiscard]] series_meta_t get_series_meta(
 	    const std::string &id) const &;
 
-	[[nodiscard]] std::string_view get_series_info(
-	    const std::string_view &id,
-	    const char *key) const &;
+	[[nodiscard]] std::string_view
+	get_series_info(const std::string &id, const char *key) const &;
 
 	[[nodiscard]] bool is_removed(std::size_t record_id) const &;
 

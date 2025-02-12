@@ -183,7 +183,7 @@ series_meta_t dataframe_interface::get_series_meta(
 }
 
 std::string_view dataframe_interface::get_series_info(
-    const std::string_view &id,
+    const std::string &id,
     const char *key) const &
 {
 	return as_impl(this).get_series_info(id, key);

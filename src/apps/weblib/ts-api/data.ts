@@ -3,13 +3,16 @@ import * as D from './types/data.js'
 import { CRecord, CData } from './module/cdata.js'
 import { DataRecord } from './datarecord.js'
 import { Mirrored } from './tsutils.js'
+import { CPointer } from './cvizzu.types';
 
 type DataTypes = D.DimensionValue | D.MeasureValue
 export class Data {
 	private _cData: CData
+	private _cChart: CPointer
 
-	constructor(cData: CData) {
+	constructor(cData: CData, cChart: CPointer) {
 		this._cData = cData
+		this._cChart = cChart
 	}
 
 	set(obj?: D.TableBySeries | D.TableByRecords): void {
@@ -259,9 +262,9 @@ export class Data {
 	private _setFilter(filter: D.FilterCallback | null): void {
 		if (typeof filter === 'function') {
 			const callback = (cRecord: CRecord): boolean => filter(new DataRecord(cRecord))
-			this._cData.setFilter(callback)
+			this._cData.setFilter(callback, this._cChart)
 		} else if (filter === null) {
-			this._cData.setFilter(null)
+			this._cData.setFilter(null, this._cChart)
 		} else {
 			throw new Error('data filter is not a function or null')
 		}

@@ -49,12 +49,12 @@ export class Chart implements ChartInterface {
 		this._plugins = plugins
 		this._module = module
 
-		this._cChart = this._module.createChart()
+		this._cData = this._module.createData()
+		this._cChart = this._module.createChart(this._cData)
 		this._module.registerChart(this._cChart, this)
 
 		this._cCanvas = this._module.createCanvas()
-		this._cData = this._module.getData(this._cChart)
-		this._data = new Data(this._cData)
+		this._data = new Data(this._cData, this._cChart.getId())
 
 		this._events = new Events(this._cChart)
 		this._plugins.init(this._events)

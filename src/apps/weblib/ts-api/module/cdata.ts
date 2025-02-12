@@ -128,7 +128,7 @@ export class CData extends CObject {
 		}
 	}
 
-	setFilter(callback: ((record: CRecord) => boolean) | null): void {
+	setFilter(callback: ((record: CRecord) => boolean) | null, chartId: CPointer): void {
 		const callbackPtrs: [CPointer, CPointer] = [0, 0]
 		if (callback !== null) {
 			const f = (recordPtr: CRecordPtr): boolean => callback(new CRecord(this, recordPtr))
@@ -140,6 +140,6 @@ export class CData extends CObject {
 			}
 			callbackPtrs[1] = this._wasm.addFunction(deleter, 'vi')
 		}
-		this._call(this._wasm._chart_setFilter)(...callbackPtrs)
+		this._callStatic(this._wasm._chart_setFilter).bind(this, chartId)(...callbackPtrs)
 	}
 }

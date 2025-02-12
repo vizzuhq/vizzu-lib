@@ -117,6 +117,15 @@ public:
 		};
 	}
 
+	Fun *getFun1() const
+	{
+		return func1.get() == True ? nullptr : func1.get();
+	}
+	Fun *getFun2() const
+	{
+		return func2.get() == True ? nullptr : func2.get();
+	}
+
 private:
 	SharedFun func1{std::shared_ptr<void>{}, True};
 	SharedFun func2{std::shared_ptr<void>{}, True};
@@ -167,7 +176,7 @@ struct MarkerId
 struct DataTable
 {
 	[[nodiscard]] virtual std::string_view get_series_info(
-	    const std::string_view &id,
+	    const std::string &id,
 	    const char *key) const & = 0;
 
 	[[nodiscard]] virtual dataframe::series_meta_t get_series_meta(
@@ -215,7 +224,7 @@ struct DataTableImpl final : DataTable
 	{}
 
 	[[nodiscard]] std::string_view get_series_info(
-	    const std::string_view &id,
+	    const std::string &id,
 	    const char *key) const & override
 	{
 		return df->get_series_info(id, key);

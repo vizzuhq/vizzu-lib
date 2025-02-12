@@ -271,7 +271,8 @@ struct chart_setup
 		    skip->*is_emscripten == "Emscripten build"_is_false;
 		    return is_emscripten;
 	    }()};
-	Vizzu::Chart chart{};
+	Vizzu::Chart chart{std::make_shared<Vizzu::Data::DataTableImpl>(
+	    Vizzu::dataframe::dataframe::create_new())};
 
 	explicit(false) operator Vizzu::Chart &()
 	{
