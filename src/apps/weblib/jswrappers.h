@@ -17,18 +17,32 @@ template <class T> struct JsCompositionWrapper
 {
 	T values;
 	void (*deleter)();
-	~JsCompositionWrapper() { deleter(); }
+	~JsCompositionWrapper()
+	{
+		if (auto &&d = std::exchange(deleter, {})) d();
+	}
 	[[nodiscard]] JsCompositionWrapper(T &&values,
 	    void (*deleter)()) :
 	    values(std::move(values)),
 	    deleter(deleter)
 	{}
 	JsCompositionWrapper(const JsCompositionWrapper &) = delete;
-	JsCompositionWrapper(JsCompositionWrapper &&) noexcept = default;
+	JsCompositionWrapper(JsCompositionWrapper &&other) noexcept :
+	    values(std::move(other.values)),
+	    deleter(std::exchange(other.deleter, {}))
+	{}
 	JsCompositionWrapper &operator=(
 	    const JsCompositionWrapper &) = delete;
 	JsCompositionWrapper &operator=(
-	    JsCompositionWrapper &&) noexcept = default;
+	    JsCompositionWrapper &&other) noexcept
+	{
+		if (this->deleter != other.deleter) {
+			if (deleter) deleter();
+			values = std::move(other.values);
+			deleter = std::exchange(other.deleter, {});
+		}
+		return *this;
+	}
 };
 
 }

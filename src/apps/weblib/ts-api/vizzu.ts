@@ -48,7 +48,16 @@ export interface FeatureOptions {
 	features?: Plugin[]
 }
 
-export type VizzuOptions = FeatureOptions & LazyCanvasOptions
+export interface OtherSource {
+	series: Data.SeriesMetaInfo[]
+	aggregate: (filter1: string, filter2: string, groupBy: Data.SeriesList, series: Data.SeriesList) => Data.Set
+}
+
+export interface OtherSourceOptions {
+	otherSource?: OtherSource
+}
+
+export type VizzuOptions = FeatureOptions & OtherSourceOptions & LazyCanvasOptions
 
 export type FeatureFunction = (feature: Feature | Plugin, enabled?: boolean) => PluginApi
 export interface Features extends Record<string, PluginApi>, FeatureFunction {

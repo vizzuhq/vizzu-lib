@@ -435,7 +435,6 @@ struct IntFDataTable final : Data::DataTable
 	{
 		auto &intf = Interface::getInstance();
 		auto &&res = dataframe::dataframe::create_new();
-		auto &&obj = intf.createData(&res);
 
 		std::vector<const char *> aggregateBy(aggregate_by.size());
 		std::ranges::transform(aggregate_by,
@@ -479,7 +478,7 @@ struct IntFDataTable final : Data::DataTable
 			std::vector<const char *> aggregatingRawNames(
 			    aggregating.size());
 
-			externalData.values.aggregator(obj,
+			externalData.values.aggregator(intf.createData(&res),
 			    filter.getFun1(),
 			    filter.getFun2(),
 			    aggregateBy.size(),
@@ -494,8 +493,6 @@ struct IntFDataTable final : Data::DataTable
 				    externalData.values.stringDeleter);
 		}
 
-		intf.freeObj(obj);
-
 		std::map<Data::SeriesIndex, std::string> resMap;
 		for (auto it = aggregatingNames.data();
 		     auto &&agg : aggregating)
@@ -506,6 +503,7 @@ struct IntFDataTable final : Data::DataTable
 				    Refl::enum_name<std::string>(agg.getAggr())
 				    + " of " + agg.getColIndex();
 
+		res->finalize();
 		return {res, resMap};
 	}
 };

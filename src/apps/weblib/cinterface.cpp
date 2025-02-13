@@ -23,6 +23,7 @@ static_assert(offsetof(Point, y) == 8);
 static_assert(offsetof(Value, dimension) == 0);
 static_assert(offsetof(Value, measureValue) == 8);
 static_assert(offsetof(Value, dimensionValue) == 8);
+static_assert(sizeof(const char *) == 4);
 
 constexpr std::uint_fast32_t hash(std::string_view s) noexcept
 {

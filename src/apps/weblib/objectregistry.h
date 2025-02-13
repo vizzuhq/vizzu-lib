@@ -46,7 +46,7 @@ public:
 		if (auto lock = std::lock_guard{mutex}; objects.erase(handle))
 			return;
 
-		throw std::logic_error("No such object exists");
+		// throw std::logic_error("No such object exists");
 	}
 
 private:

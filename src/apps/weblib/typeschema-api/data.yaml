@@ -335,7 +335,9 @@ definitions:
                 description: |
                     A filter callback is called on each record of the dataset on chart
                     generation. If the callback returns false, the record will not be shown on the chart.
-                $ref: FilterCallback
+                oneOf:
+                    - $ref: FilterCallback
+                    - type: string
                 nullable: true
 
     TableBySeries:

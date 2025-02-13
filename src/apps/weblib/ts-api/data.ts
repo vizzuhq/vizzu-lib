@@ -1,18 +1,37 @@
 import * as D from './types/data.js'
 
-import { CRecord, CData } from './module/cdata.js'
+import { CData } from './module/cdata.js'
+import { CRecord, CChart } from './module/cchart.js'
 import { DataRecord } from './datarecord.js'
 import { Mirrored } from './tsutils.js'
-import { CPointer } from './cvizzu.types';
+import { CPointer } from "./cvizzu.types";
 
 type DataTypes = D.DimensionValue | D.MeasureValue
 export class Data {
 	private _cData: CData
-	private _cChart: CPointer
+	private _cChart: CChart | undefined
+	private readonly _needDetach: boolean
+	private _filters : Map<CPointer, string>
 
-	constructor(cData: CData, cChart: CPointer) {
+	constructor(cData: CData, cChart: CChart | undefined, needDetach: boolean) {
 		this._cData = cData
 		this._cChart = cChart
+		this._needDetach = needDetach
+		this._filters = new Map()
+	}
+
+	detach(): void {
+		if (this._needDetach) {
+			this._cData.free()
+		}
+	}
+
+	getMetaInfo(): Mirrored<D.Metainfo> {
+		return this._cData.getMetaInfo()
+	}
+
+	getFilterByPtr(ptr: CPointer): string | null {
+		return this._filters.get(ptr) ?? null
 	}
 
 	set(obj?: D.TableBySeries | D.TableByRecords): void {
@@ -259,12 +278,17 @@ export class Data {
 		this._cData.addMeasure(name, unit, numbers)
 	}
 
-	private _setFilter(filter: D.FilterCallback | null): void {
+	private _setFilter(filter: D.FilterCallback | string | null): void {
+		if (this._cChart === undefined) {
+			throw new Error('chart is not attached')
+		}
 		if (typeof filter === 'function') {
 			const callback = (cRecord: CRecord): boolean => filter(new DataRecord(cRecord))
-			this._cData.setFilter(callback, this._cChart)
+			this._cChart.setFilter(callback)
 		} else if (filter === null) {
-			this._cData.setFilter(null, this._cChart)
+			this._cChart.setFilter(null)
+		} else if (typeof filter === 'string') {
+			this._filters.set(this._cChart.setFilter((): boolean => false), filter)
 		} else {
 			throw new Error('data filter is not a function or null')
 		}
