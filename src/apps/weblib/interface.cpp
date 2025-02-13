@@ -478,7 +478,9 @@ struct IntFDataTable final : Data::DataTable
 			std::vector<const char *> aggregatingRawNames(
 			    aggregating.size());
 
-			externalData.values.aggregator(intf.createData(&res),
+			externalData.values.aggregator(
+			    create_unique_ptr(intf.createData(&res), &object_free)
+			        .get(),
 			    filter.getFun1(),
 			    filter.getFun2(),
 			    aggregateBy.size(),
@@ -496,12 +498,12 @@ struct IntFDataTable final : Data::DataTable
 		std::map<Data::SeriesIndex, std::string> resMap;
 		for (auto it = aggregatingNames.data();
 		     auto &&agg : aggregating)
-			if (auto &&ptr = *it++)
-				resMap[agg] = ptr.get();
-			else
-				resMap[agg] =
-				    Refl::enum_name<std::string>(agg.getAggr())
-				    + " of " + agg.getColIndex();
+			resMap[agg] = it++->get();
+
+		for (const auto &dim : aggregate_by)
+			res->set_sort(dim.getColIndex(),
+			    dataframe::sort_type::less,
+			    dataframe::na_position::first);
 
 		res->finalize();
 		return {res, resMap};

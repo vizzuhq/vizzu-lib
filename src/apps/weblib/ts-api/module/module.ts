@@ -92,7 +92,7 @@ export class Module extends CEnv {
 												grouping: number, groupingList: CPointer,
 												aggregating: number, aggregatingNames: CPointer,
 												aggregatingFunctions: CPointer, outputNames: CPointer): void => {
-			const data = new CData((): CPointer => dataPtr, this)
+			const data = new CData((): CPointer => dataPtr, this, false)
 
 			const groupingArray: Data.SeriesList = new Array(grouping)
 			for (let i = 0; i < grouping; i++) {
@@ -116,7 +116,6 @@ export class Module extends CEnv {
 					this._wasm.setValue(outputNames + i * 4, this._toCString(val), 'i8*')
 				}
 			}
-			data.free()
 		}
 		callbackPtrs[3] = this._wasm.addFunction(aggregator, 'viiiiiiiii')
 

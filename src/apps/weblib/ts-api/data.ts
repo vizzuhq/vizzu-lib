@@ -13,7 +13,7 @@ export class Data {
 	private readonly _needDetach: boolean
 	private _filters : Map<CPointer, string>
 
-	constructor(cData: CData, cChart: CChart | undefined, needDetach: boolean) {
+	constructor(cData: CData, cChart: CChart | undefined = undefined, needDetach: boolean = true) {
 		this._cData = cData
 		this._cChart = cChart
 		this._needDetach = needDetach
@@ -288,7 +288,7 @@ export class Data {
 		} else if (filter === null) {
 			this._cChart.setFilter(null)
 		} else if (typeof filter === 'string') {
-			this._filters.set(this._cChart.setFilter((): boolean => false, this._filters.delete), filter)
+			this._filters.set(this._cChart.setFilter((): boolean => false, this._filters.delete.bind(this._filters)), filter)
 		} else {
 			throw new Error('data filter is not a function or null')
 		}

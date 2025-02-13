@@ -50,7 +50,7 @@ export class Chart implements ChartInterface {
 				new Map(series.map(info => [info.name, info.type === 'dimension'] as const)),
 				new Map(series.map(info => [info.name, new Map(Object.entries(info))] as const)),
 				(data: CData, filt1: number, filt2: number, grouping: D.SeriesList, aggregating: D.SeriesList): string[] => {
-					new Data(data, undefined, false).set(aggregate(this._data.getFilterByPtr(filt1), this._data.getFilterByPtr(filt2), grouping, aggregating))
+					new Data(data).set(aggregate(this._data.getFilterByPtr(filt1), this._data.getFilterByPtr(filt2), grouping, aggregating))
 					return data.getMetaInfo().series.filter(series => series.type ===
 						'measure')
 						.map(series => series.name)
@@ -65,12 +65,13 @@ export class Chart implements ChartInterface {
 		this._plugins = plugins
 		this._module = module
 
+		const cDataFromInside = true
 		const cData = this._createData()
 		this._cChart = this._module.createChart(cData)
 		this._module.registerChart(this._cChart, this)
 
 		this._cCanvas = this._module.createCanvas()
-		this._data = new Data(cData, this._cChart, true)
+		this._data = new Data(cData, this._cChart, cDataFromInside)
 
 		this._events = new Events(this._cChart)
 		this._plugins.init(this._events)
