@@ -1,4 +1,4 @@
-import { CManagedObject } from "./cenv.js";
+import { CManagedObject } from './cenv.js'
 import { Mirrored } from '../tsutils'
 import * as Data from '../types/data.js'
 

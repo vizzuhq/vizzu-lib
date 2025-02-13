@@ -1,4 +1,4 @@
-import { CString, CFunction, CEventPtr, CPointer, CRecordPtr } from '../cvizzu.types';
+import { CString, CFunction, CEventPtr, CPointer, CRecordPtr } from '../cvizzu.types'
 
 import * as Anim from '../types/anim.js'
 import * as Config from '../types/config.js'
@@ -187,7 +187,10 @@ export class CChart extends CManagedObject {
 		)
 	}
 
-	setFilter(callback: ((record: CRecord) => boolean) | null, out_deleter: ((ptr: CPointer) => void) | null = null): CPointer {
+	setFilter(
+		callback: ((record: CRecord) => boolean) | null,
+		out_deleter: ((ptr: CPointer) => void) | null = null
+	): CPointer {
 		const callbackPtrs: [CPointer, CPointer] = [0, 0]
 		if (callback !== null) {
 			const f = (recordPtr: CRecordPtr): boolean => callback(new CRecord(this, recordPtr))

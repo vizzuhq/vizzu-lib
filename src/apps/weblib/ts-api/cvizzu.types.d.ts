@@ -68,13 +68,13 @@ export interface CVizzu {
 	// exported functions
 	_vizzu_createData(): CDataPtr
 	_vizzu_createExternalData(
-		stringDeleter : CFunction,
-		seriesMeta : CFunction,
-		seriesInfo : CFunction,
-		aggregator : CFunction,
-		deleter : CFunction
+		stringDeleter: CFunction,
+		seriesMeta: CFunction,
+		seriesInfo: CFunction,
+		aggregator: CFunction,
+		deleter: CFunction
 	): CDataPtr
-	_vizzu_createChart(data : CDataPtr): CChartPtr
+	_vizzu_createChart(data: CDataPtr): CChartPtr
 	_vizzu_createCanvas(): CCanvasPtr
 	_vizzu_pointerDown(
 		chart: CChartPtr,

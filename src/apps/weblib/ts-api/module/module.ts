@@ -1,4 +1,4 @@
-import { CPointer, CVizzu } from '../cvizzu.types';
+import { CPointer, CVizzu } from '../cvizzu.types'
 import * as Data from '../types/data.js'
 
 import { ObjectRegistry } from './objregistry.js'
@@ -10,7 +10,7 @@ import { CAnimControl } from './canimctrl.js'
 import { CCoordSystem } from './ccoordsys.js'
 import { Canvas } from './canvas.js'
 import { Chart } from './chart.js'
-import { AggregatorType } from "../types/data.js";
+import { AggregatorType } from '../types/data.js'
 
 export class Module extends CEnv {
 	constructor(wasm: CVizzu) {
@@ -59,13 +59,17 @@ export class Module extends CEnv {
 		return new CData(this._getStatic(this._wasm._vizzu_createData), this)
 	}
 
-	createExternalData(isDimension: Map<string, boolean>, toInfo: Map<string, Map<string, string>>,
-										 aggregatorFunction: (data: CData,
-																					filt1: CPointer,
-																					filt2: CPointer,
-																					grouping: Data.SeriesList,
-																					aggregating: Data.SeriesList) => string[]
-										 ): CData {
+	createExternalData(
+		isDimension: Map<string, boolean>,
+		toInfo: Map<string, Map<string, string>>,
+		aggregatorFunction: (
+			data: CData,
+			filt1: CPointer,
+			filt2: CPointer,
+			grouping: Data.SeriesList,
+			aggregating: Data.SeriesList
+		) => string[]
+	): CData {
 		const callbackPtrs: [CPointer, CPointer, CPointer, CPointer, CPointer] = [0, 0, 0, 0, 0]
 		const stringDeleter = (ptr: CPointer): void => {
 			this._wasm._free(ptr)
@@ -88,10 +92,17 @@ export class Module extends CEnv {
 		}
 		callbackPtrs[2] = this._wasm.addFunction(seriesInfo, 'iii')
 
-		const aggregator = (dataPtr: CPointer, filt1: CPointer, filt2: CPointer,
-												grouping: number, groupingList: CPointer,
-												aggregating: number, aggregatingNames: CPointer,
-												aggregatingFunctions: CPointer, outputNames: CPointer): void => {
+		const aggregator = (
+			dataPtr: CPointer,
+			filt1: CPointer,
+			filt2: CPointer,
+			grouping: number,
+			groupingList: CPointer,
+			aggregating: number,
+			aggregatingNames: CPointer,
+			aggregatingFunctions: CPointer,
+			outputNames: CPointer
+		): void => {
 			const data = new CData((): CPointer => dataPtr, this, false)
 
 			const groupingArray: Data.SeriesList = new Array(grouping)
@@ -104,12 +115,20 @@ export class Module extends CEnv {
 			for (let i = 0; i < aggregating; i++) {
 				aggregatingArray[i] = {
 					name: this._fromCString(this._wasm.getValue(aggregatingNames + i * 4, 'i8*')),
-					aggregator: this._fromCString(this._wasm.getValue(aggregatingFunctions + i * 4, 'i8*')) as AggregatorType
+					aggregator: this._fromCString(
+						this._wasm.getValue(aggregatingFunctions + i * 4, 'i8*')
+					) as AggregatorType
 				}
 				this._wasm.setValue(outputNames + i * 4, 0, 'i8*')
 			}
 
-			const aggregated = aggregatorFunction(data, filt1, filt2, groupingArray, aggregatingArray)
+			const aggregated = aggregatorFunction(
+				data,
+				filt1,
+				filt2,
+				groupingArray,
+				aggregatingArray
+			)
 			for (let i = 0; i < aggregating; i++) {
 				const val = aggregated[i]
 				if (val) {
@@ -130,7 +149,7 @@ export class Module extends CEnv {
 		return new CData((): CPointer => cPointer, this)
 	}
 
-	createChart(data : CData): CChart {
+	createChart(data: CData): CChart {
 		const cPointer = this._callStatic(this._wasm._vizzu_createChart)(data.getId())
 		return new CChart(this, (): CPointer => cPointer)
 	}

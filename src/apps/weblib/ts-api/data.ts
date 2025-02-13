@@ -4,14 +4,14 @@ import { CData } from './module/cdata.js'
 import { CRecord, CChart } from './module/cchart.js'
 import { DataRecord } from './datarecord.js'
 import { Mirrored } from './tsutils.js'
-import { CPointer } from "./cvizzu.types";
+import { CPointer } from './cvizzu.types'
 
 type DataTypes = D.DimensionValue | D.MeasureValue
 export class Data {
 	private _cData: CData
 	private _cChart: CChart | undefined
 	private readonly _needDetach: boolean
-	private _filters : Map<CPointer, string>
+	private _filters: Map<CPointer, string>
 
 	constructor(cData: CData, cChart: CChart | undefined = undefined, needDetach: boolean = true) {
 		this._cData = cData
@@ -288,7 +288,13 @@ export class Data {
 		} else if (filter === null) {
 			this._cChart.setFilter(null)
 		} else if (typeof filter === 'string') {
-			this._filters.set(this._cChart.setFilter((): boolean => false, this._filters.delete.bind(this._filters)), filter)
+			this._filters.set(
+				this._cChart.setFilter(
+					(): boolean => false,
+					this._filters.delete.bind(this._filters)
+				),
+				filter
+			)
 		} else {
 			throw new Error('data filter is not a function or null')
 		}

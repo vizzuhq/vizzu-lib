@@ -10,7 +10,7 @@ import { CAnimControl, CAnimation } from './module/canimctrl.js'
 import { Data } from './data.js'
 import { Events, EventType, EventHandler, EventMap } from './events.js'
 import { Mirrored } from './tsutils.js'
-import { VizzuOptions } from "./vizzu.js";
+import { VizzuOptions } from './vizzu.js'
 import { AnimControl } from './animcontrol.js'
 import {
 	PluginRegistry,
@@ -47,13 +47,27 @@ export class Chart implements ChartInterface {
 		if (this._options.otherSource) {
 			const { series, aggregate } = this._options.otherSource
 			return this._module.createExternalData(
-				new Map(series.map(info => [info.name, info.type === 'dimension'] as const)),
-				new Map(series.map(info => [info.name, new Map(Object.entries(info))] as const)),
-				(data: CData, filt1: number, filt2: number, grouping: D.SeriesList, aggregating: D.SeriesList): string[] => {
-					new Data(data).set(aggregate(this._data.getFilterByPtr(filt1), this._data.getFilterByPtr(filt2), grouping, aggregating))
-					return data.getMetaInfo().series.filter(series => series.type ===
-						'measure')
-						.map(series => series.name)
+				new Map(series.map((info) => [info.name, info.type === 'dimension'] as const)),
+				new Map(series.map((info) => [info.name, new Map(Object.entries(info))] as const)),
+				(
+					data: CData,
+					filt1: number,
+					filt2: number,
+					grouping: D.SeriesList,
+					aggregating: D.SeriesList
+				): string[] => {
+					new Data(data).set(
+						aggregate(
+							this._data.getFilterByPtr(filt1),
+							this._data.getFilterByPtr(filt2),
+							grouping,
+							aggregating
+						)
+					)
+					return data
+						.getMetaInfo()
+						.series.filter((series) => series.type === 'measure')
+						.map((series) => series.name)
 				}
 			)
 		}
