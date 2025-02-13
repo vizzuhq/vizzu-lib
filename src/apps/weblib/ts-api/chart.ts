@@ -50,7 +50,7 @@ export class Chart implements ChartInterface {
 				new Map(series.map(info => [info.name, info.type === 'dimension'] as const)),
 				new Map(series.map(info => [info.name, new Map(Object.entries(info))] as const)),
 				(data: CData, filt1: number, filt2: number, grouping: D.SeriesList, aggregating: D.SeriesList): string[] => {
-					new Data(data, undefined, false).set(aggregate(this._data.getFilterByPtr(filt1) || '', this._data.getFilterByPtr(filt2) || '', grouping, aggregating))
+					new Data(data, undefined, false).set(aggregate(this._data.getFilterByPtr(filt1), this._data.getFilterByPtr(filt2), grouping, aggregating))
 					return data.getMetaInfo().series.filter(series => series.type ===
 						'measure')
 						.map(series => series.name)

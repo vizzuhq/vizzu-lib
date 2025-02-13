@@ -288,7 +288,7 @@ export class Data {
 		} else if (filter === null) {
 			this._cChart.setFilter(null)
 		} else if (typeof filter === 'string') {
-			this._filters.set(this._cChart.setFilter((): boolean => false), filter)
+			this._filters.set(this._cChart.setFilter((): boolean => false, this._filters.delete), filter)
 		} else {
 			throw new Error('data filter is not a function or null')
 		}

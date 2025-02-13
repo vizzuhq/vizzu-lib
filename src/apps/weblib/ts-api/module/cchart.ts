@@ -187,13 +187,14 @@ export class CChart extends CManagedObject {
 		)
 	}
 
-	setFilter(callback: ((record: CRecord) => boolean) | null): CPointer {
+	setFilter(callback: ((record: CRecord) => boolean) | null, out_deleter: ((ptr: CPointer) => void) | null = null): CPointer {
 		const callbackPtrs: [CPointer, CPointer] = [0, 0]
 		if (callback !== null) {
 			const f = (recordPtr: CRecordPtr): boolean => callback(new CRecord(this, recordPtr))
 			callbackPtrs[0] = this._wasm.addFunction(f, 'ii')
 			const deleter = (ptr: CPointer): void => {
 				if (ptr !== callbackPtrs[0]) console.warn('Wrong pointer passed to destructor')
+				if (out_deleter) out_deleter(callbackPtrs[0])
 				this._wasm.removeFunction(callbackPtrs[0])
 				this._wasm.removeFunction(callbackPtrs[1])
 			}
