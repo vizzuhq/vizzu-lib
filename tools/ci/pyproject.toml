@@ -43,8 +43,7 @@ docs = [
     "markdown",
     "types-Markdown",
     "Pillow",
-    "types-Pillow",
-    "setuptools<72.0.0",
+    "types-Pillow"
 ]
 
 [tool.setuptools]
