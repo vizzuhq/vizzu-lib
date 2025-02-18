@@ -331,7 +331,8 @@ void Interface::addDimension(ObjectRegistryHandle table,
 	getTable(table)->add_dimension({categories, categoriesCount},
 	    {categoryIndices, categoryIndicesCount},
 	    name,
-	    {{{"isContiguous", isContiguous ? "true" : "false"}}});
+	    {{{"isContiguous", isContiguous ? "true" : "false"}}},
+	    dataframe::adding_type::create_or_override);
 }
 
 void Interface::addMeasure(ObjectRegistryHandle table,
@@ -342,7 +343,8 @@ void Interface::addMeasure(ObjectRegistryHandle table,
 {
 	getTable(table)->add_measure({values, count},
 	    name,
-	    {{std::pair{"unit", unit}}});
+	    {{std::pair{"unit", unit}}},
+	    dataframe::adding_type::create_or_override);
 }
 
 void Interface::addRecord(ObjectRegistryHandle table,

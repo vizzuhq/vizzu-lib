@@ -117,11 +117,11 @@ public:
 		};
 	}
 
-	Fun *getFun1() const
+	[[nodiscard]] Fun *getFun1() const
 	{
 		return func1.get() == True ? nullptr : func1.get();
 	}
-	Fun *getFun2() const
+	[[nodiscard]] Fun *getFun2() const
 	{
 		return func2.get() == True ? nullptr : func2.get();
 	}
@@ -186,17 +186,13 @@ struct DataTable
 	    std::span<const char *const> dimension_categories,
 	    std::span<const std::uint32_t> dimension_values,
 	    std::string_view name,
-	    std::span<const std::pair<const char *, const char *>> info =
-	        {},
-	    dataframe::adding_type adding_strategy =
-	        dataframe::adding_type::create_or_override) & = 0;
+	    std::span<const std::pair<const char *, const char *>> info,
+	    dataframe::adding_type adding_strategy) & = 0;
 
 	virtual void add_measure(std::span<const double> measure_values,
 	    std::string_view name,
-	    std::span<const std::pair<const char *, const char *>> info =
-	        {},
-	    dataframe::adding_type adding_strategy =
-	        dataframe::adding_type::create_or_override) & = 0;
+	    std::span<const std::pair<const char *, const char *>> info,
+	    dataframe::adding_type adding_strategy) & = 0;
 
 	virtual void add_record(
 	    std::span<const char *const> values) & = 0;
