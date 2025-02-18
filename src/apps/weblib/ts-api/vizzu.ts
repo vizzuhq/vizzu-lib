@@ -51,8 +51,8 @@ export interface FeatureOptions {
 export interface OtherSource {
 	series: Data.SeriesMetaInfo[]
 	aggregate: (
-		filter1: string | null,
-		filter2: string | null,
+		filter1: Data.OutFilterCallback | null,
+		filter2: Data.OutFilterCallback | null,
 		groupBy: Data.SeriesList,
 		series: Data.SeriesList
 	) => Data.Set

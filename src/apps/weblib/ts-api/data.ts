@@ -8,20 +8,20 @@ import { CPointer } from './cvizzu.types'
 
 type DataTypes = D.DimensionValue | D.MeasureValue
 export class Data {
-	private _cData: CData
-	private _cChart: CChart | undefined
-	private readonly _needDetach: boolean
-	private _filters: Map<CPointer, string>
+	private readonly _cData: CData
+	private readonly _cChart: CChart | undefined
+	private readonly _dataOwned: boolean
+	private readonly _filters: Map<CPointer, D.OutFilterCallback>
 
-	constructor(cData: CData, cChart: CChart | undefined = undefined, needDetach: boolean = true) {
+	constructor(cData: CData, cChart: CChart | undefined = undefined, dataOwned: boolean = true) {
 		this._cData = cData
 		this._cChart = cChart
-		this._needDetach = needDetach
+		this._dataOwned = dataOwned
 		this._filters = new Map()
 	}
 
 	detach(): void {
-		if (this._needDetach) {
+		if (this._dataOwned) {
 			this._cData.free()
 		}
 	}
@@ -30,7 +30,7 @@ export class Data {
 		return this._cData.getMetaInfo()
 	}
 
-	getFilterByPtr(ptr: CPointer): string | null {
+	getFilterByPtr(ptr: CPointer): D.OutFilterCallback | null {
 		return this._filters.get(ptr) ?? null
 	}
 
@@ -278,22 +278,25 @@ export class Data {
 		this._cData.addMeasure(name, unit, numbers)
 	}
 
-	private _setFilter(filter: D.FilterCallback | string | null): void {
+	private _setFilter(filter: D.FilterCallback | D.OutFilterCallback | null): void {
 		if (this._cChart === undefined) {
 			throw new Error('chart is not attached')
 		}
-		if (typeof filter === 'function') {
-			const callback = (cRecord: CRecord): boolean => filter(new DataRecord(cRecord))
-			this._cChart.setFilter(callback)
-		} else if (filter === null) {
+		if (filter === null) {
 			this._cChart.setFilter(null)
-		} else if (typeof filter === 'string') {
+		} else if (typeof filter === 'function' && filter.length == 1) {
+			const callback = (cRecord: CRecord): boolean =>
+				(filter as D.FilterCallback)(new DataRecord(cRecord))
+			this._cChart.setFilter(callback)
+		} else if (typeof filter === 'function' && filter.length == 0) {
 			this._filters.set(
 				this._cChart.setFilter(
 					(): boolean => false,
-					this._filters.delete.bind(this._filters)
+					(ptr: CPointer) => {
+						this._filters.delete(ptr)
+					}
 				),
-				filter
+				filter as D.OutFilterCallback
 			)
 		} else {
 			throw new Error('data filter is not a function or null')

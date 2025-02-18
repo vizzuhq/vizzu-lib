@@ -480,9 +480,10 @@ struct IntFDataTable final : Data::DataTable
 			std::vector<const char *> aggregatingRawNames(
 			    aggregating.size());
 
-			externalData.values.aggregator(
-			    create_unique_ptr(intf.createData(&res), &object_free)
-			        .get(),
+			auto &&dataPtr = create_unique_ptr(intf.createData(&res),
+			    &object_free);
+
+			externalData.values.aggregator(dataPtr.get(),
 			    filter.getFun1(),
 			    filter.getFun2(),
 			    aggregateBy.size(),

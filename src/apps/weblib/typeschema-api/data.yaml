@@ -315,6 +315,13 @@ definitions:
         required: [record]
         return: { type: boolean }
 
+    OutFilterCallback:
+        type: function
+        description: A function returns a specific value for source data
+        arguments:
+        required: []
+        return: { type: any }
+
     SeriesMetaInfo:
         $ref: SeriesInfo
 
@@ -337,7 +344,7 @@ definitions:
                     generation. If the callback returns false, the record will not be shown on the chart.
                 oneOf:
                     - $ref: FilterCallback
-                    - type: string
+                    - $ref: OutFilterCallback
                 nullable: true
 
     TableBySeries:
