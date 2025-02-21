@@ -105,38 +105,16 @@ DataCube::DataCube(const DataTable &table,
 	auto &&channels = options.getChannels();
 	auto &&dimensions = channels.getDimensions();
 	auto &&measures = channels.getMeasures();
-	auto empty = dimensions.empty() && measures.empty();
 
-	df = {empty ? dataframe::dataframe::create_new()
-	            : table.copy(false)};
-
-	if (empty) {
+	if (dimensions.empty() && measures.empty()) {
+		df = dataframe::dataframe::create_new();
 		df->finalize();
 		return;
 	}
 
-	df->remove_records(options.dataFilter.getFunction());
+	std::tie(df, measure_names) =
+	    table.aggregate(options.dataFilter, dimensions, measures);
 
-	auto removed = df->copy(false);
-
-	for (const auto &dim : dimensions)
-		df->aggregate_by(dim.getColIndex());
-
-	for (const auto &meas : measures) {
-		auto &&sid = meas.getColIndex();
-		auto &&aggr = meas.getAggr();
-
-		measure_names.try_emplace(std::pair{sid, aggr},
-		    df->set_aggregate(sid, aggr));
-	}
-
-	for (const auto &dim : dimensions) {
-		df->set_sort(dim.getColIndex(),
-		    dataframe::sort_type::less,
-		    dataframe::na_position::first);
-	}
-
-	df->finalize();
 	for (std::size_t ix{}; const auto &dim : dimensions) {
 		auto &&dimName = dim.getColIndex();
 		auto &&cats = df->get_categories(dimName);
@@ -167,22 +145,16 @@ DataCube::DataCube(const DataTable &table,
 			std::swap(sumBy, common);
 		if (sumBy.empty()) continue;
 
-		auto &sub_df =
-		    *cacheImpl.try_emplace(channelId, removed->copy(false))
-		         .first->second;
+		auto dimCp{dimensions};
+		std::erase_if(dimCp,
+		    [&sumBy](const auto &dim)
+		    {
+			    return sumBy.contains(dim);
+		    });
 
-		auto &&set = sumBy.as_set();
-		for (auto first = set.begin(), last = set.end();
-		     auto &&dim : dimensions)
-			if (first == last || dim < *first)
-				sub_df.aggregate_by(dim.getColIndex());
-			else
-				++first;
-
-		std::ignore = sub_df.set_aggregate(meas->getColIndex(),
-		    meas->getAggr());
-
-		sub_df.finalize();
+		cacheImpl.try_emplace(channelId,
+		    table.aggregate(options.dataFilter, dimCp, {*meas})
+		        .first);
 	}
 }
 
@@ -209,8 +181,7 @@ bool DataCube::empty() const
 const std::string &DataCube::getName(
     const SeriesIndex &seriesId) const
 {
-	return measure_names.at(
-	    {seriesId.getColIndex(), seriesId.getAggr()});
+	return measure_names.at(seriesId);
 }
 
 MarkerId DataCube::getId(const SeriesList &sl,

@@ -60,28 +60,40 @@ auto testcase_0 = [](Vizzu::Data::DataTable &table)
 {
 	table.add_dimension(std::initializer_list<const char *>{},
 	    std::initializer_list<std::uint32_t>{},
-	    "Index");
-	table.add_measure(std::initializer_list<double>{}, "x");
-	table.add_measure(std::initializer_list<double>{}, "y");
+	    "Index",
+	    {},
+	    {});
+	table.add_measure(std::initializer_list<double>{}, "x", {}, {});
+	table.add_measure(std::initializer_list<double>{}, "y", {}, {});
 };
 
 auto testcase_1 = [](Vizzu::Data::DataTable &table)
 {
 	table.add_dimension({{"A", "B", "C", "D", "E"}},
 	    {{0, 0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 4}},
-	    "Dim5");
+	    "Dim5",
+	    {},
+	    {});
 	table.add_dimension({{"a", "b"}},
 	    {{0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1}},
-	    "Dim2");
+	    "Dim2",
+	    {},
+	    {});
 	table.add_dimension({{"a", "b", "c"}},
 	    {{0, 0, 1, 1, 0, 0, 1, 1, 2, 2, 1, 0, 2, 2, 1, 0}},
-	    "Dim3");
+	    "Dim3",
+	    {},
+	    {});
 	table.add_measure(
 	    {{1, 2, 4, 3, 3, 4, 2, 1, 4, 3, 1, 2, 2, 1, 3, 4}},
-	    "Meas1");
+	    "Meas1",
+	    {},
+	    {});
 	table.add_measure(
 	    {{0, -1, 5, 6, 6, 5, -1, 0, 5, 6, 0, -1, -1, 0, 6, -5}},
-	    "Meas2");
+	    "Meas2",
+	    {},
+	    {});
 };
 
 auto testcase_2 = [](Vizzu::Data::DataTable &table)
@@ -140,7 +152,9 @@ break)",
 	        2,
 	        2,
 	        2}},
-	    "Channel title for long names");
+	    "Channel title for long names",
+	    {},
+	    {});
 
 	table.add_dimension({{"Very long label of this element",
 	                        "",
@@ -196,7 +210,9 @@ break)",
 	        9,
 
 	    }},
-	    "Childs of long names which have no end");
+	    "Childs of long names which have no end",
+	    {},
+	    {});
 
 	table.add_measure({{639,
 	                      354,
@@ -246,7 +262,9 @@ break)",
 	                      778,
 	                      651,
 	                      598}},
-	    "値3");
+	    "値3",
+	    {},
+	    {});
 };
 
 struct chart_setup
@@ -271,7 +289,8 @@ struct chart_setup
 		    skip->*is_emscripten == "Emscripten build"_is_false;
 		    return is_emscripten;
 	    }()};
-	Vizzu::Chart chart{};
+	Vizzu::Chart chart{std::make_shared<Vizzu::Data::DataTableImpl>(
+	    Vizzu::dataframe::dataframe::create_new())};
 
 	explicit(false) operator Vizzu::Chart &()
 	{

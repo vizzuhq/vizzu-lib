@@ -7,6 +7,7 @@ export type CException = CPointer
 export type CTypeInfo = CPointer
 export type CSnapshotPtr = CPointer
 export type CAnimationPtr = CPointer
+export type CDataPtr = CPointer
 export type CChartPtr = CPointer
 export type CCanvasPtr = CPointer
 export type CEventPtr = CPointer
@@ -65,7 +66,15 @@ export interface CVizzu {
 	ExceptionInfo: CExceptionInfoConstructor
 
 	// exported functions
-	_vizzu_createChart(): CChartPtr
+	_vizzu_createData(): CDataPtr
+	_vizzu_createExternalData(
+		stringDeleter: CFunction,
+		seriesMeta: CFunction,
+		seriesInfo: CFunction,
+		aggregator: CFunction,
+		deleter: CFunction
+	): CDataPtr
+	_vizzu_createChart(data: CDataPtr): CChartPtr
 	_vizzu_createCanvas(): CCanvasPtr
 	_vizzu_pointerDown(
 		chart: CChartPtr,
