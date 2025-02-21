@@ -291,7 +291,7 @@ export class Data {
 		} else if (typeof filter === 'function' && filter.length == 0) {
 			this._filters.set(
 				this._cChart.setFilter(
-					(): boolean => false,
+					(): boolean => true,
 					(ptr: CPointer) => {
 						this._filters.delete(ptr)
 					}
