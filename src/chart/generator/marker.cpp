@@ -153,7 +153,7 @@ bool Marker::connectMarkers(bool first,
     bool polarConnection)
 {
 	if (prev && next && main && (!first || polarConnection)
-	    && prev->enabled) {
+	    && static_cast<bool>(prev->enabled)) {
 		next->prevMainMarker =
 		    RelativeMarkerIndex{prev->idx, prev - next};
 		next->polarConnection = polarConnection && first;
