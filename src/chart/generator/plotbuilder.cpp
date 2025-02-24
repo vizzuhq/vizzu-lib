@@ -218,7 +218,7 @@ bool PlotBuilder::linkMarkers(const Buckets &buckets,
 	    && plot->getOptions()->geometry.get() == ShapeType::rectangle
 	    && !plot->getOptions()->mainAxis().dimensions().contains_any(
 	        subAxisDims.begin(),
-	        subAxisDims.end());
+	        {});
 
 	if (isAggregatable) {
 		double pre_neg{};
