@@ -13,6 +13,8 @@
 - Add record didn't handle when a measure got an empty string.
 - Fix no fontparent set bug.
 - Fix NaN handling on markers linking.
+- Fix handling negative numbers on stacked charts.
+- Fix connected charts when nan values is the prev connection.
 
 ## [0.16.0] - 2024-11-28
 

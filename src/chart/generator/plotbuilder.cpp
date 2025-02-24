@@ -212,6 +212,14 @@ bool PlotBuilder::linkMarkers(const Buckets &buckets,
 	        && plot->getOptions()->geometry.get()
 	               == ShapeType::rectangle);
 
+	auto &&subAxisDims = plot->getOptions()->subAxis().dimensions();
+	auto isSubAggregatable =
+	    !isMain
+	    && plot->getOptions()->geometry.get() == ShapeType::rectangle
+	    && !plot->getOptions()->mainAxis().dimensions().contains_any(
+	        subAxisDims.begin(),
+	        subAxisDims.end());
+
 	if (isAggregatable) {
 		double pre_neg{};
 		double pre_pos{};
@@ -252,7 +260,7 @@ bool PlotBuilder::linkMarkers(const Buckets &buckets,
 	                        && plot->getOptions()->isHorizontal();
 
 	for (const auto &bucket : buckets) {
-		double prevPos{};
+		std::array<double, 2> prevPositions{};
 		for (auto i = 0U; i < sorted.size(); ++i) {
 			auto idAct = sorted[i].index;
 			auto &&ids = std::ranges::views::values(bucket);
@@ -274,12 +282,18 @@ bool PlotBuilder::linkMarkers(const Buckets &buckets,
 			                 ? nullptr
 			                 : *it.base().base().base();
 
-			if (act)
-				if (auto &&ppos = act->position.getCoord(
-				        orientation(axisIndex)) +=
-				    isAggregatable ? dimOffset[i] : prevPos;
-				    std::isfinite(ppos))
-					prevPos = ppos;
+			if (act) {
+				auto &apos =
+				    act->position.getCoord(orientation(axisIndex));
+				if (!std::isfinite(apos)) apos = 0;
+				if (isAggregatable)
+					apos += dimOffset[i];
+				else {
+					auto &pp = prevPositions[isSubAggregatable
+					                         && std::signbit(apos)];
+					pp = apos += pp;
+				}
+			}
 
 			hasConnection |=
 			    Marker::connectMarkers(iNext == 0 && act != next,
