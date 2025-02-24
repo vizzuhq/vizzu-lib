@@ -275,9 +275,11 @@ bool PlotBuilder::linkMarkers(const Buckets &buckets,
 			                 : *it.base().base().base();
 
 			if (act)
-				prevPos =
-				    act->position.getCoord(orientation(axisIndex)) +=
+				if (auto &&ppos = act->position.getCoord(
+				        orientation(axisIndex)) +=
 				    isAggregatable ? dimOffset[i] : prevPos;
+				    std::isfinite(ppos))
+					prevPos = ppos;
 
 			hasConnection |=
 			    Marker::connectMarkers(iNext == 0 && act != next,
@@ -303,7 +305,7 @@ void PlotBuilder::calcAxises(const Data::DataTable &dataTable)
 
 	if (markerIt == plot->markers.end()) {
 		stats.setIfRange(AxisId::x, xrange.getRange({0.0, 0.0}));
-		stats.setIfRange(AxisId::y, xrange.getRange({0.0, 0.0}));
+		stats.setIfRange(AxisId::y, yrange.getRange({0.0, 0.0}));
 	}
 	else {
 		auto boundRect = markerIt->toRectangle().positive();

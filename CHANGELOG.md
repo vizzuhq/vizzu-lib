@@ -10,6 +10,7 @@
 - Visible non-sum aggregated value jumped.
 - Add record didn't handle when a measure got an empty string.
 - Fix no fontparent set bug.
+- Fix NaN handling on markers linking.
 
 ## [0.16.0] - 2024-11-28
 
