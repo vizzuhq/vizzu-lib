@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+## [0.16.1] - 2025-02-24
+
 ### Fixed
 
 - Fix invalid read/write when animation is contiguous (onFinish callback calls setKeyframe).
