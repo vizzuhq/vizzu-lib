@@ -1,5 +1,5 @@
 chart.animate({
 	config: {
-		title: 'Minimum of Popularity by Genre'
+		title: 'Minimum of Popularity by Genres'
 	}
 })
