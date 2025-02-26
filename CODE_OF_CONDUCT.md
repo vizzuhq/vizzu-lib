@@ -30,7 +30,7 @@ community include:
 - Being respectful of differing opinions, viewpoints, and experiences
 - Giving and gracefully accepting constructive feedback
 - Accepting responsibility and apologizing to those affected by our mistakes,
-  and learning from the experience
+    and learning from the experience
 - Attempting collaboration before conflict
 - Sharing your knowledge and ask questions
 - Giving credit when the credit is deserved
@@ -40,17 +40,17 @@ Examples of unacceptable behavior include:
 
 - Violence, threats of violence, or inciting others to commit self-harm
 - The use of sexualized language or imagery and unwelcome sexual attention or
-  advances
+    advances
 - Trolling, intentionally spreading misinformation, insulting/derogatory
-  comments, and personal or political attacks
+    comments, and personal or political attacks
 - Public or private harassment
 - Publishing others' private information, such as a physical or electronic
-  address, without explicit permission
+    address, without explicit permission
 - Represent someone else’s work or words as your own
 - Abuse of the reporting process to intentionally harass or exclude others
 - Advocating for, or encouraging, any of the above behavior
 - Other conduct which could reasonably be considered inappropriate in a
-  professional setting
+    professional setting
 
 ## Enforcement Responsibilities
 
@@ -87,29 +87,29 @@ Project maintainers will follow these Community Impact Guidelines in determining
 the consequences for any action they deem in violation of this Code of Conduct:
 
 - Correction Community Impact: Use of inappropriate language or other behavior
-  deemed unprofessional or unwelcome in the community. Consequence: A private,
-  written warning from Project maintainers, providing clarity around the nature
-  of the violation and an explanation of why the behavior was inappropriate. A
-  public apology may be requested.
+    deemed unprofessional or unwelcome in the community. Consequence: A private,
+    written warning from Project maintainers, providing clarity around the
+    nature of the violation and an explanation of why the behavior was
+    inappropriate. A public apology may be requested.
 - Warning Community Impact: A violation through a single incident or series of
-  actions. Consequence: A warning with consequences for continued behavior. No
-  interaction with the people involved, including unsolicited interaction with
-  those enforcing the Code of Conduct, for a specified period of time. This
-  includes avoiding interactions in community spaces as well as external
-  channels like social media. Violating these terms may lead to a temporary or
-  permanent ban.
+    actions. Consequence: A warning with consequences for continued behavior. No
+    interaction with the people involved, including unsolicited interaction with
+    those enforcing the Code of Conduct, for a specified period of time. This
+    includes avoiding interactions in community spaces as well as external
+    channels like social media. Violating these terms may lead to a temporary or
+    permanent ban.
 - Temporary Ban Community Impact: A serious violation of community standards,
-  including sustained inappropriate behavior. Consequence: A temporary ban from
-  any sort of interaction or public communication with the community for a
-  specified period of time. No public or private interaction with the people
-  involved, including unsolicited interaction with those enforcing the Code of
-  Conduct, is allowed during this period. Violating these terms may lead to a
-  permanent ban.
+    including sustained inappropriate behavior. Consequence: A temporary ban
+    from any sort of interaction or public communication with the community for
+    a specified period of time. No public or private interaction with the people
+    involved, including unsolicited interaction with those enforcing the Code of
+    Conduct, is allowed during this period. Violating these terms may lead to a
+    permanent ban.
 - Permanent Ban Community Impact: Demonstrating a pattern of violation of
-  community standards, including sustained inappropriate behavior, harassment of
-  an individual, or aggression toward or disparagement of classes of
-  individuals. Consequence: A permanent ban from any sort of public interaction
-  within the community.
+    community standards, including sustained inappropriate behavior, harassment
+    of an individual, or aggression toward or disparagement of classes of
+    individuals. Consequence: A permanent ban from any sort of public
+    interaction within the community.
 
 Project maintainers who do not follow or enforce the Code of Conduct in good
 faith may face temporary or permanent repercussions as determined by other

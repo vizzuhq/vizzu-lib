@@ -17,5 +17,4 @@ Or use it from [CDN](https://www.jsdelivr.com/package/npm/vizzu):
   </script>
  </head>
 </html>
-
 ```

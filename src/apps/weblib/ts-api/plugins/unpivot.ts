@@ -58,9 +58,7 @@ export default class UnPivot {
 		assert('measures' in data, 'data.measures is requreid')
 
 		const convertedData: Data.TableBySeries = (({
-			// eslint-disable-next-line @typescript-eslint/no-unused-vars
 			dimensions,
-			// eslint-disable-next-line @typescript-eslint/no-unused-vars
 			measures,
 			...o
 		}: DataCube): Data.TableBySeries => Object.assign(o, { series: [] }))(data)

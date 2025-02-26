@@ -2,7 +2,7 @@ strict: true
 
 site_name: vizzu
 site_url: https://lib.vizzuhq.com
-copyright: Copyright &copy; 2021-2024 Vizzu Inc.
+copyright: Copyright &copy; 2021-2025 Vizzu Inc.
 
 docs_dir: ../../docs
 site_dir: ../../site
@@ -64,7 +64,6 @@ extra:
 markdown_extensions:
     - pymdownx.tasklist:
           custom_checkbox: true
-    - mdx_truly_sane_lists
     - attr_list
     - md_in_html
     - admonition
@@ -77,7 +76,6 @@ plugins:
     - exclude:
           glob:
               - tutorial/assets/**.md
-              - tutorial/.eslintrc.cjs
     - mike:
           version_selector: true
           alias_type: symlink

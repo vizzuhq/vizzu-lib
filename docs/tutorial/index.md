@@ -28,8 +28,8 @@ The first parameter has the following three properties:
 
 - `data`: this is where you add the data that you want to put on the charts
 - `config`: this is where you can add or remove series on the channels and set
-  the general settings of the chart like the chart title, the geometry, the
-  alignment etc.
+    the general settings of the chart like the chart title, the geometry, the
+    alignment etc.
 - `style`: this is where you can set how your chart looks
 
 The parameters of multiple animate methods can be bundled together and can be
@@ -56,7 +56,6 @@ Or use it from [CDN](https://www.jsdelivr.com/package/npm/vizzu):
   </script>
  </head>
 </html>
-
 ```
 
 ## Usage

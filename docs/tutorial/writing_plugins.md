@@ -49,11 +49,11 @@ getter function to define the object. There are three plugin hooks which can be
 defined in the returned object:
 
 - `prepareAnimation`: Called when the animate() parameters gets set in the
-  library to prepare the animation.
+    library to prepare the animation.
 - `registerAnimation`: Called when the animate() method called, and the lib
-  schedules the call to the animation queue.
+    schedules the call to the animation queue.
 - `runAnimation`: Called when all animate() parameter set and animation can be
-  started.
+    started.
 
 Let’s add a simple function to the `prepareAnimation` phase. We’d like to
 automatically set the chart title to the name of the data series which is
@@ -201,5 +201,6 @@ anim.activated.then(() => {
 ```
 
 !!! info
+
     For more information check out our plugins at
     <https://github.com/vizzuhq/vizzu-lib-ext>.

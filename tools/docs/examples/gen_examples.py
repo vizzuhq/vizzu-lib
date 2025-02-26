@@ -1,5 +1,6 @@
 # pylint: disable=missing-module-docstring,missing-class-docstring,missing-function-docstring
 
+from contextlib import chdir
 import os
 from pathlib import Path
 import re
@@ -27,9 +28,6 @@ sys.path.insert(0, str(TOOLS_PATH / "modules"))
 sys.path.insert(0, str(TOOLS_PATH / "ci"))
 sys.path.insert(0, str(MKDOCS_PATH))
 
-from chdir import (  # pylint: disable=import-error, wrong-import-position, wrong-import-order
-    chdir,
-)
 from node import (  # pylint: disable=import-error, wrong-import-position, wrong-import-order
     Node,
 )
@@ -158,7 +156,7 @@ class GenExamples:
 
         return index
 
-    def _add_index_item(  # pylint: disable=too-many-arguments
+    def _add_index_item(  # pylint: disable=too-many-arguments,too-many-positional-arguments
         self,
         index: str,
         title: str,
@@ -211,7 +209,7 @@ class GenExamples:
                 + f"(./{href}.md)\n"
             )
 
-    def _add_video(  # pylint: disable=too-many-arguments
+    def _add_video(  # pylint: disable=too-many-arguments,too-many-positional-arguments
         self, index: str, title: str, href: str, thumbnail: str, figcaption: bool
     ) -> None:
         with mkdocs_gen_files.open(f"{index}/index.md", "a") as fh_index:
@@ -298,7 +296,7 @@ class GenExamples:
             with mkdocs_gen_files.open(f"assets/data/{datafile}.csv", "w") as f_example:
                 f_example.write(content)
 
-    def _generate_example_js(  # pylint: disable=too-many-arguments
+    def _generate_example_js(  # pylint: disable=too-many-arguments,too-many-positional-arguments
         self,
         item: Path,
         item_name: str,
@@ -314,7 +312,7 @@ class GenExamples:
         ) as f_example:
             f_example.write(content)
 
-    def _generate_example_md(  # pylint: disable=too-many-arguments
+    def _generate_example_md(  # pylint: disable=too-many-arguments,too-many-positional-arguments
         self,
         item: Path,
         item_name: str,
@@ -340,7 +338,7 @@ class GenExamples:
         ) as f_example:
             f_example.write(content)
 
-    def _generate_example(  # pylint: disable=too-many-arguments
+    def _generate_example(  # pylint: disable=too-many-arguments,too-many-positional-arguments
         self,
         item: Path,
         item_name: str,

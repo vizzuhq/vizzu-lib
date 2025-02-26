@@ -61,7 +61,7 @@ struct MeasureAxis
 
 	MeasureAxis() = default;
 	MeasureAxis(const Math::Range<> &interval,
-	    std::string series,
+	    std::string &&series,
 	    const std::string_view &unit,
 	    const std::optional<double> &step);
 	[[nodiscard]] bool operator==(

@@ -21,9 +21,7 @@ namespace SmartString
 template <class T>
 concept PlusAssignableToString =
     requires(std::string &str, const T &t) {
-	    {
-		    str += t
-	    } -> std::same_as<std::string &>;
+	    { str += t } -> std::same_as<std::string &>;
     };
 
 template <char... separators> constexpr std::string join(auto &&il)

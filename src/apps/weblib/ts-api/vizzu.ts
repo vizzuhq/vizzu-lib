@@ -212,7 +212,6 @@ export default class Vizzu {
 				if (ok) {
 					resolve(this)
 				} else {
-					// eslint-disable-next-line prefer-promise-reject-errors
 					reject(new CancelError())
 					this._anim = Promise.resolve(this)
 				}

@@ -15,9 +15,10 @@ the chart. For example, on a column chart, elements will be vertically centered,
 whereas on a bar chart, horizontally.
 
 !!! info
-    In the first example, the y-axis labels are hidden because they don't
-    properly represent the values shown on the column chart anymore, as the
-    chart elements float off the x-axis.
+
+    In the first example, the y-axis labels are hidden because they don't properly
+    represent the values shown on the column chart anymore, as the chart elements
+    float off the x-axis.
 
 <div id="tutorial_01"></div>
 

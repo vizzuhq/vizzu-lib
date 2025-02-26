@@ -13,6 +13,7 @@
 #include "chart/generator/plotbuilder.h"
 #include "chart/generator/plotptr.h"
 #include "dataframe/old/datatable.h"
+#include "dataframe/old/types.h"
 
 #include "options.h"
 

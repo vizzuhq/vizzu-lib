@@ -24,7 +24,7 @@ std::string_view trim_view(const std::string_view &string)
 	{
 		return std::isspace(c);
 	};
-	const auto *start = std::ranges::find_if_not(string, ignore);
+	auto &&start = std::ranges::find_if_not(string, ignore);
 	return {start,
 	    std::find_if_not(string.rbegin(),
 	        std::reverse_iterator{start},

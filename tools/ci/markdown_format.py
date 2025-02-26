@@ -17,7 +17,7 @@ class Markdown:
                 "footnote",
                 "frontmatter",
                 "configblack",
-                "admonition",
+                "mkdocs",
             },
             codeformatters={
                 "python",

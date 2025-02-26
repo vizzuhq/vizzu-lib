@@ -7,7 +7,6 @@ In `HTML`, create a placeholder element that will contain the rendered chart.
   </div>
  </body>
 </html>
-
 ```
 
 In `JavaScript`, initialize and configure the chart:

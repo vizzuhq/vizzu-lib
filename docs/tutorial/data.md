@@ -131,9 +131,10 @@ let data = {
 Using data cube form:
 
 !!! note
-    In the example below, the record `Rock,Experimental,36` has been replaced
-    with `Rock,Smooth,36` in order to illustrate that only data with same
-    dimensions can be used in the data cube form.
+
+    In the example below, the record `Rock,Experimental,36` has been replaced with
+    `Rock,Smooth,36` in order to illustrate that only data with same dimensions can
+    be used in the data cube form.
 
 <table>
   <tbody><tr><th colspan="2" rowspan="2"></th><th colspan="4" style="text-align:center">Genres</th></tr>

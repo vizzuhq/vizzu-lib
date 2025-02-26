@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <cmath>
 #include <numbers>
+#include <optional>
 #include <ranges>
 #include <string>
 #include <utility>
@@ -466,15 +467,16 @@ void DrawAxes::drawTitle(Gen::AxisId axisIndex,
 		    -std::numbers::pi / 2.0
 		    * (fades == ::Anim::second
 		            ? !isHorizontal(
-		                titleStyle.orientation->get_or_first(index)
-		                    .value)
+		                  titleStyle.orientation->get_or_first(index)
+		                      .value)
 		            : titleStyle.orientation->factor(
-		                Styles::AxisTitle::Orientation::vertical));
+		                  Styles::AxisTitle::Orientation::vertical));
 
 		auto orientedSize =
 		    fades == ::Anim::second
 		        ? calcOrientation(
-		            titleStyle.orientation->get_or_first(index).value)
+		              titleStyle.orientation->get_or_first(index)
+		                  .value)
 		        : titleStyle.orientation->combine(calcOrientation);
 
 		auto center = offset * (orientedSize / 2.0);
@@ -577,7 +579,7 @@ void DrawAxes::drawDimensionLabel(Gen::AxisId axisIndex,
 		            ? labelStyle.side->get_or_first(index).value
 		                  == Styles::AxisLabel::Side::negative
 		            : labelStyle.side->factor(
-		                Styles::AxisLabel::Side::negative);
+		                  Styles::AxisLabel::Side::negative);
 
 		    auto draw = [&,
 		                    posDir = coordSys

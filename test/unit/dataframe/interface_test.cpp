@@ -25,8 +25,8 @@ using test::input;
 using test::skip;
 using test::skip_error;
 using test::throw_;
-using test::operator"" _suite;
-using test::operator"" _is_true;
+using test::operator""_suite;
+using test::operator""_is_true;
 
 struct if_setup
 {
