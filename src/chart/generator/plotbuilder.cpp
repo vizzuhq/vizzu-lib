@@ -563,7 +563,7 @@ void PlotBuilder::addSeparation(const Buckets &subBuckets,
 			    prevOrExact != theRanges.begin())
 				if (range = (--prevOrExact)->second;
 				    prevOrExact->first != i)
-					range.min = range.max -= splitSpace / 2;
+					range.min = range.max += splitSpace / 2;
 
 			marker.setSizeBy(subAxis,
 			    Base::Align{align, range}.getAligned(
