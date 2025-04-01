@@ -545,9 +545,9 @@ void PlotBuilder::addSeparation(const Buckets &subBuckets,
 	        .plot.getAxis(plot->getOptions()->subAxisType())
 	        .spacing->get(max.max, plot->getStyle().calculatedSize());
 
-	std::adjacent_difference(views.begin(),
+	std::partial_sum(views.begin(),
 	    views.end(),
-	    std::next(views.begin()),
+	    views.begin(),
 	    [&splitSpace](const auto &lhs, const auto &rhs)
 	    {
 		    return rhs + lhs.max + splitSpace;

@@ -6,7 +6,7 @@
 
 - Fix "Cerror: vector" where if a lot of categories are present without usage, 
   memory allocation could be failed.
-- Fix appearing split markers position
+- Fix appearing split markers starter position to center of separation space.
 
 ## [0.16.1] - 2025-02-24
 
