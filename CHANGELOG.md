@@ -1,6 +1,12 @@
 # Changelog
 
-## [Unreleased]
+## [Unreleased - 0.16.2] - 2025-04-??
+
+### Fixed
+
+- Fix "Cerror: vector" where if a lot of categories are present without usage, 
+  memory allocation could be failed.
+- Fix appearing split markers position
 
 ## [0.16.1] - 2025-02-24
 

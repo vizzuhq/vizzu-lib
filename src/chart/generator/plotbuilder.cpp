@@ -526,7 +526,7 @@ void PlotBuilder::addSeparation(const Buckets &subBuckets,
 	std::map<std::size_t, Math::Range<>> theRanges;
 
 	auto &&subAxis = plot->getOptions()->subAxisType();
-	constexpr Math::Range defRange{{}, {}};
+	constexpr auto defRange = Math::Range<>{{}, {}};
 	for (auto &&bucket : subBuckets)
 		for (std::size_t i{}, prIx{}; auto &&[marker, idx] : bucket) {
 			if (!marker.enabled) continue;
@@ -559,12 +559,11 @@ void PlotBuilder::addSeparation(const Buckets &subBuckets,
 			    mainBucketSize;
 
 			auto range = defRange;
-			auto upper = theRanges.upper_bound(i);
-			if (upper != theRanges.begin()) {
-				--upper;
-				range = upper->second;
-				if (upper->first != i) range.min = range.max;
-			}
+			if (auto prevOrExact = theRanges.upper_bound(i);
+			    prevOrExact != theRanges.begin())
+				if (range = (--prevOrExact)->second;
+				    prevOrExact->first != i)
+					range.min = range.max -= splitSpace / 2;
 
 			marker.setSizeBy(subAxis,
 			    Base::Align{align, range}.getAligned(
