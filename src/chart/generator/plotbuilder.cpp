@@ -7,6 +7,7 @@
 #include <limits>
 #include <map>
 #include <memory>
+#include <numeric>
 #include <optional>
 #include <ranges>
 #include <stdexcept>
@@ -77,8 +78,7 @@ void PlotBuilder::initDimensionTrackers()
 	for (auto type : Refl::enum_values<ChannelId>())
 		if (auto &&ch = plot->getOptions()->getChannels().at(type);
 		    !ch.hasMeasure())
-			stats.tracked.at(type).emplace<1>(
-			    dataCube.combinedSizeOf(ch.dimensions()).second);
+			stats.tracked.at(type).emplace<1>();
 }
 
 Buckets PlotBuilder::generateMarkers(std::size_t &mainBucketSize)
@@ -378,30 +378,29 @@ void PlotBuilder::calcLegendAndLabel(const Data::DataTable &dataTable)
 			}
 		}
 		else if (!scale.isEmpty()) {
-			const auto &indices = std::get<1>(stats.at(type));
 			auto merge =
 			    type == LegendId::size
 			    || (type == LegendId::lightness
 			        && plot->getOptions()->dimLabelIndex(+type) == 0);
-			for (std::uint32_t i{}, count{}; i < indices.size(); ++i)
-				if (const auto &sliceIndex = indices[i]) {
-					auto rangeId = static_cast<double>(i);
-					std::optional<ColorBase> color;
-					if (type == LegendId::color)
-						color = ColorBase(i, 0.5);
-					else if (type == LegendId::lightness) {
-						rangeId = stats.lightness.rescale(rangeId);
-						color = ColorBase(0U, rangeId);
-					}
-
-					if (calcLegend.dimension.add(*sliceIndex,
-					        {rangeId, rangeId},
-					        count,
-					        color,
-					        true,
-					        merge))
-						++count;
+			for (std::uint32_t count{}; const auto &[i, label] :
+			     std::get<1>(stats.at(type))) {
+				auto rangeId = static_cast<double>(i);
+				std::optional<ColorBase> color;
+				if (type == LegendId::color)
+					color = ColorBase(i, 0.5);
+				else if (type == LegendId::lightness) {
+					rangeId = stats.lightness.rescale(rangeId);
+					color = ColorBase(0U, rangeId);
 				}
+
+				if (calcLegend.dimension.add(label,
+				        {rangeId, rangeId},
+				        count,
+				        color,
+				        true,
+				        merge))
+					++count;
+			}
 
 			if (auto &&series = plot->getOptions()->labelSeries(type);
 			    series && isAutoTitle && calcLegend.dimension.empty())
@@ -524,38 +523,51 @@ void PlotBuilder::addSeparation(const Buckets &subBuckets,
 
 	auto align = plot->getOptions()->align;
 
-	std::vector ranges{mainBucketSize, Math::Range<>{{}, {}}};
-	std::vector<bool> anyEnabled(mainBucketSize);
+	std::map<std::size_t, Math::Range<>> theRanges;
 
 	auto &&subAxis = plot->getOptions()->subAxisType();
+	constexpr Math::Range defRange{{}, {}};
 	for (auto &&bucket : subBuckets)
 		for (std::size_t i{}, prIx{}; auto &&[marker, idx] : bucket) {
 			if (!marker.enabled) continue;
 			(i += idx.itemId - std::exchange(prIx, idx.itemId)) %=
-			    ranges.size();
-			ranges[i].include(marker.getSizeBy(subAxis).size());
-			anyEnabled[i] = true;
+			    mainBucketSize;
+			theRanges.try_emplace(i, defRange)
+			    .first->second.include(
+			        marker.getSizeBy(subAxis).size());
 		}
 
-	auto max = Math::Range<>{{}, {}};
-	for (auto i = 0U; i < ranges.size(); ++i)
-		if (anyEnabled[i]) max = max + ranges[i];
+	auto &&views = std::ranges::views::values(theRanges);
+	auto max = std::accumulate(views.begin(), views.end(), defRange);
 
 	auto splitSpace =
 	    plot->getStyle()
 	        .plot.getAxis(plot->getOptions()->subAxisType())
 	        .spacing->get(max.max, plot->getStyle().calculatedSize());
 
-	for (auto i = 1U; i < ranges.size(); ++i)
-		ranges[i] = ranges[i] + ranges[i - 1].max
-		          + (anyEnabled[i - 1] ? splitSpace : 0);
+	std::adjacent_difference(views.begin(),
+	    views.end(),
+	    std::next(views.begin()),
+	    [&splitSpace](const auto &lhs, const auto &rhs)
+	    {
+		    return rhs + lhs.max + splitSpace;
+	    });
 
 	for (auto &&bucket : subBuckets)
 		for (std::size_t i{}, prIx{}; auto &&[marker, idx] : bucket) {
 			(i += idx.itemId - std::exchange(prIx, idx.itemId)) %=
-			    ranges.size();
+			    mainBucketSize;
+
+			auto range = defRange;
+			auto upper = theRanges.upper_bound(i);
+			if (upper != theRanges.begin()) {
+				--upper;
+				range = upper->second;
+				if (upper->first != i) range.min = range.max;
+			}
+
 			marker.setSizeBy(subAxis,
-			    Base::Align{align, ranges[i]}.getAligned(
+			    Base::Align{align, range}.getAligned(
 			        marker.getSizeBy(subAxis)));
 		}
 }

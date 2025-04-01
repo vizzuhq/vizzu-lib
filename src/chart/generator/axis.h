@@ -21,7 +21,7 @@ namespace Vizzu::Gen
 struct ChannelStats
 {
 	using TrackType = std::variant<Math::Range<>,
-	    std::vector<std::optional<Data::SliceIndex>>>;
+	    std::map<std::uint32_t, Data::SliceIndex>>;
 
 	Refl::EnumArray<ChannelId, TrackType> tracked;
 	Math::Range<> lightness;
@@ -35,7 +35,9 @@ struct ChannelStats
 	void track(ChannelId at, const Data::MarkerId &id)
 	{
 		auto &vec = std::get<1>(tracked[at]);
-		vec[id.itemId] = id.label;
+		if (id.label)
+			vec.try_emplace(static_cast<std::uint32_t>(id.itemId),
+			    *id.label);
 	}
 
 	void track(ChannelId at, const double &value)
