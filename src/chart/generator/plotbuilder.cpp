@@ -545,8 +545,13 @@ void PlotBuilder::addSeparation(const Buckets &subBuckets,
 	        .plot.getAxis(plot->getOptions()->subAxisType())
 	        .spacing->get(max.max, plot->getStyle().calculatedSize());
 
-	for (auto range = defRange; auto &v : views)
-		range = v = v + range.max + splitSpace;
+	std::partial_sum(views.begin(),
+	    views.end(),
+	    views.begin(),
+	    [&splitSpace](const auto &lhs, const auto &rhs)
+	    {
+		    return rhs + lhs.max + splitSpace;
+	    });
 
 	for (auto &&bucket : subBuckets)
 		for (std::size_t i{}, prIx{}; auto &&[marker, idx] : bucket) {
