@@ -36,6 +36,9 @@
 		},
 		"legend_interpolation": {
 			"refs": ["0e7b2e8"]
+		},
+		"data_input/big_category_indexed": {
+			"refs": ["fabc101"]
 		}
 	}
 }
