@@ -3,7 +3,9 @@ import { data_6 } from '../../../../test_data/chart_types_eu.mjs'
 const testSteps = [
 	async (chart) => {
 		await import('https://cdn.jsdelivr.net/npm/tinycolor2@1.6.0/dist/tinycolor-min.js')
-		const THREE = await import('https://cdn.jsdelivr.net/npm/three@0.175.0/build/three.module.js')
+		const THREE = await import(
+			'https://cdn.jsdelivr.net/npm/three@0.175.0/build/three.module.js'
+		)
 
 		const toCanvasRect = (rect) => {
 			const coordSystem = chart.feature.coordSystem
