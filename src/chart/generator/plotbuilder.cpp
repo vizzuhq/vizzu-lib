@@ -411,11 +411,22 @@ void PlotBuilder::calcLegendAndLabel(const Data::DataTable &dataTable)
 	if (auto &&meas = plot->getOptions()
 	                      ->getChannels()
 	                      .at(ChannelId::label)
-	                      .measure())
+	                      .measure()) {
+		auto markerLabelsUnitPercent =
+		    plot->getStyle().plot.marker.label.unit
+		        == Styles::MarkerLabel::Unit::percent
+		    && plot->getOptions()->align == Base::Align::Type::stretch
+		    && plot->getOptions()->labelSeries(
+		           plot->getOptions()->subAxisType())
+		           == *meas
+		    && !plot->getOptions()->isSplit();
 		plot->axises.label = {
-		    ::Anim::String{
-		        std::string{dataTable.getUnit(meas->getColIndex())}},
+		    ::Anim::String{std::string{
+		        markerLabelsUnitPercent
+		            ? "%"
+		            : dataTable.getUnit(meas->getColIndex())}},
 		    ::Anim::String{meas->getColIndex()}};
+	}
 }
 
 void PlotBuilder::calcAxis(const Data::DataTable &dataTable,
@@ -500,6 +511,19 @@ void PlotBuilder::addAlignment(const Buckets &subBuckets) const
 	}
 
 	auto &&subAxis = plot->getOptions()->subAxisType();
+
+	auto &&subAxisLabel = plot->getOptions()->labelSeries(subAxis);
+	auto markerLabelsUnitPercent =
+	    plot->getStyle().plot.marker.label.unit
+	        == Styles::MarkerLabel::Unit::percent
+	    && plot->getOptions()->align == Base::Align::Type::stretch
+	    && subAxisLabel.has_value()
+	    && subAxisLabel
+	           == plot->getOptions()
+	                  ->getChannels()
+	                  .at(ChannelId::label)
+	                  .measure();
+
 	const Base::Align align{plot->getOptions()->align, {0.0, 1.0}};
 	for (auto &&bucket : subBuckets) {
 		Math::Range<> range;
@@ -510,9 +534,13 @@ void PlotBuilder::addAlignment(const Buckets &subBuckets) const
 
 		auto &&transform = align.getAligned(range) / range;
 
-		for (auto &&[marker, idx] : bucket)
-			marker.setSizeBy(subAxis,
-			    marker.getSizeBy(subAxis) * transform);
+		for (auto &&[marker, idx] : bucket) {
+			auto &&newRange = marker.getSizeBy(subAxis) * transform;
+			marker.setSizeBy(subAxis, newRange);
+			if (markerLabelsUnitPercent)
+				marker.label->value.value.emplace(
+				    newRange.size() * 100);
+		}
 	}
 }
 
