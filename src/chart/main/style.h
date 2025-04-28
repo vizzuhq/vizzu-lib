@@ -261,10 +261,12 @@ struct MarkerLabelParams
 		measureFirst,
 		dimensionsFirst
 	};
+	enum class Unit : std::uint8_t { original, percent };
 
 	Param<::Anim::Interpolated<Position>> position;
 	Param<Gfx::ColorTransform> filter;
 	Param<Format> format;
+	Param<Unit> unit;
 };
 
 struct MarkerLabel : OrientedLabel, MarkerLabelParams
