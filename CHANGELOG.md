@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+## [0.16.3] - 2025-04-28
+
+- Added new (development) style parameter: 'plot.marker.label.unit' with options 'original' (default) and 'percent'.
+
 ## [0.16.2] - 2025-04-03
 
 ### Fixed
