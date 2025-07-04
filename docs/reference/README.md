@@ -9,11 +9,11 @@ In case you're just getting started with Vizzu, we recommend visiting our
 
 ## Library Overview
 
-The main entry point of the library is the [Vizzu](./vizzu/classes/Vizzu.md)
+The main entry point of the library is the [Vizzu](./vizzu/classes/vizzu.md)
 class, and its most important component is the
-[animate](./vizzu/classes/Vizzu.md#animate) method:
+[animate](./vizzu/classes/vizzu.md#animate) method:
 
-[`Vizzu`](./vizzu/classes/Vizzu.md)`.`[`animate`](./vizzu/classes/Vizzu.md#animate)`(`[`Anim.AnimTarget`](./types/anim/type-aliases/AnimTarget.md)`,`[`Anim.ControlOptions`](./types/anim/interfaces/ControlOptions.md)`):`[`Anim.Completing`](./animcompleting/README.md)
+[`Vizzu`](./vizzu/classes/vizzu.md)`.`[`animate`](./vizzu/classes/vizzu.md#animate)`(`[`Anim.AnimTarget`](./types/anim/type-aliases/AnimTarget.md)`,`[`Anim.ControlOptions`](./types/anim/interfaces/ControlOptions.md)`):`[`Anim.Completing`](./animcompleting/README.md)
 
 The **animate** method's main parameter is the **AnimTarget** interface, which
 is an array of keyframes containing the configuration of the chart, the
