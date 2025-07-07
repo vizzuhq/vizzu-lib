@@ -463,17 +463,28 @@ void PlotBuilder::calcLegendAndLabel(const Data::DataTable &dataTable)
 	                      .at(ChannelId::label)
 	                      .measure()) {
 
+		auto mainAxisType = plot->getOptions()->mainAxisType();
 		auto subAxisType = plot->getOptions()->subAxisType();
 		auto markerLabelsUnitPercent =
 		    plot->getStyle().plot.marker.label.unit
 		        == Styles::MarkerLabel::Unit::percent
-		    && plot->getOptions()
-		               ->getChannels()
-		               .axisPropsAt(subAxisType)
-		               .align
-		           == Base::Align::Type::stretch
-		    && plot->getOptions()->labelSeries(subAxisType) == *meas
-		    && !plot->getOptions()->isSplit(subAxisType);
+		    && ((plot->getOptions()
+		                    ->getChannels()
+		                    .axisPropsAt(mainAxisType)
+		                    .align
+		                == Base::Align::Type::stretch
+		            && plot->getOptions()->labelSeries(mainAxisType)
+		                   == *meas
+		            && !plot->getOptions()->isSplit(mainAxisType))
+		        || (plot->getOptions()
+		                    ->getChannels()
+		                    .axisPropsAt(subAxisType)
+		                    .align
+		                == Base::Align::Type::stretch
+		            && plot->getOptions()->labelSeries(subAxisType)
+		                   == *meas
+		            && !plot->getOptions()->isSplit(subAxisType)));
+
 		plot->axises.label = {
 		    ::Anim::String{std::string{
 		        markerLabelsUnitPercent
@@ -501,8 +512,7 @@ void PlotBuilder::calcAxis(const Data::DataTable &dataTable,
 		const auto &meas = *scale.measure();
 		if (isAutoTitle) axis.title = dataCube.getName(meas);
 
-		if (type == plot->getOptions()->subAxisType()
-		    && axisProps.align == Base::Align::Type::stretch)
+		if (axisProps.align == Base::Align::Type::stretch)
 			axis.measure = {{0, 100},
 			    meas.getColIndex(),
 			    "%",
@@ -568,20 +578,13 @@ void PlotBuilder::addAlignment(const Buckets &buckets,
 		    axisRange.max - halfSize};
 	}
 
-	auto subAxisType = plot->getOptions()->subAxisType();
-
-	auto &&subAxisLabel =
-	    plot->getOptions()->labelSeries(subAxisType);
+	auto &&axisLabel = plot->getOptions()->labelSeries(axisIndex);
 	auto markerLabelsUnitPercent =
 	    plot->getStyle().plot.marker.label.unit
 	        == Styles::MarkerLabel::Unit::percent
-	    && plot->getOptions()
-	               ->getChannels()
-	               .axisPropsAt(subAxisType)
-	               .align
-	           == Base::Align::Type::stretch
-	    && subAxisLabel.has_value()
-	    && subAxisLabel
+	    && axisProps.align == Base::Align::Type::stretch
+	    && axisLabel.has_value()
+	    && axisLabel
 	           == plot->getOptions()
 	                  ->getChannels()
 	                  .at(ChannelId::label)

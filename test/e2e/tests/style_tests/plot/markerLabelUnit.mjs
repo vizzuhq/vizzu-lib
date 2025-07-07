@@ -96,11 +96,18 @@ const testSteps = [
 				color: ['Foo3'],
 				label: ['Bar2']
 			}
-		}),
+		}, 0),
 	(chart) =>
 		chart.animate({
 			style: {
 				'plot.marker.label.unit': 'percent'
+			}
+		}),
+	(chart) =>
+		chart.animate({
+			config: {
+			  y: { labelLevel: 0 },
+				orientation: 'vertical'
 			}
 		})
 ]
