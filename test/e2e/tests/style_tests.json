@@ -1020,6 +1020,9 @@
 		},
 		"legend/offsetY": {
 			"refs": ["b326287"]
+		},
+		"plot/markerLabelUnit": {
+			"refs": ["ae0f5f5"]
 		}
 	}
 }

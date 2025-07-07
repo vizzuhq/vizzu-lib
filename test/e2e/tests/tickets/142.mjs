@@ -16,13 +16,15 @@ const testSteps = [
 	(chart) =>
 		chart.animate({
 			y: ['Y0', 'm'],
-			x: ['X', 'm0']
+			x: ['X', 'm0'],
+			color: { set: 'Y0', title: 'Y0' },
+			label: ['X', 'm']
 		}),
 	(chart) =>
 		chart.animate({
 			y: ['Y1', 'm'],
 			x: ['X', 'm1'],
-			color: 'Y1'
+			color: { set: 'Y1', title: 'Y1' }
 		})
 ]
 

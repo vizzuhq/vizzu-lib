@@ -426,7 +426,7 @@ const static auto tests =
 	auto &&events = get_events(chart);
 
 	check->*events.count("plot-axis-draw") == 1u;
-	check->*events.count("plot-axis-label-draw") == 3u + 3u;
+	check->*events.count("plot-axis-label-draw") == 4u + 4u;
 	check->*events.count("plot-marker-draw") == 10u;
 
 	double xCenter{};
