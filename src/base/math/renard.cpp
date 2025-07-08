@@ -13,17 +13,17 @@ namespace Math
 
 Renard Renard::R3()
 {
-	static const std::array R3Numbers = {1.0, 2.0, 5.0, 10.0};
+	static constexpr std::array R3Numbers = {1.0, 2.0, 5.0, 10.0};
 	return Renard{R3Numbers};
 }
 Renard Renard::R5()
 {
-	static const std::array R5Numbers =
+	static constexpr std::array R5Numbers =
 	    {1.0, 1.5, 2.5, 4.0, 6.0, 10.0};
 	return Renard{R5Numbers};
 }
 
-double Renard::ceil(double value)
+double Renard::ceil(double value) const
 {
 	if (value == 0.0) return 0.0;
 
@@ -39,7 +39,7 @@ double Renard::ceil(double value)
 	    + std::to_string(value) + ".");
 }
 
-double Renard::floor(double value)
+double Renard::floor(double value) const
 {
 	if (value == 0.0) return 0.0;
 

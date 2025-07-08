@@ -14,8 +14,8 @@ public:
 	explicit Renard(std::span<const double> const &numbers) :
 	    numbers(numbers)
 	{}
-	double ceil(double value);
-	double floor(double value);
+	[[nodiscard]] double ceil(double value) const;
+	[[nodiscard]] double floor(double value) const;
 
 private:
 	std::span<const double> numbers;
