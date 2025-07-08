@@ -473,7 +473,10 @@ void PlotBuilder::calcLegendAndLabel(const Data::DataTable &dataTable)
 		                    .axisPropsAt(mainAxisType)
 		                    .align
 		                == Base::Align::Type::stretch
-		            && plot->getOptions()->labelSeries(mainAxisType)
+		            && plot->getOptions()
+		                       ->getChannels()
+		                       .at(mainAxisType)
+		                       .measure()
 		                   == *meas
 		            && !plot->getOptions()->isSplit(mainAxisType))
 		        || (plot->getOptions()
@@ -481,7 +484,10 @@ void PlotBuilder::calcLegendAndLabel(const Data::DataTable &dataTable)
 		                    .axisPropsAt(subAxisType)
 		                    .align
 		                == Base::Align::Type::stretch
-		            && plot->getOptions()->labelSeries(subAxisType)
+		            && plot->getOptions()
+		                       ->getChannels()
+		                       .at(subAxisType)
+		                       .measure()
 		                   == *meas
 		            && !plot->getOptions()->isSplit(subAxisType)));
 
@@ -578,13 +584,14 @@ void PlotBuilder::addAlignment(const Buckets &buckets,
 		    axisRange.max - halfSize};
 	}
 
-	auto &&axisLabel = plot->getOptions()->labelSeries(axisIndex);
+	auto &&axisMeasure =
+	    plot->getOptions()->getChannels().at(axisIndex).measure();
 	auto markerLabelsUnitPercent =
 	    plot->getStyle().plot.marker.label.unit
 	        == Styles::MarkerLabel::Unit::percent
 	    && axisProps.align == Base::Align::Type::stretch
-	    && axisLabel.has_value()
-	    && axisLabel
+	    && axisMeasure.has_value()
+	    && axisMeasure
 	           == plot->getOptions()
 	                  ->getChannels()
 	                  .at(ChannelId::label)

@@ -86,17 +86,20 @@ const testSteps = [
 		return chart.animate({ data })
 	},
 	(chart) =>
-		chart.animate({
-			config: {
-				x: ['Foo2'],
-				y: {
-					set: ['Bar2', 'Foo3'],
-					align: 'stretch'
-				},
-				color: ['Foo3'],
-				label: ['Bar2']
-			}
-		}, 0),
+		chart.animate(
+			{
+				config: {
+					x: ['Foo2'],
+					y: {
+						set: ['Bar2', 'Foo3'],
+						align: 'stretch'
+					},
+					color: ['Foo3'],
+					label: ['Bar2']
+				}
+			},
+			0
+		),
 	(chart) =>
 		chart.animate({
 			style: {
@@ -106,7 +109,7 @@ const testSteps = [
 	(chart) =>
 		chart.animate({
 			config: {
-			  y: { labelLevel: 0 },
+				y: { labelLevel: 0 },
 				orientation: 'vertical'
 			}
 		})

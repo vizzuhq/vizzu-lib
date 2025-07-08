@@ -14,6 +14,7 @@
     - axis labels multiplication.
     - axis range interpretation differently for all split part.
     - align center / stretch fix.
+- Less restrictive 'plot.marker.label.unit'
 
 ### Added
 
