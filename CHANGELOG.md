@@ -4,21 +4,17 @@
 
 ### Fixed
 
-- Fix invalid read/write when animation is contiguous (onFinish callback calls setKeyframe).
-- Waterfall chart preset not aligned.
-- Split chart count negative values too.
 - Split chart handled when same dimension on main and sub axis.
-- Add record didn't handle when a measure got an empty string.
-- Fix no fontparent set bug.
 
 ### Changed
 
 - Channels 'set' rewrite doesn't clear AxisChannel properties.
-- Split charts 
-  - axis line multiplication.
-  - axis labels multiplication.
-  - axis range interpretation differently for all split part.
-  - align center / stretch fix.
+- Split charts
+    - axis line multiplication.
+    - axis labels multiplication.
+    - axis range interpretation differently for all split part.
+    - align center / stretch fix.
+- Less restrictive 'plot.marker.label.unit'
 
 ### Added
 
@@ -27,6 +23,35 @@
 - Add new sorting strategy: 'byLabel'.
 - Enable split and align on mainAxis.
 - Add 'isContiguous' property for dimension series
+
+
+## [0.16.3] - 2025-04-28
+
+### Added
+
+- Added new (development) style parameter: 'plot.marker.label.unit' with options 'original' (default) and 'percent'.
+
+## [0.16.2] - 2025-04-03
+
+### Fixed
+
+- Fix "Cerror: vector" where if a lot of categories are present without usage, 
+  memory allocation could be failed.
+- Fix appearing split markers starter position to center of separation space.
+
+## [0.16.1] - 2025-02-24
+
+### Fixed
+
+- Fix invalid read/write when animation is contiguous (onFinish callback calls setKeyframe).
+- Waterfall chart preset not aligned.
+- Split chart count negative values too.
+- Visible non-sum aggregated value jumped.
+- Add record didn't handle when a measure got an empty string.
+- Fix no fontparent set bug.
+- Fix NaN handling on markers linking.
+- Fix handling negative numbers on stacked charts.
+- Fix connected charts when nan values is the prev connection.
 
 ## [0.16.0] - 2024-11-28
 

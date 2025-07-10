@@ -61,9 +61,6 @@ public:
 
 	DataCube(const DataTable &table, const Gen::Options &options);
 
-	[[nodiscard]] std::pair<size_t, size_t> combinedSizeOf(
-	    const SeriesList &colIndices) const;
-
 	[[nodiscard]] bool empty() const;
 
 	[[nodiscard]] std::shared_ptr<const CellInfo>

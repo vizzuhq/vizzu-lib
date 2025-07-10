@@ -62,7 +62,8 @@ void StyleMorphFactory::operator()(const T &source,
 template <typename T, typename PT>
     requires(std::is_same_v<PT, Text::NumberFormat>
              || std::is_same_v<PT, Text::NumberScale>
-             || std::is_same_v<PT, Styles::MarkerLabel::Format>)
+             || std::is_same_v<PT, Styles::MarkerLabel::Format>
+             || std::is_same_v<PT, Styles::MarkerLabel::Unit>)
 void StyleMorphFactory::operator()(const T &, const T &, T &) const
 {}
 

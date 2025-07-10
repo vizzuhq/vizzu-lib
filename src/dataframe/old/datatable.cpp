@@ -185,21 +185,6 @@ DataCube::DataCube(const DataTable &table,
 	}
 }
 
-std::pair<size_t, size_t> DataCube::combinedSizeOf(
-    const SeriesList &colIndices) const
-{
-	std::size_t maxBySL{1};
-	std::size_t maxByOthers{1};
-
-	for (auto &&[val, comm] : dim_reindex.iterate_common(colIndices))
-		if (comm)
-			maxBySL *= val.size;
-		else
-			maxByOthers *= val.size;
-
-	return {maxByOthers, maxBySL};
-}
-
 bool DataCube::empty() const
 {
 	return df->get_measures().empty() && df->get_dimensions().empty();
