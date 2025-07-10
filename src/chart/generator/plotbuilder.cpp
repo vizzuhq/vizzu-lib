@@ -496,7 +496,7 @@ void PlotBuilder::calcLegendAndLabel(const Data::DataTable &dataTable)
 		        markerLabelsUnitPercent
 		            ? "%"
 		            : dataTable.get_series_info(meas->getColIndex(),
-		                "unit")}},
+		                  "unit")}},
 		    ::Anim::String{meas->getColIndex()}};
 	}
 }
