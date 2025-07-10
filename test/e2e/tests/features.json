@@ -2,40 +2,43 @@
 	"suite": "/test/e2e/tests/features",
 	"test": {
 		"aggregators/aggregators": {
-			"refs": ["32e9647"]
+			"refs": ["463ca59"]
 		},
 		"aggregators/aggregators_together": {
-			"refs": ["e24bdb5"]
-		},
-		"anim/speed": {
-			"refs": ["c339d99"]
+			"refs": ["e2abafe"]
 		},
 		"axis_title_positioning": {
-			"refs": ["e630a50"]
-		},
-		"cssproperties": {
-			"refs": ["e7c63c9"]
-		},
-		"data_input/category_indexed": {
-			"refs": ["95fa740"]
+			"refs": ["ffc403c"]
 		},
 		"data_input/object_records": {
-			"refs": ["8866a5d"]
+			"refs": ["ba17dad"]
+		},
+		"events/drawing_events": {
+			"refs": ["962d7d3"]
+		},
+		"subtitle_caption": {
+			"refs": ["f6dabf0"]
+		},
+		"cssproperties": {
+			"refs": ["b1a2535"]
+		},
+		"anim/speed": {
+			"refs": ["b6c8e6a"]
+		},
+		"presets": {
+			"refs": ["84541ff"]
 		},
 		"detach": {
 			"refs": ["e3b0c44"]
 		},
-		"events/drawing_events": {
-			"refs": ["15d1c81"]
+		"data_input/category_indexed": {
+			"refs": ["72a8149"]
 		},
 		"legend_interpolation": {
-			"refs": ["f85926f"]
+			"refs": ["0e7b2e8"]
 		},
-		"presets": {
-			"refs": ["a25a0c2"]
-		},
-		"subtitle_caption": {
-			"refs": ["f03b398"]
+		"data_input/big_category_indexed": {
+			"refs": ["0ac7b6d"]
 		}
 	}
 }
