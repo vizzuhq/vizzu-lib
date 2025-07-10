@@ -9,6 +9,7 @@
 #include "base/geom/orientation.h"
 #include "base/math/trig.h"
 #include "base/refl/auto_enum.h"
+#include "dataframe/interface.h"
 #include "dataframe/old/types.h"
 
 #include "channel.h"
