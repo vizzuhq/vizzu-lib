@@ -78,7 +78,7 @@ docker run -i -t -v .:/workspace vizzu/vizzu-dev-desktop bash
 or you can use a specific version of the prebuilt image:
 
 ```sh
-docker run -i -t -v .:/workspace vizzu/vizzu-dev-desktop:0.16 bash
+docker run -i -t -v .:/workspace vizzu/vizzu-dev-desktop:0.17 bash
 ```
 
 Run the following commands to build and run the `WASM` version's development
@@ -92,7 +92,7 @@ docker run -i -t -v .:/workspace vizzu/vizzu-dev-wasm bash
 or you can use a specific version of the prebuilt image:
 
 ```sh
-docker run -i -t -v .:/workspace vizzu/vizzu-dev-wasm:0.16 bash
+docker run -i -t -v .:/workspace vizzu/vizzu-dev-wasm:0.17 bash
 ```
 
 ### Building the project
