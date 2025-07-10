@@ -1,5 +1,5 @@
 chart.animate({
 	config: {
-		title: 'Mean of Popularity by Genre'
+		title: 'Mean of Popularity by Genres'
 	}
 })

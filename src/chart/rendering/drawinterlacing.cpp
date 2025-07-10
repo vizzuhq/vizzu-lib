@@ -1,10 +1,13 @@
 #include "drawinterlacing.h"
 
 #include <algorithm>
+#include <array>
 #include <cmath>
+#include <compare>
 #include <cstddef>
 #include <iterator>
 #include <map>
+#include <memory>
 #include <utility>
 
 #include "base/anim/interpolated.h"
@@ -245,7 +248,7 @@ void DrawInterlacing::drawDataLabel(
 		               ? labelStyle.side->get_or_first(index).value
 		                     == Styles::AxisLabel::Side::negative
 		               : labelStyle.side->factor(
-		                   Styles::AxisLabel::Side::negative);
+		                     Styles::AxisLabel::Side::negative);
 
 		auto &&posDir = parent.coordSys
 		                    .convertDirectionAt(tr(

@@ -1,4 +1,4 @@
-FROM ubuntu:22.04
+FROM ubuntu:24.04
 
 ENV DEBIAN_FRONTEND=noninteractive
 
@@ -8,13 +8,14 @@ RUN apt-get install -y git wget gnupg software-properties-common
 
 RUN add-apt-repository ppa:deadsnakes/ppa -y \
     && wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | apt-key add - \
-    && add-apt-repository "deb http://apt.llvm.org/focal/ llvm-toolchain-focal-16 main" \
     && apt-get update \
-    && apt-get install -y g++-12 clang-16 clang-tools-16 lldb-16 lld-16 clang-tidy-16 clang-format-16 cppcheck cmake \
-    && update-alternatives --install /usr/bin/clang clang /usr/bin/clang-16 120 \
-    && update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-16 120 \
-    && update-alternatives --install /usr/bin/c++ c++ /usr/bin/clang++-16 120 \
-    && ln -s /usr/bin/clang-tidy-16 /usr/bin/clang-tidy \
-    && ln -s /usr/bin/clang-format-16 /usr/bin/clang-format
+    && apt-get install -y gcc-14 g++-14 clang-18 clang-tools-18 lldb-18 lld-18 clang-tidy-18 clang-format-18 cppcheck cmake \
+    && update-alternatives --install /usr/bin/clang clang /usr/bin/clang-18 120 \
+    && update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-18 120 \
+    && update-alternatives --install /usr/bin/c++ c++ /usr/bin/clang++-18 120 \
+    && update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-14 120 \
+    && update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-14 120 \
+    && ln -s /usr/bin/clang-tidy-18 /usr/bin/clang-tidy \
+    && ln -s /usr/bin/clang-format-18 /usr/bin/clang-format
 
 WORKDIR /workspace/

@@ -23,11 +23,11 @@ mind, that's awesome and we are very interested in hearing about it.
 ### Development environment
 
 The following steps demonstrate how to set up the development environment on an
-`Ubuntu` `22.04` operating system. However, the process can be adapted for other
+`Ubuntu` `24.04` operating system. However, the process can be adapted for other
 operating systems as well.
 
 To contribute to the `JavaScript` part of the project, it is recommended to use
-`Node.js` `18`.
+`Node.js` `22`.
 
 Run the following command to install the `JavaScript` development dependencies:
 
@@ -41,7 +41,7 @@ the command `npm run lock:js`.
 
 However, for the documentation we are also using `Python`. If you plan to
 contribute to this part of the project, you will need `Python`, preferably
-version `3.10`.
+version `3.13`.
 
 Run the following command to install the `Python` development dependencies:
 
@@ -59,6 +59,14 @@ To contribute to the `C++` part of the project, it is recommended to use
 `Docker`, but based on the `Dockerfiles` below, you can also configure the
 necessary dependencies on your local machine.
 
+**Note:** If you need to change the environment you need to manually update the
+docker images:
+
+```sh
+gh workflow run "Docker publish vizzu-dev-desktop" --ref <branch>
+gh workflow run "Docker publish vizzu-dev-wasm" --ref <branch>
+```
+
 Run the following commands to build and run the `Desktop` version's development
 environment
 
@@ -70,7 +78,7 @@ docker run -i -t -v .:/workspace vizzu/vizzu-dev-desktop bash
 or you can use a specific version of the prebuilt image:
 
 ```sh
-docker run -i -t -v .:/workspace vizzu/vizzu-dev-desktop:0.16 bash
+docker run -i -t -v .:/workspace vizzu/vizzu-dev-desktop:0.17 bash
 ```
 
 Run the following commands to build and run the `WASM` version's development
@@ -84,7 +92,7 @@ docker run -i -t -v .:/workspace vizzu/vizzu-dev-wasm bash
 or you can use a specific version of the prebuilt image:
 
 ```sh
-docker run -i -t -v .:/workspace vizzu/vizzu-dev-wasm:0.16 bash
+docker run -i -t -v .:/workspace vizzu/vizzu-dev-wasm:0.17 bash
 ```
 
 ### Building the project
@@ -131,9 +139,10 @@ Run the following script in the running `vizzu-dev-wasm` container to build the
 **Note:** To debug WASM version under Chrome:
 
 - set Chrome/DevTools/Settings/Experiments/'WebAssembly Debugging: Enable DWARF
-  support' to true
-- set \[repo\]/project/cmake/emcc.txt: CMAKE_EXE_LINKER_FLAGS_DEBUG
-  --source-map-base to the URL where the browser can find cvizzu.wasm.map file.
+    support' to true
+- set [repo]/project/cmake/emcc.txt: CMAKE_EXE_LINKER_FLAGS_DEBUG
+    --source-map-base to the URL where the browser can find cvizzu.wasm.map
+    file.
 
 #### Building npm package
 
@@ -250,17 +259,17 @@ sometimes unstable changes.
 
 - build from the `HEAD` commit of the main branch:
 
-  https://vizzu-lib-main.storage.googleapis.com/lib/vizzu.js
+    https://vizzu-lib-main.storage.googleapis.com/lib/vizzu.js
 
-  and the minified, boundled version:
+    and the minified, boundled version:
 
-  https://vizzu-lib-main.storage.googleapis.com/lib/vizzu.min.js
+    https://vizzu-lib-main.storage.googleapis.com/lib/vizzu.min.js
 
 - all builds of the past 30 days:
 
-  https://vizzu-lib-main-sha.storage.googleapis.com/lib-HASH/vizzu.js
+    https://vizzu-lib-main-sha.storage.googleapis.com/lib-HASH/vizzu.js
 
-  where `HASH` is the first 7 character of the commit's git hash.
+    where `HASH` is the first 7 character of the commit's git hash.
 
 ### Documentation
 
@@ -297,12 +306,12 @@ To release `Vizzu`, follow the steps below:
 - You should increase the version number in `src/chart/main/version.cpp`.
 
 - If the major or minor version has changed, increase the version in
-  `.github/workflows/docker-vizzu-dev-desktop.yml`,
-  `.github/workflows/docker-vizzu-dev-wasm.yml`,
-  `tools/ci/gcp/cloudbuild/cloudbuild.yaml` and `CONTRIBUTING.md`.
+    `.github/workflows/docker-vizzu-dev-desktop.yml`,
+    `.github/workflows/docker-vizzu-dev-wasm.yml`,
+    `tools/ci/gcp/cloudbuild/cloudbuild.yaml` and `CONTRIBUTING.md`.
 
 - Set the release and release date in `CHANGELOG.md`, under the `Unreleased`
-  title.
+    title.
 
 - Create the release notes from `CHANGELOG.md` and publish the new release on
-  [Releases](https://github.com/vizzuhq/vizzu-lib/releases).
+    [Releases](https://github.com/vizzuhq/vizzu-lib/releases).

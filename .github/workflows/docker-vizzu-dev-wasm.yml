@@ -1,20 +1,15 @@
 name: Docker publish vizzu-dev-wasm
 
 on:
-    pull_request:
-        branches-ignore:
-            - main
-        paths:
-            - '**/vizzu-dev-wasm'
-            - '**/docker-vizzu-dev-wasm.yml'
+    workflow_dispatch:
 
 jobs:
     publish:
-        runs-on: ubuntu-22.04
+        runs-on: ubuntu-24.04
 
         steps:
             - name: Checkout repo
-              uses: actions/checkout@v3
+              uses: actions/checkout@v4
               with:
                   fetch-depth: 1
 
@@ -24,6 +19,6 @@ jobs:
             - name: Build and Publish
               run: |
                   IMAGE="vizzu-dev-wasm"
-                  IMAGE_NAME="vizzu/$IMAGE:0.16"
+                  IMAGE_NAME="vizzu/$IMAGE:0.17"
                   docker build -t $IMAGE_NAME -f tools/ci/docker/$IMAGE .
                   docker push $IMAGE_NAME

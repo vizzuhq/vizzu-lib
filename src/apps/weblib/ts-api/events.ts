@@ -402,7 +402,7 @@ export class Events {
 				}
 			}
 		} catch (e) {
-			console.log('exception in event handler: ' + e)
+			console.log(`exception in event handler: ${e}`)
 		}
 		return state.canceled
 	}

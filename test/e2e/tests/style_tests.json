@@ -2,1027 +2,1027 @@
 	"suite": "/test/e2e/tests/style_tests",
 	"test": {
 		"plot/backgroundColor/hex/animated_black-white": {
-			"refs": ["8d982f8"]
+			"refs": ["d3015da"]
 		},
 		"plot/backgroundColor/hex/animated_blueCustom-yellowCustom": {
-			"refs": ["7ce484d"]
+			"refs": ["2fdea77"]
 		},
 		"plot/backgroundColor/hex/animated_white-black": {
-			"refs": ["0c3626c"]
+			"refs": ["e79821b"]
 		},
 		"plot/backgroundColor/hex/animated_yellowCustom-blueCustom": {
-			"refs": ["713c958"]
+			"refs": ["b10604e"]
 		},
 		"plot/backgroundColor/hex/static_black": {
-			"refs": ["4d58c5f"]
+			"refs": ["0853211"]
 		},
 		"plot/backgroundColor/hex/static_blue": {
-			"refs": ["1d995a5"]
+			"refs": ["e10187f"]
 		},
 		"plot/backgroundColor/hex/static_blueCustom": {
-			"refs": ["75fd755"]
+			"refs": ["b8adcbe"]
 		},
 		"plot/backgroundColor/hex/static_blueCustomLowerCase": {
-			"refs": ["75fd755"]
+			"refs": ["b8adcbe"]
 		},
 		"plot/backgroundColor/hex/static_cyan": {
-			"refs": ["db23eaa"]
+			"refs": ["f264817"]
 		},
 		"plot/backgroundColor/hex/static_lime": {
-			"refs": ["9786ecb"]
+			"refs": ["2e13ecc"]
 		},
 		"plot/backgroundColor/hex/static_magenta": {
-			"refs": ["8b23989"]
+			"refs": ["24ebb6a"]
 		},
 		"plot/backgroundColor/hex/static_red": {
-			"refs": ["9a103ad"]
+			"refs": ["6b363fc"]
 		},
 		"plot/backgroundColor/hex/static_white": {
-			"refs": ["cdd4d6f"]
+			"refs": ["125b195"]
 		},
 		"plot/backgroundColor/hex/static_yellow": {
-			"refs": ["fee3960"]
+			"refs": ["945db75"]
 		},
 		"plot/backgroundColor/hex/static_yellowCustom": {
-			"refs": ["5dcbb01"]
+			"refs": ["962eb1e"]
 		},
 		"plot/backgroundColor/hex/static_yellowCustomLowerCase": {
-			"refs": ["5dcbb01"]
+			"refs": ["962eb1e"]
 		},
 		"plot/backgroundColor/hexa/animated_yellowCustom_0.25-blueCustom_0.75": {
-			"refs": ["19ccebc"]
+			"refs": ["e2b0c8c"]
 		},
 		"plot/backgroundColor/hexa/animated_yellowCustom_0.75-blueCustom_0.25": {
-			"refs": ["1d6f74d"]
+			"refs": ["e3d1ed0"]
 		},
 		"plot/backgroundColor/hexa/static_black_0.00": {
-			"refs": ["cdd4d6f"]
+			"refs": ["125b195"]
 		},
 		"plot/backgroundColor/hexa/static_black_0.25": {
-			"refs": ["de3a180"]
+			"refs": ["1016d00"]
 		},
 		"plot/backgroundColor/hexa/static_black_0.50": {
-			"refs": ["990e90f"]
+			"refs": ["89db04d"]
 		},
 		"plot/backgroundColor/hexa/static_black_0.75": {
-			"refs": ["1c30eec"]
+			"refs": ["131106a"]
 		},
 		"plot/backgroundColor/hexa/static_black_1.00": {
-			"refs": ["4d58c5f"]
+			"refs": ["0853211"]
 		},
 		"plot/backgroundColor/hexa/static_blueCustomLowerCase_0.75": {
-			"refs": ["dabcbe8"]
+			"refs": ["dfbc631"]
 		},
 		"plot/backgroundColor/hexa/static_blueCustom_0.00": {
-			"refs": ["cdd4d6f"]
+			"refs": ["125b195"]
 		},
 		"plot/backgroundColor/hexa/static_blueCustom_0.25": {
-			"refs": ["1fa6159"]
+			"refs": ["71ef6b9"]
 		},
 		"plot/backgroundColor/hexa/static_blueCustom_0.50": {
-			"refs": ["75c7e81"]
+			"refs": ["3a3f58f"]
 		},
 		"plot/backgroundColor/hexa/static_blueCustom_0.75": {
-			"refs": ["dabcbe8"]
+			"refs": ["dfbc631"]
 		},
 		"plot/backgroundColor/hexa/static_blueCustom_1.00": {
-			"refs": ["75fd755"]
+			"refs": ["b8adcbe"]
 		},
 		"plot/backgroundColor/hexa/static_white_0.00": {
-			"refs": ["cdd4d6f"]
+			"refs": ["125b195"]
 		},
 		"plot/backgroundColor/hexa/static_white_0.25": {
-			"refs": ["cdd4d6f"]
+			"refs": ["125b195"]
 		},
 		"plot/backgroundColor/hexa/static_white_0.50": {
-			"refs": ["cdd4d6f"]
+			"refs": ["125b195"]
 		},
 		"plot/backgroundColor/hexa/static_white_0.75": {
-			"refs": ["cdd4d6f"]
+			"refs": ["125b195"]
 		},
 		"plot/backgroundColor/hexa/static_white_1.00": {
-			"refs": ["cdd4d6f"]
+			"refs": ["125b195"]
 		},
 		"plot/backgroundColor/hexa/static_yellowCustomLowerCase_0.75": {
-			"refs": ["917fa25"]
+			"refs": ["080a432"]
 		},
 		"plot/backgroundColor/hexa/static_yellowCustom_0.00": {
-			"refs": ["cdd4d6f"]
+			"refs": ["125b195"]
 		},
 		"plot/backgroundColor/hexa/static_yellowCustom_0.25": {
-			"refs": ["c78a438"]
+			"refs": ["6cb29e3"]
 		},
 		"plot/backgroundColor/hexa/static_yellowCustom_0.50": {
-			"refs": ["cc2d484"]
+			"refs": ["435318d"]
 		},
 		"plot/backgroundColor/hexa/static_yellowCustom_0.75": {
-			"refs": ["917fa25"]
+			"refs": ["080a432"]
 		},
 		"plot/backgroundColor/hexa/static_yellowCustom_1.00": {
-			"refs": ["5dcbb01"]
+			"refs": ["962eb1e"]
 		},
 		"plot/backgroundColor/hexshort/animated_black-white": {
-			"refs": ["8d982f8"]
+			"refs": ["d3015da"]
 		},
 		"plot/backgroundColor/hexshort/animated_white-black": {
-			"refs": ["0c3626c"]
+			"refs": ["e79821b"]
 		},
 		"plot/backgroundColor/hexshort/static_black": {
-			"refs": ["4d58c5f"]
+			"refs": ["0853211"]
 		},
 		"plot/backgroundColor/hexshort/static_blue": {
-			"refs": ["1d995a5"]
+			"refs": ["e10187f"]
 		},
 		"plot/backgroundColor/hexshort/static_cyan": {
-			"refs": ["db23eaa"]
+			"refs": ["f264817"]
 		},
 		"plot/backgroundColor/hexshort/static_lime": {
-			"refs": ["9786ecb"]
+			"refs": ["2e13ecc"]
 		},
 		"plot/backgroundColor/hexshort/static_magenta": {
-			"refs": ["8b23989"]
+			"refs": ["24ebb6a"]
 		},
 		"plot/backgroundColor/hexshort/static_red": {
-			"refs": ["9a103ad"]
+			"refs": ["6b363fc"]
 		},
 		"plot/backgroundColor/hexshort/static_white": {
-			"refs": ["cdd4d6f"]
+			"refs": ["125b195"]
 		},
 		"plot/backgroundColor/hexshort/static_yellow": {
-			"refs": ["fee3960"]
+			"refs": ["945db75"]
 		},
 		"plot/backgroundColor/rgb/animated_black-white": {
-			"refs": ["8d982f8"]
+			"refs": ["d3015da"]
 		},
 		"plot/backgroundColor/rgb/animated_blueCustom-yellowCustom": {
-			"refs": ["7ce484d"]
+			"refs": ["2fdea77"]
 		},
 		"plot/backgroundColor/rgb/animated_white-black": {
-			"refs": ["0c3626c"]
+			"refs": ["e79821b"]
 		},
 		"plot/backgroundColor/rgb/animated_yellowCustom-blueCustom": {
-			"refs": ["713c958"]
+			"refs": ["b10604e"]
 		},
 		"plot/backgroundColor/rgb/static_black": {
-			"refs": ["4d58c5f"]
+			"refs": ["0853211"]
 		},
 		"plot/backgroundColor/rgb/static_blue": {
-			"refs": ["1d995a5"]
+			"refs": ["e10187f"]
 		},
 		"plot/backgroundColor/rgb/static_blueCustom": {
-			"refs": ["75fd755"]
+			"refs": ["b8adcbe"]
 		},
 		"plot/backgroundColor/rgb/static_blueCustomWithSpaces": {
-			"refs": ["75fd755"]
+			"refs": ["b8adcbe"]
 		},
 		"plot/backgroundColor/rgb/static_cyan": {
-			"refs": ["db23eaa"]
+			"refs": ["f264817"]
 		},
 		"plot/backgroundColor/rgb/static_lime": {
-			"refs": ["9786ecb"]
+			"refs": ["2e13ecc"]
 		},
 		"plot/backgroundColor/rgb/static_magenta": {
-			"refs": ["8b23989"]
+			"refs": ["24ebb6a"]
 		},
 		"plot/backgroundColor/rgb/static_red": {
-			"refs": ["9a103ad"]
+			"refs": ["6b363fc"]
 		},
 		"plot/backgroundColor/rgb/static_white": {
-			"refs": ["cdd4d6f"]
+			"refs": ["125b195"]
 		},
 		"plot/backgroundColor/rgb/static_yellow": {
-			"refs": ["fee3960"]
+			"refs": ["945db75"]
 		},
 		"plot/backgroundColor/rgb/static_yellowCustom": {
-			"refs": ["5dcbb01"]
+			"refs": ["962eb1e"]
 		},
 		"plot/backgroundColor/rgb/static_yellowCustomWithSpaces": {
-			"refs": ["5dcbb01"]
+			"refs": ["962eb1e"]
 		},
 		"plot/backgroundColor/rgba/animated_yellowCustom_0.25-blueCustom_0.75": {
-			"refs": ["e0957cb"]
+			"refs": ["013fe93"]
 		},
 		"plot/backgroundColor/rgba/animated_yellowCustom_0.75-blueCustom_0.25": {
-			"refs": ["315fedf"]
+			"refs": ["bfd9684"]
 		},
 		"plot/backgroundColor/rgba/static_black_0.00": {
-			"refs": ["cdd4d6f"]
+			"refs": ["125b195"]
 		},
 		"plot/backgroundColor/rgba/static_black_0.25": {
-			"refs": ["f0e0af9"]
+			"refs": ["1c0ce8c"]
 		},
 		"plot/backgroundColor/rgba/static_black_0.50": {
-			"refs": ["b6c8e38"]
+			"refs": ["5810152"]
 		},
 		"plot/backgroundColor/rgba/static_black_0.75": {
-			"refs": ["1c30eec"]
+			"refs": ["131106a"]
 		},
 		"plot/backgroundColor/rgba/static_black_1.00": {
-			"refs": ["4d58c5f"]
+			"refs": ["0853211"]
 		},
 		"plot/backgroundColor/rgba/static_blueCustomWithSpaces_0.75": {
-			"refs": ["dabcbe8"]
+			"refs": ["dfbc631"]
 		},
 		"plot/backgroundColor/rgba/static_blueCustom_0.00": {
-			"refs": ["cdd4d6f"]
+			"refs": ["125b195"]
 		},
 		"plot/backgroundColor/rgba/static_blueCustom_0.25": {
-			"refs": ["89244f9"]
+			"refs": ["1e15340"]
 		},
 		"plot/backgroundColor/rgba/static_blueCustom_0.50": {
-			"refs": ["0191b6f"]
+			"refs": ["70e822e"]
 		},
 		"plot/backgroundColor/rgba/static_blueCustom_0.75": {
-			"refs": ["dabcbe8"]
+			"refs": ["dfbc631"]
 		},
 		"plot/backgroundColor/rgba/static_blueCustom_1.00": {
-			"refs": ["75fd755"]
+			"refs": ["b8adcbe"]
 		},
 		"plot/backgroundColor/rgba/static_white_0.00": {
-			"refs": ["cdd4d6f"]
+			"refs": ["125b195"]
 		},
 		"plot/backgroundColor/rgba/static_white_0.25": {
-			"refs": ["cdd4d6f"]
+			"refs": ["125b195"]
 		},
 		"plot/backgroundColor/rgba/static_white_0.50": {
-			"refs": ["cdd4d6f"]
+			"refs": ["125b195"]
 		},
 		"plot/backgroundColor/rgba/static_white_0.75": {
-			"refs": ["cdd4d6f"]
+			"refs": ["125b195"]
 		},
 		"plot/backgroundColor/rgba/static_white_1.00": {
-			"refs": ["cdd4d6f"]
+			"refs": ["125b195"]
 		},
 		"plot/backgroundColor/rgba/static_yellowCustomWithSpaces_0.75": {
-			"refs": ["917fa25"]
+			"refs": ["080a432"]
 		},
 		"plot/backgroundColor/rgba/static_yellowCustom_0.00": {
-			"refs": ["cdd4d6f"]
+			"refs": ["125b195"]
 		},
 		"plot/backgroundColor/rgba/static_yellowCustom_0.25": {
-			"refs": ["462c2b2"]
+			"refs": ["ab336d0"]
 		},
 		"plot/backgroundColor/rgba/static_yellowCustom_0.50": {
-			"refs": ["f13a7e1"]
+			"refs": ["b5e1d5b"]
 		},
 		"plot/backgroundColor/rgba/static_yellowCustom_0.75": {
-			"refs": ["917fa25"]
+			"refs": ["080a432"]
 		},
 		"plot/backgroundColor/rgba/static_yellowCustom_1.00": {
-			"refs": ["5dcbb01"]
+			"refs": ["962eb1e"]
 		},
 		"plot/borderColor/hexa/animated_yellowCustom_0.25-blueCustom_0.75": {
-			"refs": ["2798f05"]
+			"refs": ["0b99948"]
 		},
 		"plot/borderColor/hexa/animated_yellowCustom_0.75-blueCustom_0.25": {
-			"refs": ["2837a89"]
+			"refs": ["9546d7f"]
 		},
 		"plot/borderColor/hexa/static_blueCustom_0.25": {
-			"refs": ["a792d7b"]
+			"refs": ["cb96782"]
 		},
 		"plot/borderColor/hexa/static_blueCustom_0.75": {
-			"refs": ["f66ea1e"]
+			"refs": ["a27770e"]
 		},
 		"plot/borderColor/hexa/static_yellowCustom_0.25": {
-			"refs": ["da77c57"]
+			"refs": ["4498627"]
 		},
 		"plot/borderColor/hexa/static_yellowCustom_0.75": {
-			"refs": ["975f17a"]
+			"refs": ["0f7fa0f"]
 		},
 		"plot/borderWidth/animated_1-100": {
-			"refs": ["82bfe20"]
+			"refs": ["6cc62a2"]
 		},
 		"plot/borderWidth/animated_100-1": {
-			"refs": ["e310173"]
+			"refs": ["9e3e5fd"]
 		},
 		"plot/borderWidth/static_1": {
-			"refs": ["a63b151"]
+			"refs": ["38106cd"]
 		},
 		"plot/borderWidth/static_10": {
-			"refs": ["eed6261"]
+			"refs": ["294919e"]
 		},
 		"plot/borderWidth/static_100": {
-			"refs": ["5a62ac8"]
+			"refs": ["f673f44"]
 		},
 		"plot/interlacing": {
-			"refs": ["f14b366"]
+			"refs": ["a008a9c"]
 		},
 		"plot/paddingBottom/animated_150-350": {
-			"refs": ["e618e56"]
+			"refs": ["0146540"]
 		},
 		"plot/paddingBottom/animated_350-150": {
-			"refs": ["30008f5"]
+			"refs": ["12396f9"]
 		},
 		"plot/paddingBottom/static_150": {
-			"refs": ["7aaaeba"]
+			"refs": ["e281ec1"]
 		},
 		"plot/paddingBottom/static_350": {
-			"refs": ["b63bbfd"]
+			"refs": ["dec813d"]
 		},
 		"plot/paddingLeft/animated_150-350": {
-			"refs": ["04a6386"]
+			"refs": ["909e741"]
 		},
 		"plot/paddingLeft/animated_350-150": {
-			"refs": ["3618fcc"]
+			"refs": ["bbcc793"]
 		},
 		"plot/paddingLeft/static_150": {
-			"refs": ["94fa4a0"]
+			"refs": ["90167b5"]
 		},
 		"plot/paddingLeft/static_350": {
-			"refs": ["7097960"]
+			"refs": ["b7d25a2"]
 		},
 		"plot/paddingRight/animated_150-350": {
-			"refs": ["c7f4808"]
+			"refs": ["dcc7bca"]
 		},
 		"plot/paddingRight/animated_350-150": {
-			"refs": ["c5b4f15"]
+			"refs": ["5ed4f52"]
 		},
 		"plot/paddingRight/static_150": {
-			"refs": ["a46da8a"]
+			"refs": ["fef0322"]
 		},
 		"plot/paddingRight/static_350": {
-			"refs": ["88e3ced"]
+			"refs": ["7a6cf7a"]
 		},
 		"plot/paddingTop/animated_150-350": {
-			"refs": ["319dae7"]
+			"refs": ["9621518"]
 		},
 		"plot/paddingTop/animated_350-150": {
-			"refs": ["3185801"]
+			"refs": ["8e3a2b9"]
 		},
 		"plot/paddingTop/static_150": {
-			"refs": ["45280dd"]
+			"refs": ["12c26f3"]
 		},
 		"plot/paddingTop/static_350": {
-			"refs": ["bcfbd92"]
+			"refs": ["56b6951"]
 		},
 		"plot/spacing": {
-			"refs": ["a464984"]
+			"refs": ["ee0b955"]
 		},
 		"plot/xAxis/color/hexa/animated_yellowCustom_0.25-blueCustom_0.75": {
-			"refs": ["77b26be"]
+			"refs": ["b8973cc"]
 		},
 		"plot/xAxis/color/hexa/animated_yellowCustom_0.75-blueCustom_0.25": {
-			"refs": ["06f87e2"]
+			"refs": ["6b83e6e"]
 		},
 		"plot/xAxis/color/hexa/static_blueCustom_0.25": {
-			"refs": ["7af2465"]
+			"refs": ["b7d5d90"]
 		},
 		"plot/xAxis/color/hexa/static_blueCustom_0.75": {
-			"refs": ["e49e59d"]
+			"refs": ["271eb10"]
 		},
 		"plot/xAxis/color/hexa/static_yellowCustom_0.25": {
-			"refs": ["e21d098"]
+			"refs": ["6afb74f"]
 		},
 		"plot/xAxis/color/hexa/static_yellowCustom_0.75": {
-			"refs": ["5446539"]
+			"refs": ["92d0270"]
 		},
 		"plot/xAxis/interlacing/color/hexa/animated_yellowCustom_0.25-blueCustom_0.75": {
-			"refs": ["7e819c1"]
+			"refs": ["1cffefe"]
 		},
 		"plot/xAxis/interlacing/color/hexa/animated_yellowCustom_0.75-blueCustom_0.25": {
-			"refs": ["ec536c2"]
+			"refs": ["2398576"]
 		},
 		"plot/xAxis/interlacing/color/hexa/static_blueCustom_0.25": {
-			"refs": ["d670af6"]
+			"refs": ["26bce32"]
 		},
 		"plot/xAxis/interlacing/color/hexa/static_blueCustom_0.75": {
-			"refs": ["2f34452"]
+			"refs": ["5218615"]
 		},
 		"plot/xAxis/interlacing/color/hexa/static_yellowCustom_0.25": {
-			"refs": ["89cdb21"]
+			"refs": ["5b77df9"]
 		},
 		"plot/xAxis/interlacing/color/hexa/static_yellowCustom_0.75": {
-			"refs": ["e2be0e5"]
+			"refs": ["8820669"]
 		},
 		"plot/xAxis/label/angle/deg/animated_90-135": {
-			"refs": ["ec98122"]
+			"refs": ["875204f"]
 		},
 		"plot/xAxis/label/angle/deg/animated_90-225": {
-			"refs": ["9972a2b"]
+			"refs": ["0963c1a"]
 		},
 		"plot/xAxis/label/angle/deg/animated_90-45": {
-			"refs": ["9972a2b"]
+			"refs": ["0963c1a"]
 		},
 		"plot/xAxis/label/angle/deg/static_495": {
-			"refs": ["77763dd"]
+			"refs": ["180fcc9"]
 		},
 		"plot/xAxis/label/angle/deg/static_90": {
-			"refs": ["e0b2908"]
+			"refs": ["b3cb6ee"]
 		},
 		"plot/xAxis/label/angle/grad/animated_100-150": {
-			"refs": ["ec98122"]
+			"refs": ["875204f"]
 		},
 		"plot/xAxis/label/angle/grad/animated_100-250": {
-			"refs": ["9972a2b"]
+			"refs": ["0963c1a"]
 		},
 		"plot/xAxis/label/angle/grad/animated_100-50": {
-			"refs": ["9972a2b"]
+			"refs": ["0963c1a"]
 		},
 		"plot/xAxis/label/angle/grad/static_100": {
-			"refs": ["e0b2908"]
+			"refs": ["b3cb6ee"]
 		},
 		"plot/xAxis/label/angle/grad/static_550": {
-			"refs": ["77763dd"]
+			"refs": ["180fcc9"]
 		},
 		"plot/xAxis/label/angle/number/animated_1.5708-0.7854": {
-			"refs": ["c0e15b4"]
+			"refs": ["26579c4"]
 		},
 		"plot/xAxis/label/angle/number/animated_1.5708-2.3562": {
-			"refs": ["ec98122"]
+			"refs": ["875204f"]
 		},
 		"plot/xAxis/label/angle/number/animated_1.5708-3.927": {
-			"refs": ["c0e15b4"]
+			"refs": ["26579c4"]
 		},
 		"plot/xAxis/label/angle/number/static_1.5708": {
-			"refs": ["e0b2908"]
+			"refs": ["b3cb6ee"]
 		},
 		"plot/xAxis/label/angle/number/static_8.6394": {
-			"refs": ["77763dd"]
+			"refs": ["180fcc9"]
 		},
 		"plot/xAxis/label/angle/rad/animated_1.5708-0.7854": {
-			"refs": ["c0e15b4"]
+			"refs": ["26579c4"]
 		},
 		"plot/xAxis/label/angle/rad/animated_1.5708-2.3562": {
-			"refs": ["ec98122"]
+			"refs": ["875204f"]
 		},
 		"plot/xAxis/label/angle/rad/animated_1.5708-3.927": {
-			"refs": ["c0e15b4"]
+			"refs": ["26579c4"]
 		},
 		"plot/xAxis/label/angle/rad/static_1.5708": {
-			"refs": ["e0b2908"]
+			"refs": ["b3cb6ee"]
 		},
 		"plot/xAxis/label/angle/rad/static_8.6394": {
-			"refs": ["77763dd"]
+			"refs": ["180fcc9"]
 		},
 		"plot/xAxis/label/angle/turn/animated_0.25-0.125": {
-			"refs": ["9972a2b"]
+			"refs": ["0963c1a"]
 		},
 		"plot/xAxis/label/angle/turn/animated_0.25-0.375": {
-			"refs": ["ec98122"]
+			"refs": ["875204f"]
 		},
 		"plot/xAxis/label/angle/turn/animated_0.25-0.625": {
-			"refs": ["9972a2b"]
+			"refs": ["0963c1a"]
 		},
 		"plot/xAxis/label/angle/turn/static_0.25": {
-			"refs": ["e0b2908"]
+			"refs": ["b3cb6ee"]
 		},
 		"plot/xAxis/label/angle/turn/static_1.375": {
-			"refs": ["77763dd"]
+			"refs": ["180fcc9"]
 		},
 		"plot/xAxis/label/color/hexa/animated_yellowCustom_0.25-blueCustom_0.75": {
-			"refs": ["d38766a"]
+			"refs": ["ece7d1e"]
 		},
 		"plot/xAxis/label/color/hexa/animated_yellowCustom_0.75-blueCustom_0.25": {
-			"refs": ["fa48344"]
+			"refs": ["c6c9e86"]
 		},
 		"plot/xAxis/label/color/hexa/static_blueCustom_0.25": {
-			"refs": ["d0b224a"]
+			"refs": ["6622ce4"]
 		},
 		"plot/xAxis/label/color/hexa/static_blueCustom_0.75": {
-			"refs": ["6749c0d"]
+			"refs": ["7c160d9"]
 		},
 		"plot/xAxis/label/color/hexa/static_yellowCustom_0.25": {
-			"refs": ["d2a9602"]
+			"refs": ["3d99cd1"]
 		},
 		"plot/xAxis/label/color/hexa/static_yellowCustom_0.75": {
-			"refs": ["76d19d6"]
+			"refs": ["2768e81"]
 		},
 		"plot/xAxis/label/fontSize/elementFontPercentage/animated_1-3": {
-			"refs": ["5f4f5e3"]
+			"refs": ["277e66c"]
 		},
 		"plot/xAxis/label/fontSize/elementFontPercentage/animated_3-1": {
-			"refs": ["5630add"]
+			"refs": ["6d6926d"]
 		},
 		"plot/xAxis/label/fontSize/elementFontPercentage/static_1": {
-			"refs": ["cdd4d6f"]
+			"refs": ["125b195"]
 		},
 		"plot/xAxis/label/fontSize/elementFontPercentage/static_2": {
-			"refs": ["9615370"]
+			"refs": ["03363e1"]
 		},
 		"plot/xAxis/label/fontSize/elementFontPercentage/static_3": {
-			"refs": ["ac66703"]
+			"refs": ["3710525"]
 		},
 		"plot/xAxis/label/fontSize/elementPercentage/animated_100-300": {
-			"refs": ["5f4f5e3"]
+			"refs": ["277e66c"]
 		},
 		"plot/xAxis/label/fontSize/elementPercentage/animated_300-100": {
-			"refs": ["5630add"]
+			"refs": ["6d6926d"]
 		},
 		"plot/xAxis/label/fontSize/elementPercentage/static_100": {
-			"refs": ["cdd4d6f"]
+			"refs": ["125b195"]
 		},
 		"plot/xAxis/label/fontSize/elementPercentage/static_200": {
-			"refs": ["9615370"]
+			"refs": ["03363e1"]
 		},
 		"plot/xAxis/label/fontSize/elementPercentage/static_300": {
-			"refs": ["ac66703"]
+			"refs": ["3710525"]
 		},
 		"plot/xAxis/label/fontSize/number/animated_1-50": {
-			"refs": ["dd5b216"]
+			"refs": ["09de9a7"]
 		},
 		"plot/xAxis/label/fontSize/number/animated_50-1": {
-			"refs": ["2de3a21"]
+			"refs": ["9c1eb4c"]
 		},
 		"plot/xAxis/label/fontSize/number/static_1": {
-			"refs": ["e3ae4c7"]
+			"refs": ["14703ce"]
 		},
 		"plot/xAxis/label/fontSize/number/static_10": {
-			"refs": ["7c246cd"]
+			"refs": ["cc2e8fc"]
 		},
 		"plot/xAxis/label/fontSize/number/static_50": {
-			"refs": ["9b1edc4"]
+			"refs": ["6893f90"]
 		},
 		"plot/xAxis/label/fontSize/pixel/animated_1-50": {
-			"refs": ["dd5b216"]
+			"refs": ["09de9a7"]
 		},
 		"plot/xAxis/label/fontSize/pixel/animated_50-1": {
-			"refs": ["2de3a21"]
+			"refs": ["9c1eb4c"]
 		},
 		"plot/xAxis/label/fontSize/pixel/static_1": {
-			"refs": ["e3ae4c7"]
+			"refs": ["14703ce"]
 		},
 		"plot/xAxis/label/fontSize/pixel/static_10": {
-			"refs": ["7c246cd"]
+			"refs": ["cc2e8fc"]
 		},
 		"plot/xAxis/label/fontSize/pixel/static_50": {
-			"refs": ["9b1edc4"]
+			"refs": ["6893f90"]
 		},
 		"plot/xAxis/label/fontStyle/animated_italic-normal": {
-			"refs": ["cef142a"]
+			"refs": ["cdead9e"]
 		},
 		"plot/xAxis/label/fontStyle/animated_italic-oblique": {
-			"refs": ["355221d"]
+			"refs": ["2503028"]
 		},
 		"plot/xAxis/label/fontStyle/animated_normal-italic": {
-			"refs": ["32c0677"]
+			"refs": ["13f3f43"]
 		},
 		"plot/xAxis/label/fontStyle/animated_normal-oblique": {
-			"refs": ["32c0677"]
+			"refs": ["13f3f43"]
 		},
 		"plot/xAxis/label/fontStyle/animated_oblique-italic": {
-			"refs": ["355221d"]
+			"refs": ["2503028"]
 		},
 		"plot/xAxis/label/fontStyle/animated_oblique-normal": {
-			"refs": ["cef142a"]
+			"refs": ["cdead9e"]
 		},
 		"plot/xAxis/label/fontStyle/static_italic": {
-			"refs": ["911dc83"]
+			"refs": ["0af2e14"]
 		},
 		"plot/xAxis/label/fontStyle/static_normal": {
-			"refs": ["cdd4d6f"]
+			"refs": ["125b195"]
 		},
 		"plot/xAxis/label/fontStyle/static_oblique": {
-			"refs": ["911dc83"]
+			"refs": ["0af2e14"]
 		},
 		"plot/xAxis/label/fontWeight/animated_400-700": {
-			"refs": ["cffb715"]
+			"refs": ["724ef6b"]
 		},
 		"plot/xAxis/label/fontWeight/animated_700-400": {
-			"refs": ["a7345c7"]
+			"refs": ["8b1a46d"]
 		},
 		"plot/xAxis/label/fontWeight/animated_bold-normal": {
-			"refs": ["a7345c7"]
+			"refs": ["8b1a46d"]
 		},
 		"plot/xAxis/label/fontWeight/animated_normal-bold": {
-			"refs": ["cffb715"]
+			"refs": ["724ef6b"]
 		},
 		"plot/xAxis/label/fontWeight/static_100": {
-			"refs": ["16c0f10"]
+			"refs": ["2b382ee"]
 		},
 		"plot/xAxis/label/fontWeight/static_400": {
-			"refs": ["cdd4d6f"]
+			"refs": ["125b195"]
 		},
 		"plot/xAxis/label/fontWeight/static_700": {
-			"refs": ["2ca4e65"]
+			"refs": ["31e9365"]
 		},
 		"plot/xAxis/label/fontWeight/static_900": {
-			"refs": ["7d79e0a"]
+			"refs": ["8226839"]
 		},
 		"plot/xAxis/label/fontWeight/static_bold": {
-			"refs": ["2ca4e65"]
+			"refs": ["31e9365"]
 		},
 		"plot/xAxis/label/fontWeight/static_normal": {
-			"refs": ["cdd4d6f"]
+			"refs": ["125b195"]
 		},
 		"plot/xAxis/label/orientation/animated_horizontal-vertical": {
-			"refs": ["e6f63eb"]
+			"refs": ["713cb8e"]
 		},
 		"plot/xAxis/label/orientation/animated_normal-tangential": {
-			"refs": ["a2faf80"]
+			"refs": ["f10e00f"]
 		},
 		"plot/xAxis/label/orientation/animated_tangential-normal": {
-			"refs": ["58da3b6"]
+			"refs": ["015046e"]
 		},
 		"plot/xAxis/label/orientation/animated_vertical-horizontal": {
-			"refs": ["c2b4e9c"]
+			"refs": ["1b80369"]
 		},
 		"plot/xAxis/label/orientation/static_horizontal": {
-			"refs": ["cdd4d6f"]
+			"refs": ["125b195"]
 		},
 		"plot/xAxis/label/orientation/static_normal": {
-			"refs": ["e0b2908"]
+			"refs": ["b3cb6ee"]
 		},
 		"plot/xAxis/label/orientation/static_tangential": {
-			"refs": ["cdd4d6f"]
+			"refs": ["125b195"]
 		},
 		"plot/xAxis/label/orientation/static_vertical": {
-			"refs": ["e0b2908"]
+			"refs": ["b3cb6ee"]
 		},
 		"plot/xAxis/label/paddingBottom/animated_15-35": {
-			"refs": ["8fc5ba9"]
+			"refs": ["562f224"]
 		},
 		"plot/xAxis/label/paddingBottom/animated_35-15": {
-			"refs": ["39e010d"]
+			"refs": ["e2c3573"]
 		},
 		"plot/xAxis/label/paddingBottom/static_15": {
-			"refs": ["62d8d61"]
+			"refs": ["d2e90c1"]
 		},
 		"plot/xAxis/label/paddingBottom/static_35": {
-			"refs": ["8c05a72"]
+			"refs": ["30522a1"]
 		},
 		"plot/xAxis/label/paddingLeft/animated_150-350": {
-			"refs": ["16119f6"]
+			"refs": ["0d2adcc"]
 		},
 		"plot/xAxis/label/paddingLeft/animated_350-150": {
-			"refs": ["1283959"]
+			"refs": ["34bd2b5"]
 		},
 		"plot/xAxis/label/paddingLeft/static_150": {
-			"refs": ["329f2a3"]
+			"refs": ["2c70ccc"]
 		},
 		"plot/xAxis/label/paddingLeft/static_350": {
-			"refs": ["e5fcb9d"]
+			"refs": ["e9a4773"]
 		},
 		"plot/xAxis/label/paddingRight/animated_150-350": {
-			"refs": ["65277a4"]
+			"refs": ["442fdb0"]
 		},
 		"plot/xAxis/label/paddingRight/animated_350-150": {
-			"refs": ["9960a8a"]
+			"refs": ["af4b417"]
 		},
 		"plot/xAxis/label/paddingRight/static_150": {
-			"refs": ["f675c35"]
+			"refs": ["4bc8c6f"]
 		},
 		"plot/xAxis/label/paddingRight/static_350": {
-			"refs": ["77dd949"]
+			"refs": ["b257bb9"]
 		},
 		"plot/xAxis/label/paddingTop/animated_15-35": {
-			"refs": ["0e58b51"]
+			"refs": ["75351ff"]
 		},
 		"plot/xAxis/label/paddingTop/animated_35-15": {
-			"refs": ["aa1aa71"]
+			"refs": ["9a91142"]
 		},
 		"plot/xAxis/label/paddingTop/static_15": {
-			"refs": ["229d9b0"]
+			"refs": ["c99a38d"]
 		},
 		"plot/xAxis/label/paddingTop/static_35": {
-			"refs": ["feb8f29"]
+			"refs": ["d98a820"]
 		},
 		"plot/xAxis/label/position/animated_axis-max-edge": {
-			"refs": ["da53294"]
+			"refs": ["7743995"]
 		},
 		"plot/xAxis/label/position/animated_axis-min-edge": {
-			"refs": ["fa35515"]
+			"refs": ["7d0b6a0"]
 		},
 		"plot/xAxis/label/position/animated_max-edge-axis": {
-			"refs": ["d3dff54"]
+			"refs": ["15118b7"]
 		},
 		"plot/xAxis/label/position/animated_max-edge-min-edge": {
-			"refs": ["d3dff54"]
+			"refs": ["15118b7"]
 		},
 		"plot/xAxis/label/position/animated_min-edge-axis": {
-			"refs": ["fa35515"]
+			"refs": ["7d0b6a0"]
 		},
 		"plot/xAxis/label/position/animated_min-edge-max-edge": {
-			"refs": ["da53294"]
+			"refs": ["7743995"]
 		},
 		"plot/xAxis/label/position/static_axis": {
-			"refs": ["cdd4d6f"]
+			"refs": ["125b195"]
 		},
 		"plot/xAxis/label/position/static_max-edge": {
-			"refs": ["38418e4"]
+			"refs": ["5a8c51c"]
 		},
 		"plot/xAxis/label/position/static_min-edge": {
-			"refs": ["cdd4d6f"]
+			"refs": ["125b195"]
 		},
 		"plot/xAxis/label/side/animated_negative-positive": {
-			"refs": ["6dc6a0e"]
+			"refs": ["f9ed94a"]
 		},
 		"plot/xAxis/label/side/animated_positive-negative": {
-			"refs": ["b10557d"]
+			"refs": ["5442ca8"]
 		},
 		"plot/xAxis/label/side/static_negative": {
-			"refs": ["cdd4d6f"]
+			"refs": ["125b195"]
 		},
 		"plot/xAxis/label/side/static_positive": {
-			"refs": ["0783f64"]
+			"refs": ["128e862"]
 		},
 		"plot/xAxis/label/textAlign/animated_center-left": {
-			"refs": ["2fa395d"]
+			"refs": ["b977c23"]
 		},
 		"plot/xAxis/label/textAlign/animated_center-right": {
-			"refs": ["2fa395d"]
+			"refs": ["b977c23"]
 		},
 		"plot/xAxis/label/textAlign/animated_left-center": {
-			"refs": ["2fa395d"]
+			"refs": ["b977c23"]
 		},
 		"plot/xAxis/label/textAlign/animated_left-right": {
-			"refs": ["2fa395d"]
+			"refs": ["b977c23"]
 		},
 		"plot/xAxis/label/textAlign/animated_right-center": {
-			"refs": ["2fa395d"]
+			"refs": ["b977c23"]
 		},
 		"plot/xAxis/label/textAlign/animated_right-left": {
-			"refs": ["2fa395d"]
+			"refs": ["b977c23"]
 		},
 		"plot/xAxis/label/textAlign/static_center": {
-			"refs": ["cdd4d6f"]
+			"refs": ["125b195"]
 		},
 		"plot/xAxis/label/textAlign/static_left": {
-			"refs": ["cdd4d6f"]
+			"refs": ["125b195"]
 		},
 		"plot/xAxis/label/textAlign/static_right": {
-			"refs": ["cdd4d6f"]
+			"refs": ["125b195"]
 		},
 		"plot/xAxis/ticks/color/hexa/animated_yellowCustom_0.25-blueCustom_0.75": {
-			"refs": ["b292bb7"]
+			"refs": ["c5438a4"]
 		},
 		"plot/xAxis/ticks/color/hexa/animated_yellowCustom_0.75-blueCustom_0.25": {
-			"refs": ["b207c5e"]
+			"refs": ["e32bf15"]
 		},
 		"plot/xAxis/ticks/color/hexa/static_blueCustom_0.25": {
-			"refs": ["dbd00db"]
+			"refs": ["46aefa9"]
 		},
 		"plot/xAxis/ticks/color/hexa/static_blueCustom_0.75": {
-			"refs": ["584ffd2"]
+			"refs": ["f1b820a"]
 		},
 		"plot/xAxis/ticks/color/hexa/static_yellowCustom_0.25": {
-			"refs": ["13d23ea"]
+			"refs": ["1e4f02a"]
 		},
 		"plot/xAxis/ticks/color/hexa/static_yellowCustom_0.75": {
-			"refs": ["365d64d"]
+			"refs": ["936f9e0"]
 		},
 		"plot/xAxis/ticks/length/elementFontPercentage/animated_1-3": {
-			"refs": ["b7d9081"]
+			"refs": ["be020d8"]
 		},
 		"plot/xAxis/ticks/length/elementFontPercentage/animated_3-1": {
-			"refs": ["2a3644f"]
+			"refs": ["76f1759"]
 		},
 		"plot/xAxis/ticks/length/elementFontPercentage/static_1": {
-			"refs": ["74e8064"]
+			"refs": ["2ca8099"]
 		},
 		"plot/xAxis/ticks/length/elementFontPercentage/static_2": {
-			"refs": ["2a2ef36"]
+			"refs": ["b6b819c"]
 		},
 		"plot/xAxis/ticks/length/elementFontPercentage/static_3": {
-			"refs": ["8b29c03"]
+			"refs": ["9462d6e"]
 		},
 		"plot/xAxis/ticks/length/elementPercentage/animated_10-20": {
-			"refs": ["0fe97db"]
+			"refs": ["51058a3"]
 		},
 		"plot/xAxis/ticks/length/elementPercentage/animated_20-10": {
-			"refs": ["88a363e"]
+			"refs": ["30dd952"]
 		},
 		"plot/xAxis/ticks/length/elementPercentage/static_10": {
-			"refs": ["8e727de"]
+			"refs": ["5aaf367"]
 		},
 		"plot/xAxis/ticks/length/elementPercentage/static_15": {
-			"refs": ["d55e2b5"]
+			"refs": ["98b4bfc"]
 		},
 		"plot/xAxis/ticks/length/elementPercentage/static_20": {
-			"refs": ["76cd1ee"]
+			"refs": ["5341385"]
 		},
 		"plot/xAxis/ticks/length/number/animated_1-50": {
-			"refs": ["c38254a"]
+			"refs": ["11c4b4b"]
 		},
 		"plot/xAxis/ticks/length/number/animated_50-1": {
-			"refs": ["a6e8fdc"]
+			"refs": ["950cb50"]
 		},
 		"plot/xAxis/ticks/length/number/static_1": {
-			"refs": ["a526863"]
+			"refs": ["6a5d6a5"]
 		},
 		"plot/xAxis/ticks/length/number/static_10": {
-			"refs": ["ed9739b"]
+			"refs": ["d6e6c04"]
 		},
 		"plot/xAxis/ticks/length/number/static_50": {
-			"refs": ["87ea605"]
+			"refs": ["03b30b7"]
 		},
 		"plot/xAxis/ticks/length/pixel/animated_1-50": {
-			"refs": ["c38254a"]
+			"refs": ["11c4b4b"]
 		},
 		"plot/xAxis/ticks/length/pixel/animated_50-1": {
-			"refs": ["a6e8fdc"]
+			"refs": ["950cb50"]
 		},
 		"plot/xAxis/ticks/length/pixel/static_1": {
-			"refs": ["a526863"]
+			"refs": ["6a5d6a5"]
 		},
 		"plot/xAxis/ticks/length/pixel/static_10": {
-			"refs": ["ed9739b"]
+			"refs": ["d6e6c04"]
 		},
 		"plot/xAxis/ticks/length/pixel/static_50": {
-			"refs": ["87ea605"]
+			"refs": ["03b30b7"]
 		},
 		"plot/xAxis/ticks/lineWidth/animated_1-100": {
-			"refs": ["9c214f3"]
+			"refs": ["7718631"]
 		},
 		"plot/xAxis/ticks/lineWidth/animated_100-1": {
-			"refs": ["6a8fb12"]
+			"refs": ["d69d20e"]
 		},
 		"plot/xAxis/ticks/lineWidth/static_1": {
-			"refs": ["7daa215"]
+			"refs": ["ba8131f"]
 		},
 		"plot/xAxis/ticks/lineWidth/static_10": {
-			"refs": ["33bda66"]
+			"refs": ["79b48e9"]
 		},
 		"plot/xAxis/ticks/lineWidth/static_100": {
-			"refs": ["3439783"]
+			"refs": ["96e198b"]
 		},
 		"plot/xAxis/ticks/position/animated_center-inside": {
-			"refs": ["c119ea0"]
+			"refs": ["62a3b3d"]
 		},
 		"plot/xAxis/ticks/position/animated_center-outside": {
-			"refs": ["208222d"]
+			"refs": ["1afe635"]
 		},
 		"plot/xAxis/ticks/position/animated_inside-center": {
-			"refs": ["fdbbabb"]
+			"refs": ["2ac0093"]
 		},
 		"plot/xAxis/ticks/position/animated_inside-outside": {
-			"refs": ["50d50f7"]
+			"refs": ["b756bba"]
 		},
 		"plot/xAxis/ticks/position/animated_outside-center": {
-			"refs": ["502000d"]
+			"refs": ["0958c7b"]
 		},
 		"plot/xAxis/ticks/position/animated_outside-inside": {
-			"refs": ["d7ad3ab"]
+			"refs": ["a7ddc01"]
 		},
 		"plot/xAxis/ticks/position/static_center": {
-			"refs": ["3205683"]
+			"refs": ["064a833"]
 		},
 		"plot/xAxis/ticks/position/static_inside": {
-			"refs": ["ed2621d"]
+			"refs": ["dd77f29"]
 		},
 		"plot/xAxis/ticks/position/static_outside": {
-			"refs": ["7daa215"]
+			"refs": ["ba8131f"]
 		},
 		"plot/yAxis/color/hexa/animated_yellowCustom_0.25-blueCustom_0.75": {
-			"refs": ["58101ec"]
+			"refs": ["0b79218"]
 		},
 		"plot/yAxis/color/hexa/animated_yellowCustom_0.75-blueCustom_0.25": {
-			"refs": ["048a1a3"]
+			"refs": ["34ac022"]
 		},
 		"plot/yAxis/color/hexa/static_blueCustom_0.25": {
-			"refs": ["b5c703f"]
+			"refs": ["9bb91e6"]
 		},
 		"plot/yAxis/color/hexa/static_blueCustom_0.75": {
-			"refs": ["b933032"]
+			"refs": ["9cccf3e"]
 		},
 		"plot/yAxis/color/hexa/static_yellowCustom_0.25": {
-			"refs": ["eaed794"]
+			"refs": ["ab0390e"]
 		},
 		"plot/yAxis/color/hexa/static_yellowCustom_0.75": {
-			"refs": ["2f5dec0"]
+			"refs": ["d9d2b09"]
 		},
 		"plot/yAxis/interlacing/color/hexa/animated_yellowCustom_0.25-blueCustom_0.75": {
-			"refs": ["ca74f36"]
+			"refs": ["907bfab"]
 		},
 		"plot/yAxis/interlacing/color/hexa/animated_yellowCustom_0.75-blueCustom_0.25": {
-			"refs": ["d2fa542"]
+			"refs": ["0ce1b62"]
 		},
 		"plot/yAxis/interlacing/color/hexa/static_blueCustom_0.25": {
-			"refs": ["f283ed9"]
+			"refs": ["ef4c973"]
 		},
 		"plot/yAxis/interlacing/color/hexa/static_blueCustom_0.75": {
-			"refs": ["475470f"]
+			"refs": ["3517ef6"]
 		},
 		"plot/yAxis/interlacing/color/hexa/static_yellowCustom_0.25": {
-			"refs": ["b847c05"]
+			"refs": ["9f5e01d"]
 		},
 		"plot/yAxis/interlacing/color/hexa/static_yellowCustom_0.75": {
-			"refs": ["4580c02"]
+			"refs": ["9dc647f"]
 		},
 		"plot/yAxis/ticks/color/hexa/animated_yellowCustom_0.25-blueCustom_0.75": {
-			"refs": ["15d4f8d"]
+			"refs": ["fa8ab3d"]
 		},
 		"plot/yAxis/ticks/color/hexa/animated_yellowCustom_0.75-blueCustom_0.25": {
-			"refs": ["0ddad08"]
+			"refs": ["1f1a5e4"]
 		},
 		"plot/yAxis/ticks/color/hexa/static_blueCustom_0.25": {
-			"refs": ["ba76b3e"]
+			"refs": ["2b32d59"]
 		},
 		"plot/yAxis/ticks/color/hexa/static_blueCustom_0.75": {
-			"refs": ["511ae19"]
+			"refs": ["f5f9614"]
 		},
 		"plot/yAxis/ticks/color/hexa/static_yellowCustom_0.25": {
-			"refs": ["c1033a4"]
+			"refs": ["885dd14"]
 		},
 		"plot/yAxis/ticks/color/hexa/static_yellowCustom_0.75": {
-			"refs": ["ca080ce"]
+			"refs": ["767a44d"]
 		},
 		"plot/yAxis/ticks/length/elementFontPercentage/animated_1-3": {
-			"refs": ["56eb7b9"]
+			"refs": ["906b1e6"]
 		},
 		"plot/yAxis/ticks/length/elementFontPercentage/animated_3-1": {
-			"refs": ["9b50f2d"]
+			"refs": ["a2b6e7e"]
 		},
 		"plot/yAxis/ticks/length/elementFontPercentage/static_1": {
-			"refs": ["ec0d7d4"]
+			"refs": ["36e6cf0"]
 		},
 		"plot/yAxis/ticks/length/elementFontPercentage/static_2": {
-			"refs": ["cd9d442"]
+			"refs": ["f7826d1"]
 		},
 		"plot/yAxis/ticks/length/elementFontPercentage/static_3": {
-			"refs": ["1afbe46"]
+			"refs": ["461da89"]
 		},
 		"plot/yAxis/ticks/length/elementPercentage/animated_1-6": {
-			"refs": ["d2f3209"]
+			"refs": ["37652f6"]
 		},
 		"plot/yAxis/ticks/length/elementPercentage/animated_6-1": {
-			"refs": ["88809ff"]
+			"refs": ["2dc49cb"]
 		},
 		"plot/yAxis/ticks/length/elementPercentage/static_1": {
-			"refs": ["e358aff"]
+			"refs": ["82d5497"]
 		},
 		"plot/yAxis/ticks/length/elementPercentage/static_3": {
-			"refs": ["255aa61"]
+			"refs": ["2427aa5"]
 		},
 		"plot/yAxis/ticks/length/elementPercentage/static_6": {
-			"refs": ["5eb0431"]
+			"refs": ["2b419ab"]
 		},
 		"plot/yAxis/ticks/length/number/animated_1-50": {
-			"refs": ["87d770a"]
+			"refs": ["4d83c27"]
 		},
 		"plot/yAxis/ticks/length/number/animated_50-1": {
-			"refs": ["1a8b76e"]
+			"refs": ["2284e59"]
 		},
 		"plot/yAxis/ticks/length/number/static_1": {
-			"refs": ["d72e521"]
+			"refs": ["ff1ac0f"]
 		},
 		"plot/yAxis/ticks/length/number/static_10": {
-			"refs": ["23163b2"]
+			"refs": ["24bede5"]
 		},
 		"plot/yAxis/ticks/length/number/static_50": {
-			"refs": ["e239731"]
+			"refs": ["56d0dcf"]
 		},
 		"plot/yAxis/ticks/length/pixel/animated_1-50": {
-			"refs": ["87d770a"]
+			"refs": ["4d83c27"]
 		},
 		"plot/yAxis/ticks/length/pixel/animated_50-1": {
-			"refs": ["1a8b76e"]
+			"refs": ["2284e59"]
 		},
 		"plot/yAxis/ticks/length/pixel/static_1": {
-			"refs": ["d72e521"]
+			"refs": ["ff1ac0f"]
 		},
 		"plot/yAxis/ticks/length/pixel/static_10": {
-			"refs": ["23163b2"]
+			"refs": ["24bede5"]
 		},
 		"plot/yAxis/ticks/length/pixel/static_50": {
-			"refs": ["e239731"]
+			"refs": ["56d0dcf"]
 		},
 		"plot/yAxis/ticks/lineWidth/animated_1-10": {
-			"refs": ["a007206"]
+			"refs": ["bb74d33"]
 		},
 		"plot/yAxis/ticks/lineWidth/animated_10-1": {
-			"refs": ["9875387"]
+			"refs": ["bb2b8a2"]
 		},
 		"plot/yAxis/ticks/lineWidth/static_1": {
-			"refs": ["63e21fd"]
+			"refs": ["5d89c9c"]
 		},
 		"plot/yAxis/ticks/lineWidth/static_10": {
-			"refs": ["b1af0fc"]
+			"refs": ["4982c08"]
 		},
 		"plot/yAxis/ticks/position/animated_center-inside": {
-			"refs": ["785ad24"]
+			"refs": ["89f5c74"]
 		},
 		"plot/yAxis/ticks/position/animated_center-outside": {
-			"refs": ["b1d09dd"]
+			"refs": ["c7e2688"]
 		},
 		"plot/yAxis/ticks/position/animated_inside-center": {
-			"refs": ["0b9482e"]
+			"refs": ["fc3cc43"]
 		},
 		"plot/yAxis/ticks/position/animated_inside-outside": {
-			"refs": ["dca0ad9"]
+			"refs": ["16f0899"]
 		},
 		"plot/yAxis/ticks/position/animated_outside-center": {
-			"refs": ["c1aed29"]
+			"refs": ["3a49608"]
 		},
 		"plot/yAxis/ticks/position/animated_outside-inside": {
-			"refs": ["a4bfcf9"]
+			"refs": ["58a0707"]
 		},
 		"plot/yAxis/ticks/position/static_center": {
-			"refs": ["9d3fce2"]
+			"refs": ["5656c54"]
 		},
 		"plot/yAxis/ticks/position/static_inside": {
-			"refs": ["069949f"]
+			"refs": ["978d335"]
 		},
 		"plot/yAxis/ticks/position/static_outside": {
-			"refs": ["63e21fd"]
+			"refs": ["5d89c9c"]
 		},
 		"plot/xAxis/label/autorotate": {
-			"refs": ["9edbce5"]
+			"refs": ["122d0b8"]
 		},
 		"legend/offsetY": {
-			"refs": ["b326287"]
+			"refs": ["2994082"]
 		},
 		"plot/markerLabelUnit": {
-			"refs": ["3a02ec4"]
+			"refs": ["749f4f1"]
 		}
 	}
 }

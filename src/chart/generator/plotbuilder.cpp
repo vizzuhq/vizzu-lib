@@ -1,10 +1,12 @@
 #include "plotbuilder.h"
 
 #include <algorithm>
+#include <array>
 #include <cmath>
 #include <cstddef>
 #include <cstdint>
 #include <functional>
+#include <iterator>
 #include <limits>
 #include <memory>
 #include <numeric>
@@ -420,7 +422,7 @@ void PlotBuilder::calcLegendAndLabel(const Data::DataTable &dataTable)
 				if (isAutoTitle)
 					calcLegend.title = dataCube.getName(*meas);
 				calcLegend.measure = {std::get<0>(stats.at(type)),
-				    meas->getColIndex(),
+				    auto{meas->getColIndex()},
 				    dataTable.get_series_info(meas->getColIndex(),
 				        "unit"),
 				    {1}};
@@ -496,7 +498,7 @@ void PlotBuilder::calcLegendAndLabel(const Data::DataTable &dataTable)
 		        markerLabelsUnitPercent
 		            ? "%"
 		            : dataTable.get_series_info(meas->getColIndex(),
-		                "unit")}},
+		                  "unit")}},
 		    ::Anim::String{meas->getColIndex()}};
 	}
 }
@@ -520,12 +522,12 @@ void PlotBuilder::calcAxis(const Data::DataTable &dataTable,
 
 		if (axisProps.align == Base::Align::Type::stretch)
 			axis.measure = {{0, 100},
-			    meas.getColIndex(),
+			    auto{meas.getColIndex()},
 			    "%",
 			    axisProps.step.getValue()};
 		else
 			axis.measure = {std::get<0>(stats.at(type)),
-			    meas.getColIndex(),
+			    auto{meas.getColIndex()},
 			    dataTable.get_series_info(meas.getColIndex(), "unit"),
 			    axisProps.step.getValue()};
 	}

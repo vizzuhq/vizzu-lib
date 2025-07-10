@@ -1,5 +1,6 @@
 # pylint: disable=missing-module-docstring,missing-class-docstring,missing-function-docstring
 
+from contextlib import chdir
 import os
 from pathlib import Path
 import shutil
@@ -16,9 +17,6 @@ GEN_PATH = MKDOCS_PATH / "reference"
 sys.path.insert(0, str(TOOLS_PATH / "modules"))
 sys.path.insert(0, str(TOOLS_PATH / "ci"))
 
-from chdir import (  # pylint: disable=import-error, wrong-import-position, wrong-import-order
-    chdir,
-)
 from node import (  # pylint: disable=import-error, wrong-import-position, wrong-import-order
     Node,
 )
@@ -47,6 +45,8 @@ class Reference:
 
         for path in Path(tmp_dir).rglob("*.md"):
             with open(path, "rt", encoding="utf8") as f_src:
+                if (Path(tmp_dir) / "README.md").resolve() == path.resolve():
+                    continue
                 content = f_src.read()
                 content = content.replace("##### ", "").replace("#### ", "")
                 content = Vizzu.set_version(content)

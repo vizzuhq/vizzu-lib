@@ -1,4 +1,3 @@
-const TypeDoc = require('typedoc')
 const path = require('node:path')
 
 const repoPath = path.join(__dirname, '..', '..', '..')
@@ -8,6 +7,7 @@ const genPath = path.join(mkdocsPath, 'reference')
 const srcPath = path.join(repoPath, 'src', 'apps', 'weblib', 'ts-api')
 
 async function reference() {
+	const TypeDoc = await import('typedoc')
 	const app = await TypeDoc.Application.bootstrapWithPlugins(
 		{
 			plugin: ['typedoc-plugin-markdown', 'typedoc-plugin-rename-defaults'],
@@ -19,11 +19,10 @@ async function reference() {
 			entryPointStrategy: 'expand',
 			tsconfig: path.join(srcPath, 'tsconfig.json'),
 			name: 'Vizzu',
-			hideInPageTOC: true,
 			disableSources: true,
 			excludeNotDocumented: true,
 			excludePrivate: true,
-			readme: path.join(repoPath, 'docs', 'reference', 'index.md')
+			theme: 'markdown'
 		},
 		[new TypeDoc.TSConfigReader()]
 	)

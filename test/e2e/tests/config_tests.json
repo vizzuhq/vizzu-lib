@@ -1,65 +1,65 @@
 {
 	"suite": "/test/e2e/tests/config_tests",
 	"test": {
-		"geometry/static_area": {
-			"refs": ["dcaccf5"]
-		},
-		"geometry/static_circle": {
-			"refs": ["b114235"]
-		},
-		"geometry/static_default": {
-			"refs": ["d487d60"]
-		},
-		"geometry/static_line": {
-			"refs": ["482976a"]
-		},
-		"geometry/static_rectangle": {
-			"refs": ["d487d60"]
-		},
-		"geometry/animated_area-line": {
-			"refs": ["0ce1e7a"]
-		},
-		"geometry/animated_area-rectangle": {
-			"refs": ["abb3c41"]
-		},
-		"geometry/animated_line-area": {
-			"refs": ["0fd0dc2"]
-		},
-		"geometry/animated_line-circle": {
-			"refs": ["a4f616a"]
-		},
-		"geometry/animated_line-rectangle": {
-			"refs": ["b5bc6b4"]
-		},
-		"geometry/animated_rectangle-area": {
-			"refs": ["2de661f"]
-		},
-		"geometry/animated_rectangle-circle": {
-			"refs": ["4707c43"]
-		},
-		"geometry/animated_rectangle-line": {
-			"refs": ["2ac83c5"]
-		},
-		"dimension_axis_title": {
-			"refs": ["0f4b203"]
-		},
-		"dimension_axis_density": {
-			"refs": ["0de86a3"]
-		},
-		"geometry/animated_area-circle": {
-			"refs": ["d037f4d"]
-		},
 		"channel_ranges/dim_axis": {
-			"refs": ["0e9a9fd"]
+			"refs": ["eb85ebf"]
 		},
 		"channel_ranges/dim_color": {
-			"refs": ["c5b912f"]
+			"refs": ["b8c3eb2"]
 		},
 		"channel_ranges/dim_lightness": {
-			"refs": ["b26b94f"]
+			"refs": ["38be869"]
 		},
 		"channel_ranges/meas_axis": {
-			"refs": ["fa8bd29"]
+			"refs": ["193c6f4"]
+		},
+		"dimension_axis_density": {
+			"refs": ["5c4c6df"]
+		},
+		"dimension_axis_title": {
+			"refs": ["7c08796"]
+		},
+		"geometry/animated_area-circle": {
+			"refs": ["8e34a98"]
+		},
+		"geometry/animated_area-line": {
+			"refs": ["0439a39"]
+		},
+		"geometry/animated_area-rectangle": {
+			"refs": ["98b220e"]
+		},
+		"geometry/animated_line-area": {
+			"refs": ["7d65a21"]
+		},
+		"geometry/animated_line-circle": {
+			"refs": ["31d575d"]
+		},
+		"geometry/animated_line-rectangle": {
+			"refs": ["cd5dafc"]
+		},
+		"geometry/animated_rectangle-area": {
+			"refs": ["768b27c"]
+		},
+		"geometry/animated_rectangle-circle": {
+			"refs": ["64d6ffe"]
+		},
+		"geometry/animated_rectangle-line": {
+			"refs": ["ec94d23"]
+		},
+		"geometry/static_area": {
+			"refs": ["0138315"]
+		},
+		"geometry/static_circle": {
+			"refs": ["e8bb04d"]
+		},
+		"geometry/static_default": {
+			"refs": ["3103d88"]
+		},
+		"geometry/static_line": {
+			"refs": ["9a0ad56"]
+		},
+		"geometry/static_rectangle": {
+			"refs": ["3103d88"]
 		}
 	}
 }

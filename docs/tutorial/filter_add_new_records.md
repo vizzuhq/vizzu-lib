@@ -48,9 +48,10 @@ Here we add another record to the data set and update the chart accordingly.
 ```
 
 !!! info
-    Combining this option with the [store](./shorthands_store.md) function makes
-    it easy to update previously configured states with fresh data since this
-    function saves the config and style parameters of the chart into a variable
-    but not the data.
+
+    Combining this option with the [store](./shorthands_store.md) function makes it
+    easy to update previously configured states with fresh data since this function
+    saves the config and style parameters of the chart into a variable but not the
+    data.
 
 <script src="../assets/snippet.js" config="../filter_add_new_records/config.js"></script>

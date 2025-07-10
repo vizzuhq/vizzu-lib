@@ -71,6 +71,7 @@ Distinct: the height of the bars show the number of distinct categories of
 `Kinds` in each of the `Genres`.
 
 !!! note
+
     Distinct aggregation logic relates to dimensions like `Genres` and not to
     measures like `Popularity`.
 

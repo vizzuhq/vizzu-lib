@@ -2,43 +2,43 @@
 	"suite": "/test/e2e/tests/features",
 	"test": {
 		"aggregators/aggregators": {
-			"refs": ["463ca59"]
+			"refs": ["32e9647"]
 		},
 		"aggregators/aggregators_together": {
-			"refs": ["e2abafe"]
+			"refs": ["e24bdb5"]
 		},
 		"axis_title_positioning": {
-			"refs": ["ffc403c"]
+			"refs": ["e630a50"]
 		},
 		"data_input/object_records": {
-			"refs": ["ba17dad"]
+			"refs": ["8866a5d"]
 		},
 		"events/drawing_events": {
-			"refs": ["962d7d3"]
+			"refs": ["15d1c81"]
 		},
 		"subtitle_caption": {
-			"refs": ["f6dabf0"]
+			"refs": ["f03b398"]
 		},
 		"cssproperties": {
-			"refs": ["b1a2535"]
+			"refs": ["e7c63c9"]
 		},
 		"anim/speed": {
-			"refs": ["b6c8e6a"]
+			"refs": ["c339d99"]
 		},
 		"presets": {
-			"refs": ["84541ff"]
+			"refs": ["a25a0c2"]
 		},
 		"detach": {
 			"refs": ["e3b0c44"]
 		},
 		"data_input/category_indexed": {
-			"refs": ["72a8149"]
+			"refs": ["95fa740"]
 		},
 		"legend_interpolation": {
-			"refs": ["0e7b2e8"]
+			"refs": ["f85926f"]
 		},
 		"data_input/big_category_indexed": {
-			"refs": ["0ac7b6d"]
+			"refs": ["d8538cb"]
 		}
 	}
 }

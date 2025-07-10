@@ -110,7 +110,7 @@ export class Chart implements ChartInterface {
 		const control = force ? RenderControlMode.forced : RenderControlMode.disabled
 		const ctx: RenderContext = {
 			renderer: null,
-			control: control,
+			control,
 			changed: this._changed,
 			size: { x: 0, y: 0 }
 		}

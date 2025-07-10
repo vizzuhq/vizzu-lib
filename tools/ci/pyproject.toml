@@ -3,10 +3,10 @@ name = "vizzu-dev"
 version = "0.1.0"
 description = ""
 authors = [
-    {name = "Vizzu Inc.", email = "hello@vizzuhq.com"},
+    {name = "Vizzu Inc.", email = "hello@vizzu.io"},
 ]
 dependencies = []
-requires-python = ">=3.10"
+requires-python = ">=3.13"
 license = {text = "Apache-2.0"}
 
 [tool.pdm.dev-dependencies]
@@ -16,25 +16,25 @@ codequality = [
     "mypy",
 ]
 docs = [
+    "setuptools",
     "mdformat",
     "mdformat-beautysh",
     "mdformat-black",
     "mdformat-configurable-black",
     "mdformat-config",
     "mdformat-web",
-    "mdformat-admon < 0.2.0",
+    "mdformat-mkdocs",
     "mdformat-gfm",
     "mdformat-tables",
     "mdformat-footnote",
     "mdformat-frontmatter",
-    "mdx_truly_sane_lists",
     "mkdocs",
     "mkdocs-material",
     "mkdocs-section-index",
     "mkdocs-literate-nav",
     "mkdocs-autorefs",
     "mkdocs-gen-files",
-    "mkdocs-placeholder-plugin>=0.4.1",
+    "mkdocs-placeholder-plugin",
     "mkdocs-include-markdown-plugin",
     "mkdocs-exclude",
     "mike",
@@ -43,8 +43,7 @@ docs = [
     "markdown",
     "types-Markdown",
     "Pillow",
-    "types-Pillow",
-    "setuptools<72.0.0",
+    "types-Pillow"
 ]
 
 [tool.setuptools]

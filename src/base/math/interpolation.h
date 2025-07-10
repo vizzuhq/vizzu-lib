@@ -10,8 +10,9 @@ namespace Math
 
 template <typename T>
     requires(!std::is_same_v<std::remove_cvref_t<T>, bool>)
-auto interpolate(const T &op0, const T &op1, double factor)
-    -> decltype(op0 * (1.0 - factor) + op1 * factor)
+auto interpolate(const T &op0,
+    const T &op1,
+    double factor) -> decltype(op0 * (1.0 - factor) + op1 * factor)
 {
 	if (factor <= 0.0) return op0;
 	if (factor >= 1.0) return op1;
@@ -28,7 +29,8 @@ template <class T> struct interpolatable_t
 		return requires(const T &a, const T &b, double factor) {
 			{
 				interpolate(a, b, factor)
-			} -> std::same_as<
+			}
+			-> std::same_as<
 			    std::conditional_t<std::is_integral_v<T>, double, T>>;
 		};
 	}

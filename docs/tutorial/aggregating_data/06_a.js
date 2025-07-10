@@ -1,5 +1,5 @@
 chart.animate({
 	config: {
-		title: 'Distinct Kinds by Genre'
+		title: 'Distinct Kinds by Genres'
 	}
 })

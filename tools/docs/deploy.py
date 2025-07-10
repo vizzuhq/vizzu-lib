@@ -1,5 +1,6 @@
 # pylint: disable=missing-module-docstring,missing-class-docstring,missing-function-docstring
 
+from contextlib import chdir
 from pathlib import Path
 from subprocess import Popen
 import sys
@@ -12,9 +13,6 @@ MKDOCS_PATH = TOOLS_PATH / "docs"
 
 sys.path.insert(0, str(TOOLS_PATH / "modules"))
 
-from chdir import (  # pylint: disable=import-error, wrong-import-position, wrong-import-order
-    chdir,
-)
 from vizzu import (  # pylint: disable=import-error, wrong-import-position, wrong-import-order
     Vizzu,
 )

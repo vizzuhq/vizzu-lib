@@ -10,7 +10,6 @@ rendered chart.
   </div>
  </body>
 </html>
-
 ```
 
 Create a new object instance of the `Vizzu` class, add it to a variable,
@@ -45,6 +44,7 @@ Vizzu.options({
 ```
 
 !!! note
+
     You should set this path before the `Vizzu` constructor is called because it
     loads the wasm module.
 
