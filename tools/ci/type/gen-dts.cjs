@@ -222,6 +222,8 @@ class DTSGenerator {
 			}
 			const returns = definition.return ? this._getType(name, definition.return) : 'void'
 			return `(${args}) => ${returns}`
+		} else if (definition.type === 'any') {
+			return 'unknown'
 		} else if (definition.$ref) {
 			this._validateDef(definition, '$ref', '$template')
 			const refType = this._getRef(definition.$ref)
