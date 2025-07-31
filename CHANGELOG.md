@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+## [0.17.0] - 2025-07-31
+
 ### Fixed
 
 - Split chart handled when same dimension on main and sub axis.

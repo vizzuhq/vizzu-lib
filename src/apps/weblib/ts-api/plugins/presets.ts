@@ -181,23 +181,29 @@ export default class Presets {
 		})
 	}
 
-	private _getMainAxis(presetConfig: Config.Chart): keyof Config.Channels {
-		const channel = presetConfig.channels?.x
-		if (
-			this._isChannel(channel) &&
-			channel.set?.find((series) => {
-				return series.name === 'stackedBy' || series.name === 'splittedBy'
-			})
-		) {
-			return 'y' as keyof Config.Channels
-		}
+	private _getMainAxis(presetName: PresetNames): keyof Config.Channels {
+		const presetsWithYMainAxis = new Set([
+			'bar',
+			'groupedBar',
+			'stackedBar',
+			'splittedBar',
+			'percentageBar',
+			'verticalStream',
+			'verticalViolin',
+			'verticalLine',
+			'pie',
+			'radialBar',
+			'radialStackedBar',
+			'donut',
+			'nestedDonut'
+		])
 
-		return 'x' as keyof Config.Channels
+		return presetsWithYMainAxis.has(presetName) ? 'y' : 'x'
 	}
 
 	private _buildPresetConfig(presetName: PresetNames, config: Config.Chart): Config.Chart {
 		const presetConfig = this._createPresetConfig(presetName)
-		const mainAxis = this._getMainAxis(presetConfig)
+		const mainAxis = this._getMainAxis(presetName)
 		this._fillChannels(presetConfig, config)
 		this._setupUserParams(presetConfig, config, mainAxis)
 		return presetConfig
