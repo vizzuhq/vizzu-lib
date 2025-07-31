@@ -182,7 +182,7 @@ export default class Presets {
 	}
 
 	private _getMainAxis(presetName: PresetNames): keyof Config.Channels {
-		const yAxisPresets = new Set([
+		const presetsWithYMainAxis = new Set([
 			'bar',
 			'groupedBar',
 			'stackedBar',
@@ -198,7 +198,7 @@ export default class Presets {
 			'nestedDonut'
 		])
 
-		return yAxisPresets.has(presetName) ? 'y' : 'x'
+		return presetsWithYMainAxis.has(presetName) ? 'y' : 'x'
 	}
 
 	private _buildPresetConfig(presetName: PresetNames, config: Config.Chart): Config.Chart {
