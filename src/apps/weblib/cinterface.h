@@ -14,6 +14,7 @@ namespace APIHandles
 {
 using Any = const void *;
 using Chart = const void *;
+using DataTable = const void *;
 using Snapshot = const void *;
 using Event = Util::EventDispatcher::Params *;
 using Animation = const void *;
@@ -39,7 +40,22 @@ struct alignas(double) Value
 	};
 };
 
-extern APIHandles::Chart vizzu_createChart();
+extern APIHandles::DataTable vizzu_createData();
+extern APIHandles::DataTable vizzu_createExternalData(
+    void (*stringDeleter)(const char *),
+    bool (*seriesMeta)(const char *),
+    const char *(*seriesInfo)(const char *, const char *),
+    void (*aggregator)(APIHandles::DataTable,
+        bool (*)(const Vizzu::Data::RowWrapper *),
+        bool (*)(const Vizzu::Data::RowWrapper *),
+        std::uint32_t,
+        const char *const *,
+        std::uint32_t,
+        const char *const *,
+        const char *const *,
+        const char **),
+    void (*deleter)());
+extern APIHandles::Chart vizzu_createChart(APIHandles::DataTable);
 extern APIHandles::Canvas vizzu_createCanvas();
 extern void vizzu_pointerDown(APIHandles::Chart chart,
     APIHandles::Canvas canvas,
@@ -79,7 +95,7 @@ extern const char *vizzu_version();
 
 extern void data_addDimension(APIHandles::Chart chart,
     const char *name,
-    const char **categories,
+    const char *const *categories,
     std::uint32_t categoriesCount,
     const std::uint32_t *categoryIndices,
     std::uint32_t categoryIndicesCount,
