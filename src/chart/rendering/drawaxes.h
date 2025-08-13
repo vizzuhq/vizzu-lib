@@ -42,7 +42,7 @@ public:
 	{
 		struct DimLabel
 		{
-			const Data::SliceIndex &index;
+			const std::vector<Data::SliceIndex> &index;
 			const ::Anim::Interpolated<bool> &presented;
 			bool start;
 			bool end;

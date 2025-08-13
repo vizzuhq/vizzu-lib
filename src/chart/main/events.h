@@ -78,7 +78,7 @@ public:
 		Geom::TransformedRect outerRect;
 		[[maybe_unused]] Geom::Rect innerRect;
 		[[maybe_unused]] double align{};
-		std::string_view text;
+		std::string text;
 	};
 
 	struct OnTextDrawEvent :
@@ -294,14 +294,13 @@ public:
 
 			template <class... Args>
 			explicit CategoryInfo(
-			    const std::string_view &categoryName,
-			    const std::string_view &categoryValue,
+			    const std::vector<Data::SliceIndex> &indices,
 			    Args &&...args) :
 			    Base(std::forward<Args>(args)...)
 			{
-				Conv::JSONObj{info}.template operator()<false>(
-				    categoryName,
-				    categoryValue);
+				Conv::JSONObj cats{info};
+				for (auto &&[name, value] : indices)
+					cats.operator()<false>(name, value);
 			}
 
 			void appendToJSON(Conv::JSONObj &&jsonObj) const override
@@ -384,13 +383,12 @@ public:
 		}
 
 		static auto dimLegendLabel(
-		    const std::string_view &categoryName,
+		    const std::vector<Data::SliceIndex> &indices,
 		    const std::string &categoryValue,
 		    const LegendProperties &properties)
 		{
 			return std::make_unique<CategoryInfo<Text<LegendChild>>>(
-			    categoryName,
-			    categoryValue,
+			    indices,
 			    categoryValue,
 			    "label",
 			    properties);
@@ -412,13 +410,12 @@ public:
 			    properties);
 		}
 
-		static auto legendMarker(const std::string_view &categoryName,
-		    const std::string_view &categoryValue,
+		static auto legendMarker(
+		    const std::vector<Data::SliceIndex> &indices,
 		    const LegendProperties &properties)
 		{
 			return std::make_unique<CategoryInfo<LegendChild>>(
-			    categoryName,
-			    categoryValue,
+			    indices,
 			    "marker",
 			    properties);
 		}
@@ -428,13 +425,13 @@ public:
 			return std::make_unique<LegendChild>("bar", properties);
 		}
 
-		static auto dimAxisLabel(const std::string_view &categoryName,
+		static auto dimAxisLabel(
+		    const std::vector<Data::SliceIndex> &indices,
 		    const std::string &categoryValue,
 		    Gen::AxisId axis)
 		{
 			return std::make_unique<CategoryInfo<Text<AxisChild>>>(
-			    categoryName,
-			    categoryValue,
+			    indices,
 			    categoryValue,
 			    "label",
 			    axis);

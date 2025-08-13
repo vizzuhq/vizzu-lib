@@ -146,7 +146,7 @@ struct MultiIndex
 
 struct MarkerId
 {
-	std::optional<SliceIndex> label;
+	std::vector<SliceIndex> label;
 	std::size_t seriesId{};
 	std::size_t itemId{};
 

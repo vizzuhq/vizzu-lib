@@ -36,7 +36,7 @@ struct Buckets
 
 		[[nodiscard]] auto operator*() const
 		{
-			return std::ranges::views::transform(data,
+			return std::views::transform(data,
 			    [this](Marker *marker)
 			        -> std::pair<Marker &, const Data::MarkerId &>
 			    {

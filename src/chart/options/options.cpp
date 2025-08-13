@@ -291,7 +291,7 @@ std::optional<LegendId> Options::getAutoLegend() const
 		series.erase(*meas);
 
 	for (auto axisId : {AxisId::x, AxisId::y})
-		if (auto &&id = labelSeries(axisId)) series.erase(*id);
+		for (auto &&id : labelSeries(axisId)) series.erase(id);
 
 	for (auto channelId : {LegendId::color, LegendId::lightness})
 		if (channels.at(channelId).dimensions().contains_any(
@@ -350,9 +350,11 @@ void Options::setRange(Channel &channel,
 
 bool Options::labelsShownFor(const Data::SeriesIndex &series) const
 {
-	return labelSeries(AxisId::x) == series
-	    || labelSeries(AxisId::y) == series
-	    || (legend.get() && labelSeries(*legend.get()) == series);
+	return std::ranges::contains(labelSeries(AxisId::x), series)
+	    || std::ranges::contains(labelSeries(AxisId::y), series)
+	    || (legend.get()
+	        && std::ranges::contains(labelSeries(*legend.get()),
+	            series));
 }
 
 void Options::showTooltip(std::optional<MarkerIndex> marker)

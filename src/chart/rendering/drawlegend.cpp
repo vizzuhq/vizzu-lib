@@ -189,13 +189,15 @@ void DrawLegend::drawDimension(Info &info) const
 		    getMarkerRect(info, itemRect),
 		    needGradient);
 
+		auto &&value = Gen::DimensionAxis::mergedLabels(sindex);
+
 		label.draw(info.canvas,
 		    getLabelRect(info, itemRect),
-		    sindex.value,
+		    value,
 		    style.label,
 		    *events.label,
-		    Events::Targets::dimLegendLabel(sindex.column,
-		        sindex.value,
+		    Events::Targets::dimLegendLabel(sindex,
+		        value,
 		        info.properties),
 		    {.colorTransform = Gfx::ColorTransform::Opacity(alpha),
 		        .gradient =
@@ -235,7 +237,7 @@ Geom::TransformedRect DrawLegend::getLabelRect(const Info &info,
 }
 
 void DrawLegend::drawMarker(Info &info,
-    const Data::SliceIndex &sindex,
+    const std::vector<Data::SliceIndex> &sindex,
     const Gfx::Color &color,
     const Geom::Rect &rect,
     bool needGradient) const
@@ -251,9 +253,7 @@ void DrawLegend::drawMarker(Info &info,
 	info.canvas.setLineWidth(0);
 
 	if (auto &&markerElement{
-	        Events::Targets::legendMarker(sindex.column,
-	            sindex.value,
-	            info.properties)};
+	        Events::Targets::legendMarker(sindex, info.properties)};
 	    events.marker->invoke(
 	        Events::OnRectDrawEvent(*markerElement, {rect, false}))) {
 		auto radius = rootStyle.legend.marker.type->factor(

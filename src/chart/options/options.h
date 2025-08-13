@@ -1,11 +1,14 @@
 #ifndef PLOT_OPTIONS_H
 #define PLOT_OPTIONS_H
 
+#include <algorithm>
 #include <functional>
 #include <map>
 #include <memory>
 #include <optional>
+#include <ranges>
 #include <string>
+#include <vector>
 
 #include "base/anim/interpolated.h"
 #include "base/geom/orientation.h"
@@ -89,37 +92,77 @@ public:
 		return channels.at(subAxisType());
 	}
 
-	[[nodiscard]] std::optional<std::size_t> dimLabelIndex(
+	[[nodiscard]] std::vector<std::size_t> dimLabelIndex(
 	    ChannelId channel) const
 	{
 		auto &&ch = channels.at(channel);
 		auto hasMeasure = ch.hasMeasure();
-		auto defaultLabelLevel =
+
+		auto defaultLabelDimension =
 		    hasMeasure && channel == mainAxisType()
 		    && ch.hasDimension() && geometry == ShapeType::rectangle;
-		auto ll = ch.labelLevel.getValue(defaultLabelLevel);
-		if (hasMeasure && ll == 0) return {};
-		ll -= hasMeasure;
-		if (ll >= ch.dimensions().size()) return {};
-		return ll;
+		auto lll = ch.labelLevel.getValueOrAuto();
+		if (!lll && defaultLabelDimension) {
+			lll.emplace(std::size_t{1});
+		}
+		else if (!lll && !hasMeasure && ch.dimensions().size() > 1
+		         && channel == legend.get().getValueOrAuto()) {
+			lll.emplace(
+			    Channel::LabelLevelList{std::vector{std::from_range,
+			        std::views::iota(std::size_t{},
+			            ch.dimensions().size())}});
+		}
+		else if (!lll) {
+			lll.emplace(std::size_t{0});
+		}
+
+		if (hasMeasure && std::ranges::contains(lll->levels, 0))
+			return {};
+		if (hasMeasure)
+			std::ranges::transform(lll->levels,
+			    lll->levels.begin(),
+			    [](auto &&v)
+			    {
+				    return v - 1;
+			    });
+		std::erase_if(lll->levels,
+		    [max = ch.dimensions().size()](auto &v)
+		    {
+			    return v >= max;
+		    });
+		return lll->levels;
 	}
 
 	[[nodiscard]] bool isMeasure(ChannelId channel) const
 	{
 		return channels.at(channel).hasMeasure()
-		    && !dimLabelIndex(channel);
+		    && dimLabelIndex(channel).empty();
 	}
 
 	template <ChannelIdLike IdType>
-	[[nodiscard]] Channel::OptionalIndex labelSeries(
+	[[nodiscard]] std::vector<Data::SeriesIndex> labelSeries(
 	    IdType channel) const
 	{
 		auto &&ch = channels.at(channel);
-		if (auto dimIndex = dimLabelIndex(+channel))
-			return *std::next(ch.set.dimensionIds.begin(),
-			    static_cast<std::intptr_t>(*dimIndex));
-		return ch.labelLevel.getValue(0) == 0 ? ch.measure()
-		                                      : std::nullopt;
+		if (auto dimIndex = dimLabelIndex(+channel);
+		    !dimIndex.empty()) {
+			std::vector<Data::SeriesIndex> result(dimIndex.size());
+			std::transform(dimIndex.begin(),
+			    dimIndex.end(),
+			    result.begin(),
+			    [&ch](std::size_t index)
+			    {
+				    return *std::next(ch.set.dimensionIds.begin(),
+				        static_cast<std::intptr_t>(index));
+			    });
+			return result;
+		}
+		if (auto &&measure = ch.measure();
+		    measure
+		    && ch.labelLevel.getValue(std::size_t{}).levels
+		           == std::vector{std::size_t{}})
+			return {*measure};
+		return {};
 	}
 
 	Channel &mainAxis() { return channels.at(mainAxisType()); }

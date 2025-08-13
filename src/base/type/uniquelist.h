@@ -2,6 +2,8 @@
 #define TYPE_UNIQUELIST
 
 #include <algorithm>
+#include <cstddef>
+#include <functional>
 #include <map>
 #include <ranges>
 #include <utility>
@@ -217,7 +219,7 @@ public:
 
 	[[nodiscard]] auto as_set() const noexcept
 	{
-		return std::ranges::views::keys(items);
+		return std::views::keys(items);
 	}
 
 	template <class It, class Sentinel = It>

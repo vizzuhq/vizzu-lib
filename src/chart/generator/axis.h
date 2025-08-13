@@ -2,6 +2,7 @@
 #define AXIS_H
 
 #include <map>
+#include <ranges>
 
 #include "base/anim/interpolated.h"
 #include "base/geom/point.h"
@@ -21,7 +22,7 @@ namespace Vizzu::Gen
 struct ChannelStats
 {
 	using TrackType = std::variant<Math::Range<>,
-	    std::map<std::uint32_t, Data::SliceIndex>>;
+	    std::map<std::uint32_t, std::vector<Data::SliceIndex>>>;
 
 	Refl::EnumArray<ChannelId, TrackType> tracked;
 	Math::Range<> lightness;
@@ -35,9 +36,9 @@ struct ChannelStats
 	void track(ChannelId at, const Data::MarkerId &id)
 	{
 		auto &vec = std::get<1>(tracked[at]);
-		if (id.label)
+		if (!id.label.empty())
 			vec.try_emplace(static_cast<std::uint32_t>(id.itemId),
-			    *id.label);
+			    id.label);
 	}
 
 	void track(ChannelId at, const double &value)
@@ -128,13 +129,13 @@ struct DimensionAxis
 		friend Item
 		interpolate(const Item &op0, const Item &op1, double factor);
 	};
-	using Values = std::multimap<Data::SliceIndex, Item>;
+	using Values = std::multimap<std::vector<Data::SliceIndex>, Item>;
 
 	double factor{};
 	bool hasMarker{};
 
 	DimensionAxis() = default;
-	bool add(const Data::SliceIndex &index,
+	bool add(const std::vector<Data::SliceIndex> &index,
 	    const Math::Range<> &range,
 	    std::uint32_t position,
 	    const std::optional<ColorBase> &color,
@@ -145,19 +146,19 @@ struct DimensionAxis
 
 	[[nodiscard]] auto begin()
 	{
-		return std::ranges::views::values(values).begin();
+		return std::views::values(values).begin();
 	};
 	[[nodiscard]] auto end()
 	{
-		return std::ranges::views::values(values).end();
+		return std::views::values(values).end();
 	}
 	[[nodiscard]] auto begin() const
 	{
-		return std::ranges::views::values(values).begin();
+		return std::views::values(values).begin();
 	};
 	[[nodiscard]] auto end() const
 	{
-		return std::ranges::views::values(values).end();
+		return std::views::values(values).end();
 	}
 	[[nodiscard]] bool empty() const { return values.empty(); }
 	bool setLabels(double step);
@@ -179,6 +180,23 @@ struct DimensionAxis
 		    ItemSorterByRangeStart>{begin(), end()};
 	}
 
+	static std::size_t commonDimensionParts(const Values &lhs,
+	    const Values &rhs);
+
+	template <std::string Data::SliceIndex::*which =
+	              &Data::SliceIndex::value>
+	[[nodiscard]] static std::string mergedLabels(
+	    const std::vector<Data::SliceIndex> &slices)
+	{
+		return {std::from_range,
+		    std::views::transform(slices,
+		        [](const Data::SliceIndex &slice)
+		        {
+			        return ", " + slice.*which;
+		        })
+		        | std::views::join | std::views::drop(2)};
+	}
+
 private:
 	Values values;
 };
@@ -189,10 +207,13 @@ struct Axis
 	MeasureAxis measure;
 	DimensionAxis dimension;
 
-	[[nodiscard]] const std::string &seriesName() const
+	[[nodiscard]] std::string seriesName() const
 	{
-		if (!dimension.empty())
-			return dimension.getValues().begin()->first.column;
+		if (!dimension.empty()) {
+			return DimensionAxis::mergedLabels<
+			    &Data::SliceIndex::column>(
+			    dimension.getValues().begin()->first);
+		}
 		return measure.series;
 	}
 
@@ -220,8 +241,7 @@ struct SplitAxis : Axis
 		}
 	};
 
-	using Parts =
-	    std::multimap<std::optional<Data::SliceIndex>, Part>;
+	using Parts = std::multimap<std::vector<Data::SliceIndex>, Part>;
 	Parts parts;
 
 	[[nodiscard]] bool operator==(

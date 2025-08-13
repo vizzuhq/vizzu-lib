@@ -170,10 +170,10 @@ template <class Container>
 Rect Rect::Boundary(const Container &points)
 {
 	auto &&[minx, maxx] = std::ranges::minmax(
-	    std::ranges::views::transform(points, std::mem_fn(&Point::x)),
+	    std::views::transform(points, std::mem_fn(&Point::x)),
 	    Math::Floating::less);
 	auto &&[miny, maxy] = std::ranges::minmax(
-	    std::ranges::views::transform(points, std::mem_fn(&Point::y)),
+	    std::views::transform(points, std::mem_fn(&Point::y)),
 	    Math::Floating::less);
 	return Rect{{minx, miny}, {maxx - minx, maxy - miny}};
 }

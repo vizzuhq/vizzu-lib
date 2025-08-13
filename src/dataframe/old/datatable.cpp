@@ -198,20 +198,24 @@ const std::string &DataCube::getName(
 }
 
 MarkerId DataCube::getId(const SeriesList &sl,
-    const std::optional<std::size_t> &ll,
+    const std::vector<std::size_t> &ll,
     const MultiIndex &mi) const
 {
 	MarkerId res{};
+	res.label.resize(ll.size());
 	std::vector<std::pair<std::size_t, std::size_t>> v(sl.size());
 
 	for (auto &&[val, comm] : dim_reindex.iterate_common(sl)) {
 		auto &&[name, cats, size, ix] = val;
 		auto &&oldIx = mi.old[ix];
 		if (comm) {
-			if (v[*comm] = {oldIx, size}; *comm == ll)
-				res.label.emplace(name,
+			v[*comm] = {oldIx, size};
+			if (auto &&it = std::ranges::find(ll, *comm);
+			    it != ll.end()) {
+				res.label[it - ll.begin()] = SliceIndex{name,
 				    oldIx < cats.size() ? cats[oldIx]
-				                        : std::string{});
+				                        : std::string{}};
+			}
 		}
 		else
 			res.seriesId = res.seriesId * size + oldIx;

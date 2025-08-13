@@ -31,13 +31,13 @@ private:
 	{
 		std::size_t index{};
 		double size{};
-		const std::string *label{};
+		std::optional<std::string> label{};
 	};
 
 	struct BucketSeparationInfo
 	{
 		std::size_t itemId{};
-		std::optional<Data::SliceIndex> index{};
+		std::vector<Data::SliceIndex> index{};
 		Math::Range<> containsValues{0.0, 0.0};
 		Math::Range<> atRange{0.0, 0.0};
 

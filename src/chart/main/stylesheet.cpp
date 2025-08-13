@@ -243,8 +243,8 @@ void Sheet::setAfterStyles(Gen::Plot &plot, const Geom::Size &size)
 
 			if (!item.label.get()) continue;
 
-			auto textBoundary =
-			    Gfx::ICanvas::textBoundary(font, label.value);
+			auto textBoundary = Gfx::ICanvas::textBoundary(font,
+			    Gen::DimensionAxis::mergedLabels(label));
 			auto textXHalfMargin =
 			    xLabel.toInvMargin(textBoundary, font.size)
 			        .getSpace()

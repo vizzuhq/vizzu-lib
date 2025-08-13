@@ -138,7 +138,7 @@ const DrawAxes &&DrawAxes::init() &&
 		const auto &axis = plot->axises.at(axisIndex);
 
 		const static Gen::SplitAxis::Parts oneSized{
-		    {std::nullopt, Gen::SplitAxis::Part{}}};
+		    {{}, Gen::SplitAxis::Part{}}};
 		splits[axisIndex] =
 		    axis.parts.empty() ? oneSized : axis.parts;
 
@@ -467,16 +467,15 @@ void DrawAxes::drawTitle(Gen::AxisId axisIndex,
 		    -std::numbers::pi / 2.0
 		    * (fades == ::Anim::second
 		            ? !isHorizontal(
-		                  titleStyle.orientation->get_or_first(index)
-		                      .value)
+		                titleStyle.orientation->get_or_first(index)
+		                    .value)
 		            : titleStyle.orientation->factor(
-		                  Styles::AxisTitle::Orientation::vertical));
+		                Styles::AxisTitle::Orientation::vertical));
 
 		auto orientedSize =
 		    fades == ::Anim::second
 		        ? calcOrientation(
-		              titleStyle.orientation->get_or_first(index)
-		                  .value)
+		            titleStyle.orientation->get_or_first(index).value)
 		        : titleStyle.orientation->combine(calcOrientation);
 
 		auto center = offset * (orientedSize / 2.0);
@@ -579,7 +578,7 @@ void DrawAxes::drawDimensionLabel(Gen::AxisId axisIndex,
 		            ? labelStyle.side->get_or_first(index).value
 		                  == Styles::AxisLabel::Side::negative
 		            : labelStyle.side->factor(
-		                  Styles::AxisLabel::Side::negative);
+		                Styles::AxisLabel::Side::negative);
 
 		    auto draw = [&,
 		                    posDir = coordSys
@@ -591,8 +590,10 @@ void DrawAxes::drawDimensionLabel(Gen::AxisId axisIndex,
 		                    double plusWeight = 1.0)
 		    {
 			    if (!str.value) return;
+			    auto dimValues =
+			        Gen::DimensionAxis::mergedLabels(dimInfo.index);
 			    drawLabel.draw(canvas,
-			        dimInfo.index.value,
+			        dimValues,
 			        posDir,
 			        labelStyle,
 			        0,
@@ -601,9 +602,8 @@ void DrawAxes::drawDimensionLabel(Gen::AxisId axisIndex,
 			                str.weight,
 			                plusWeight)),
 			        *rootEvents.draw.plot.axis.label,
-			        Events::Targets::dimAxisLabel(
-			            dimInfo.index.column,
-			            dimInfo.index.value,
+			        Events::Targets::dimAxisLabel(dimInfo.index,
+			            dimValues,
 			            axisIndex));
 		    };
 

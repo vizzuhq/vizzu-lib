@@ -14,6 +14,7 @@
 #include <ranges>
 #include <set>
 #include <stdexcept>
+#include <string>
 #include <tuple>
 #include <utility>
 #include <vector>
@@ -36,6 +37,7 @@
 #include "dataframe/old/datatable.h"
 #include "dataframe/old/types.h"
 
+#include "axis.h"
 #include "buckets.h"
 #include "colorbase.h"
 #include "plot.h"
@@ -157,10 +159,12 @@ std::vector<PlotBuilder::BucketSortInfo> PlotBuilder::sortedBuckets(
 				it = sorted.emplace(it,
 				    idx.itemId,
 				    0.0,
-				    (marker.*buckets.marker_id_get).label
-				        ? &(marker.*buckets.marker_id_get)
-				               .label->value
-				        : nullptr);
+				    !(marker.*buckets.marker_id_get).label.empty()
+				        ? std::make_optional(
+				            DimensionAxis::mergedLabels(
+				                (marker.*buckets.marker_id_get)
+				                    .label))
+				        : std::nullopt);
 
 			it->size += marker.size.getCoord(
 			    !plot->getOptions()->getOrientation());
@@ -181,8 +185,9 @@ std::vector<PlotBuilder::BucketSortInfo> PlotBuilder::sortedBuckets(
 		std::ranges::stable_sort(sorted,
 		    [](const BucketSortInfo &lhs, const BucketSortInfo &rhs)
 		    {
-			    if (rhs.label == nullptr || lhs.label == nullptr)
-				    return lhs.label != nullptr;
+			    if (rhs.label == std::nullopt
+			        || lhs.label == std::nullopt)
+				    return lhs.label != std::nullopt;
 			    return Text::NaturalCmp{}(*lhs.label, *rhs.label);
 		    });
 		break;
@@ -271,7 +276,7 @@ bool PlotBuilder::linkMarkers(const Buckets &buckets,
 		for (std::size_t ix{}, max = sorted.size(); ix < max; ++ix) {
 			auto &o = dimOffset[ix];
 			for (const auto &bucket : buckets) {
-				auto &&ids = std::ranges::views::values(bucket);
+				auto &&ids = std::views::values(bucket);
 				auto sIx = sorted[ix].index;
 				auto it = std::ranges::lower_bound(ids,
 				    sIx,
@@ -308,7 +313,7 @@ bool PlotBuilder::linkMarkers(const Buckets &buckets,
 		std::array<double, 2> prevPositions{};
 		for (auto i = 0U; i < sorted.size(); ++i) {
 			auto idAct = sorted[i].index;
-			auto &&ids = std::ranges::views::values(bucket);
+			auto &&ids = std::views::values(bucket);
 			auto it = std::ranges::lower_bound(ids,
 			    idAct,
 			    {},
@@ -429,10 +434,10 @@ void PlotBuilder::calcLegendAndLabel(const Data::DataTable &dataTable)
 			}
 		}
 		else if (!scale.isEmpty()) {
-			auto merge =
-			    type == LegendId::size
-			    || (type == LegendId::lightness
-			        && plot->getOptions()->dimLabelIndex(+type) == 0);
+			auto merge = type == LegendId::size
+			          || (type == LegendId::lightness
+			              && plot->getOptions()->dimLabelIndex(+type)
+			                     == std::vector{std::size_t{}});
 			for (std::uint32_t count{}; const auto &[i, label] :
 			     std::get<1>(stats.at(type))) {
 				auto rangeId = static_cast<double>(i);
@@ -455,8 +460,16 @@ void PlotBuilder::calcLegendAndLabel(const Data::DataTable &dataTable)
 			}
 
 			if (auto &&series = plot->getOptions()->labelSeries(type);
-			    series && isAutoTitle && calcLegend.dimension.empty())
-				calcLegend.title = series.value().getColIndex();
+			    !series.empty() && isAutoTitle
+			    && calcLegend.dimension.empty())
+				calcLegend.title = std::string{std::from_range,
+				    series
+				        | std::views::transform(
+				            [](const Data::SeriesIndex &series)
+				            {
+					            return ", " + series.getColIndex();
+				            })
+				        | std::views::join | std::views::drop(2)};
 		}
 	}
 
@@ -498,7 +511,7 @@ void PlotBuilder::calcLegendAndLabel(const Data::DataTable &dataTable)
 		        markerLabelsUnitPercent
 		            ? "%"
 		            : dataTable.get_series_info(meas->getColIndex(),
-		                  "unit")}},
+		                "unit")}},
 		    ::Anim::String{meas->getColIndex()}};
 	}
 }
@@ -532,11 +545,11 @@ void PlotBuilder::calcAxis(const Data::DataTable &dataTable,
 			    axisProps.step.getValue()};
 	}
 	else {
-		for (auto merge =
-		         axisProps.sort == Sort::byLabel
-		         || (plot->getOptions()->dimLabelIndex(+type) == 0
-		             && (axisProps.sort == Sort::none
-		                 || scale.dimensions().size() == 1));
+		for (auto merge = axisProps.sort == Sort::byLabel
+		               || (plot->getOptions()->dimLabelIndex(+type)
+		                       == std::vector{std::size_t{}}
+		                   && (axisProps.sort == Sort::none
+		                       || scale.dimensions().size() == 1));
 		     const auto &marker : plot->markers) {
 			if (!marker.enabled) continue;
 
@@ -545,8 +558,8 @@ void PlotBuilder::calcAxis(const Data::DataTable &dataTable,
 			        ? marker.mainId
 			        : marker.subId;
 
-			if (const auto &slice = id.label)
-				axis.dimension.add(*slice,
+			if (const auto &slice = id.label; !slice.empty())
+				axis.dimension.add(slice,
 				    marker.getSizeBy(type),
 				    {},
 				    {},
@@ -557,8 +570,15 @@ void PlotBuilder::calcAxis(const Data::DataTable &dataTable,
 		}
 		if (auto &&series = plot->getOptions()->labelSeries(type);
 		    !axis.dimension.setLabels(axisProps.step.getValue(1.0))
-		    && series && isAutoTitle)
-			axis.title = series.value().getColIndex();
+		    && !series.empty() && isAutoTitle)
+			axis.title = std::string{std::from_range,
+			    series
+			        | std::views::transform(
+			            [](const Data::SeriesIndex &series)
+			            {
+				            return ", " + series.getColIndex();
+			            })
+			        | std::views::join | std::views::drop(2)};
 		for (std::uint32_t pos{};
 		     DimensionAxis::Item & i : axis.dimension.sortedItems())
 			i.endPos = i.startPos =
@@ -641,7 +661,7 @@ PlotBuilder::addSeparation(const Buckets &buckets, AxisId axisIndex)
 			}
 
 			auto &resItem = *it;
-			if (!resItem.index && idx.label)
+			if (resItem.index.empty() && !idx.label.empty())
 				resItem.index = idx.label;
 
 			resItem.containsValues.include(

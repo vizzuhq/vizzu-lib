@@ -74,7 +74,7 @@ public:
 	    const SeriesIndex &seriesId) const;
 
 	[[nodiscard]] MarkerId getId(const SeriesList &,
-	    const std::optional<std::size_t> &,
+	    const std::vector<std::size_t> &,
 	    const MultiIndex &) const;
 
 	[[nodiscard]] std::string joinDimensionValues(
