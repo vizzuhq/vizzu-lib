@@ -8,107 +8,80 @@ const testSteps = [
 	(chart) =>
 		chart.animate([
 			{
-				"target": {
-					"data": {
-						"filter": (input) => input['Genres'] === 'Pop'
+				target: {
+					data: {
+						filter: (input) => input.Genres === 'Pop'
 					},
-					"config": {
-						"channels": {
-							"x": {
-								"set": [
-									{ "name": "Genres" }
-								]
+					config: {
+						channels: {
+							x: {
+								set: [{ name: 'Genres' }]
 							},
-							"y": {
-								"set": [
-									{ "name": "Popularity" },
-									{ "name": "Kinds" }
-								]
+							y: {
+								set: [{ name: 'Popularity' }, { name: 'Kinds' }]
 							},
-							"color": {
-								"set": [
-									{ "name": "Kinds" }
-								]
+							color: {
+								set: [{ name: 'Kinds' }]
 							},
-							"label": {
-								"set": [
-									{ "name": "Popularity" }
-								]
+							label: {
+								set: [{ name: 'Popularity' }]
 							}
 						}
 					}
 				}
 			},
 			{
-				"target": {
-					"data": {
-						"filter": (input) => input['Genres'] === 'Pop'
+				target: {
+					data: {
+						filter: (input) => input.Genres === 'Pop'
 					},
-					"config": {
-						"channels": {
-							"x": {
-								"set": [
-									{ "name": "Genres" }
-								]
+					config: {
+						channels: {
+							x: {
+								set: [{ name: 'Genres' }]
 							},
-							"y": {
-								"set": [
-									{ "name": "Popularity" }
-								]
+							y: {
+								set: [{ name: 'Popularity' }]
 							},
-							"color": {
-								"set": [
-									{ "name": "Kinds" }
-								]
+							color: {
+								set: [{ name: 'Kinds' }]
 							},
-							"label": {
-								"set": [
-									{ "name": "Popularity" }
-								]
+							label: {
+								set: [{ name: 'Popularity' }]
 							}
 						},
-						"geometry": "circle"
+						geometry: 'circle'
 					}
 				}
 			},
 			{
-				"target": {
-					"data": {
-						"filter": null
+				target: {
+					data: {
+						filter: null
 					},
-					"config": {
-						"channels": {
-							"x": {
-								"set": []
+					config: {
+						channels: {
+							x: {
+								set: []
 							},
-							"y": {
-								"set": [
-									{ "name": "Popularity" },
-									{ "name": "Kinds" },
-									{ "name": "Genres" }
-								]
+							y: {
+								set: [{ name: 'Popularity' }, { name: 'Kinds' }, { name: 'Genres' }]
 							},
-							"color": {
-								"set": [
-									{ "name": "Kinds" }
-								]
+							color: {
+								set: [{ name: 'Kinds' }]
 							},
-							"lightness": {
-								"set": [
-									{ "name": "Genres" }
-								]
+							lightness: {
+								set: [{ name: 'Genres' }]
 							},
-							"label": {
-								"set": [
-									{ "name": "Genres" },
-									{ "name": "Popularity" }
-								]
+							label: {
+								set: [{ name: 'Genres' }, { name: 'Popularity' }]
 							}
 						},
-						"geometry": "rectangle"
+						geometry: 'rectangle'
 					}
 				}
-			}]),
+			}
+		])
 ]
 
 export default testSteps
