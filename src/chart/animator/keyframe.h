@@ -28,13 +28,14 @@ private:
 	Gen::PlotPtr source;
 	Gen::PlotPtr target;
 	Gen::PlotPtr actual;
+	Gen::PlotPtr sourceCopy;
 	Gen::PlotPtr targetCopy;
 
 	void init(const Gen::PlotPtr &plot,
 	    const Data::DataTable &dataTable);
 	void prepareActual();
 	void prepareActualMarkersInfo();
-	void copyTarget();
+	void copySourceTarget();
 };
 
 }
