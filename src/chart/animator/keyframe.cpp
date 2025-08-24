@@ -61,11 +61,11 @@ void Keyframe::prepareActual()
 {
 	if (Gen::Plot::dimensionMatch(*source, *target)) {
 		if (Gen::Plot::hasMarkerChange(*source, *target))
-			copyTarget();
+			copySourceTarget();
 		Gen::Plot::mergeMarkersAndCellInfo(*source, *target);
 	}
 	else {
-		copyTarget();
+		copySourceTarget();
 		target->prependMarkers(*source);
 		source->appendMarkers(*targetCopy);
 	}
@@ -80,7 +80,7 @@ void Keyframe::prepareActualMarkersInfo()
 {
 	const auto &origTMI = target->getMarkersInfo();
 	auto &smi = source->getMarkersInfo();
-	if (!smi.empty()) copyTarget();
+	if (!smi.empty()) copySourceTarget();
 
 	for (auto &tmi = target->getMarkersInfo(); auto &&item : smi)
 		tmi.insert(std::pair{item.first, Gen::Plot::MarkerInfo{}});
@@ -89,13 +89,19 @@ void Keyframe::prepareActualMarkersInfo()
 		smi.insert(std::pair{item.first, Gen::Plot::MarkerInfo{}});
 }
 
-void Keyframe::copyTarget()
+void Keyframe::copySourceTarget()
 {
 	if (!targetCopy) {
 		targetCopy = target;
 		target = std::make_shared<Gen::Plot>(*targetCopy);
 		target->getStyle().setup();
 		target->detachOptions();
+	}
+	if (!sourceCopy) {
+		sourceCopy = source;
+		source = std::make_shared<Gen::Plot>(*sourceCopy);
+		source->getStyle().setup();
+		source->detachOptions();
 	}
 }
 

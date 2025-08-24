@@ -2,6 +2,12 @@
 
 ## [Unreleased]
 
+## [0.17.1] - 2025-08-24
+
+### Fixed
+
+- Fix Keyframe marker modifications on source chart.
+
 ## [0.17.0] - 2025-07-31
 
 ### Fixed
