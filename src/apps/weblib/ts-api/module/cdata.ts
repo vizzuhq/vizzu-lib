@@ -1,34 +1,8 @@
-import { CPointer, CRecordPtr } from '../cvizzu.types'
-import { CObject, CEnv } from './cenv.js'
+import { CManagedObject } from './cenv.js'
 import { Mirrored } from '../tsutils'
 import * as Data from '../types/data.js'
 
-export class CRecord extends CObject {
-	constructor(env: CEnv, recordPtr: CRecordPtr) {
-		super(() => recordPtr, env)
-	}
-
-	getValue(columnName: string): string | number {
-		const col = this._toCString(columnName)
-		let ptr
-		let value
-
-		try {
-			ptr = this._call(this._wasm._record_getValue)(col)
-
-			if (this._wasm.getValue(ptr, 'i1')) {
-				value = this._fromCString(this._wasm.getValue(ptr + 8, 'i8*'))
-			} else {
-				value = this._wasm.getValue(ptr + 8, 'double')
-			}
-		} finally {
-			this._wasm._free(col)
-		}
-		return value
-	}
-}
-
-export class CData extends CObject {
+export class CData extends CManagedObject {
 	getMetaInfo(): Mirrored<Data.Metainfo> {
 		const cInfo = this._call(this._wasm._data_metaInfo)()
 		const info = this._fromCString(cInfo)
@@ -126,20 +100,5 @@ export class CData extends CObject {
 			}
 			this._wasm._free(ptrArr)
 		}
-	}
-
-	setFilter(callback: ((record: CRecord) => boolean) | null): void {
-		const callbackPtrs: [CPointer, CPointer] = [0, 0]
-		if (callback !== null) {
-			const f = (recordPtr: CRecordPtr): boolean => callback(new CRecord(this, recordPtr))
-			callbackPtrs[0] = this._wasm.addFunction(f, 'ii')
-			const deleter = (ptr: CPointer): void => {
-				if (ptr !== callbackPtrs[0]) console.warn('Wrong pointer passed to destructor')
-				this._wasm.removeFunction(callbackPtrs[0])
-				this._wasm.removeFunction(callbackPtrs[1])
-			}
-			callbackPtrs[1] = this._wasm.addFunction(deleter, 'vi')
-		}
-		this._call(this._wasm._chart_setFilter)(...callbackPtrs)
 	}
 }

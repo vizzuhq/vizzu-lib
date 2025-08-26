@@ -68,9 +68,11 @@ export class CObject extends CEnv {
 }
 
 export class CManagedObject extends CObject {
-	constructor(getId: CPointerClosure, cenv: CEnv) {
+	constructor(getId: CPointerClosure, cenv: CEnv, manage: boolean = true) {
 		super(getId, cenv)
-		this._objectRegistry.register(this.getId)
+		if (manage) {
+			this._objectRegistry.register(this.getId)
+		}
 	}
 
 	free(): void {

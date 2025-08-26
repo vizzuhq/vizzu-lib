@@ -14,7 +14,7 @@ class ChartWidget
 public:
 	Util::Event<const std::string> openUrl;
 
-	explicit ChartWidget();
+	explicit ChartWidget(const std::shared_ptr<Data::DataTable> &);
 
 	void onPointerDown(const GUI::PointerEvent &event) const;
 	void onPointerMove(const GUI::PointerEvent &event) const;
