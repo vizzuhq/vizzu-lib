@@ -462,14 +462,14 @@ void PlotBuilder::calcLegendAndLabel(const Data::DataTable &dataTable)
 			if (auto &&series = plot->getOptions()->labelSeries(type);
 			    !series.empty() && isAutoTitle
 			    && calcLegend.dimension.empty())
-				calcLegend.title = std::string{std::from_range,
+				calcLegend.title = std::ranges::to<std::string>(
 				    series
-				        | std::views::transform(
-				            [](const Data::SeriesIndex &series)
-				            {
-					            return ", " + series.getColIndex();
-				            })
-				        | std::views::join | std::views::drop(2)};
+				    | std::views::transform(
+				        [](const Data::SeriesIndex &series)
+				        {
+					        return ", " + series.getColIndex();
+				        })
+				    | std::views::join | std::views::drop(2));
 		}
 	}
 
@@ -571,14 +571,14 @@ void PlotBuilder::calcAxis(const Data::DataTable &dataTable,
 		if (auto &&series = plot->getOptions()->labelSeries(type);
 		    !axis.dimension.setLabels(axisProps.step.getValue(1.0))
 		    && !series.empty() && isAutoTitle)
-			axis.title = std::string{std::from_range,
+			axis.title = std::ranges::to<std::string>(
 			    series
-			        | std::views::transform(
-			            [](const Data::SeriesIndex &series)
-			            {
-				            return ", " + series.getColIndex();
-			            })
-			        | std::views::join | std::views::drop(2)};
+			    | std::views::transform(
+			        [](const Data::SeriesIndex &series)
+			        {
+				        return ", " + series.getColIndex();
+			        })
+			    | std::views::join | std::views::drop(2));
 		for (std::uint32_t pos{};
 		     DimensionAxis::Item & i : axis.dimension.sortedItems())
 			i.endPos = i.startPos =

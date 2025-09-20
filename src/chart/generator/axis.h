@@ -188,13 +188,13 @@ struct DimensionAxis
 	[[nodiscard]] static std::string mergedLabels(
 	    const std::vector<Data::SliceIndex> &slices)
 	{
-		return {std::from_range,
+		return std::ranges::to<std::string>(
 		    std::views::transform(slices,
 		        [](const Data::SliceIndex &slice)
 		        {
 			        return ", " + slice.*which;
 		        })
-		        | std::views::join | std::views::drop(2)};
+		    | std::views::join | std::views::drop(2));
 	}
 
 private:

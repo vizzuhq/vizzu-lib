@@ -107,10 +107,10 @@ public:
 		}
 		else if (!lll && !hasMeasure && ch.dimensions().size() > 1
 		         && channel == legend.get().getValueOrAuto()) {
-			lll.emplace(
-			    Channel::LabelLevelList{std::vector{std::from_range,
+			lll.emplace(Channel::LabelLevelList{
+			    std::ranges::to<std::vector<std::size_t>>(
 			        std::views::iota(std::size_t{},
-			            ch.dimensions().size())}});
+			            ch.dimensions().size()))});
 		}
 		else if (!lll) {
 			lll.emplace(std::size_t{0});
@@ -159,7 +159,9 @@ public:
 		}
 		if (auto &&measure = ch.measure();
 		    measure
-		    && ch.labelLevel.getValue(std::size_t{}).levels
+		    && ch.labelLevel
+		               .getValue(Channel::LabelLevelList{size_t{}})
+		               .levels
 		           == std::vector{std::size_t{}})
 			return {*measure};
 		return {};

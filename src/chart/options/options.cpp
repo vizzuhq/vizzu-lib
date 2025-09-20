@@ -1,6 +1,7 @@
 
 #include "options.h"
 
+#include <algorithm>
 #include <atomic>
 #include <cstddef>
 #include <iterator>

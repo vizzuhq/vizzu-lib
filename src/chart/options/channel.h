@@ -195,8 +195,18 @@ struct Channel
 		[[nodiscard]] auto operator<=>(
 		    const LabelLevelList &) const = default;
 
-		LabelLevelList(std::size_t one) : levels{one} {}
-		template <class T> LabelLevelList(T &&) = delete;
+		explicit LabelLevelList(std::size_t one) : levels{one} {}
+		LabelLevelList(const LabelLevelList &) = default;
+		LabelLevelList(LabelLevelList &&) noexcept = default;
+		LabelLevelList &operator=(const LabelLevelList &) = default;
+		LabelLevelList &operator=(
+		    LabelLevelList &&) noexcept = default;
+
+		template <class T>
+		    requires(!std::is_same_v<std::remove_cvref_t<T>,
+		                LabelLevelList>)
+		// NOLINTNEXTLINE(cppcoreguidelines-missing-std-forward)
+		explicit LabelLevelList(T &&) = delete;
 
 		explicit LabelLevelList(std::vector<std::size_t> &&levels) :
 		    levels(std::move(levels))
@@ -204,8 +214,9 @@ struct Channel
 
 		static LabelLevelList fromString(const std::string &str)
 		{
-			return LabelLevelList{{std::from_range,
-			    std::string_view{str} | std::views::split(',')
+			return LabelLevelList{
+			    std::ranges::to<std::vector<std::size_t>>(
+			        std::string_view{str} | std::views::split(',')
 			        | std::views::transform(
 			            [](const auto &s)
 			            {
@@ -222,7 +233,7 @@ struct Channel
 				                range.end(),
 				                ix);
 				            return ix;
-			            })}};
+			            }))};
 		}
 
 		[[nodiscard]] std::string toString() const

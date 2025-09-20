@@ -1,12 +1,10 @@
 #include "axis.h"
 
-#include <__compare/compare_three_way.h>
 #include <algorithm>
 #include <cmath>
 #include <compare>
 #include <cstddef>
 #include <cstdint>
-#include <functional>
 #include <limits>
 #include <memory>
 #include <optional>
@@ -14,6 +12,7 @@
 #include <string_view>
 #include <tuple>
 #include <utility>
+#include <vector>
 
 #include "base/alg/merge.h"
 #include "base/anim/interpolated.h"
@@ -338,9 +337,6 @@ DimensionAxis interpolate(const DimensionAxis &op0,
 	                  const Val &rhs,
 	                  const Val::first_type *key = nullptr) -> Val
 	{
-		printf("%s to %s\n",
-		    DimensionAxis::mergedLabels(lhs.first).c_str(),
-		    DimensionAxis::mergedLabels(rhs.first).c_str());
 		return {key ? *key : lhs.first,
 		    interpolate(lhs.second, rhs.second, factor)};
 	};

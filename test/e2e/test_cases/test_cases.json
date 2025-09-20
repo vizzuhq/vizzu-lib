@@ -56,7 +56,7 @@
 			"refs": ["bc224eb"]
 		},
 		"basic_animations/legend_transitions/color_2discrete_anim": {
-			"refs": ["86f503c"]
+			"refs": ["71a45d2"]
 		},
 		"basic_animations/legend_transitions/color_conti_anim": {
 			"refs": ["106245c"]
@@ -80,7 +80,7 @@
 			"refs": ["0617129"]
 		},
 		"basic_animations/legend_transitions/lightness_2discrete_anim": {
-			"refs": ["3e29b58"]
+			"refs": ["f818429"]
 		},
 		"basic_animations/legend_transitions/lightness_conti_anim": {
 			"refs": ["e65d2ff"]
@@ -299,7 +299,7 @@
 			"refs": ["b627ce9"]
 		},
 		"operations/orientation_tutorial_data/line_orientation": {
-			"refs": ["dc9ac6c"]
+			"refs": ["156df8d"]
 		},
 		"operations/orientation_tutorial_data/rectangle_orientation": {
 			"refs": ["a97572f"]

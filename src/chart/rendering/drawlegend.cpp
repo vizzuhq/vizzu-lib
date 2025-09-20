@@ -7,6 +7,7 @@
 #include <functional>
 #include <string>
 #include <utility>
+#include <vector>
 
 #include "base/anim/interpolated.h"
 #include "base/geom/affinetransform.h"

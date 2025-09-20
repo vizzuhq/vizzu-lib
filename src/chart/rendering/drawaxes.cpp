@@ -28,7 +28,6 @@
 #include "chart/main/events.h"
 #include "chart/main/style.h"
 #include "chart/options/channel.h"
-#include "dataframe/old/types.h"
 
 #include "drawguides.h"
 #include "drawinterlacing.h"
