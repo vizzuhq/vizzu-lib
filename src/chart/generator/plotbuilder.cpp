@@ -161,9 +161,9 @@ std::vector<PlotBuilder::BucketSortInfo> PlotBuilder::sortedBuckets(
 				    0.0,
 				    !(marker.*buckets.marker_id_get).label.empty()
 				        ? std::make_optional(
-				            DimensionAxis::mergedLabels(
-				                (marker.*buckets.marker_id_get)
-				                    .label))
+				              DimensionAxis::mergedLabels(
+				                  (marker.*buckets.marker_id_get)
+				                      .label))
 				        : std::nullopt);
 
 			it->size += marker.size.getCoord(
@@ -511,7 +511,7 @@ void PlotBuilder::calcLegendAndLabel(const Data::DataTable &dataTable)
 		        markerLabelsUnitPercent
 		            ? "%"
 		            : dataTable.get_series_info(meas->getColIndex(),
-		                "unit")}},
+		                  "unit")}},
 		    ::Anim::String{meas->getColIndex()}};
 	}
 }
