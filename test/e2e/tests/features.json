@@ -39,6 +39,9 @@
 		},
 		"data_input/big_category_indexed": {
 			"refs": ["d8538cb"]
+		},
+		"multilabel": {
+			"refs": ["6356a25"]
 		}
 	}
 }
