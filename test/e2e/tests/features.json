@@ -11,7 +11,7 @@
 			"refs": ["e630a50"]
 		},
 		"data_input/object_records": {
-			"refs": ["8866a5d"]
+			"refs": ["1fd2848"]
 		},
 		"events/drawing_events": {
 			"refs": ["15d1c81"]
@@ -32,16 +32,16 @@
 			"refs": ["e3b0c44"]
 		},
 		"data_input/category_indexed": {
-			"refs": ["95fa740"]
+			"refs": ["3a73700"]
 		},
 		"legend_interpolation": {
 			"refs": ["f85926f"]
 		},
 		"data_input/big_category_indexed": {
-			"refs": ["d8538cb"]
+			"refs": ["7d57280"]
 		},
 		"multilabel": {
-			"refs": ["6356a25"]
+			"refs": ["9f0a44b"]
 		}
 	}
 }

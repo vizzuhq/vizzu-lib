@@ -167,10 +167,10 @@
 			"refs": ["8e41d87"]
 		},
 		"chart_precision/rectangle_negative_x": {
-			"refs": ["a8fb8c6"]
+			"refs": ["851884e"]
 		},
 		"chart_precision/rectangle_negative_y": {
-			"refs": ["1f4d68e"]
+			"refs": ["551c23e"]
 		},
 		"chart_precision/rectangle_x": {
 			"refs": ["e0db77b"]
@@ -221,10 +221,10 @@
 			"refs": ["61f49ad"]
 		},
 		"operations/all_operations": {
-			"refs": ["bcdfcb8"]
+			"refs": ["177f9dd"]
 		},
 		"operations/all_operations_sizeing": {
-			"refs": ["d6b6cd2"]
+			"refs": ["22c77be"]
 		},
 		"operations/drilldown_aggregate_tutorial_data/area_drilldown_aggregate": {
 			"refs": ["c72a511"]
@@ -242,7 +242,7 @@
 			"refs": ["86a33a3"]
 		},
 		"operations/drilldown_aggregate_tutorial_data/rectangle_drilldown_aggregate_X": {
-			"refs": ["ba70ec8"]
+			"refs": ["137db8d"]
 		},
 		"operations/drilldown_aggregate_tutorial_data/rectangle_drilldown_aggregate_Y": {
 			"refs": ["90b1efc"]
@@ -293,7 +293,7 @@
 			"refs": ["4b543e2"]
 		},
 		"operations/histogram_2_drilldown_negative_1dis_1con": {
-			"refs": ["f296965"]
+			"refs": ["4375afa"]
 		},
 		"operations/orientation_tutorial_data/area_orientation": {
 			"refs": ["b627ce9"]
@@ -317,7 +317,7 @@
 			"refs": ["6ab1497"]
 		},
 		"shorthands/column_shorthands": {
-			"refs": ["c087ddb"]
+			"refs": ["fb360f2"]
 		},
 		"static_chart_types/cartesian_coo_sys/area_1dis_1con": {
 			"refs": ["dda4953"]
@@ -341,7 +341,7 @@
 			"refs": ["b12feff"]
 		},
 		"static_chart_types/cartesian_coo_sys/column_stacked_rectangle_negative_3dis_1con": {
-			"refs": ["083902d"]
+			"refs": ["ca1ca65"]
 		},
 		"static_chart_types/cartesian_coo_sys/dotplot_circle_negative_1dis_1con": {
 			"refs": ["e30a5e9"]
@@ -473,22 +473,22 @@
 			"refs": ["08fd337"]
 		},
 		"web_content/analytical_operations/compare/column_100percent_stacked": {
-			"refs": ["a2ad349"]
+			"refs": ["3dcf571"]
 		},
 		"web_content/analytical_operations/compare/column_groupped_1": {
-			"refs": ["fc5e4b9"]
+			"refs": ["b4bc2a5"]
 		},
 		"web_content/analytical_operations/compare/column_groupped_2": {
 			"refs": ["b190fee"]
 		},
 		"web_content/analytical_operations/compare/column_split_stacked_1": {
-			"refs": ["fe567f4"]
+			"refs": ["b5f0b66"]
 		},
 		"web_content/analytical_operations/compare/column_split_stacked_2": {
 			"refs": ["03de206"]
 		},
 		"web_content/analytical_operations/compare/column_stacked_1": {
-			"refs": ["598fa7a"]
+			"refs": ["8a8ff6e"]
 		},
 		"web_content/analytical_operations/compare/column_stacked_2": {
 			"refs": ["7629fb1"]
@@ -572,7 +572,7 @@
 			"refs": ["d04b2ae"]
 		},
 		"web_content/analytical_operations/drilldown/column_1": {
-			"refs": ["66be173"]
+			"refs": ["a330a74"]
 		},
 		"web_content/analytical_operations/drilldown/column_2": {
 			"refs": ["0fcb9cd"]
@@ -665,7 +665,7 @@
 			"refs": ["98035ea"]
 		},
 		"web_content/analytical_operations/stretch_to_proportion/column_groupped": {
-			"refs": ["bdd13c0"]
+			"refs": ["96a2dbc"]
 		},
 		"web_content/analytical_operations/stretch_to_proportion/column_split_stacked": {
 			"refs": ["487255e"]
@@ -728,7 +728,7 @@
 			"refs": ["61390de"]
 		},
 		"web_content/analytical_operations/sum/column_groupped": {
-			"refs": ["55c617a"]
+			"refs": ["0b00ee9"]
 		},
 		"web_content/analytical_operations/sum/column_split_stacked": {
 			"refs": ["446065b"]
@@ -803,7 +803,7 @@
 			"refs": ["b4ea8a7"]
 		},
 		"web_content_removed/animated/merge_split_bar": {
-			"refs": ["0516608"]
+			"refs": ["26e14d2"]
 		},
 		"web_content_removed/animated/merge_split_radial_stacked_rectangle_2dis_1con": {
 			"refs": ["51063b8"]
@@ -860,13 +860,13 @@
 			"refs": ["7ecf026"]
 		},
 		"web_content/infinite": {
-			"refs": ["d257766"]
+			"refs": ["1ad875a"]
 		},
 		"web_content/presets/chart/column": {
 			"refs": ["e9e411c"]
 		},
 		"web_content/presets/chart/column_grouped": {
-			"refs": ["f9b2e1d"]
+			"refs": ["9b7eace"]
 		},
 		"web_content/presets/chart/column_stacked": {
 			"refs": ["265f54e"]
@@ -890,7 +890,7 @@
 			"refs": ["e8fd972"]
 		},
 		"web_content/presets/chart/bar_grouped": {
-			"refs": ["57e87d1"]
+			"refs": ["f8208d5"]
 		},
 		"web_content/presets/chart/bar_stacked": {
 			"refs": ["d172c17"]
@@ -1754,13 +1754,13 @@
 			"refs": ["f608679"]
 		},
 		"ww_next_steps/next_steps/03_C_R": {
-			"refs": ["71b9597"]
+			"refs": ["6db0562"]
 		},
 		"ww_next_steps/next_steps/04_C_R": {
-			"refs": ["6e81537"]
+			"refs": ["29b0445"]
 		},
 		"ww_next_steps/next_steps/05_C_R": {
-			"refs": ["b97849e"]
+			"refs": ["d7c9cb3"]
 		},
 		"ww_next_steps/next_steps/21_C_C_dotplot": {
 			"refs": ["a11f581"]
@@ -1784,13 +1784,13 @@
 			"refs": ["1988c78"]
 		},
 		"ww_next_steps/next_steps_Tests/03_C_R": {
-			"refs": ["aae37dc"]
+			"refs": ["f77095d"]
 		},
 		"ww_next_steps/next_steps_Tests/04_C_R": {
-			"refs": ["2bb8c50"]
+			"refs": ["b837607"]
 		},
 		"ww_next_steps/next_steps_Tests/05_C_R": {
-			"refs": ["4c16ed2"]
+			"refs": ["2aa7f1f"]
 		},
 		"ww_next_steps/next_steps_Tests/21_C_C_dotplot": {
 			"refs": ["d7f059a"]
@@ -1811,16 +1811,16 @@
 			"refs": ["ad9d76e"]
 		},
 		"ww_next_steps/next_steps_byOperations/compare/comparison_02": {
-			"refs": ["1264bb3"]
+			"refs": ["484cdae"]
 		},
 		"ww_next_steps/next_steps_byOperations/compare/comparison_03": {
 			"refs": ["ef57d87"]
 		},
 		"ww_next_steps/next_steps_byOperations/compare/comparison_04": {
-			"refs": ["bb1cba2"]
+			"refs": ["2826d71"]
 		},
 		"ww_next_steps/next_steps_byOperations/compare/comparison_05": {
-			"refs": ["135e52d"]
+			"refs": ["101436b"]
 		},
 		"ww_next_steps/next_steps_byOperations/compare/comparison_06": {
 			"refs": ["974354f"]
@@ -1835,7 +1835,7 @@
 			"refs": ["bd8c4e2"]
 		},
 		"ww_next_steps/next_steps_byOperations/components/components_01": {
-			"refs": ["474b7d1"]
+			"refs": ["3897d0a"]
 		},
 		"ww_next_steps/next_steps_byOperations/components/components_02": {
 			"refs": ["80ff02e"]
@@ -1889,13 +1889,13 @@
 			"refs": ["bb816fc"]
 		},
 		"ww_next_steps/next_steps_byOperations/drilldown/drilldown_04": {
-			"refs": ["7494491"]
+			"refs": ["1cf4c74"]
 		},
 		"ww_next_steps/next_steps_byOperations/drilldown/drilldown_05": {
 			"refs": ["2d0054c"]
 		},
 		"ww_next_steps/next_steps_byOperations/drilldown/drilldown_06": {
-			"refs": ["aaec548"]
+			"refs": ["9a5f3bc"]
 		},
 		"ww_next_steps/next_steps_byOperations/drilldown/drilldown_07": {
 			"refs": ["da7c691"]
@@ -1919,7 +1919,7 @@
 			"refs": ["43cf7dc"]
 		},
 		"ww_next_steps/next_steps_byOperations/ratio/ratio_02": {
-			"refs": ["427ff94"]
+			"refs": ["87f2ea2"]
 		},
 		"ww_next_steps/next_steps_byOperations/ratio/ratio_03": {
 			"refs": ["73c8d37"]
@@ -1964,13 +1964,13 @@
 			"refs": ["7de0b4f"]
 		},
 		"ww_next_steps/next_steps_byOperations/sum_aggregate/sum_aggregate_06": {
-			"refs": ["595d52c"]
+			"refs": ["7cfecd0"]
 		},
 		"ww_next_steps/next_steps_byOperations/sum_aggregate/sum_aggregate_07": {
-			"refs": ["c22361a"]
+			"refs": ["09c1eab"]
 		},
 		"ww_next_steps/next_steps_byOperations/sum_aggregate/sum_aggregate_08": {
-			"refs": ["a9f23a2"]
+			"refs": ["caa65da"]
 		},
 		"ww_next_steps/next_steps_byOperations/sum_aggregate/sum_aggregate_09": {
 			"refs": ["6e1614b"]
@@ -2018,7 +2018,7 @@
 			"refs": ["43999e1"]
 		},
 		"ww_next_steps/next_steps_byOperations/total/total_03": {
-			"refs": ["d53abe3"]
+			"refs": ["eaa5a56"]
 		},
 		"ww_next_steps/next_steps_byOperations/total/total_04": {
 			"refs": ["72a4868"]
@@ -3155,7 +3155,7 @@
 			"refs": ["f81d317"]
 		},
 		"www_new_analytical_operations/operations/01_drilldown/Column_Stacked_Column": {
-			"refs": ["77b1660"]
+			"refs": ["2698e57"]
 		},
 		"www_new_analytical_operations/operations/02_sum/Area_Stacked_Area": {
 			"refs": ["13bf736"]
@@ -3164,10 +3164,10 @@
 			"refs": ["4fecff5"]
 		},
 		"www_new_analytical_operations/operations/02_sum/Column_Groupped_Column_1": {
-			"refs": ["bccfc5a"]
+			"refs": ["c829d15"]
 		},
 		"www_new_analytical_operations/operations/02_sum/Column_Groupped_Column_2": {
-			"refs": ["06304f9"]
+			"refs": ["aab8908"]
 		},
 		"www_new_analytical_operations/operations/02_sum/Column_Groupped_Column_to_Bar": {
 			"refs": ["6282c8d"]
