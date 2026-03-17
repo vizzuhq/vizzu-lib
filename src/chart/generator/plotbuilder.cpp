@@ -695,7 +695,7 @@ PlotBuilder::addSeparation(const Buckets &buckets,
     AxisId axisIndex,
     bool needAxisDefaultSplit)
 {
-	bool isSplit = plot->getOptions()->isSplit(axisIndex);
+	const bool isSplit = plot->getOptions()->isSplit(axisIndex);
 	if (!isSplit && !needAxisDefaultSplit) return {};
 
 	const auto &axisProps =
