@@ -2,9 +2,8 @@ const testSteps = [
 	(chart) => {
 		const data = {
 			series: [
-				{ name: 'Foo', values: ['A', 'B', 'C', 'A', 'B', 'C'] },
-				{ name: 'Foo2', values: ['1', '1', '1', '2', '2', '2'] },
-				{ name: 'Bar', values: [1, 2, 1, 2, 1, 2] }
+				{ name: 'Foo', values: ['Alice', 'Bob', 'Ted'] },
+				{ name: 'Baz', values: [3, 2, 1] }
 			]
 		}
 
@@ -13,8 +12,8 @@ const testSteps = [
 	(chart) =>
 		chart.animate(
 			{
-				x: ['Foo', 'Foo2'],
-				y: 'Bar',
+				x: { set: 'Foo', range: { max: 2.5 } },
+				y: 'Baz',
 				coordSystem: 'polar'
 			},
 			0

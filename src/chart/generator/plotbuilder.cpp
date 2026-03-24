@@ -416,8 +416,12 @@ void PlotBuilder::calcAxises(const Data::DataTable &dataTable,
 	    mainAxis,
 	    needAxisDefaultSplitMain);
 
-	auto mainBoundRect = plot->getMarkersBounds(mainAxis);
-	auto subBoundRect = plot->getMarkersBounds(!mainAxis);
+	auto mainBoundRect = needAxisDefaultSplitMain
+	                       ? Math::Range{0.0, 1.0}
+	                       : plot->getMarkersBounds(mainAxis);
+	auto subBoundRect = needAxisDefaultSplitSub
+	                      ? Math::Range{0.0, 1.0}
+	                      : plot->getMarkersBounds(!mainAxis);
 
 	plot->getOptions()->setAutoRange(
 	    !std::signbit(
@@ -433,12 +437,8 @@ void PlotBuilder::calcAxises(const Data::DataTable &dataTable,
 	    plot->getOptions()->subAxis().range.getRange(subBoundRect);
 
 	for (auto &&[axis, needRanges, boundSize] :
-	    {std::tuple{mainAxis,
-	         mainRanges.empty() && !needAxisDefaultSplitMain,
-	         mainBoundRect},
-	        {!mainAxis,
-	            subRanges.empty() && !needAxisDefaultSplitSub,
-	            subBoundRect}}) {
+	    {std::tuple{mainAxis, mainRanges.empty(), mainBoundRect},
+	        {!mainAxis, subRanges.empty(), subBoundRect}}) {
 		if (!needRanges) continue;
 
 		for (auto &marker : plot->markers) {
