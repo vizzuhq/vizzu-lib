@@ -433,8 +433,12 @@ void PlotBuilder::calcAxises(const Data::DataTable &dataTable,
 	    plot->getOptions()->subAxis().range.getRange(subBoundRect);
 
 	for (auto &&[axis, needRanges, boundSize] :
-	    {std::tuple{mainAxis, mainRanges.empty(), mainBoundRect},
-	        {!mainAxis, subRanges.empty(), subBoundRect}}) {
+	    {std::tuple{mainAxis,
+	         mainRanges.empty() && !needAxisDefaultSplitMain,
+	         mainBoundRect},
+	        {!mainAxis,
+	            subRanges.empty() && !needAxisDefaultSplitSub,
+	            subBoundRect}}) {
 		if (!needRanges) continue;
 
 		for (auto &marker : plot->markers) {
@@ -782,8 +786,11 @@ PlotBuilder::addSeparation(const Buckets &buckets,
 	}
 
 	if (plot->getOptions()->coordSystem == CoordSystem::polar
-	    && axisIndex == AxisId::x && !first)
+	    && axisIndex == AxisId::x && !first) {
 		onMax += splitSpace;
+
+		if (!isSplit) maxRange.max += splitSpace;
+	}
 
 	for (auto &&bucket : buckets)
 		for (auto &&[marker, idx] : bucket) {
