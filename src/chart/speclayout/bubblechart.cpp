@@ -57,6 +57,16 @@ void BubbleChart::generate()
 	    Geom::Point{firstMarkerSize + markerSize, 0},
 	    markerSize);
 
+	auto overlapsAnyPlaced =
+	    [&](const Geom::Circle &candidate)
+	{
+		for (auto it = markers.begin(); it != currMarker; ++it)
+			if (it->circle().radius > 0
+			    && candidate.overlaps(it->circle()))
+				return true;
+		return false;
+	};
+
 	for (auto preMarker = currMarker++; currMarker != markers.end();
 	     ++currMarker) {
 		if (currMarker->negative) {
@@ -71,7 +81,8 @@ void BubbleChart::generate()
 		        *nextBaseMarker,
 		        *preMarker);
 		    candidate1
-		    && !candidate1->overlaps(baseMarker->circle())) {
+		    && !candidate1->overlaps(baseMarker->circle())
+		    && !overlapsAnyPlaced(*candidate1)) {
 			currMarker->emplaceCircle(*candidate1);
 			baseMarker = nextBaseMarker++;
 			while (nextBaseMarker->negative) ++nextBaseMarker;
@@ -80,11 +91,20 @@ void BubbleChart::generate()
 		             *baseMarker,
 		             *preMarker);
 		         candidate0
-		         && !candidate0->overlaps(nextBaseMarker->circle()))
+		         && !candidate0->overlaps(nextBaseMarker->circle())
+		         && !overlapsAnyPlaced(*candidate0))
 			currMarker->emplaceCircle(*candidate0);
 		else {
-			// TODO bubblechart generation failed. It need a fix.
-			break;
+			auto newNextBase = std::next(nextBaseMarker);
+			while (newNextBase != currMarker
+			       && (newNextBase->negative
+			           || newNextBase->circle().radius == 0))
+				++newNextBase;
+			if (newNextBase == currMarker) break;
+			baseMarker = nextBaseMarker;
+			nextBaseMarker = newNextBase;
+			--currMarker;
+			continue;
 		}
 		preMarker = currMarker;
 	}
