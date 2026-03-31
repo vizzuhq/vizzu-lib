@@ -266,7 +266,6 @@ Chart Chart::def()
 							{
 								.position = Anim::Interpolated<AxisLabel::Position>(AxisLabel::Position::min_edge),
 								.side = Anim::Interpolated<AxisLabel::Side>(AxisLabel::Side::negative),
-								.multiLevelAxis = Anim::Interpolated<AxisLabel::MultiLevelAxis>(AxisLabel::MultiLevelAxis::flattened)
 							}
 						},
 						.ticks = {
@@ -359,7 +358,6 @@ Chart Chart::def()
 							{
 								.position = Anim::Interpolated<AxisLabel::Position>(AxisLabel::Position::min_edge),
 								.side = Anim::Interpolated<AxisLabel::Side>(AxisLabel::Side::negative),
-								.multiLevelAxis = Anim::Interpolated<AxisLabel::MultiLevelAxis>(AxisLabel::MultiLevelAxis::flattened)
 							}
 						},
 						.ticks = {
