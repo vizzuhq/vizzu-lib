@@ -11,7 +11,7 @@
 			"refs": ["e630a50"]
 		},
 		"data_input/object_records": {
-			"refs": ["8866a5d"]
+			"refs": ["1fd2848"]
 		},
 		"events/drawing_events": {
 			"refs": ["15d1c81"]
@@ -32,22 +32,22 @@
 			"refs": ["e3b0c44"]
 		},
 		"data_input/category_indexed": {
-			"refs": ["95fa740"]
+			"refs": ["3a73700"]
 		},
 		"legend_interpolation": {
 			"refs": ["f85926f"]
 		},
 		"data_input/big_category_indexed": {
-			"refs": ["d8538cb"]
+			"refs": ["7d57280"]
 		},
 		"multi_label/legend_color": {
 			"refs": ["6026882"]
 		},
 		"multi_label/x_axis": {
-			"refs": ["b2b6ae7"]
+			"refs": ["08887fc"]
 		},
 		"multi_label/y_axis": {
-			"refs": ["a6c70e1"]
+			"refs": ["46a40ba"]
 		}
 	}
 }

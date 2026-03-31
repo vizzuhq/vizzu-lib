@@ -8,7 +8,6 @@ import sys
 
 import mkdocs_gen_files
 
-
 REPO_PATH = Path(__file__).parent / ".." / ".." / ".."
 TOOLS_PATH = REPO_PATH / "tools"
 MKDOCS_PATH = TOOLS_PATH / "docs"

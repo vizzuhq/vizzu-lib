@@ -2,6 +2,14 @@
 
 ## [Unreleased]
 
+### Experimental Added
+
+- Support multiple dimension label on axis as list and separated elements.
+- Support multiple dimension label on legend as list.
+- Added 'plot.<x/y>Axis.label.multiLevelAxis' style parameter: flattened (default)/nested.
+- Added 'plot.<x/y>Axis.label.multiLevelSpacing' double typed style parameter to set the spacing between axis labels.
+- Added default spacing between categories if a lot of conditions are met
+
 ## [0.17.1] - 2025-08-24
 
 ### Fixed

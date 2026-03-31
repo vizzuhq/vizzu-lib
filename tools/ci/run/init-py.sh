@@ -17,5 +17,5 @@ test -f ~/.netrc && chmod u+rw,u-x,go-rwx ~/.netrc
 $PYTHON -m venv --copies ".venv"
 
 source .venv/bin/activate
-pip install pdm==2.22.3
+pip install "pdm==2.22.3" "hishel<1.0"
 pdm install -p tools/ci --no-isolation

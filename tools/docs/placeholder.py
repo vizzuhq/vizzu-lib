@@ -4,7 +4,6 @@ from contextlib import chdir
 from pathlib import Path
 import sys
 
-
 REPO_PATH = Path(__file__).parent / ".." / ".."
 TOOLS_PATH = REPO_PATH / "tools"
 MKDOCS_PATH = TOOLS_PATH / "docs"
@@ -15,7 +14,6 @@ sys.path.insert(0, str(TOOLS_PATH / "modules"))
 from vizzu import (  # pylint: disable=import-error, wrong-import-position, wrong-import-order
     Vizzu,
 )
-
 
 PLACEHOLDER = """placeholders:
   LIB_MINOR_VERSION: "{}"

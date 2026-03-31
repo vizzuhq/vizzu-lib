@@ -45,6 +45,11 @@ private:
 		{
 			return itemId < id;
 		}
+
+		bool operator<(const Data::SliceIndex &front) const noexcept
+		{
+			return index.front() < front;
+		}
 	};
 
 	void initDimensionTrackers();
@@ -53,12 +58,16 @@ private:
 	[[nodiscard]] bool linkMarkers(const Buckets &buckets,
 	    AxisId axisIndex) const;
 	void calcAxises(const Data::DataTable &dataTable,
-	    Buckets &buckets);
+	    Buckets &buckets,
+	    bool needAxisDefaultSplitMain,
+	    bool needAxisDefaultSplitSub);
 	void calcLegendAndLabel(const Data::DataTable &dataTable);
 	void calcAxis(const Data::DataTable &dataTable, AxisId type);
 	void addAlignment(const Buckets &buckets, AxisId axisIndex) const;
-	[[nodiscard]] std::vector<BucketSeparationInfo>
-	addSeparation(const Buckets &buckets, AxisId axisIndex);
+	[[nodiscard]] std::vector<BucketSeparationInfo> addSeparation(
+	    const Buckets &buckets,
+	    AxisId axisIndex,
+	    bool needAxisDefaultSplit);
 	void normalizeSizes();
 	void normalizeColors();
 	[[nodiscard]] std::vector<BucketSortInfo>
@@ -66,6 +75,8 @@ private:
 	void addSpecLayout(Buckets &buckets);
 	void addAxisLayout(Buckets &buckets,
 	    const Data::DataTable &dataTable);
+
+	[[nodiscard]] bool needAxisDefaultSplit(AxisId axisIndex) const;
 };
 }
 
