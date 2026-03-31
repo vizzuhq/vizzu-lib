@@ -18,7 +18,7 @@ const testSteps = [
 			config: {
 				y: ['Foo', 'Foo2', 'Foo3'],
 				x: 'Bar'
-			},
+			}
 		}),
 	(chart) =>
 		chart.animate({
@@ -34,8 +34,8 @@ const testSteps = [
 		}),
 	(chart) =>
 		chart.animate({
-			config: {	y: { labelLevel: '[0, 1]' } },
-			style: { plot: { yAxis: { label: { multiLevelAxis: 'nested' }}}}
+			config: { y: { labelLevel: '[0, 1]' } },
+			style: { plot: { yAxis: { label: { multiLevelAxis: 'nested' } } } }
 		}),
 	(chart) =>
 		chart.animate({
@@ -60,12 +60,12 @@ const testSteps = [
 	(chart) =>
 		chart.animate({
 			config: { y: { labelLevel: '[0, 1, 2]' } },
-			style: { plot: { paddingLeft: '9.2em' }}
+			style: { plot: { paddingLeft: '9.2em' } }
 		}),
 	(chart) =>
 		chart.animate({
-			config: { y: { labelLevel: '[0, 2]' }},
-			style: { plot: { paddingLeft: null }}
+			config: { y: { labelLevel: '[0, 2]' } },
+			style: { plot: { paddingLeft: null } }
 		})
 ]
 

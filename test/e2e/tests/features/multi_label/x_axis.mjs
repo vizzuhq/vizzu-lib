@@ -34,8 +34,8 @@ const testSteps = [
 		}),
 	(chart) =>
 		chart.animate({
-			config: {	x: { labelLevel: '[0, 1]' } },
-			style: { plot: { xAxis: { label: { multiLevelAxis: 'nested' }}}}
+			config: { x: { labelLevel: '[0, 1]' } },
+			style: { plot: { xAxis: { label: { multiLevelAxis: 'nested' } } } }
 		}),
 	(chart) =>
 		chart.animate({
@@ -60,12 +60,12 @@ const testSteps = [
 	(chart) =>
 		chart.animate({
 			config: { x: { labelLevel: '[0, 1, 2]' } },
-			style: { plot: { paddingBottom: '7.25em' }}
+			style: { plot: { paddingBottom: '7.25em' } }
 		}),
 	(chart) =>
 		chart.animate({
-			config: { x: { labelLevel: '[0, 2]' }},
-			style: { plot: { paddingBottom: null }}
+			config: { x: { labelLevel: '[0, 2]' } },
+			style: { plot: { paddingBottom: null } }
 		})
 ]
 
