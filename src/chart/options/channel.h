@@ -214,29 +214,33 @@ struct Channel
 
 		static LabelLevelList fromString(const std::string &str)
 		{
-			return LabelLevelList{
-			    std::ranges::to<std::vector<std::size_t>>(
-			        std::string_view{str} | std::views::split(',')
-			        | std::views::transform(
-			            [](const auto &s)
-			            {
-				            auto &&range =
-				                s
-				                | std::views::drop_while(
-				                    [](const char &c)
-				                    {
-					                    return std::isspace(
-					                               static_cast<
-					                                   unsigned char>(
-					                                   c))
-					                        || c == '[';
-				                    });
-				            std::size_t ix{};
-				            std::from_chars(range.begin(),
-				                range.end(),
-				                ix);
-				            return ix;
-			            }))};
+			std::vector<std::size_t> levels;
+			if (!str.empty() && str == std::string_view{"[]"})
+				for (auto &&s :
+				    std::string_view{str} | std::views::split(',')
+				        | std::views::transform(
+				            [](const auto &s)
+				            {
+					            auto &&range =
+					                s
+					                | std::views::drop_while(
+					                    [](const char &c)
+					                    {
+						                    return std::isspace(
+						                               static_cast<
+						                                   unsigned char>(
+						                                   c))
+						                        || c == '[';
+					                    });
+					            std::size_t ix{};
+					            std::from_chars(range.begin(),
+					                range.end(),
+					                ix);
+					            return ix;
+				            }))
+					if (!std::ranges::contains(levels, s))
+						levels.push_back(s);
+			return LabelLevelList{std::move(levels)};
 		}
 
 		[[nodiscard]] std::string toString() const
