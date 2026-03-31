@@ -602,9 +602,10 @@ void PlotBuilder::calcAxis(const Data::DataTable &dataTable,
 	}
 	else {
 		auto &&labels = plot->getOptions()->dimLabelIndex(+type);
+		auto &&firstLabelIsZero =
+		    !labels.empty() && labels.front() == std::size_t{};
 		auto merge = axisProps.sort == Sort::byLabel
-		          || (std::ranges::starts_with(labels,
-		                  std::views::single(std::size_t{}))
+		          || (firstLabelIsZero
 		              && (axisProps.sort == Sort::none
 		                  || scale.dimensions().size() == 1));
 		auto layer =
@@ -615,8 +616,7 @@ void PlotBuilder::calcAxis(const Data::DataTable &dataTable,
 		           == Styles::AxisLabelParams::MultiLevelAxis::nested
 		    && plot->getStyle().plot.getAxis(type).label.position
 		           != Styles::AxisLabel::Position::axis
-		    && std::ranges::starts_with(labels,
-		        std::views::single(std::size_t{}));
+		    && firstLabelIsZero;
 
 		merge &= layer || labels.size() == 1;
 
@@ -810,6 +810,8 @@ PlotBuilder::addSeparation(const Buckets &buckets,
 
 		if (!isSplit) maxRange.max += splitSpace;
 	}
+
+	if (Math::Floating::is_zero(onMax)) onMax = 1.0;
 
 	if (!isSplit) {
 		if (axisProps.sort == Sort::byLabel)

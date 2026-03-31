@@ -244,50 +244,55 @@ void Sheet::setAfterStyles(Gen::Plot &plot, const Geom::Size &size)
 
 		if (auto skipCollisionCheck =
 		        (sort == Gen::Sort::byLabel
-		            || (std::ranges::starts_with(indices,
-		                    std::views::single(std::size_t{}))
-		                && sort == Gen::Sort::none))
-		        && xLabel.multiLevelAxis
-		               == AxisLabelParams::MultiLevelAxis::nested
-		        && indices.size() > 1
-		        && xLabel.position != AxisLabel::Position::axis;
-		    !skipCollisionCheck) {
-			for (std::vector<Math::Range<>> ranges;
-			     const auto &[label, item] :
-			     plot.axises.at(xChannel).dimension.getValues()) {
+		            || (!indices.empty()
+		                   && indices.front() == std::size_t{})
+		                   && sort == Gen::Sort::none))
+			&&xLabel.multiLevelAxis
+			        == AxisLabelParams::MultiLevelAxis::nested
+			                   &&indices.size()
+			               > 1
+			    && xLabel.position != AxisLabel::Position::axis;
+		    !skipCollisionCheck)
+		    {
+			    for (std::vector<Math::Range<>> ranges;
+			         const auto &[label, item] :
+			         plot.axises.at(xChannel).dimension.getValues()) {
 
-				if (!item.label.get()) continue;
+				    if (!item.label.get()) continue;
 
-				auto textBoundary = Gfx::ICanvas::textBoundary(font,
-				    Gen::DimensionAxis::mergedLabels(label));
-				auto textXHalfMargin =
-				    xLabel.toInvMargin(textBoundary, font.size)
-				        .getSpace()
-				        .x
-				    / 2.0;
-				auto xHalfSize =
-				    (textBoundary.x + textXHalfMargin) / plotX / 2.0;
+				    auto textBoundary =
+				        Gfx::ICanvas::textBoundary(font,
+				            Gen::DimensionAxis::mergedLabels(label));
+				    auto textXHalfMargin =
+				        xLabel.toInvMargin(textBoundary, font.size)
+				            .getSpace()
+				            .x
+				        / 2.0;
+				    auto xHalfSize =
+				        (textBoundary.x + textXHalfMargin) / plotX
+				        / 2.0;
 
-				auto rangeCenter = item.range.middle();
+				    auto rangeCenter = item.range.middle();
 
-				auto next_range =
-				    Math::Range<>{rangeCenter - xHalfSize,
-				        rangeCenter + xHalfSize};
+				    auto next_range =
+				        Math::Range<>{rangeCenter - xHalfSize,
+				            rangeCenter + xHalfSize};
 
-				if (std::any_of(ranges.begin(),
-				        ranges.end(),
-				        [&next_range](const Math::Range<> &other)
-				        {
-					        return other.intersects(next_range);
-				        })) {
-					has_collision = true;
-					break;
-				}
-				ranges.push_back(next_range);
-			}
-		}
+				    if (std::any_of(ranges.begin(),
+				            ranges.end(),
+				            [&next_range](const Math::Range<> &other)
+				            {
+					            return other.intersects(next_range);
+				            })) {
+					    has_collision = true;
+					    break;
+				    }
+				    ranges.push_back(next_range);
+			    }
+		    }
 
-		xLabel.angle.emplace(has_collision * std::numbers::pi / 4);
+		    xLabel.angle.emplace(
+		        has_collision * std::numbers::pi / 4);
 	}
 	if (!xLabel.multiLevelSpacing) {
 		xLabel.multiLevelSpacing.emplace(

@@ -225,7 +225,10 @@ struct Channel
 				                | std::views::drop_while(
 				                    [](const char &c)
 				                    {
-					                    return std::isspace(c)
+					                    return std::isspace(
+					                               static_cast<
+					                                   unsigned char>(
+					                                   c))
 					                        || c == '[';
 				                    });
 				            std::size_t ix{};
