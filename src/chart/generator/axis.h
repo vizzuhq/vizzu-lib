@@ -93,15 +93,18 @@ struct DimensionAxis
 		Math::Range<> range;
 		::Anim::Interpolated<ColorBase> colorBase;
 		::Anim::Interpolated<bool> label;
+		::Anim::Interpolated<std::uint32_t> layer;
 
 		Item(Math::Range<> range,
 		    std::uint32_t position,
 		    const std::optional<ColorBase> &color,
-		    bool setCategoryAsLabel) :
+		    bool setCategoryAsLabel,
+		    std::uint32_t layer) :
 		    startPos(position),
 		    endPos(position),
 		    range(range),
-		    label(setCategoryAsLabel)
+		    label(setCategoryAsLabel),
+		    layer(layer)
 		{
 			if (color) colorBase = *color;
 		}
@@ -111,7 +114,8 @@ struct DimensionAxis
 		    endPos(starter ? PosType{} : item.endPos),
 		    range(item.range),
 		    colorBase(item.colorBase),
-		    label(item.label)
+		    label(item.label),
+		    layer(item.layer)
 		{}
 
 		bool operator==(const Item &other) const
@@ -140,7 +144,9 @@ struct DimensionAxis
 	    std::uint32_t position,
 	    const std::optional<ColorBase> &color,
 	    bool label,
-	    bool merge);
+	    bool merge,
+	    bool layered,
+	    std::uint32_t layer = 0);
 	[[nodiscard]] bool operator==(
 	    const DimensionAxis &other) const = default;
 
@@ -176,8 +182,13 @@ struct DimensionAxis
 				    rhs.range.min);
 			}
 		};
-		return std::multiset<std::reference_wrapper<Item>,
-		    ItemSorterByRangeStart>{begin(), end()};
+		return std::ranges::to<
+		    std::multiset<std::reference_wrapper<Item>,
+		        ItemSorterByRangeStart>>(std::views::filter(*this,
+		    [](const Item &i)
+		    {
+			    return i.layer.get() == 0;
+		    }));
 	}
 
 	static std::size_t commonDimensionParts(const Values &lhs,

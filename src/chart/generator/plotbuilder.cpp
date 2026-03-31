@@ -454,7 +454,8 @@ void PlotBuilder::calcLegendAndLabel(const Data::DataTable &dataTable)
 				        count,
 				        color,
 				        true,
-				        merge))
+				        merge,
+				        false))
 					++count;
 				calcLegend.dimension.hasMarker = true;
 			}
@@ -545,11 +546,24 @@ void PlotBuilder::calcAxis(const Data::DataTable &dataTable,
 			    axisProps.step.getValue()};
 	}
 	else {
-		for (auto merge = axisProps.sort == Sort::byLabel
-		               || (plot->getOptions()->dimLabelIndex(+type)
-		                       == std::vector{std::size_t{}}
-		                   && (axisProps.sort == Sort::none
-		                       || scale.dimensions().size() == 1));
+		for (auto
+		         merge =
+		             axisProps.sort == Sort::byLabel
+		             || (std::ranges::starts_with(
+		                     plot->getOptions()->dimLabelIndex(+type),
+		                     std::views::single(std::size_t{}))
+		                 && (axisProps.sort == Sort::none
+		                     || scale.dimensions().size() == 1)),
+		         layer = merge
+		              && plot->getStyle()
+		                         .plot.getAxis(type)
+		                         .label.multiLevelAxis
+		                     == Styles::AxisLabelParams::
+		                         MultiLevelAxis::nested
+		              && plot->getStyle()
+		                         .plot.getAxis(type)
+		                         .label.position
+		                     != Styles::AxisLabel::Position::axis;
 		     const auto &marker : plot->markers) {
 			if (!marker.enabled) continue;
 
@@ -564,7 +578,8 @@ void PlotBuilder::calcAxis(const Data::DataTable &dataTable,
 				    {},
 				    {},
 				    false,
-				    merge);
+				    merge,
+				    layer);
 
 			axis.dimension.hasMarker = true;
 		}

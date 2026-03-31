@@ -150,6 +150,9 @@ const DrawAxes &&DrawAxes::init() &&
 			auto weight = item.weight(axis.dimension.factor);
 			if (Math::Floating::is_zero(weight)) continue;
 
+			auto mainFactor = item.layer.factor(std::uint32_t{});
+			auto layer = item.layer.combine<double>();
+
 			auto needInterlacing =
 			    measEnabled == 0.0
 			    || Math::FuzzyBool::And(Math::FuzzyBool::more(weight),
@@ -158,7 +161,7 @@ const DrawAxes &&DrawAxes::init() &&
 
 			intervals.emplace_back(item.range.positive(),
 			    weight,
-			    Math::FuzzyBool::And<double>(
+			    Math::FuzzyBool::And<double>(mainFactor,
 			        Math::Niebloid::interpolate(
 			            (item.startPos ? *item.startPos
 			                           : *item.endPos)
@@ -169,6 +172,7 @@ const DrawAxes &&DrawAxes::init() &&
 			        needInterlacing),
 			    Interval::DimLabel{index,
 			        item.label,
+			        layer,
 			        !item.startPos.isAuto(),
 			        !item.endPos.isAuto()});
 
@@ -501,9 +505,7 @@ void DrawAxes::drawTitle(Gen::AxisId axisIndex,
 	}
 }
 
-void DrawAxes::drawDimensionLabels(Gen::AxisId axisIndex,
-    const Geom::AffineTransform &tr,
-    double w) const
+void DrawAxes::drawDimensionLabels(Gen::AxisId axisIndex) const
 {
 	const auto &labelStyle = rootStyle.plot.getAxis(axisIndex).label;
 
@@ -522,9 +524,7 @@ void DrawAxes::drawDimensionLabels(Gen::AxisId axisIndex,
 			drawDimensionLabel(axisIndex,
 			    origo,
 			    interval,
-			    tr,
-			    Math::FuzzyBool::And<double>(w,
-			        interval.weight,
+			    Math::FuzzyBool::And<double>(interval.weight,
 			        enabled.labels));
 		}
 	}
@@ -533,7 +533,6 @@ void DrawAxes::drawDimensionLabels(Gen::AxisId axisIndex,
 void DrawAxes::drawDimensionLabel(Gen::AxisId axisIndex,
     const Geom::Point &origo,
     const Interval &interval,
-    const Geom::AffineTransform &tr,
     double weight) const
 {
 	if (weight == 0) return;
@@ -544,7 +543,6 @@ void DrawAxes::drawDimensionLabel(Gen::AxisId axisIndex,
 	auto drawLabel = OrientedLabel{{ctx()}};
 	labelStyle.position->visit(
 	    [this,
-	        &tr,
 	        &axisIndex,
 	        &drawLabel,
 	        &labelStyle,
@@ -562,16 +560,38 @@ void DrawAxes::drawDimensionLabel(Gen::AxisId axisIndex,
 			    return;
 
 		    Geom::Point refPos;
-
+		    double spacing{};
 		    switch (position.value) {
 			    using Pos = Styles::AxisLabel::Position;
-		    case Pos::max_edge: refPos = normal; break;
+		    case Pos::max_edge:
+			    spacing =
+			        dimInfo.layer * *labelStyle.multiLevelSpacing;
+
+			    if (axisIndex == Gen::AxisId::y) {
+				    spacing *= plot->getOptions()->coordSystem.factor(
+				                   Gen::CoordSystem::polar)
+				                 * -2
+				             + 1;
+			    }
+
+			    refPos = normal;
+			    break;
 		    case Pos::axis: refPos = origo.comp(!orientation); break;
 		    default:
-		    case Pos::min_edge: refPos = Geom::Point(); break;
+		    case Pos::min_edge:
+			    spacing =
+			        -dimInfo.layer * *labelStyle.multiLevelSpacing;
+			    break;
 		    }
-
 		    auto relCenter = refPos + ident * interval.range.middle();
+		    if (axisIndex == Gen::AxisId::x
+		        && !Math::Floating::is_zero(spacing))
+			    relCenter += normal
+			               * std::copysign(
+			                   (coordSys.getOriginal(normal * spacing)
+			                       - coordSys.getOriginal({}))
+			                       .abs(),
+			                   spacing);
 
 		    auto under =
 		        labelStyle.position->interpolates()
@@ -580,13 +600,16 @@ void DrawAxes::drawDimensionLabel(Gen::AxisId axisIndex,
 		            : labelStyle.side->factor(
 		                  Styles::AxisLabel::Side::negative);
 
-		    auto draw = [&,
-		                    posDir = coordSys
-		                                 .convertDirectionAt(
-		                                     tr(Geom::Line{relCenter,
-		                                         relCenter + normal}))
-		                                 .extend(1 - 2 * under)](
-		                    const ::Anim::Weighted<bool> &str,
+		    auto posDir =
+		        coordSys
+		            .convertDirectionAt(
+		                Geom::Line{relCenter, relCenter + normal})
+		            .extend(1 - 2 * under);
+		    if (axisIndex == Gen::AxisId::y
+		        && !Math::Floating::is_zero(spacing))
+			    posDir.shift(normal * spacing);
+
+		    auto draw = [&](const ::Anim::Weighted<bool> &str,
 		                    double plusWeight = 1.0)
 		    {
 			    if (!str.value) return;

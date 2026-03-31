@@ -268,8 +268,25 @@ bool DimensionAxis::add(const std::vector<Data::SliceIndex> &index,
     std::uint32_t position,
     const std::optional<ColorBase> &color,
     bool label,
-    bool merge)
+    bool merge,
+    bool layered,
+    std::uint32_t layer)
 {
+	if (layered) {
+		bool res{};
+		for (auto ix{index.size()}; const auto &slice : index) {
+			--ix;
+			res |= add({slice},
+			    range,
+			    position,
+			    color,
+			    ix > 0,
+			    std::exchange(merge, false),
+			    false,
+			    ix);
+		}
+		return res;
+	}
 	auto [it, end] = values.equal_range(index);
 	if (merge) {
 		if (it != end) {
@@ -288,7 +305,7 @@ bool DimensionAxis::add(const std::vector<Data::SliceIndex> &index,
 			if (it++->second.range == range) return false;
 	values.emplace(std::piecewise_construct,
 	    std::tuple{index},
-	    std::tuple{range, position, color, label});
+	    std::tuple{range, position, color, label, layer});
 
 	return true;
 }
@@ -405,6 +422,7 @@ DimensionAxis::Item interpolate(const DimensionAxis::Item &op0,
 	res.range = interpolate(op0.range, op1.range, factor);
 	res.colorBase = interpolate(op0.colorBase, op1.colorBase, factor);
 	res.label = interpolate(op0.label, op1.label, factor);
+	res.layer = interpolate(op0.layer, op1.layer, factor);
 	return res;
 }
 

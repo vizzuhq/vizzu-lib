@@ -205,7 +205,8 @@ struct AxisLabelParams
 
 	Param<::Anim::Interpolated<Position>> position;
 	Param<::Anim::Interpolated<Side>> side;
-	Param<::Anim::Interpolated<MultiLevelAxis>> multiLevelAxis;
+	Param<MultiLevelAxis> multiLevelAxis;
+	Param<double> multiLevelSpacing;
 };
 
 struct AxisLabel : OrientedLabel, AxisLabelParams
