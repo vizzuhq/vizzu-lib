@@ -16,17 +16,17 @@ const testSteps = [
 	(chart) =>
 		chart.animate({
 			config: {
-				x: ['Foo', 'Foo2'],
+				x: ['Foo', 'Foo2', 'Foo3'],
 				y: 'Bar'
 			}
 		}),
 	(chart) =>
 		chart.animate({
-			x: { labelLevel: '[0, 1]' }
+			x: { labelLevel: '[0, 1]', sort: 'byLabel' }
 		}),
 	(chart) =>
 		chart.animate({
-			x: { labelLevel: '[1, 0]' }
+			x: { set: ['Foo', 'Foo2'], labelLevel: '[1, 0]', sort: 'none' }
 		}),
 	(chart) =>
 		chart.animate({

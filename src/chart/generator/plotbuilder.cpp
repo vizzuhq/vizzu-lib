@@ -601,25 +601,26 @@ void PlotBuilder::calcAxis(const Data::DataTable &dataTable,
 			    axisProps.step.getValue()};
 	}
 	else {
-		for (auto
-		         merge =
-		             axisProps.sort == Sort::byLabel
-		             || (std::ranges::starts_with(
-		                     plot->getOptions()->dimLabelIndex(+type),
-		                     std::views::single(std::size_t{}))
-		                 && (axisProps.sort == Sort::none
-		                     || scale.dimensions().size() == 1)),
-		         layer = merge
-		              && plot->getStyle()
-		                         .plot.getAxis(type)
-		                         .label.multiLevelAxis
-		                     == Styles::AxisLabelParams::
-		                         MultiLevelAxis::nested
-		              && plot->getStyle()
-		                         .plot.getAxis(type)
-		                         .label.position
-		                     != Styles::AxisLabel::Position::axis;
-		     const auto &marker : plot->markers) {
+		auto &&labels = plot->getOptions()->dimLabelIndex(+type);
+		auto merge = axisProps.sort == Sort::byLabel
+		          || (std::ranges::starts_with(labels,
+		                  std::views::single(std::size_t{}))
+		              && (axisProps.sort == Sort::none
+		                  || scale.dimensions().size() == 1));
+		auto layer =
+		    merge
+		    && plot->getStyle()
+		               .plot.getAxis(type)
+		               .label.multiLevelAxis
+		           == Styles::AxisLabelParams::MultiLevelAxis::nested
+		    && plot->getStyle().plot.getAxis(type).label.position
+		           != Styles::AxisLabel::Position::axis
+		    && std::ranges::starts_with(labels,
+		        std::views::single(std::size_t{}));
+
+		merge &= layer || labels.size() == 1;
+
+		for (const auto &marker : plot->markers) {
 			if (!marker.enabled) continue;
 
 			const auto &id =
