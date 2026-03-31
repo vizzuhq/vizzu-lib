@@ -215,7 +215,7 @@ struct Channel
 		static LabelLevelList fromString(const std::string &str)
 		{
 			std::vector<std::size_t> levels;
-			if (!str.empty() && str == std::string_view{"[]"})
+			if (!str.empty() && str != std::string_view{"[]"})
 				for (auto &&s :
 				    std::string_view{str} | std::views::split(',')
 				        | std::views::transform(

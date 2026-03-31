@@ -2,6 +2,7 @@
 
 #include <algorithm>
 #include <cmath>
+#include <cstddef>
 #include <functional>
 #include <map>
 #include <numbers>
@@ -17,10 +18,12 @@
 #include "base/refl/auto_accessor.h"
 #include "base/style/impl.tpp"
 #include "chart/generator/plot.h"
+#include "chart/main/style.h"
 #include "chart/options/channel.h"
 #include "chart/options/coordsystem.h"
 #include "chart/options/options.h"
 #include "chart/options/shapetype.h"
+#include "chart/options/sort.h"
 
 #include "layout.h"
 

@@ -2,6 +2,7 @@
 
 #include <algorithm>
 #include <cmath>
+#include <cstdint>
 #include <numbers>
 #include <optional>
 #include <ranges>
@@ -28,6 +29,7 @@
 #include "chart/main/events.h"
 #include "chart/main/style.h"
 #include "chart/options/channel.h"
+#include "chart/options/coordsystem.h"
 
 #include "drawguides.h"
 #include "drawinterlacing.h"
