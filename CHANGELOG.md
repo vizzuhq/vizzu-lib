@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+### Experimental added
+
+- Support multiple axis label as list. Default separated with ', '
+
 ## [0.17.1] - 2025-08-24
 
 ### Fixed
