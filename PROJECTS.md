@@ -12,7 +12,7 @@ Official:
     - \[
         [ipyvizzu](https://github.com/vizzuhq/ipyvizzu)
         \]
-        integration for Vizzu
+        **Jupyter Notebook** integration for Vizzu
 - Extensions
     - \[
         [vizzu-story-js](https://github.com/vizzuhq/vizzu-story-js)
@@ -34,7 +34,7 @@ Official:
     - \[
         [vizzu-vite-demo](https://github.com/vizzuhq/vizzu-vite-demo)
         \]
-        example for using Vizzu with **Vite**
+        Howto and example for using Vizzu with **Vite**
     - \[
         [vizzu-pyscript-example](https://github.com/vizzuhq/vizzu-pyscript-example)
         \]
