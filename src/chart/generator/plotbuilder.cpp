@@ -14,6 +14,7 @@
 #include <ranges>
 #include <set>
 #include <stdexcept>
+#include <string>
 #include <tuple>
 #include <utility>
 #include <vector>
@@ -36,6 +37,7 @@
 #include "dataframe/old/datatable.h"
 #include "dataframe/old/types.h"
 
+#include "axis.h"
 #include "buckets.h"
 #include "colorbase.h"
 #include "plot.h"
@@ -70,10 +72,57 @@ void PlotBuilder::addAxisLayout(Buckets &buckets,
     const Data::DataTable &dataTable)
 {
 	linkMarkers(buckets);
-	calcAxises(dataTable, buckets);
-	addAlignment(buckets, plot->getOptions()->mainAxisType());
-	addAlignment(buckets.sort(&Marker::subId),
-	    plot->getOptions()->subAxisType());
+
+	auto needAxisDefaultSplitMain =
+	    needAxisDefaultSplit(plot->getOptions()->mainAxisType());
+	auto needAxisDefaultSplitSub =
+	    needAxisDefaultSplit(plot->getOptions()->subAxisType());
+
+	calcAxises(dataTable,
+	    buckets,
+	    needAxisDefaultSplitMain,
+	    needAxisDefaultSplitSub);
+	if (!needAxisDefaultSplitMain)
+		addAlignment(buckets, plot->getOptions()->mainAxisType());
+	if (!needAxisDefaultSplitSub)
+		addAlignment(buckets.sort(&Marker::subId),
+		    plot->getOptions()->subAxisType());
+}
+
+bool PlotBuilder::needAxisDefaultSplit(AxisId axisIndex) const
+{
+	if (isConnecting(plot->getOptions()->geometry.get()))
+		return false;
+
+	if (plot->getOptions()->isSplit(axisIndex)
+	    || !plot->getOptions()->hasDimensionToSplit((axisIndex)))
+		return false;
+
+	const auto &channel =
+	    plot->getOptions()->getChannels().at(axisIndex);
+	if (channel.hasMeasure()) return false;
+	if (channel.dimensions().size() <= 1) return false;
+	if (plot->getOptions()->getChannels().axisPropsAt(axisIndex).sort
+	    == Sort::byValue)
+		return false;
+
+	const auto &dimensionLabelLevelIndex =
+	    plot->getOptions()->dimLabelIndex(+axisIndex);
+	if (dimensionLabelLevelIndex.empty()
+	    || dimensionLabelLevelIndex.front() != 0)
+		return false;
+	const auto &seriesIndex = *channel.dimensions().begin();
+	for (auto id : {+!axisIndex,
+	         ChannelId::label,
+	         ChannelId::color,
+	         ChannelId::lightness,
+	         ChannelId::size})
+		if (plot->getOptions()->getChannels().at(id).isSeriesUsed(
+		        seriesIndex))
+			return false;
+	return dataCube.df->get_series_info(seriesIndex.getColIndex(),
+	           "isContiguous")
+	    != "true";
 }
 
 void PlotBuilder::initDimensionTrackers()
@@ -157,10 +206,12 @@ std::vector<PlotBuilder::BucketSortInfo> PlotBuilder::sortedBuckets(
 				it = sorted.emplace(it,
 				    idx.itemId,
 				    0.0,
-				    (marker.*buckets.marker_id_get).label
-				        ? &(marker.*buckets.marker_id_get)
-				               .label->value
-				        : nullptr);
+				    !(marker.*buckets.marker_id_get).label.empty()
+				        ? std::make_optional(
+				              DimensionAxis::mergedLabels(
+				                  (marker.*buckets.marker_id_get)
+				                      .label))
+				        : std::nullopt);
 
 			it->size += marker.size.getCoord(
 			    !plot->getOptions()->getOrientation());
@@ -181,8 +232,9 @@ std::vector<PlotBuilder::BucketSortInfo> PlotBuilder::sortedBuckets(
 		std::ranges::stable_sort(sorted,
 		    [](const BucketSortInfo &lhs, const BucketSortInfo &rhs)
 		    {
-			    if (rhs.label == nullptr || lhs.label == nullptr)
-				    return lhs.label != nullptr;
+			    if (rhs.label == std::nullopt
+			        || lhs.label == std::nullopt)
+				    return lhs.label != std::nullopt;
 			    return Text::NaturalCmp{}(*lhs.label, *rhs.label);
 		    });
 		break;
@@ -271,7 +323,7 @@ bool PlotBuilder::linkMarkers(const Buckets &buckets,
 		for (std::size_t ix{}, max = sorted.size(); ix < max; ++ix) {
 			auto &o = dimOffset[ix];
 			for (const auto &bucket : buckets) {
-				auto &&ids = std::ranges::views::values(bucket);
+				auto &&ids = std::views::values(bucket);
 				auto sIx = sorted[ix].index;
 				auto it = std::ranges::lower_bound(ids,
 				    sIx,
@@ -308,7 +360,7 @@ bool PlotBuilder::linkMarkers(const Buckets &buckets,
 		std::array<double, 2> prevPositions{};
 		for (auto i = 0U; i < sorted.size(); ++i) {
 			auto idAct = sorted[i].index;
-			auto &&ids = std::ranges::views::values(bucket);
+			auto &&ids = std::views::values(bucket);
 			auto it = std::ranges::lower_bound(ids,
 			    idAct,
 			    {},
@@ -352,16 +404,24 @@ bool PlotBuilder::linkMarkers(const Buckets &buckets,
 }
 
 void PlotBuilder::calcAxises(const Data::DataTable &dataTable,
-    Buckets &buckets)
+    Buckets &buckets,
+    bool needAxisDefaultSplitMain,
+    bool needAxisDefaultSplitSub)
 {
 	auto mainAxis = plot->getOptions()->mainAxisType();
-	auto &&subRanges = addSeparation(buckets, !mainAxis);
+	auto &&subRanges =
+	    addSeparation(buckets, !mainAxis, needAxisDefaultSplitSub);
 
-	auto &&mainRanges =
-	    addSeparation(buckets.sort(&Marker::mainId), mainAxis);
+	auto &&mainRanges = addSeparation(buckets.sort(&Marker::mainId),
+	    mainAxis,
+	    needAxisDefaultSplitMain);
 
-	auto mainBoundRect = plot->getMarkersBounds(mainAxis);
-	auto subBoundRect = plot->getMarkersBounds(!mainAxis);
+	auto mainBoundRect = needAxisDefaultSplitMain
+	                       ? Math::Range{0.0, 1.0}
+	                       : plot->getMarkersBounds(mainAxis);
+	auto subBoundRect = needAxisDefaultSplitSub
+	                      ? Math::Range{0.0, 1.0}
+	                      : plot->getMarkersBounds(!mainAxis);
 
 	plot->getOptions()->setAutoRange(
 	    !std::signbit(
@@ -429,10 +489,10 @@ void PlotBuilder::calcLegendAndLabel(const Data::DataTable &dataTable)
 			}
 		}
 		else if (!scale.isEmpty()) {
-			auto merge =
-			    type == LegendId::size
-			    || (type == LegendId::lightness
-			        && plot->getOptions()->dimLabelIndex(+type) == 0);
+			auto merge = type == LegendId::size
+			          || (type == LegendId::lightness
+			              && plot->getOptions()->dimLabelIndex(+type)
+			                     == std::vector{std::size_t{}});
 			for (std::uint32_t count{}; const auto &[i, label] :
 			     std::get<1>(stats.at(type))) {
 				auto rangeId = static_cast<double>(i);
@@ -449,14 +509,23 @@ void PlotBuilder::calcLegendAndLabel(const Data::DataTable &dataTable)
 				        count,
 				        color,
 				        true,
-				        merge))
+				        merge,
+				        false))
 					++count;
 				calcLegend.dimension.hasMarker = true;
 			}
 
 			if (auto &&series = plot->getOptions()->labelSeries(type);
-			    series && isAutoTitle && calcLegend.dimension.empty())
-				calcLegend.title = series.value().getColIndex();
+			    !series.empty() && isAutoTitle
+			    && calcLegend.dimension.empty())
+				calcLegend.title = std::ranges::to<std::string>(
+				    series
+				    | std::views::transform(
+				        [](const Data::SeriesIndex &series)
+				        {
+					        return ", " + series.getColIndex();
+				        })
+				    | std::views::join | std::views::drop(2));
 		}
 	}
 
@@ -532,12 +601,26 @@ void PlotBuilder::calcAxis(const Data::DataTable &dataTable,
 			    axisProps.step.getValue()};
 	}
 	else {
-		for (auto merge =
-		         axisProps.sort == Sort::byLabel
-		         || (plot->getOptions()->dimLabelIndex(+type) == 0
-		             && (axisProps.sort == Sort::none
-		                 || scale.dimensions().size() == 1));
-		     const auto &marker : plot->markers) {
+		auto &&labels = plot->getOptions()->dimLabelIndex(+type);
+		auto &&firstLabelIsZero =
+		    !labels.empty() && labels.front() == std::size_t{};
+		auto merge = axisProps.sort == Sort::byLabel
+		          || (firstLabelIsZero
+		              && (axisProps.sort == Sort::none
+		                  || scale.dimensions().size() == 1));
+		auto layer =
+		    merge
+		    && plot->getStyle()
+		               .plot.getAxis(type)
+		               .label.multiLevelAxis
+		           == Styles::AxisLabelParams::MultiLevelAxis::nested
+		    && plot->getStyle().plot.getAxis(type).label.position
+		           != Styles::AxisLabel::Position::axis
+		    && firstLabelIsZero;
+
+		merge &= layer || labels.size() == 1;
+
+		for (const auto &marker : plot->markers) {
 			if (!marker.enabled) continue;
 
 			const auto &id =
@@ -545,20 +628,28 @@ void PlotBuilder::calcAxis(const Data::DataTable &dataTable,
 			        ? marker.mainId
 			        : marker.subId;
 
-			if (const auto &slice = id.label)
-				axis.dimension.add(*slice,
+			if (const auto &slice = id.label; !slice.empty())
+				axis.dimension.add(slice,
 				    marker.getSizeBy(type),
 				    {},
 				    {},
 				    false,
-				    merge);
+				    merge,
+				    layer);
 
 			axis.dimension.hasMarker = true;
 		}
 		if (auto &&series = plot->getOptions()->labelSeries(type);
 		    !axis.dimension.setLabels(axisProps.step.getValue(1.0))
-		    && series && isAutoTitle)
-			axis.title = series.value().getColIndex();
+		    && !series.empty() && isAutoTitle)
+			axis.title = std::ranges::to<std::string>(
+			    series
+			    | std::views::transform(
+			        [](const Data::SeriesIndex &series)
+			        {
+				        return ", " + series.getColIndex();
+			        })
+			    | std::views::join | std::views::drop(2));
 		for (std::uint32_t pos{};
 		     DimensionAxis::Item & i : axis.dimension.sortedItems())
 			i.endPos = i.startPos =
@@ -620,9 +711,12 @@ void PlotBuilder::addAlignment(const Buckets &buckets,
 }
 
 std::vector<PlotBuilder::BucketSeparationInfo>
-PlotBuilder::addSeparation(const Buckets &buckets, AxisId axisIndex)
+PlotBuilder::addSeparation(const Buckets &buckets,
+    AxisId axisIndex,
+    bool needAxisDefaultSplit)
 {
-	if (!plot->getOptions()->isSplit(axisIndex)) return {};
+	const bool isSplit = plot->getOptions()->isSplit(axisIndex);
+	if (!isSplit && !needAxisDefaultSplit) return {};
 
 	const auto &axisProps =
 	    plot->getOptions()->getChannels().axisPropsAt(axisIndex);
@@ -633,35 +727,62 @@ PlotBuilder::addSeparation(const Buckets &buckets, AxisId axisIndex)
 	for (auto &&bucket : buckets)
 		for (auto &&[marker, idx] : bucket) {
 			if (!marker.enabled) continue;
+			if (isSplit) {
+				auto it = std::lower_bound(res.begin(),
+				    res.end(),
+				    idx.itemId);
+				if (it == res.end() || it->itemId != idx.itemId)
+					it = res.insert(it,
+					    {.itemId = idx.itemId, .index = idx.label});
+				else if (it->index.empty() && !idx.label.empty())
+				    [[unlikely]]
+					it->index = idx.label;
 
-			auto it =
-			    std::lower_bound(res.begin(), res.end(), idx.itemId);
-			if (it == res.end() || it->itemId != idx.itemId) {
-				it = res.insert(it, {idx.itemId});
+				it->containsValues.include(
+				    marker.getSizeBy(axisIndex).size());
 			}
+			else if (!idx.label.empty()) {
+				const auto &front = idx.label.front();
+				auto it =
+				    std::lower_bound(res.begin(), res.end(), front);
+				if (it == res.end() || it->index.front() != front)
+					it = res.insert(it,
+					    {.itemId = idx.itemId,
+					        .index = {front},
+					        .containsValues =
+					            marker.getSizeBy(axisIndex)});
+				else if (idx.itemId > it->itemId)
+					it->itemId = idx.itemId;
 
-			auto &resItem = *it;
-			if (!resItem.index && idx.label)
-				resItem.index = idx.label;
-
-			resItem.containsValues.include(
-			    marker.getSizeBy(axisIndex).size());
+				it->containsValues.include(
+				    marker.getSizeBy(axisIndex));
+			}
 		}
+
+	if (!isSplit) {
+		if (axisProps.sort == Sort::none)
+			std::ranges::stable_sort(res,
+			    std::less{},
+			    &BucketSeparationInfo::itemId);
+		if (axisProps.reverse) std::ranges::reverse(res);
+	}
 
 	auto max = Math::Range<>{{}, {}};
 	auto maxRange = Math::Range<>{{}, {}};
 	for (auto &resItem : res) {
-		auto onlyPositive = !std::signbit(resItem.containsValues.min);
-		plot->getOptions()->setAutoRange(onlyPositive,
-		    onlyPositive,
-		    true);
+		if (isSplit) {
+			auto onlyPositive =
+			    !std::signbit(resItem.containsValues.min);
+			plot->getOptions()->setAutoRange(onlyPositive,
+			    onlyPositive,
+			    true);
 
-		resItem.containsValues =
-		    plot->getOptions()
-		        ->getChannels()
-		        .at(axisIndex)
-		        .range.getRange(resItem.containsValues);
-
+			resItem.containsValues =
+			    plot->getOptions()
+			        ->getChannels()
+			        .at(axisIndex)
+			        .range.getRange(resItem.containsValues);
+		}
 		max = max + resItem.containsValues;
 		maxRange.include(resItem.containsValues);
 	}
@@ -684,14 +805,37 @@ PlotBuilder::addSeparation(const Buckets &buckets, AxisId axisIndex)
 	}
 
 	if (plot->getOptions()->coordSystem == CoordSystem::polar
-	    && axisIndex == AxisId::x && !first)
+	    && axisIndex == AxisId::x && !first) {
 		onMax += splitSpace;
+
+		if (!isSplit) maxRange.max += splitSpace;
+	}
+
+	if (Math::Floating::is_zero(onMax)) onMax = 1.0;
+
+	if (!isSplit) {
+		if (axisProps.sort == Sort::byLabel)
+			std::ranges::stable_sort(res,
+			    std::less{},
+			    &BucketSeparationInfo::itemId);
+		else if (axisProps.reverse)
+			std::ranges::reverse(res);
+	}
 
 	for (auto &&bucket : buckets)
 		for (auto &&[marker, idx] : bucket) {
+			auto markerSize = marker.getSizeBy(axisIndex);
 
-			auto it =
-			    std::lower_bound(res.begin(), res.end(), idx.itemId);
+			auto it = res.end();
+			bool found{};
+			it = std::lower_bound(res.begin(), it, idx.itemId);
+			if (isSplit) {
+				found = it != res.end() && it->itemId == idx.itemId;
+			}
+			else if (!idx.label.empty()) {
+				found = it != res.end()
+				     && it->index.front() == idx.label.front();
+			}
 
 			Math::Range<> atRange{};
 			Math::Range<> containsValues{};
@@ -703,7 +847,7 @@ PlotBuilder::addSeparation(const Buckets &buckets, AxisId axisIndex)
 					    it->containsValues.max};
 				}
 			}
-			else if (it->itemId != idx.itemId) {
+			else if (!found) {
 				if (it == res.begin()) {
 					atRange = {it->atRange.min, it->atRange.min};
 					containsValues = {it->containsValues.min,
@@ -726,13 +870,12 @@ PlotBuilder::addSeparation(const Buckets &buckets, AxisId axisIndex)
 				containsValues = it->containsValues;
 			}
 
-			// auto buc = res[idx.itemId];
-			auto markerSize = marker.getSizeBy(axisIndex);
+			if (isSplit) { markerSize = markerSize - markerSize.min; }
 
 			marker.setSizeBy(axisIndex,
 			    (Base::Align{align,
 			         atRange - atRange.min + containsValues.min}
-			            .getAligned(markerSize - markerSize.min)
+			            .getAligned(markerSize)
 			        + atRange.min - containsValues.min)
 			        / onMax);
 		}
@@ -759,6 +902,9 @@ PlotBuilder::addSeparation(const Buckets &buckets, AxisId axisIndex)
 	}
 
 	stats.setIfRange(axisIndex, alignedRange);
+
+	if (!isSplit) return {};
+
 	return res;
 }
 

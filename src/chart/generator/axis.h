@@ -2,6 +2,7 @@
 #define AXIS_H
 
 #include <map>
+#include <ranges>
 
 #include "base/anim/interpolated.h"
 #include "base/geom/point.h"
@@ -21,7 +22,7 @@ namespace Vizzu::Gen
 struct ChannelStats
 {
 	using TrackType = std::variant<Math::Range<>,
-	    std::map<std::uint32_t, Data::SliceIndex>>;
+	    std::map<std::uint32_t, std::vector<Data::SliceIndex>>>;
 
 	Refl::EnumArray<ChannelId, TrackType> tracked;
 	Math::Range<> lightness;
@@ -35,9 +36,9 @@ struct ChannelStats
 	void track(ChannelId at, const Data::MarkerId &id)
 	{
 		auto &vec = std::get<1>(tracked[at]);
-		if (id.label)
+		if (!id.label.empty())
 			vec.try_emplace(static_cast<std::uint32_t>(id.itemId),
-			    *id.label);
+			    id.label);
 	}
 
 	void track(ChannelId at, const double &value)
@@ -92,15 +93,18 @@ struct DimensionAxis
 		Math::Range<> range;
 		::Anim::Interpolated<ColorBase> colorBase;
 		::Anim::Interpolated<bool> label;
+		::Anim::Interpolated<std::uint32_t> layer;
 
 		Item(Math::Range<> range,
 		    std::uint32_t position,
 		    const std::optional<ColorBase> &color,
-		    bool setCategoryAsLabel) :
+		    bool setCategoryAsLabel,
+		    std::uint32_t layer) :
 		    startPos(position),
 		    endPos(position),
 		    range(range),
-		    label(setCategoryAsLabel)
+		    label(setCategoryAsLabel),
+		    layer(layer)
 		{
 			if (color) colorBase = *color;
 		}
@@ -110,7 +114,8 @@ struct DimensionAxis
 		    endPos(starter ? PosType{} : item.endPos),
 		    range(item.range),
 		    colorBase(item.colorBase),
-		    label(item.label)
+		    label(item.label),
+		    layer(item.layer)
 		{}
 
 		bool operator==(const Item &other) const
@@ -128,36 +133,38 @@ struct DimensionAxis
 		friend Item
 		interpolate(const Item &op0, const Item &op1, double factor);
 	};
-	using Values = std::multimap<Data::SliceIndex, Item>;
+	using Values = std::multimap<std::vector<Data::SliceIndex>, Item>;
 
 	double factor{};
 	bool hasMarker{};
 
 	DimensionAxis() = default;
-	bool add(const Data::SliceIndex &index,
+	bool add(const std::vector<Data::SliceIndex> &index,
 	    const Math::Range<> &range,
 	    std::uint32_t position,
 	    const std::optional<ColorBase> &color,
 	    bool label,
-	    bool merge);
+	    bool merge,
+	    bool layered,
+	    std::uint32_t layer = 0);
 	[[nodiscard]] bool operator==(
 	    const DimensionAxis &other) const = default;
 
 	[[nodiscard]] auto begin()
 	{
-		return std::ranges::views::values(values).begin();
+		return std::views::values(values).begin();
 	};
 	[[nodiscard]] auto end()
 	{
-		return std::ranges::views::values(values).end();
+		return std::views::values(values).end();
 	}
 	[[nodiscard]] auto begin() const
 	{
-		return std::ranges::views::values(values).begin();
+		return std::views::values(values).begin();
 	};
 	[[nodiscard]] auto end() const
 	{
-		return std::ranges::views::values(values).end();
+		return std::views::values(values).end();
 	}
 	[[nodiscard]] bool empty() const { return values.empty(); }
 	bool setLabels(double step);
@@ -175,8 +182,30 @@ struct DimensionAxis
 				    rhs.range.min);
 			}
 		};
-		return std::multiset<std::reference_wrapper<Item>,
-		    ItemSorterByRangeStart>{begin(), end()};
+		return std::ranges::to<
+		    std::multiset<std::reference_wrapper<Item>,
+		        ItemSorterByRangeStart>>(std::views::filter(*this,
+		    [](const Item &i)
+		    {
+			    return i.layer.get() == 0;
+		    }));
+	}
+
+	static std::size_t commonDimensionParts(const Values &lhs,
+	    const Values &rhs);
+
+	template <std::string Data::SliceIndex::*which =
+	              &Data::SliceIndex::value>
+	[[nodiscard]] static std::string mergedLabels(
+	    const std::vector<Data::SliceIndex> &slices)
+	{
+		return std::ranges::to<std::string>(
+		    std::views::transform(slices,
+		        [](const Data::SliceIndex &slice)
+		        {
+			        return ", " + slice.*which;
+		        })
+		    | std::views::join | std::views::drop(2));
 	}
 
 private:
@@ -189,10 +218,13 @@ struct Axis
 	MeasureAxis measure;
 	DimensionAxis dimension;
 
-	[[nodiscard]] const std::string &seriesName() const
+	[[nodiscard]] std::string seriesName() const
 	{
-		if (!dimension.empty())
-			return dimension.getValues().begin()->first.column;
+		if (!dimension.empty()) {
+			return DimensionAxis::mergedLabels<
+			    &Data::SliceIndex::column>(
+			    dimension.getValues().begin()->first);
+		}
 		return measure.series;
 	}
 
@@ -220,8 +252,7 @@ struct SplitAxis : Axis
 		}
 	};
 
-	using Parts =
-	    std::multimap<std::optional<Data::SliceIndex>, Part>;
+	using Parts = std::multimap<std::vector<Data::SliceIndex>, Part>;
 	Parts parts;
 
 	[[nodiscard]] bool operator==(

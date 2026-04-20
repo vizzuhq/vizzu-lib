@@ -31,6 +31,7 @@ for (let i = 95; i <= 105; i++) {
 			{
 				x: ['X' + i, 'X'],
 				y: 'Y',
+				size: 'X' + i,
 				title: 'Count of |: ' + i
 			},
 			{ regroupStrategy: 'drilldown', duration: 0.5 }

@@ -65,7 +65,7 @@ constexpr void index_erase_if<>::operator()(
     Cont &&cont) const noexcept
 {
 	auto from = cont.end();
-	for (auto i : std::ranges::views::reverse(indices))
+	for (auto i : std::views::reverse(indices))
 		cont[i] = std::move(*--from);
 	std::forward<Cont>(cont).erase(from, cont.end());
 }

@@ -8,10 +8,10 @@
 			"refs": ["d902bf7"]
 		},
 		"animation_control_keyframes": {
-			"refs": ["b606cf4"]
+			"refs": ["ffe02cb"]
 		},
 		"animation_options": {
-			"refs": ["d9946ed"]
+			"refs": ["0759731"]
 		},
 		"axes_title_tooltip": {
 			"refs": ["c6a1da9"]
@@ -41,16 +41,16 @@
 			"refs": ["a3858f1"]
 		},
 		"group_stack": {
-			"refs": ["8434f27"]
+			"refs": ["5ff57c1"]
 		},
 		"orientation_split_polar": {
 			"refs": ["58dc5b1"]
 		},
 		"shorthands_store": {
-			"refs": ["ed6c351"]
+			"refs": ["397f7c1"]
 		},
 		"sorting": {
-			"refs": ["949e329"]
+			"refs": ["c9ce754"]
 		},
 		"stacking_explanation": {
 			"refs": ["3ffa038"]

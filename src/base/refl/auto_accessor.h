@@ -153,7 +153,7 @@ const Accessor<Object, runtime> &getAccessor(
 
 template <class Object, bool runtime = false> auto getAccessorNames()
 {
-	return std::ranges::views::keys(getAccessors<Object, runtime>());
+	return std::views::keys(getAccessors<Object, runtime>());
 }
 }
 

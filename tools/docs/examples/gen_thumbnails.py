@@ -9,7 +9,6 @@ from typing import List, Optional
 
 from PIL import Image
 
-
 REPO_PATH = Path(__file__).parent / ".." / ".." / ".."
 TOOLS_PATH = REPO_PATH / "tools"
 MKDOCS_PATH = TOOLS_PATH / "docs"

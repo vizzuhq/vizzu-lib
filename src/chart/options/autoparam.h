@@ -37,6 +37,7 @@ template <typename Type, bool nullable = false> struct AutoParam
 	}
 
 	[[nodiscard]] auto toString() const
+	    requires(requires { Conv::toString(std::declval<Type>()); })
 	{
 		if (autoSet) return decltype(Conv::toString(value)){"auto"};
 		if constexpr (nullable)

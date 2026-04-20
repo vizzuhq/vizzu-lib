@@ -85,7 +85,9 @@ public:
 	    requires(std::is_same_v<PT, Text::NumberFormat>
 	             || std::is_same_v<PT, Text::NumberScale>
 	             || std::is_same_v<PT, Styles::MarkerLabel::Format>
-	             || std::is_same_v<PT, Styles::MarkerLabel::Unit>)
+	             || std::is_same_v<PT, Styles::MarkerLabel::Unit>
+	             || std::is_same_v<PT,
+	                 Styles::AxisLabelParams::MultiLevelAxis>)
 	void operator()(const T &, const T &, T &) const;
 
 private:

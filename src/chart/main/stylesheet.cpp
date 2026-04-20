@@ -2,6 +2,7 @@
 
 #include <algorithm>
 #include <cmath>
+#include <cstddef>
 #include <functional>
 #include <map>
 #include <numbers>
@@ -17,10 +18,12 @@
 #include "base/refl/auto_accessor.h"
 #include "base/style/impl.tpp"
 #include "chart/generator/plot.h"
+#include "chart/main/style.h"
 #include "chart/options/channel.h"
 #include "chart/options/coordsystem.h"
 #include "chart/options/options.h"
 #include "chart/options/shapetype.h"
+#include "chart/options/sort.h"
 
 #include "layout.h"
 
@@ -221,11 +224,9 @@ void Sheet::setAfterStyles(Gen::Plot &plot, const Geom::Size &size)
 {
 	auto &style = plot.getStyle();
 
-	if (auto &xLabel =
-	        style.plot
-	            .getAxis(plot.getOptions()->getHorizontalChannel())
-	            .label;
-	    !xLabel.angle) {
+	auto xChannel = plot.getOptions()->getHorizontalChannel();
+	auto &xLabel = style.plot.getAxis(xChannel).label;
+	if (!xLabel.angle) {
 		auto plotX = size.x;
 
 		auto em = style.calculatedSize();
@@ -236,41 +237,67 @@ void Sheet::setAfterStyles(Gen::Plot &plot, const Geom::Size &size)
 
 		auto font = Gfx::Font{xLabel};
 
-		std::vector<Math::Range<>> ranges;
 		bool has_collision = false;
-		for (const auto &[label, item] :
-		    plot.axises.at(Gen::AxisId::x).dimension.getValues()) {
 
-			if (!item.label.get()) continue;
+		auto indices = plot.getOptions()->dimLabelIndex(+xChannel);
+		auto sort = plot.getOptions()
+		                ->getChannels()
+		                .axisPropsAt(xChannel)
+		                .sort;
 
-			auto textBoundary =
-			    Gfx::ICanvas::textBoundary(font, label.value);
-			auto textXHalfMargin =
-			    xLabel.toInvMargin(textBoundary, font.size)
-			        .getSpace()
-			        .x
-			    / 2.0;
-			auto xHalfSize =
-			    (textBoundary.x + textXHalfMargin) / plotX / 2.0;
+		if (auto skipCollisionCheck =
+		        (sort == Gen::Sort::byLabel
+		            || (!indices.empty()
+		                && indices.front() == std::size_t{}
+		                && sort == Gen::Sort::none))
+		        && xLabel.multiLevelAxis
+		               == AxisLabelParams::MultiLevelAxis::nested
+		        && indices.size() > 1
+		        && xLabel.position != AxisLabel::Position::axis;
+		    !skipCollisionCheck) {
+			for (std::vector<Math::Range<>> ranges;
+			     const auto &[label, item] :
+			     plot.axises.at(xChannel).dimension.getValues()) {
 
-			auto rangeCenter = item.range.middle();
+				if (!item.label.get()) continue;
 
-			auto next_range = Math::Range<>{rangeCenter - xHalfSize,
-			    rangeCenter + xHalfSize};
+				auto textBoundary = Gfx::ICanvas::textBoundary(font,
+				    Gen::DimensionAxis::mergedLabels(label));
+				auto textXHalfMargin =
+				    xLabel.toInvMargin(textBoundary, font.size)
+				        .getSpace()
+				        .x
+				    / 2.0;
+				auto xHalfSize =
+				    (textBoundary.x + textXHalfMargin) / plotX / 2.0;
 
-			if (std::any_of(ranges.begin(),
-			        ranges.end(),
-			        [&next_range](const Math::Range<> &other)
-			        {
-				        return other.intersects(next_range);
-			        })) {
-				has_collision = true;
-				break;
+				auto rangeCenter = item.range.middle();
+
+				auto next_range =
+				    Math::Range<>{rangeCenter - xHalfSize,
+				        rangeCenter + xHalfSize};
+
+				if (std::any_of(ranges.begin(),
+				        ranges.end(),
+				        [&next_range](const Math::Range<> &other)
+				        {
+					        return other.intersects(next_range);
+				        })) {
+					has_collision = true;
+					break;
+				}
+				ranges.push_back(next_range);
 			}
-			ranges.push_back(next_range);
 		}
 
 		xLabel.angle.emplace(has_collision * std::numbers::pi / 4);
+	}
+	if (!xLabel.multiLevelSpacing) {
+		xLabel.multiLevelSpacing.emplace(
+		    plot.getOptions()->coordSystem.get()
+		            == Gen::CoordSystem::cartesian
+		        ? 15.0
+		        : 100.0);
 	}
 }
 

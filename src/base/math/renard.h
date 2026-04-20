@@ -18,7 +18,7 @@ public:
 	[[nodiscard]] double floor(double value) const;
 
 private:
-	std::span<const double> numbers;
+	std::span<const double> numbers{};
 };
 
 }

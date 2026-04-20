@@ -5,7 +5,6 @@ from pathlib import Path
 from subprocess import Popen
 import sys
 
-
 REPO_PATH = Path(__file__).parent / ".." / ".."
 TOOLS_PATH = REPO_PATH / "tools"
 MKDOCS_PATH = TOOLS_PATH / "docs"

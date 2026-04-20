@@ -201,8 +201,12 @@ struct AxisLabelParams
 
 	enum class Side : std::uint8_t { positive, negative };
 
+	enum class MultiLevelAxis : std::uint8_t { flattened, nested };
+
 	Param<::Anim::Interpolated<Position>> position;
 	Param<::Anim::Interpolated<Side>> side;
+	Param<MultiLevelAxis> multiLevelAxis;
+	Param<double> multiLevelSpacing;
 };
 
 struct AxisLabel : OrientedLabel, AxisLabelParams

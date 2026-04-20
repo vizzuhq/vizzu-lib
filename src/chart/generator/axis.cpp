@@ -2,8 +2,9 @@
 
 #include <algorithm>
 #include <cmath>
+#include <compare>
+#include <cstddef>
 #include <cstdint>
-#include <functional>
 #include <limits>
 #include <memory>
 #include <optional>
@@ -11,6 +12,7 @@
 #include <string_view>
 #include <tuple>
 #include <utility>
+#include <vector>
 
 #include "base/alg/merge.h"
 #include "base/anim/interpolated.h"
@@ -46,7 +48,10 @@ void Axises::addLegendInterpolation(double legendFactor,
 	         && target.measure.enabled.get())
 	        || (!source.dimension.empty()
 	            && !target.dimension.empty()))
-	    && source.seriesName() != target.seriesName()) {
+	    && source.seriesName() != target.seriesName()
+	    && !DimensionAxis::commonDimensionParts(
+	        source.dimension.getValues(),
+	        target.dimension.getValues())) {
 		if (!leftLegend[0]) leftLegend[0].emplace(legendType);
 		if (!leftLegend[1]) leftLegend[1].emplace(legendType);
 
@@ -67,8 +72,11 @@ void Axises::addLegendInterpolation(double legendFactor,
 	        leftLegend[0] && leftLegend[1]
 	        && leftLegend[0]->interpolated
 	               == leftLegend[1]->interpolated
-	        && leftLegend[0]->calc.seriesName()
-	               == leftLegend[1]->calc.seriesName();
+	        && (leftLegend[0]->calc.seriesName()
+	                == leftLegend[1]->calc.seriesName()
+	            || DimensionAxis::commonDimensionParts(
+	                leftLegend[0]->calc.dimension.getValues(),
+	                leftLegend[1]->calc.dimension.getValues()));
 	    sameInterpolated && !leftLegend[0]->calc.dimension.empty()
 	    && !leftLegend[1]->calc.dimension.empty()) {
 
@@ -99,6 +107,19 @@ Geom::Point Axises::origo() const
 {
 	return {at(AxisId::x).measure.origo(),
 	    at(AxisId::y).measure.origo()};
+}
+std::size_t DimensionAxis::commonDimensionParts(const Values &lhs,
+    const Values &rhs)
+{
+	return lhs.empty() || rhs.empty()
+	         ? 0
+	         : std::ranges::mismatch(lhs.begin()->first,
+	               rhs.begin()->first,
+	               [](const auto &lhsItem, const auto &rhsItem)
+	               {
+		               return lhsItem.column == rhsItem.column;
+	               }).in1
+	               - lhs.begin()->first.begin();
 }
 
 MeasureAxis::MeasureAxis(const Math::Range<> &interval,
@@ -242,13 +263,30 @@ MeasureAxis interpolate(const MeasureAxis &op0,
 
 	return res;
 }
-bool DimensionAxis::add(const Data::SliceIndex &index,
+bool DimensionAxis::add(const std::vector<Data::SliceIndex> &index,
     const Math::Range<> &range,
     std::uint32_t position,
     const std::optional<ColorBase> &color,
     bool label,
-    bool merge)
+    bool merge,
+    bool layered,
+    std::uint32_t layer)
 {
+	if (layered) {
+		bool res{};
+		for (auto ix{index.size()}; const auto &slice : index) {
+			--ix;
+			res |= add({slice},
+			    range,
+			    position,
+			    color,
+			    ix > 0,
+			    std::exchange(merge, false),
+			    false,
+			    ix);
+		}
+		return res;
+	}
 	auto [it, end] = values.equal_range(index);
 	if (merge) {
 		if (it != end) {
@@ -267,7 +305,7 @@ bool DimensionAxis::add(const Data::SliceIndex &index,
 			if (it++->second.range == range) return false;
 	values.emplace(std::piecewise_construct,
 	    std::tuple{index},
-	    std::tuple{range, position, color, label});
+	    std::tuple{range, position, color, label, layer});
 
 	return true;
 }
@@ -302,27 +340,54 @@ DimensionAxis interpolate(const DimensionAxis &op0,
 	        factor));
 	using Val = DimensionAxis::Values::value_type;
 
+	std::size_t commonSize =
+	    DimensionAxis::commonDimensionParts(op0.getValues(),
+	        op1.getValues());
+	std::size_t maxSize = std::max(
+	    op0.values.empty() ? 0 : op0.values.begin()->first.size(),
+	    op1.values.empty() ? 0 : op1.values.begin()->first.size());
+
 	const Val *latest1{};
 	const Val *latest2{};
 
-	auto merger = [&](const Val &lhs, const Val &rhs) -> Val
+	auto merger = [&](const Val &lhs,
+	                  const Val &rhs,
+	                  const Val::first_type *key = nullptr) -> Val
 	{
-		latest1 = std::addressof(lhs);
-		latest2 = std::addressof(rhs);
-		return {lhs.first,
+		return {key ? *key : lhs.first,
 		    interpolate(lhs.second, rhs.second, factor)};
 	};
 
+	auto needMerge = [&](const Val &lhs, const Val &rhs)
+	{
+		latest1 = std::addressof(lhs);
+		latest2 = std::addressof(rhs);
+		return commonSize == maxSize || commonSize == 0;
+	};
+
+	auto comparator = [&](const auto &lhs, const auto &rhs)
+	{
+		if (commonSize == maxSize || commonSize == 0)
+			return std::compare_three_way{}(lhs, rhs);
+		return std::lexicographical_compare_three_way(lhs.begin(),
+		    lhs.begin() + commonSize,
+		    rhs.begin(),
+		    rhs.begin() + commonSize);
+	};
+
 	auto &&one_side =
-	    [&merger](bool first,
+	    [&](bool first,
 	        DimensionAxis::Item::PosType DimensionAxis::Item::*pos,
 	        const Val *&paramOther)
 	{
 		return [&, first, pos](const Val &val) -> Val
 		{
-			if (paramOther && paramOther->first == val.first) {
-				auto &&res = first ? merger(val, *paramOther)
-				                   : merger(*paramOther, val);
+			if (paramOther
+			    && std::is_eq(
+			        comparator(paramOther->first, val.first))) {
+				auto &&res = first
+				               ? merger(val, *paramOther)
+				               : merger(*paramOther, val, &val.first);
 				(res.second.*pos).makeAuto();
 				return res;
 			}
@@ -334,11 +399,13 @@ DimensionAxis interpolate(const DimensionAxis &op0,
 	    op1.values,
 	    res.values,
 	    Alg::merge_args{.projection = &Val::first,
+	        .comparator = comparator,
 	        .transformer_1 =
 	            one_side(true, &DimensionAxis::Item::endPos, latest2),
 	        .transformer_2 = one_side(false,
 	            &DimensionAxis::Item::startPos,
 	            latest1),
+	        .need_merge = needMerge,
 	        .merger = merger});
 
 	return res;
@@ -355,6 +422,7 @@ DimensionAxis::Item interpolate(const DimensionAxis::Item &op0,
 	res.range = interpolate(op0.range, op1.range, factor);
 	res.colorBase = interpolate(op0.colorBase, op1.colorBase, factor);
 	res.label = interpolate(op0.label, op1.label, factor);
+	res.layer = interpolate(op0.layer, op1.layer, factor);
 	return res;
 }
 
@@ -438,7 +506,7 @@ interpolate(const SplitAxis &op0, const SplitAxis &op1, double factor)
 		}
 		else
 			res.parts
-			    .insert({std::nullopt,
+			    .insert({{},
 			        {.weight =
 			                op0.parts.empty() ? 1 - factor : factor}})
 			    ->second.unique = true;

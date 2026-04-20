@@ -42,8 +42,9 @@ public:
 	{
 		struct DimLabel
 		{
-			const Data::SliceIndex &index;
+			const std::vector<Data::SliceIndex> &index;
 			const ::Anim::Interpolated<bool> &presented;
+			double layer;
 			bool start;
 			bool end;
 
@@ -108,13 +109,10 @@ private:
 	void drawTitle(Gen::AxisId axisIndex,
 	    const Geom::AffineTransform &tr = {},
 	    double w = 1.0) const;
-	void drawDimensionLabels(Gen::AxisId axisIndex,
-	    const Geom::AffineTransform &tr = {},
-	    double w = 1.0) const;
+	void drawDimensionLabels(Gen::AxisId axisIndex) const;
 	void drawDimensionLabel(Gen::AxisId axisIndex,
 	    const Geom::Point &origo,
 	    const Interval &interval,
-	    const Geom::AffineTransform &tr,
 	    double weight) const;
 };
 

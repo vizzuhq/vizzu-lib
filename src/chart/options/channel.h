@@ -1,11 +1,15 @@
 #ifndef CHANNEL_H
 #define CHANNEL_H
 
+#include <cctype>
+#include <charconv>
 #include <cstdint>
 #include <optional>
+#include <ranges>
 #include <set>
 #include <string>
 
+#include "base/conv/auto_json.h"
 #include "base/geom/orientation.h"
 #include "dataframe/old/types.h"
 
@@ -181,10 +185,77 @@ struct Channel
 		return set.measureId;
 	}
 
+	struct LabelLevelList
+	{
+		std::vector<std::size_t> levels;
+
+		[[nodiscard]] bool operator==(
+		    const LabelLevelList &other) const = default;
+
+		[[nodiscard]] auto operator<=>(
+		    const LabelLevelList &) const = default;
+
+		explicit LabelLevelList(std::size_t one) : levels{one} {}
+		LabelLevelList(const LabelLevelList &) = default;
+		LabelLevelList(LabelLevelList &&) noexcept = default;
+		LabelLevelList &operator=(const LabelLevelList &) = default;
+		LabelLevelList &operator=(
+		    LabelLevelList &&) noexcept = default;
+
+		template <class T>
+		    requires(!std::is_same_v<std::remove_cvref_t<T>,
+		                LabelLevelList>)
+		// NOLINTNEXTLINE(cppcoreguidelines-missing-std-forward)
+		explicit LabelLevelList(T &&) = delete;
+
+		explicit LabelLevelList(std::vector<std::size_t> &&levels) :
+		    levels(std::move(levels))
+		{}
+
+		static LabelLevelList fromString(const std::string &str)
+		{
+			std::vector<std::size_t> levels;
+			if (!str.empty() && str != std::string_view{"[]"})
+				for (auto &&s :
+				    std::string_view{str} | std::views::split(',')
+				        | std::views::transform(
+				            [](const auto &s)
+				            {
+					            auto &&range =
+					                s
+					                | std::views::drop_while(
+					                    [](const char &c)
+					                    {
+						                    return std::isspace(
+						                               static_cast<
+						                                   unsigned char>(
+						                                   c))
+						                        || c == '[';
+					                    });
+					            std::size_t ix{};
+					            std::from_chars(range.begin(),
+					                range.end(),
+					                ix);
+					            return ix;
+				            }))
+					if (!std::ranges::contains(levels, s))
+						levels.push_back(s);
+			return LabelLevelList{std::move(levels)};
+		}
+
+		[[nodiscard]] std::string toString() const
+		{
+			if (levels.size() == 1)
+				return std::to_string(levels.front());
+
+			return Conv::toJSON(levels);
+		}
+	};
+
 	bool stackable{};
 	ChannelSeriesList set{};
 	ChannelRange range{};
-	Base::AutoParam<std::size_t> labelLevel{};
+	Base::AutoParam<LabelLevelList> labelLevel{};
 	Base::AutoParam<std::string, true> title{};
 };
 
