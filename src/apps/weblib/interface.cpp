@@ -27,7 +27,7 @@
 #include "cinterface.h"
 #include "interfacejs.h"
 #include "jscriptcanvas.h"
-#include "jsfunctionwrapper.h"
+#include "jswrappers.h"
 #include "objectregistry.h"
 
 namespace Vizzu
@@ -216,6 +216,12 @@ std::variant<double, const std::string *> Interface::getRecordValue(
 	return record.get_value(column);
 }
 
+std::shared_ptr<Data::DataTable> Interface::getTable(
+    ObjectRegistryHandle data)
+{
+	return objects.get<Data::DataTable>(data);
+}
+
 void Interface::addEventListener(ObjectRegistryHandle chart,
     const char *event,
     void (*callback)(APIHandles::Event, const char *))
@@ -314,49 +320,217 @@ void Interface::setAnimValue(ObjectRegistryHandle chart,
 	getChart(chart)->getAnimOptions().set(path, value);
 }
 
-void Interface::addDimension(ObjectRegistryHandle chart,
+void Interface::addDimension(ObjectRegistryHandle table,
     const char *name,
-    const char **categories,
+    const char *const *categories,
     std::uint32_t categoriesCount,
     const std::uint32_t *categoryIndices,
     std::uint32_t categoryIndicesCount,
     bool isContiguous)
 {
-	getChart(chart)->getTable().add_dimension(
-	    {categories, categoriesCount},
+	getTable(table)->add_dimension({categories, categoriesCount},
 	    {categoryIndices, categoryIndicesCount},
 	    name,
-	    {{{"isContiguous", isContiguous ? "true" : "false"}}});
+	    {{{"isContiguous", isContiguous ? "true" : "false"}}},
+	    dataframe::adding_type::create_or_override);
 }
 
-void Interface::addMeasure(ObjectRegistryHandle chart,
+void Interface::addMeasure(ObjectRegistryHandle table,
     const char *name,
     const char *unit,
     const double *values,
     std::uint32_t count)
 {
-	getChart(chart)->getTable().add_measure({values, count},
+	getTable(table)->add_measure({values, count},
 	    name,
-	    {{std::pair{"unit", unit}}});
+	    {{std::pair{"unit", unit}}},
+	    dataframe::adding_type::create_or_override);
 }
 
-void Interface::addRecord(ObjectRegistryHandle chart,
+void Interface::addRecord(ObjectRegistryHandle table,
     const char *const *cells,
     std::uint32_t count)
 {
-	getChart(chart)->getTable().add_record({cells, count});
+	getTable(table)->add_record({cells, count});
 }
 
-const char *Interface::dataMetaInfo(ObjectRegistryHandle chart)
+const char *Interface::dataMetaInfo(ObjectRegistryHandle table)
 {
 	thread_local std::string res;
-	res = getChart(chart)->getTable().as_string();
+	res = getTable(table)->as_string();
 	return res.c_str();
 }
 
-ObjectRegistryHandle Interface::createChart()
+struct IntFDataTable final : Data::DataTable
 {
-	auto &&widget = std::make_shared<UI::ChartWidget>();
+	JsCompositionWrapper<Interface::ExternalData> externalData;
+
+	[[nodiscard]] explicit IntFDataTable(
+	    JsCompositionWrapper<Interface::ExternalData>
+	        &&external_data) :
+	    externalData(std::move(external_data))
+	{}
+
+	[[nodiscard]] dataframe::series_meta_t get_series_meta(
+	    const std::string &id) const & override
+	{
+		return {id,
+		    externalData.values.seriesMeta(id.c_str())
+		        ? dataframe::series_type::dimension
+		        : dataframe::series_type::measure};
+	}
+
+	[[nodiscard]] std::string_view get_series_info(
+	    const std::string &id,
+	    const char *key) const & override
+	{
+		thread_local std::string res;
+		res = create_unique_ptr(
+		    externalData.values.seriesInfo(id.c_str(), key),
+		    externalData.values.stringDeleter)
+		          .get();
+		return res;
+	}
+
+	[[noreturn]] static void unsupported()
+	{
+		throw std::logic_error("unsupported");
+	}
+
+	[[noreturn]] void add_dimension(std::span<const char *const>,
+	    std::span<const std::uint32_t>,
+	    std::string_view,
+	    std::span<const std::pair<const char *, const char *>>,
+	    dataframe::adding_type)
+	    & override
+	{
+		unsupported();
+	}
+
+	[[noreturn]] void add_measure(std::span<const double>,
+	    std::string_view,
+	    std::span<const std::pair<const char *, const char *>>,
+	    dataframe::adding_type)
+	    & override
+	{
+		unsupported();
+	}
+
+	[[noreturn]] void add_record(std::span<const char *const>)
+	    & override
+	{
+		unsupported();
+	}
+
+	[[nodiscard]] std::string as_string() const & override
+	{
+		unsupported();
+	}
+
+	[[nodiscard]] std::pair<
+	    std::shared_ptr<dataframe::dataframe_interface>,
+	    std::map<Data::SeriesIndex, std::string>>
+	aggregate(const Data::Filter &filter,
+	    const std::set<Data::SeriesIndex> &aggregate_by,
+	    const std::set<Data::SeriesIndex> &aggregating)
+	    const & override
+	{
+		auto &intf = Interface::getInstance();
+		auto &&res = dataframe::dataframe::create_new();
+
+		std::vector<const char *> aggregateBy(aggregate_by.size());
+		std::ranges::transform(aggregate_by,
+		    aggregateBy.begin(),
+		    [](const Data::SeriesIndex &index)
+		    {
+			    return index.getColIndex().c_str();
+		    });
+
+		std::vector<const char *> aggregatingCols(aggregating.size());
+		std::ranges::transform(aggregating,
+		    aggregatingCols.begin(),
+		    [](const Data::SeriesIndex &index)
+		    {
+			    return index.getColIndex().c_str();
+		    });
+
+		using ArrType =
+		    Refl::EnumArray<dataframe::aggregator_type, std::string>;
+		static ArrType arr = std::apply(
+		    [](auto &&...names)
+		    {
+			    return ArrType{{std::string{names}...}};
+		    },
+		    Refl::enum_names<dataframe::aggregator_type>);
+
+		std::vector<const char *> aggregatingFun(aggregating.size());
+		std::ranges::transform(aggregating,
+		    aggregatingFun.begin(),
+		    [](const Data::SeriesIndex &index) -> const char *
+		    {
+			    return arr[index.getAggr()].c_str();
+		    });
+
+		std::vector<
+		    std::unique_ptr<const char, void (*)(const char *)>>
+		    aggregatingNames;
+		aggregatingNames.reserve(aggregating.size());
+
+		{
+			std::vector<const char *> aggregatingRawNames(
+			    aggregating.size());
+
+			auto &&dataPtr = create_unique_ptr(intf.createData(&res),
+			    &object_free);
+
+			externalData.values.aggregator(dataPtr.get(),
+			    filter.getFun1(),
+			    filter.getFun2(),
+			    aggregateBy.size(),
+			    aggregateBy.data(),
+			    aggregating.size(),
+			    aggregatingCols.data(),
+			    aggregatingFun.data(),
+			    aggregatingRawNames.data());
+
+			for (auto &&ptr : std::move(aggregatingRawNames))
+				aggregatingNames.emplace_back(ptr,
+				    externalData.values.stringDeleter);
+		}
+
+		std::map<Data::SeriesIndex, std::string> resMap;
+		for (auto it = aggregatingNames.data();
+		     auto &&agg : aggregating)
+			resMap[agg] = it++->get();
+
+		for (const auto &dim : aggregate_by)
+			res->set_sort(dim.getColIndex(),
+			    dataframe::sort_type::less,
+			    dataframe::na_position::first);
+
+		res->finalize();
+		return {res, resMap};
+	}
+};
+
+ObjectRegistryHandle Interface::createData(
+    std::shared_ptr<dataframe::dataframe_interface> *df)
+{
+	return objects.reg(std::make_shared<Data::DataTableImpl>(
+	    df ? *df : dataframe::dataframe::create_new()));
+}
+
+ObjectRegistryHandle Interface::createExternalData(
+    JsCompositionWrapper<ExternalData> &&externalData)
+{
+	return objects.reg(
+	    std::make_shared<IntFDataTable>(std::move(externalData)));
+}
+
+ObjectRegistryHandle Interface::createChart(ObjectRegistryHandle data)
+{
+	auto &&widget = std::make_shared<UI::ChartWidget>(
+	    objects.get<Data::DataTable>(data));
 
 	auto &openUrl = widget->openUrl;
 	auto &doChange = widget->getChart().onChanged;
@@ -380,8 +554,7 @@ ObjectRegistryHandle Interface::createChart()
 
 ObjectRegistryHandle Interface::createCanvas()
 {
-	return objects.reg(
-	    std::make_shared<Vizzu::Main::JScriptCanvas>());
+	return objects.reg(std::make_shared<Main::JScriptCanvas>());
 }
 
 void Interface::setLogging(bool enable)

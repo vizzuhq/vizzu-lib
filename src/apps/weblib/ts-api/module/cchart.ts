@@ -1,4 +1,4 @@
-import { CString, CFunction, CEventPtr } from '../cvizzu.types'
+import { CString, CFunction, CEventPtr, CPointer, CRecordPtr } from '../cvizzu.types'
 
 import * as Anim from '../types/anim.js'
 import * as Config from '../types/config.js'
@@ -22,6 +22,31 @@ export class CEvent extends CObject {
 class CConfig extends CProxy<Config.Chart> {}
 class CStyle extends CProxy<Styles.Chart> {}
 class CAnimOptions extends CProxy<Anim.Options> {}
+
+export class CRecord extends CObject {
+	constructor(env: CEnv, recordPtr: CRecordPtr) {
+		super(() => recordPtr, env)
+	}
+
+	getValue(columnName: string): string | number {
+		const col = this._toCString(columnName)
+		let ptr
+		let value
+
+		try {
+			ptr = this._call(this._wasm._record_getValue)(col)
+
+			if (this._wasm.getValue(ptr, 'i1')) {
+				value = this._fromCString(this._wasm.getValue(ptr + 8, 'i8*'))
+			} else {
+				value = this._wasm.getValue(ptr + 8, 'double')
+			}
+		} finally {
+			this._wasm._free(col)
+		}
+		return value
+	}
+}
 
 export class CChart extends CManagedObject {
 	config: CConfig
@@ -160,5 +185,26 @@ export class CChart extends CManagedObject {
 			() => 0,
 			this._wasm._anim_setValue
 		)
+	}
+
+	setFilter(
+		callback: ((record: CRecord) => boolean) | null,
+		out_deleter: ((ptr: CPointer) => void) | null = null
+	): CPointer {
+		const callbackPtrs: [CPointer, CPointer] = [0, 0]
+		if (callback !== null) {
+			const f = (recordPtr: CRecordPtr): boolean => callback(new CRecord(this, recordPtr))
+			callbackPtrs[0] = this._wasm.addFunction(f, 'ii')
+			const deleter = (ptr: CPointer): void => {
+				if (ptr !== callbackPtrs[0]) console.warn('Wrong pointer passed to destructor')
+				if (out_deleter) out_deleter(callbackPtrs[0])
+				this._wasm.removeFunction(callbackPtrs[0])
+				this._wasm.removeFunction(callbackPtrs[1])
+			}
+			callbackPtrs[1] = this._wasm.addFunction(deleter, 'vi')
+		}
+		this._call(this._wasm._chart_setFilter)(...callbackPtrs)
+
+		return callbackPtrs[0]
 	}
 }

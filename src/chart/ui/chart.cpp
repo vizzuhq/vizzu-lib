@@ -12,7 +12,9 @@
 namespace Vizzu::UI
 {
 
-ChartWidget::ChartWidget() :
+ChartWidget::ChartWidget(
+    const std::shared_ptr<Data::DataTable> &table) :
+    chart(table),
     onClick(chart.getEventDispatcher().createEvent("click")),
     onPointerMoveEvent(
         chart.getEventDispatcher().createEvent("pointermove")),

@@ -5,8 +5,8 @@ import * as D from './types/data.js'
 import { Module } from './module/module.js'
 import { Chart as ChartInterface } from './module/chart.js'
 import { CChart, Snapshot } from './module/cchart.js'
-import { CAnimControl, CAnimation } from './module/canimctrl.js'
 import { CData } from './module/cdata.js'
+import { CAnimControl, CAnimation } from './module/canimctrl.js'
 import { Data } from './data.js'
 import { Events, EventType, EventHandler, EventMap } from './events.js'
 import { Mirrored } from './tsutils.js'
@@ -38,23 +38,54 @@ export class Chart implements ChartInterface {
 	private _cChart: CChart
 	private _cCanvas: CCanvas
 	private _module: Module
-	private _cData: CData
 	private _data: Data
 	private _events: Events
 	private _plugins: PluginRegistry
 	private _changed = true
+
+	private _createData(): CData {
+		if (this._options.otherSource) {
+			const { series, aggregate } = this._options.otherSource
+			return this._module.createExternalData(
+				new Map(series.map((info) => [info.name, info.type === 'dimension'] as const)),
+				new Map(series.map((info) => [info.name, new Map(Object.entries(info))] as const)),
+				(
+					data: CData,
+					filt1: number,
+					filt2: number,
+					grouping: D.SeriesList,
+					aggregating: D.SeriesList
+				): string[] => {
+					new Data(data).set(
+						aggregate(
+							this._data.getFilterByPtr(filt1),
+							this._data.getFilterByPtr(filt2),
+							grouping,
+							aggregating
+						)
+					)
+					return data
+						.getMetaInfo()
+						.series.filter((series) => series.type === 'measure')
+						.map((series) => series.name)
+				}
+			)
+		}
+		return this._module.createData()
+	}
 
 	constructor(module: Module, options: VizzuOptions, plugins: PluginRegistry) {
 		this._options = options
 		this._plugins = plugins
 		this._module = module
 
-		this._cChart = this._module.createChart()
+		const cDataFromInside = true
+		const cData = this._createData()
+		this._cChart = this._module.createChart(cData)
 		this._module.registerChart(this._cChart, this)
 
 		this._cCanvas = this._module.createCanvas()
-		this._cData = this._module.getData(this._cChart)
-		this._data = new Data(this._cData)
+		this._data = new Data(cData, this._cChart, cDataFromInside)
 
 		this._events = new Events(this._cChart)
 		this._plugins.init(this._events)
@@ -79,6 +110,7 @@ export class Chart implements ChartInterface {
 		this._module.unregisterChart(this._cChart)
 		this._cCanvas.free()
 		this._cChart.free()
+		this._data.detach()
 	}
 
 	start(): void {
@@ -199,7 +231,7 @@ export class Chart implements ChartInterface {
 	}
 
 	get data(): Mirrored<D.Metainfo> {
-		return this._cData.getMetaInfo()
+		return this._data.getMetaInfo()
 	}
 
 	get config(): Mirrored<Config.Chart> {

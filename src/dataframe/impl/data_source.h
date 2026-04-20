@@ -15,8 +15,6 @@
 namespace Vizzu::dataframe
 {
 
-enum class series_type : std::uint8_t { unknown, dimension, measure };
-
 enum class error_type : std::uint8_t {
 	series_not_found,
 	duplicated_series,
@@ -27,12 +25,6 @@ enum class error_type : std::uint8_t {
 	record,
 	unimplemented,
 	internal_error
-};
-
-struct series_meta_t
-{
-	std::string name;
-	series_type type;
 };
 
 [[maybe_unused]] [[noreturn]] void error(error_type err,

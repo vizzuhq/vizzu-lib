@@ -9,7 +9,10 @@
 #include "chart/ui/events.h"
 #include "dataframe/old/datatable.h"
 
-TestChart::TestChart() {}
+TestChart::TestChart() :
+    chart(std::make_shared<Vizzu::Data::DataTableImpl>(
+        Vizzu::dataframe::dataframe::create_new()))
+{}
 
 void TestChart::prepareData()
 {
@@ -28,11 +31,15 @@ void TestChart::prepareData()
 	auto &table = chart.getChart().getTable();
 	table.add_dimension(cat1,
 	    std::array{0u, 0u, 0u, 1u, 1u, 1u, 2u, 2u, 2u},
-	    "Cat1");
+	    "Cat1",
+	    {},
+	    {});
 	table.add_dimension(cat2,
 	    std::array{0u, 1u, 2u, 3u, 4u, 5u, 6u, 7u, 8u},
-	    "Cat2");
-	table.add_measure(val, "Val");
+	    "Cat2",
+	    {},
+	    {});
+	table.add_measure(val, "Val", {}, {});
 
 	chart.getChart()
 	    .getEventDispatcher()

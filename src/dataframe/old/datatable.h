@@ -25,9 +25,7 @@ class DataCube
 
 public:
 	std::shared_ptr<dataframe::dataframe_interface> df;
-	std::map<std::pair<std::string, dataframe::aggregator_type>,
-	    std::string>
-	    measure_names;
+	std::map<SeriesIndex, std::string> measure_names;
 
 	struct DimensionInfo
 	{

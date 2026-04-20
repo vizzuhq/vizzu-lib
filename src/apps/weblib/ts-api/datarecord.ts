@@ -1,5 +1,5 @@
 import * as Data from './types/data.js'
-import { CRecord } from './module/cdata.js'
+import { CRecord } from './module/cchart.js'
 
 export class DataRecord implements Data.Record {
 	[seriesName: Data.SeriesName]: Data.Value
