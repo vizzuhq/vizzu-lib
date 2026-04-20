@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+## [0.18.0] - 2026-04-20
+
 ### Experimental Added
 
 - Added support for multiple dimension labels on axes, allowing both list-based and individually separated elements.
