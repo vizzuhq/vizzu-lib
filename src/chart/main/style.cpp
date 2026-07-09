@@ -183,7 +183,7 @@ Chart Chart::def()
 								},
 								MarkerLabelParams
 								{
-									.position = Anim::Interpolated<MarkerLabel::Position>(MarkerLabel::Position::center),
+									.position = Anim::Interpolated<MarkerLabel::Position>{},
 									.filter = Gfx::ColorTransform::Lightness(0),
 									.format = MarkerLabel::Format::measureFirst,
 									.unit = MarkerLabel::Unit::original

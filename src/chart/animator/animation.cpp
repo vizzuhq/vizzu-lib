@@ -209,6 +209,7 @@ Gen::PlotPtr Animation::getIntermediate(const Gen::PlotPtr &base,
 		res =
 		    Gen::PlotBuilder{dataTable, extOptions, base->getStyle()}
 		        .build();
+		res->getStyle().plot.marker.label.position.emplace();
 
 		res->keepAspectRatio = base->keepAspectRatio;
 	}

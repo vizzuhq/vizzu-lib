@@ -8,6 +8,10 @@
   the JS API, its destructor was not invoked and its memory was not
   released, leaking memory on every error raised by the library.
 - Fix wrong position for marker guides on area geometry.
+- Fix marker labels moving to the meaningless default label position of a
+  state without labels: labels now fade out at the previous state's
+  position and fade in at the new state's position instead of flying
+  across the chart.
 
 
 ## [0.18.0] - 2026-04-20

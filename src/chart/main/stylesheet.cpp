@@ -182,6 +182,9 @@ void Sheet::setMarkers()
 
 void Sheet::setMarkerLabels()
 {
+	if (options->getChannels().at(Gen::ChannelId::label).isEmpty())
+		return;
+
 	auto &def = defaultParams.plot.marker.label;
 
 	if (options->getChannels().anyAxisSet()
