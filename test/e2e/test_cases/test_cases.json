@@ -1994,7 +1994,7 @@
 			"refs": ["d52c668"]
 		},
 		"ww_next_steps/next_steps_byOperations/sum_aggregate/sum_aggregate_17": {
-			"refs": ["e104b8d"]
+			"refs": ["bef029e"]
 		},
 		"ww_next_steps/next_steps_byOperations/sum_aggregate/sum_aggregate_18": {
 			"refs": ["e365ba5"]
@@ -3158,7 +3158,7 @@
 			"refs": ["dca0823"]
 		},
 		"www_new_analytical_operations/operations/02_sum/Area_Stacked_Area": {
-			"refs": ["3f7501c"]
+			"refs": ["4845ed7"]
 		},
 		"www_new_analytical_operations/operations/02_sum/Bubble_Bubble": {
 			"refs": ["80162ab"]

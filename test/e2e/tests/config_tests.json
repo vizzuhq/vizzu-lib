@@ -11,7 +11,7 @@
 			"refs": ["38be869"]
 		},
 		"channel_ranges/meas_axis": {
-			"refs": ["193c6f4"]
+			"refs": ["ecf67e2"]
 		},
 		"dimension_axis_density": {
 			"refs": ["5c4c6df"]
