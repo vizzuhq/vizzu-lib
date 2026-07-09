@@ -32,6 +32,7 @@ private:
 		std::size_t index{};
 		double size{};
 		std::optional<std::string> label{};
+		std::set<std::size_t> uniqueOtherItemIds{};
 	};
 
 	struct BucketSeparationInfo

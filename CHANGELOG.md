@@ -20,6 +20,11 @@
   own style as the animation source instead of inheriting the target's
   style, so style changes animate. The first, not yet shown chart still
   gets its styles applied instantly.
+- Fix sorted chart order jumping during animation when the markers get
+  stacked by a dimension on the size channel (e.g. sorted lollipop chart
+  stacked via an intermediate animation state): values aggregated over
+  the size channel's dimensions were counted once per marker instead of
+  once per category when calculating the byValue order.
 
 
 ## [0.18.0] - 2026-04-20
