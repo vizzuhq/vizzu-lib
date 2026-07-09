@@ -28,7 +28,10 @@
 - Fix marker labels of markers cropped by the axis ranges being positioned
   on the invisible, cut off part of the marker, even outside of the plot
   area: the labels are now placed on the visible part of the marker.
-
+- Rotated axis labels got different offsets based on their length.
+  'plot.<x/y>Axis.label.textAlign' now controls how labels are anchored to the tick
+  position: 'center' (default) centers the label on the tick, 'left' pins the start
+  of the text to it, 'right' pins the end.
 
 ## [0.18.0] - 2026-04-20
 

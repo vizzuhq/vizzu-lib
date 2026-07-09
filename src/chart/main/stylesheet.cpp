@@ -122,8 +122,10 @@ void Sheet::setAxisLabels()
 	else if (!options->isMeasure(+options->getHorizontalChannel())
 	         && options->getChannels()
 	                .at(+options->getHorizontalChannel())
-	                .hasDimension())
+	                .hasDimension()) {
 		def.angle.reset();
+		def.textAlign.reset();
+	}
 }
 
 void Sheet::setAxisTitle()
@@ -294,6 +296,16 @@ void Sheet::setAfterStyles(Gen::Plot &plot, const Geom::Size &size)
 		}
 
 		xLabel.angle.emplace(has_collision * std::numbers::pi / 4);
+	}
+	if (!xLabel.textAlign) {
+		auto labelAngleRad = xLabel.angle->rad();
+		auto &&res =
+		    std::weak_order(labelAngleRad, std::numbers::pi / 2.0);
+		xLabel.textAlign.emplace(
+		    Math::Floating::is_zero(labelAngleRad) || std::is_eq(res)
+		        ? Text::TextAlign::center
+		    : std::is_lt(res) ? Text::TextAlign::left
+		                      : Text::TextAlign::right);
 	}
 	if (!xLabel.multiLevelSpacing) {
 		xLabel.multiLevelSpacing.emplace(

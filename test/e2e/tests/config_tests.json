@@ -60,6 +60,9 @@
 		},
 		"geometry/static_rectangle": {
 			"refs": ["3103d88"]
+		},
+		"main_axis_split": {
+			"refs": ["70139f0"]
 		}
 	}
 }

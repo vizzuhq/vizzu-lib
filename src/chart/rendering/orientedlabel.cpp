@@ -52,11 +52,9 @@ void OrientedLabel::draw(Gfx::ICanvas &canvas,
 	auto relAngle = Geom::Angle(absAngle - baseAngle).rad();
 	if (relAngle > std::numbers::pi) relAngle -= std::numbers::pi;
 
-	auto xOffsetAngle = std::numbers::pi;
-	if (relAngle < std::numbers::pi / 4.0)
-		xOffsetAngle = 0.0;
-	else if (relAngle < 3.0 * std::numbers::pi / 4.0)
-		xOffsetAngle /= 2.0;
+	auto realAngle = Geom::Angle(baseAngle + relAngle).rad();
+	auto upsideDown = realAngle > std::numbers::pi / 2.0
+	               && realAngle < 3 * std::numbers::pi / 2.0;
 
 	const Gfx::Font font(labelStyle);
 	canvas.setFont(font);
@@ -65,20 +63,21 @@ void OrientedLabel::draw(Gfx::ICanvas &canvas,
 	    labelStyle.extendSize(Gfx::ICanvas::textBoundary(font, text),
 	        font.size);
 
-	auto offset = Geom::Point{-sin(relAngle + xOffsetAngle)
-	                              * paddedSize.x / 2.0,
-	                  -fabs(cos(relAngle)) * paddedSize.y / 2
-	                      - sin(relAngle) * paddedSize.x / 2}
-	            * (1 - centered) * labelPos.getDirection().abs();
+	auto align = labelStyle.textAlign->combine<double>();
+
+	auto offset =
+	    Geom::Point{align * (upsideDown ? 1.0 : -1.0) * cos(relAngle)
+	                    * paddedSize.x / 2.0,
+	        -fabs(cos(relAngle)) * paddedSize.y / 2
+	            - sin(relAngle) * paddedSize.x / 2}
+	    * (1 - centered) * labelPos.getDirection().abs();
 
 	auto transform =
 	    Geom::AffineTransform(labelPos.begin, 1.0, -baseAngle)
 	    * Geom::AffineTransform(offset, 1.0, -relAngle)
 	    * Geom::AffineTransform(paddedSize / -2, 1.0, 0);
 
-	if (auto realAngle = Geom::Angle(baseAngle + relAngle).rad();
-	    realAngle > std::numbers::pi / 2.0
-	    && realAngle < 3 * std::numbers::pi / 2.0)
+	if (upsideDown)
 		transform = transform
 		          * Geom::AffineTransform(paddedSize,
 		              1.0,

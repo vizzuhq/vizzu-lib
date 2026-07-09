@@ -350,7 +350,9 @@ definitions:
         description: |
             Style settings for the values shown on the axis to display the scale 
             being used or the categories along the axis.
-            Note: textAlign has no effect on the Axis label.
+            Note: textAlign anchors the label to the tick position: 'center'
+            centers the label on it, 'left' pins the start of the text to it,
+            'right' pins the end.
         $extends: OrientedLabel
         type: object
         properties:

@@ -395,79 +395,79 @@
 			"refs": ["8820669"]
 		},
 		"plot/xAxis/label/angle/deg/animated_90-135": {
-			"refs": ["875204f"]
+			"refs": ["062f76d"]
 		},
 		"plot/xAxis/label/angle/deg/animated_90-225": {
-			"refs": ["0963c1a"]
+			"refs": ["ba3babb"]
 		},
 		"plot/xAxis/label/angle/deg/animated_90-45": {
-			"refs": ["0963c1a"]
+			"refs": ["ba3babb"]
 		},
 		"plot/xAxis/label/angle/deg/static_495": {
-			"refs": ["180fcc9"]
+			"refs": ["b80ed14"]
 		},
 		"plot/xAxis/label/angle/deg/static_90": {
 			"refs": ["b3cb6ee"]
 		},
 		"plot/xAxis/label/angle/grad/animated_100-150": {
-			"refs": ["875204f"]
+			"refs": ["062f76d"]
 		},
 		"plot/xAxis/label/angle/grad/animated_100-250": {
-			"refs": ["0963c1a"]
+			"refs": ["ba3babb"]
 		},
 		"plot/xAxis/label/angle/grad/animated_100-50": {
-			"refs": ["0963c1a"]
+			"refs": ["ba3babb"]
 		},
 		"plot/xAxis/label/angle/grad/static_100": {
 			"refs": ["b3cb6ee"]
 		},
 		"plot/xAxis/label/angle/grad/static_550": {
-			"refs": ["180fcc9"]
+			"refs": ["b80ed14"]
 		},
 		"plot/xAxis/label/angle/number/animated_1.5708-0.7854": {
-			"refs": ["26579c4"]
+			"refs": ["c1824b6"]
 		},
 		"plot/xAxis/label/angle/number/animated_1.5708-2.3562": {
-			"refs": ["875204f"]
+			"refs": ["696b7d9"]
 		},
 		"plot/xAxis/label/angle/number/animated_1.5708-3.927": {
-			"refs": ["26579c4"]
+			"refs": ["c1824b6"]
 		},
 		"plot/xAxis/label/angle/number/static_1.5708": {
 			"refs": ["b3cb6ee"]
 		},
 		"plot/xAxis/label/angle/number/static_8.6394": {
-			"refs": ["180fcc9"]
+			"refs": ["b80ed14"]
 		},
 		"plot/xAxis/label/angle/rad/animated_1.5708-0.7854": {
-			"refs": ["26579c4"]
+			"refs": ["c1824b6"]
 		},
 		"plot/xAxis/label/angle/rad/animated_1.5708-2.3562": {
-			"refs": ["875204f"]
+			"refs": ["696b7d9"]
 		},
 		"plot/xAxis/label/angle/rad/animated_1.5708-3.927": {
-			"refs": ["26579c4"]
+			"refs": ["c1824b6"]
 		},
 		"plot/xAxis/label/angle/rad/static_1.5708": {
 			"refs": ["b3cb6ee"]
 		},
 		"plot/xAxis/label/angle/rad/static_8.6394": {
-			"refs": ["180fcc9"]
+			"refs": ["b80ed14"]
 		},
 		"plot/xAxis/label/angle/turn/animated_0.25-0.125": {
-			"refs": ["0963c1a"]
+			"refs": ["ba3babb"]
 		},
 		"plot/xAxis/label/angle/turn/animated_0.25-0.375": {
-			"refs": ["875204f"]
+			"refs": ["062f76d"]
 		},
 		"plot/xAxis/label/angle/turn/animated_0.25-0.625": {
-			"refs": ["0963c1a"]
+			"refs": ["ba3babb"]
 		},
 		"plot/xAxis/label/angle/turn/static_0.25": {
 			"refs": ["b3cb6ee"]
 		},
 		"plot/xAxis/label/angle/turn/static_1.375": {
-			"refs": ["180fcc9"]
+			"refs": ["b80ed14"]
 		},
 		"plot/xAxis/label/color/hexa/animated_yellowCustom_0.25-blueCustom_0.75": {
 			"refs": ["ece7d1e"]
@@ -605,16 +605,16 @@
 			"refs": ["125b195"]
 		},
 		"plot/xAxis/label/orientation/animated_horizontal-vertical": {
-			"refs": ["713cb8e"]
+			"refs": ["e8fda6e"]
 		},
 		"plot/xAxis/label/orientation/animated_normal-tangential": {
-			"refs": ["f10e00f"]
+			"refs": ["fb443ce"]
 		},
 		"plot/xAxis/label/orientation/animated_tangential-normal": {
-			"refs": ["015046e"]
+			"refs": ["4164412"]
 		},
 		"plot/xAxis/label/orientation/animated_vertical-horizontal": {
-			"refs": ["1b80369"]
+			"refs": ["8b5bd76"]
 		},
 		"plot/xAxis/label/orientation/static_horizontal": {
 			"refs": ["125b195"]
@@ -716,31 +716,31 @@
 			"refs": ["128e862"]
 		},
 		"plot/xAxis/label/textAlign/animated_center-left": {
-			"refs": ["b977c23"]
+			"refs": ["e373251"]
 		},
 		"plot/xAxis/label/textAlign/animated_center-right": {
-			"refs": ["b977c23"]
+			"refs": ["7cf855c"]
 		},
 		"plot/xAxis/label/textAlign/animated_left-center": {
-			"refs": ["b977c23"]
+			"refs": ["80bd49a"]
 		},
 		"plot/xAxis/label/textAlign/animated_left-right": {
-			"refs": ["b977c23"]
+			"refs": ["b520b8a"]
 		},
 		"plot/xAxis/label/textAlign/animated_right-center": {
-			"refs": ["b977c23"]
+			"refs": ["2dec0ab"]
 		},
 		"plot/xAxis/label/textAlign/animated_right-left": {
-			"refs": ["b977c23"]
+			"refs": ["c400115"]
 		},
 		"plot/xAxis/label/textAlign/static_center": {
 			"refs": ["125b195"]
 		},
 		"plot/xAxis/label/textAlign/static_left": {
-			"refs": ["125b195"]
+			"refs": ["241a503"]
 		},
 		"plot/xAxis/label/textAlign/static_right": {
-			"refs": ["125b195"]
+			"refs": ["7b1cfe0"]
 		},
 		"plot/xAxis/ticks/color/hexa/animated_yellowCustom_0.25-blueCustom_0.75": {
 			"refs": ["c5438a4"]
@@ -1016,13 +1016,40 @@
 			"refs": ["5d89c9c"]
 		},
 		"plot/xAxis/label/autorotate": {
-			"refs": ["122d0b8"]
+			"refs": ["f864c5c"]
 		},
 		"legend/offsetY": {
 			"refs": ["2994082"]
 		},
 		"plot/markerLabelUnit": {
 			"refs": ["749f4f1"]
+		},
+		"plot/xAxis/label/textAlign_angle/static": {
+			"refs": ["1a5b59b"]
+		},
+		"plot/xAxis/label/textAlign_angle/static_30deg_center": {
+			"refs": ["007f6d9"]
+		},
+		"plot/xAxis/label/textAlign_angle/static_30deg_left": {
+			"refs": ["279659e"]
+		},
+		"plot/xAxis/label/textAlign_angle/static_30deg_right": {
+			"refs": ["ec186d0"]
+		},
+		"plot/xAxis/label/textAlign_angle/static_min30deg": {
+			"refs": ["5dbe5c5"]
+		},
+		"plot/xAxis/label/textAlign_angle/static_min30deg_center": {
+			"refs": ["0de1929"]
+		},
+		"plot/xAxis/label/textAlign_angle/static_min30deg_left": {
+			"refs": ["853ea79"]
+		},
+		"plot/xAxis/label/textAlign_angle/static_min30deg_right": {
+			"refs": ["5dbe5c5"]
+		},
+		"plot/xAxis/label/textAlign_angle/static_30deg": {
+			"refs": ["279659e"]
 		}
 	}
 }
