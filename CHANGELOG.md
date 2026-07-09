@@ -2,6 +2,13 @@
 
 ## [Unreleased]
 
+### Fixed
+
+- Fix thrown C++ exceptions never being freed: when an exception reached
+  the JS API, its destructor was not invoked and its memory was not
+  released, leaking memory on every error raised by the library.
+
+
 ## [0.18.0] - 2026-04-20
 
 ### Experimental Added

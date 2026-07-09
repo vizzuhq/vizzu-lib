@@ -11,6 +11,7 @@ set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} \
  -s EXPORTED_FUNCTIONS=[\
 '_malloc',\
 '_free',\
+'___cxa_free_exception',\
 '_vizzu_createChart',\
 '_vizzu_createCanvas',\
 '_vizzu_pointerDown',\
@@ -59,6 +60,7 @@ set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} \
 'setValue',\
 'getValue',\
 'addFunction',\
+'getWasmTableEntry',\
 'removeFunction',\
 'ExceptionInfo',\
 'HEAPU8'] \

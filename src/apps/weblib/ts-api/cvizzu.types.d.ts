@@ -35,6 +35,7 @@ export type PtrType =
 
 export interface CExceptionInfo {
 	get_type(): CTypeInfo
+	get_destructor(): CFunction
 }
 export interface CExceptionInfoConstructor {
 	new (ptr: CPointer): CExceptionInfo
@@ -96,6 +97,8 @@ export interface CVizzu {
 	_vizzu_render(chart: CChartPtr, canvas: CCanvasPtr, width: number, height: number): void
 
 	_vizzu_errorMessage(exceptionPtr: CException, typeinfo: CTypeInfo): CString
+	___cxa_free_exception(exceptionPtr: CException): void
+	getWasmTableEntry(index: CFunction): (...args: CPointer[]) => void
 	_vizzu_version(): CString
 	_data_addDimension(
 		chart: CChartPtr,
