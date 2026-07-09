@@ -7,6 +7,7 @@
 - Fix thrown C++ exceptions never being freed: when an exception reached
   the JS API, its destructor was not invoked and its memory was not
   released, leaking memory on every error raised by the library.
+- Fix wrong position for marker guides on area geometry.
 
 
 ## [0.18.0] - 2026-04-20
