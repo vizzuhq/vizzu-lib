@@ -39,18 +39,28 @@ void Keyframe::init(const Gen::PlotPtr &plot,
 		auto emptyOpt =
 		    std::make_shared<Gen::Options>(*plot->getOptions());
 		emptyOpt->reset();
+
+		auto hasContent = false;
 		if (source) {
-			if (auto &&title = source->getOptions()->title.get())
+			if (auto &&title = source->getOptions()->title.get()) {
 				emptyOpt->title = title;
+				hasContent = true;
+			}
 			if (auto &&subtitle =
-			        source->getOptions()->subtitle.get())
+			        source->getOptions()->subtitle.get()) {
 				emptyOpt->subtitle = subtitle;
-			if (auto &&caption = source->getOptions()->caption.get())
+				hasContent = true;
+			}
+			if (auto &&caption =
+			        source->getOptions()->caption.get()) {
 				emptyOpt->caption = caption;
+				hasContent = true;
+			}
 		}
-		source =
-		    Gen::PlotBuilder{dataTable, emptyOpt, plot->getStyle()}
-		        .build();
+		source = Gen::PlotBuilder{dataTable,
+		    emptyOpt,
+		    hasContent ? source->getStyle() : plot->getStyle()}
+		             .build();
 		source->keepAspectRatio = plot->keepAspectRatio;
 	}
 	target = plot;

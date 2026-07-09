@@ -15,6 +15,11 @@
 - Fix animation options passed along with a keyframe array being silently
   ignored: they now apply to the whole animation, the delay precedes the
   first keyframe and the duration rescales all the keyframes together.
+- Fix styles jumping instead of animating when moving from an empty chart
+  that already shows a title, subtitle or caption: such a chart keeps its
+  own style as the animation source instead of inheriting the target's
+  style, so style changes animate. The first, not yet shown chart still
+  gets its styles applied instantly.
 
 
 ## [0.18.0] - 2026-04-20

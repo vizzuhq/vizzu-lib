@@ -2,7 +2,7 @@
 	"suite": "/test/e2e/tests/docs/tutorial",
 	"test": {
 		"aggregating_data": {
-			"refs": ["303638c"]
+			"refs": ["c997b3c"]
 		},
 		"align_range": {
 			"refs": ["d902bf7"]
