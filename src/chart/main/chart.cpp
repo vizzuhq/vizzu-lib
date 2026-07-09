@@ -79,7 +79,7 @@ void Chart::animate(Anim::Animation::OnComplete &&onComplete)
 		    }
 	    });
 
-	animator.animate(nextAnimOptions.control, std::move(onComplete));
+	animator.animate(nextAnimOptions, std::move(onComplete));
 	nextAnimOptions = Anim::Options();
 	nextOptions = std::make_shared<Gen::Options>(*nextOptions);
 }

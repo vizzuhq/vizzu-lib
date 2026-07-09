@@ -165,8 +165,10 @@ export default class Vizzu {
     using the store() method of the AnimControl object, which can be queried
     from the promise returned by the animate() method.
     The optional second parameter specifies the animation control options 
-    and also all the other animation options in case of only a single chart
-    state passed as the first argument. 
+    and also all the other animation options. When a keyframe array is 
+    passed as the first argument, the animation options apply to the whole 
+    animation: the delay precedes the first keyframe, and the duration 
+    rescales all the keyframes together to the given length.
     This second option can be a scalar value, setting the overall 
     animation duration. Passing explicit null as second parameter will
     result in no animation.
@@ -174,7 +176,10 @@ export default class Vizzu {
     finished. Since there can be multiple animations in the queue, the result
     promise provides a nested promise member `activated`, 
     which resolves when the requested animation gets active.  */
-	animate(target: Anim.AnimTarget, options?: Anim.ControlOptions): AnimCompleting {
+	animate(
+		target: Anim.AnimTarget,
+		options?: Anim.ControlOptions & Anim.Options
+	): AnimCompleting {
 		const copiedTarget = recursiveCopy(target, CObject)
 		const copiedOptions = recursiveCopy(options)
 		const ctx = Object.assign(
@@ -197,7 +202,7 @@ export default class Vizzu {
 
 	private _animate(
 		target: Anim.AnimTarget,
-		options: Anim.ControlOptions | undefined,
+		options: (Anim.ControlOptions & Anim.Options) | undefined,
 		activate: (control: AnimControl) => void
 	): Promise<Vizzu> {
 		if (!this._chart) throw new NotInitializedError()

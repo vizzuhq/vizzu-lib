@@ -12,6 +12,9 @@
   state without labels: labels now fade out at the previous state's
   position and fade in at the new state's position instead of flying
   across the chart.
+- Fix animation options passed along with a keyframe array being silently
+  ignored: they now apply to the whole animation, the delay precedes the
+  first keyframe and the duration rescales all the keyframes together.
 
 
 ## [0.18.0] - 2026-04-20
