@@ -185,10 +185,7 @@ export default class Vizzu {
     finished. Since there can be multiple animations in the queue, the result
     promise provides a nested promise member `activated`, 
     which resolves when the requested animation gets active.  */
-	animate(
-		target: Anim.AnimTarget,
-		options?: Anim.ControlOptions & Anim.Options
-	): AnimCompleting {
+	animate(target: Anim.AnimTarget, options?: Anim.ControlOptions & Anim.Options): AnimCompleting {
 		if (this._detached) return Promise.reject(new VizzuFinalized())
 		const copiedTarget = recursiveCopy(target, CObject)
 		const copiedOptions = recursiveCopy(options)
