@@ -41,7 +41,10 @@ function getTestSteps(testCasesModule, testType, testIndex) {
 function detach(chart) {
 	try {
 		if (chart !== undefined) {
-			chart.detach()
+			// detach() may return a promise (async detach) or undefined (old versions)
+			Promise.resolve(chart.detach()).catch((err) => {
+				console.error(err)
+			})
 		}
 	} catch (err) {
 		console.error(err)
@@ -120,8 +123,9 @@ try {
 							return animFinished
 						})
 					}
-					return promise.then(() => {
-						chart.detach()
+					return promise.then(async () => {
+						// detach() may return a promise (async detach) or undefined (old versions)
+						await Promise.resolve(chart.detach())
 						return Promise.all(promises).then(() => {
 							testData.hashes.forEach((items) => {
 								testData.hash += items.join('')

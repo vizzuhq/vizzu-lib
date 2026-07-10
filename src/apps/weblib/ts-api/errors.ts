@@ -11,3 +11,10 @@ export class NotInitializedError extends Error {
 		this.name = 'NotInitializedError'
 	}
 }
+
+export class VizzuFinalized extends Error {
+	constructor() {
+		super('vizzu is finalized by detach(), no operation is allowed')
+		this.name = 'VizzuFinalized'
+	}
+}

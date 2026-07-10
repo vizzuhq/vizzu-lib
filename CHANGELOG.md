@@ -32,6 +32,14 @@
   'plot.<x/y>Axis.label.textAlign' now controls how labels are anchored to the tick
   position: 'center' (default) centers the label on the tick, 'left' pins the start
   of the text to it, 'right' pins the end.
+- Fix sporadic detach e2e test failure caused by the garbage collection of the test's FinalizationRegistry.
+- detach() unregisters user registered event handlers, releasing them from the wasm function table.
+- Fix double-free of wasm objects: the internal object registry now unregisters freed objects properly.
+
+### Changed
+
+- detach() became asynchronous and idempotent: it waits for the library initialization, settles the animation queue (cancelling the pending animation if there is one), then releases the underlying wasm chart object. Repeated calls return the same promise.
+- After detach() any public API call throws a VizzuFinalized error; the promise returning animate() rejects with it instead of throwing synchronously. Animations already scheduled when detach() is called are cancelled (rejected with CancelError) instead of running against the finalized chart.
 
 ## [0.18.0] - 2026-04-20
 

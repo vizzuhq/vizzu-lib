@@ -11,7 +11,7 @@ import { AnimControl } from './animcontrol.js'
 import { AnimCompleting } from './animcompleting.js'
 import { recursiveCopy } from './utils.js'
 import { Mirrored } from './tsutils.js'
-import { NotInitializedError, CancelError } from './errors.js'
+import { NotInitializedError, CancelError, VizzuFinalized } from './errors.js'
 import { Plugin, PluginApi, PluginRegistry, Hooks } from './plugins.js'
 import Presets from './plugins/presets.js'
 import { LazyCanvasOptions, HtmlCanvasApi } from './plugins/htmlcanvas.js'
@@ -65,6 +65,8 @@ export default class Vizzu {
 	private _chart?: Chart
 	private _anim: AnimCompleting
 	private _plugins: PluginRegistry
+	private _detached = false
+	private _detaching?: Promise<void>
 
 	/** Returns the chart preset collection. */
 	static get presets(): Presets {
@@ -114,12 +116,19 @@ export default class Vizzu {
 		return [] as Plugin[]
 	}
 
+	private _validateChart(): Chart {
+		if (this._detached) throw new VizzuFinalized()
+		if (!this._chart) throw new NotInitializedError()
+		return this._chart
+	}
+
 	/** If called as a function:
       (name, enabled): it enables/disables built-in features and registered plugins. 
       (plugin, enabled?): registers the given plugin.
       Otherwise gives access to the interfaces of the registered plugins, where
       every plugin acceccible as a property with the plugin name. */
 	get feature(): Features {
+		if (this._detached) throw new VizzuFinalized()
 		const fn: FeatureFunction = this._feature.bind(this)
 		return new Proxy(fn, {
 			get: (_target, pluginName: string): PluginApi => {
@@ -165,9 +174,9 @@ export default class Vizzu {
     using the store() method of the AnimControl object, which can be queried
     from the promise returned by the animate() method.
     The optional second parameter specifies the animation control options 
-    and also all the other animation options. When a keyframe array is 
-    passed as the first argument, the animation options apply to the whole 
-    animation: the delay precedes the first keyframe, and the duration 
+    and also all the other animation options. When a keyframe array is
+    passed as the first argument, the animation options apply to the whole
+    animation: the delay precedes the first keyframe, and the duration
     rescales all the keyframes together to the given length.
     This second option can be a scalar value, setting the overall 
     animation duration. Passing explicit null as second parameter will
@@ -180,6 +189,7 @@ export default class Vizzu {
 		target: Anim.AnimTarget,
 		options?: Anim.ControlOptions & Anim.Options
 	): AnimCompleting {
+		if (this._detached) return Promise.reject(new VizzuFinalized())
 		const copiedTarget = recursiveCopy(target, CObject)
 		const copiedOptions = recursiveCopy(options)
 		const ctx = Object.assign(
@@ -205,6 +215,7 @@ export default class Vizzu {
 		options: (Anim.ControlOptions & Anim.Options) | undefined,
 		activate: (control: AnimControl) => void
 	): Promise<Vizzu> {
+		if (this._detached) throw new CancelError()
 		if (!this._chart) throw new NotInitializedError()
 		return this._chart.prepareAnimation(target, options).then(() => {
 			return this._runAnimation(activate)
@@ -230,69 +241,98 @@ export default class Vizzu {
 	/** Returns controls for the ongoing animation, if any.
     @deprecated since version 0.4.0  */
 	get animation(): AnimControl {
-		if (!this._chart) throw new NotInitializedError()
-		return this._chart.getAnimControl()
+		return this._validateChart().getAnimControl()
 	}
 
 	/** Returns the version number of the library. */
 	version(): string {
-		if (!this._chart) throw new NotInitializedError()
-		return this._chart.version()
+		return this._validateChart().version()
 	}
 
 	/** Property for read-only access to data metainfo object. */
 	get data(): Mirrored<Data.Metainfo> {
-		if (!this._chart) throw new NotInitializedError()
-		return this._chart.data
+		return this._validateChart().data
 	}
 
 	/** Property for read-only access to chart parameter object. */
 	get config(): Mirrored<Config.Chart> {
-		if (!this._chart) throw new NotInitializedError()
-		return this._chart.config
+		return this._validateChart().config
 	}
 
 	/** Property for read-only access to style object without default values. */
 	get style(): Mirrored<Styles.Chart> {
-		if (!this._chart) throw new NotInitializedError()
-		return this._chart.style
+		return this._validateChart().style
 	}
 
 	/** Property for read-only access to the style object after setting defaults. */
 	getComputedStyle(): Mirrored<Styles.Chart> {
-		if (!this._chart) throw new NotInitializedError()
-		return this._chart.getComputedStyle()
+		return this._validateChart().getComputedStyle()
 	}
 
 	/** Installs the provided event handler to the event specified by name. */
 	on<T extends EventType>(eventName: T, handler: EventHandler<EventMap[T]>): void {
-		if (!this._chart) throw new NotInitializedError()
-		this._chart.on(eventName, handler)
+		this._validateChart().on(eventName, handler)
 	}
 
 	/** Uninstalls the provided event handler from the event specified by name. */
 	off<T extends EventType>(eventName: T, handler: EventHandler<EventMap[T]>): void {
-		if (!this._chart) throw new NotInitializedError()
-		this._chart.off(eventName, handler)
+		this._validateChart().off(eventName, handler)
 	}
 
 	/** Returns a reference to the actual chart state for further reuse. 
     This reference includes the chart config, style parameters and the
     data filter but does not include the actual data and the animation options. */
 	store(): Snapshot {
-		if (!this._chart) throw new NotInitializedError()
-		return this._chart.store()
+		return this._validateChart().store()
 	}
 
-	/** Removes the reference of the chart from every place it attached itself,
+	/** Removes the references of the chart from every place it attached itself,
     this method must be called in order to get the chart properly garbage 
-    collected.  */
-	detach(): void {
+    collected. The chart is finalized immediately: any subsequent public API
+    call will throw a VizzuFinalized error. Detach waits for the library
+    initialization and settles the animation queue: if an animation is
+    pending it gets cancelled, cancelling all scheduled animations as well.
+    Then it releases the underlying wasm chart and canvas objects.
+    Returns a promise which resolves when the detach process is completed.
+    The method is idempotent: repeated calls return the same promise. */
+	detach(): Promise<void> {
+		return (this._detaching ??= this._detach())
+	}
+
+	private async _detach(): Promise<void> {
+		this._detached = true
+		await this.initializing.catch(() => {})
+		await this._settleAnimations()
 		try {
 			this._plugins.destruct()
-			this._chart?.detach()
 		} catch (e) {
 			console.error(`Error during plugin destruct: ${e}`)
+		}
+		this._chart?.detach()
+		delete this._chart
+	}
+
+	private async _settleAnimations(): Promise<void> {
+		const scheduled = this._anim
+		let settled = false
+		const observed = scheduled.then(
+			() => {
+				settled = true
+			},
+			() => {
+				settled = true
+			}
+		)
+		await Promise.resolve()
+		if (!settled) this._cancelScheduledAnimations()
+		await observed
+	}
+
+	private _cancelScheduledAnimations(): void {
+		try {
+			this._chart?.getAnimControl().cancel()
+		} catch (e) {
+			// there is no ongoing animation to cancel
 		}
 	}
 }

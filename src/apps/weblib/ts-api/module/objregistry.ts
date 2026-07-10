@@ -14,7 +14,7 @@ export class ObjectRegistry {
 	}
 
 	register(objectId: CPointerClosure): void {
-		this._finalizationRegistry.register(objectId, objectId())
+		this._finalizationRegistry.register(objectId, objectId(), objectId)
 	}
 
 	unregister(objectId: CPointerClosure): void {

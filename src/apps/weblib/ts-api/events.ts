@@ -383,6 +383,19 @@ export class Events {
 		}
 	}
 
+	destruct(): void {
+		for (const eventName of Object.keys(this._eventHandlers) as EventType[]) {
+			const eventRecord = this._eventHandlers[eventName]
+			if (eventRecord) {
+				const [cfunc] = eventRecord
+				if (cfunc && !this._isJSEvent(eventName)) {
+					this._cChart.removeEventListener(eventName, cfunc)
+				}
+			}
+			delete this._eventHandlers[eventName]
+		}
+	}
+
 	private _invoke<T extends EventType>(
 		eventName: T,
 		param: EventMap[T],
