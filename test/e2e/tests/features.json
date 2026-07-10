@@ -8,7 +8,7 @@
 			"refs": ["e24bdb5"]
 		},
 		"axis_title_positioning": {
-			"refs": ["e630a50"]
+			"refs": ["860d730"]
 		},
 		"data_input/object_records": {
 			"refs": ["1fd2848"]
@@ -26,7 +26,7 @@
 			"refs": ["c339d99"]
 		},
 		"presets": {
-			"refs": ["a25a0c2"]
+			"refs": ["83128c3"]
 		},
 		"detach": {
 			"refs": ["e3b0c44"]
@@ -44,10 +44,10 @@
 			"refs": ["6026882"]
 		},
 		"multi_label/x_axis": {
-			"refs": ["aace017"]
+			"refs": ["442445c"]
 		},
 		"multi_label/y_axis": {
-			"refs": ["de3f01c"]
+			"refs": ["51bd58e"]
 		}
 	}
 }

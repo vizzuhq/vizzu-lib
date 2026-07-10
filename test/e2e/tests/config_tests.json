@@ -11,7 +11,7 @@
 			"refs": ["38be869"]
 		},
 		"channel_ranges/meas_axis": {
-			"refs": ["193c6f4"]
+			"refs": ["ecf67e2"]
 		},
 		"dimension_axis_density": {
 			"refs": ["5c4c6df"]
@@ -20,7 +20,7 @@
 			"refs": ["7c08796"]
 		},
 		"geometry/animated_area-circle": {
-			"refs": ["8e34a98"]
+			"refs": ["70ec0e8"]
 		},
 		"geometry/animated_area-line": {
 			"refs": ["0439a39"]
@@ -60,6 +60,9 @@
 		},
 		"geometry/static_rectangle": {
 			"refs": ["3103d88"]
+		},
+		"main_axis_split": {
+			"refs": ["70139f0"]
 		}
 	}
 }

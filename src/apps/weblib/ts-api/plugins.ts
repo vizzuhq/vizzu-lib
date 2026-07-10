@@ -196,6 +196,7 @@ export class PluginRegistry {
 		if (index !== -1) {
 			const plugin = this._plugins[index]
 			this._plugins.splice(index, 1)
+			if (plugin) this._disableEvents(plugin)
 			if (plugin?.instance.unregister && this._parent) {
 				plugin.instance.unregister(this._parent)
 			}

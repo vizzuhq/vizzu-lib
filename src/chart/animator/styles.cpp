@@ -59,6 +59,17 @@ void StyleMorphFactory::operator()(const T &source,
 	}
 }
 
+void StyleMorphFactory::operator()(const Styles::MarkerLabel &source,
+    const Styles::MarkerLabel &target,
+    Styles::MarkerLabel &value) const
+{
+	if (auto targetHasValue = target.position->hasOneValue();
+	    source.position->hasOneValue() && targetHasValue)
+		Refl::visit(*this, source, target, value);
+	else
+		value = targetHasValue ? target : source;
+}
+
 template <typename T, typename PT>
     requires(std::is_same_v<PT, Text::NumberFormat>
              || std::is_same_v<PT, Text::NumberScale>

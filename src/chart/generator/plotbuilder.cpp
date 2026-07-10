@@ -193,6 +193,20 @@ std::vector<PlotBuilder::BucketSortInfo> PlotBuilder::sortedBuckets(
 {
 	std::vector<BucketSortInfo> sorted;
 
+	auto sort =
+	    plot->getOptions()->getChannels().axisPropsAt(axisIndex).sort;
+
+	auto shouldUniqueSize =
+	    sort == Sort::byValue
+	    && plot->getOptions()->stackChannelType() == ChannelId::size
+	    && plot->getOptions()
+	           ->getChannels()
+	           .at(!axisIndex)
+	           .hasMeasure();
+	auto otherIdsGet = axisIndex == plot->getOptions()->mainAxisType()
+	                     ? &Marker::subId
+	                     : &Marker::mainId;
+
 	for (auto &&bucket : buckets)
 		for (auto &&[marker, idx] : bucket) {
 			if (!marker.enabled) continue;
@@ -213,14 +227,16 @@ std::vector<PlotBuilder::BucketSortInfo> PlotBuilder::sortedBuckets(
 				                      .label))
 				        : std::nullopt);
 
-			it->size += marker.size.getCoord(
-			    !plot->getOptions()->getOrientation());
+			if (!shouldUniqueSize
+			    || it->uniqueOtherItemIds
+			           .emplace((marker.*otherIdsGet).itemId)
+			           .second) {
+				it->size += marker.size.getCoord(
+				    !plot->getOptions()->getOrientation());
+			}
 		}
 
-	switch (plot->getOptions()
-	            ->getChannels()
-	            .axisPropsAt(axisIndex)
-	            .sort) {
+	switch (sort) {
 	case Sort::byValue:
 		std::ranges::stable_sort(sorted,
 		    [](const BucketSortInfo &lhs, const BucketSortInfo &rhs)

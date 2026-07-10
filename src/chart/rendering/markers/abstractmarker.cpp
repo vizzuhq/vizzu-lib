@@ -1,5 +1,6 @@
 #include "abstractmarker.h"
 
+#include <algorithm>
 #include <array>
 
 #include "base/anim/interpolated.h"
@@ -154,19 +155,21 @@ Geom::Line AbstractMarker::getLabelPos(
 	case Pos::right: direction = Geom::Point{1, 0}; break;
 	}
 
-	if (position == Pos::center) { center = dataRect.center(); }
+	auto rect = dataRect.positive();
+	rect.setLeft(std::clamp(rect.left(), 0.0, 1.0));
+	rect.setRight(std::clamp(rect.right(), 0.0, 1.0));
+	rect.setBottom(std::clamp(rect.bottom(), 0.0, 1.0));
+	rect.setTop(std::clamp(rect.top(), 0.0, 1.0));
+
+	if (position == Pos::center) { center = rect.center(); }
 	else {
 		Geom::Line side;
 		switch (position) {
 		default:
-		case Pos::top: side = dataRect.positive().topSide(); break;
-		case Pos::bottom:
-			side = dataRect.positive().bottomSide();
-			break;
-		case Pos::left: side = dataRect.positive().leftSide(); break;
-		case Pos::right:
-			side = dataRect.positive().rightSide();
-			break;
+		case Pos::top: side = rect.topSide(); break;
+		case Pos::bottom: side = rect.bottomSide(); break;
+		case Pos::left: side = rect.leftSide(); break;
+		case Pos::right: side = rect.rightSide(); break;
 		}
 		center = side.center();
 	}

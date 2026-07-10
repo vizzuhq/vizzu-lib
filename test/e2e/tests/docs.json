@@ -2,7 +2,7 @@
 	"suite": "/test/e2e/tests/docs/tutorial",
 	"test": {
 		"aggregating_data": {
-			"refs": ["303638c"]
+			"refs": ["c997b3c"]
 		},
 		"align_range": {
 			"refs": ["d902bf7"]
@@ -17,16 +17,16 @@
 			"refs": ["c6a1da9"]
 		},
 		"changing_dimensions": {
-			"refs": ["d65d43b"]
+			"refs": ["314aa04"]
 		},
 		"channels_legend": {
-			"refs": ["32dc5ce"]
+			"refs": ["8e04a9a"]
 		},
 		"chart_layout": {
 			"refs": ["ec33879"]
 		},
 		"chart_presets": {
-			"refs": ["f6e5b5f"]
+			"refs": ["adeec99"]
 		},
 		"color_palette_fonts": {
 			"refs": ["717c3ad"]
@@ -44,7 +44,7 @@
 			"refs": ["5ff57c1"]
 		},
 		"orientation_split_polar": {
-			"refs": ["58dc5b1"]
+			"refs": ["820bc24"]
 		},
 		"shorthands_store": {
 			"refs": ["397f7c1"]
@@ -53,7 +53,7 @@
 			"refs": ["c9ce754"]
 		},
 		"stacking_explanation": {
-			"refs": ["3ffa038"]
+			"refs": ["68cb422"]
 		},
 		"without_coordinates_noop_channel": {
 			"refs": ["12bab88"]

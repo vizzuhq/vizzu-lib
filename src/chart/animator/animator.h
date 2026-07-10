@@ -24,7 +24,7 @@ public:
 
 	void setAnimation(const AnimationPtr &animation);
 
-	void animate(const ::Anim::Control::Option &options,
+	void animate(const Options &options,
 	    Animation::OnComplete &&onThisCompletes);
 
 	const Data::DataTable &dataTable;

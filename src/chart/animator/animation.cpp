@@ -7,6 +7,7 @@
 
 #include "base/anim/control.h"
 #include "base/anim/controllable.h"
+#include "base/anim/group.h"
 #include "base/anim/sequence.h"
 #include "chart/animator/keyframe.h"
 #include "chart/generator/plot.h"
@@ -209,6 +210,7 @@ Gen::PlotPtr Animation::getIntermediate(const Gen::PlotPtr &base,
 		res =
 		    Gen::PlotBuilder{dataTable, extOptions, base->getStyle()}
 		        .build();
+		res->getStyle().plot.marker.label.position.emplace();
 
 		res->keepAspectRatio = base->keepAspectRatio;
 	}
@@ -228,16 +230,39 @@ void Animation::addKeyframe(const Gen::PlotPtr &source,
 	    isInstant));
 }
 
-void Animation::animate(const Option &options,
+void Animation::animate(const Options &options,
     OnComplete &&onThisCompletes)
 {
 	if (isRunning())
 		throw std::logic_error("animation already in progress");
 
+	if (const auto &all = options.keyframe.all;
+	    (all.duration || all.delay)
+	    && static_cast<double>(getDuration()) != 0.0)
+		reTime(all.duration.value_or(getDuration()),
+		    all.delay.value_or(::Anim::Duration{}));
+
 	completionCallback = std::move(onThisCompletes);
 	reset();
-	this->options = options;
+	this->options = options.control;
 	onBegin();
+}
+
+void Animation::reTime(::Anim::Duration duration,
+    ::Anim::Duration delay)
+{
+	auto total = getDuration();
+	auto newTotal = ::Anim::Duration{};
+
+	for (const auto &keyframe : keyframes) {
+		if (auto share = duration * (keyframe->getDuration() / total);
+		    static_cast<double>(keyframe->getDuration()) != 0.0)
+			static_cast<::Anim::Group &>(*keyframe).reTime(share,
+			    std::exchange(delay, ::Anim::Duration{}));
+		newTotal += keyframe->getDuration();
+	}
+
+	setDuration(newTotal);
 }
 
 }

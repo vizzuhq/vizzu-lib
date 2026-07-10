@@ -81,6 +81,10 @@ public:
 	    requires(requires(StyleMorph<T> &m) { m.transform(0.0); })
 	void operator()(const T &source, const T &target, T &value) const;
 
+	void operator()(const Styles::MarkerLabel &source,
+	    const Styles::MarkerLabel &target,
+	    Styles::MarkerLabel &value) const;
+
 	template <typename T, typename PT = Style::ParamT<T>>
 	    requires(std::is_same_v<PT, Text::NumberFormat>
 	             || std::is_same_v<PT, Text::NumberScale>

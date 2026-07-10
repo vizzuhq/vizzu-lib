@@ -2,6 +2,45 @@
 
 ## [Unreleased]
 
+### Fixed
+
+- Fix thrown C++ exceptions never being freed: when an exception reached
+  the JS API, its destructor was not invoked and its memory was not
+  released, leaking memory on every error raised by the library.
+- Fix wrong position for marker guides on area geometry.
+- Fix marker labels moving to the meaningless default label position of a
+  state without labels: labels now fade out at the previous state's
+  position and fade in at the new state's position instead of flying
+  across the chart.
+- Fix animation options passed along with a keyframe array being silently
+  ignored: they now apply to the whole animation, the delay precedes the
+  first keyframe and the duration rescales all the keyframes together.
+- Fix styles jumping instead of animating when moving from an empty chart
+  that already shows a title, subtitle or caption: such a chart keeps its
+  own style as the animation source instead of inheriting the target's
+  style, so style changes animate. The first, not yet shown chart still
+  gets its styles applied instantly.
+- Fix sorted chart order jumping during animation when the markers get
+  stacked by a dimension on the size channel (e.g. sorted lollipop chart
+  stacked via an intermediate animation state): values aggregated over
+  the size channel's dimensions were counted once per marker instead of
+  once per category when calculating the byValue order.
+- Fix marker labels of markers cropped by the axis ranges being positioned
+  on the invisible, cut off part of the marker, even outside of the plot
+  area: the labels are now placed on the visible part of the marker.
+- Rotated axis labels got different offsets based on their length.
+  'plot.<x/y>Axis.label.textAlign' now controls how labels are anchored to the tick
+  position: 'center' (default) centers the label on the tick, 'left' pins the start
+  of the text to it, 'right' pins the end.
+- Fix sporadic detach e2e test failure caused by the garbage collection of the test's FinalizationRegistry.
+- detach() unregisters user registered event handlers, releasing them from the wasm function table.
+- Fix double-free of wasm objects: the internal object registry now unregisters freed objects properly.
+
+### Changed
+
+- detach() became asynchronous and idempotent: it waits for the library initialization, settles the animation queue (cancelling the pending animation if there is one), then releases the underlying wasm chart object. Repeated calls return the same promise.
+- After detach() any public API call throws a VizzuFinalized error; the promise returning animate() rejects with it instead of throwing synchronously. Animations already scheduled when detach() is called are cancelled (rejected with CancelError) instead of running against the finalized chart.
+
 ## [0.18.0] - 2026-04-20
 
 ### Experimental Added

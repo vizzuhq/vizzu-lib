@@ -141,7 +141,7 @@ ConnectingMarker::ConnectingMarker(const DrawingContext &ctx,
 			            ? prev->size.yComp() * horizontalFactor
 			            : prev->size.xComp() * horizontalFactor);
 
-			center = isLine ? pos : Geom::Point{pos.x, 0};
+			center = pos;
 		}
 		else {
 			center = points[3] = pos;

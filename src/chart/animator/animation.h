@@ -24,13 +24,15 @@ public:
 	    const Data::DataTable &dataTable,
 	    const Options::Keyframe &options);
 
-	void animate(const ::Anim::Control::Option &options,
+	void animate(const Options &options,
 	    OnComplete &&onThisCompletes);
 
 private:
 	OnComplete completionCallback;
 	Gen::PlotPtr source;
 	Gen::PlotPtr target;
+
+	void reTime(::Anim::Duration duration, ::Anim::Duration delay);
 
 	template <class Modifier>
 	static Gen::PlotPtr getIntermediate(const Gen::PlotPtr &base,

@@ -1,5 +1,10 @@
 
+#include <algorithm>
+#include <array>
 #include <chart/rendering/painter/painter.h>
+#include <cmath>
+#include <map>
+#include <vector>
 
 #include "../util/test.h"
 #include "chart/ui/chart.h"
@@ -350,8 +355,8 @@ std::multimap<std::string, event_as, std::less<>> get_events(
 	        const std::string &json)
 	{
 		auto marker = params.eventName == "plot-marker-draw";
-		if ((marker && line)
-		    || params.eventName == "plot-axis-draw") {
+		if ((marker && line) || params.eventName == "plot-axis-draw"
+		    || params.eventName == "plot-marker-guide-draw") {
 			events.emplace(std::piecewise_construct,
 			    std::tuple{params.eventName},
 			    std::tuple{json,
@@ -417,6 +422,77 @@ const static auto tests =
 	for (auto &&[beg, end] = events.equal_range("plot-marker-draw");
 	     const auto &[v, t, d] : values(subrange(beg, end)))
 		check->*std::get<Vizzu::Draw::Rect>(d).rect.bottom() == 0.0;
+}
+
+    | "area marker guides" |
+    [](Vizzu::Chart &chart = chart_setup{{{x, "Dim5"}, {y, "Meas1"}}})
+{
+	chart.getOptions().geometry = area;
+
+	auto &channels = chart.getOptions().getChannels();
+	channels.axisPropsAt(Vizzu::Gen::AxisId::x).markerGuides =
+	    Vizzu::Base::AutoBool{true};
+	channels.axisPropsAt(Vizzu::Gen::AxisId::y).markerGuides =
+	    Vizzu::Base::AutoBool{true};
+
+	auto &&events = get_events(chart);
+
+	check->*events.count("plot-marker-draw") == 5u;
+	check->*events.count("plot-marker-guide-draw") == 10u;
+
+	std::map<const Vizzu::Gen::Marker *,
+	    std::map<Vizzu::Gen::AxisId, Geom::Line>>
+	    guides;
+	for (auto &&[beg, end] =
+	         events.equal_range("plot-marker-guide-draw");
+	     const auto &[v, t, d] : values(subrange(beg, end))) {
+		const auto &guide =
+		    static_cast<const Vizzu::Events::Targets::MarkerGuide &>(
+		        *t);
+		guides[&guide.parent.marker].emplace(guide.axis,
+		    std::get<Vizzu::Draw::Line>(d).line);
+	}
+
+	check->*guides.size() == 5u;
+
+	std::vector<Geom::Point> points;
+	for (const auto &[marker, byAxis] : guides) {
+		check->*byAxis.size() == 2u;
+		auto &&vertical = byAxis.at(Vizzu::Gen::AxisId::y);
+		auto &&horizontal = byAxis.at(Vizzu::Gen::AxisId::x);
+
+		auto &&point = vertical.end;
+
+		check->*(horizontal.begin - point).abs() <= 0.000001;
+		check->*std::abs(vertical.begin.x - point.x) <= 0.000001;
+		check->*std::abs(vertical.begin.y) <= 0.000001;
+		check->*std::abs(horizontal.end.y - point.y) <= 0.000001;
+		check->*std::abs(horizontal.end.x) <= 0.000001;
+
+		points.push_back(point);
+	}
+
+	std::ranges::sort(points,
+	    [](auto &&a, auto &&b)
+	    {
+		    return a.x < b.x;
+	    });
+
+	// category band centers on the x axis
+	// and marker value heights proportional to
+	// the sums of Meas1 by Dim5: 10, 10, 10, 6, 4
+	constexpr std::array relX{0.1, 0.3, 0.5, 0.7, 0.9};
+	constexpr std::array sums{10.0, 10.0, 10.0, 6.0, 4.0};
+
+	check->*points.size() == 5u;
+	check->*points[0].y > 0.0;
+	for (auto i = 0u; i < points.size(); ++i) {
+		check->*std::abs(points[i].x - relX[i]) <= 0.000001;
+		check
+		            ->*std::abs(
+		                points[i].y - points[0].y * sums[i] / sums[0])
+		    <= 0.000001;
+	}
 }
 
     | "bar stacked rectangle negative" |

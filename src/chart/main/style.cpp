@@ -183,7 +183,7 @@ Chart Chart::def()
 								},
 								MarkerLabelParams
 								{
-									.position = Anim::Interpolated<MarkerLabel::Position>(MarkerLabel::Position::center),
+									.position = Anim::Interpolated<MarkerLabel::Position>{},
 									.filter = Gfx::ColorTransform::Lightness(0),
 									.format = MarkerLabel::Format::measureFirst,
 									.unit = MarkerLabel::Unit::original
@@ -250,7 +250,7 @@ Chart Chart::def()
 									Text
 									{
 										.color = Gfx::Color::Gray(0.6),
-										.textAlign = Anim::Interpolated<Text::TextAlign>(Text::TextAlign::left),
+										.textAlign = Anim::Interpolated<Text::TextAlign>(Text::TextAlign::center),
 										.numberFormat = ::Text::NumberFormat::prefixed,
 										.maxFractionDigits = 3,
 										.numberScale = ::Text::NumberScale{}
@@ -344,7 +344,7 @@ Chart Chart::def()
 									Text
 									{
 										.color = Gfx::Color::Gray(0.6),
-										.textAlign = Anim::Interpolated<Text::TextAlign>(Text::TextAlign::left),
+										.textAlign = Anim::Interpolated<Text::TextAlign>(Text::TextAlign::center),
 										.numberFormat = ::Text::NumberFormat::prefixed,
 										.maxFractionDigits = 3,
 										.numberScale = ::Text::NumberScale{}
